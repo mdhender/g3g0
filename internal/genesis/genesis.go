@@ -19,6 +19,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/mdhender/g3g0/internal/clib"
 )
 
 const (
@@ -1351,7 +1353,7 @@ func (g *generator) nextRegionName() string {
 func (g *generator) create(name string) (*os.File, *bufio.Writer) {
 	fp, err := os.OpenFile(g.path(name), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o666)
 	if err != nil {
-		perror(g.stderr, "genesis: can't write "+name, err)
+		clib.Perror(g.stderr, "genesis: can't write "+name, err)
 		g.exit(1)
 	}
 	return fp, bufio.NewWriter(fp)
@@ -1590,18 +1592,18 @@ const (
 	optOceanGrowth
 )
 
-var longopts = []longOption{
-	{"size", requiredArgument, 's'},
-	{"number-of-oceans", requiredArgument, 'n'},
-	{"island-iterations", requiredArgument, 'i'},
-	{"seed", requiredArgument, 'd'},
-	{"defer-oceans", noArgument, 'D'},
-	{"start-cities", requiredArgument, optStartCities},
-	{"ocean-growth", requiredArgument, optOceanGrowth},
-	{"image", requiredArgument, optImage},
-	{"pixels", requiredArgument, optPixels},
-	{"grid", requiredArgument, optGrid},
-	{"help", noArgument, 'h'},
+var longopts = []clib.LongOption{
+	{Name: "size", HasArg: clib.RequiredArgument, Val: 's'},
+	{Name: "number-of-oceans", HasArg: clib.RequiredArgument, Val: 'n'},
+	{Name: "island-iterations", HasArg: clib.RequiredArgument, Val: 'i'},
+	{Name: "seed", HasArg: clib.RequiredArgument, Val: 'd'},
+	{Name: "defer-oceans", HasArg: clib.NoArgument, Val: 'D'},
+	{Name: "start-cities", HasArg: clib.RequiredArgument, Val: optStartCities},
+	{Name: "ocean-growth", HasArg: clib.RequiredArgument, Val: optOceanGrowth},
+	{Name: "image", HasArg: clib.RequiredArgument, Val: optImage},
+	{Name: "pixels", HasArg: clib.RequiredArgument, Val: optPixels},
+	{Name: "grid", HasArg: clib.RequiredArgument, Val: optGrid},
+	{Name: "help", HasArg: clib.NoArgument, Val: 'h'},
 }
 
 // Run generates a world from the command-line arguments args (args[0] is
@@ -1644,32 +1646,32 @@ func (g *generator) main(args []string) int {
 		prog = args[0]
 	}
 
-	opts := newGetopt(args, "s:n:i:d:Dh", longopts, g.stderr)
+	opts := clib.NewGetoptLong(args, "s:n:i:d:Dh", longopts, g.stderr)
 	for {
-		opt := opts.next()
+		opt := opts.Next()
 		if opt == -1 {
 			break
 		}
-		optarg := opts.optarg
+		optarg := opts.Optarg
 		switch opt {
 		case 's':
-			size = atoi(optarg)
+			size = clib.Atoi(optarg)
 		case 'n':
-			oceans = atoi(optarg)
+			oceans = clib.Atoi(optarg)
 		case 'i':
-			iterations = atoi(optarg)
+			iterations = clib.Atoi(optarg)
 		case 'd':
-			seed = strtoull0(optarg)
+			seed = clib.Strtoull0(optarg)
 		case 'D':
 			g.gDeferOceans = true
 		case optImage:
 			imagePath, haveImage = optarg, true
 		case optPixels:
-			imagePixels = atoi(optarg)
+			imagePixels = clib.Atoi(optarg)
 		case optGrid:
-			imageGrid = atoi(optarg)
+			imageGrid = clib.Atoi(optarg)
 		case optStartCities:
-			startCities = atoi(optarg)
+			startCities = clib.Atoi(optarg)
 		case optOceanGrowth:
 			switch optarg {
 			case "bfs":

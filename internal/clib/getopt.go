@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael D Henderson.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-package genesis
+package clib
 
 import (
 	"fmt"
@@ -11,44 +11,49 @@ import (
 )
 
 // This file reproduces getopt_long(3) from the BSD libc on macOS, the
-// reference platform, for the one option table genesis uses. Its error
-// messages differ from glibc's. Like the C library it permutes: options
-// after a non-option argument are still parsed, unless POSIXLY_CORRECT is
-// set. genesis ignores non-option arguments, so they are only skipped here.
+// reference platform. Its error messages differ from glibc's. Like the C
+// library it permutes: options after a non-option argument are still parsed,
+// unless POSIXLY_CORRECT is set. Non-option arguments are only skipped here;
+// no ported program uses them.
+
+// Values for LongOption.HasArg.
+const (
+	NoArgument       = 0
+	RequiredArgument = 1
+)
 
 const (
-	noArgument       = 0
-	requiredArgument = 1
-
 	badCh  = '?' // unknown option
 	badArg = '?' // missing or unexpected argument; ':' only with a leading ':' in optstring
 )
 
-// longOption is struct option without the flag pointer, which genesis
-// never sets.
-type longOption struct {
-	name   string
-	hasArg int
-	val    int
+// LongOption is struct option without the flag pointer, which no ported
+// program sets.
+type LongOption struct {
+	Name   string
+	HasArg int
+	Val    int
 }
 
-// getopt holds the state that getopt_long keeps in globals.
-type getopt struct {
+// GetoptLong holds the state that getopt_long keeps in globals.
+type GetoptLong struct {
 	args      []string
 	optstring string
-	longopts  []longOption
+	longopts  []LongOption
 	stderr    io.Writer
 
 	optind int
-	optarg string
+	Optarg string // the current option's argument, as optarg
 	place  string // rest of the current short-option cluster
 
 	posixlyCorrect bool
 }
 
-func newGetopt(args []string, optstring string, longopts []longOption, stderr io.Writer) *getopt {
+// NewGetoptLong returns a parser over argv, starting at optind 1, that writes
+// its diagnostics to stderr.
+func NewGetoptLong(args []string, optstring string, longopts []LongOption, stderr io.Writer) *GetoptLong {
 	_, posixly := os.LookupEnv("POSIXLY_CORRECT")
-	return &getopt{
+	return &GetoptLong{
 		args:           args,
 		optstring:      optstring,
 		longopts:       longopts,
@@ -60,7 +65,7 @@ func newGetopt(args []string, optstring string, longopts []longOption, stderr io
 
 // warnx prints a diagnostic prefixed with the program name, which is the
 // last element of argv[0].
-func (g *getopt) warnx(format string, a ...any) {
+func (g *GetoptLong) warnx(format string, a ...any) {
 	prog := ""
 	if len(g.args) > 0 {
 		prog = g.args[0]
@@ -71,10 +76,10 @@ func (g *getopt) warnx(format string, a ...any) {
 	fmt.Fprintf(g.stderr, "%s: %s\n", prog, fmt.Sprintf(format, a...))
 }
 
-// next returns the next option character or long option value, or -1 when
-// the options are exhausted. The option's argument is left in g.optarg.
-func (g *getopt) next() int {
-	g.optarg = ""
+// Next returns the next option character or long option value, or -1 when
+// the options are exhausted. The option's argument is left in g.Optarg.
+func (g *GetoptLong) Next() int {
+	g.Optarg = ""
 	if g.place == "" {
 		for {
 			if g.optind >= len(g.args) {
@@ -132,14 +137,14 @@ func (g *getopt) next() int {
 		return int(optchar)
 	}
 	if g.place != "" {
-		g.optarg = g.place
+		g.Optarg = g.place
 	} else {
 		g.optind++
 		if g.optind >= len(g.args) {
 			g.warnx("option requires an argument -- %c", optchar)
 			return badArg
 		}
-		g.optarg = g.args[g.optind]
+		g.Optarg = g.args[g.optind]
 	}
 	g.place = ""
 	g.optind++
@@ -147,7 +152,7 @@ func (g *getopt) next() int {
 }
 
 // parseLong handles a long option; current is its text after "--".
-func (g *getopt) parseLong(current string) int {
+func (g *GetoptLong) parseLong(current string) int {
 	g.optind++
 
 	name, value, hasEqual := strings.Cut(current, "=")
@@ -155,17 +160,17 @@ func (g *getopt) parseLong(current string) int {
 	exact := false
 	ambiguous := false
 	for i, o := range g.longopts {
-		if !strings.HasPrefix(o.name, name) {
+		if !strings.HasPrefix(o.Name, name) {
 			continue
 		}
-		if len(o.name) == len(name) {
+		if len(o.Name) == len(name) {
 			match = i
 			exact = true
 			break
 		}
 		if match == -1 {
 			match = i
-		} else if o.hasArg != g.longopts[match].hasArg || o.val != g.longopts[match].val {
+		} else if o.HasArg != g.longopts[match].HasArg || o.Val != g.longopts[match].Val {
 			ambiguous = true
 		}
 	}
@@ -179,21 +184,21 @@ func (g *getopt) parseLong(current string) int {
 	}
 
 	o := g.longopts[match]
-	if o.hasArg == noArgument && hasEqual {
+	if o.HasArg == NoArgument && hasEqual {
 		g.warnx("option `--%s' doesn't allow an argument", name)
 		return badArg
 	}
-	if o.hasArg == requiredArgument {
+	if o.HasArg == RequiredArgument {
 		switch {
 		case hasEqual:
-			g.optarg = value
+			g.Optarg = value
 		case g.optind < len(g.args):
-			g.optarg = g.args[g.optind]
+			g.Optarg = g.args[g.optind]
 			g.optind++
 		default:
 			g.warnx("option `--%s' requires an argument", current)
 			return badArg
 		}
 	}
-	return o.val
+	return o.Val
 }

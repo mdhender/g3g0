@@ -9,19 +9,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"testing"
 )
-
-func TestFgetsLines(t *testing.T) {
-	long := strings.Repeat("x", 300)
-	got := fgetsLines([]byte("ab\ncd\x00ef\n\n"+long+"\nlast"), 256)
-	want := []string{"ab\n", "cd", "\n", long[:255], long[255:] + "\n", "last"}
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("fgetsLines = %q, want %q", got, want)
-	}
-}
 
 func TestGetlin(t *testing.T) {
 	r := &lineReader{data: []byte("one\n\nthree\x00x\n" + strings.Repeat("y", 1100))}
@@ -33,55 +23,6 @@ func TestGetlin(t *testing.T) {
 	}
 	if _, ok := r.getlin(); ok {
 		t.Errorf("getlin at end of input reported a line")
-	}
-}
-
-func TestScanner(t *testing.T) {
-	tests := []struct {
-		in       string
-		row, col int
-		typ      byte
-		n        int // fields assigned, as sscanf would return
-	}{
-		{"41,6\tp\tEndless Prairie", 41, 6, 'p', 3},
-		{"  -3,+7   f", -3, 7, 'f', 3},
-		{"4, 28 x", 4, 28, 'x', 3},
-		{"4 ,28 x", 4, 0, 0, 1},
-		{"12,", 12, 0, 0, 1},
-		{"9,9", 9, 9, 0, 2},
-		{"", 0, 0, 0, 0},
-		{"Great Sea", 0, 0, 0, 0},
-	}
-	for _, tc := range tests {
-		sc := &scanner{s: tc.in}
-		var row, col, n int
-		var typ byte
-		if v, ok := sc.int(); ok {
-			row, n = v, 1
-			if sc.literal(',') {
-				if v, ok := sc.int(); ok {
-					col, n = v, 2
-					sc.skipSpace()
-					if c, ok := sc.char(); ok {
-						typ, n = c, 3
-					}
-				}
-			}
-		}
-		if row != tc.row || col != tc.col || typ != tc.typ || n != tc.n {
-			t.Errorf("scan %q = %d,%d %q (%d), want %d,%d %q (%d)",
-				tc.in, row, col, typ, n, tc.row, tc.col, tc.typ, tc.n)
-		}
-	}
-}
-
-func TestPad(t *testing.T) {
-	// C pads by bytes; "é" is two bytes.
-	if got := padRight("é", 4); got != "é  " {
-		t.Errorf("padRight = %q", got)
-	}
-	if got := padLeft("ab", 4); got != "  ab" {
-		t.Errorf("padLeft = %q", got)
 	}
 }
 

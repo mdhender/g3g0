@@ -1,7 +1,10 @@
 // Copyright (c) 2026 Michael D Henderson.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-package genesis
+// Package clib reproduces the C library behavior that the ported programs'
+// observable output depends on. It follows the BSD libc that macOS ships,
+// which is the reference platform.
+package clib
 
 import (
 	"errors"
@@ -12,12 +15,8 @@ import (
 	"syscall"
 )
 
-// This file holds the C library behavior that genesis's observable output
-// depends on. It follows the BSD libc that macOS ships, which is the
-// reference platform.
-
-// isspace is the C locale isspace().
-func isspace(c byte) bool {
+// IsSpace is the C locale isspace(), which scanf uses to skip input.
+func IsSpace(c byte) bool {
 	return c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r'
 }
 
@@ -35,11 +34,11 @@ func digitValue(c byte) uint64 {
 	return 36
 }
 
-// atoi is atoi(3), which is (int)strtol(s, NULL, 10): out-of-range values
+// Atoi is atoi(3), which is (int)strtol(s, NULL, 10): out-of-range values
 // saturate to the 64-bit long range and are then truncated to 32 bits.
-func atoi(s string) int {
+func Atoi(s string) int {
 	i := 0
-	for i < len(s) && isspace(s[i]) {
+	for i < len(s) && IsSpace(s[i]) {
 		i++
 	}
 	neg := false
@@ -78,12 +77,12 @@ func atoi(s string) int {
 	return int(int32(n))
 }
 
-// strtoull0 is strtoull(s, NULL, 0): a 0x prefix selects hexadecimal and a
+// Strtoull0 is strtoull(s, NULL, 0): a 0x prefix selects hexadecimal and a
 // leading 0 octal. A minus sign negates the result as an unsigned value, and
 // out-of-range values saturate to ULLONG_MAX.
-func strtoull0(s string) uint64 {
+func Strtoull0(s string) uint64 {
 	i := 0
-	for i < len(s) && isspace(s[i]) {
+	for i < len(s) && IsSpace(s[i]) {
 		i++
 	}
 	neg := false
@@ -121,10 +120,9 @@ func strtoull0(s string) uint64 {
 	return acc
 }
 
-// strerror returns the C library message for err, as perror() prints it.
-func strerror(err error) string {
-	var errno syscall.Errno
-	if errors.As(err, &errno) {
+// Strerror returns the C library message for err, as perror() prints it.
+func Strerror(err error) string {
+	if errno, ok := errors.AsType[syscall.Errno](err); ok {
 		msg := errno.Error()
 		if msg != "" {
 			// Go's messages are the C messages with a lowercase first letter.
@@ -134,7 +132,12 @@ func strerror(err error) string {
 	return err.Error()
 }
 
-// perror writes s and the message for err the way perror(3) does.
-func perror(w io.Writer, s string, err error) {
-	fmt.Fprintf(w, "%s: %s\n", s, strerror(err))
+// Perror writes s and the message for err the way perror(3) does. An empty
+// s prints the message alone.
+func Perror(w io.Writer, s string, err error) {
+	if s != "" {
+		fmt.Fprintf(w, "%s: %s\n", s, Strerror(err))
+		return
+	}
+	fmt.Fprintf(w, "%s\n", Strerror(err))
 }

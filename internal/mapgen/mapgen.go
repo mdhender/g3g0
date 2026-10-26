@@ -20,6 +20,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/mdhender/g3g0/internal/clib"
 	"github.com/mdhender/g3g0/internal/rnd"
 )
 
@@ -324,7 +325,7 @@ func (g *generator) openFps() {
 	open := func(name string) *bufio.Writer {
 		fp, err := os.Create(g.path(name))
 		if err != nil {
-			perror(g.stderr, "can't write "+name, err)
+			clib.Perror(g.stderr, "can't write "+name, err)
 			g.exit(1)
 		}
 		g.files = append(g.files, fp)
@@ -363,7 +364,7 @@ func (g *generator) saveSeed(fnam string) {
 	fp, err := os.OpenFile(g.path(fnam), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0o666)
 	if err != nil {
 		g.errf("couldn't write %s:", fnam)
-		perror(g.stderr, "", err)
+		clib.Perror(g.stderr, "", err)
 		g.exit(1)
 	}
 	seed := g.rng.Seed()
@@ -408,16 +409,16 @@ func (g *generator) mapInit() {
 }
 
 func (g *generator) readMap() {
-	data, err := readAll(g.path("Map"))
+	data, err := clib.ReadFile(g.path("Map"))
 	if err != nil {
-		perror(g.stderr, "can't open Map", err)
+		clib.Perror(g.stderr, "can't open Map", err)
 		g.exit(1)
 	}
 
 	var terrain int
 	row := 0
 
-	for _, buf := range fgetsLines(data, lineLen) {
+	for _, buf := range clib.FgetsLines(data, lineLen) {
 		for col := 0; col < len(buf) && buf[col] != '\n'; col++ {
 			if buf[col] == '#' { // hole in map
 				continue
@@ -597,7 +598,7 @@ func (g *generator) readMap() {
 				n := g.createACity(row, col, name, 1)
 				g.subloc[n].safeHaven = 1
 
-				g.errf("%s #%s %s at (%d,%d)\n", label, ch(buf[col]), cstr(g.subloc[n].name), row, col)
+				g.errf("%s #%s %s at (%d,%d)\n", label, clib.Ch(buf[col]), clib.Str(g.subloc[n].name), row, col)
 
 			case '8':
 				terrain = terrForest
@@ -605,7 +606,7 @@ func (g *generator) readMap() {
 
 				n := g.createACity(row, col, strp("Golden City"), 1)
 
-				g.errf("Golden City #%s %s at (%d,%d)\n", ch(buf[col]), cstr(g.subloc[n].name), row, col)
+				g.errf("Golden City #%s %s at (%d,%d)\n", clib.Ch(buf[col]), clib.Str(g.subloc[n].name), row, col)
 
 			case '*':
 				terrain = terrLand
@@ -617,7 +618,7 @@ func (g *generator) readMap() {
 
 			default:
 				// Every digit has a case above, so this is never a digit.
-				g.errf("unknown terrain %s\n", ch(buf[col]))
+				g.errf("unknown terrain %s\n", clib.Ch(buf[col]))
 				g.assert(false, 680, "FALSE")
 			}
 
@@ -1308,10 +1309,10 @@ const continentFormat = "%s  %s  %s  %s  %s\n"
 
 func (g *generator) printContinentRow(name, coord, nprovs, ncities, gates string) {
 	g.errf(continentFormat,
-		padRight(name, 25),
-		padLeft(coord, 8),
-		padLeft(nprovs, 6),
-		padLeft(ncities, 7),
+		clib.PadRight(name, 25),
+		clib.PadLeft(coord, 8),
+		clib.PadLeft(nprovs, 6),
+		clib.PadLeft(ncities, 7),
 		gates)
 }
 
@@ -1420,24 +1421,24 @@ func (g *generator) setRegions() {
 	landCount := 0
 	waterCount := 0
 
-	data, err := readAll(g.path("Regions"))
+	data, err := clib.ReadFile(g.path("Regions"))
 	if err != nil {
-		perror(g.stderr, "can't read Regions", err)
+		clib.Perror(g.stderr, "can't read Regions", err)
 		return
 	}
 
-	for _, buf := range fgetsLines(data, lineLen) {
+	for _, buf := range clib.FgetsLines(data, lineLen) {
 		buf = chomp(buf)
 
 		if buf == "" {
 			continue
 		}
 
-		sc := &scanner{s: buf}
-		if v, ok := sc.int(); ok {
+		sc := clib.NewScanner(buf)
+		if v, ok := sc.Int(); ok {
 			row = v
-			if sc.literal(',') {
-				if v, ok := sc.int(); ok {
+			if sc.Literal(',') {
+				if v, ok := sc.Int(); ok {
 					col = v
 				}
 			}
@@ -1451,7 +1452,7 @@ func (g *generator) setRegions() {
 		}
 
 		if ins := g.m[row][col].inside; ins != 0 {
-			g.errf("collision between %s and %s at (%d,%d)\n", p, cstr(g.insideNames[ins]), row, col)
+			g.errf("collision between %s and %s at (%d,%d)\n", p, clib.Str(g.insideNames[ins]), row, col)
 			continue
 		}
 
@@ -1523,7 +1524,7 @@ func (g *generator) floodLandInside(row, col, ins int) int {
 		}
 
 		if p.inside != 0 {
-			g.errf("flood_land_inside(%d,%d,%s) error\n", row, col, cstr(g.insideNames[ins]))
+			g.errf("flood_land_inside(%d,%d,%s) error\n", row, col, clib.Str(g.insideNames[ins]))
 			g.assert(false, 1858, "FALSE")
 		}
 
@@ -1550,7 +1551,7 @@ func (g *generator) floodWaterInside(row, col, ins int) int {
 		}
 
 		if p.inside != 0 {
-			g.errf("flood_water_inside(%d,%d,%s) error\n", row, col, cstr(g.insideNames[ins]))
+			g.errf("flood_water_inside(%d,%d,%s) error\n", row, col, clib.Str(g.insideNames[ins]))
 			g.assert(false, 1890, "FALSE")
 		}
 
@@ -1568,23 +1569,23 @@ func (g *generator) setProvinceClumps() {
 	var typ byte
 	count := 0
 
-	data, err := readAll(g.path("Land"))
+	data, err := clib.ReadFile(g.path("Land"))
 	if err != nil {
-		perror(g.stderr, "can't read Land", err)
+		clib.Perror(g.stderr, "can't read Land", err)
 		return
 	}
 
-	for _, buf := range fgetsLines(data, lineLen) {
+	for _, buf := range clib.FgetsLines(data, lineLen) {
 		buf = chomp(buf)
 
-		sc := &scanner{s: buf}
-		if v, ok := sc.int(); ok {
+		sc := clib.NewScanner(buf)
+		if v, ok := sc.Int(); ok {
 			row = v
-			if sc.literal(',') {
-				if v, ok := sc.int(); ok {
+			if sc.Literal(',') {
+				if v, ok := sc.Int(); ok {
 					col = v
-					sc.skipSpace()
-					if c, ok := sc.char(); ok {
+					sc.SkipSpace()
+					if c, ok := sc.Char(); ok {
 						typ = c
 					}
 				}
@@ -1614,7 +1615,7 @@ func (g *generator) setProvinceClumps() {
 
 		if g.m[row][col].saveChar != typ {
 			g.errf("Land '%s' expects '%s' at (%d,%d), got '%s'\n",
-				p, ch(typ), row, col, ch(g.m[row][col].saveChar))
+				p, clib.Ch(typ), row, col, clib.Ch(g.m[row][col].saveChar))
 		}
 
 		if g.m[row][col].name != nil {
@@ -1644,7 +1645,7 @@ func (g *generator) unnamedProvinceClumps() {
 			n := g.floodLandClumps(row, col, strp("Unnamed"))
 
 			if t.saveChar != 'o' {
-				g.errf("%d,%d\t%s\t%d unnamed\n", row, col, ch(t.saveChar), n)
+				g.errf("%d,%d\t%s\t%d unnamed\n", row, col, clib.Ch(t.saveChar), n)
 			}
 		}
 	}
@@ -2430,9 +2431,9 @@ func (g *generator) createACity(row, col int, name *string, major int) int {
 	// The C code keeps the Cities stream in a static; a failed open is
 	// retried, and reported, on every call.
 	if g.cities == nil {
-		data, err := readAll(g.path("Cities"))
+		data, err := clib.ReadFile(g.path("Cities"))
 		if err != nil {
-			perror(g.stderr, "can't open Cities", err)
+			clib.Perror(g.stderr, "can't open Cities", err)
 		} else {
 			g.cities = &lineReader{data: data}
 		}
@@ -2506,7 +2507,7 @@ func (g *generator) countTiles() {
 	}
 
 	for i := 1; i < len(terrS); i++ {
-		g.errf("%s %d\n", padRight(terrS[i], 30), count[i])
+		g.errf("%s %d\n", clib.PadRight(terrS[i], 30), count[i])
 	}
 }
 

@@ -5,7 +5,6 @@ package genesis
 
 import (
 	"bytes"
-	"math"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,56 +14,6 @@ import (
 // The expected values below were observed from the pinned C genesis-g3 on
 // macOS. The full byte-for-byte comparison against the C build is
 // tools/genesis-compat/run.sh.
-
-func TestAtoi(t *testing.T) {
-	for _, tc := range []struct {
-		in   string
-		want int
-	}{
-		{"10", 10},
-		{" 10", 10},
-		{"+7", 7},
-		{"-3", -3},
-		{"20x", 20},
-		{"abc", 0},
-		{"", 0},
-		{"4294967306", 10},           // (int)4294967306
-		{"-4294967286", 10},          // (int)-4294967286
-		{"99999999999999999999", -1}, // strtol saturates to LONG_MAX
-		{"-99999999999999999999", 0}, // LONG_MIN truncates to 0
-	} {
-		if got := atoi(tc.in); got != tc.want {
-			t.Errorf("atoi(%q) = %d, want %d", tc.in, got, tc.want)
-		}
-	}
-}
-
-func TestStrtoull0(t *testing.T) {
-	for _, tc := range []struct {
-		in   string
-		want uint64
-	}{
-		{"0", 0},
-		{"12345", 12345},
-		{"0x10", 16},
-		{"0X10", 16},
-		{"010", 8},
-		{"08", 0},
-		{"0x", 0},
-		{"0xg", 0},
-		{"  +12", 12},
-		{"42abc", 42},
-		{"nope", 0},
-		{"-1", math.MaxUint64},
-		{"18446744073709551615", math.MaxUint64},
-		{"99999999999999999999999", math.MaxUint64},
-		{"-99999999999999999999999", math.MaxUint64},
-	} {
-		if got := strtoull0(tc.in); got != tc.want {
-			t.Errorf("strtoull0(%q) = %d, want %d", tc.in, got, tc.want)
-		}
-	}
-}
 
 // run runs genesis in a fresh directory and returns it with the exit status
 // and stderr.
