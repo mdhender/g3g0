@@ -1,0 +1,12 @@
+*~
+*-prompt.md
+*.db
+*.db-*
+*.pdf
+*.swp
+.idea/
+/tmp/
+
+# Local environment overrides may hold secrets such as G3G0_PEPPER.
+.env.local
+.env.*.local
