@@ -39,6 +39,7 @@ Both must pass before committing.
   This may change after v1.0.0.
 - Agents are authorized to commit and push each task as it is completed, provided all checks pass and code changes include a version bump.
 - Agents are authorized to create GitHub labels as needed.
+- Agents are authorized to create issues in the upstream github.com/playbymail/olympia-g3 repository.
 
 ## Upstream behavior, bugs, and harness tests
 
