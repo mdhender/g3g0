@@ -6,7 +6,7 @@ Expected results always come from running the pinned C build; nothing here is re
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `067e7020deb8467371193b69f54ee253416d30ec`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2322a0474de5fb38308d795f6cd72beb811652e9`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows `mapgen/mapgen.c` and `mapgen/z.c` and the linked support code: `lib/rnd.c` (MD5 RNG), `lib/ilist.c`, `lib/tiles.c` and `lib/roads.c` (lists and Knuth shuffles), and `lib/checked_alloc.c` (zeroed allocation).
@@ -106,7 +106,7 @@ When G3 has an unfixed defect, `WORKFLOW.md` requires the port to reproduce it, 
 
 ## Upstream fixes followed
 
-Each fix moves the pinned revision to the G3 commit that merged it:
+Each change moves the pinned revision to the G3 commit that merged it:
 
 | G3 fix | G3 commit | g3g0 issue | change |
 |---|---|---|---|
@@ -117,3 +117,4 @@ Each fix moves the pinned revision to the G3 commit that merged it:
 | [#286](https://github.com/playbymail/olympia-g3/pull/286) (fixes #281) | `dcdb868` | [#6](https://github.com/mdhender/g3g0/issues/6) | `flood_land_inside()` treats another region's boundary square as a wall instead of asserting |
 | [#288](https://github.com/playbymail/olympia-g3/pull/288) (fixes #285) | `9adb2fb` | [#7](https://github.com/mdhender/g3g0/issues/7) | `bridge_map_holes()` scans the last row and column, so holes there are bridged |
 | [#289](https://github.com/playbymail/olympia-g3/pull/289) (fixes #287) | `067e702` | [#8](https://github.com/mdhender/g3g0/issues/8) | the "highest province" line uses `rc_to_region(max_row, max_col)`, so a hole in that corner no longer crashes before `randseed` is saved |
+| [#291](https://github.com/playbymail/olympia-g3/pull/291), for G3 [#290](https://github.com/playbymail/olympia-g3/issues/290) | `2322a04` | [#10](https://github.com/mdhender/g3g0/issues/10) | adds genesis regression gates only; mapgen sources are unchanged and every result is identical |

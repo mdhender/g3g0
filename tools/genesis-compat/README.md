@@ -3,11 +3,14 @@
 `run.sh` checks that the Go world generator (`cmd/genesis`) is byte-compatible with G3's C `genesis-g3`.
 G3 is the reference.
 Expected results always come from running the pinned C build; nothing here is re-baselined from Go output.
-Upstream has no genesis harness, fixtures or golden outputs, so the reference's output for each case in [`cases.txt`](cases.txt) is the expectation.
+Two sources of expectations are used:
+
+- G3's own genesis regression gates (`tests/genesis/regress`, added for [G3 #290](https://github.com/playbymail/olympia-g3/issues/290)). They run unchanged from the pinned export, with G3's committed expectations.
+- A downstream differential matrix, [`cases.txt`](cases.txt), for what the gates don't cover. Its expectation for each case is the pinned C build's output.
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `067e7020deb8467371193b69f54ee253416d30ec`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2322a0474de5fb38308d795f6cd72beb811652e9`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows `genesis/genesis.c`, `genesis/pcg.c` (PCG32 and splitmix64), `genesis/names.h` (the name pools, copied verbatim into `internal/genesis/names.go`) and `lib/map_image.c` (the `--image` BMP writer).
@@ -51,9 +54,12 @@ The script:
 7. Feeds every world the Go port generated to the C `mapgen-g3` and to the Go `mapgen`.
    The C program must exit 0, and the two must agree byte for byte on `loc`, `gate`, `road`, the final `randseed`, stdout, stderr and the exit status.
    This is a smoke check that the worlds are usable; the comparison against C genesis is the gate.
+8. Runs G3's own genesis regression gates (`tests/genesis/regress/*/check.sh`) from the export, unchanged, against the C build and against Go.
+   They run the C build by default, and the Go binary through their `GENESIS_BIN` setting (`tests/genesis/genesis.sh`).
+   Each must print `YES`.
 
 The script exits 0 only when every check passes.
-Each run's outputs are left under `tmp/genesis-compat/runs/<case>/{c1,c2,go1,go2}`, the mapgen runs under `tmp/genesis-compat/mapgen/<case>/{c,go}`, and the summary is written to `tmp/genesis-compat/results.tsv`.
+Each run's outputs are left under `tmp/genesis-compat/runs/<case>/{c1,c2,go1,go2}`, the mapgen runs under `tmp/genesis-compat/mapgen/<case>/{c,go}`, and the summaries are written to `tmp/genesis-compat/results.tsv` (cases) and `tmp/genesis-compat/gates.tsv` (G3 gates).
 
 `go test ./internal/genesis` checks the C library emulation (`atoi`, `strtoull`, `getopt_long`), the argument diagnostics, determinism, and seed sensitivity.
 Its expected messages were observed from the pinned C build.
@@ -82,6 +88,10 @@ Seeds for the rare paths (coloring retries, start-city spacing retries, lakes, "
 Two `--defer-oceans` retry paths are not exercised: "couldn't place N ocean origins" and "N deferred oceans not 4-colorable".
 Scans of up to 400 seeds per configuration, at sizes 10 to 99 with up to 12 oceans and both growth modes, never reached them in the C build.
 No case reaches the three `assert()`s, "no land for start cities" or "no open water left for oceans" either.
+G3's gates don't reach any of these paths either; its `tests/genesis/README.md` lists them as unreached.
+
+The G3 gates cover a subset of this matrix with G3's own expectations: defaults, seed parsing, sizes and the ocean cap, coloring retries, island iterations, the region pool wrap, deferred oceans, `bfs` growth, start cities, `--image`, validation errors and write failures.
+They pass no unknown or malformed options, because `getopt_long`'s messages differ between C libraries, so the `getopt_long` cases here have no upstream counterpart.
 
 ## Results
 
@@ -91,8 +101,9 @@ Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.
   All 131 PASS: Go matches C byte for byte on every file, stdout, stderr and exit status, and both programs are deterministic.
 - The seed groups gave 7, 4 and 3 distinct reference worlds for 7, 4 and 3 cases.
 - All 84 Go-generated worlds are accepted by the C `mapgen-g3`, and the Go `mapgen` matches it on each.
+- G3 gates: all 12 (`coloring-retry`, `defaults`, `defer-oceans`, `image`, `island-iterations`, `ocean-growth-bfs`, `region-pool-wrap`, `seed-parsing`, `sizes`, `start-cities`, `validation-errors`, `write-failures`) print `YES` for the C build and for Go.
 
-The full table of hashes is in [`results.tsv`](results.tsv). It is copied from the run, not edited by hand.
+The full table of hashes is in [`results.tsv`](results.tsv), and the gate results are in [`gates.tsv`](gates.tsv). Both are copied from the run, not edited by hand.
 
 ## Known differences
 
@@ -104,8 +115,17 @@ These are limited to failure paths the C build cannot reproduce exactly. None is
   The port panics with an index error there instead.
 - **Byte order.** `randseed` is two `uint64_t` values written with `fwrite`, so its bytes are in the host's byte order.
   The port writes them in Go's native byte order, which matches on every platform; the recorded results are from a little-endian machine.
+  G3's gate manifests pin `randseed`, so, as its `tests/genesis/README.md` notes, they hold only on little-endian hosts.
 
 ## Upstream defects reproduced on purpose
 
 None are known at the pinned revision.
 When G3 has an unfixed defect, `WORKFLOW.md` requires the port to reproduce it, with a comment linking the G3 issue, and to list it here.
+
+## Upstream changes followed
+
+Each change moves the pinned revision to the G3 commit that merged it:
+
+| G3 change | G3 commit | g3g0 issue | change |
+|---|---|---|---|
+| [#291](https://github.com/playbymail/olympia-g3/pull/291), for G3 [#290](https://github.com/playbymail/olympia-g3/issues/290) | `2322a04` | [#10](https://github.com/mdhender/g3g0/issues/10) | genesis regression gates with `GENESIS_BIN` selection; tests only, so the port is unchanged and `run.sh` now runs the gates against C and Go |

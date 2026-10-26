@@ -11,8 +11,10 @@
 # leaves behind (Map, Regions, Land, Cities, randseed, any BMP), stderr,
 # stdout and the exit status must match byte for byte.
 #
-# Finally, each world the Go port generated is fed to the C mapgen-g3 and to
-# the Go mapgen, which must both accept it and agree.
+# Then each world the Go port generated is fed to the C mapgen-g3 and to the
+# Go mapgen, which must both accept it and agree. Finally it runs G3's own
+# genesis regression gates, with their assertions and expectations unchanged,
+# against both binaries.
 #
 # Usage: tools/genesis-compat/run.sh
 #
@@ -24,7 +26,8 @@
 #   RUN_TIMEOUT  seconds allowed per program run (default 120)
 #
 # Exits 0 only if every check passes. Results are written to
-# $WORK/results.tsv; per-run outputs are kept under $WORK/runs.
+# $WORK/results.tsv and $WORK/gates.tsv; per-run outputs are kept under
+# $WORK/runs.
 
 set -euo pipefail
 
@@ -32,7 +35,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-067e7020deb8467371193b69f54ee253416d30ec}"
+G3_REV="${G3_REV:-2322a0474de5fb38308d795f6cd72beb811652e9}"
 WORK="${WORK:-${ROOT}/tmp/genesis-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
 
@@ -251,6 +254,29 @@ for label in "${ok_labels[@]}"; do
 	done
 	printf '  %-4s %-20s loc %.12s  gate %.12s  road %.12s\n' "${result}" "${label}" \
 		"$(sha "${c}/loc")" "$(sha "${c}/gate")" "$(sha "${c}/road")"
+done
+
+# ---------------------------------------------------------------------------
+# G3's genesis regression gates, unchanged. They run the C reference by
+# default and another world generator when GENESIS_BIN names it
+# (tests/genesis/genesis.sh).
+# ---------------------------------------------------------------------------
+echo
+echo "G3 genesis regression gates"
+GATES="${WORK}/gates.tsv"
+printf 'gate\timpl\tresult\n' >"${GATES}"
+for check in "${WORK}"/g3/tests/genesis/regress/*/check.sh; do
+	name="$(basename "$(dirname "${check}")")"
+	for impl in c go; do
+		if [ "${impl}" = go ]; then
+			out="$(GENESIS_BIN="${GO_BIN}" bash "${check}" 2>&1)" || true
+		else
+			out="$(env -u GENESIS_BIN OLYMPIA_PRESET=debug bash "${check}" 2>&1)" || true
+		fi
+		printf '  %-20s %-3s %s\n' "${name}" "${impl}" "$(head -1 <<<"${out}")"
+		printf '%s\t%s\t%s\n' "${name}" "${impl}" "$(head -1 <<<"${out}")" >>"${GATES}"
+		[ "$(head -1 <<<"${out}")" = YES ] || fail "gate ${name} (${impl}): ${out}"
+	done
 done
 
 echo
