@@ -312,9 +312,7 @@ func (g *generator) main() {
 	g.countTiles()
 
 	g.errf("\n")
-	// A hole at (max_row, max_col) is a NULL tile here and crashes.
-	// Upstream bug: https://github.com/playbymail/olympia-g3/issues/287
-	g.errf("highest province = %d\n", g.m[g.maxRow][g.maxCol].region)
+	g.errf("highest province = %d\n", g.rcToRegion(g.maxRow, g.maxCol))
 	g.errf("\n")
 
 	g.saveSeed("randseed")
