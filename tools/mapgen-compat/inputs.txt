@@ -1,0 +1,13 @@
+# Input sets for the mapgen differential test (see README.md).
+#
+# Each line is: <label> <source> [genesis-g3 arguments...]
+#   fixtures  copy Map, Regions, Land and Cities from tests/mapgen/fixtures
+#             in the pinned G3 export.
+#   genesis   run the pinned genesis-g3 with the given arguments and use the
+#             Map, Regions, Land and Cities it writes (its randseed is
+#             discarded; seeds come from seeds.txt).
+
+fixtures       fixtures
+genesis-40     genesis --seed 1 --size 40
+genesis-60     genesis --seed 7 --size 60 --start-cities 9
+genesis-99     genesis --seed 1993 --size 99 --defer-oceans --ocean-growth bfs

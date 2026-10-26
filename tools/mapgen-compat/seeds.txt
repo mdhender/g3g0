@@ -1,0 +1,20 @@
+# Seed corpus for the mapgen differential test (see README.md).
+#
+# Each line is: <label> <seed>
+# <seed> is the exact randseed file content in hex. "missing" means no
+# randseed file at all; a seed shorter than 16 bytes exercises load_seed()'s
+# partial read. Every seed is run against every input set in inputs.txt.
+
+# tests/mapgen/fixtures/randseed ("slartibartfast?\n")
+fixture          736c6172746962617274666173743f0a
+# tests/mapgen/regress/secret-sea-route/randseed ("S000000000000002")
+secret-sea-route 53303030303030303030303030303032
+zero             00000000000000000000000000000000
+ones             ffffffffffffffffffffffffffffffff
+random-1         fff685d92c9a4ace6d2ea0f1b5d98ad9
+random-2         59fc969dae68bfbea93ed0657ef24e2f
+random-3         428a5a3bc5d6b45ed47720496f5d8c7a
+random-4         e8969ddde0b5199dc7efb4a07cc0bfcb
+# Edge cases for load_seed().
+short-5          68656c6c6f
+missing          missing
