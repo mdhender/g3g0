@@ -3,11 +3,15 @@
 # Each line is: <label> <source> [genesis-g3 arguments...]
 #   fixtures  copy Map, Regions, Land and Cities from tests/mapgen/fixtures
 #             in the pinned G3 export.
+#   regress/<name>
+#             copy the inputs of tests/mapgen/regress/<name>; any of Map,
+#             Regions, Land and Cities it lacks come from the fixtures.
 #   genesis   run the pinned genesis-g3 with the given arguments and use the
 #             Map, Regions, Land and Cities it writes (its randseed is
 #             discarded; seeds come from seeds.txt).
 
 fixtures       fixtures
+map-glyphs     regress/map-glyphs
 genesis-40     genesis --seed 1 --size 40
 genesis-60     genesis --seed 7 --size 60 --start-cities 9
 genesis-99     genesis --seed 1993 --size 99 --defer-oceans --ocean-growth bfs

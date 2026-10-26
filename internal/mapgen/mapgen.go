@@ -1930,12 +1930,9 @@ func (g *generator) randomProvinceGates(n int) {
 
 	for i := 0; i < n; i++ {
 		r1, c1 := g.randomProvince(0)
-		_, c2 := g.randomProvince(0)
+		r2, c2 := g.randomProvince(0)
 
-		// The C code gates to (r1,c2), not (r2,c2). That square may be ocean
-		// or a map hole; a hole is a NULL tile and crashes new_gate().
-		// Upstream bug: https://github.com/playbymail/olympia-g3/issues/272
-		g.newGate(g.m[r1][c1], g.m[r1][c2], 0)
+		g.newGate(g.m[r1][c1], g.m[r2][c2], 0)
 	}
 }
 

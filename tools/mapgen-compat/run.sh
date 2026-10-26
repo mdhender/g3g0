@@ -30,7 +30,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-06a59597595fbb0e91a8978aa13a9b93999b62c7}"
+G3_REV="${G3_REV:-b086a163d93dda4961c04f80e72918850778f318}"
 WORK="${WORK:-${ROOT}/tmp/mapgen-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
 
@@ -87,6 +87,14 @@ while read -r label source args; do
 	case "${source}" in
 	fixtures)
 		for f in "${INPUTS[@]}"; do cp -p "${WORK}/g3/tests/mapgen/fixtures/${f}" "${dir}/"; done
+		;;
+	regress/*)
+		# A G3 regression's own inputs; files it lacks come from the fixtures.
+		for f in "${INPUTS[@]}"; do
+			src="${WORK}/g3/tests/mapgen/${source}/${f}"
+			[ -f "${src}" ] || src="${WORK}/g3/tests/mapgen/fixtures/${f}"
+			cp -p "${src}" "${dir}/"
+		done
 		;;
 	genesis)
 		# shellcheck disable=SC2086 # args is a word list by design
