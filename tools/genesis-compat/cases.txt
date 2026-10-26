@@ -1,0 +1,175 @@
+# Differential test cases for tools/genesis-compat/run.sh.
+#
+# Fields, separated by whitespace (args is the rest of the line, split as
+# bash words):
+#   label   unique name; also the run directory
+#   expect  ok    the reference must exit 0
+#           fail  the reference must exit nonzero
+#           help  the reference must exit 0 without writing files
+#   group   cases in the same group must all produce different worlds, so a
+#           port that ignored the seed cannot pass; "-" for none
+#   setup   "-", or one of:
+#             dir:NAME  create a directory NAME so fopen(NAME, "w") fails
+#             ro        make the run directory read-only
+#             posix     run with POSIXLY_CORRECT=1
+#   args    the argument vector after argv[0]
+#
+# Every case runs the C reference twice and the Go port twice, each in a fresh
+# empty directory with argv[0] set to genesis-g3.
+
+# --- defaults and distinct seeds (frontier oceans) -------------------------
+default             ok    -       -    
+seed-0              ok    seeds   -    --seed 0
+seed-1              ok    seeds   -    --seed 1
+seed-12345          ok    seeds   -    --seed 12345
+seed-hex            ok    seeds   -    --seed 0xdeadbeef
+seed-octal          ok    seeds   -    --seed 0777
+seed-max            ok    seeds   -    --seed 18446744073709551615
+seed-big            ok    seeds   -    --seed 9876543210123456789
+
+# --- seed spellings (strtoull base 0) --------------------------------------
+seed-16-dec         ok    -       -    --seed 16
+seed-16-hex         ok    -       -    --seed 0x10
+seed-16-HEX         ok    -       -    --seed 0X10
+seed-16-oct         ok    -       -    --seed 020
+seed-neg-1          ok    -       -    --seed -1
+seed-overflow       ok    -       -    --seed 99999999999999999999999
+seed-space-plus     ok    -       -    --seed '  +12'
+seed-0x-only        ok    -       -    --seed 0x
+seed-0xg            ok    -       -    --seed 0xg
+seed-8-octal-stop   ok    -       -    --seed 08
+seed-trailing       ok    -       -    --seed 42abc
+seed-words          ok    -       -    --seed=nope
+
+# --- sizes, with the ocean cap and coloring retries ------------------------
+size-10             ok    -       -    --seed 5 --size 10
+size-11             ok    -       -    --seed 5 --size 11
+size-12             ok    -       -    --seed 5 --size 12
+size-20             ok    -       -    --seed 5 --size 20
+size-36             ok    -       -    --seed 5 --size 36
+size-50             ok    -       -    --seed 5 --size 50
+size-98             ok    -       -    --seed 5 --size 98
+size-99             ok    -       -    --seed 5 --size 99
+size-wrap           ok    -       -    --seed 5 --size 4294967306
+size-space          ok    -       -    --seed 5 --size ' 20'
+size-trailing       ok    -       -    --seed 5 --size 20x
+color-retry-13      ok    -       -    --seed 68 --size 13 -n 5
+color-retry-20      ok    -       -    --seed 8 --size 20 -n 7
+color-retry-40      ok    -       -    --seed 39 --size 40 -n 12
+oceans-1            ok    -       -    --seed 5 -n 1
+oceans-12           ok    -       -    --seed 5 -n 12
+oceans-clamped      ok    -       -    --seed 5 --size 30 -n 50
+
+# --- island iterations ------------------------------------------------------
+iter-2              ok    -       -    --seed 9 -i 2
+iter-3              ok    -       -    --seed 9 -i 3
+iter-10             ok    -       -    --seed 9 -i 10
+iter-2-small        ok    -       -    --seed 9 -i 2 --size 10
+
+# --- region and land naming --------------------------------------------------
+names-wrap          ok    -       -    --seed 1 --size 99
+
+# --- deferred oceans ---------------------------------------------------------
+defer-0             ok    defer   -    -D
+defer-7             ok    defer   -    -D --seed 7
+defer-lake          ok    defer   -    -D --seed 6
+defer-great-lake    ok    defer   -    -D --seed 27
+defer-frontier      ok    -       -    --defer-oceans --ocean-growth frontier --seed 7
+defer-12            ok    -       -    -D --seed 6 -n 12
+defer-1             ok    -       -    -D --seed 6 -n 1
+defer-small         ok    -       -    -D --seed 3 --size 10
+defer-30            ok    -       -    -D --seed 3 --size 30 -n 10
+bfs-0               ok    bfs     -    -D --ocean-growth bfs
+bfs-3               ok    bfs     -    -D --ocean-growth bfs --seed 3
+bfs-lake            ok    bfs     -    -D --ocean-growth bfs --seed 11 --size 60
+bfs-small           ok    -       -    -D --ocean-growth bfs --seed 3 --size 10
+bfs-before-defer    ok    -       -    --ocean-growth bfs --defer-oceans --seed 4
+
+# --- start cities --------------------------------------------------------------
+cities-0            ok    -       -    --seed 2 --start-cities 0
+cities-1            ok    -       -    --seed 2 --start-cities 1
+cities-6            ok    -       -    --seed 2 --start-cities 6
+cities-16           ok    -       -    --seed 2 --start-cities 16
+cities-retry        ok    -       -    --size 10 --start-cities 6
+cities-16-small     ok    -       -    --seed 2 --size 10 --start-cities 16
+cities-defer-16     ok    -       -    -D --seed 2 --start-cities 16
+
+# --- --image -----------------------------------------------------------------
+image-default       ok    -       -    --seed 4 --image map.bmp
+image-px1           ok    -       -    --seed 4 --size 20 --image map.bmp --pixels 1
+image-px64          ok    -       -    --seed 4 --size 10 --image map.bmp --pixels 64
+image-grid1         ok    -       -    --seed 4 --size 20 --image map.bmp --pixels 3 --grid 1
+image-grid4         ok    -       -    --seed 4 --size 20 --image map.bmp --pixels 5 --grid 4
+image-pad           ok    -       -    --seed 4 --size 11 --image map.bmp --pixels 3 --grid 2
+image-defer         ok    -       -    -D --seed 4 --size 50 --image map.bmp --pixels 2
+image-twice         ok    -       -    --seed 4 --size 20 --image a.bmp --image b.bmp
+pixels-no-image     ok    -       -    --seed 4 --size 20 --pixels 0 --grid 9
+
+# --- getopt_long forms ---------------------------------------------------------
+short-attached      ok    -       -    -s20 -d7 -n3 -i4
+short-cluster       ok    -       -    -Dd7 -s20
+long-equals         ok    -       -    --size=20 --seed=7
+long-abbrev         ok    -       -    --si 20 --se 7 --st 3 --def --o bfs --nu 3 --is 4
+long-equals-junk    ok    -       -    '--se=7 --size 10'
+permute             ok    -       -    stray --size 20 other --seed 7
+dash-operand        ok    -       -    - --size 20
+end-of-options      ok    -       -    --size 20 -- --bogus -x
+repeated            ok    -       -    --seed 5 --size 20 --seed 6
+arg-is-dash-dash    ok    -       -    --size 20 --seed --
+cluster-long        ok    -       -    -D-size 20
+posix-stop          ok    -       posix  --size 20 stray --bogus
+
+# --- help ------------------------------------------------------------------------
+help-short          help  -       -    -h
+help-long           help  -       -    --help
+help-abbrev         help  -       -    --he
+help-cluster        help  -       -    -hx
+help-after          help  -       -    --size 5 --help
+
+# --- validation errors ---------------------------------------------------------
+size-9              fail  -       -    --size 9
+size-100            fail  -       -    --size 100
+size-words          fail  -       -    --size abc
+size-saturate       fail  -       -    --size 99999999999999999999
+size-first          fail  -       -    --size 9 --number-of-oceans 0
+oceans-0            fail  -       -    -n 0
+oceans-neg          fail  -       -    -n -3
+iter-1              fail  -       -    -i 1
+iter-11             fail  -       -    -i 11
+cities-neg          fail  -       -    --start-cities -1
+cities-17           fail  -       -    --start-cities 17
+pixels-0            fail  -       -    --image map.bmp --pixels 0
+pixels-65           fail  -       -    --image map.bmp --pixels 65
+grid-neg            fail  -       -    --image map.bmp --grid -1
+grid-5              fail  -       -    --image map.bmp --grid 5
+growth-bad          fail  -       -    --ocean-growth BFS
+growth-bad-early    fail  -       -    --ocean-growth x --size 5
+bfs-no-defer        fail  -       -    --ocean-growth bfs
+
+# --- getopt errors ---------------------------------------------------------------
+short-unknown       fail  -       -    -x
+short-colon         fail  -       -    -:
+short-missing       fail  -       -    --size 20 -s
+long-unknown        fail  -       -    --bogus
+long-unknown-eq     fail  -       -    --bogus=3
+long-ambiguous-s    fail  -       -    --s 5
+long-ambiguous-i    fail  -       -    --i 3
+long-empty-name     fail  -       -    --=x
+long-triple-dash    fail  -       -    ---size 5
+long-missing        fail  -       -    --seed
+long-noarg-eq       fail  -       -    --defer-oceans=1
+help-eq             fail  -       -    --help=1
+cluster-dash-end    fail  -       -    -D-
+cluster-dash-long   fail  -       -    -D-x
+posix-illegal       fail  -       posix  -x
+
+# --- output failures -------------------------------------------------------------
+unwritable-dir      fail  -       ro         --seed 3 --size 20
+map-is-dir          fail  -       dir:Map      --seed 3 --size 20
+regions-is-dir      fail  -       dir:Regions  --seed 3 --size 20
+land-is-dir         fail  -       dir:Land     --seed 3 --size 20
+cities-is-dir       fail  -       dir:Cities   --seed 3 --size 20
+randseed-is-dir     fail  -       dir:randseed --seed 3 --size 20
+image-empty-path    fail  -       -    --seed 3 --size 20 --image=
+image-bad-dir       fail  -       -    --seed 3 --size 20 --image /nonexistent/dir/map.bmp
+image-is-dir        fail  -       dir:map.bmp  --seed 3 --size 20 --image map.bmp
