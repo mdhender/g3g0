@@ -1176,11 +1176,8 @@ var bridgeDirS = []string{
 // bridgeMapHoles bridges each # map hole with a secret road.
 // It won't put two roads in the same square.
 func (g *generator) bridgeMapHoles() {
-	// The bounds skip the last row and column, so holes there are never
-	// bridged.
-	// Upstream bug: https://github.com/playbymail/olympia-g3/issues/285
-	for row := 0; row < g.maxRow; row++ {
-		for col := 0; col < g.maxCol; col++ {
+	for row := 0; row <= g.maxRow; row++ {
+		for col := 0; col <= g.maxCol; col++ {
 			if g.m[row][col] == nil {
 				if n := g.bridgeMapHoleSup(row, col); n != 0 {
 					g.errf("%s map hole bridge at (%d,%d)\n", bridgeDirS[n], row, col)

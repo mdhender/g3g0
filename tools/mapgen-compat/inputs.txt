@@ -16,6 +16,7 @@ unnamed-regions  regress/unnamed-regions
 seed-no-province regress/seed-no-province
 last-column      regress/last-column
 lone-boundary    regress/lone-boundary
+hole-edges       regress/hole-edges
 genesis-40       genesis --seed 1 --size 40
 genesis-60       genesis --seed 7 --size 60 --start-cities 9
 genesis-99       genesis --seed 1993 --size 99 --defer-oceans --ocean-growth bfs
