@@ -1523,9 +1523,10 @@ func (g *generator) floodLandInside(row, col, ins int) int {
 			continue // already been here
 		}
 
-		// Reaching a boundary square that another region already claimed
-		// asserts here.
-		// Upstream bug: https://github.com/playbymail/olympia-g3/issues/281
+		if p.inside != 0 && p.regionBoundary != 0 {
+			continue // another region's boundary
+		}
+
 		if p.inside != 0 {
 			g.errf("flood_land_inside(%d,%d,%s) error\n", row, col, cstr(g.insideNames[ins]))
 			g.assert(false, 1858, "FALSE")

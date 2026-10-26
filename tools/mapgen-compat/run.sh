@@ -30,7 +30,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-635bb93a85c877090cdd191ca3862e7e3e1b8b26}"
+G3_REV="${G3_REV:-dcdb868d44707f4cff0eef5702224948fc7fd3b7}"
 WORK="${WORK:-${ROOT}/tmp/mapgen-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
 
