@@ -2126,12 +2126,8 @@ func (g *generator) markBadLocs() {
 	}
 
 	// don't put gates in locations where magic can't be used
-	//
-	// The column bound is "< max_col", so the last map column is skipped,
-	// as it is in random_province().
-	// Upstream bug: https://github.com/playbymail/olympia-g3/issues/275
 	for r := 0; r <= g.maxRow; r++ {
-		for c := 0; c < g.maxCol; c++ {
+		for c := 0; c <= g.maxCol; c++ {
 			if g.m[r][c] != nil && g.m[r][c].safeHaven != 0 {
 				g.m[r][c].mark = 1
 			}
@@ -2152,10 +2148,9 @@ func (g *generator) randomProvince(terr int) (int, int) {
 		return t.terrain == terr
 	}
 
-	// The column bound is "< max_col"; see markBadLocs.
 	sum := 0
 	for r := 0; r <= g.maxRow; r++ {
-		for c := 0; c < g.maxCol; c++ {
+		for c := 0; c <= g.maxCol; c++ {
 			if ok(g.m[r][c]) {
 				sum++
 			}
@@ -2165,7 +2160,7 @@ func (g *generator) randomProvince(terr int) (int, int) {
 	n := g.rnd(1, sum)
 
 	for r := 0; r <= g.maxRow; r++ {
-		for c := 0; c < g.maxCol; c++ {
+		for c := 0; c <= g.maxCol; c++ {
 			if ok(g.m[r][c]) {
 				n--
 				if n <= 0 {
