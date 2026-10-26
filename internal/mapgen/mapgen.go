@@ -1067,6 +1067,12 @@ func roadName(cnt *int) *string {
 	return strp(name)
 }
 
+// isMarked reports whether a neighbor exists and is marked. Off-map squares
+// and holes are nil.
+func isMarked(t *tile) bool {
+	return t != nil && t.mark != 0
+}
+
 // The horror, the horror: bump each neighbor's mark by a coin flip.
 func (g *generator) horror(tiles ...*tile) {
 	for _, t := range tiles {
@@ -1090,12 +1096,8 @@ func (g *generator) bridgeMapHoleSup(row, col int) int {
 	ne := g.adjacentTileSup(row, col, dirNE)
 	se := g.adjacentTileSup(row, col, dirSE)
 
-	// The C code reads every neighbor's mark before it checks for NULL, so a
-	// hole beside another hole or the map edge dereferences NULL and crashes.
-	// The nil dereferences here reproduce that.
-	// Upstream bug: https://github.com/playbymail/olympia-g3/issues/274
-	if n.mark != 0 || s.mark != 0 || e.mark != 0 || w.mark != 0 ||
-		nw.mark != 0 || sw.mark != 0 || ne.mark != 0 || se.mark != 0 {
+	if isMarked(n) || isMarked(s) || isMarked(e) || isMarked(w) ||
+		isMarked(nw) || isMarked(sw) || isMarked(ne) || isMarked(se) {
 		return 0
 	}
 
@@ -1199,9 +1201,8 @@ func (g *generator) bridgeCornerSup(row, col int) int {
 	ne := g.adjacentTileSup(row, col, dirNE)
 	se := g.adjacentTileSup(row, col, dirSE)
 
-	marked := func(t *tile) bool { return t != nil && t.mark != 0 }
-	if marked(n) || marked(s) || marked(e) || marked(w) ||
-		marked(nw) || marked(sw) || marked(ne) || marked(se) {
+	if isMarked(n) || isMarked(s) || isMarked(e) || isMarked(w) ||
+		isMarked(nw) || isMarked(sw) || isMarked(ne) || isMarked(se) {
 		return 0
 	}
 

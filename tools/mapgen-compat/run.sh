@@ -30,7 +30,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-03b5cea880c44fb42b40173dacf20d32896c0aa4}"
+G3_REV="${G3_REV:-06a59597595fbb0e91a8978aa13a9b93999b62c7}"
 WORK="${WORK:-${ROOT}/tmp/mapgen-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
 
@@ -209,20 +209,22 @@ for input in "${input_labels[@]}"; do
 done
 
 # ---------------------------------------------------------------------------
-# G3's mapgen regression checks, unchanged. They look for the binary at
-# build/$OLYMPIA_PRESET/mapgen-g3 in the export, so the Go binary is placed at
-# build/go/ there; the reference binary is left alone.
+# G3's mapgen regression checks, unchanged. They run the C reference by
+# default and another map generator when MAPGEN_BIN names it
+# (tests/mapgen/mapgen.sh).
 # ---------------------------------------------------------------------------
 echo
 echo "G3 mapgen regression checks"
-mkdir -p "${WORK}/g3/build/go"
-cp -p "${GO_BIN}" "${WORK}/g3/build/go/mapgen-g3"
 for check in "${WORK}"/g3/tests/mapgen/regress/*/check.sh; do
 	name="$(basename "$(dirname "${check}")")"
-	for preset in debug go; do
-		out="$(OLYMPIA_PRESET="${preset}" bash "${check}" 2>&1)" || true
-		printf '  %-22s %-5s %s\n' "${name}" "${preset}" "$(head -1 <<<"${out}")"
-		[ "$(head -1 <<<"${out}")" = YES ] || fail "regression ${name} (${preset}): ${out}"
+	for impl in c go; do
+		if [ "${impl}" = go ]; then
+			out="$(MAPGEN_BIN="${GO_BIN}" bash "${check}" 2>&1)" || true
+		else
+			out="$(env -u MAPGEN_BIN OLYMPIA_PRESET=debug bash "${check}" 2>&1)" || true
+		fi
+		printf '  %-22s %-3s %s\n' "${name}" "${impl}" "$(head -1 <<<"${out}")"
+		[ "$(head -1 <<<"${out}")" = YES ] || fail "regression ${name} (${impl}): ${out}"
 	done
 done
 

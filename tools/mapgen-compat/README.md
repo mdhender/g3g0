@@ -6,7 +6,7 @@ Expected results always come from running the pinned C build; nothing here is re
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `03b5cea880c44fb42b40173dacf20d32896c0aa4`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `06a59597595fbb0e91a8978aa13a9b93999b62c7`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows `mapgen/mapgen.c` and `mapgen/z.c` and the linked support code: `lib/rnd.c` (MD5 RNG), `lib/ilist.c`, `lib/tiles.c` and `lib/roads.c` (lists and Knuth shuffles), and `lib/checked_alloc.c` (zeroed allocation).
@@ -47,14 +47,12 @@ The script:
 6. For each input set, requires that every full 16-byte seed gives a different reference map.
    A port that ignored the seed would fail this check.
 7. Runs G3's own mapgen regression scripts (`tests/mapgen/regress/*/check.sh`) from the export, unchanged, against the C build and against Go.
-   The scripts look for `build/$OLYMPIA_PRESET/mapgen-g3`.
-   The Go binary is copied to `build/go/` in the disposable export and run with `OLYMPIA_PRESET=go`.
-   The C binary is left in place.
+   They run the C build by default, and the Go binary through their `MAPGEN_BIN` setting (`tests/mapgen/mapgen.sh`).
 
 The script exits 0 only when every check passes.
 Each run's outputs are left under `tmp/mapgen-compat/runs/<input>/<seed>/{c1,c2,go1,go2}`, and the summary is written to `tmp/mapgen-compat/results.tsv`.
 
-`go test ./internal/mapgen` runs the two upstream regressions in-process when `G3_ROOT` names a G3 checkout.
+`go test ./internal/mapgen` runs the `secret-sea-route` and `save-seed-unwritable` regressions in-process when `G3_ROOT` names a G3 checkout.
 They read the seed and `EXPECT.sha256` from that checkout:
 
 ```sh
@@ -84,15 +82,13 @@ Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.
 - 4 input sets × 10 seeds = 40 cases.
   All 40 PASS: Go matches C byte for byte on every output, and both programs are deterministic.
 - Each input set gives 8 distinct reference maps for its 8 full seeds.
-- The `secret-sea-route` case reproduces upstream `EXPECT.sha256` (`loc` `7e340b89…`, `gate` `95a45e1c…`, `road` `a752a33c…`).
-- G3 regressions: `save-seed-unwritable` and `secret-sea-route` both print `YES` for the C build and for Go.
+- The `fixtures`/`secret-sea-route` case reproduces upstream's `secret-sea-route/EXPECT.sha256` for `gate`, `loc` and `road`.
+- G3 regressions: every `tests/mapgen/regress/*/check.sh` at the pinned revision prints `YES` for the C build and for Go.
 
 The full table of hashes and final seeds is in [`results.tsv`](results.tsv). It is copied from the run, not edited by hand.
 
-These inputs leave some paths uncovered.
-No upstream fixture or genesis world contains `#` map holes, the Uldim and Summerbridge glyphs (`^ v { } [ ]`), sea-lane glyphs (`; : ~ "`) or `*` city squares.
-Those paths follow the C source but have not been compared with it.
-Coverage for them has been requested upstream in [G3 #276](https://github.com/playbymail/olympia-g3/issues/276).
+`#` map holes, the Uldim and Summerbridge glyphs (`^ v { } [ ]`), sea-lane glyphs (`; : ~ "`) and `*` city squares appear only in upstream's `map-glyphs` regression, added for [G3 #276](https://github.com/playbymail/olympia-g3/issues/276).
+The fixture inputs and genesis worlds in the matrix don't contain them.
 
 ## Known differences
 
@@ -110,7 +106,14 @@ As `WORKFLOW.md` requires, the port reproduces these and links each one from `in
 
 - [G3 #272](https://github.com/playbymail/olympia-g3/issues/272): `random_province_gates()` gates to `(r1,c2)` instead of `(r2,c2)`.
 - [G3 #273](https://github.com/playbymail/olympia-g3/issues/273): a region with no `Regions` entry has a NULL name, and `mark_bad_locs()`, `random_tile_from_each_region()` and `island_allowed()` dereference it.
-- [G3 #274](https://github.com/playbymail/olympia-g3/issues/274): `bridge_map_hole_sup()` reads neighbor marks before checking for NULL, so a hole at the map edge or next to another hole crashes.
 - [G3 #275](https://github.com/playbymail/olympia-g3/issues/275): `random_province()` and `mark_bad_locs()` scan `c < max_col` and skip the last map column.
 
-For #273 and #274 the C build and the port agree byte for byte up to the crash, on stdout, stderr and the output files, and both exit 139.
+For #273 the C build and the port agree byte for byte up to the crash, on stdout, stderr and the output files, and both exit 139.
+
+## Upstream fixes followed
+
+Each fix moves the pinned revision to the G3 commit that merged it:
+
+| G3 fix | G3 commit | g3g0 issue | change |
+|---|---|---|---|
+| [#277](https://github.com/playbymail/olympia-g3/pull/277) (fixes #274) | `06a5959` | [#2](https://github.com/mdhender/g3g0/issues/2) | `bridge_map_hole_sup()` checks each neighbor for NULL before reading `mark` |
