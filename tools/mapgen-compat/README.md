@@ -6,7 +6,7 @@ Expected results always come from running the pinned C build; nothing here is re
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `b086a163d93dda4961c04f80e72918850778f318`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `8854d663a6781c0600f30a1a4ccda8e5b4e6640b`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows `mapgen/mapgen.c` and `mapgen/z.c` and the linked support code: `lib/rnd.c` (MD5 RNG), `lib/ilist.c`, `lib/tiles.c` and `lib/roads.c` (lists and Knuth shuffles), and `lib/checked_alloc.c` (zeroed allocation).
@@ -79,8 +79,8 @@ G3_ROOT=tmp/mapgen-compat/g3 go test -count=1 ./internal/mapgen
 
 Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
 
-- 5 input sets × 10 seeds = 50 cases.
-  All 50 PASS: Go matches C byte for byte on every output, and both programs are deterministic.
+- 7 input sets × 10 seeds = 70 cases.
+  All 70 PASS: Go matches C byte for byte on every output, and both programs are deterministic.
 - Each input set gives 8 distinct reference maps for its 8 full seeds.
 - The `fixtures`/`secret-sea-route` case reproduces upstream's `secret-sea-route/EXPECT.sha256` for `gate`, `loc` and `road`.
 - G3 regressions: every `tests/mapgen/regress/*/check.sh` at the pinned revision prints `YES` for the C build and for Go.
@@ -103,10 +103,10 @@ These are limited to failure paths that the C build cannot reproduce exactly:
 
 As `WORKFLOW.md` requires, the port reproduces these and links each one from `internal/mapgen/mapgen.go`:
 
-- [G3 #273](https://github.com/playbymail/olympia-g3/issues/273): a region with no `Regions` entry has a NULL name, and `mark_bad_locs()`, `random_tile_from_each_region()` and `island_allowed()` dereference it.
 - [G3 #275](https://github.com/playbymail/olympia-g3/issues/275): `random_province()` and `mark_bad_locs()` scan `c < max_col` and skip the last map column.
-
-For #273 the C build and the port agree byte for byte up to the crash, on stdout, stderr and the output files, and both exit 139.
+- [G3 #281](https://github.com/playbymail/olympia-g3/issues/281): `flood_land_inside()` asserts when it reaches a boundary square another region already claimed.
+- [G3 #285](https://github.com/playbymail/olympia-g3/issues/285): `bridge_map_holes()` skips holes in the last row and column.
+- [G3 #287](https://github.com/playbymail/olympia-g3/issues/287): a hole at (`max_row`, `max_col`) crashes the final "highest province" line.
 
 ## Upstream fixes followed
 
@@ -116,3 +116,4 @@ Each fix moves the pinned revision to the G3 commit that merged it:
 |---|---|---|---|
 | [#277](https://github.com/playbymail/olympia-g3/pull/277) (fixes #274) | `06a5959` | [#2](https://github.com/mdhender/g3g0/issues/2) | `bridge_map_hole_sup()` checks each neighbor for NULL before reading `mark` |
 | [#282](https://github.com/playbymail/olympia-g3/pull/282) (fixes #272) | `b086a16` | [#3](https://github.com/mdhender/g3g0/issues/3) | `random_province_gates()` gates to the second province, `(r2,c2)`; changes `gate` for every seed |
+| [#283](https://github.com/playbymail/olympia-g3/pull/283) (fixes #273, #278) | `8854d66` | [#4](https://github.com/mdhender/g3g0/issues/4) | unnamed regions are allowed (stone-circle line prints `??`); `Regions` and `Land` entries with no province are skipped with a diagnostic |

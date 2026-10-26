@@ -312,6 +312,8 @@ func (g *generator) main() {
 	g.countTiles()
 
 	g.errf("\n")
+	// A hole at (max_row, max_col) is a NULL tile here and crashes.
+	// Upstream bug: https://github.com/playbymail/olympia-g3/issues/287
 	g.errf("highest province = %d\n", g.m[g.maxRow][g.maxCol].region)
 	g.errf("\n")
 
@@ -1174,6 +1176,9 @@ var bridgeDirS = []string{
 // bridgeMapHoles bridges each # map hole with a secret road.
 // It won't put two roads in the same square.
 func (g *generator) bridgeMapHoles() {
+	// The bounds skip the last row and column, so holes there are never
+	// bridged.
+	// Upstream bug: https://github.com/playbymail/olympia-g3/issues/285
 	for row := 0; row < g.maxRow; row++ {
 		for col := 0; col < g.maxCol; col++ {
 			if g.m[row][col] == nil {
@@ -1381,6 +1386,15 @@ func (g *generator) fixTerrainLand() {
 	}
 }
 
+// province returns the tile at (row, col), or nil when there is none: the
+// square is a hole, past the end of its line, or off the map.
+func (g *generator) province(row, col int) *tile {
+	if row < 0 || row >= maxRow || col < 0 || col >= maxCol {
+		return nil
+	}
+	return g.m[row][col]
+}
+
 // restOfLine returns the text after the first whitespace-delimited field,
 // as set_regions() finds the region name.
 func restOfLine(buf string) string {
@@ -1435,6 +1449,11 @@ func (g *generator) setRegions() {
 		}
 
 		p := restOfLine(buf)
+
+		if g.province(row, col) == nil {
+			g.errf("Regions '%s': no province at (%d,%d)\n", p, row, col)
+			continue
+		}
 
 		if ins := g.m[row][col].inside; ins != 0 {
 			g.errf("collision between %s and %s at (%d,%d)\n", p, cstr(g.insideNames[ins]), row, col)
@@ -1504,6 +1523,9 @@ func (g *generator) floodLandInside(row, col, ins int) int {
 			continue // already been here
 		}
 
+		// Reaching a boundary square that another region already claimed
+		// asserts here.
+		// Upstream bug: https://github.com/playbymail/olympia-g3/issues/281
 		if p.inside != 0 {
 			g.errf("flood_land_inside(%d,%d,%s) error\n", row, col, cstr(g.insideNames[ins]))
 			g.assert(false, 1858, "FALSE")
@@ -1588,6 +1610,11 @@ func (g *generator) setProvinceClumps() {
 			i++
 		}
 		p := buf[i:]
+
+		if g.province(row, col) == nil {
+			g.errf("Land '%s': no province at (%d,%d)\n", p, row, col)
+			continue
+		}
 
 		if g.m[row][col].saveChar != typ {
 			g.errf("Land '%s' expects '%s' at (%d,%d), got '%s'\n",
@@ -1680,9 +1707,11 @@ func (g *generator) islandAllowed(row, col int) bool {
 		return true
 	}
 
-	// An unnamed region has a NULL name, which the C code dereferences.
-	// Upstream bug: https://github.com/playbymail/olympia-g3/issues/273
-	name := *g.insideNames[inside]
+	// An unnamed region has no name, so it is never "Deep".
+	name := ""
+	if g.insideNames[inside] != nil {
+		name = *g.insideNames[inside]
+	}
 	for p := 0; p < len(name); p++ {
 		if len(name)-p >= 4 && name[p:p+4] == "Deep" {
 			return false
@@ -1839,9 +1868,7 @@ func (g *generator) randomTileFromEachRegion() []*tile {
 			continue
 		}
 
-		// An unnamed region has a NULL name, which strcmp() dereferences.
-		// Upstream bug: https://github.com/playbymail/olympia-g3/issues/273
-		if *g.insideNames[i] == "Impassable Mountains" {
+		if g.isImpassable(i) {
 			continue
 		}
 
@@ -2034,7 +2061,11 @@ func (g *generator) gateStoneCircles() {
 		n := g.createASubloc(l[i].row, l[i].col, 1, terrStoneCir)
 		circs = append(circs, g.subloc[n])
 
-		g.errf("\t(%2d,%2d) in %s\n", l[i].row, l[i].col, cstr(g.insideNames[l[i].inside]))
+		name := "??"
+		if g.insideNames[l[i].inside] != nil {
+			name = *g.insideNames[l[i].inside]
+		}
+		g.errf("\t(%2d,%2d) in %s\n", l[i].row, l[i].col, name)
 	}
 
 	// Cross-circle links need at least three circles (G3 issue #77).
@@ -2063,6 +2094,12 @@ func (g *generator) gateStoneCircles() {
 	}
 }
 
+// isImpassable reports whether region i is the Impassable Mountains.
+// An unnamed region never is.
+func (g *generator) isImpassable(i int) bool {
+	return g.insideNames[i] != nil && *g.insideNames[i] == "Impassable Mountains"
+}
+
 func (g *generator) clearProvinceMarks() {
 	for row := 0; row < maxRow; row++ {
 		for col := 0; col < maxCol; col++ {
@@ -2081,9 +2118,7 @@ func (g *generator) clearSublocMarks() {
 
 func (g *generator) markBadLocs() {
 	for i := 1; i <= g.insideTop; i++ {
-		// An unnamed region has a NULL name, which strcmp() dereferences.
-		// Upstream bug: https://github.com/playbymail/olympia-g3/issues/273
-		if *g.insideNames[i] == "Impassable Mountains" {
+		if g.isImpassable(i) {
 			for _, t := range g.insideList[i] {
 				t.mark = 1
 			}
