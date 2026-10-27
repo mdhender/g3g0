@@ -100,7 +100,36 @@ echo "building the Go port (log: ${LOG})"
 	go build -o "${WORK}/bin/olympia-g3" ./cmd/olympia
 ) >"${LOG}" 2>&1 || die "Go build failed; see ${LOG}"
 
-export OLYMPIA_ENGINE_BIN="${WORK}/bin/olympia-g3"
+# A script loses exec -a's argv[0] at the interpreter boundary (#99).
+# This native launcher passes it unchanged to the existing run_limited.
+cat >"${WORK}/engine.go" <<'EOF'
+package main
+
+import (
+	"fmt"
+	"os"
+	"os/exec"
+	"syscall"
+)
+
+func main() {
+	bash, err := exec.LookPath("bash")
+	if err == nil {
+		args := []string{"bash", "-c", `. "$1"; shift; run_limited "$@"`,
+			"fixture-engine", os.Getenv("G3G0_TIMEOUT_SH"), os.Getenv("RUN_TIMEOUT"),
+			os.Args[0], os.Getenv("G3G0_ENGINE_BIN")}
+		err = syscall.Exec(bash, append(args, os.Args[1:]...), os.Environ())
+	}
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(127)
+}
+EOF
+go build -o "${WORK}/bin/engine" "${WORK}/engine.go" >>"${LOG}" 2>&1 ||
+	die "fixture launcher build failed; see ${LOG}"
+export G3G0_TIMEOUT_SH="${HERE}/../lib/timeout.sh"
+export G3G0_ENGINE_BIN="${WORK}/bin/olympia-g3"
+export RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
+export OLYMPIA_ENGINE_BIN="${WORK}/bin/engine"
 export OLYMPIA_RUN_DIR="${RUN_DIR}"
 
 # ---------------------------------------------------------------------------
