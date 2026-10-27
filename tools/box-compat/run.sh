@@ -50,6 +50,7 @@
 #   WORK     scratch directory, emptied first (default tmp/box-compat)
 #   GAMES    directory of cached games (default tmp/olympia-roundtrip/cases)
 #   CC       C compiler (default cc)
+#   RUN_TIMEOUT seconds allowed per driver/test process (default 10)
 #
 # Exits 0 only if the C output matches the recorded output, the Go test
 # passes and every saved game checked gives the same output in C and Go.
@@ -59,11 +60,15 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
+# shellcheck source=../lib/timeout.sh
+. "${HERE}/../lib/timeout.sh"
+
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-47535543d83fbc5649d54b63b49e578f2b11ab1c}"
+G3_REV="${G3_REV:-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985}"
 WORK="${WORK:-${ROOT}/tmp/box-compat}"
 GAMES="${GAMES:-${ROOT}/tmp/olympia-roundtrip/cases}"
 CC="${CC:-cc}"
+RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 CASES="${ROOT}/internal/olympia/testdata/box-cases.txt"
 EXPECT="${ROOT}/internal/olympia/testdata/box-c-output.txt"
 
@@ -86,7 +91,7 @@ done
 
 die() { echo "error: $*" >&2; exit 2; }
 
-for tool in git go python3 tar cmp diff "${CC}"; do
+for tool in git go perl python3 tar cmp diff "${CC}"; do
 	command -v "${tool}" >/dev/null || die "missing required tool: ${tool}"
 done
 git -C "${G3_REPO}" cat-file -e "${G3_REV}^{commit}" 2>/dev/null ||
@@ -653,18 +658,25 @@ echo "building the C driver (log: ${WORK}/build.log)"
 
 # Check 1: the recorded cases.
 
+# Also used by go test -exec, so every driver/test process has the same
+# supervisor and signal statuses, without shell crash diagnostics.
+cat >"${WORK}/limited.sh" <<EOF
+. "${HERE}/../lib/timeout.sh"
+run_limited "${RUN_TIMEOUT}" "\$1" "\$@"
+EOF
+
 sections=$(grep -c '^section ' "${CASES}")
-# The driver sends its stderr to its stdout. Bash reports each crash on its
-# own stderr, which is dropped. Each section runs in a fresh directory, for
-# the files it writes.
+# The driver sends its stderr to its stdout. Each section runs in a fresh
+# directory, for the files it writes.
 for run in run1 run2; do
 	for ((i = 0; i < sections; i++)); do
 		status=0
 		mkdir "${WORK}/${run}/${i}"
-		(cd "${WORK}/${run}/${i}" && exec "${WORK}/box-driver" "${CASES}" "${i}" >>../out.txt) || status=$?
+		(cd "${WORK}/${run}/${i}" && run_limited "${RUN_TIMEOUT}" box-driver "${WORK}/box-driver" "${CASES}" "${i}" >>../out.txt) || status=$?
+		[ "${status}" -ne "${TIMEOUT_STATUS}" ] || die "section ${i} timed out after ${RUN_TIMEOUT}s"
 		echo "exit ${status}" >>"${WORK}/${run}/out.txt"
 	done
-done 2>/dev/null
+done
 cmp -s "${WORK}/run1/out.txt" "${WORK}/run2/out.txt" || die "C driver is not deterministic"
 echo "C driver: ${sections} sections, $(wc -l <"${WORK}/run1/out.txt" | tr -d ' ') lines, deterministic"
 
@@ -680,7 +692,7 @@ else
 fi
 
 echo "running the Go port against it"
-(cd "${ROOT}" && go test -count=1 -run 'TestBoxMatchesC' ./internal/olympia)
+(cd "${ROOT}" && go test -exec "bash ${WORK}/limited.sh" -count=1 -run 'TestBoxMatchesC' ./internal/olympia)
 
 # Check 2: the saved games.
 
@@ -721,7 +733,8 @@ for lib in "${libs[@]}"; do
 	for pretty in 0 1; do
 		out="${WORK}/games/${k}.${pretty}"
 		status=0
-		"${WORK}/box-driver" -w "${lib}" "${pretty}" >"${out}.c.out" 2>"${out}.c.err" || status=$?
+		run_limited "${RUN_TIMEOUT}" box-driver "${WORK}/box-driver" -w "${lib}" "${pretty}" >"${out}.c.out" 2>"${out}.c.err" || status=$?
+		[ "${status}" -ne "${TIMEOUT_STATUS}" ] || die "C driver timed out after ${RUN_TIMEOUT}s on ${lib}"
 		[ "${status}" -eq 0 ] || die "C driver failed (${status}) on ${lib}"
 		printf '%s\t%s\t%s\n' "${lib}" "${pretty}" "${out}.go" >>"${list}"
 	done
@@ -730,7 +743,7 @@ for lib in "${libs[@]}"; do
 	total=$((total + n))
 
 	(cd "${ROOT}/internal/olympia" && G3G0_FULL=1 BOX_COMPAT_GAMES="${list}" \
-		"${WORK}/olympia.test" -test.count=1 -test.run '^TestBoxWorlds$' >"${WORK}/games/${k}.test.log" 2>&1) ||
+		run_limited "${RUN_TIMEOUT}" olympia.test "${WORK}/olympia.test" -test.count=1 -test.run '^TestBoxWorlds$' >"${WORK}/games/${k}.test.log" 2>&1) ||
 		{ cat "${WORK}/games/${k}.test.log"; die "TestBoxWorlds failed on ${lib}"; }
 
 	ok=1

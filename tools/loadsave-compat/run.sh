@@ -68,6 +68,7 @@
 #   WORK     scratch directory, emptied first (default tmp/loadsave-compat)
 #   GAMES    directory of cached games (default tmp/olympia-roundtrip/cases)
 #   CC       C compiler (default cc)
+#   RUN_TIMEOUT seconds allowed per driver/test process (default 10)
 #
 # Exits 0 only if the C output matches the recorded output, the Go test
 # passes and every saved game checked gives the same result in C and Go.
@@ -76,12 +77,15 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
+# shellcheck source=../lib/timeout.sh
+. "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-47535543d83fbc5649d54b63b49e578f2b11ab1c}"
+G3_REV="${G3_REV:-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985}"
 WORK="${WORK:-${ROOT}/tmp/loadsave-compat}"
 GAMES="${GAMES:-${ROOT}/tmp/olympia-roundtrip/cases}"
 CC="${CC:-cc}"
+RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 CASES="${ROOT}/internal/olympia/testdata/loadsave-cases.txt"
 EXPECT="${ROOT}/internal/olympia/testdata/loadsave-c-output.txt"
 
@@ -104,7 +108,7 @@ done
 
 die() { echo "error: $*" >&2; exit 2; }
 
-for tool in git go python3 tar cmp diff find stat sort "${CC}"; do
+for tool in git go perl python3 tar cmp diff find stat sort "${CC}"; do
 	command -v "${tool}" >/dev/null || die "missing required tool: ${tool}"
 done
 git -C "${G3_REPO}" cat-file -e "${G3_REV}^{commit}" 2>/dev/null ||
@@ -284,6 +288,7 @@ cat >"${WORK}/driver.c" <<'EOF'
  *                                of them, on LIBDIR
  */
 #include <dirent.h>
+#include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -614,7 +619,7 @@ echo "building the C driver (log: ${WORK}/build.log)"
 # section.py runs every section in a fresh directory with umask 022 and
 # writes, for each, the driver's output (its stderr goes to its stdout),
 # how it ended and the directory's tree. A section that runs for more than
-# 10 seconds is stopped, and the check fails. The tree lists each path
+# RUN_TIMEOUT seconds is stopped, and the check fails. The tree lists each path
 # under the directory, sorted: "d MODE PATH" for a directory ("unreadable"
 # if it cannot be listed), "f MODE SIZE PATH" and the contents for a file,
 # as "| LINE", escaped as the driver escapes, and "\ no newline at end"
@@ -622,8 +627,7 @@ echo "building the C driver (log: ${WORK}/build.log)"
 cat >"${WORK}/section.py" <<'EOF'
 import os, signal, subprocess, sys
 
-driver, cases, sections, outdir = sys.argv[1], sys.argv[2], int(sys.argv[3]), sys.argv[4]
-LIMIT = 10.0
+driver, cases, sections, outdir, runner = sys.argv[1], sys.argv[2], int(sys.argv[3]), sys.argv[4], sys.argv[5]
 
 def esc(b):
     return "".join(chr(c) if 32 <= c <= 126 and c != 0x5c else "\\x%02x" % c for c in b)
@@ -665,14 +669,11 @@ def tree(root, out):
 def run(i):
     d = os.path.join(outdir, str(i))
     os.mkdir(d)
-    p = subprocess.Popen([driver, cases, str(i)], cwd=d, stdout=subprocess.PIPE,
+    p = subprocess.Popen(["bash", runner, driver, cases, str(i)], cwd=d, stdout=subprocess.PIPE,
                          stderr=subprocess.DEVNULL)
-    try:
-        data, _ = p.communicate(timeout=LIMIT)
-    except subprocess.TimeoutExpired:
-        p.kill()
-        p.wait()
-        sys.exit(f"section {i} did not finish in {LIMIT:g} seconds")
+    data, _ = p.communicate()
+    if p.returncode == 124:
+        sys.exit(f"section {i} timed out")
     lines = data.split(b"\n")
     data = lines.pop()
     out = [l.decode("latin-1") for l in lines]
@@ -693,10 +694,17 @@ with open(os.path.join(outdir, "out.txt"), "w", encoding="latin-1") as f:
         f.write(run(i))
 EOF
 
+# Also used by go test -exec, so every driver/test process has the same
+# supervisor and signal statuses, without shell crash diagnostics.
+cat >"${WORK}/limited.sh" <<EOF
+. "${HERE}/../lib/timeout.sh"
+run_limited "${RUN_TIMEOUT}" "\$1" "\$@"
+EOF
+
 sections=$(grep -c '^section ' "${CASES}")
 for run in run1 run2; do
 	mkdir -p "${WORK}/${run}"
-	python3 -I "${WORK}/section.py" "${WORK}/loadsave-driver" "${CASES}" "${sections}" "${WORK}/${run}"
+	python3 -I "${WORK}/section.py" "${WORK}/loadsave-driver" "${CASES}" "${sections}" "${WORK}/${run}" "${WORK}/limited.sh"
 done
 cmp -s "${WORK}/run1/out.txt" "${WORK}/run2/out.txt" || die "C driver is not deterministic"
 echo "C driver: ${sections} sections, $(wc -l <"${WORK}/run1/out.txt" | tr -d ' ') lines, deterministic"
@@ -713,7 +721,7 @@ else
 fi
 
 echo "running the Go port against it"
-(cd "${ROOT}" && go test -count=1 -run 'TestLoadSaveMatchesC' ./internal/olympia)
+(cd "${ROOT}" && go test -exec "bash ${WORK}/limited.sh" -count=1 -run 'TestLoadSaveMatchesC' ./internal/olympia)
 
 # Check 2: the saved games.
 
@@ -771,13 +779,14 @@ for lib in "${libs[@]}"; do
 	copy "${lib}" "${dir}/c/${k}"
 	copy "${lib}" "${dir}/go/${k}"
 	status=0
-	(cd "${dir}/c/${k}" && exec "${WORK}/loadsave-driver" -g lib) \
+	(cd "${dir}/c/${k}" && run_limited "${RUN_TIMEOUT}" loadsave-driver "${WORK}/loadsave-driver" -g lib) \
 		>"${dir}/c/${k}.out" 2>"${dir}/c/${k}.err" || status=$?
+	[ "${status}" -ne "${TIMEOUT_STATUS}" ] || die "C driver timed out after ${RUN_TIMEOUT}s on ${lib}"
 	echo "exit ${status}" >>"${dir}/c/${k}.out"
 	list="${dir}/go/${k}.list"
 	printf '%s\t%s\n' "${dir}/go/${k}" "${dir}/go/${k}" >"${list}"
 	(cd "${ROOT}/internal/olympia" && G3G0_FULL=1 LOADSAVE_COMPAT_GAMES="${list}" \
-		"${WORK}/olympia.test" -test.count=1 -test.run '^TestLoadSaveWorlds$' >"${dir}/go/${k}.log" 2>&1) ||
+		run_limited "${RUN_TIMEOUT}" olympia.test "${WORK}/olympia.test" -test.count=1 -test.run '^TestLoadSaveWorlds$' >"${dir}/go/${k}.log" 2>&1) ||
 		{ cat "${dir}/go/${k}.log"; die "TestLoadSaveWorlds failed on ${lib}"; }
 
 	ok=1

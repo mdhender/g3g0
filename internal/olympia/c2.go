@@ -18,11 +18,9 @@ import (
 // close_times() that main() runs after times_masthead() has nothing to
 // close.
 
-// months is months[] in c2.c, the calendar months of the masthead date,
-// with C's misspelling of February (upstream defect:
-// https://github.com/playbymail/olympia-g3/issues/334).
+// months is months[] in c2.c, the calendar months of the masthead date.
 var months = []string{
-	"January", "Februrary", "March", "April", "May", "June", "July",
+	"January", "February", "March", "April", "May", "June", "July",
 	"August", "September", "October", "November", "December",
 }
 

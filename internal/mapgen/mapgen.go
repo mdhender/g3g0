@@ -237,7 +237,7 @@ type segfault struct{}
 // there. It returns the process exit status mapgen-g3 would have.
 func Run(dir string, stdout, stderr io.Writer) (status int) {
 	// stdout is a stdio stream in C, fully buffered when it is not a
-	// terminal: exit(3), a return from main() and (on macOS) abort() write
+	// terminal: exit(3), a return from main() and asfail() write
 	// what it holds, and SIGSEGV loses it. stderr is unbuffered.
 	out := bufio.NewWriter(stdout)
 	g := &generator{dir: dir, stdout: out, stderr: stderr, rng: rnd.New([16]byte{})}
@@ -251,8 +251,8 @@ func Run(dir string, stdout, stderr io.Writer) (status int) {
 			// asfail() prints the compiler's __FILE__, which is the absolute
 			// path of the upstream source; the relative path stands in for it.
 			fmt.Fprintf(g.stderr, "assertion failure: %s (%d): %s\n", "mapgen/mapgen.c", r.line, r.cond)
-			// abort() exits 134 and, on macOS, flushes every open stdio
-			// stream. Every reachable asfail() comes before print_map(), so
+			// asfail() flushes every open stdio stream before abort(), status
+			// 134. Every reachable asfail() comes before print_map(), so
 			// loc, gate and road are still empty, and the only buffered
 			// stdout is load_seed()'s message, flushed below.
 			status = 134
@@ -1993,9 +1993,13 @@ func (g *generator) gateProvinceIslands(times int) {
 
 func (g *generator) gateContinentalTour() {
 	l := g.randomTileFromEachRegion()
+	if len(l) == 0 {
+		g.errf("the map has no land region\n")
+		g.exit(1)
+	}
 	m := g.shiftTourEndpoints(l)
 
-	g.assert(len(l) == len(m), 2515, "tiles_len(l) == tiles_len(m)")
+	g.assert(len(l) == len(m), 2522, "tiles_len(l) == tiles_len(m)")
 
 	g.errf("\nContinental gate tour:\n")
 
@@ -2006,15 +2010,6 @@ func (g *generator) gateContinentalTour() {
 		g.newGate(l[i], m[i+1], 0)
 	}
 
-	// With no land region (an all-water Map), l and m are empty, and both
-	// are NULL in C: random_tile_from_each_region() runs here for the first
-	// time, so its static list was never allocated. Reading l[0] below then
-	// dies with SIGSEGV before this line prints. This reproduces an
-	// upstream defect:
-	// https://github.com/playbymail/olympia-g3/issues/328
-	if len(l) == 0 {
-		panic(segfault{})
-	}
 	g.errf("\t(%2d,%2d) -> (%2d,%2d)\n\n", l[i].row, l[i].col, m[0].row, m[0].col)
 
 	g.newGate(l[i], m[0], g.rnd(111, 333))
@@ -2179,6 +2174,9 @@ func (g *generator) randomProvince(terr int) (int, int) {
 		}
 	}
 
+	if sum == 0 {
+		g.noChoice("random_province", "province")
+	}
 	n := g.rnd(1, sum)
 
 	for r := 0; r <= g.maxRow; r++ {
@@ -2193,12 +2191,25 @@ func (g *generator) randomProvince(terr int) (int, int) {
 		}
 	}
 
-	g.assert(false, 2818, "FALSE")
+	g.assert(false, 2845, "FALSE")
 	return 0, 0
+}
+
+func (g *generator) noChoice(fn, what string) {
+	g.errf("%s: no unmarked %s left to choose\n", fn, what)
+	g.exit(1)
 }
 
 func (g *generator) randomIsland() int {
 	var i int
+	for i = 1; i <= g.topSubloc; i++ {
+		if g.subloc[i].terrain == terrIsland && g.subloc[i].mark == 0 {
+			break
+		}
+	}
+	if i > g.topSubloc {
+		g.noChoice("random_island", "island")
+	}
 	for {
 		n := g.rnd(1, g.numIslands)
 		i = 1
@@ -2213,7 +2224,7 @@ func (g *generator) randomIsland() int {
 			i++
 		}
 
-		g.assert(n <= g.topSubloc, 2848, "n <= top_subloc")
+		g.assert(n <= g.topSubloc, 2881, "n <= top_subloc")
 
 		if g.subloc[i].mark == 0 {
 			break
@@ -2280,7 +2291,7 @@ func (g *generator) nameGuild(skill int) string {
 		}
 	}
 
-	g.assert(sum > 0, 2916, "sum > 0")
+	g.assert(sum > 0, 2949, "sum > 0")
 
 	n := g.rnd(1, sum)
 
@@ -2294,7 +2305,7 @@ func (g *generator) nameGuild(skill int) string {
 		}
 	}
 
-	g.assert(false, 2929, "FALSE")
+	g.assert(false, 2962, "FALSE")
 	return ""
 }
 

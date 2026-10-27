@@ -22,16 +22,14 @@ func regionCol(where int) int {
 // determineMapEdges is determine_map_edges(): it raises maxMapRow and
 // maxMapCol to the largest row and column of every province, in chain
 // order, that is not in Faery, Hades, the Cloudlands, the tunnels or
-// Nowhere, and sets maxMapInit. While a special region is still 0, so is
-// region() of a province in no region, and such a province is skipped too
-// (upstream: https://github.com/playbymail/olympia-g3/issues/333).
+// Nowhere, and sets maxMapInit. A special region not yet created is ignored.
 func (w *world) determineMapEdges() {
 	for i := range w.loopProvince() {
-		if w.region(i) == int(w.faeryRegion) ||
-			w.region(i) == int(w.hadesRegion) ||
-			w.region(i) == int(w.cloudRegion) ||
-			w.region(i) == int(w.tunnelRegion) ||
-			w.region(i) == int(w.nowhereRegion) {
+		if (w.faeryRegion != 0 && w.region(i) == int(w.faeryRegion)) ||
+			(w.hadesRegion != 0 && w.region(i) == int(w.hadesRegion)) ||
+			(w.cloudRegion != 0 && w.region(i) == int(w.cloudRegion)) ||
+			(w.tunnelRegion != 0 && w.region(i) == int(w.tunnelRegion)) ||
+			(w.nowhereRegion != 0 && w.region(i) == int(w.nowhereRegion)) {
 			continue
 		}
 

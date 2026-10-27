@@ -43,18 +43,38 @@ func (w *world) applyTradeRouteSeed(seed uint64) {
 	w.tradeRouteSecret = uint32(s ^ (s >> 32)) // fold 64 -> 32
 }
 
-// fscanfLlu is fscanf(fp, "%llu", &seed) == 1 on the file at path, opened
-// with fopen(path, "r"): the number at the start of the file, after any
-// white space, and true, or false if the file does not start with one. ok
-// is false if the file cannot be opened; a directory opens, and reads as
-// an empty file.
-func fscanfLlu(path string) (seed uint64, scanned, ok bool) {
+// readTradeRouteSeed reads an unlimited decimal token as read_trade_route_seed
+// does, saturating overflow even after a minus sign. ok reports fopen success.
+func readTradeRouteSeed(path string) (seed uint64, scanned, ok bool) {
 	data, err := clib.ReadFile(path)
 	if err != nil {
 		return 0, false, false
 	}
 
-	seed, scanned = clib.NewScanner(string(data)).Uint64()
+	i := 0
+	for i < len(data) && clib.IsSpace(data[i]) {
+		i++
+	}
+	neg := false
+	if i < len(data) && (data[i] == '+' || data[i] == '-') {
+		neg = data[i] == '-'
+		i++
+	}
+	over := false
+	for ; i < len(data) && isdigit(data[i]); i++ {
+		d := uint64(data[i] - '0')
+		if seed > (^uint64(0)-d)/10 {
+			over = true
+		} else {
+			seed = seed*10 + d
+		}
+		scanned = true
+	}
+	if over {
+		seed = ^uint64(0)
+	} else if neg {
+		seed = -seed
+	}
 	return seed, scanned, true
 }
 
@@ -65,7 +85,7 @@ func fscanfLlu(path string) (seed uint64, scanned, ok bool) {
 // trade_routes, still wins.
 func (w *world) initTradeRoutes() {
 	fnam := sout("%s/trade_routes", w.libdir)
-	if seed, scanned, ok := fscanfLlu(fnam); ok {
+	if seed, scanned, ok := readTradeRouteSeed(fnam); ok {
 		if scanned {
 			w.applyTradeRouteSeed(seed)
 		}
@@ -83,7 +103,7 @@ func (w *world) initTradeRoutes() {
 	}
 
 	fnam = sout("%s/trade-route-seed", w.libdir)
-	if seed, scanned, ok := fscanfLlu(fnam); ok && scanned {
+	if seed, scanned, ok := readTradeRouteSeed(fnam); ok && scanned {
 		w.applyTradeRouteSeed(seed)
 	}
 }

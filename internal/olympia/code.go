@@ -185,10 +185,7 @@ func codeToInt(s string) int {
 	}
 }
 
-// printBoxUsageSup is print_box_usage_sup(). It prints high-low as the
-// size of the range and divides by it, one less than the number of boxes it
-// counts, as C does. This is an upstream defect, reproduced on purpose:
-// https://github.com/playbymail/olympia-g3/issues/310
+// printBoxUsageSup is print_box_usage_sup(), counting an inclusive range.
 func (w *world) printBoxUsageSup(low, high int, s string) {
 	used, unused := 0, 0
 
@@ -203,24 +200,19 @@ func (w *world) printBoxUsageSup(low, high int, s string) {
 	fmt.Fprintf(w.stderr, "\t%5d - %5d  %4s  %d/%d used (%d%%)\n",
 		low, high,
 		s,
-		used, high-low, used*100/(high-low))
+		used, high-low+1, used*100/(high-low+1))
 }
 
 // printBoxUsage is print_box_usage(), which load_db() writes to stderr.
-// The ranges are C's, which disagree with the coding system above: "locs"
-// is 20000-59999, so it leaves out the provinces at 10000-19999 and
-// overlaps "play", "lloc" and "subl", and "rest" starts at 79900, not
-// 79000. Upstream defects, reproduced on purpose:
-// https://github.com/playbymail/olympia-g3/issues/310
 func (w *world) printBoxUsage() {
 	fmt.Fprintf(w.stderr, "entity space usage:\n")
 
 	w.printBoxUsageSup(1000, 9999, "char")
-	w.printBoxUsageSup(20000, 59999, "locs")
+	w.printBoxUsageSup(10000, 49999, "locs")
 	w.printBoxUsageSup(50000, 56759, "play")
 	w.printBoxUsageSup(56760, 58759, "lloc")
 	w.printBoxUsageSup(59000, 78999, "subl")
-	w.printBoxUsageSup(79900, maxBoxes-1, "rest")
+	w.printBoxUsageSup(79000, maxBoxes-1, "rest")
 }
 
 // scode is scode(): code_to_int() of s, less one leading '[' or '('. The

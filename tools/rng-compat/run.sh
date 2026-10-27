@@ -35,8 +35,11 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
+. "${HERE}/../lib/timeout.sh"
+RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
+
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-47535543d83fbc5649d54b63b49e578f2b11ab1c}"
+G3_REV="${G3_REV:-5a114320c05e37c6c521b4eb730af49017cb6fa8}"
 WORK="${WORK:-${ROOT}/tmp/rng-compat}"
 CC="${CC:-cc}"
 CASES="${ROOT}/internal/rng/testdata/cases.txt"
@@ -74,7 +77,7 @@ git -C "${G3_REPO}" archive "${G3_REV}" lib olympia | tar -x -C "${WORK}/g3"
 # need nothing from the engine but sysclock, the rng layer and ilist.
 # ---------------------------------------------------------------------------
 SNIPPETS=(
-	buy.c:33:33 buy.c:160:257
+	buy.c:34:34 buy.c:215:312
 	combat.c:32:90
 	npc.c:24:62
 	quest.c:32:56
@@ -400,7 +403,7 @@ echo "building the C driver (log: ${WORK}/build.log)"
 	die "C driver build failed; see ${WORK}/build.log"
 
 for run in run1 run2; do
-	(cd "${WORK}/${run}" && "${WORK}/rng-driver" <"${CASES}" >out.txt) ||
+	(cd "${WORK}/${run}" && run_limited "${RUN_TIMEOUT}" rng-driver "${WORK}/rng-driver" <"${CASES}" >out.txt) ||
 		die "C driver failed in ${run}"
 done
 cmp -s "${WORK}/run1/out.txt" "${WORK}/run2/out.txt" || die "C driver is not deterministic"
@@ -418,5 +421,5 @@ else
 fi
 
 echo "running the Go port against it"
-(cd "${ROOT}" && go test -count=1 -run 'TestMatchesC' ./internal/rng)
+(cd "${ROOT}" && RUN_TIMEOUT="${RUN_TIMEOUT}" go test -exec "bash ${HERE}/../lib/run-limited.sh" -count=1 -run 'TestMatchesC' ./internal/rng)
 echo "PASS"

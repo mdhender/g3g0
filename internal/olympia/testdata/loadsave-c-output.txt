@@ -418,7 +418,7 @@ trade_route 0 0 11557902
 ocean_chars:
 trades_to_check:
 > savesystem
-load_system: can't write lib/system: Is a directory
+save_system: can't write lib/system: Is a directory
 exit 0
 d 755 lib
 d 755 lib/system
@@ -452,7 +452,7 @@ f 644 12 lib/system
 | gm_player=5
 section save_system: no directory
 > savesystem
-load_system: can't write lib/system: No such file or directory
+save_system: can't write lib/system: No such file or directory
 exit 0
 section trade routes: none
 > mkdir lib
@@ -924,14 +924,14 @@ indep=100 gm=200 skill=202 post=0 init=0
 fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
-trade_route 1 1 403206445
+trade_route 1 13 1013431624
 ocean_chars:
 trades_to_check:
 > savetrade
 exit 0
 d 755 lib
-f 644 2 lib/trade_routes
-| 1
+f 644 3 lib/trade_routes
+| 13
 section trade routes: lib/trade_routes 600 zeros
 > mkdir lib
 > trade
@@ -950,14 +950,14 @@ indep=100 gm=200 skill=202 post=0 init=0
 fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
-trade_route 1 0 2570937750
+trade_route 1 13 1013431624
 ocean_chars:
 trades_to_check:
 > savetrade
 exit 0
 d 755 lib
-f 644 2 lib/trade_routes
-| 0
+f 644 3 lib/trade_routes
+| 13
 section trade routes: lib/trade_routes a sign and 511 zeros
 > mkdir lib
 > trade
@@ -976,14 +976,14 @@ indep=100 gm=200 skill=202 post=0 init=0
 fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
-trade_route 1 1 403206445
+trade_route 1 13 1013431624
 ocean_chars:
 trades_to_check:
 > savetrade
 exit 0
 d 755 lib
-f 644 2 lib/trade_routes
-| 1
+f 644 3 lib/trade_routes
+| 13
 section trade routes: lib/trade_routes hexadecimal
 > mkdir lib
 > trade
@@ -1921,8 +1921,27 @@ section load_orders: one player twice
 can't open lib/master: No such file or directory
 fast_scan failed, scan_all_boxes()
 > orders
-assertion failure: olympia/order.c (266): rp_player(pl)->orders == NULL
-exit 134
+ERROR: orders/1001 but orders for [1001] are already loaded
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
+orders 1001 1002: [x]
+exit 0
 d 755 lib
 d 755 lib/fact
 f 644 0 lib/gate
@@ -1989,7 +2008,26 @@ section load_orders: a player with no PL section
 can't open lib/master: No such file or directory
 fast_scan failed, scan_all_boxes()
 > orders
-exit 139
+ERROR: orders/100 but [100] is not a player
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
+exit 0
 d 755 lib
 d 755 lib/fact
 f 644 0 lib/gate
@@ -2054,7 +2092,26 @@ section load_orders: a box that is not a player
 can't open lib/master: No such file or directory
 fast_scan failed, scan_all_boxes()
 > orders
-exit 139
+ERROR: orders/10101 but [10101] is not a player
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
+exit 0
 d 755 lib
 d 755 lib/fact
 f 644 0 lib/gate
@@ -2380,7 +2437,7 @@ garrison_pay=2 auto_quit=0 army_slow_factor=20
 indep=100 gm=200 skill=202 post=0 init=0
 fr=10002 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
-max_map 23 12 1
+max_map 99 99 1
 trade_route 0 0 11557902
 ocean_chars:
 trades_to_check:
@@ -2446,7 +2503,7 @@ garrison_pay=2 auto_quit=0 army_slow_factor=20
 indep=100 gm=200 skill=202 post=0 init=0
 fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
-max_map 1 1 1
+max_map 99 99 1
 trade_route 0 0 11557902
 ocean_chars:
 trades_to_check:

@@ -14,7 +14,7 @@ The spec is the three gates that G3 documents for another engine in `doc/claude/
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `47535543d83fbc5649d54b63b49e578f2b11ab1c`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2567e6a5dd0ba0d95516d8bed9e1bafb87a51985`.
 The revision is pinned in `run.sh` (`PINNED_REV`).
 `G3_REV` runs another revision, but then `passing.txt` is neither compared nor written.
 Change the pin only on purpose, and rerun this and [`tools/olympia-roundtrip`](../olympia-roundtrip) when you do.
@@ -23,7 +23,7 @@ Change the pin only on purpose, and rerun this and [`tools/olympia-roundtrip`](.
 
 - A G3 clone that contains the pinned revision. The default is `~/Software/playbymail/olympia-g3`; set `G3_REPO` to use another. Its working tree and build are not used.
 - Go (the version in `go.mod`), Bash (3.2 is enough), Perl, Python 3 (`rng-selftest` runs `-R` on a pseudo-terminal), `patch`, `shasum` and `diff`.
-- macOS, for the reasons given in [`tools/olympia-cli-compat`](../olympia-cli-compat/README.md#prerequisites).
+- Linux or macOS (the pinned C engine owns its BSD short-option parser).
 
 No C build is needed: with `OLYMPIA_ENGINE_BIN` set, the gates run only that engine.
 
@@ -37,7 +37,7 @@ tools/olympia-spec/run.sh move-go ...  # just those fixtures; passing.txt is lef
 The script:
 
 1. Exports the pinned revision with `git archive` into `tmp/olympia-spec/g3`.
-2. Builds the Go port into `tmp/olympia-spec/bin/olympia-g3` and sets `OLYMPIA_ENGINE_BIN` to it.
+2. Builds the Go port into `tmp/olympia-spec/bin/olympia-g3` and sets `OLYMPIA_ENGINE_BIN` to a native launcher that sends it through `run_limited`, preserving the fixture's `exec -a` `argv[0]` (#99). A shell-script launcher discards that name before it can reach the engine.
 3. Sets `OLYMPIA_RUN_DIR` to `${TMPDIR:-/tmp}/g3g0-olympia-spec-run` (or `RUN_DIR`), which must be outside this repository and the G3 clone, and empties it.
 4. Runs `run-all.sh` from the export.
    With fixture names, only those run, and the golden turn is skipped.
@@ -55,11 +55,15 @@ The gates also run inside the export, so they cannot write to the clone.
 
 ## Results
 
-Last run: 2026-10-27, macOS 26.6.2 arm64, Go 1.26.4. About 45 seconds.
+Last run: 2026-10-27, Linux amd64, Go 1.26.4. About 54 seconds.
 
-- `run-all.sh`: pass 6, fail 100, error 1.
+- `run-all.sh`: pass 15, fail 100, error 1; no previously passing gate lost.
+  - G3 #345's `cli-options` (20 cases) and `load-number-width` (13 cases)
+    now pass. Both unchanged gates also print `YES` for the actual pinned C
+    engine. Generic Scanner and the Go BSD option parser are unchanged.
+  - Seven newly passing G3 #340/#341 regressions: `assert-flush`, `load-bad-master`, `load-box-usage`, `load-here-duplicate`, `load-orphan-unit`, `load-stray-orders`, `trade-route-seed-parse`. These also pass on the actual pinned C engine.
   - Passing: `rng-selftest`, and, since `load_db`, `save_db` and `-l`/`-S` were ported (#52), the fixtures that only load and save: `load-comment-lines`, `load-continuation-blank`, `load-continuation-eof`, `load-short-entries` and `save-fly-cap`.
   - 97 fixtures fail because their turn (`-r`) is not ported; `save-seed-unwritable` is one of them (it wants the turn to exit 1 on an unwritable `randseed`, and Go stops at `-r` before loading). `trade-routes` fails for the same reason, through `--use-coverage`, which its check reads back. `mail-libdir-space` needs `-M`, `-h` and the turn.
   - `save-libdir-space` (G3 #320) is an `ERROR`, not a `FAIL`: it runs the engine for its reference first, a `-r -S` turn, and an engine that cannot run the turn is an error to it.
 - `run/olympia-g3.sh` exits 2 (the Go engine stops at `-i` with "not yet implemented"), so `golden_check.sh` reports that the run diverges from the manifest.
-- The same `run-all.sh` with the pinned C build passes all 107 fixtures.
+- Full C spec not rerun at this pin; the two G3 #345 regressions pass on C.

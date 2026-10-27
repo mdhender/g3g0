@@ -17,29 +17,27 @@
 # it (G3G0 #46).
 
 # read_map(): an unknown terrain glyph (mapgen.c 680)
-unknown-terrain   missing  134
-unknown-terrain   fixture  134
+unknown-terrain    missing  134
+unknown-terrain    fixture  134
 # alloc_inside(): more than 199 regions (mapgen.c 768)
-too-many-regions  missing  134
-too-many-regions  fixture  134
+too-many-regions   missing  134
+too-many-regions   fixture  134
 # rc_to_region() from read_map(): a Map column past 99 (mapgen.c 1056)
-wide-map          missing  134
-wide-map          fixture  134
+wide-map           missing  134
+wide-map           fixture  134
 # ... in the last row, where the C store lands past the whole map array
-wide-last-row     missing  134
+wide-last-row      missing  134
 # ... and a Map row past 99 (mapgen.c 1055)
-tall-map          missing  134
-tall-map          fixture  134
-# gate_continental_tour(): no land region, so l is NULL and l[0] faults
-# (mapgen.c 2527, G3G0 #46)
-all-water          missing  139
-all-water          fixture  139
+tall-map           missing  134
+tall-map           fixture  134
+# gate_continental_tour(): no land region, diagnosed before the tour (G3 #328)
+all-water          missing  1
+all-water          fixture  1
 # ... the same with one square, with 100x100, with every water glyph, and
 # with a Map of nothing but holes
-all-water-1x1      fixture  139
-all-water-100x100  fixture  139
-all-water-mixed    fixture  139
-all-holes          missing  139
-# One land square in a 20x20 sea of ',': C and Go both loop forever
-# (G3 #329), so each run is cut off after 2 seconds (G3G0 #47)
-one-land-square    fixture  timeout  2
+all-water-1x1      fixture  1
+all-water-100x100  fixture  1
+all-water-mixed    fixture  1
+all-holes          missing  1
+# One land square in a 20x20 sea: random_province reports no choice (G3 #329)
+one-land-square    fixture  1  2

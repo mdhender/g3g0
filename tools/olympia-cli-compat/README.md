@@ -10,10 +10,10 @@ Two sources of expectations are used:
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `47535543d83fbc5649d54b63b49e578f2b11ab1c`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2567e6a5dd0ba0d95516d8bed9e1bafb87a51985`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
-The port follows `main()` in `olympia/main.c` (the long-option pass, the `getopt()` loop, the usage text and what `main()` prints before it dispatches), `test_random()` in `olympia/z.c` and `ilist_test()` in `lib/ilist.c`, and from #52 its load and save (`load_db()`, `check_db()`, `save_db()` with `-S`, `times_masthead()` and the closing output), which [`olympia-roundtrip`](../olympia-roundtrip) checks on saved games.
+The port follows `main()` in `olympia/main.c` (the long-option pass, the BSD `oly_getopt()` loop, the usage text and what `main()` prints before it dispatches), `test_random()` in `olympia/z.c` and `ilist_test()` in `lib/ilist.c`, and from #52 its load and save (`load_db()`, `check_db()`, `save_db()` with `-S`, `times_masthead()` and the closing output), which [`olympia-roundtrip`](../olympia-roundtrip) checks on saved games.
 Every other mode stops with `<argv[0]>: <what>: not yet implemented` on stderr and exit status 2:
 
 - A vector that asks for a mode that runs after `load_db()` and is not ported (`-e`, `-E`, `-s`, `-r`, `-a`, `-i`, `-M`, `-h` or a `--` path option) stops before `load_db()`, so the message names `load_db` and the modes that were asked for.
@@ -32,8 +32,9 @@ The entity types have to change when the pinned revision changes `struct box`, a
 - A G3 clone that contains the pinned revision. The default is `~/Software/playbymail/olympia-g3`; set `G3_REPO` to use another.
 - What G3 needs to build `olympia-g3`: CMake 3.25 or later, Ninja and a C11 compiler.
 - Go (the version in `go.mod`), Bash, Perl, Python 3 (the gate runs `-R` on a pseudo-terminal), `shasum`, `cmp` and `diff`.
-- macOS. The engine parses its flags with the C library's `getopt()`, and the port reproduces the BSD libc that macOS ships: it does not permute, says `illegal option`, and names `argv[0]` as given.
-  glibc's `getopt()` differs on all three.
+- Linux or macOS. G3 #345 makes the C engine own its BSD `oly_getopt()`:
+  it does not permute, says `illegal option`, and names `argv[0]` as given.
+  The Go port's existing BSD short-option parser is unchanged.
 
 ## Running
 
@@ -82,10 +83,13 @@ OLYMPIA_ENGINE_BIN=/path/to/g3g0/tmp/olympia tests/olympia/regress/rng-selftest/
 
 ## Results
 
-Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
+Last run: 2026-10-27, Linux amd64, GCC 12.2.0, Go 1.26.4.
 
 - 92 vectors: 62 `same` and 30 `nyi`. All 92 PASS. For the 15 `nyi` vectors that now load (#52), Go's stdout is all of C's and its stderr is C's up to the "not yet implemented" line.
 - G3 gate: `rng-selftest` prints `YES` for the C build and for Go.
+- G3's unchanged `cli-options` gate also prints `YES` for both engines
+  (20 cases, including fixed `argv[0]` values), through the native timeout
+  launcher of `olympia-spec` (#99). No Go option-parser change was needed.
 
 The full table of hashes and exit statuses is in [`results.tsv`](results.tsv), copied from the run, not edited by hand.
 

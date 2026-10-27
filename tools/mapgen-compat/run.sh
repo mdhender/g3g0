@@ -12,7 +12,8 @@
 # match byte for byte. Finally it runs G3's own mapgen regression checks, with
 # their assertions and expectations unchanged, against both binaries.
 #
-# Usage: tools/mapgen-compat/run.sh
+# Usage: tools/mapgen-compat/run.sh [--update]
+# --update records failure statuses from deterministic C runs and results.tsv.
 #
 # Environment:
 #   G3_REPO      G3 clone that contains G3_REV
@@ -32,7 +33,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-2322a0474de5fb38308d795f6cd72beb811652e9}"
+G3_REV="${G3_REV:-5a114320c05e37c6c521b4eb730af49017cb6fa8}"
 WORK="${WORK:-${ROOT}/tmp/mapgen-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
 
@@ -41,6 +42,10 @@ INPUTS=(Map Regions Land Cities)
 
 die() { echo "error: $*" >&2; exit 2; }
 sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
+
+UPDATE=0
+if [ "${1:-}" = --update ]; then UPDATE=1; shift; fi
+[ $# -eq 0 ] || die "usage: $0 [--update]"
 
 # with_timeout BIN ARGS... runs BIN, killing it after RUN_TIMEOUT seconds
 # (tools/lib/timeout.sh). A run that times out exits TIMEOUT_STATUS, for C
@@ -243,12 +248,18 @@ strip_file_prefix() {
 
 echo
 echo "failure cases"
-while read -r label seed want limit; do
-	[[ -z "${label}" || "${label}" == \#* ]] && continue
+: >"${WORK}/failures.txt"
+while IFS= read -r row; do
+	read -r label seed want limit <<<"${row}"
+	if [[ -z "${label}" || "${label}" == \#* ]]; then
+		printf '%s\n' "${row}" >>"${WORK}/failures.txt"
+		continue
+	fi
 	src="${HERE}/failures/${label}"
 	[ -d "${src}" ] || die "failures.txt: no directory failures/${label}"
 	[ -n "${want}" ] || die "failures.txt: no status for ${label}"
 	[ "${want}" != timeout ] || want="${TIMEOUT_STATUS}"
+	recorded_limit="${limit}"
 	limit="${limit:-${RUN_TIMEOUT}}"
 	printf '%s\n' "${seed_labels[@]}" | grep -qx -- "${seed}" || die "failures.txt: unknown seed '${seed}' for ${label}"
 	input="fail-${label}"
@@ -270,6 +281,8 @@ while read -r label seed want limit; do
 
 	result=PASS
 	status="$(cat "${base}/c1/status")"
+	if [ "${UPDATE}" -eq 1 ]; then want="${status}"; fi
+	printf '%-18s %-8s %s%s\n' "${label}" "${seed}" "${want}" "${recorded_limit:+  ${recorded_limit}}" >>"${WORK}/failures.txt"
 	if [ "${status}" != "${want}" ]; then
 		fail "${input}/${seed}: reference mapgen-g3 exited ${status}, not ${want}"
 		result=FAIL
@@ -288,6 +301,9 @@ while read -r label seed want limit; do
 	printf '  %-6s %-18s %-8s status %s  stdout %s bytes  %s\n' "${result}" "${label}" "${seed}" "${status}" \
 		"$(wc -c <"${base}/c1/stdout" | tr -d ' ')" "$(tail -1 "${base}/c1/stderr")"
 done <"${HERE}/failures.txt"
+if [ "${UPDATE}" -eq 1 ] && [ "${failures}" -eq 0 ]; then
+	cp "${WORK}/failures.txt" "${HERE}/failures.txt"
+fi
 
 # ---------------------------------------------------------------------------
 # G3's mapgen regression checks, unchanged. They run the C reference by
@@ -299,11 +315,14 @@ echo "G3 mapgen regression checks"
 for check in "${WORK}"/g3/tests/mapgen/regress/*/check.sh; do
 	name="$(basename "$(dirname "${check}")")"
 	for impl in c go; do
-		if [ "${impl}" = go ]; then
-			out="$(MAPGEN_BIN="${GO_BIN}" bash "${check}" 2>&1)" || true
-		else
-			out="$(env -u MAPGEN_BIN OLYMPIA_PRESET=debug bash "${check}" 2>&1)" || true
-		fi
+		bin="${C_BIN}"
+		[ "${impl}" != go ] || bin="${GO_BIN}"
+		cat >"${WORK}/bin/fixture-engine" <<EOF
+#!/usr/bin/env bash
+exec bash "${HERE}/../lib/run-limited.sh" "${bin}" "\$@"
+EOF
+		chmod +x "${WORK}/bin/fixture-engine"
+		out="$(MAPGEN_BIN="${WORK}/bin/fixture-engine" bash "${check}" 2>&1)" || true
 		printf '  %-22s %-3s %s\n' "${name}" "${impl}" "$(head -1 <<<"${out}")"
 		[ "$(head -1 <<<"${out}")" = YES ] || fail "regression ${name} (${impl}): ${out}"
 	done
@@ -315,4 +334,5 @@ if [ "${failures}" -ne 0 ]; then
 	echo "${failures} check(s) FAILED"
 	exit 1
 fi
+[ "${UPDATE}" -ne 1 ] || cp "${RESULTS}" "${HERE}/results.tsv"
 echo "all checks passed"

@@ -264,12 +264,12 @@ visit:
 visit: 1 2 3 4 5 6 7 1000 1001 1002 1003 1004 1005 1006 1007 1008
 > usage
 entity space usage:
-	 1000 -  9999  char  9/8999 used (0%)
-	20000 - 59999  locs  0/39999 used (0%)
-	50000 - 56759  play  0/6759 used (0%)
-	56760 - 58759  lloc  0/1999 used (0%)
-	59000 - 78999  subl  0/19999 used (0%)
-	79900 - 149999  rest  0/70099 used (0%)
+	 1000 -  9999  char  9/9000 used (0%)
+	10000 - 49999  locs  0/40000 used (0%)
+	50000 - 56759  play  0/6760 used (0%)
+	56760 - 58759  lloc  0/2000 used (0%)
+	59000 - 78999  subl  0/20000 used (0%)
+	79000 - 149999  rest  0/71000 used (0%)
 exit 0
 section descending and mixed
 > alloc 9000 5 0
@@ -545,12 +545,12 @@ exit 0
 section usage
 > usage
 entity space usage:
-	 1000 -  9999  char  0/8999 used (0%)
-	20000 - 59999  locs  0/39999 used (0%)
-	50000 - 56759  play  0/6759 used (0%)
-	56760 - 58759  lloc  0/1999 used (0%)
-	59000 - 78999  subl  0/19999 used (0%)
-	79900 - 149999  rest  0/70099 used (0%)
+	 1000 -  9999  char  0/9000 used (0%)
+	10000 - 49999  locs  0/40000 used (0%)
+	50000 - 56759  play  0/6760 used (0%)
+	56760 - 58759  lloc  0/2000 used (0%)
+	59000 - 78999  subl  0/20000 used (0%)
+	79000 - 149999  rest  0/71000 used (0%)
 > alloc 1000 2 0
 > alloc 9999 2 0
 > alloc 10000 3 0
@@ -571,12 +571,12 @@ entity space usage:
 > delete 9999
 > usage
 entity space usage:
-	 1000 -  9999  char  2/8999 used (0%)
-	20000 - 59999  locs  8/39999 used (0%)
-	50000 - 56759  play  2/6759 used (0%)
-	56760 - 58759  lloc  1/1999 used (0%)
-	59000 - 78999  subl  3/19999 used (0%)
-	79900 - 149999  rest  2/70099 used (0%)
+	 1000 -  9999  char  2/9000 used (0%)
+	10000 - 49999  locs  3/40000 used (0%)
+	50000 - 56759  play  2/6760 used (0%)
+	56760 - 58759  lloc  1/2000 used (0%)
+	59000 - 78999  subl  3/20000 used (0%)
+	79000 - 149999  rest  4/71000 used (0%)
 exit 0
 section alloc dup
 > alloc 1001 2 0

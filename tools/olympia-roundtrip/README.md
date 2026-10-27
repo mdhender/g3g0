@@ -33,7 +33,7 @@ A case passes when the exit status, stdout and stderr match byte for byte, and s
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `47535543d83fbc5649d54b63b49e578f2b11ab1c`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2567e6a5dd0ba0d95516d8bed9e1bafb87a51985`.
 The revision is pinned in `run.sh` (`PINNED_REV`); `G3_REV` tests against another.
 Change the pin only on purpose, together with [`tools/olympia-spec`](../olympia-spec).
 
@@ -42,7 +42,7 @@ Change the pin only on purpose, together with [`tools/olympia-spec`](../olympia-
 - A G3 clone that contains the pinned revision. The default is `~/Software/playbymail/olympia-g3`; set `G3_REPO` to use another. Its working tree and build are not used.
 - What G3 needs to build `olympia-g3`: CMake 3.25 or later, Ninja and a C11 compiler.
 - Go (the version in `go.mod`), Bash (3.2 is enough), Perl, `patch`, `tar`, `shasum`, `cmp` and `diff`.
-- macOS, for the reasons given in [`tools/olympia-cli-compat`](../olympia-cli-compat/README.md#prerequisites).
+- Linux or macOS (the pinned C engine owns its BSD short-option parser).
 
 ## Running
 
@@ -86,7 +86,11 @@ It exits 0 only when every selected case passes.
 
 ## Results
 
-Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4, with `--fresh --determinism-all`.
+Current pin: 2026-10-27, Linux amd64, GCC 12.2.0, Go 1.26.4:
+`world` passes, with deterministic C, both statuses 0, identical stdout and
+stderr, and no differing files. Full world/fixture coverage was not rerun.
+
+Historical run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4, with `--fresh --determinism-all`.
 
 pass 196, fail 0, error 0.
 C gave the same result twice on every case, and Go matches it on every case: exit status, stdout, stderr and every file of the run directory.

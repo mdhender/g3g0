@@ -315,8 +315,7 @@ section check_here removes from here lists
 # 10101 lists 1003, which is in 10102, and 1005 twice, which is nowhere;
 # 10102 lists 1002 twice and 1003, which are both its. The first loop
 # adds 1003 to 10102 and nothing else; the second removes 1003 from
-# 10101, and 1005 there, both copies at once, so the loop's second visit
-# of 1005 fails remove_from_here_list()'s assertion.
+# 10101, and 1005 there, both copies at once; its second visit is skipped.
 mkdir lib
 mkdir lib/fact
 put lib/loc
@@ -679,7 +678,7 @@ check
 save
 
 section check_indep on a unit that is nowhere
-# touch_loc() fails loc_depth()'s assertion (G3 #330).
+# touch_loc() skips the missing viewing location (G3 #330).
 mkdir lib
 mkdir lib/fact
 put lib/loc
@@ -696,8 +695,7 @@ check
 save
 
 section check_indep on a unit in a region
-# viewloc() steps out of the region to 0, and loc_depth(0) fails its
-# assertion, as for a unit that is nowhere.
+# viewloc() steps out of the region to 0; touch_loc() skips it too.
 mkdir lib
 mkdir lib/fact
 put lib/loc

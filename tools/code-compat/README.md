@@ -6,7 +6,7 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `47535543d83fbc5649d54b63b49e578f2b11ab1c`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2567e6a5dd0ba0d95516d8bed9e1bafb87a51985`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows, from `olympia/code.c`: `letter_val`, `int_to_code`, `code_to_int`, `print_box_usage`, `scode`, `name`, `set_name`, `set_banner`, `box_code`, `box_code_less`, the chains (`add_next_chain`, `remove_next_chain`, `add_sub_chain`, `remove_sub_chain` and their cache), `delete_box`, `change_box_kind`, `change_box_subkind` and `alloc_box`.
@@ -50,7 +50,7 @@ The script:
 
 ## Results
 
-Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
+Last run: 2026-10-27, Linux amd64, GCC 12.2.0, Go 1.26.4.
 
 - 20 sections, 652 lines. The C driver is deterministic, its output matches `code-c-output.txt`, and `TestCodeMatchesC` passes.
 

@@ -63,8 +63,8 @@ func testRandom(out *cStdout, tty bool) {
 // assertion is a failed assert(): asfail() in olympia/z.c prints it to
 // stderr and calls abort(). The port panics with it, and whatever runs the
 // engine recovers it, prints Error() to stderr and exits as abort() does:
-// with status 134, after flushing every open stdio stream, which abort()
-// does on macOS (stdout, and the files that clib.FlushAll flushes).
+// with status 134, after flushing every open stdio stream, as asfail()
+// explicitly does before abort() (stdout and the files clib.FlushAll flushes).
 //
 // file stands in for the __FILE__ that C prints, which is whatever path the
 // C build compiled the source as (an absolute path in the CMake build);
@@ -243,7 +243,7 @@ func (w *world) readfile(path string) bool {
 }
 
 // closefile is closefile() in olympia/z.c: it closes the file readfile()
-// opened. C does not reset line_fd, or the buffer, so as after a failed
+// opened. C resets line_fd but not the buffer, so as after a failed
 // readfile(), readlin() returns what is left in the chunk C holds and then
 // NULL.
 func (w *world) closefile(path string) {

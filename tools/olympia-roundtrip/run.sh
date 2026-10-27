@@ -57,7 +57,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 # shellcheck source=../lib/timeout.sh
 . "${HERE}/../lib/timeout.sh"
 
-PINNED_REV=47535543d83fbc5649d54b63b49e578f2b11ab1c
+PINNED_REV=2567e6a5dd0ba0d95516d8bed9e1bafb87a51985
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 G3_REV="${G3_REV:-${PINNED_REV}}"
 WORK="${WORK:-${ROOT}/tmp/olympia-roundtrip}"

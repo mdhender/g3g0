@@ -41,8 +41,11 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
+. "${HERE}/../lib/timeout.sh"
+RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
+
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-47535543d83fbc5649d54b63b49e578f2b11ab1c}"
+G3_REV="${G3_REV:-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985}"
 WORK="${WORK:-${ROOT}/tmp/io-compat}"
 CC="${CC:-cc}"
 CASES="${ROOT}/internal/olympia/testdata/io-cases.txt"
@@ -677,7 +680,7 @@ for run in run1 run2; do
 	for ((i = 0; i < sections; i++)); do
 		status=0
 		mkdir "${WORK}/${run}/${i}"
-		(cd "${WORK}/${run}/${i}" && exec "${WORK}/io-driver" "${CASES}" "${i}" >>../out.txt) || status=$?
+		(cd "${WORK}/${run}/${i}" && run_limited "${RUN_TIMEOUT}" io-driver "${WORK}/io-driver" "${CASES}" "${i}" >>../out.txt) || status=$?
 		echo "exit ${status}" >>"${WORK}/${run}/out.txt"
 	done
 done 2>/dev/null
@@ -696,5 +699,5 @@ else
 fi
 
 echo "running the Go port against it"
-(cd "${ROOT}" && go test -count=1 -run 'TestIOMatchesC' ./internal/olympia)
+(cd "${ROOT}" && RUN_TIMEOUT="${RUN_TIMEOUT}" go test -exec "bash ${HERE}/../lib/run-limited.sh" -count=1 -run 'TestIOMatchesC' ./internal/olympia)
 echo "PASS"

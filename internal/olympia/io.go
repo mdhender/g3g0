@@ -76,21 +76,33 @@ func lastIsBackslash(s string) bool {
 	return len(s) > 0 && s[len(s)-1] == '\\'
 }
 
-// sscanD is sscanf(s, "%d %d ...") with one conversion for each of ptrs,
-// each an *int32, *int16 (for %hd) or *int. Like sscanf, it stops at the
+// scanInts is io.c's scan_ints, with one conversion for each of ptrs,
+// each an *int32, *int16 (for olytime) or *int. It stops at the
 // first conversion that fails and leaves that target and the rest as they
 // were. It returns the number of conversions made.
 //
-// Each conversion is clib.Scanner.Int, which follows the macOS libc
-// (FreeBSD's vfscanf), truncated to the target's width as %hd stores the
-// low bits of the converted value.
-func sscanD(s string, ptrs ...any) int {
-	sc := clib.NewScanner(s)
+// Numbers have no token-length limit: strtoll saturates to signed 64 bits,
+// then the int keeps its low 32 bits (olytime shorts keep the low 16).
+// clib.Atoi has that same decimal saturation and narrowing contract.
+func scanInts(s string, ptrs ...any) int {
 	for i, p := range ptrs {
-		v, ok := sc.Int()
-		if !ok {
+		start := 0
+		for start < len(s) && clib.IsSpace(s[start]) {
+			start++
+		}
+		end := start
+		if end < len(s) && (s[end] == '+' || s[end] == '-') {
+			end++
+		}
+		digits := end
+		for end < len(s) && isdigit(s[end]) {
+			end++
+		}
+		if end == digits {
 			return i
 		}
+		v := clib.Atoi(s[start:end])
+		s = s[end:]
 		switch p := p.(type) {
 		case *int32:
 			*p = int32(v)
@@ -99,7 +111,7 @@ func sscanD(s string, ptrs ...any) int {
 		case *int:
 			*p = v
 		default:
-			panic(fmt.Sprintf("olympia: sscanD: unsupported target %T", p))
+			panic(fmt.Sprintf("olympia: scanInts: unsupported target %T", p))
 		}
 	}
 	return len(ptrs)
@@ -462,7 +474,7 @@ func (w *world) skillListScan(s string, l *skillEntsList, boxNum int) {
 	for {
 		p := &skillEnt{}
 		var dummy, know, experience int // a short line leaves them unset
-		sscanD(s, &p.skill, &know, &p.daysStudied, &experience, &dummy)
+		scanInts(s, &p.skill, &know, &p.daysStudied, &experience, &dummy)
 
 		p.know = int8(know)
 		p.experience = int16(experience)
@@ -519,7 +531,7 @@ func (w *world) itemListPrint(fp io.Writer, header string, l itemEntsList) {
 func (w *world) itemListScan(s string, l *itemEntsList, boxNum int) {
 	for {
 		p := &itemEnt{}
-		sscanD(s, &p.item, &p.qty)
+		scanInts(s, &p.item, &p.qty)
 
 		if w.validBox(int(p.item)) {
 			l.Append(p)
@@ -587,7 +599,7 @@ func (w *world) tradeListPrint(fp io.Writer, header string, l tradesList) {
 func (w *world) tradeListScan(s string, l *tradesList, boxNum int) {
 	for {
 		p := &trade{}
-		sscanD(s,
+		scanInts(s,
 			&p.kind,
 			&p.item,
 			&p.qty,
@@ -657,7 +669,7 @@ func (w *world) reqListScan(s string, l *reqEntsList, boxNum int) {
 	for {
 		p := &reqEnt{}
 		var consume int // a short line leaves it unset
-		sscanD(s, &p.item, &p.qty, &consume)
+		scanInts(s, &p.item, &p.qty, &consume)
 		p.consume = int8(consume)
 
 		if w.validBox(int(p.item)) {
@@ -681,7 +693,7 @@ func (w *world) reqListScan(s string, l *reqEntsList, boxNum int) {
 // olytimeScan is olytime_scan(): "turn day days" from s into p. Fields
 // that s does not give keep their values.
 func olytimeScan(s string, p *olytime) {
-	sscanD(s, &p.turn, &p.day, &p.daysSinceEpoch)
+	scanInts(s, &p.turn, &p.day, &p.daysSinceEpoch)
 }
 
 // olytimePrint is olytime_print(): header and "turn day days", unless all
@@ -1721,7 +1733,7 @@ func (w *world) scanCommand(p *command, boxNum int) {
 		case 'u'<<hShift | 'e':
 			p.useExp = int32(clib.Atoi(t))
 		case 'a'<<hShift | 'r':
-			sscanD(t,
+			scanInts(t,
 				&p.a, &p.b, &p.c, &p.d,
 				&p.e, &p.f, &p.g, &p.h)
 		default:
@@ -1885,7 +1897,7 @@ func (w *world) loadBox(n int) {
 	if !w.validBox(n) {
 		fmt.Fprintf(w.stderr, "Unforseen box %d found in load phase.\n", n)
 		fmt.Fprintf(w.stderr, "Remove %s/master and retry.\n", w.libdir)
-		assert(false, "olympia/io.c", 1944, "FALSE")
+		assert(false, "olympia/io.c", 1989, "FALSE")
 	}
 
 	w.extBoxnum = int32(n)
@@ -1961,7 +1973,7 @@ func (w *world) loadBox(n int) {
 	}
 
 	if w.line != nil {
-		assert(*w.line == "", "olympia/io.c", 2022, "*line == '\\0'")
+		assert(*w.line == "", "olympia/io.c", 2067, "*line == '\\0'")
 		w.advance() // advance over blank separating line
 	}
 }
@@ -1974,7 +1986,7 @@ func (w *world) saveBox(fp io.Writer, n int) {
 		return
 	}
 
-	assert(w.validBox(n), "olympia/io.c", 2038, "valid_box(n)")
+	assert(w.validBox(n), "olympia/io.c", 2083, "valid_box(n)")
 
 	p := w.bx[n]
 
@@ -2095,7 +2107,7 @@ func (w *world) writePlayer(pl int) {
 
 	for who := range w.loopUnits(pl) {
 		assert(w.kind(who) == tChar || w.kind(who) == tDeleted,
-			"olympia/io.c", 2137, "kind(who) == T_char || kind(who) == T_deleted")
+			"olympia/io.c", 2182, "kind(who) == T_char || kind(who) == T_deleted")
 
 		w.saveBox(fp, who)
 	}
@@ -2190,61 +2202,72 @@ func (w *world) readChars() {
 	}
 }
 
-// fastScan is fast_scan(), pass 1 from libdir/master: allocBox for each of
-// its lines, "n<white>kind.subkind...". It returns false, after
-// readfile()'s diagnostic, if master cannot be opened. It never closes
-// master; read_boxes() opens the next file over it.
-//
-// Each line is taken as it is: a line without a box number (0) fails
-// alloc_box()'s assertion, and one without a '.' has subkind 0. Kind and
-// subkind are not range-checked, and master is never closed: upstream
-// defects https://github.com/playbymail/olympia-g3/issues/321 and
-// https://github.com/playbymail/olympia-g3/issues/322
+// masterLine is master_line(): parse "num<white>kind.subkind...".
+func masterLine(s string) (num, kind, sk int) {
+	num = clib.Atoi(s)
+	p := 0
+	for p < len(s) && isdigit(s[p]) {
+		p++
+	}
+	for p < len(s) && iswhite(s[p]) {
+		p++
+	}
+	q := p
+	for q < len(s) && s[q] != '.' {
+		q++
+	}
+	kind = clib.Atoi(s[p:q])
+	if q < len(s) {
+		sk = clib.Atoi(s[q+1:])
+	}
+	return
+}
+
+// fastScanCheck validates every master entry before any box is allocated.
+func (w *world) fastScanCheck(path string) bool {
+	if !w.readfile(path) {
+		return false
+	}
+	ok := true
+	for sp := w.readlin(); ok && sp != nil; sp = w.readlin() {
+		num, kind, sk := masterLine(*sp)
+		if num <= 0 || num >= maxBoxes || kind <= tDeleted || kind >= tMax || sk < 0 || sk >= subMax {
+			fmt.Fprintf(w.stderr, "fast_scan: bad master entry: %d %d.%d\n", num, kind, sk)
+			ok = false
+			break
+		}
+	}
+	w.closefile(path)
+	return ok
+}
+
+// fastScan is fast_scan(): validate master, then reopen it and allocate.
+// A missing or invalid master returns false for scan_all_boxes fallback.
 func (w *world) fastScan() bool {
 	path := sout("%s/master", w.libdir)
+	if !w.fastScanCheck(path) {
+		return false
+	}
 	if !w.readfile(path) {
 		return false
 	}
 
 	for sp := w.readlin(); sp != nil; sp = w.readlin() {
-		s := *sp
-		num := clib.Atoi(s)
-
-		p := 0
-		for p < len(s) && isdigit(s[p]) {
-			p++
-		}
-		for p < len(s) && iswhite(s[p]) {
-			p++
-		}
-
-		q := p
-		for q < len(s) && s[q] != '.' {
-			q++
-		}
-		kindPart, skPart := s[p:q], ""
-		if q < len(s) { // *q == '.'
-			skPart = s[q+1:]
-		}
-
-		kind := clib.Atoi(kindPart)
-		sk := clib.Atoi(skPart)
-
+		num, kind, sk := masterLine(*sp)
 		w.allocBox(num, kind, sk)
 	}
 
+	w.closefile(path)
 	return true
 }
 
 // scanBoxes is scan_boxes(), the slow pass 1 for one file: allocBox for
 // each box of libdir/fnam, from its "n kind subkind" line. Kind and
 // subkind are names, matched without regard to case; a subkind that starts
-// with '0' is 0. An unknown kind or subkind gets a diagnostic (which says
-// read_boxes) and becomes 0. The lines after the box's first, up to one
+// with '0' is 0. An unknown kind or subkind gets a diagnostic and becomes
+// 0. The lines after the box's first, up to one
 // that is blank or all white space, are skipped, and so are comment lines.
-// A file that cannot be opened gets readfile()'s diagnostic. Like C, it
-// does not close the file. Upstream defects:
-// https://github.com/playbymail/olympia-g3/issues/322
+// A file that cannot be opened gets readfile()'s diagnostic.
 func (w *world) scanBoxes(fnam string) {
 	path := sout("%s/%s", w.libdir, fnam)
 	if !w.readfile(path) {
@@ -2284,7 +2307,7 @@ func (w *world) scanBoxes(fnam string) {
 		kind := lookup(kindS, s)
 
 		if kind < 0 {
-			fmt.Fprintf(w.stderr, "read_boxes(%d): bad kind: %s\n", boxNum, s)
+			fmt.Fprintf(w.stderr, "scan_boxes(%d): bad kind: %s\n", boxNum, s)
 			kind = 0
 		}
 
@@ -2296,7 +2319,7 @@ func (w *world) scanBoxes(fnam string) {
 		}
 
 		if sk < 0 {
-			fmt.Fprintf(w.stderr, "read_boxes(%d): bad subkind: %s\n", boxNum, t)
+			fmt.Fprintf(w.stderr, "scan_boxes(%d): bad subkind: %s\n", boxNum, t)
 			sk = 0
 		}
 
@@ -2318,9 +2341,10 @@ func (w *world) scanBoxes(fnam string) {
 			}
 		}
 	}
+	w.closefile(path)
 }
 
-// scanChars is scan_chars(): scanBoxes, then closefile(), for every file in
+// scanChars is scan_chars(): scanBoxes for every file in
 // libdir/fact whose name starts with a digit, in the directory's order.
 func (w *world) scanChars() {
 	fnam := sout("%s/fact", w.libdir)
@@ -2335,7 +2359,6 @@ func (w *world) scanChars() {
 	for _, e := range names {
 		if e[0] >= '0' && e[0] <= '9' {
 			w.scanBoxes(sout("fact/%s", e))
-			w.closefile(sout("fact/%s", e))
 		}
 	}
 }
@@ -2441,9 +2464,7 @@ func (w *world) writeAllBoxes() {
 // reads, one line per box that is not deleted, in box number order: first
 // the boxes of the kinds that have their own file, with that file's name
 // (players and characters name their player's fact/N), and then every
-// other box, naming misc. Roads go to the misc lines, although
-// write_all_boxes() saves them to road (upstream defect:
-// https://github.com/playbymail/olympia-g3/issues/322). It clears every box's temp mark,
+// other box, naming misc. It clears every box's temp mark,
 // and leaves it set on the boxes of the first lines.
 func (w *world) writeMaster() {
 	fnam := sout("%s/master", w.libdir)
@@ -2469,7 +2490,7 @@ func (w *world) writeMaster() {
 			// C's switch has a case 0 too, which is T_deleted and so
 			// never reached.
 			switch w.kind(i) {
-			case tLoc, tItem, tSkill, tGate, tShip, tUnform:
+			case tLoc, tItem, tSkill, tGate, tRoad, tShip, tUnform:
 				fmt.Fprintf(fp, "%d\t%d.%d\t%s\t\t%s\n",
 					i,
 					b.kind, b.skind,
@@ -2601,15 +2622,14 @@ func (w *world) loadSystem() {
 // saveSystem is save_system(): the game's settings to libdir/system, in
 // the order and form loadSystem reads them. auto_quit and mo are written
 // only when positive, and sysclock only when not all zero. A file that
-// cannot be opened gets a diagnostic, which, as in C, names load_system
-// (upstream defect: https://github.com/playbymail/olympia-g3/issues/333).
+// cannot be opened gets a diagnostic.
 func (w *world) saveSystem() {
 	fname := sout("%s/system", w.libdir)
 
 	fp, err := clib.Fopen(fname)
 
 	if err != nil {
-		fmt.Fprintf(w.stderr, "load_system: can't write %s: ", fname)
+		fmt.Fprintf(w.stderr, "save_system: can't write %s: ", fname)
 		clib.Perror(w.stderr, "", err)
 		return
 	}
@@ -2690,10 +2710,10 @@ func (w *world) loadDb() {
 	// Assertions to verify the sanity of the linehash macro
 	// Switch the byte ordering if this fails
 
-	assert(linehash("ab f") == 'a'<<8|'b', "olympia/io.c", 2775, "linehash(\"ab f\") == 'ab'")
-	assert(linehash("") == 0, "olympia/io.c", 2776, "linehash(\"\") == 0")
-	assert(linehash("na") == 'n'<<8|'a', "olympia/io.c", 2777, "linehash(\"na\") == 'na'")
-	assert(linehash("ab ") == 'a'<<8|'b', "olympia/io.c", 2778, "linehash(\"ab \") == 'ab'")
+	assert(linehash("ab f") == 'a'<<8|'b', "olympia/io.c", 2878, "linehash(\"ab f\") == 'ab'")
+	assert(linehash("") == 0, "olympia/io.c", 2879, "linehash(\"\") == 0")
+	assert(linehash("na") == 'n'<<8|'a', "olympia/io.c", 2880, "linehash(\"na\") == 'na'")
+	assert(linehash("ab ") == 'a'<<8|'b', "olympia/io.c", 2881, "linehash(\"ab \") == 'ab'")
 
 	w.loadSeed(sout("%s/randseed", w.libdir))
 	w.initTradeRoutes() // issue #46: per-game trade-route buyer secret

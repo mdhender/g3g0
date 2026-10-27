@@ -7,7 +7,7 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `47535543d83fbc5649d54b63b49e578f2b11ab1c`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2567e6a5dd0ba0d95516d8bed9e1bafb87a51985`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 The script exports that revision with `git archive`, so the clone's checkout does not matter.
 
@@ -21,7 +21,7 @@ The port follows `olympia/check.c` (all of it), in `check.go`:
 | `check_glob`, `check_nowhere`, `check_skills`, `check_item_counts`, `check_loc_name_lengths`, `check_moving`, `check_prisoner` | `checkGlob`, `checkNowhere`, `checkSkills`, `checkItemCounts`, `checkLocNameLengths`, `checkMoving`, `checkPrisoner` |
 
 The helpers it calls were ported in [#48](https://github.com/mdhender/g3g0/issues/48), and are checked by [`helper-compat`](../helper-compat).
-`loop_here` and `loop_inv` assert `valid_box()` of their box at the caller's line (`check.c` lines 49 and 400); both run inside `loop_boxes`, which yields only valid boxes, and nothing in those checks deletes a box, so the assertions cannot fail and the port leaves them out.
+`loop_here` and `loop_inv` assert `valid_box()` of their box at the caller's line (`check.c` lines 49 and 401); both run inside `loop_boxes`, which yields only valid boxes, and nothing in those checks deletes a box, so the assertions cannot fail and the port leaves them out.
 
 ## Prerequisites
 
@@ -64,9 +64,9 @@ In the engine, `load_db()` runs more between the box-file passes and `check_db()
 |---|---|
 | a consistent game | every special player, a player, a noble, a school and a unique item where they belong: only the stage line |
 | the special players | all missing (created, with their subkinds, and named), present with no names (named), and each one not a player (the assertion of each check, in order) |
-| check_here | units, a stacked unit, a location and a ship missing from their location's here list (added at the end); here lists naming boxes that are elsewhere or nowhere (removed), a box that lists itself, duplicates of a box that belongs; a stale box listed twice, which `remove_from_here_list()` removes both copies of at once, so the second visit fails its assertion (G3 [#331](https://github.com/playbymail/olympia-g3/issues/331)) |
+| check_here | units, a stacked unit, a location and a ship missing from their location's here list (added at the end); here lists naming boxes that are elsewhere or nowhere (removed), a box that lists itself, duplicates of a box that belongs; stale duplicates removed and reported once (G3 #331) |
 | check_swear | units missing from their player's list, directly and through a lord (added, and the list sorted), a unit of another player; lists naming another player's units, a location, and duplicates (each reported and removed, a duplicate reported twice); a lord loop (`player()`'s assertion) |
-| check_indep | units with no lord, sworn to a unit with no player, with no CH, sworn to a location, with a command that is loading and one that is running (each sworn to 100: `prev_lord` and loyalty cleared, CH and command created); the independent player created first; a unit whose command is in error (`init_load_sup()`'s assertion); a unit that is nowhere, and one in a region (`loc_depth()`'s assertion in `touch_loc()`, G3 [#330](https://github.com/playbymail/olympia-g3/issues/330)) |
+| check_indep | units with no lord, sworn to a unit with no player, with no CH, sworn to a location, with a command that is loading and one that is running (each sworn to 100: `prev_lord` and loyalty cleared, CH and command created); the independent player created first; a unit whose command is in error (`init_load_sup()`'s assertion); orphan units nowhere or directly in a region repaired without touching location 0 (G3 #330) |
 | check_nowhere | a unit, locations and ships below a region that are nowhere (ships first), a region that is not reported; a raft (`loc_depth()`'s assertion) |
 | check_skills | an orphaned subskill, skills with no learn time and no SK, a skill two schools offer, offered and researched skills in another school, an offered item, a skill no one offers; a loop of required skills (`skill_school()`'s assertion) |
 | check_item_counts | a unit in an inventory, a unique item held by the wrong unit and by a location (who_has repaired to each in turn), a quantity of 3, 0 and -1 of a unique item, a unique item no one holds, a unique item whose who_has is an item |
@@ -77,12 +77,15 @@ In the engine, `load_db()` runs more between the box-file passes and `check_db()
 
 ## Results
 
-Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
+Current pin: 2026-10-27, Linux amd64, GCC 12.2.0, Go 1.26.4:
+30 recorded sections, 2197 lines, deterministic C and matching Go.
+Whole-game checks were not rerun at this pin. Historical full run:
+2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
 - Check 1: 30 sections, 2071 lines. The C driver is deterministic, its output matches `check-c-output.txt`, and `TestCheckMatchesC` passes.
 - Check 2 (`--full`): 197 games (`world.tgz` and the 196 cached round-trip inputs; 7,947,575 boxes in their written `master` files, 36,999 in `world.tgz`): C and Go `lib` trees (files, modes and contents), stdout, stderr and exit status identical. No game gives any message but `check_db()`'s stage line: no repair branch, warning or assertion is reached by a real saved game.
 
-## Upstream defects reproduced on purpose
+## Upstream fixes followed
 
-- `check_indep()` swears a unit with no player and no location to the independent player, and `set_lord()`'s `touch_loc()` then fails `loc_depth()`'s assertion, so `check_db()` aborts instead of repairing the database: G3 [#330](https://github.com/playbymail/olympia-g3/issues/330) (reproduced in `touchLoc`, `day.go`). A unit directly in a region fails the same way, since `viewloc()` steps out of the region to 0.
-- `check_here()` walks a copy of each here list and removes a stale entry with `remove_from_here_list()`, which removes every copy of it. A stale box listed twice is reached again, and `remove_from_here_list()`'s assertion that it is in the list fails, so `check_db()` aborts (the section "check_here removes from here lists"): G3 [#331](https://github.com/playbymail/olympia-g3/issues/331).
+G3 #340 fixes orphan-location touches (#330) and duplicate stale here entries
+(#331). The recorded cases follow those repairs at the pinned revision.

@@ -387,8 +387,8 @@ type errReader struct{}
 
 func (errReader) Read([]byte) (int, error) { return 0, errors.New("read error") }
 
-// TestSscanD checks the conversions sscanD stops at.
-func TestSscanD(t *testing.T) {
+// TestScanInts checks the conversions scanInts stops at.
+func TestScanInts(t *testing.T) {
 	for _, tc := range []struct {
 		s    string
 		n    int
@@ -403,8 +403,8 @@ func TestSscanD(t *testing.T) {
 		{"99999999999999999999 -99999999999999999999", 2, [3]int32{-1, 0, 7}},
 	} {
 		got := [3]int32{7, 7, 7}
-		if n := sscanD(tc.s, &got[0], &got[1], &got[2]); n != tc.n || got != tc.want {
-			t.Errorf("sscanD(%q) = %d %v, want %d %v", tc.s, n, got, tc.n, tc.want)
+		if n := scanInts(tc.s, &got[0], &got[1], &got[2]); n != tc.n || got != tc.want {
+			t.Errorf("scanInts(%q) = %d %v, want %d %v", tc.s, n, got, tc.n, tc.want)
 		}
 	}
 }

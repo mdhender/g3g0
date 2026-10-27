@@ -6,7 +6,7 @@ Expected results always come from running the pinned C build; nothing here is re
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2322a0474de5fb38308d795f6cd72beb811652e9`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `5a114320c05e37c6c521b4eb730af49017cb6fa8`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows `mapgen/mapgen.c` and `mapgen/z.c` and the linked support code: `lib/rnd.c` (MD5 RNG), `lib/ilist.c`, `lib/tiles.c` and `lib/roads.c` (lists and Knuth shuffles), and `lib/checked_alloc.c` (zeroed allocation).
@@ -27,6 +27,7 @@ The port follows `mapgen/mapgen.c` and `mapgen/z.c` and the linked support code:
 
 ```sh
 tools/mapgen-compat/run.sh
+tools/mapgen-compat/run.sh --update  # record deterministic C failure statuses and result table
 ```
 
 The script:
@@ -74,12 +75,12 @@ G3_ROOT=tmp/mapgen-compat/g3 go test -count=1 ./internal/mapgen
 | wide-map | a `Map` row 101 squares wide | `rc_to_region()` asserts on column 100 (line 1056) |
 | wide-last-row | the same in row 99, where the C store lands past the whole `map` array | the same assertion |
 | tall-map | a `Map` 101 rows tall | `rc_to_region()` asserts on row 100 (line 1055) |
-| all-water | a 20×20 `Map` of `,` | `gate_continental_tour()` reads `l[0]` through a NULL list and dies with SIGSEGV (line 2527) |
-| all-water-1x1 | a 1×1 `Map` of `,` | the same crash |
-| all-water-100x100 | a 100×100 `Map` of `,` | the same crash |
-| all-water-mixed | a 20×20 `Map` of `,`, `;`, `.` and `~` bands | the same crash |
-| all-holes | a 20×20 `Map` of `#` holes, with no tiles at all | the same crash |
-| one-land-square | a 20×20 `Map` of `,` with one `p` square | never ends ([G3 #329](https://github.com/playbymail/olympia-g3/issues/329)); killed after 2 seconds |
+| all-water | a 20×20 `Map` of `,` | `the map has no land region`, exit 1 |
+| all-water-1x1 | a 1×1 `Map` of `,` | the same diagnostic and exit |
+| all-water-100x100 | a 100×100 `Map` of `,` | the same diagnostic and exit |
+| all-water-mixed | a 20×20 `Map` of `,`, `;`, `.` and `~` bands | the same diagnostic and exit |
+| all-holes | a 20×20 `Map` of `#` holes, with no tiles at all | the same diagnostic and exit |
+| one-land-square | a 20×20 `Map` of `,` with one `p` square | `random_province: no unmarked province left to choose`, exit 1 |
 
 Each runs with the `fixture` seed, with no `randseed`, or both.
 Without one, `load_seed()` leaves `randseed could not be opened.` in the stdout buffer.
@@ -87,11 +88,10 @@ Without one, `load_seed()` leaves `randseed could not be opened.` in the stdout 
 The port buffers stdout the same way and drops the buffer when it reports a crash, so it prints the same bytes in both cases.
 `loc`, `gate` and `road` are open but still empty when each fires: nothing writes to them before `print_map()`, and no failure case is reachable from there on.
 
-With no land region, `random_tile_from_each_region()` returns an empty list.
-It keeps that list in a static that is still NULL on this first call, so `gate_continental_tour()` gets NULL for `l` and `m`, skips its loop, and dereferences `l[0]` for the last gate.
-`Continental gate tour:` is already on stderr by then.
-A `Map` with a single land square does not get this far: both C and Go loop forever earlier ([G3 #329](https://github.com/playbymail/olympia-g3/issues/329)).
-`one-land-square` runs it with a 2-second limit, so the suite stays fast and the time limit itself is tested on a real hang.
+With no land region, `gate_continental_tour()` diagnoses the empty list before
+printing the tour. Empty province and island choices likewise diagnose and
+exit before drawing. These follow G3 #328/#329; successful maps keep the
+same RNG stream and draw order.
 
 ## Time limits
 
@@ -118,11 +118,11 @@ A run that a signal kills has status 128 + the signal number (134 for SIGABRT, 1
 
 ## Results
 
-Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
+Last run: 2026-10-27, Linux x86_64, GCC 12.2.0, CMake 4.1.3, Go 1.26.4.
 
 - 11 input sets × 10 seeds = 110 cases.
   All 110 PASS: Go matches C byte for byte on every output, and both programs are deterministic.
-- 16 failure cases: 9 exiting 134 (SIGABRT), 6 exiting 139 (SIGSEGV) and 1 timing out (status 124) in C.
+- 16 failure cases: 9 exiting 134 (SIGABRT) and 7 exiting 1 in C.
   All 16 PASS: Go matches C byte for byte on every output, apart from the source path removed from the C assertion message.
 - Each input set gives 8 distinct reference maps for its 8 full seeds.
 - The `fixtures`/`secret-sea-route` case reproduces upstream's `secret-sea-route/EXPECT.sha256` for `gate`, `loc` and `road`.
@@ -139,22 +139,17 @@ These are limited to failure paths that the C build cannot reproduce exactly:
 - **Assertion failures.** `asfail()` prints the compiler's `__FILE__`, which is the absolute path of the source on the build machine.
   The port prints `mapgen/mapgen.c` with the C line number, and exits 134, the status the shell sees for `abort()`'s SIGABRT.
   The process is not actually killed by a signal.
-  On macOS `abort()` also flushes every open stdio stream; at every reachable assertion the only buffered data is `load_seed()`'s stdout message, which the port has already written.
+  `asfail()` explicitly flushes every open stdio stream before `abort()`; at every reachable assertion the only buffered data is `load_seed()`'s stdout message, which the port also flushes.
 - **Crashes.** Where the C code dereferences NULL, the port exits 139 and writes nothing more, which is what the shell sees for SIGSEGV.
   The process is not actually killed by a signal.
   Like the fully buffered C stdout, the port's stdout buffer is dropped, not written.
   When stdout is a terminal, C's stream is line buffered and the `load_seed()` message is printed before the crash; the port does not tell the two apart.
   A `Map` wider or taller than 100 squares makes the C code store past `map[row]` before `rc_to_region()` asserts; the port asserts first, so it fails the same way (see the failure cases).
 
-## Upstream defects reproduced on purpose
-
-- An all-water `Map` (no land region) crashes `gate_continental_tour()` with SIGSEGV at `mapgen.c` line 2527 ([#46](https://github.com/mdhender/g3g0/issues/46); [G3 #328](https://github.com/playbymail/olympia-g3/issues/328)).
-  The port exits 139 at the same point.
-- A `Map` with a single land square loops forever in C and in the port ([G3 #329](https://github.com/playbymail/olympia-g3/issues/329)); see the `one-land-square` failure case.
-
-When G3 has an unfixed defect, `WORKFLOW.md` requires the port to reproduce it, with a comment linking the G3 issue, and to list it here.
-
 ## Upstream fixes followed
+
+G3 #340 fixes no-land and empty-choice exits; G3 #341 makes assertion
+flushing explicit on every platform. The port follows both at this pin.
 
 Each change moves the pinned revision to the G3 commit that merged it:
 

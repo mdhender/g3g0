@@ -12,6 +12,10 @@ func (w *world) touchLocPl(pl, where int) {
 	p := w.pPlayer(pl)
 	where = w.viewloc(where)
 
+	if where == 0 {
+		return
+	}
+
 	setBit(&p.locs, where)
 
 	if w.locDepth(where) > locProvince {
@@ -20,10 +24,7 @@ func (w *world) touchLocPl(pl, where int) {
 	}
 }
 
-// touchLoc is touch_loc(): touchLocPl for who's player and location. A
-// unit that is nowhere has location 0, and loc_depth(0) reports subkind 0
-// and fails an assertion, which aborts check_db's repair of such a unit.
-// Upstream defect: https://github.com/playbymail/olympia-g3/issues/330
+// touchLoc is touch_loc(): touchLocPl for who's player and location.
 func (w *world) touchLoc(who int) {
 	where := w.subloc(who)
 

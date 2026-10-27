@@ -38,7 +38,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-47535543d83fbc5649d54b63b49e578f2b11ab1c}"
+G3_REV="${G3_REV:-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985}"
 WORK="${WORK:-${ROOT}/tmp/olympia-cli-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-60}"
 
@@ -187,11 +187,14 @@ echo
 echo "G3 rng-selftest gate"
 check="${WORK}/g3/tests/olympia/regress/rng-selftest/check.sh"
 for impl in c go; do
-	if [ "${impl}" = go ]; then
-		out="$(OLYMPIA_ENGINE_BIN="${GO_BIN}" bash "${check}" 2>&1)" || true
-	else
-		out="$(env -u OLYMPIA_ENGINE_BIN OLYMPIA_PRESET=debug bash "${check}" 2>&1)" || true
-	fi
+	bin="${C_BIN}"
+	[ "${impl}" != go ] || bin="${GO_BIN}"
+	cat >"${WORK}/bin/fixture-engine" <<EOF
+#!/usr/bin/env bash
+exec bash "${HERE}/../lib/run-limited.sh" "${bin}" "\$@"
+EOF
+	chmod +x "${WORK}/bin/fixture-engine"
+	out="$(OLYMPIA_ENGINE_BIN="${WORK}/bin/fixture-engine" bash "${check}" 2>&1)" || true
 	printf '  %-14s %-3s %s\n' rng-selftest "${impl}" "$(head -1 <<<"${out}")"
 	[ "$(head -1 <<<"${out}")" = YES ] || fail "gate rng-selftest (${impl}): ${out}"
 done

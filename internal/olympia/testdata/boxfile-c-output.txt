@@ -10,23 +10,9 @@ section fast_scan
 > putl lib/master 79 7.\x092
 > put lib/master 80\x0912.0
 > fast
-fast_scan 1
+fast_scan: bad master entry: 10104 0.5
+fast_scan 0
 > boxes
-box 78 kind 4 skind 44 temp 0
-box 79 kind 7 skind 2 temp 0
-box 80 kind 12 skind 0 temp 0
-box 1001 kind 1 skind 49 temp 0
-box 1002 kind 2 skind 0 temp 0
-box 10101 kind 3 skind 14 temp 0
-box 10102 kind 3 skind 0 temp 0
-box 10103 kind 3 skind 0 temp 0
-box 10104 kind 0 skind 5 temp 0
-kind 1: 1001
-kind 2: 1002
-kind 3: 10101 10102 10103
-kind 4: 78
-kind 7: 79
-kind 12: 80
 > line
 line NULL
 exit 0
@@ -65,8 +51,9 @@ section fast_scan of a blank line
 > putl lib/master
 > putl lib/master 1002\x092.0\x09fact/1001\x09Noble
 > fast
-assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
-exit 134
+fast_scan: bad master entry: 0 0.0
+fast_scan 0
+exit 0
 d 755 lib
 f 644 57 lib/master
 | 1001\x091.49\x09fact/1001\x09Player one
@@ -88,8 +75,9 @@ section fast_scan of a comment
 > mkdir lib
 > putl lib/master # a comment
 > fast
-assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
-exit 134
+fast_scan: bad master entry: 0 0.0
+fast_scan 0
+exit 0
 d 755 lib
 f 644 12 lib/master
 | # a comment
@@ -141,14 +129,14 @@ section scan_boxes
 > putl lib/loc 10113 item 0
 > put lib/loc na no blank line at the end
 > scan loc
-read_boxes(10106): bad subkind:   city
-read_boxes(10107): bad kind: location
-read_boxes(10108): bad subkind: town
-read_boxes(10109): bad subkind: 
-read_boxes(10110): bad kind: 
-read_boxes(10110): bad subkind: 
-read_boxes(10111): bad kind: city
-read_boxes(10111): bad subkind: 
+scan_boxes(10106): bad subkind:   city
+scan_boxes(10107): bad kind: location
+scan_boxes(10108): bad subkind: town
+scan_boxes(10109): bad subkind: 
+scan_boxes(10110): bad kind: 
+scan_boxes(10110): bad subkind: 
+scan_boxes(10111): bad kind: city
+scan_boxes(10111): bad subkind: 
 > boxes
 box 10101 kind 3 skind 14 temp 0
 box 10102 kind 3 skind 3 temp 0
@@ -215,8 +203,8 @@ section scan_boxes of a blank line between boxes
 > putl lib/loc
 > putl lib/loc 10102 loc city
 > scan loc
-read_boxes(0): bad kind: 
-read_boxes(0): bad subkind: 
+scan_boxes(0): bad kind: 
+scan_boxes(0): bad subkind: 
 assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
 exit 134
 d 755 lib
@@ -262,7 +250,7 @@ section scan_chars
 > putl lib/fact/.1005 1005 char 0
 > mkdir lib/fact/9
 > scanchars
-read_boxes(1003): bad kind: chars
+scan_boxes(1003): bad kind: chars
 > boxes
 box 1001 kind 1 skind 49 temp 0
 box 1002 kind 2 skind 0 temp 0
@@ -714,7 +702,7 @@ section read_boxes of an unforseen box
 > read loc
 Unforseen box 10102 found in load phase.
 Remove lib/master and retry.
-assertion failure: olympia/io.c (1944): FALSE
+assertion failure: olympia/io.c (1989): FALSE
 exit 134
 d 755 lib
 f 644 31 lib/loc
@@ -998,7 +986,7 @@ section write_player of a unit that is not a character
 > unit 1001 1002
 > unit 1001 10101
 > writeplayer 1001
-assertion failure: olympia/io.c (2137): kind(who) == T_char || kind(who) == T_deleted
+assertion failure: olympia/io.c (2182): kind(who) == T_char || kind(who) == T_deleted
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -1016,7 +1004,7 @@ section write_player of a unit that is a player
 > alloc 1002 1 49
 > unit 1001 1002
 > writeplayer 1001
-assertion failure: olympia/io.c (2137): kind(who) == T_char || kind(who) == T_deleted
+assertion failure: olympia/io.c (2182): kind(who) == T_char || kind(who) == T_deleted
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -1585,7 +1573,7 @@ box 1005 kind 2 skind 0 temp 1
 box 10101 kind 3 skind 14 temp 1
 box 10102 kind 3 skind 3 temp 1
 box 20000 kind 6 skind 0 temp 1
-box 20001 kind 7 skind 0 temp 0
+box 20001 kind 7 skind 0 temp 1
 box 20002 kind 9 skind 30 temp 1
 box 20003 kind 12 skind 0 temp 1
 box 20004 kind 11 skind 0 temp 0
@@ -1608,7 +1596,7 @@ kind 12: 20003
 kind 13: 20006
 exit 0
 d 755 lib
-f 644 335 lib/master
+f 644 336 lib/master
 | 10\x094.0\x09item\x09\x09
 | 600\x095.0\x09skill\x09\x09
 | 1001\x091.49\x09fact/1001\x09Player one
@@ -1619,9 +1607,9 @@ f 644 335 lib/master
 | 10101\x093.14\x09loc\x09\x09City
 | 10102\x093.3\x09loc\x09\x09Plain\x09with a tab
 | 20000\x096.0\x09gate\x09\x09
+| 20001\x097.0\x09road\x09\x09Road
 | 20002\x099.30\x09ship\x09\x09
 | 20003\x0912.0\x09unform\x09\x09
-| 20001\x097.0\x09misc\x09Road
 | 20004\x0911.0\x09misc\x09
 | 20005\x0910.0\x09misc\x09
 | 20006\x0913.0\x09misc\x09
@@ -1725,7 +1713,7 @@ box 1001 kind 1 skind 49 temp 1
 box 1002 kind 2 skind 0 temp 1
 box 10101 kind 3 skind 14 temp 1
 box 10102 kind 3 skind 3 temp 1
-box 20001 kind 7 skind 0 temp 0
+box 20001 kind 7 skind 0 temp 1
 box 20004 kind 11 skind 0 temp 0
 kind 1: 1001
 kind 2: 1002
@@ -1762,12 +1750,12 @@ f 644 87 lib/loc
 | LI
 |  hl 10101 
 | 
-f 644 135 lib/master
+f 644 136 lib/master
 | 1001\x091.49\x09fact/1001\x09Player one
 | 1002\x092.0\x09fact/1001\x09Noble
 | 10101\x093.14\x09loc\x09\x09City
 | 10102\x093.3\x09loc\x09\x09Plain
-| 20001\x097.0\x09misc\x09Road
+| 20001\x097.0\x09road\x09\x09Road
 | 20004\x0911.0\x09misc\x09
 f 644 15 lib/misc
 | 20004 storm 0

@@ -22,11 +22,8 @@ import "fmt"
 // This gives precedence to the location the unit claims to be in over the
 // location's here-list of units.
 //
-// The second loop walks a copy of each here list, and removeFromHereList
-// removes every copy of a box, so a stale box listed twice is reached
-// again when it is no longer in the list, and remove_from_here_list()'s
-// assertion fails, aborting check_db(). The port does the same. Upstream
-// defect: https://github.com/playbymail/olympia-g3/issues/331
+// The second loop walks a copy, so it checks that a stale duplicate has
+// not already been removed before reporting and removing it.
 //
 // loop_here asserts valid_box(i) at check.c line 49, but loop_boxes yields
 // only valid boxes and nothing here deletes one, so the assertion cannot
@@ -44,7 +41,7 @@ func (w *world) checkHere() {
 	for i := range w.loopBoxes() {
 		for j := range w.loopHere(i) {
 			where := w.loc(j)
-			if where != i {
+			if where != i && w.inHereList(i, j) {
 				fmt.Fprintf(w.stderr, "\tcheck_here: removing [%d] from here list of [%d]\n", j, i)
 
 				w.removeFromHereList(i, j)
@@ -107,14 +104,8 @@ func (w *world) checkSpecialPlayer(n, sk int, fn, what string, assertLine int, c
 
 // checkIndep is check_indep(): it makes sure the independent player
 // exists, and swears every unit that belongs to no player to it.
-//
-// A unit that belongs to no player and is nowhere fails loc_depth()'s
-// assertion in touch_loc(), which set_lord() calls, and aborts; so does
-// one in a region, outside any province, since viewloc() steps out of the
-// region to 0. Upstream defect:
-// https://github.com/playbymail/olympia-g3/issues/330
 func (w *world) checkIndep() {
-	w.checkSpecialPlayer(int(w.indepPlayer), subPlNpc, "check_indep", "independent", 136,
+	w.checkSpecialPlayer(int(w.indepPlayer), subPlNpc, "check_indep", "independent", 137,
 		"kind(indep_player) == T_player", "Independent player")
 
 	for i := range w.loopKind(tChar) {
@@ -128,43 +119,43 @@ func (w *world) checkIndep() {
 
 // checkGm is check_gm(): it makes sure the gm player exists.
 func (w *world) checkGm() {
-	w.checkSpecialPlayer(int(w.gmPlayer), subPlSystem, "check_gm", "gm", 167,
+	w.checkSpecialPlayer(int(w.gmPlayer), subPlSystem, "check_gm", "gm", 168,
 		"kind(gm_player) == T_player", "Gamemaster")
 }
 
 // checkSkillPlayer is check_skill_player(): it makes sure the skill player
 // exists.
 func (w *world) checkSkillPlayer() {
-	w.checkSpecialPlayer(int(w.skillPlayer), subPlSystem, "check_skill_player", "skill", 186,
+	w.checkSpecialPlayer(int(w.skillPlayer), subPlSystem, "check_skill_player", "skill", 187,
 		"kind(skill_player) == T_player", "Skill list")
 }
 
 // checkEatPlayer is check_eat_player(): it makes sure the order eater
 // player exists.
 func (w *world) checkEatPlayer() {
-	w.checkSpecialPlayer(int(w.eatPl), subPlSystem, "check_eat_player", "eat", 205,
+	w.checkSpecialPlayer(int(w.eatPl), subPlSystem, "check_eat_player", "eat", 206,
 		"kind(eat_pl) == T_player", "Order eater")
 }
 
 // checkNpcPlayer is check_npc_player(): it makes sure the npc player
 // exists.
 func (w *world) checkNpcPlayer() {
-	w.checkSpecialPlayer(int(w.npcPl), subPlSilent, "check_npc_player", "npc", 224,
+	w.checkSpecialPlayer(int(w.npcPl), subPlSilent, "check_npc_player", "npc", 225,
 		"kind(npc_pl) == T_player", "NPC control")
 }
 
 // checkGarrPlayer is check_garr_player(): it makes sure the garrison
 // player exists.
 func (w *world) checkGarrPlayer() {
-	w.checkSpecialPlayer(int(w.garrPl), subPlSilent, "check_garr_player", "garrison", 243,
+	w.checkSpecialPlayer(int(w.garrPl), subPlSilent, "check_garr_player", "garrison", 244,
 		"kind(garr_pl) == T_player", "Garrison units")
 }
 
 // checkGlob is check_glob(): it checks that kind_s has T_MAX entries and
 // subkind_s SUB_MAX, before their NULLs (see glob.go).
 func (w *world) checkGlob() {
-	assert(len(kindS) == tMax, "olympia/check.c", 262, "i == T_MAX")
-	assert(len(subkindS) == subMax, "olympia/check.c", 266, "i == SUB_MAX")
+	assert(len(kindS) == tMax, "olympia/check.c", 263, "i == T_MAX")
+	assert(len(subkindS) == subMax, "olympia/check.c", 267, "i == SUB_MAX")
 }
 
 // checkNowhere is check_nowhere(): it warns of every unit, and of every
@@ -244,7 +235,7 @@ func (w *world) checkSkills() {
 // the box its who_has names, which it repairs to the box that holds it. It
 // leaves in each item's temp the total quantity held.
 //
-// loop_inv asserts valid_box(i) at check.c line 400, but loop_boxes yields
+// loop_inv asserts valid_box(i) at check.c line 401, but loop_boxes yields
 // only valid boxes and nothing here deletes one, so the assertion cannot
 // fail and is left out.
 func (w *world) checkItemCounts() {

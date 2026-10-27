@@ -201,6 +201,15 @@ func (w *world) loadOrders() {
 				continue
 			}
 
+			if w.rpPlayer(fact) == nil {
+				fmt.Fprintf(w.stderr, "ERROR: orders/%s but [%d] is not a player\n", name, fact)
+				continue
+			}
+			if w.rpPlayer(fact).orders != nil {
+				fmt.Fprintf(w.stderr, "ERROR: orders/%s but orders for [%d] are already loaded\n", name, fact)
+				continue
+			}
+
 			w.loadPlayerOrders(fact)
 		}
 	}

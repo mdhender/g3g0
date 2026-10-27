@@ -6,13 +6,13 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `47535543d83fbc5649d54b63b49e578f2b11ab1c`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2567e6a5dd0ba0d95516d8bed9e1bafb87a51985`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 The script exports that revision with `git archive`, so the clone's checkout does not matter.
 
 The port follows:
 
-- `olympia/io.c`, lines 2081 to 2540 at the pinned revision (`open_write_fp` to `write_master`).
+- `olympia/io.c`, lines 2126 to 2640 at the pinned revision (`open_write_fp` to `write_master`).
 - `olympia/u.c`: `lookup()` and `stage()`; `olympia/swear.c`: `lord()` and `player()`, which `write_master()` uses; `olympia/sout.c`: `sout()`'s cut to `LEN` bytes.
 
 ## Prerequisites
@@ -51,28 +51,28 @@ Before upstream fixed G3 [#316](https://github.com/playbymail/olympia-g3/issues/
 
 ### What the abort and crash statuses mean for the files
 
-On macOS `abort()` flushes every open stdio stream, so a section that fails an assertion while writing a file (`write_player()` of a unit that is not a character, `player()` of a lord loop in `write_master()`) leaves the file with everything written to it so far; the port's assertion panic is recovered with `clib.FlushAll()`. A crash (status 139) flushes nothing.
+`asfail()` explicitly flushes every open stdio stream before `abort()`, so a section that fails an assertion while writing a file (`write_player()` of a unit that is not a character, `player()` of a lord loop in `write_master()`) leaves the file with everything written to it so far; the port's assertion panic is recovered with `clib.FlushAll()`. A crash (status 139) flushes nothing.
 
 ## What the cases cover
 
 | section | covers |
 |---|---|
-| fast_scan | `master` lines with extra white space, no `.`, no subkind, junk, a subkind past `schar`, no newline at the end; no `master`, an empty one; a blank line, a comment and a duplicate box (the `alloc_box()` assertions); another `libdir` |
-| scan_boxes | comments before and inside a box, a line of white space ending a box, kinds and subkinds in other cases, subkind `0` and `0x`, a subkind with a space, bad kinds and subkinds (the `read_boxes(N)` diagnostics), short and tab-separated box lines, kind `deleted`, no blank line at the end; a missing file; a blank line between boxes and a box number 0 (assertion); a duplicate box across files |
+| fast_scan | `master` lines with extra white space, no `.`, no subkind, junk, a subkind past `schar`, no newline at the end; no `master`, an empty one; blank lines and comments rejected before allocation; duplicate box (`alloc_box()` assertion); another `libdir` |
+| scan_boxes | comments before and inside a box, a line of white space ending a box, kinds and subkinds in other cases, subkind `0` and `0x`, a subkind with a space, bad kinds and subkinds (the `scan_boxes(N)` diagnostics), short and tab-separated box lines, kind `deleted`, no blank line at the end; a missing file; a blank line between boxes and a box number 0 (assertion); a duplicate box across files |
 | scan_chars, scan_all_boxes | fact files whose names do and do not start with a digit, a directory among them; no `fact`, `fact` a file, an unreadable `fact`; every box file, and none of them (the `stage()` line and every diagnostic) |
 | read_boxes, read_chars, read_all_boxes | box lines with leading white space, the end of the file, a continued field on the file's last line; a missing file; comment lines first, between boxes, last and alone, one and three extra blank lines between boxes, blank lines first and last, and junk, indented and box-number-0 lines between boxes and last, each skipped (G3 [#316](https://github.com/playbymail/olympia-g3/issues/316), fixed upstream); a line that is not a box and a negative box number; a box pass 1 did not allocate (`load_box()`'s assertion); `fact` with other names and a dot directory; no `fact`; a box in two files |
 | write_kind | chain order, deleted boxes, an empty kind, pretty names; no `libdir`; a read-only, a write-only and a directory in the file's place |
 | write_player, write_chars, write_leftovers | units in list order, a unit twice, a deleted unit, a unit with no box; no units; no `fact`; a unit that is a location or a player (assertion, with the file as `abort()` leaves it); what each leaves to `misc`, and `temp` |
 | write_all_boxes | every kind, an old `fact` file and stale box files; no `fact`, no `libdir`, a read-only `libdir`; `fact` cleared by `remove_dir()`, not the shell (G3 [#320](https://github.com/playbymail/olympia-g3/issues/320), fixed upstream): files, a dot file, nested and empty directories, and symbolic links to a directory, a file and nowhere (removed, not followed), `fact` a file, a symbolic link to a directory (its contents removed, the link kept), unreadable, and holding an entry it cannot remove (no message for any of them); a `libdir` with a space, which clears its own `fact` and nothing else, with and without `win_flag`; and `win_flag` (no effect) with and without `fact` |
-| write_master | every kind, roads in the misc lines, names with tabs, the lord chain to a player, no lord and a lord that is not a player (`fact/0`), pretty (no effect); a lord loop (assertion), a lord with no box (crash); no `libdir`; no boxes |
+| write_master | every kind, roads indexed as road, names with tabs, the lord chain to a player, no lord and a lord that is not a player (`fact/0`), pretty (no effect); a lord loop (assertion), a lord with no box (crash); no `libdir`; no boxes |
 | round trip | `scan_all_boxes`, `read_all_boxes`, `write_all_boxes` and `write_master` on a small game |
 
 ## Results
 
-Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
+Last run: 2026-10-27, Linux amd64, GCC 12.2.0, Go 1.26.4.
 
-- Check 1: 70 sections, 1783 lines. The C driver is deterministic, its output matches `boxfile-c-output.txt`, and `TestBoxfileMatchesC` passes.
-- Check 2 (`--full`): 197 games (`world.tgz` and the 196 cached round-trip inputs; 7,947,575 boxes in their written `master` files, 36,999 in `world.tgz`), each with `master`, with `master` and pretty, and without `master`: C and Go `lib` trees (files, modes and contents), stdout and stderr identical.
+- Check 1: 70 sections, 1771 lines. The C driver is deterministic, its output matches `boxfile-c-output.txt`, and `TestBoxfileMatchesC` passes.
+- Check 2 was not rerun at this pin. Historical macOS `--full`: 197 games (`world.tgz` and the 196 cached round-trip inputs; 7,947,575 boxes in their written `master` files, 36,999 in `world.tgz`), each with `master`, with `master` and pretty, and without `master`: C and Go `lib` trees (files, modes and contents), stdout and stderr identical.
 
 ## Upstream defects reproduced on purpose
 

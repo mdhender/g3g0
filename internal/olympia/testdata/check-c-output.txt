@@ -218,7 +218,7 @@ can't open lib/master: No such file or directory
 fast_scan failed, scan_all_boxes()
 > check
 check_db()
-assertion failure: olympia/check.c (136): kind(indep_player) == T_player
+assertion failure: olympia/check.c (137): kind(indep_player) == T_player
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -247,7 +247,7 @@ fast_scan failed, scan_all_boxes()
 > check
 check_db()
 	check_indep: creating independent player [100]
-assertion failure: olympia/check.c (167): kind(gm_player) == T_player
+assertion failure: olympia/check.c (168): kind(gm_player) == T_player
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -271,7 +271,7 @@ fast_scan failed, scan_all_boxes()
 check_db()
 	check_indep: creating independent player [100]
 	check_gm: creating gm player [200]
-assertion failure: olympia/check.c (186): kind(skill_player) == T_player
+assertion failure: olympia/check.c (187): kind(skill_player) == T_player
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -296,7 +296,7 @@ check_db()
 	check_indep: creating independent player [100]
 	check_gm: creating gm player [200]
 	check_skill_player: creating skill player [202]
-assertion failure: olympia/check.c (205): kind(eat_pl) == T_player
+assertion failure: olympia/check.c (206): kind(eat_pl) == T_player
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -324,7 +324,7 @@ check_db()
 	check_gm: creating gm player [200]
 	check_skill_player: creating skill player [202]
 	check_eat_player: creating eat player [203]
-assertion failure: olympia/check.c (224): kind(npc_pl) == T_player
+assertion failure: olympia/check.c (225): kind(npc_pl) == T_player
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -351,7 +351,7 @@ check_db()
 	check_skill_player: creating skill player [202]
 	check_eat_player: creating eat player [203]
 	check_npc_player: creating npc player [206]
-assertion failure: olympia/check.c (243): kind(garr_pl) == T_player
+assertion failure: olympia/check.c (244): kind(garr_pl) == T_player
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -487,18 +487,25 @@ check_db()
 	check_here: removing [1003] from here list of [10101]
 	check_here: removing [1005] from here list of [10101]
 	check_here: removing [1002] from here list of [10101]
-	check_here: removing [1005] from here list of [10101]
-assertion failure: olympia/loc.c (241): in_here_list(loc, who)
-exit 134
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+	warning: unit [1005] is nowhere
+> save
+exit 0
 d 755 lib
 d 755 lib/fact
-f 644 0 lib/gate
-f 644 0 lib/item
-f 644 0 lib/loc
-f 644 282 lib/misc
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 148 lib/fact/1001
 | 1001 player pl_regular
 | PL
-|  un 1002 1003 1005
+|  un 1002 1003 1005 
 | 
 | 1002 char 0
 | LI
@@ -516,20 +523,57 @@ f 644 282 lib/misc
 | CH
 |  lo 1001
 | 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 118 lib/loc
 | 10001 loc region
 | LI
-|  hl 10101 10102
+|  hl 10101 10102 
 | 
 | 10101 loc plain
 | LI
 |  wh 10001
-|  hl 1003 1005 1002 1005
 | 
 | 10102 loc plain
 | LI
 |  wh 10001
-|  hl 1002 1002
+|  hl 1002 1002 1003 
 | 
+f 644 318 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09
+| 1002\x092.0\x09fact/1001\x09
+| 1003\x092.0\x09fact/1001\x09
+| 1005\x092.0\x09fact/1001\x09
+| 10001\x093.50\x09loc\x09\x09
+| 10101\x093.3\x09loc\x09\x09
+| 10102\x093.3\x09loc\x09\x09
+f 644 0 lib/misc
 f 644 0 lib/road
 f 644 0 lib/ship
 f 644 0 lib/skill
@@ -1152,17 +1196,58 @@ fast_scan failed, scan_all_boxes()
 check_db()
 	check_indep: creating independent player [100]
 	check_indep: swearing unit [1002] to Independent player~[100]
-subkind is 0
-assertion failure: olympia/u.c (386): FALSE
-exit 134
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+	warning: unit [1002] is nowhere
+> save
+exit 0
 d 755 lib
 d 755 lib/fact
+f 644 78 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| CH
+|  lo 100
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
 f 644 0 lib/gate
 f 644 0 lib/item
 f 644 0 lib/loc
-f 644 13 lib/misc
-| 1002 char 0
-| 
+f 644 207 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1002\x092.0\x09fact/100\x09
+f 644 0 lib/misc
 f 644 0 lib/road
 f 644 0 lib/ship
 f 644 0 lib/skill
@@ -1177,23 +1262,64 @@ fast_scan failed, scan_all_boxes()
 check_db()
 	check_indep: creating independent player [100]
 	check_indep: swearing unit [1002] to Independent player~[100]
-subkind is 0
-assertion failure: olympia/u.c (386): FALSE
-exit 134
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+> save
+exit 0
 d 755 lib
 d 755 lib/fact
-f 644 0 lib/gate
-f 644 0 lib/item
-f 644 0 lib/loc
-f 644 56 lib/misc
+f 644 91 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| PL
+|  un 1002 
+| 
 | 1002 char 0
 | LI
 |  wh 10001
+| CH
+|  lo 100
 | 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 31 lib/loc
 | 10001 loc region
 | LI
-|  hl 1002
+|  hl 1002 
 | 
+f 644 224 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1002\x092.0\x09fact/100\x09
+| 10001\x093.50\x09loc\x09\x09
+f 644 0 lib/misc
 f 644 0 lib/road
 f 644 0 lib/ship
 f 644 0 lib/skill

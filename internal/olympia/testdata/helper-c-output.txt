@@ -1376,9 +1376,7 @@ section set_lord of a unit that is nowhere
 > alloc 100 1 52
 > alloc 1001 2 0
 > setlord 1001 100 0 0
-subkind is 0
-assertion failure: olympia/u.c (386): FALSE
-exit 134
+exit 0
 section touch_loc
 > alloc 50000 1 49
 > alloc 58760 3 50
@@ -1458,6 +1456,10 @@ box 50000: kind 1 sub 49 where 0 temp 0
 > where 1007 58760
 > lord 1007 50000
 > touch 1007
-subkind is 0
-assertion failure: olympia/u.c (386): FALSE
-exit 134
+> dump 50000
+box 50000: kind 1 sub 49 where 0 temp 0
+  here:
+  player: last_order_turn 0
+  units:
+  locs: 59000 10000
+exit 0
