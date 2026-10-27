@@ -44,18 +44,21 @@ functions = {
     'u.c': ['loc_depth', 'loc_hidden', 'test_known', 'test_bit', 'set_bit',
             'max', 'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
             'count_stack_move_nobles', 'count_stack_figures', 'count_any',
-            'has_item', 'comma_num', 'nice_num', 'cap', 'lookup'],
+            'has_item', 'sub_item', 'comma_num', 'nice_num', 'cap', 'lookup'],
     'swear.c': ['lord', 'player', 'set_loyal'],
     'move.c': ['move_exit_land', 'move_exit_fly', 'move_exit_water',
                'parse_exit_dir', 'save_v_array', 'restore_v_array',
                'suspend_stack_actions', 'restore_stack_actions', 'clear_guard_flag',
-               'land_check', 'can_move_here', 'can_move_at_outer_level'],
+               'land_check', 'can_move_here', 'can_move_at_outer_level',
+               'check_captain_loses_sailors'],
+    'input.c': ['find_command'],
     'perm.c': ['rp_admit', 'will_admit'],
     'stack.c': ['here_pos', 'stack_parent', 'stack_leader', 'promote',
                 'unstack', 'leave_stack'],
     'storm.c': ['weather_here'],
 }
 with open(dest, 'w') as out:
+    out.write('#include <stdlib.h>\nint fuzzy_find;\n')
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
         if file == 'dir.c':
@@ -82,7 +85,18 @@ void drv_save(struct command *c, struct exit_view *v) { save_v_array(c, v); }
 void drv_restore(struct command *c, struct exit_view *v) { restore_v_array(c, v); }
 void drv_suspend(int who) { suspend_stack_actions(who); }
 void drv_unstack(int who) { unstack(who); }
+int drv_sub_item(int who, int item, int qty) { return sub_item(who, item, qty); }
 ''')
+# find_command reads the actual glob.c table. Its callbacks are deliberately
+# unreachable here: never make an unfinished SAIL callback a successful stub.
+glob = open(f'{src}/glob.c').read()
+table = glob[glob.index('struct cmd_tbl_ent cmd_tbl[]'):glob.index('char *kind_s[]')]
+routines = set()
+for m in re.finditer(r'^\{[^,]*,[^,]*,\s*(\w+),\s*(\w+),\s*(\w+),', table, re.M):
+    routines.update(n for n in m.groups() if n != 'NULL')
+with open(dest, 'a') as out:
+    for name in sorted(routines):
+        out.write(f'int {name}(struct command *c) {{ fprintf(stderr, "out-of-scope C dependency: {name}\\n"); abort(); }}\n')
 PY
 case "$(uname -s)" in
  Darwin) ldflags=(-Wl,-dead_strip) ;;

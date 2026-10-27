@@ -24,6 +24,8 @@ void drv_save(struct command *, struct exit_view *);
 void drv_restore(struct command *, struct exit_view *);
 void drv_suspend(int);
 void drv_unstack(int);
+int drv_sub_item(int, int, int);
+int find_command(char *);
 
 /* Unreachable report routes must abort, never decide gameplay. */
 ilist players_who_rule_here(int n)
@@ -130,6 +132,33 @@ int main(int argc, char **argv)
             exit_views_append(&l, &v); dump(l); exit_views_reclaim(&l);
         }
         else if (!strcmp(op, "dump_command")) printf("command %d %d %d %d %d %d %d %d %d %d %d %d\n", cmd.who, cmd.a, cmd.b, cmd.c, cmd.d, cmd.e, cmd.f, cmd.g, cmd.h, cmd.wait, cmd.cmd, cmd.days_executing);
+        else if (!strcmp(op, "voyage")) {
+            struct command *p = p_command(a);
+            *p = cmd;
+            p->who = a; p->state = b; p->wait = c;
+            p->cmd = find_command(d ? "sail" : "move");
+        }
+        else if (!strcmp(op, "remove")) printf("remove %d\n", drv_sub_item(a, b, c));
+        else if (!strcmp(op, "lose")) check_captain_loses_sailors(a, b, c);
+        else if (!strcmp(op, "voyage_water")) {
+            struct exit_view v = {0};
+            v.destination = b; v.distance = c;
+            printf("voyage_water %d\n", drv_water(rp_command(a), &v, b, d));
+        }
+        else if (!strcmp(op, "vector")) vector_add(a);
+        else if (!strcmp(op, "voyage_state")) {
+            int n, i;
+            extern ilist out_vector;
+            printf("vector:");
+            for (i = 0; i < ilist_len(out_vector); i++) printf(" %d", out_vector[i]);
+            printf("\n");
+            loop_boxes(n) {
+                struct command *p = rp_command(n);
+                if (p) printf("voyage %d %d %d %d %d %d %d %d %d %d %d %d %d\n", p->who, p->state, p->a, p->b, p->c, p->d, p->e, p->f, p->g, p->h, p->wait, p->cmd, p->days_executing);
+                if (rp_subloc(n)) printf("ship_moving %d %d\n", n, ship_moving(n));
+            } next_box;
+        }
+        else if (!strcmp(op, "show_day")) show_day = a;
         else if (!strcmp(op, "see_all")) immed_see_all = a;
         else if (!strcmp(op, "admission")) {
             struct admit *p = my_malloc(sizeof(*p));

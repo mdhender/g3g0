@@ -18,7 +18,9 @@ locations, for dir.c's topology/distance/selection closure; loc.c's region,
 province and stack walks; u.c's depth/hidden/knowledge, weight/count and number
 helpers; swear.c's ownership walks and loyalty setter; move.c's complete
 land/fly/water travel calculations, parsing, land admission/outer feasibility,
-exit save/restore and stack action/guard bookkeeping; perm.c's `rp_admit` and
+exit save/restore, stack action/guard bookkeeping and `check_captain_loses_sailors`;
+input.c's `find_command` using the original glob.c command table; u.c's real
+`sub_item` for mid-voyage crew removal; perm.c's `rp_admit` and
 `will_admit`; stack.c's actual leave/unstack closure; and storm.c's actual
 `weather_here`. It preserves dir.c's original
 includes, tag constants, stream declaration, turn guard and `begin_exitdir`,
@@ -27,8 +29,9 @@ and the actual lib checked allocator, ilist, **exit_views.c**, rng.c, rnd.c and
 item_ents.c, admits.c and cstrings.c. Initialization calls real `glob_init` and
 `init_lower`, as main.c does. Original headers provide structs, macros and
 integer field widths.
-There are **no gameplay stubs**: the only unreachable report dependency
-(`players_who_rule_here`) aborts if reached, and the tool rejects that marker
+There are **no successful gameplay stubs**: unreachable command callbacks
+(including SAIL) and the report dependency `players_who_rule_here` abort if
+reached, and the tool rejects their out-of-scope marker
 even in assertion cases or `--update` mode. The driver only constructs fixtures,
 invokes helpers and dumps observed state; output comes through real sout.
 
@@ -89,11 +92,23 @@ Coverage:
   epoch extrema/zero; guard clearing handles character and container roots and
   prunes noncharacter branches. Real leave/unstack checks output order, here-list
   promotion, summoned loyalty, release-magic clearing and descendant resume.
+- Actual running SAIL command state on a completed raft, roundship and galley.
+  Removing real sailors/pirates mid-voyage leaves raft wait/base water cost
+  unchanged with no crew-loss output or log; ships incur actual singular/plural,
+  incremental/capped penalties. Enough, partial and absent crew; NULL command,
+  DONE/LOAD/ERROR, non-SAIL, nonship and unfinished ship controls; raft early
+  return before penalty/wait assertions and the real ship assertion bytes.
+  Dumps preserve command arguments/state/wait, ship/character moving fields,
+  inventory and output vector. Real sout/log_write check immediate output,
+  day-prefixed faction and GM logs, output bits, inform zero/self/other-player/
+  same-player and prisoner suppression. No output text is synthesized by the driver.
 
-The current recording has 59 sections / 2868 lines, from two deterministic C runs.
-The original 40 sections / 1703 recording lines are an unchanged prefix
-(including the earlier 25 sections / 814 lines).
-Move callbacks, departure/arrival and prisoner-escape execution belong to #67.
+The current recording has 70 sections / 3380 lines, from two deterministic C runs.
+The original 59 sections / 2868 lines are an unchanged prefix (including the
+earlier 40 sections / 1703 lines and 25 sections / 814 lines).
+The command recording remains unchanged at 204 sections / 7002 lines.
+Move callbacks remain explicit NYI for #67; departure/arrival and prisoner
+escape dependencies belong to the separately precreated #109–#113 tasks.
 This harness accepts movement helpers, not whole movement execution or
 arrival callbacks. Report rendering and unrelated LOS-distance helpers are not
 extracted; report-path output mutations are checked, not skipped.

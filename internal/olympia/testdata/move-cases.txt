@@ -1438,3 +1438,263 @@ exit1 7 302 10101 0
 check 0
 movement_state
 state
+
+section completed raft running SAIL loses sailors and pirates mid voyage
+box 200 1 49 0
+box 201 1 49 0
+box 19 4 0 0
+box 24 4 0 0
+box 10101 3 1 0
+box 301 9 66 10101
+box 1000 2 0 301
+lord 1000 201
+inv 1000 19 5
+inv 1000 24 3
+command 1000 61 7 0
+args 2 10102 17 1
+tail 7 10101 1 3
+voyage 1000 2 7 1
+char_moving 1000 777
+moving 301 777
+vector 201
+voyage_water 1000 301 7 1
+voyage_state
+remove 1000 19 5
+remove 1000 24 3
+lose 8 1000 201
+voyage_water 1000 301 7 1
+voyage_state
+movement_state
+report 200
+report 201
+state
+
+section roundship running SAIL crew loss singular and all crew log routes
+box 200 1 49 0
+box 201 1 49 0
+box 202 1 49 0
+box 19 4 0 0
+box 24 4 0 0
+box 10101 3 1 0
+box 301 9 31 10101
+box 1000 2 0 301
+box 1001 2 0 301
+lord 1000 201
+lord 1001 202
+inv 1000 19 5
+inv 1000 24 3
+command 1000 61 7 0
+args 2 10102 17 1
+tail 7 10101 1 3
+voyage 1000 2 7 1
+char_moving 1000 777
+moving 301 777
+show_day 1
+day 9
+vector 200
+voyage_water 1000 301 7 1
+remove 1000 24 1
+lose 1 1000 1001
+voyage_state
+remove 1000 19 5
+remove 1000 24 2
+lose 7 1000 1000
+voyage_water 1000 301 7 0
+voyage_state
+movement_state
+report 200
+report 201
+report 202
+state
+
+section roundship overcrew enough then capped threshold crossing immediate output
+output 1
+box 200 1 49 0
+box 201 1 49 0
+box 19 4 0 0
+box 24 4 0 0
+box 10101 3 1 0
+box 301 9 31 10101
+box 1000 2 0 301
+lord 1000 201
+inv 1000 19 10
+inv 1000 24 5
+voyage 1000 2 4 1
+vector 201
+remove 1000 19 7
+lose 7 1000 0
+voyage_state
+remove 1000 24 5
+lose 5 1000 0
+voyage_state
+state
+
+section already short roundship incremental penalty not total shortage
+box 200 1 49 0
+box 201 1 49 0
+box 19 4 0 0
+box 24 4 0 0
+box 10101 3 1 0
+box 301 9 31 10101
+box 1000 2 0 301
+lord 1000 201
+inv 1000 19 2
+inv 1000 24 3
+voyage 1000 2 10 1
+remove 1000 24 2
+lose 2 1000 201
+voyage_state
+report 200
+report 201
+state
+
+section galley enough crew then partial then absent real penalties
+box 200 1 49 0
+box 201 1 49 0
+box 19 4 0 0
+box 24 4 0 0
+box 10101 3 1 0
+box 301 9 30 10101
+box 1000 2 0 301
+lord 1000 201
+inv 1000 19 12
+inv 1000 24 6
+voyage 1000 2 6 1
+vector 201
+remove 1000 19 4
+lose 4 1000 0
+voyage_state
+remove 1000 19 3
+lose 3 1000 0
+voyage_state
+remove 1000 19 5
+remove 1000 24 6
+lose 11 1000 0
+voyage_state
+report 200
+report 201
+state
+
+section galley prisoner inform suppresses recipient not captain penalty
+box 200 1 49 0
+box 201 1 49 0
+box 202 1 49 0
+box 19 4 0 0
+box 24 4 0 0
+box 10101 3 1 0
+box 301 9 30 10101
+box 1000 2 0 301
+box 1001 2 0 301
+lord 1000 201
+lord 1001 202
+unit 1001 0 1 0
+inv 1000 19 14
+voyage 1000 2 1 1
+remove 1000 19 1
+lose 1 1000 1001
+voyage_state
+report 200
+report 201
+report 202
+state
+
+section crew loss nonrunning and nonSAIL and absent command controls
+box 200 1 49 0
+box 201 1 49 0
+box 19 4 0 0
+box 10101 3 1 0
+box 301 9 31 10101
+box 1000 2 0 301
+lord 1000 201
+inv 1000 19 1
+vector 201
+remove 1000 19 1
+lose 1 1000 201
+voyage_state
+voyage 1000 0 0 1
+lose 1 1000 201
+voyage_state
+voyage 1000 1 0 1
+lose 1 1000 201
+voyage_state
+voyage 1000 3 0 1
+lose 1 1000 201
+voyage_state
+voyage 1000 2 7 0
+lose 1 1000 201
+voyage_state
+report 200
+report 201
+state
+
+section crew loss nonship and unfinished ship controls
+box 200 1 49 0
+box 201 1 49 0
+box 10101 3 1 0
+box 301 9 67 10101
+box 302 9 34 10101
+box 303 9 33 10101
+box 1000 2 0 10101
+box 1001 2 0 301
+box 1002 2 0 302
+box 1003 2 0 303
+lord 1000 201
+lord 1001 201
+lord 1002 201
+lord 1003 201
+voyage 1000 2 7 1
+voyage 1001 2 7 1
+voyage 1002 2 7 1
+voyage 1003 2 7 1
+vector 201
+lose 8 1000 201
+lose 8 1001 201
+lose 8 1002 201
+lose 14 1003 201
+voyage_state
+report 200
+report 201
+state
+
+section raft immediate return before penalty and wait assertions
+box 200 1 49 0
+box 19 4 0 0
+box 24 4 0 0
+box 10101 3 1 0
+box 301 9 66 10101
+box 1000 2 0 301
+lord 1000 200
+voyage 1000 2 0 1
+vector 200
+lose 0 1000 0
+lose -9 1000 0
+voyage_state
+report 200
+state
+
+section invalid crew loss zero penalty assertion
+output 1
+box 200 1 49 0
+box 19 4 0 0
+box 24 4 0 0
+box 10101 3 1 0
+box 301 9 31 10101
+box 1000 2 0 301
+lord 1000 200
+voyage 1000 2 7 1
+vector 200
+voyage_state
+lose 0 1000 0
+
+section invalid crew loss wait assertion after real output
+output 1
+box 200 1 49 0
+box 19 4 0 0
+box 24 4 0 0
+box 10101 3 1 0
+box 301 9 30 10101
+box 1000 2 0 301
+lord 1000 200
+voyage 1000 2 0 1
+voyage_state
+lose 14 1000 200

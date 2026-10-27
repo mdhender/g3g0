@@ -233,6 +233,59 @@ func (w *world) moveExitFly(c *command, v *exitView, show bool) int32 {
 	return delay + extra
 }
 
+// checkCaptainLosesSailors is the complete pinned move.c helper. The caller
+// has already removed qty sailors/pirates. SAIL callbacks remain NYI (#67).
+func (w *world) checkCaptainLosesSailors(qty int32, target, inform int) {
+	where := w.subloc(target)
+	if w.cmdSail < 0 {
+		w.cmdSail = int32(w.findCommand("sail"))
+		assert(w.cmdSail > 0, "olympia/move.c", 1189, "cmd_sail > 0")
+	}
+	if !w.isShip(w.subloc(target)) {
+		return
+	}
+	c := w.rpCommand(target)
+	if c == nil || c.state != stateRun || c.cmd != w.cmdSail {
+		return
+	}
+	now := int32(w.hasItem(target, itemSailor)) + int32(w.hasItem(target, itemPirate))
+	before := now + qty
+	var shouldHave int32
+	switch w.subkind(where) {
+	case subRaft:
+		// G3 #350/#351: a completed raft needs no crew, even mid-voyage.
+		return
+	case subGalley:
+		shouldHave = 14
+	case subRoundship:
+		shouldHave = 8
+	default:
+		fmt.Fprintf(w.stderr, "kind is %d\n", w.subkind(where))
+		assert(false, "olympia/move.c", 1218, "FALSE")
+	}
+	if now >= shouldHave {
+		return
+	}
+	if before > shouldHave {
+		before = shouldHave
+	}
+	penalty := before - now
+	assert(penalty > 0, "olympia/move.c", 1229, "penalty > 0")
+	w.outVector.Clear()
+	w.outVector.Append(target)
+	if inform != 0 && target != inform {
+		w.outVector.Append(inform)
+	}
+	if penalty == 1 {
+		w.commandOut(vect, "Loss of crew will cause travel to take an extra day.")
+	} else {
+		w.commandOut(vect, "Loss of crew will cause travel to take %s extra days.", niceNum(int(penalty)))
+	}
+	assert(c.wait > 0, "olympia/move.c", 1242, "c->wait > 0")
+	c.wait += penalty
+	w.logWrite(11, "Loss of sailors incurs penalty for %s.", w.boxCode(w.player(target))) // LOG_SPECIAL
+}
+
 func (w *world) moveExitWater(c *command, v *exitView, ship int, show bool) int32 {
 	who := int(c.who)
 	delay, handsShort, windBonus := int32(v.distance), int32(0), int32(0)

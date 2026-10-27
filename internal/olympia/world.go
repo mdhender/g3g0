@@ -137,6 +137,7 @@ type world struct {
 	// input.c statics. cmdWait stays -1 until process_orders resolves it.
 	curPri         int32
 	cmdWait        int32
+	cmdSail        int32 // move.c check_captain_loses_sailors static
 	immediate      bool
 	immedSeeAll    int32 // oly.h see_all(n), independent of immediate output
 	showDay        bool  // glob.c show_day; default formatting for command output
@@ -205,6 +206,7 @@ func newWorld() *world {
 	w := &world{
 		bx:      make([]*box, maxBoxes),
 		cmdWait: -1,
+		cmdSail: -1,
 
 		fromHost:       "g3@olympia.v-labs.be",
 		replyHost:      "g3@olympia.v-labs.be",

@@ -136,6 +136,40 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 			dump([]*exitView{v})
 		case "dump_command":
 			fmt.Fprintf(&stdout, "command %d %d %d %d %d %d %d %d %d %d %d %d\n", cmd.who, cmd.a, cmd.b, cmd.c, cmd.d, cmd.e, cmd.f, cmd.g, cmd.h, cmd.wait, cmd.cmd, cmd.daysExecuting)
+		case "voyage":
+			p := w.pCommand(n)
+			*p = *cmd
+			p.who, p.state, p.wait = int32(n), int8(b), int32(sk)
+			name := "move"
+			if d != 0 {
+				name = "sail"
+			}
+			p.cmd = int32(w.findCommand(name))
+		case "remove":
+			fmt.Fprintf(&stdout, "remove %d\n", b2i(w.subItem(n, b, sk)))
+		case "lose":
+			w.checkCaptainLosesSailors(int32(n), b, sk)
+		case "voyage_water":
+			v := &exitView{destination: int32(b), distance: int32(sk)}
+			fmt.Fprintf(&stdout, "voyage_water %d\n", w.moveExitWater(w.rpCommand(n), v, b, d != 0))
+		case "vector":
+			w.outVector.Append(n)
+		case "voyage_state":
+			fmt.Fprint(&stdout, "vector:")
+			for _, i := range w.outVector {
+				fmt.Fprintf(&stdout, " %d", i)
+			}
+			fmt.Fprintln(&stdout)
+			for n := range w.loopBoxes() {
+				if p := w.rpCommand(n); p != nil {
+					fmt.Fprintf(&stdout, "voyage %d %d %d %d %d %d %d %d %d %d %d %d %d\n", p.who, p.state, p.a, p.b, p.c, p.d, p.e, p.f, p.g, p.h, p.wait, p.cmd, p.daysExecuting)
+				}
+				if p := w.rpSubloc(n); p != nil {
+					fmt.Fprintf(&stdout, "ship_moving %d %d\n", n, p.moving)
+				}
+			}
+		case "show_day":
+			w.showDay = n != 0
 		case "see_all":
 			w.immedSeeAll = int32(n)
 		case "admission":
