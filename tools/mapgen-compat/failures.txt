@@ -5,11 +5,13 @@
 #           Cities it lacks come from tests/mapgen/fixtures in the pinned
 #           G3 export.
 #   seed    a label from seeds.txt.
-#   status  the exit status the pinned C build gives (134 is SIGABRT).
+#   status  the exit status the pinned C build gives (134 is SIGABRT, 139
+#           SIGSEGV).
 #
 # Each case runs once per seed listed. With the "missing" seed, load_seed()
 # leaves "randseed could not be opened." in the stdout buffer, which only
-# abort()'s flush of every open stream writes out (G3G0 #39).
+# abort()'s flush of every open stream writes out (G3G0 #39). SIGSEGV loses
+# it (G3G0 #46).
 
 # read_map(): an unknown terrain glyph (mapgen.c 680)
 unknown-terrain   missing  134
@@ -25,3 +27,13 @@ wide-last-row     missing  134
 # ... and a Map row past 99 (mapgen.c 1055)
 tall-map          missing  134
 tall-map          fixture  134
+# gate_continental_tour(): no land region, so l is NULL and l[0] faults
+# (mapgen.c 2527, G3G0 #46)
+all-water          missing  139
+all-water          fixture  139
+# ... the same with one square, with 100x100, with every water glyph, and
+# with a Map of nothing but holes
+all-water-1x1      fixture  139
+all-water-100x100  fixture  139
+all-water-mixed    fixture  139
+all-holes          missing  139

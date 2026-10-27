@@ -228,10 +228,19 @@ type assertion struct {
 	cond string
 }
 
+// segfault unwinds the generator where the C code reads through a NULL
+// pointer that Go has no nil pointer for (an empty list, which the C code
+// keeps as NULL), and dies with SIGSEGV.
+type segfault struct{}
+
 // Run generates a map from the input files in dir, writing the output files
 // there. It returns the process exit status mapgen-g3 would have.
 func Run(dir string, stdout, stderr io.Writer) (status int) {
-	g := &generator{dir: dir, stdout: stdout, stderr: stderr, rng: rnd.New([16]byte{})}
+	// stdout is a stdio stream in C, fully buffered when it is not a
+	// terminal: exit(3), a return from main() and (on macOS) abort() write
+	// what it holds, and SIGSEGV loses it. stderr is unbuffered.
+	out := bufio.NewWriter(stdout)
+	g := &generator{dir: dir, stdout: out, stderr: stderr, rng: rnd.New([16]byte{})}
 
 	defer func() {
 		switch r := recover().(type) {
@@ -245,19 +254,25 @@ func Run(dir string, stdout, stderr io.Writer) (status int) {
 			// abort() exits 134 and, on macOS, flushes every open stdio
 			// stream. Every reachable asfail() comes before print_map(), so
 			// loc, gate and road are still empty, and the only buffered
-			// stdout is load_seed()'s message, which the port has already
-			// written to g.stdout.
+			// stdout is load_seed()'s message, flushed below.
 			status = 134
+		case segfault:
+			status = 139 // 128 + SIGSEGV
 		case runtime.Error:
 			// The C code dereferences NULL on several inputs and dies with
 			// SIGSEGV, printing nothing. The port reaches the same points as nil
 			// dereferences; report them the same way rather than as a Go panic.
 			if !strings.Contains(r.Error(), "nil pointer dereference") {
+				_ = out.Flush()
 				panic(r)
 			}
 			status = 139 // 128 + SIGSEGV
 		default:
+			_ = out.Flush()
 			panic(r)
+		}
+		if status != 139 {
+			_ = out.Flush()
 		}
 	}()
 
@@ -1991,6 +2006,15 @@ func (g *generator) gateContinentalTour() {
 		g.newGate(l[i], m[i+1], 0)
 	}
 
+	// With no land region (an all-water Map), l and m are empty, and both
+	// are NULL in C: random_tile_from_each_region() runs here for the first
+	// time, so its static list was never allocated. Reading l[0] below then
+	// dies with SIGSEGV before this line prints. This reproduces an
+	// upstream defect:
+	// https://github.com/playbymail/olympia-g3/issues/328
+	if len(l) == 0 {
+		panic(segfault{})
+	}
 	g.errf("\t(%2d,%2d) -> (%2d,%2d)\n\n", l[i].row, l[i].col, m[0].row, m[0].col)
 
 	g.newGate(l[i], m[0], g.rnd(111, 333))
