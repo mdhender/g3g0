@@ -37,7 +37,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-2322a0474de5fb38308d795f6cd72beb811652e9}"
+G3_REV="${G3_REV:-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985}"
 WORK="${WORK:-${ROOT}/tmp/genesis-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
 
@@ -91,6 +91,36 @@ echo "building the Go ports"
 ) >>"${LOG}" 2>&1 || die "Go build failed; see ${LOG}"
 GO_BIN="${WORK}/bin/genesis-g3"
 GO_MAPGEN="${WORK}/bin/mapgen-g3"
+
+# Like olympia-spec's #99 launcher, preserve exec -a through a native entry
+# point: a shell-script engine override loses argv[0] at its interpreter.
+cat >"${WORK}/engine.go" <<'EOF'
+package main
+
+import (
+	"fmt"
+	"os"
+	"os/exec"
+	"syscall"
+)
+
+func main() {
+	bash, err := exec.LookPath("bash")
+	if err == nil {
+		args := []string{"bash", "-c", `. "$1"; shift; run_limited "$@"`,
+			"fixture-engine", os.Getenv("G3G0_TIMEOUT_SH"), os.Getenv("RUN_TIMEOUT"),
+			os.Args[0], os.Getenv("G3G0_ENGINE_BIN")}
+		err = syscall.Exec(bash, append(args, os.Args[1:]...), os.Environ())
+	}
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(127)
+}
+EOF
+go build -o "${WORK}/bin/engine" "${WORK}/engine.go" >>"${LOG}" 2>&1 ||
+	die "fixture launcher build failed; see ${LOG}"
+rm "${WORK}/engine.go"
+export G3G0_TIMEOUT_SH="${HERE}/../lib/timeout.sh"
+export RUN_TIMEOUT
 
 # ---------------------------------------------------------------------------
 # Runs.
@@ -259,8 +289,8 @@ for label in "${ok_labels[@]}"; do
 done
 
 # ---------------------------------------------------------------------------
-# G3's genesis regression gates, unchanged. They run the C reference by
-# default and another world generator when GENESIS_BIN names it
+# G3's genesis regression gates, unchanged. GENESIS_BIN selects a native
+# launcher for each engine, preserving argv[0] and limiting every process
 # (tests/genesis/genesis.sh).
 # ---------------------------------------------------------------------------
 echo
@@ -270,11 +300,11 @@ printf 'gate\timpl\tresult\n' >"${GATES}"
 for check in "${WORK}"/g3/tests/genesis/regress/*/check.sh; do
 	name="$(basename "$(dirname "${check}")")"
 	for impl in c go; do
+		bin="${C_BIN}"
 		if [ "${impl}" = go ]; then
-			out="$(GENESIS_BIN="${GO_BIN}" bash "${check}" 2>&1)" || true
-		else
-			out="$(env -u GENESIS_BIN OLYMPIA_PRESET=debug bash "${check}" 2>&1)" || true
+			bin="${GO_BIN}"
 		fi
+		out="$(G3G0_ENGINE_BIN="${bin}" GENESIS_BIN="${WORK}/bin/engine" bash "${check}" 2>&1)" || true
 		printf '  %-20s %-3s %s\n' "${name}" "${impl}" "$(head -1 <<<"${out}")"
 		printf '%s\t%s\t%s\n' "${name}" "${impl}" "$(head -1 <<<"${out}")" >>"${GATES}"
 		[ "$(head -1 <<<"${out}")" = YES ] || fail "gate ${name} (${impl}): ${out}"

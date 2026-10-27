@@ -1,4 +1,6 @@
 gate	impl	result
+cli-options	c	YES
+cli-options	go	YES
 coloring-retry	c	YES
 coloring-retry	go	YES
 defaults	c	YES

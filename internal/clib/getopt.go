@@ -49,7 +49,8 @@ type Getopt struct {
 	longopts  []LongOption
 	stderr    io.Writer
 
-	Opterr bool // print diagnostics, as opterr; true by default
+	Opterr      bool   // print diagnostics, as opterr; true by default
+	ProgramName string // override the default argv[0]-based diagnostic prefix
 
 	optind int
 	Optarg string // the current option's argument, as optarg
@@ -86,15 +87,15 @@ func NewGetoptLong(args []string, optstring string, longopts []LongOption, stder
 	}
 }
 
-// warnx prints a diagnostic prefixed with the program name, unless Opterr
-// is false. The name is argv[0] for getopt() and its last element for
+// warnx prints a diagnostic unless Opterr is false. Without a ProgramName
+// override, the prefix is argv[0] for getopt() and its last element for
 // getopt_long().
 func (g *Getopt) warnx(format string, a ...any) {
 	if !g.Opterr {
 		return
 	}
-	prog := ""
-	if len(g.args) > 0 {
+	prog := g.ProgramName
+	if prog == "" && len(g.args) > 0 {
 		prog = g.args[0]
 		if i := strings.LastIndexByte(prog, '/'); i >= 0 && g.long {
 			prog = prog[i+1:]

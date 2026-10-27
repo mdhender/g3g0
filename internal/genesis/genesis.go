@@ -1650,6 +1650,8 @@ func (g *generator) main(args []string) int {
 	}
 
 	opts := clib.NewGetoptLong(args, "s:n:i:d:Dh", longopts, g.stderr)
+	// gen_warn uses a fixed prefix; usage still prints the actual argv[0].
+	opts.ProgramName = "genesis-g3"
 	for {
 		opt := opts.Next()
 		if opt == -1 {
