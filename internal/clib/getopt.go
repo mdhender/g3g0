@@ -11,9 +11,12 @@ import (
 )
 
 // This file reproduces getopt(3) and getopt_long(3) from the BSD libc on
-// macOS, the reference platform. Both are getopt_internal() there; getopt()
-// passes no long options and does not permute. Its error messages differ from
-// glibc's, and glibc's getopt() permutes.
+// macOS, the reference platform. getopt_long() is getopt_internal(); getopt()
+// is the older FreeBSD getopt.c, which parses the same way without long
+// options or permuting but words its diagnostics differently: "illegal
+// option" whatever POSIXLY_CORRECT says, prefixed with argv[0] as given, not
+// its last element. Both differ from glibc's messages, and glibc's getopt()
+// permutes.
 //
 // getopt_long permutes: options after a non-option argument are still parsed,
 // unless POSIXLY_CORRECT is set. Non-option arguments are only skipped here;
@@ -83,8 +86,9 @@ func NewGetoptLong(args []string, optstring string, longopts []LongOption, stder
 	}
 }
 
-// warnx prints a diagnostic prefixed with the program name, which is the
-// last element of argv[0], unless Opterr is false.
+// warnx prints a diagnostic prefixed with the program name, unless Opterr
+// is false. The name is argv[0] for getopt() and its last element for
+// getopt_long().
 func (g *Getopt) warnx(format string, a ...any) {
 	if !g.Opterr {
 		return
@@ -92,7 +96,7 @@ func (g *Getopt) warnx(format string, a ...any) {
 	prog := ""
 	if len(g.args) > 0 {
 		prog = g.args[0]
-		if i := strings.LastIndexByte(prog, '/'); i >= 0 {
+		if i := strings.LastIndexByte(prog, '/'); i >= 0 && g.long {
 			prog = prog[i+1:]
 		}
 	}
@@ -146,7 +150,7 @@ func (g *Getopt) Next() int {
 		if g.place == "" {
 			g.optind++
 		}
-		if g.posixlyCorrect {
+		if g.posixlyCorrect || !g.long {
 			g.warnx("illegal option -- %c", optchar)
 		} else {
 			g.warnx("invalid option -- %c", optchar)

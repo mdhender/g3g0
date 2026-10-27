@@ -154,3 +154,32 @@ func TestGetopt(t *testing.T) {
 		}
 	}
 }
+
+func TestGetoptDiagnostics(t *testing.T) {
+	// macOS getopt() says "illegal option" and names argv[0] as given;
+	// getopt_long() says "invalid option" and names its last element.
+	// Observed from the pinned C olympia-g3 and genesis-g3.
+	for _, tc := range []struct {
+		long bool
+		args []string
+		want string
+	}{
+		{false, []string{"./bin/p", "-x"}, "./bin/p: illegal option -- x\n"},
+		{false, []string{"./bin/p", "-s"}, "./bin/p: option requires an argument -- s\n"},
+		{true, []string{"./bin/p", "-x"}, "p: invalid option -- x\n"},
+		{true, []string{"./bin/p", "-s"}, "p: option requires an argument -- s\n"},
+	} {
+		var stderr strings.Builder
+		var g *Getopt
+		if tc.long {
+			g = NewGetoptLong(tc.args, "s:", nil, &stderr)
+		} else {
+			g = NewGetopt(tc.args, "s:", &stderr)
+		}
+		for g.Next() != -1 {
+		}
+		if stderr.String() != tc.want {
+			t.Errorf("long %v %q: stderr %q, want %q", tc.long, tc.args, stderr.String(), tc.want)
+		}
+	}
+}
