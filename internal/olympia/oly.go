@@ -19,6 +19,12 @@ const (
 	numMonths = 8
 )
 
+// olyMonth and olyYear are oly_month and oly_year. Promote the short turn
+// before subtracting; C division and remainder truncate toward zero. In
+// particular turn zero has month -1, year 0 (only the masthead clamps it).
+func olyMonth(a olytime) int { return (int(a.turn) - 1) % numMonths }
+func olyYear(a olytime) int  { return (int(a.turn) - 1) / numMonths }
+
 // Entity kinds: T_xxx.
 const (
 	tDeleted  = 0 // forget on save

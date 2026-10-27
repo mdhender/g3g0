@@ -1,0 +1,99 @@
+# clock TURN DAY EPOCH sets the short/short/int fields, dump prints them
+# and the actual oly_month/oly_year macros. increment N calls the real
+# routine N times; turn_change prepares day zero, NOT day one.
+# dot N CHAR calls print_dot N times. stage TEXT / stage_empty / stage_null
+# exercise the existing stage routine. time_self N sets timing mode; each
+# timing case calls stage only once while enabled, so output is deterministic.
+
+section nonzero clock independent fields
+clock 13 27 913
+dump
+increment 2
+dump
+turn_change
+dump
+increment 1
+dump
+increment 29
+dump
+increment 1
+dump
+turn_change
+dump
+
+section calendar boundaries and no implicit rollover
+clock 0 30 281
+dump
+turn_change
+dump
+increment 30
+dump
+clock 7 29 901
+dump
+increment 2
+dump
+turn_change
+dump
+turn_change
+dump
+clock 16 17 4021
+dump
+turn_change
+dump
+clock 24 30 712
+dump
+turn_change
+dump
+
+section signed calendar and short widths
+clock -1 -7 -117
+dump
+turn_change
+dump
+clock -8 9 291
+dump
+clock 32767 32767 2147483646
+dump
+increment 1
+dump
+turn_change
+dump
+clock -32768 -32768 -2000000000
+dump
+increment 1
+dump
+
+section dot first wrap and persistent count across stages
+stage process_orders()
+stage_null
+stage_empty
+dot 1 65
+dot 57 46
+stage boundary58
+dot 1 66
+dot 1 67
+dot 58 46
+stage boundary118
+dot 1 68
+dot 1 321
+stage_null
+stage_empty
+
+section dot reset in fresh world
+stage_null
+dot 1 88
+stage done
+dot 1 89
+
+section first timed named stage has no newline
+stage before timing
+time_self 1
+stage timed
+dot 1 90
+
+section first timed null stage and untimed calls do not set old
+stage before timing
+stage_null
+stage_empty
+time_self 1
+stage_null

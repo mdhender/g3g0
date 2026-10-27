@@ -1,0 +1,152 @@
+stdout:
+section nonzero clock independent fields
+> clock 13 27 913
+> dump
+clock: 13 27 913; month 4 year 1
+> increment 2
+> dump
+clock: 13 29 915; month 4 year 1
+> turn_change
+> dump
+clock: 14 0 915; month 5 year 1
+> increment 1
+> dump
+clock: 14 1 916; month 5 year 1
+> increment 29
+> dump
+clock: 14 30 945; month 5 year 1
+> increment 1
+> dump
+clock: 14 31 946; month 5 year 1
+> turn_change
+> dump
+clock: 15 0 946; month 6 year 1
+stderr:
+
+exit 0
+stdout:
+section calendar boundaries and no implicit rollover
+> clock 0 30 281
+> dump
+clock: 0 30 281; month -1 year 0
+> turn_change
+> dump
+clock: 1 0 281; month 0 year 0
+> increment 30
+> dump
+clock: 1 30 311; month 0 year 0
+> clock 7 29 901
+> dump
+clock: 7 29 901; month 6 year 0
+> increment 2
+> dump
+clock: 7 31 903; month 6 year 0
+> turn_change
+> dump
+clock: 8 0 903; month 7 year 0
+> turn_change
+> dump
+clock: 9 0 903; month 0 year 1
+> clock 16 17 4021
+> dump
+clock: 16 17 4021; month 7 year 1
+> turn_change
+> dump
+clock: 17 0 4021; month 0 year 2
+> clock 24 30 712
+> dump
+clock: 24 30 712; month 7 year 2
+> turn_change
+> dump
+clock: 25 0 712; month 0 year 3
+stderr:
+
+exit 0
+stdout:
+section signed calendar and short widths
+> clock -1 -7 -117
+> dump
+clock: -1 -7 -117; month -2 year 0
+> turn_change
+> dump
+clock: 0 0 -117; month -1 year 0
+> clock -8 9 291
+> dump
+clock: -8 9 291; month -1 year -1
+> clock 32767 32767 2147483646
+> dump
+clock: 32767 32767 2147483646; month 6 year 4095
+> increment 1
+> dump
+clock: 32767 -32768 2147483647; month 6 year 4095
+> turn_change
+> dump
+clock: -32768 0 2147483647; month -1 year -4096
+> clock -32768 -32768 -2000000000
+> dump
+clock: -32768 -32768 -2000000000; month -1 year -4096
+> increment 1
+> dump
+clock: -32768 -32767 -1999999999; month -1 year -4096
+stderr:
+
+exit 0
+stdout:
+section dot first wrap and persistent count across stages
+> stage process_orders()
+> stage_null
+> stage_empty
+> dot 1 65
+> dot 57 46
+> stage boundary58
+> dot 1 66
+> dot 1 67
+> dot 58 46
+> stage boundary118
+> dot 1 68
+> dot 1 321
+> stage_null
+> stage_empty
+stderr:
+process_orders()
+
+   A.........................................................boundary58
+
+   BC..........................................................boundary118
+
+   DA
+
+exit 0
+stdout:
+section dot reset in fresh world
+> stage_null
+> dot 1 88
+> stage done
+> dot 1 89
+stderr:
+   Xdone
+Y
+exit 0
+stdout:
+section first timed named stage has no newline
+> stage before timing
+> time_self 1
+> stage timed
+> dot 1 90
+stderr:
+before timing
+timed   Z
+exit 0
+stdout:
+section first timed null stage and untimed calls do not set old
+> stage before timing
+> stage_null
+> stage_empty
+> time_self 1
+> stage_null
+stderr:
+before timing
+
+0 seconds
+
+exit 0

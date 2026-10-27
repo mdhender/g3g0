@@ -61,12 +61,12 @@ func (w *world) timesMasthead() {
 
 	// oly_month() is ((turn-1) % NUM_MONTHS), which C clamps to 0 when it
 	// is negative (turn 0 and below).
-	month := (int(w.sysclock.turn) - 1) % numMonths
+	month := olyMonth(w.sysclock)
 	if month < 0 {
 		month = 0
 	}
 	assert(month >= 0 && month < numMonths, "olympia/c2.c", 434, "month >= 0 && month < NUM_MONTHS")
-	issueS := fmt.Sprintf("%s year %d", monthNames[month], (int(w.sysclock.turn)-1)/numMonths+1)
+	issueS := fmt.Sprintf("%s year %d", monthNames[month], olyYear(w.sysclock)+1)
 
 	fmt.Fprintf(fp, "From: %s\n", w.fromHost)
 	fmt.Fprintf(fp, "Subject: %s - The Olympia Times - Issue %d\n", w.gameTitle, w.sysclock.turn)

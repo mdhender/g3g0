@@ -10,6 +10,34 @@ import (
 
 // Ported from olympia/u.c.
 
+// olytimeIncrement is olytime_increment(): advance the epoch and day,
+// without rolling over the day or changing the turn.
+func olytimeIncrement(p *olytime) {
+	p.daysSinceEpoch++
+	p.day++
+}
+
+// olytimeTurnChange is olytime_turn_change(): ready the next turn at day
+// zero. The daily loop follows this with olytimeIncrement.
+func olytimeTurnChange(p *olytime) {
+	p.day = 0
+	p.turn++
+}
+
+// printDot is print_dot(): progress on stderr, indented once and wrapped
+// before every 59th, 119th, ... character. The counter survives stages.
+func (w *world) printDot(c int) {
+	if w.dotCount == 0 {
+		fmt.Fprint(w.stderr, "   ")
+		w.dotCount++
+	}
+	w.dotCount++
+	if w.dotCount%60 == 0 {
+		fmt.Fprint(w.stderr, "\n   ")
+	}
+	w.stderr.Write([]byte{byte(c)})
+}
+
 // testBit is test_bit(): whether i is in the sparse set kr.
 func testBit(kr sparse, i int) bool {
 	return kr.Lookup(i) != -1

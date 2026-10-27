@@ -130,6 +130,12 @@ type world struct {
 	loadQ [maxPri]lists.IList
 	runQ  lists.IList
 
+	// monthDone is month_done in input.c, set after the daily loop.
+	monthDone int32
+
+	// dotCount is print_dot()'s static dot_count in u.c.
+	dotCount int32
+
 	// stderr is C's stderr, which print_box_usage() and alloc_box() write
 	// to. newWorld sets it to os.Stderr; the engine sets it to its own.
 	stderr io.Writer
