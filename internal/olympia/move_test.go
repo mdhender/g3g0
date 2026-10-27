@@ -44,6 +44,10 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 	var stdout, stderr strings.Builder
 	w := newWorld()
 	w.stdout, w.stderr = &stdout, &stderr
+	w.libdir = t.TempDir()
+	if err := os.Mkdir(filepath.Join(w.libdir, "log"), 0o755); err != nil {
+		t.Fatal(err)
+	}
 	status := 0
 	defer func() {
 		switch r := recover().(type) {
@@ -86,6 +90,98 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 		}
 		n, b, sk, d := a[0], a[1], a[2], a[3]
 		switch op {
+		case "output":
+			w.immediate = n != 0
+		case "output_bit":
+			fmt.Fprintf(&stdout, "output_bit %d\n", b2i(testBit(w.pPlayer(n).output, b)))
+		case "report":
+			fmt.Fprintf(&stdout, "report %d:\n", n)
+			data, err := os.ReadFile(filepath.Join(w.libdir, "log", fmt.Sprint(n)))
+			if err != nil && !os.IsNotExist(err) {
+				t.Fatal(err)
+			}
+			stdout.Write(data)
+		case "item":
+			p := w.pItem(n)
+			p.weight, p.landCap, p.rideCap = int16(b), int16(sk), int16(d)
+		case "air":
+			p := w.pItem(n)
+			p.flyCap, p.animal, p.isManItem = int16(b), int8(sk), int8(d)
+		case "fighter":
+			p := w.pItem(n)
+			p.attack, p.defense, p.missile = int16(b), int16(sk), int16(d)
+		case "unit":
+			p := w.pChar(n)
+			p.unitItem, p.prisoner, p.loyKind = int32(b), int8(sk), int8(d)
+		case "inv":
+			var entry *itemEnt
+			for _, e := range w.bx[n].items {
+				if e.item == int32(b) {
+					entry = e
+					break
+				}
+			}
+			if entry == nil {
+				entry = &itemEnt{item: int32(b)}
+				w.bx[n].items = append(w.bx[n].items, entry)
+			}
+			entry.qty = int32(sk)
+		case "factor":
+			w.armySlowFactor = int32(n)
+		case "strength":
+			w.pMisc(n).stormStr = int16(b)
+		case "unit_weights", "stack_weights":
+			var v weights
+			if op == "unit_weights" {
+				v = w.determineUnitWeights(n)
+			} else {
+				v = w.determineStackWeights(n)
+			}
+			fmt.Fprintf(&stdout, "weights %d %d %d %d %d %d %d %d\n", v.animals, v.totalWeight, v.landCap, v.landWeight, v.rideCap, v.rideWeight, v.flyCap, v.flyWeight)
+		case "counts":
+			fmt.Fprintf(&stdout, "counts %d %d\n", w.countStackMoveNobles(n), w.countStackFigures(n))
+		case "land", "fly", "water":
+			cmd, v := &command{who: int32(n)}, &exitView{destination: int32(b), distance: int32(sk)}
+			var result int32
+			switch op {
+			case "land":
+				result = w.moveExitLand(cmd, v, d != 0)
+			case "fly":
+				result = w.moveExitFly(cmd, v, d != 0)
+			case "water":
+				result = w.moveExitWater(cmd, v, b, d != 0)
+			}
+			fmt.Fprintf(&stdout, "%s %d\nunchanged %d %d %d %d\n", op, result, cmd.who, v.destination, v.distance, cmd.wait)
+		case "state":
+			fmt.Fprintf(&stdout, "state factor %d\n", w.armySlowFactor)
+			for n := range w.loopBoxes() {
+				fmt.Fprintf(&stdout, "box %d %d %d %d here", n, w.kind(n), w.subkind(n), w.loc(n))
+				for _, i := range w.rpLocInfo(n).hereList {
+					fmt.Fprintf(&stdout, " %d", i)
+				}
+				fmt.Fprintln(&stdout)
+				if p := w.rpChar(n); p != nil {
+					fmt.Fprintf(&stdout, "unit %d %d %d %d\n", p.unitItem, p.prisoner, p.loyKind, w.lord(n))
+				}
+				if p := w.rpItem(n); p != nil {
+					fmt.Fprintf(&stdout, "item %d %d %d %d %d %d %d %d %d\n", p.weight, p.landCap, p.rideCap, p.flyCap, p.animal, p.isManItem, p.attack, p.defense, p.missile)
+				}
+				if p := w.rpMisc(n); p != nil {
+					fmt.Fprintf(&stdout, "storm %d\n", p.stormStr)
+				}
+				for _, e := range w.bx[n].items {
+					fmt.Fprintf(&stdout, "inv %d %d\n", e.item, e.qty)
+				}
+				if p := w.rpPlayer(n); p != nil {
+					fmt.Fprint(&stdout, "output:")
+					for i := 1; i < maxBoxes; i++ {
+						if testBit(p.output, i) {
+							fmt.Fprintf(&stdout, " %d", i)
+						}
+					}
+					fmt.Fprintln(&stdout)
+				}
+			}
 		case "box":
 			w.allocBox(n, b, sk)
 			w.pLocInfo(n).where = int32(d)

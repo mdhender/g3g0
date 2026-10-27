@@ -37,9 +37,15 @@ functions = {
               'extra_routes', 'province_exits', 'province_sub_exits', 'subloc_exits',
               'ship_exits', 'building_exits', 'exits_from_loc', 'exits_from_loc_nsew',
               'exits_from_loc_nsew_select', 'has_ocean_access'],
-    'loc.c': ['region', 'province'],
-    'u.c': ['loc_depth', 'loc_hidden', 'test_known', 'test_bit', 'set_bit'],
+    'loc.c': ['region', 'province', 'subloc', 'viewloc', 'add_here', 'all_here',
+              'add_char_here', 'all_char_here', 'all_stack'],
+    'u.c': ['loc_depth', 'loc_hidden', 'test_known', 'test_bit', 'set_bit',
+            'max', 'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
+            'count_stack_move_nobles', 'count_stack_figures', 'count_any',
+            'has_item', 'comma_num', 'nice_num', 'cap'],
     'swear.c': ['lord', 'player'],
+    'move.c': ['move_exit_land', 'move_exit_fly', 'move_exit_water'],
+    'storm.c': ['weather_here'],
 }
 with open(dest, 'w') as out:
     for file, names in functions.items():
@@ -48,12 +54,20 @@ with open(dest, 'w') as out:
             # Includes, tag constants, static stream/turn guard and begin_exitdir.
             out.write('#line 1 "olympia/dir.c"\n')
             out.write(source[:source.index('int max_map_row')])
+        if file == 'u.c':
+            start, end = source.index('static char *num_s[]'), source.index('char *\nnice_num(')
+            out.write(source[start:end])
         for name in names:
             m = re.search(rf'^(?:static )?[^\n(]+\n{name}\(.*?^\}}\n', source, re.M | re.S)
             if not m:
                 sys.exit(f'no complete definition of {name} in {file}')
             line = source.count('\n', 0, m.start()) + 1
             out.write(f'#line {line} "olympia/{file}"\n{m.group(0)}\n')
+    out.write('''
+int drv_land(struct command *c, struct exit_view *v, int show) { return move_exit_land(c, v, show); }
+int drv_fly(struct command *c, struct exit_view *v, int show) { return move_exit_fly(c, v, show); }
+int drv_water(struct command *c, struct exit_view *v, int ship, int show) { return move_exit_water(c, v, ship, show); }
+''')
 PY
 case "$(uname -s)" in
  Darwin) ldflags=(-Wl,-dead_strip) ;;
@@ -61,18 +75,21 @@ case "$(uname -s)" in
 esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -ffunction-sections -fdata-sections "${ldflags[@]}" \
  -I olympia -I lib "${HERE}/driver.c" "${WORK}/helpers.c" \
- olympia/{code,glob,z}.c lib/{checked_alloc,ilist,exit_views,rng,rnd}.c \
+ olympia/{code,glob,z,sout}.c lib/{checked_alloc,ilist,exit_views,rng,rnd,item_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
 sections=$(grep -c '^section ' "${CASES}")
 section_names=()
 while IFS= read -r line; do section_names+=("$line"); done < <(grep '^section ' "${CASES}")
 for run in run1 run2; do
  for ((i=0; i<sections; i++)); do
-  mkdir -p "${WORK}/${run}/${i}"
+  mkdir -p "${WORK}/${run}/${i}/log"
   status=0
   (run_limited "${RUN_TIMEOUT}" move-driver "${WORK}/driver" "${CASES}" "$i" "${WORK}/${run}/${i}/randseed") \
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
+  if grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr"; then
+   die "C section $i reached an unfinished dependency; see ${WORK}/${run}/stderr"
+  fi
   expected_status=0
   case "${section_names[$i]}" in
    'section invalid '*|'section unsupported '*) expected_status=134 ;;

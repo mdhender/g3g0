@@ -812,3 +812,892 @@ exit 0 202 201 0 0 0 0 0 0 0 0 1 0 0
 stderr:
 
 exit 0
+stdout:
+section asymmetric eight weights fallback noble item and signed capacities
+> box 10 4 0 0
+> item 10 73 101 0
+> air 10 0 0 1
+> box 80 4 0 0
+> item 80 29 -1 137
+> air 80 0 -1 0
+> box 81 4 0 0
+> item 81 43 0 -9
+> air 81 211 1 0
+> box 82 4 0 0
+> item 82 17 53 0
+> air 82 -7 0 0
+> box 83 4 0 0
+> item 83 -11 0 0
+> box 84 4 0 0
+> box 1000 2 0 0
+> inv 1000 80 2
+> inv 1000 81 3
+> inv 1000 82 5
+> inv 1000 83 7
+> inv 1000 84 9
+> inv 1000 149999 11
+> inv 1000 10 0
+> unit_weights 1000
+weights 5 268 366 52 274 81 633 54
+> stack_weights 1000
+weights 5 268 366 52 274 81 633 54
+> unit 1000 80 0 0
+> unit_weights 1000
+weights 6 224 265 52 411 8 633 10
+> unit 1000 84 0 0
+> unit_weights 1000
+weights 5 195 265 52 274 8 633 -19
+> inv 1000 82 -2
+> unit_weights 1000
+weights 5 110 0 52 274 -77 633 -19
+> state
+state factor 20
+box 10 4 0 0 here
+item 73 101 0 0 0 1 0 0 0
+box 80 4 0 0 here
+item 29 -1 137 0 -1 0 0 0 0
+box 81 4 0 0 here
+item 43 0 -9 211 1 0 0 0 0
+box 82 4 0 0 here
+item 17 53 0 -7 0 0 0 0 0
+box 83 4 0 0 here
+item -11 0 0 0 0 0 0 0 0
+box 84 4 0 0 here
+box 1000 2 0 0 here
+unit 84 0 0 0
+inv 80 2
+inv 81 3
+inv 82 -2
+inv 83 7
+inv 84 9
+inv 149999 11
+inv 10 0
+stderr:
+
+exit 0
+stdout:
+section signed short fields and C int weight products
+> box 10 4 0 0
+> item 10 65535 32768 65537
+> air 10 65534 255 255
+> box 80 4 0 0
+> item 80 32767 0 -32768
+> air 80 32767 128 0
+> box 1000 2 0 0
+> inv 1000 80 60001
+> unit_weights 1000
+weights 60002 1966052766 0 1966052767 1 0 1966052767 0
+> inv 1000 80 70001
+> unit_weights 1000
+weights 70002 -2001244530 0 -2001244529 1 0 -2001244529 0
+> state
+state factor 20
+box 10 4 0 0 here
+item -1 -32768 1 -2 -1 -1 0 0 0
+box 80 4 0 0 here
+item 32767 0 -32768 32767 -128 0 0 0 0
+box 1000 2 0 0 here
+inv 80 70001
+stderr:
+
+exit 0
+stdout:
+section nested stacks prisoners owner NPC and fighter counts
+> output 1
+> box 200 1 49 0
+> box 201 1 49 0
+> box 10 4 0 0
+> item 10 71 107 0
+> box 80 4 0 0
+> item 80 13 0 0
+> air 80 0 0 1
+> box 81 4 0 0
+> fighter 81 -2 0 0
+> box 82 4 0 0
+> fighter 82 0 3 0
+> box 83 4 0 0
+> fighter 83 0 0 -4
+> box 18 4 0 0
+> box 1000 2 0 0
+> lord 1000 200
+> box 1001 2 54 1000
+> lord 1001 200
+> unit 1001 80 -1 4
+> box 1002 2 0 1001
+> lord 1002 201
+> box 1003 2 0 1000
+> lord 1003 201
+> unit 1003 0 1 0
+> box 1004 2 0 1000
+> lord 1004 201
+> unit 1004 0 0 4
+> box 1005 2 0 1004
+> lord 1005 201
+> unit 1005 0 0 5
+> box 1006 2 64 1000
+> lord 1006 200
+> inv 1000 80 7
+> inv 1001 81 11
+> inv 1002 82 13
+> inv 1003 83 17
+> inv 1004 18 19
+> inv 1005 80 -3
+> inv 1006 80 23
+> counts 1000
+counts 4 96
+> counts 1001
+counts 2 26
+> unit_weights 1001
+weights 0 13 0 13 0 13 0 13
+> stack_weights 1000
+weights 0 829 642 403 0 829 0 829
+> box 10101 3 3 0
+> land 1000 10101 3 0
+1000:0::0::Four nobles, 92 men: travel will take an extra day.
+land 4
+unchanged 1000 10101 3 0
+> air 10 -1 0 0
+> air 80 -1 0 1
+> fly 1000 10101 3 0
+1000:0::0::Four nobles, 92 men: travel will take an extra day.
+fly 4
+unchanged 1000 10101 3 0
+> state
+state factor 20
+box 10 4 0 0 here
+item 71 107 0 -1 0 0 0 0 0
+box 18 4 0 0 here
+box 80 4 0 0 here
+item 13 0 0 -1 0 1 0 0 0
+box 81 4 0 0 here
+item 0 0 0 0 0 0 -2 0 0
+box 82 4 0 0 here
+item 0 0 0 0 0 0 0 3 0
+box 83 4 0 0 here
+item 0 0 0 0 0 0 0 0 -4
+box 200 1 49 0 here
+box 201 1 49 0 here
+box 1000 2 0 0 here 1001 1003 1004 1006
+unit 0 0 0 200
+inv 80 7
+box 1001 2 54 1000 here 1002
+unit 80 -1 4 200
+inv 81 11
+box 1002 2 0 1001 here
+unit 0 0 0 201
+inv 82 13
+box 1003 2 0 1000 here
+unit 0 1 0 201
+inv 83 17
+box 1004 2 0 1000 here 1005
+unit 0 0 4 201
+inv 18 19
+box 1005 2 0 1004 here
+unit 0 0 5 201
+inv 80 -3
+box 1006 2 64 1000 here
+unit 0 0 0 200
+inv 80 23
+box 10101 3 3 0 here
+stderr:
+
+exit 0
+stdout:
+section invalid noncharacter descendant weight assertion
+> box 10 4 0 0
+> box 1000 2 0 0
+> box 1001 2 0 1000
+> box 201 3 46 1001
+> stack_weights 1000
+stderr:
+assertion failure: olympia/u.c (1480): kind(who) == T_char
+
+exit 134
+stdout:
+section land zero bypass and riding odd distance capacity boundary
+> output 1
+> box 200 1 49 0
+> box 10 4 0 0
+> item 10 101 0 0
+> box 80 4 0 0
+> item 80 29 -1 100
+> box 1000 2 0 0
+> lord 1000 200
+> box 10101 3 3 0
+> land 1000 10101 0 1
+land 0
+unchanged 1000 10101 0 0
+> inv 1000 80 1
+> land 1000 10101 5 1
+1000:0::0::<no subkind>~[1000] is too overloaded to travel.
+land -1
+unchanged 1000 10101 5 0
+> item 80 29 -1 101
+> land 1000 10101 5 1
+land 3
+unchanged 1000 10101 5 0
+> land 1000 10101 2 1
+land 1
+unchanged 1000 10101 2 0
+> land 1000 10101 1 0
+land -1
+unchanged 1000 10101 1 0
+> land 1000 10101 1 1
+1000:0::0::<no subkind>~[1000] is too overloaded to travel.
+land -1
+unchanged 1000 10101 1 0
+> state
+state factor 20
+box 10 4 0 0 here
+item 101 0 0 0 0 0 0 0 0
+box 80 4 0 0 here
+item 29 -1 101 0 0 0 0 0 0
+box 200 1 49 0 here
+box 1000 2 0 0 here
+unit 0 0 0 200
+inv 80 1
+box 10101 3 3 0 here
+stderr:
+
+exit 0
+stdout:
+section land load one and twice capacity thresholds truncation and terrain
+> output 1
+> box 200 1 49 0
+> box 10 4 0 0
+> item 10 71 100 0
+> box 80 4 0 0
+> item 80 1 0 0
+> box 81 4 0 0
+> item 81 23 -1 -1
+> air 81 -1 -1 0
+> box 1000 2 0 0
+> lord 1000 200
+> box 10101 3 3 0
+> box 10102 3 6 0
+> box 10103 3 12 0
+> box 10104 3 22 0
+> inv 1000 80 99
+> land 1000 10101 7 1
+land 7
+unchanged 1000 10101 7 0
+> inv 1000 80 100
+> land 1000 10101 7 1
+land 7
+unchanged 1000 10101 7 0
+> inv 1000 80 101
+> land 1000 10101 7 1
+land 7
+unchanged 1000 10101 7 0
+> inv 1000 80 114
+> land 1000 10101 7 1
+land 7
+unchanged 1000 10101 7 0
+> inv 1000 80 115
+> land 1000 10101 7 1
+1000:0::0::Excess inventory slows movement.  Travel will take an extra day.
+land 8
+unchanged 1000 10101 7 0
+> inv 1000 80 129
+> land 1000 10101 7 1
+1000:0::0::Excess inventory slows movement.  Travel will take an extra two days.
+land 9
+unchanged 1000 10101 7 0
+> inv 1000 80 200
+> land 1000 10101 7 1
+1000:0::0::Excess inventory slows movement.  Travel will take an extra seven days.
+land 14
+unchanged 1000 10101 7 0
+> inv 1000 80 201
+> land 1000 10101 7 0
+land -1
+unchanged 1000 10101 7 0
+> land 1000 10101 7 1
+1000:0::0::<no subkind>~[1000] is too overloaded to travel.
+land -1
+unchanged 1000 10101 7 0
+> inv 1000 80 100
+> inv 1000 81 2
+> land 1000 10102 7 0
+land 8
+unchanged 1000 10102 7 0
+> land 1000 10102 7 1
+1000:0::0::Difficult terrain slows the animals.  Travel will take an extra day.
+land 8
+unchanged 1000 10102 7 0
+> land 1000 10103 7 1
+1000:0::0::Difficult terrain slows the animals.  Travel will take an extra day.
+land 8
+unchanged 1000 10103 7 0
+> land 1000 10104 7 1
+1000:0::0::Difficult terrain slows the animals.  Travel will take an extra day.
+land 8
+unchanged 1000 10104 7 0
+> land 1000 10101 7 1
+land 7
+unchanged 1000 10101 7 0
+> air 81 -1 0 0
+> land 1000 10102 7 1
+land 7
+unchanged 1000 10102 7 0
+> state
+state factor 20
+box 10 4 0 0 here
+item 71 100 0 0 0 0 0 0 0
+box 80 4 0 0 here
+item 1 0 0 0 0 0 0 0 0
+box 81 4 0 0 here
+item 23 -1 -1 -1 0 0 0 0 0
+box 200 1 49 0 here
+box 1000 2 0 0 here
+unit 0 0 0 200
+inv 80 100
+inv 81 2
+box 10101 3 3 0 here
+box 10102 3 6 0 here
+box 10103 3 12 0 here
+box 10104 3 22 0 here
+stderr:
+
+exit 0
+stdout:
+section riding suppressed by swamp bog and pits
+> output 1
+> box 200 1 49 0
+> box 10 4 0 0
+> item 10 79 100 0
+> box 80 4 0 0
+> item 80 31 -1 79
+> air 80 -1 1 0
+> box 1000 2 0 0
+> lord 1000 200
+> inv 1000 80 1
+> box 10101 3 3 0
+> box 10102 3 6 0
+> box 10103 3 12 0
+> box 10104 3 22 0
+> land 1000 10101 5 1
+land 3
+unchanged 1000 10101 5 0
+> land 1000 10102 5 1
+1000:0::0::Difficult terrain slows the animals.  Travel will take an extra day.
+land 6
+unchanged 1000 10102 5 0
+> land 1000 10103 5 1
+1000:0::0::Difficult terrain slows the animals.  Travel will take an extra day.
+land 6
+unchanged 1000 10103 5 0
+> land 1000 10104 5 1
+1000:0::0::Difficult terrain slows the animals.  Travel will take an extra day.
+land 6
+unchanged 1000 10104 5 0
+> state
+state factor 20
+box 10 4 0 0 here
+item 79 100 0 0 0 0 0 0 0
+box 80 4 0 0 here
+item 31 -1 79 -1 1 0 0 0 0
+box 200 1 49 0 here
+box 1000 2 0 0 here
+unit 0 0 0 200
+inv 80 1
+box 10101 3 3 0 here
+box 10102 3 6 0 here
+box 10103 3 12 0 here
+box 10104 3 22 0 here
+stderr:
+
+exit 0
+stdout:
+section army thresholds cap and real sout output even show false
+> box 200 1 49 0
+> box 10 4 0 0
+> item 10 79 100 0
+> air 10 -1 0 1
+> box 80 4 0 0
+> air 80 -1 0 1
+> box 1000 2 0 0
+> lord 1000 200
+> box 10101 3 3 0
+> output_bit 200 1000
+output_bit 0
+> inv 1000 80 19
+> land 1000 10101 3 0
+land 3
+unchanged 1000 10101 3 0
+> inv 1000 80 20
+> land 1000 10101 3 0
+land 4
+unchanged 1000 10101 3 0
+> fly 1000 10101 3 0
+fly 4
+unchanged 1000 10101 3 0
+> inv 1000 80 119
+> land 1000 10101 3 0
+land 8
+unchanged 1000 10101 3 0
+> inv 1000 80 120
+> land 1000 10101 3 0
+land 9
+unchanged 1000 10101 3 0
+> inv 1000 80 200
+> land 1000 10101 3 0
+land 9
+unchanged 1000 10101 3 0
+> fly 1000 10101 3 0
+fly 9
+unchanged 1000 10101 3 0
+> land 1000 10101 0 0
+land 0
+unchanged 1000 10101 0 0
+> fly 1000 10101 0 0
+fly 0
+unchanged 1000 10101 0 0
+> report 200
+report 200:
+1000:0::0::One noble, 20 men: travel will take an extra day.
+1000:0::0::One noble, 20 men: travel will take an extra day.
+1000:0::0::One noble, 119 men: travel will take an extra 5 days.
+1000:0::0::One noble, 120 men: travel will take an extra 6 days.
+1000:0::0::One noble, 200 men: travel will take an extra 6 days.
+1000:0::0::One noble, 200 men: travel will take an extra 6 days.
+> output_bit 200 1000
+output_bit 1
+> state
+state factor 20
+box 10 4 0 0 here
+item 79 100 0 -1 0 1 0 0 0
+box 80 4 0 0 here
+item 0 0 0 -1 0 1 0 0 0
+box 200 1 49 0 here
+output: 1000
+box 1000 2 0 0 here
+unit 0 0 0 200
+inv 80 200
+box 10101 3 3 0 here
+stderr:
+
+exit 0
+stdout:
+section multiple nobles army denominator and one man singular
+> output 1
+> box 200 1 49 0
+> box 201 1 49 0
+> box 10 4 0 0
+> item 10 79 100 0
+> air 10 -1 0 1
+> box 80 4 0 0
+> air 80 -1 0 1
+> box 1000 2 0 0
+> lord 1000 200
+> box 1001 2 0 1000
+> lord 1001 201
+> box 10101 3 3 0
+> inv 1000 80 39
+> counts 1000
+counts 2 41
+> land 1000 10101 3 0
+land 3
+unchanged 1000 10101 3 0
+> inv 1000 80 40
+> land 1000 10101 3 0
+1000:0::0::Two nobles, 40 men: travel will take an extra day.
+land 4
+unchanged 1000 10101 3 0
+> fly 1000 10101 3 0
+1000:0::0::Two nobles, 40 men: travel will take an extra day.
+fly 4
+unchanged 1000 10101 3 0
+> inv 1000 80 80
+> land 1000 10101 3 1
+1000:0::0::Two nobles, 80 men: travel will take an extra 2 days.
+land 5
+unchanged 1000 10101 3 0
+> factor 1
+> unit 1001 0 1 0
+> lord 1001 201
+> inv 1000 80 0
+> counts 1000
+counts 1 2
+> land 1000 10101 1 0
+1000:0::0::One noble, one man: travel will take an extra day.
+land 2
+unchanged 1000 10101 1 0
+> fly 1000 10101 1 0
+1000:0::0::One noble, one man: travel will take an extra day.
+fly 2
+unchanged 1000 10101 1 0
+> state
+state factor 1
+box 10 4 0 0 here
+item 79 100 0 -1 0 1 0 0 0
+box 80 4 0 0 here
+item 0 0 0 -1 0 1 0 0 0
+box 200 1 49 0 here
+box 201 1 49 0 here
+box 1000 2 0 0 here 1001
+unit 0 0 0 200
+inv 80 0
+box 1001 2 0 1000 here
+unit 0 1 0 201
+box 10101 3 3 0 here
+stderr:
+
+exit 0
+stdout:
+section fly costs capacity equality overload and underground
+> output 1
+> box 200 1 49 0
+> box 10 4 0 0
+> item 10 101 0 0
+> box 80 4 0 0
+> item 80 37 -1 -1
+> air 80 100 1 0
+> box 1000 2 0 0
+> lord 1000 200
+> inv 1000 80 1
+> box 10101 3 3 0
+> box 10102 3 7 0
+> box 10103 3 70 0
+> fly 1000 10101 0 0
+fly -1
+unchanged 1000 10101 0 0
+> fly 1000 10101 5 1
+1000:0::0::<no subkind>~[1000] is too overloaded to fly.
+fly -1
+unchanged 1000 10101 5 0
+> air 80 101 1 0
+> fly 1000 10101 0 1
+fly 0
+unchanged 1000 10101 0 0
+> fly 1000 10101 1 1
+fly 1
+unchanged 1000 10101 1 0
+> fly 1000 10101 3 1
+fly 3
+unchanged 1000 10101 3 0
+> fly 1000 10101 4 1
+fly 3
+unchanged 1000 10101 4 0
+> fly 1000 10101 7 1
+fly 3
+unchanged 1000 10101 7 0
+> fly 1000 10101 8 1
+fly 4
+unchanged 1000 10101 8 0
+> fly 1000 10101 9 1
+fly 4
+unchanged 1000 10101 9 0
+> fly 1000 10102 0 1
+1000:0::0::Cannot fly underground.
+fly -1
+unchanged 1000 10102 0 0
+> fly 1000 10103 4 0
+fly -1
+unchanged 1000 10103 4 0
+> fly 1000 10103 4 1
+1000:0::0::Cannot fly underground.
+fly -1
+unchanged 1000 10103 4 0
+> air 80 102 1 0
+> fly 1000 10101 7 1
+fly 3
+unchanged 1000 10101 7 0
+> state
+state factor 20
+box 10 4 0 0 here
+item 101 0 0 0 0 0 0 0 0
+box 80 4 0 0 here
+item 37 -1 -1 102 1 0 0 0 0
+box 200 1 49 0 here
+box 1000 2 0 0 here
+unit 0 0 0 200
+inv 80 1
+box 10101 3 3 0 here
+box 10102 3 7 0 here
+box 10103 3 70 0 here
+stderr:
+
+exit 0
+stdout:
+section completed uncrewed raft distance greater than two wind controls
+> output 1
+> box 200 1 49 0
+> box 1000 2 0 0
+> lord 1000 200
+> box 10101 3 1 0
+> box 201 9 66 10101
+> water 1000 201 7 1
+water 7
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+water 2
+unchanged 1000 201 2 0
+> box 301 11 58 10101
+> strength 301 13
+> water 1000 201 7 1
+water 7
+unchanged 1000 201 7 0
+> water 1000 201 7 0
+water 7
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+water 2
+unchanged 1000 201 2 0
+> state
+state factor 20
+box 200 1 49 0 here
+box 201 9 66 10101 here
+box 301 11 58 10101 here
+storm 13
+box 1000 2 0 0 here
+unit 0 0 0 200
+box 10101 3 1 0 here 201 301
+stderr:
+
+exit 0
+stdout:
+section roundship no partial full crew distance two and wind controls
+> output 1
+> box 200 1 49 0
+> box 1000 2 0 0
+> lord 1000 200
+> box 19 4 0 0
+> box 24 4 0 0
+> box 10101 3 1 0
+> box 201 9 31 10101
+> water 1000 201 7 1
+1000:0::0::The crew of a roundship is eight sailors, but you have none.  Travel will take an extra eight days.
+water 15
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+1000:0::0::The crew of a roundship is eight sailors, but you have none.  Travel will take an extra eight days.
+water 10
+unchanged 1000 201 2 0
+> box 301 11 58 10101
+> strength 301 9
+> water 1000 201 7 1
+1000:0::0::The crew of a roundship is eight sailors, but you have none.  Travel will take an extra eight days.
+1000:0::0::Favorable winds speed our progress.
+water 14
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+1000:0::0::The crew of a roundship is eight sailors, but you have none.  Travel will take an extra eight days.
+water 10
+unchanged 1000 201 2 0
+> inv 1000 19 3
+> inv 1000 24 2
+> water 1000 201 7 1
+1000:0::0::The crew of a roundship is eight sailors, but you have five.  Travel will take an extra three days.
+1000:0::0::Favorable winds speed our progress.
+water 9
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+1000:0::0::The crew of a roundship is eight sailors, but you have five.  Travel will take an extra three days.
+water 5
+unchanged 1000 201 2 0
+> strength 301 0
+> water 1000 201 7 1
+1000:0::0::The crew of a roundship is eight sailors, but you have five.  Travel will take an extra three days.
+water 10
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+1000:0::0::The crew of a roundship is eight sailors, but you have five.  Travel will take an extra three days.
+water 5
+unchanged 1000 201 2 0
+> water 1000 201 7 0
+water 10
+unchanged 1000 201 7 0
+> strength 301 9
+> inv 1000 24 4
+> water 1000 201 7 1
+1000:0::0::The crew of a roundship is eight sailors, but you have seven.  Travel will take an extra day.
+1000:0::0::Favorable winds speed our progress.
+water 7
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+1000:0::0::The crew of a roundship is eight sailors, but you have seven.  Travel will take an extra day.
+water 3
+unchanged 1000 201 2 0
+> inv 1000 24 5
+> water 1000 201 7 1
+1000:0::0::Favorable winds speed our progress.
+water 6
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+water 2
+unchanged 1000 201 2 0
+> water 1000 201 7 0
+water 6
+unchanged 1000 201 7 0
+> strength 301 0
+> water 1000 201 7 1
+water 7
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+water 2
+unchanged 1000 201 2 0
+> strength 301 9
+> inv 1000 24 8
+> water 1000 201 7 1
+1000:0::0::Favorable winds speed our progress.
+water 6
+unchanged 1000 201 7 0
+> strength 301 0
+> water 1000 201 7 1
+water 7
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+water 2
+unchanged 1000 201 2 0
+> strength 301 -2
+> water 1000 201 7 1
+1000:0::0::Favorable winds speed our progress.
+water 6
+unchanged 1000 201 7 0
+> state
+state factor 20
+box 19 4 0 0 here
+box 24 4 0 0 here
+box 200 1 49 0 here
+box 201 9 31 10101 here
+box 301 11 58 10101 here
+storm -2
+box 1000 2 0 0 here
+unit 0 0 0 200
+inv 19 3
+inv 24 8
+box 10101 3 1 0 here 201 301
+stderr:
+
+exit 0
+stdout:
+section galley no partial full crew slaves ignored and wind no bonus
+> output 1
+> box 200 1 49 0
+> box 1000 2 0 0
+> lord 1000 200
+> box 19 4 0 0
+> box 24 4 0 0
+> box 15 4 0 0
+> box 10101 3 1 0
+> box 201 9 30 10101
+> water 1000 201 7 1
+1000:0::0::The crew of a galley is fourteen slaves or sailors, but you have none.  Travel will take an extra 14 days.
+water 21
+unchanged 1000 201 7 0
+> inv 1000 15 30
+> water 1000 201 7 1
+1000:0::0::The crew of a galley is fourteen slaves or sailors, but you have none.  Travel will take an extra 14 days.
+water 21
+unchanged 1000 201 7 0
+> box 301 11 58 10101
+> strength 301 11
+> water 1000 201 7 1
+1000:0::0::The crew of a galley is fourteen slaves or sailors, but you have none.  Travel will take an extra 14 days.
+water 21
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+1000:0::0::The crew of a galley is fourteen slaves or sailors, but you have none.  Travel will take an extra 14 days.
+water 16
+unchanged 1000 201 2 0
+> inv 1000 19 4
+> inv 1000 24 3
+> water 1000 201 7 1
+1000:0::0::The crew of a galley is fourteen slaves or sailors, but you have seven.  Travel will take an extra seven days.
+water 14
+unchanged 1000 201 7 0
+> inv 1000 24 9
+> water 1000 201 7 1
+1000:0::0::The crew of a galley is fourteen slaves or sailors, but you have 13.  Travel will take an extra day.
+water 8
+unchanged 1000 201 7 0
+> inv 1000 24 10
+> water 1000 201 7 1
+water 7
+unchanged 1000 201 7 0
+> water 1000 201 2 1
+water 2
+unchanged 1000 201 2 0
+> water 1000 201 7 0
+water 7
+unchanged 1000 201 7 0
+> state
+state factor 20
+box 15 4 0 0 here
+box 19 4 0 0 here
+box 24 4 0 0 here
+box 200 1 49 0 here
+box 201 9 30 10101 here
+box 301 11 58 10101 here
+storm 11
+box 1000 2 0 0 here
+unit 0 0 0 200
+inv 15 30
+inv 19 4
+inv 24 10
+box 10101 3 1 0 here 201 301
+stderr:
+
+exit 0
+stdout:
+section wind suppressed inside building and local storms only
+> output 1
+> box 200 1 49 0
+> box 1000 2 0 0
+> lord 1000 200
+> box 19 4 0 0
+> box 24 4 0 0
+> inv 1000 19 8
+> box 10101 3 1 0
+> box 10102 3 1 0
+> box 201 3 46 10101
+> box 202 9 31 201
+> box 203 9 31 10101
+> box 204 9 31 10102
+> box 301 11 58 10101
+> strength 301 13
+> box 302 11 59 10102
+> strength 302 17
+> water 1000 202 7 1
+water 7
+unchanged 1000 202 7 0
+> water 1000 203 7 1
+1000:0::0::Favorable winds speed our progress.
+water 6
+unchanged 1000 203 7 0
+> water 1000 204 7 1
+water 7
+unchanged 1000 204 7 0
+> state
+state factor 20
+box 19 4 0 0 here
+box 24 4 0 0 here
+box 200 1 49 0 here
+box 201 3 46 10101 here 202
+box 202 9 31 201 here
+box 203 9 31 10101 here
+box 204 9 31 10102 here
+box 301 11 58 10101 here
+storm 13
+box 302 11 59 10102 here
+storm 17
+box 1000 2 0 0 here
+unit 0 0 0 200
+inv 19 8
+box 10101 3 1 0 here 201 203 301
+box 10102 3 1 0 here 204 302
+stderr:
+
+exit 0
+stdout:
+section invalid water unfinished ship assertion
+> box 1000 2 0 0
+> box 10101 3 1 0
+> box 201 9 67 10101
+> water 1000 201 7 1
+stderr:
+subkind = 67
+assertion failure: olympia/move.c (1309): FALSE
+
+exit 134

@@ -5,6 +5,36 @@ package olympia
 
 import "github.com/mdhender/g3g0/internal/lists"
 
+// allHere is all_here(): all descendants, including noncharacters. Unlike
+// all_stack this does not prune branches at noncharacter boxes.
+func (w *world) allHere(who int) lists.IList {
+	assert(w.validBox(who), "olympia/loc.c", 53, "valid_box(who)")
+	var l lists.IList
+	for _, i := range w.rpLocInfo(who).hereList {
+		w.addHere(i, &l)
+	}
+	return l
+}
+
+func (w *world) addHere(who int, l *lists.IList) {
+	assert(w.validBox(who), "olympia/loc.c", 35, "valid_box(who)")
+	l.Append(who)
+	for _, i := range w.rpLocInfo(who).hereList {
+		w.addHere(i, l)
+	}
+}
+
+func (w *world) allCharHere(who int) lists.IList {
+	assert(w.validBox(who), "olympia/loc.c", 92, "valid_box(who)")
+	var l lists.IList
+	for _, i := range w.rpLocInfo(who).hereList {
+		if w.kind(i) == tChar {
+			w.addCharHere(i, &l)
+		}
+	}
+	return l
+}
+
 // Ported from olympia/loc.c: the here lists, all_stack(), set_where() and
 // the location walks that check_db() reaches (subloc() and viewloc(),
 // through set_lord() and touch_loc()) and determine_map_edges() reaches
