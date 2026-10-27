@@ -14,7 +14,7 @@ The spec is the three gates that G3 documents for another engine in `doc/claude/
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `66b03fb09b541560268e66b553179d06ea30de80`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `47535543d83fbc5649d54b63b49e578f2b11ab1c`.
 The revision is pinned in `run.sh` (`PINNED_REV`).
 `G3_REV` runs another revision, but then `passing.txt` is neither compared nor written.
 Change the pin only on purpose, and rerun this and [`tools/olympia-roundtrip`](../olympia-roundtrip) when you do.
@@ -57,6 +57,6 @@ The gates also run inside the export, so they cannot write to the clone.
 
 Last run: 2026-10-27, macOS 26.6.2 arm64, Go 1.26.4. About 45 seconds.
 
-- `run-all.sh`: pass 1, fail 103, error 2. Only `rng-selftest` passes; every other fixture needs `load_db` and the turn. `load-comment-lines` and `save-libdir-space` are an `ERROR`, not a `FAIL`, because each runs the engine first for its reference (a load of an unchanged `world.tgz`, and a `-r -S` turn on `./lib`), and an engine that cannot load is an error to them. The new `save-fly-cap` (G3 #314) needs `-S` (`load_db` and `save_db`, #28); `save-libdir-space` (G3 #320) needs that and the turn.
+- `run-all.sh`: pass 1, fail 104, error 2. Only `rng-selftest` passes; every other fixture needs `load_db` and the turn. `load-comment-lines` and `save-libdir-space` are an `ERROR`, not a `FAIL`, because each runs the engine first for its reference (a load of an unchanged `world.tgz`, and a `-r -S` turn on `./lib`), and an engine that cannot load is an error to them. The new `save-fly-cap` (G3 #314) needs `-S` (`load_db` and `save_db`, #28); `save-libdir-space` (G3 #320) needs that and the turn. The new `mail-libdir-space` (G3 #325, #326) needs the turn with `-M` and `-h`, `-M` alone and `-E -M`.
 - `run/olympia-g3.sh` exits 2 (the Go engine stops at `-i` with "not yet implemented"), so `golden_check.sh` reports that the run diverges from the manifest.
-- The same `run-all.sh` with the pinned C build passes all 106 fixtures.
+- The same `run-all.sh` with the pinned C build passes all 107 fixtures.

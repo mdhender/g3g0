@@ -1,6 +1,6 @@
 # Differential matrix for the addressable RNG layer (lib/rng.c), the
 # master-seed bridge (load_seed/rng_master_seed in lib/rnd.c) and the named
-# streams in olympia/*.c, at G3 66b03fb09b541560268e66b553179d06ea30de80.
+# streams in olympia/*.c, at G3 47535543d83fbc5649d54b63b49e578f2b11ab1c.
 #
 # tools/rng-compat/run.sh feeds this file to a C driver built from the pinned
 # sources and records its output in c-output.txt; TestMatchesC feeds it to the
