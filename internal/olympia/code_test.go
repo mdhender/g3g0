@@ -42,16 +42,12 @@ func TestCodeMatchesC(t *testing.T) {
 
 	wantLines := strings.Split(want, "\n")
 	gotLines := strings.Split(out.String(), "\n")
-	for i := 0; i < len(wantLines) || i < len(gotLines); i++ {
-		var w, g string
-		if i < len(wantLines) {
-			w = wantLines[i]
-		}
-		if i < len(gotLines) {
-			g = gotLines[i]
-		}
-		if w != g {
-			t.Fatalf("line %d:\n got %q\nwant %q", i+1, g, w)
+	if len(gotLines) != len(wantLines) {
+		t.Fatalf("line count = %d, want %d (including final empty lines)", len(gotLines), len(wantLines))
+	}
+	for i := range wantLines {
+		if wantLines[i] != gotLines[i] {
+			t.Fatalf("line %d:\n got %q\nwant %q", i+1, gotLines[i], wantLines[i])
 		}
 	}
 }
