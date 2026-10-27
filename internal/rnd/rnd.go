@@ -20,6 +20,11 @@ import (
 // Source is the mutable generator state.
 type Source struct {
 	digest [16]byte
+
+	// master is the state as Load left it, before any draw advanced it:
+	// master_seed in lib/rnd.c and olympia/rnd.c. It roots the addressable
+	// streams in internal/rng.
+	master [16]byte
 }
 
 // New returns a source whose state is seed.
@@ -42,7 +47,12 @@ func (s *Source) SetSeed(b []byte) {
 // Load is load_seed() without its message: it replaces the start of the
 // state with up to 16 bytes read from path. A read error after a successful
 // open (for example, a directory) reads nothing, as fread() does.
+//
+// Either way, like load_seed(), it then captures the state as the master
+// seed. When path cannot be opened, the master seed is the current state,
+// including any draws made since the last load.
 func (s *Source) Load(path string) error {
+	defer func() { s.master = s.digest }()
 	fp, err := os.Open(path)
 	if err != nil {
 		return err
@@ -52,6 +62,17 @@ func (s *Source) Load(path string) error {
 	n, _ := io.ReadFull(fp, buf[:])
 	s.SetSeed(buf[:n])
 	return nil
+}
+
+// MasterSeed is rng_master_seed(): the state captured by the last Load, as
+// the four native 32-bit words C copies out of it (little-endian here, as
+// for the draws). It is zero until the first Load.
+func (s *Source) MasterSeed() [4]uint32 {
+	var out [4]uint32
+	for i := range out {
+		out[i] = binary.LittleEndian.Uint32(s.master[4*i:])
+	}
+	return out
 }
 
 // Save is save_seed() without its message: it writes the state to path,
@@ -86,4 +107,15 @@ func (s *Source) Rnd(low, high int) int {
 	}
 
 	return int(int32(num + uint32(int32(low))))
+}
+
+// MD5Int is md5_int() in lib/rnd.c: the low word of the MD5 of the four
+// arguments, each stored as a 32-bit word, read back as a C int.
+func MD5Int(a, b, c, d int) int {
+	var buf [16]byte
+	for i, v := range [4]int{a, b, c, d} {
+		binary.LittleEndian.PutUint32(buf[4*i:], uint32(v))
+	}
+	sum := md5.Sum(buf[:])
+	return int(int32(binary.LittleEndian.Uint32(sum[:4])))
 }

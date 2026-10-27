@@ -1,0 +1,398 @@
+# Differential matrix for the addressable RNG layer (lib/rng.c), the
+# master-seed bridge (load_seed/rng_master_seed in lib/rnd.c) and the named
+# streams in olympia/*.c, at G3 6bbcd63055d051ade6f745f368281628441a2c27.
+#
+# tools/rng-compat/run.sh feeds this file to a C driver built from the pinned
+# sources and records its output in c-output.txt; TestMatchesC feeds it to the
+# Go port and requires the same output. The whole file runs in one process,
+# so state carries from line to line, as it does in the engine.
+#
+# One operation per line; '#' starts a comment. Integers are C longs read with
+# strtol(s, NULL, 0) and cast to int; tags are read with strtoul.
+#
+#   master HEX            write the bytes HEX to ./randseed and load_seed() it;
+#                         prints rng_master_seed()
+#   loadmissing           load_seed() a file that does not exist
+#   rnd LOW HIGH          legacy rnd() on the global digest
+#   md5int A B C D        md5_int()
+#   clock TURN DAY        set sysclock.turn and sysclock.day (shorts)
+#   root                  cur = rng_seed(master)
+#   of KEY TAG            cur = rng_stream_of(&cur, KEY, TAG)
+#   draw LOW HIGH         rng_draw(&cur, LOW, HIGH)
+#   keyed K1 K2 TAG L H   rng_keyed(&cur, K1, K2, TAG, L, H)
+#   shuffle N             ilist_shuffle_rng() of 100..100+N-1 on &cur
+#   call NAME ARGS...     a named-stream helper; list helpers take a length N
+
+# --- Before any seed or seeding: every stream is all zero. A helper that does
+# not seed its stream draws from zeros; a turn-guarded stream whose guard
+# already matches (turn -1) is never seeded.
+clock -1 0
+call econ_pick 1 2 1 100
+call npc_qty 3 4 0 1000
+call crnd 1 6
+call prnd 1 6
+call qrnd 1 20
+call cseq_rnd 1 10
+call fseq_rnd 1 10
+call hseq_rnd 1 10
+call wseq_rnd 1 10
+call magc_scry 501 17
+call up_loyal 501 0 1 100
+call soc_gift 501 502
+call ent_build 1234
+call mint_city
+master 0123
+call mint_city
+call wgen_prom 1234
+
+# --- The rng_check.c master, {0x01234567, 0x89abcdef, 0xfedcba98, 0x76543210}.
+master 67452301efcdab8998badcfe10325476
+root
+keyed 501 17 0x68697420 1 100
+keyed 501 17 0x68697420 1 100
+of 501 0x636f6d62
+keyed 1 0 0x68697420 1 20
+keyed 1 0 0x646d6720 1 6
+keyed 1 0 0x6d726c20 1 10
+root
+of 0 0x636f6d62
+root
+of 0 0x6d726b74
+root
+of 7 0x636f6d62
+draw 1 1000000
+draw 1 1000000
+draw 1 1000000
+
+# --- The mapgen fixture seed. Keys and tags at the int and uint32 edges.
+master 736c6172746962617274666173743f0a
+root
+of 0 0
+of -1 0xffffffff
+of 2147483647 0x7475726e
+of -2147483648 0x64617920
+of 4294967295 1
+keyed 0 0 0 0 0
+keyed -1 -1 0xffffffff 1 10
+keyed 2147483647 -2147483648 0x80000000 -16 -3
+keyed 123 456 0x6b657920 0 2147483647
+keyed 123 456 0x6b657920 -2147483648 -2147483648
+keyed 123 456 0x6b657920 2147483647 2147483647
+keyed 123 456 0x6b657920 -5 5
+keyed 123 456 0x6b657920 0 4
+keyed 123 456 0x6b657920 1000 9999
+
+# Sequential draws: ranges that reject often, empty ranges, negative ranges.
+root
+of 1 0x73657120
+draw 1 10
+draw 0 1
+draw 111 333
+draw 56760 58759
+draw 59000 78999
+draw 5 5
+draw -16 -3
+draw 0 2147483647
+draw 7 7
+draw 0 4
+draw 0 4
+draw 0 4
+draw 0 4
+draw 1 3
+draw 1 3
+draw 1 3
+draw -1 2147483646
+draw 1000 9999
+
+# Shuffles: lists of 0 and 1 draw nothing.
+root
+of 2 0x73687566
+shuffle 0
+shuffle 1
+shuffle 2
+shuffle 3
+shuffle 10
+shuffle 52
+
+# --- load_seed: the master seed is the state as loaded, not as advanced by
+# rnd(). A short file overwrites only the start of the state. A missing file
+# makes the current (advanced) state the master. An empty file changes
+# nothing but recaptures it.
+master 736c6172746962617274666173743f0a
+rnd 1 10
+rnd 0 2147483647
+rnd -16 -3
+root
+master 0102
+root
+rnd 1 100
+loadmissing
+root
+master
+rnd 1 100
+master
+root
+md5int 0 0 0 0
+md5int 1 2 3 4
+md5int -1 -1 -1 -1
+md5int 2147483647 -2147483648 12345 -98765
+md5int 5001 7023 52 3141592
+
+# --- The named streams, all from one master.
+master 9f1c2e7b44d05a63e8b1c7f02d9a6e35
+clock 1 1
+
+call begin_battle 10234 5001 5002
+call crnd 1 100
+call crnd 1 100
+call crnd 0 1
+call crnd 1 6
+call begin_battle 10234 5001 5002
+call crnd 1 100
+call begin_battle 10234 5002 5001
+call crnd 1 100
+call begin_pillage 10234 5001
+call prnd 1 100
+call prnd 1 100
+call pillage_mob
+call prnd 1 100
+call begin_pillage 10235 5001
+call pillage_mob
+
+call begin_economy 10234
+call econ_pick 51 10234 0 3
+call econ_stock 51 10234 1 100
+call econ_qty 51 10234 5 25
+call econ_cost 51 10234 10 40
+call econ_expire 51 10234 3 8
+call econ_mine 51 5001 1 100
+call econ_harvest 51 5001 1 100
+call econ_ring 51 10234 1 4
+call begin_economy 10235
+call econ_pick 51 10234 0 3
+call econ_mine 51 5001 1 100
+
+call begin_npc 10234
+call npc_spawn 10234 0 1 100
+call npc_qty 10234 1 10 50
+call npc_behavior 5001 2 1 100
+call npc_victim 5001 7
+call npc_victim 5001 1
+call begin_npc 0
+call npc_spawn 10234 0 1 100
+
+call begin_quest 20001 5001
+call qrnd 1 100
+call qrnd 1 3
+call quest_shuffle 8
+call qrnd 1 100
+call begin_quest 20001 5002
+call qrnd 1 100
+
+call begin_cloud_build 30001
+call cseq_rnd 1 100
+call cseq_shuffle 9
+call cseq_rnd 1 100
+call begin_faery_build 30002
+call fseq_rnd 1 100
+call fseq_shuffle 9
+call fseq_rnd 1 100
+call begin_hades_build 30003
+call hseq_rnd 1 100
+call hseq_shuffle 9
+call hseq_rnd 1 100
+call begin_worldgen_loc 30004
+call wseq_rnd 1 100
+call wseq_shuffle 9
+call wseq_rnd 1 100
+call begin_worldgen_loc 0
+call wseq_rnd 1 100
+
+call magc_scry 5001 17
+call magc_piety 5001 17
+call magc_eat 5001 6001 0
+call magc_eat 5001 6001 1
+call magc_learn 5001 600
+call magc_potion 5001 7001 0 1 2
+call magc_potion 5001 7001 1 0 3
+call magc_potion 5001 7001 2 1 100
+call magc_med 5001 0
+call magc_omen 5001 5002
+call magc_heal 5001 5002
+call magc_forge 5001 0
+call magc_forge 5001 1
+call magc_orb 5001 7002
+call magc_ring 5001 7003
+
+call expl_find 5001 10234
+call expl_gate 5001 10234
+call expl_flavor 5001 10234
+call expl_pick 5001 10234 3
+call expl_seek 5001 5002
+call expl_detect 5001 5003
+
+call mint_alloc 1000 9999
+call mint_alloc 1000 9999
+call mint_password 1 0 26
+call mint_password 1 1 26
+call mint_city
+call mint_shuffle 6
+call mint_alloc 1000 9999
+
+call exitdir_shuffle 4
+call exitdir_shuffle 4
+
+call up_heal 5001 0 1 100
+call up_heal 5001 1 0 3
+call up_loyal 5001 0 1 100
+call up_starve 5001 1 1 100
+call up_animal 5001 52 0 1 100
+call up_animal 5001 53 0 1 100
+call up_corpse 5001 1 4
+call up_income 40001 0 1 100
+call cal_day 0 1 30
+call cal_day 1 1 30
+call cal_day 2 1 30
+
+call faer_hunt_loc 0 0 1 50
+call faer_hunt_loc 0 1 1 50
+call faer_hunt_qty 0
+call faer_bandit_kind 5001 10234
+call faer_bandit_qty 5001
+call faer_bandit_gold 5001
+call faer_ambush 5001 10234
+call faer_retal 5001 10234
+
+call hads_nasty 0 0 1 100
+call hads_nasty 0 1 1 100
+call hads_bandit_kind 5001 10234
+call hads_bandit_qty 5001
+call hads_ambush 5001 10234
+call hads_retal 5001 10234
+call hads_random_loc 5001 12
+call hads_random_loc 5001 1
+
+call wgen_prom 10234
+call wgen_skill 10234 0 1 5
+call wgen_skill 10234 1 0 2
+call wgen_garr 10234
+call wgen_gate 10234
+
+call wthr_shuffle 12
+call wthr_shuffle 12
+call wthr_storm 10234 0 1 100
+call wthr_storm 10234 1 1 4
+call wthr_wreck 10234 0 1 100
+
+call soc_gift 5001 5002
+call soc_bribe 5001 5002 0 1 100
+call soc_bribe 5001 5002 1 1 100
+call soc_terror 5001 5002
+call soc_incite 5001 5002 0 1 4
+call soc_incite 5001 5002 1 1 100
+call soc_persuade 5001 5002
+call soc_breed 5001 52 0 1 100
+
+call skil_crit 5001 1601
+call skil_bonus 5001 1601 1 3
+call skil_study 5001 600
+call skil_research 5001 600
+call skil_research_pick 5001 600 4
+call skil_torture 5001 5002
+call skil_petty 5001 10234 0 1 100
+call skil_petty 5001 10234 1 10 50
+
+call ent_prisoner 5001 0
+call ent_drop 5001 5002 0 1 100
+call ent_take 5001 52 0 1 100
+call ent_sick 5001 80
+call ent_land_dir 10234 0
+call ent_land_pick 10234 5
+call ent_bark 5001 8001
+call ent_build 10234
+call ent_menial 5001
+
+# --- Same turn, next day. The per-day leaves (the <prefix>_today helpers,
+# econ_mine/harvest, explore, battle, pillage and quest) roll afresh; the
+# plain per-turn leaves repeat.
+clock 1 2
+call magc_scry 5001 17
+call magc_eat 5001 6001 0
+call up_heal 5001 0 1 100
+call up_loyal 5001 0 1 100
+call soc_bribe 5001 5002 0 1 100
+call soc_gift 5001 5002
+call skil_crit 5001 1601
+call ent_prisoner 5001 0
+call ent_take 5001 52 0 1 100
+call faer_ambush 5001 10234
+call faer_bandit_qty 5001
+call hads_ambush 5001 10234
+call hads_bandit_qty 5001
+call expl_gate 5001 10234
+call econ_mine 51 5001 1 100
+call econ_pick 51 10234 0 3
+call begin_battle 10234 5001 5002
+call crnd 1 100
+call mint_alloc 1000 9999
+call wthr_shuffle 12
+
+# --- A new master in the same turn. Streams that reseed on every begin_*()
+# pick it up; the turn-guarded streams keep the stream they seeded earlier
+# this turn (and the weather and mint counters carry on).
+master 0f1e2d3c4b5a69788796a5b4c3d2e1f0
+call magc_scry 5001 17
+call up_loyal 5001 0 1 100
+call cal_day 0 1 30
+call mint_alloc 1000 9999
+call wthr_shuffle 12
+call exitdir_shuffle 4
+call wgen_prom 10234
+call ent_build 10234
+call expl_gate 5001 10234
+call begin_economy 10234
+call econ_pick 51 10234 0 3
+
+# --- The next turn reseeds everything, now from the new master.
+clock 2 1
+call magc_scry 5001 17
+call up_loyal 5001 0 1 100
+call cal_day 0 1 30
+call mint_alloc 1000 9999
+call mint_city
+call wthr_shuffle 12
+call exitdir_shuffle 4
+call wgen_prom 10234
+call ent_build 10234
+call expl_gate 5001 10234
+call soc_gift 5001 5002
+call skil_study 5001 600
+call faer_hunt_qty 0
+call hads_nasty 0 0 1 100
+
+# --- Back to an earlier turn: the guard only compares with the last turn
+# seen, so turn 1 reseeds again.
+clock 1 1
+call magc_scry 5001 17
+call mint_alloc 1000 9999
+
+# --- sysclock fields are shorts: 40000 is stored as -25536, and 65537 as 1.
+clock 40000 70000
+call magc_scry 5001 17
+call up_heal 5001 0 1 100
+call expl_gate 5001 10234
+call begin_battle 10234 5001 5002
+call crnd 1 100
+clock 65537 1
+call magc_scry 5001 17
+call begin_battle 10234 5001 5002
+call crnd 1 100
+
+# --- Key arithmetic that wraps a C int (target*2+sub, where*16+sub,
+# item*4+sub).
+clock 3 1
+call soc_bribe 5001 1073741824 1 1 100
+call skil_petty 5001 268435456 3 1 100
+call magc_potion 5001 536870912 2 1 100
+call ent_drop 5001 -1073741825 0 1 100
+call up_animal 5001 -1 0 1 100

@@ -1,0 +1,321 @@
+clock -1 0 -> ok
+call econ_pick 1 2 1 100 -> 75
+call npc_qty 3 4 0 1000 -> 213
+call crnd 1 6 -> 4
+call prnd 1 6 -> 4
+call qrnd 1 20 -> 20
+call cseq_rnd 1 10 -> 4
+call fseq_rnd 1 10 -> 4
+call hseq_rnd 1 10 -> 4
+call wseq_rnd 1 10 -> 4
+call magc_scry 501 17 -> 85
+call up_loyal 501 0 1 100 -> 9
+call soc_gift 501 502 -> 2
+call ent_build 1234 -> 5
+call mint_city -> 4
+master 0123 -> master 00002301 00000000 00000000 00000000
+call mint_city -> 2
+call wgen_prom 1234 -> 57
+master 67452301efcdab8998badcfe10325476 -> master 01234567 89abcdef fedcba98 76543210
+root -> seed 01234567 89abcdef fedcba98 76543210 ctr 0
+keyed 501 17 0x68697420 1 100 -> 44
+keyed 501 17 0x68697420 1 100 -> 44
+of 501 0x636f6d62 -> seed f54d6e3d 605988c9 dea10cbb 8cd3b632 ctr 0
+keyed 1 0 0x68697420 1 20 -> 7
+keyed 1 0 0x646d6720 1 6 -> 2
+keyed 1 0 0x6d726c20 1 10 -> 7
+root -> seed 01234567 89abcdef fedcba98 76543210 ctr 0
+of 0 0x636f6d62 -> seed b2f73b64 342ad86b 0160746d eea040c9 ctr 0
+root -> seed 01234567 89abcdef fedcba98 76543210 ctr 0
+of 0 0x6d726b74 -> seed 80317ffa eb0f05f6 df80e007 f742c193 ctr 0
+root -> seed 01234567 89abcdef fedcba98 76543210 ctr 0
+of 7 0x636f6d62 -> seed f5a093d2 7a156b5f 2f079293 7b5fb77a ctr 0
+draw 1 1000000 -> 86357 seed f5a093d2 7a156b5f 2f079293 7b5fb77a ctr 1
+draw 1 1000000 -> 488217 seed f5a093d2 7a156b5f 2f079293 7b5fb77a ctr 2
+draw 1 1000000 -> 799350 seed f5a093d2 7a156b5f 2f079293 7b5fb77a ctr 3
+master 736c6172746962617274666173743f0a -> master 72616c73 61626974 61667472 0a3f7473
+root -> seed 72616c73 61626974 61667472 0a3f7473 ctr 0
+of 0 0 -> seed 9d1d6bf7 09a3f8f7 79688c01 501c4318 ctr 0
+of -1 0xffffffff -> seed 5d2366ad 7b70dce0 67d1b4c4 31136ac2 ctr 0
+of 2147483647 0x7475726e -> seed 209da2b7 942b7e17 619e4d6a 9085756c ctr 0
+of -2147483648 0x64617920 -> seed dc4c5d5f 9a08bd31 fb5c8308 4496dcab ctr 0
+of 4294967295 1 -> seed fb9997a7 5cac897f 3798afc2 b7ff91fa ctr 0
+keyed 0 0 0 0 0 -> 0
+keyed -1 -1 0xffffffff 1 10 -> 7
+keyed 2147483647 -2147483648 0x80000000 -16 -3 -> -14
+keyed 123 456 0x6b657920 0 2147483647 -> 1825325581
+keyed 123 456 0x6b657920 -2147483648 -2147483648 -> -2147483648
+keyed 123 456 0x6b657920 2147483647 2147483647 -> 2147483647
+keyed 123 456 0x6b657920 -5 5 -> 3
+keyed 123 456 0x6b657920 0 4 -> 0
+keyed 123 456 0x6b657920 1000 9999 -> 1525
+root -> seed 72616c73 61626974 61667472 0a3f7473 ctr 0
+of 1 0x73657120 -> seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 0
+draw 1 10 -> 10 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 1
+draw 0 1 -> 1 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 2
+draw 111 333 -> 223 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 3
+draw 56760 58759 -> 57054 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 4
+draw 59000 78999 -> 68342 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 5
+draw 5 5 -> 5 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 6
+draw -16 -3 -> -13 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 7
+draw 0 2147483647 -> 1756335037 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 8
+draw 7 7 -> 7 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 9
+draw 0 4 -> 2 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 10
+draw 0 4 -> 1 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 11
+draw 0 4 -> 2 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 12
+draw 0 4 -> 3 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 13
+draw 1 3 -> 1 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 14
+draw 1 3 -> 2 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 15
+draw 1 3 -> 3 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 16
+draw -1 2147483646 -> 1662651246 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 17
+draw 1000 9999 -> 5124 seed 0effb2e6 a68d6341 1e18a3f0 a83a4134 ctr 18
+root -> seed 72616c73 61626974 61667472 0a3f7473 ctr 0
+of 2 0x73687566 -> seed dfefaadb d28ef3aa 1b812462 c1239d0c ctr 0
+shuffle 0 -> ctr 0: 
+shuffle 1 -> ctr 0: 100
+shuffle 2 -> ctr 1: 100 101
+shuffle 3 -> ctr 3: 100 101 102
+shuffle 10 -> ctr 12: 104 102 109 106 108 101 100 105 107 103
+shuffle 52 -> ctr 63: 117 121 131 127 132 111 118 109 103 130 135 102 125 134 123 101 107 136 145 146 143 148 112 113 138 137 110 142 151 139 106 119 100 116 124 114 128 120 129 140 141 115 147 144 104 105 150 133 108 149 126 122
+master 736c6172746962617274666173743f0a -> master 72616c73 61626974 61667472 0a3f7473
+rnd 1 10 -> 8
+rnd 0 2147483647 -> 1994287758
+rnd -16 -3 -> -11
+root -> seed 72616c73 61626974 61667472 0a3f7473 ctr 0
+master 0102 -> master c37e0201 916747ea 0cd49cc0 5107be6f
+root -> seed c37e0201 916747ea 0cd49cc0 5107be6f ctr 0
+rnd 1 100 -> 69
+loadmissing -> missing-randseed could not be opened.
+master eecf2644 2755b43a f25baa4d da1dbf5e
+root -> seed eecf2644 2755b43a f25baa4d da1dbf5e ctr 0
+master -> master eecf2644 2755b43a f25baa4d da1dbf5e
+rnd 1 100 -> 38
+master -> master 58dce825 228b13e4 a13473bd 890d5e4d
+root -> seed 58dce825 228b13e4 a13473bd 890d5e4d ctr 0
+md5int 0 0 0 0 -> 907274058
+md5int 1 2 3 4 -> 1794852427
+md5int -1 -1 -1 -1 -> -909411955
+md5int 2147483647 -2147483648 12345 -98765 -> 680809297
+md5int 5001 7023 52 3141592 -> -1267902365
+master 9f1c2e7b44d05a63e8b1c7f02d9a6e35 -> master 7b2e1c9f 635ad044 f0c7b1e8 356e9a2d
+clock 1 1 -> ok
+call begin_battle 10234 5001 5002 -> ok
+call crnd 1 100 -> 36
+call crnd 1 100 -> 20
+call crnd 0 1 -> 1
+call crnd 1 6 -> 1
+call begin_battle 10234 5001 5002 -> ok
+call crnd 1 100 -> 36
+call begin_battle 10234 5002 5001 -> ok
+call crnd 1 100 -> 75
+call begin_pillage 10234 5001 -> ok
+call prnd 1 100 -> 60
+call prnd 1 100 -> 25
+call pillage_mob -> 2
+call prnd 1 100 -> 12
+call begin_pillage 10235 5001 -> ok
+call pillage_mob -> 1
+call begin_economy 10234 -> ok
+call econ_pick 51 10234 0 3 -> 2
+call econ_stock 51 10234 1 100 -> 30
+call econ_qty 51 10234 5 25 -> 19
+call econ_cost 51 10234 10 40 -> 40
+call econ_expire 51 10234 3 8 -> 6
+call econ_mine 51 5001 1 100 -> 88
+call econ_harvest 51 5001 1 100 -> 56
+call econ_ring 51 10234 1 4 -> 4
+call begin_economy 10235 -> ok
+call econ_pick 51 10234 0 3 -> 0
+call econ_mine 51 5001 1 100 -> 47
+call begin_npc 10234 -> ok
+call npc_spawn 10234 0 1 100 -> 25
+call npc_qty 10234 1 10 50 -> 19
+call npc_behavior 5001 2 1 100 -> 21
+call npc_victim 5001 7 -> 6
+call npc_victim 5001 1 -> 0
+call begin_npc 0 -> ok
+call npc_spawn 10234 0 1 100 -> 60
+call begin_quest 20001 5001 -> ok
+call qrnd 1 100 -> 74
+call qrnd 1 3 -> 3
+call quest_shuffle 8 -> 101 100 104 102 107 105 106 103
+call qrnd 1 100 -> 22
+call begin_quest 20001 5002 -> ok
+call qrnd 1 100 -> 42
+call begin_cloud_build 30001 -> ok
+call cseq_rnd 1 100 -> 2
+call cseq_shuffle 9 -> 104 100 106 101 105 102 108 107 103
+call cseq_rnd 1 100 -> 96
+call begin_faery_build 30002 -> ok
+call fseq_rnd 1 100 -> 93
+call fseq_shuffle 9 -> 103 105 108 102 100 106 101 107 104
+call fseq_rnd 1 100 -> 54
+call begin_hades_build 30003 -> ok
+call hseq_rnd 1 100 -> 45
+call hseq_shuffle 9 -> 103 101 104 105 107 102 106 108 100
+call hseq_rnd 1 100 -> 32
+call begin_worldgen_loc 30004 -> ok
+call wseq_rnd 1 100 -> 40
+call wseq_shuffle 9 -> 108 102 101 100 106 103 104 107 105
+call wseq_rnd 1 100 -> 82
+call begin_worldgen_loc 0 -> ok
+call wseq_rnd 1 100 -> 99
+call magc_scry 5001 17 -> 26
+call magc_piety 5001 17 -> 5
+call magc_eat 5001 6001 0 -> 36
+call magc_eat 5001 6001 1 -> 90
+call magc_learn 5001 600 -> 72
+call magc_potion 5001 7001 0 1 2 -> 2
+call magc_potion 5001 7001 1 0 3 -> 0
+call magc_potion 5001 7001 2 1 100 -> 89
+call magc_med 5001 0 -> 56
+call magc_omen 5001 5002 -> 4
+call magc_heal 5001 5002 -> 20
+call magc_forge 5001 0 -> 3
+call magc_forge 5001 1 -> 3
+call magc_orb 5001 7002 -> 2
+call magc_ring 5001 7003 -> 3
+call expl_find 5001 10234 -> 58
+call expl_gate 5001 10234 -> 94
+call expl_flavor 5001 10234 -> 4
+call expl_pick 5001 10234 3 -> 1
+call expl_seek 5001 5002 -> 1
+call expl_detect 5001 5003 -> 96
+call mint_alloc 1000 9999 -> 3755
+call mint_alloc 1000 9999 -> 7556
+call mint_password 1 0 26 -> 3
+call mint_password 1 1 26 -> 22
+call mint_city -> 5
+call mint_shuffle 6 -> 105 102 103 100 104 101
+call mint_alloc 1000 9999 -> 2276
+call exitdir_shuffle 4 -> 100 103 101 102
+call exitdir_shuffle 4 -> 102 101 103 100
+call up_heal 5001 0 1 100 -> 89
+call up_heal 5001 1 0 3 -> 3
+call up_loyal 5001 0 1 100 -> 51
+call up_starve 5001 1 1 100 -> 47
+call up_animal 5001 52 0 1 100 -> 48
+call up_animal 5001 53 0 1 100 -> 36
+call up_corpse 5001 1 4 -> 3
+call up_income 40001 0 1 100 -> 96
+call cal_day 0 1 30 -> 2
+call cal_day 1 1 30 -> 28
+call cal_day 2 1 30 -> 18
+call faer_hunt_loc 0 0 1 50 -> 10
+call faer_hunt_loc 0 1 1 50 -> 17
+call faer_hunt_qty 0 -> 84
+call faer_bandit_kind 5001 10234 -> 1
+call faer_bandit_qty 5001 -> 8
+call faer_bandit_gold 5001 -> 14
+call faer_ambush 5001 10234 -> 76
+call faer_retal 5001 10234 -> 2
+call hads_nasty 0 0 1 100 -> 26
+call hads_nasty 0 1 1 100 -> 65
+call hads_bandit_kind 5001 10234 -> 1
+call hads_bandit_qty 5001 -> 10
+call hads_ambush 5001 10234 -> 8
+call hads_retal 5001 10234 -> 2
+call hads_random_loc 5001 12 -> 4
+call hads_random_loc 5001 1 -> 0
+call wgen_prom 10234 -> 64
+call wgen_skill 10234 0 1 5 -> 3
+call wgen_skill 10234 1 0 2 -> 0
+call wgen_garr 10234 -> 139
+call wgen_gate 10234 -> 1
+call wthr_shuffle 12 -> 111 110 108 107 106 109 101 104 105 103 102 100
+call wthr_shuffle 12 -> 108 111 110 102 109 105 103 104 101 106 100 107
+call wthr_storm 10234 0 1 100 -> 69
+call wthr_storm 10234 1 1 4 -> 2
+call wthr_wreck 10234 0 1 100 -> 23
+call soc_gift 5001 5002 -> 2
+call soc_bribe 5001 5002 0 1 100 -> 70
+call soc_bribe 5001 5002 1 1 100 -> 22
+call soc_terror 5001 5002 -> 31
+call soc_incite 5001 5002 0 1 4 -> 3
+call soc_incite 5001 5002 1 1 100 -> 98
+call soc_persuade 5001 5002 -> 80
+call soc_breed 5001 52 0 1 100 -> 38
+call skil_crit 5001 1601 -> 18
+call skil_bonus 5001 1601 1 3 -> 1
+call skil_study 5001 600 -> 4
+call skil_research 5001 600 -> 43
+call skil_research_pick 5001 600 4 -> 3
+call skil_torture 5001 5002 -> 46
+call skil_petty 5001 10234 0 1 100 -> 99
+call skil_petty 5001 10234 1 10 50 -> 31
+call ent_prisoner 5001 0 -> 566
+call ent_drop 5001 5002 0 1 100 -> 88
+call ent_take 5001 52 0 1 100 -> 77
+call ent_sick 5001 80 -> 90
+call ent_land_dir 10234 0 -> 2
+call ent_land_pick 10234 5 -> 2
+call ent_bark 5001 8001 -> 1
+call ent_build 10234 -> 3
+call ent_menial 5001 -> 9
+clock 1 2 -> ok
+call magc_scry 5001 17 -> 91
+call magc_eat 5001 6001 0 -> 36
+call up_heal 5001 0 1 100 -> 3
+call up_loyal 5001 0 1 100 -> 51
+call soc_bribe 5001 5002 0 1 100 -> 34
+call soc_gift 5001 5002 -> 2
+call skil_crit 5001 1601 -> 71
+call ent_prisoner 5001 0 -> 489
+call ent_take 5001 52 0 1 100 -> 77
+call faer_ambush 5001 10234 -> 12
+call faer_bandit_qty 5001 -> 8
+call hads_ambush 5001 10234 -> 69
+call hads_bandit_qty 5001 -> 10
+call expl_gate 5001 10234 -> 93
+call econ_mine 51 5001 1 100 -> 67
+call econ_pick 51 10234 0 3 -> 0
+call begin_battle 10234 5001 5002 -> ok
+call crnd 1 100 -> 73
+call mint_alloc 1000 9999 -> 2661
+call wthr_shuffle 12 -> 101 111 100 103 104 108 106 107 109 102 105 110
+master 0f1e2d3c4b5a69788796a5b4c3d2e1f0 -> master 3c2d1e0f 78695a4b b4a59687 f0e1d2c3
+call magc_scry 5001 17 -> 91
+call up_loyal 5001 0 1 100 -> 51
+call cal_day 0 1 30 -> 2
+call mint_alloc 1000 9999 -> 3132
+call wthr_shuffle 12 -> 103 108 100 101 102 110 104 107 106 109 105 111
+call exitdir_shuffle 4 -> 103 100 102 101
+call wgen_prom 10234 -> 64
+call ent_build 10234 -> 3
+call expl_gate 5001 10234 -> 93
+call begin_economy 10234 -> ok
+call econ_pick 51 10234 0 3 -> 1
+clock 2 1 -> ok
+call magc_scry 5001 17 -> 31
+call up_loyal 5001 0 1 100 -> 56
+call cal_day 0 1 30 -> 9
+call mint_alloc 1000 9999 -> 7683
+call mint_city -> 4
+call wthr_shuffle 12 -> 101 106 111 109 103 102 104 108 107 110 100 105
+call exitdir_shuffle 4 -> 101 103 100 102
+call wgen_prom 10234 -> 42
+call ent_build 10234 -> 2
+call expl_gate 5001 10234 -> 51
+call soc_gift 5001 5002 -> 2
+call skil_study 5001 600 -> 2
+call faer_hunt_qty 0 -> 82
+call hads_nasty 0 0 1 100 -> 27
+clock 1 1 -> ok
+call magc_scry 5001 17 -> 35
+call mint_alloc 1000 9999 -> 8754
+clock 40000 70000 -> ok
+call magc_scry 5001 17 -> 55
+call up_heal 5001 0 1 100 -> 46
+call expl_gate 5001 10234 -> 23
+call begin_battle 10234 5001 5002 -> ok
+call crnd 1 100 -> 86
+clock 65537 1 -> ok
+call magc_scry 5001 17 -> 35
+call begin_battle 10234 5001 5002 -> ok
+call crnd 1 100 -> 92
+clock 3 1 -> ok
+call soc_bribe 5001 1073741824 1 1 100 -> 50
+call skil_petty 5001 268435456 3 1 100 -> 94
+call magc_potion 5001 536870912 2 1 100 -> 67
+call ent_drop 5001 -1073741825 0 1 100 -> 66
+call up_animal 5001 -1 0 1 100 -> 31
