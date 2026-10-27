@@ -1,0 +1,426 @@
+# Raw fixture construction: box ID kind subkind parent; dest appends a slot.
+# Exits print all fourteen dir.h fields in declaration order.
+# No expected values are modeled here; recordings come from real pinned C.
+section asymmetric terrain distances and water lanes
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 10103 3 2 100
+box 10104 3 6 100
+box 10105 3 5 100
+box 10106 3 7 100
+box 10107 3 65 100
+box 10108 3 70 100
+box 10109 3 72 100
+box 10110 3 1 100
+box 10111 3 1 100
+distance 10101 10102
+distance 10102 10101
+distance 10101 10103
+distance 10101 10104
+distance 10101 10105
+distance 10101 10106
+distance 10101 10107
+distance 10101 10108
+distance 10101 10109
+distance 10101 10110
+distance 10110 10101
+distance 10110 10111
+lane 10110 -1
+distance 10110 10111
+lane 10111 2
+distance 10110 10111
+distance 10111 10110
+
+section depth swapping sublocations buildings and Hades pit
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 201 3 13 10101
+box 202 3 13 10102
+box 203 3 60 10102
+box 301 3 46 201
+box 302 3 29 201
+distance 10101 201
+distance 201 10101
+distance 201 202
+distance 202 201
+distance 10101 301
+distance 301 10101
+distance 203 301
+distance 301 203
+
+section direction cache missing fields and zero slots
+box 10101 3 3 0
+box 10102 3 2 0
+direction 10101 1
+dest 10101 10102
+dest 10101 0
+direction 10101 1
+direction 10101 2
+direction 10101 3
+direction 10102 6
+
+section ordered province sublocation and road exits
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 10103 3 2 100
+box 10104 3 6 100
+dest 10101 10102
+dest 10101 0
+dest 10101 10103
+dest 10101 0
+dest 10101 10104
+box 301 3 13 10101
+box 302 9 66 10101
+box 303 3 53 10101
+box 401 7 0 10101
+road 401 10103 0
+exits 0 10101
+nsew 0 10101
+ocean 10101
+
+section port recursion first city and sea routes before interior
+box 100 3 50 0
+box 10101 3 1 100
+box 10102 3 3 100
+box 10103 3 4 100
+dest 10101 10102
+dest 10101 10103
+dest 10102 10101
+dest 10103 10101
+box 201 3 14 10102
+box 202 3 14 10102
+box 203 3 14 10103
+box 301 3 46 201
+port 201
+port 203
+port 10102
+province_port 10102
+province_port 10103
+exits 0 10101
+exits 0 10102
+exits 0 201
+exits 0 203
+ocean 10102
+ocean 201
+ocean 203
+
+section hidden known destinations roads and OUT barrier exception
+box 100 3 50 0
+box 200 1 0 0
+box 1001 2 0 0
+lord 1001 200
+box 10101 3 3 100
+box 10102 3 4 100
+dest 10101 10102
+hidden 10101 -1
+hidden 10102 1
+barrier 10102 -2
+box 201 3 13 10101
+hidden 201 1
+box 301 3 46 201
+box 401 7 0 10101
+road 401 10102 -1
+exits 1001 10101
+known 200 10102
+known 200 401
+exits 1001 10101
+barrier 10101 1
+exits 1001 201
+barrier 201 1
+exits 1001 301
+ocean 10101
+
+section linked regions Hades fee open links and road differences
+box 100 3 50 0
+box 101 3 50 0
+hades 101
+box 10101 3 3 100
+box 10102 3 7 101
+dest 10101 10102
+dest 10102 10101
+box 201 3 8 10102
+from 10101 201
+to 201 10101
+exits 0 10101
+open 201 1
+exits 0 10101
+exits 0 201
+exits 0 10102
+box 401 7 0 10101
+road 401 10102 0
+barrier 10102 7
+exits 0 10101
+
+section cloud vertical and road impassability in both directions
+box 100 3 50 0
+box 10101 3 4 100
+box 10102 3 65 100
+dest 10101 0
+dest 10101 0
+dest 10101 0
+dest 10101 0
+dest 10101 10102
+dest 10102 0
+dest 10102 0
+dest 10102 0
+dest 10102 0
+dest 10102 0
+dest 10102 10101
+box 401 7 0 10101
+road 401 10102 0
+box 402 7 0 10102
+road 402 10101 0
+exits 0 10101
+exits 0 10102
+
+section seasonal north Uldim and Summerbridge boundaries
+box 10101 3 4 0
+box 10102 3 3 0
+dest 10101 10102
+uldim 10101 4
+clock 3 100 0 0
+exits 0 10101
+clock 3 100 0 1
+exits 0 10101
+clock 4 100 0 0
+exits 0 10101
+clock 7 100 0 0
+exits 0 10101
+clock 8 100 0 0
+exits 0 10101
+uldim 10101 1
+clock 4 100 0 0
+exits 0 10101
+uldim 10101 0
+summer 10101 1
+clock 2 100 0 1
+exits 0 10101
+clock 3 100 0 1
+exits 0 10101
+
+section seasonal south and opposite direction controls
+box 10101 3 4 0
+box 10102 3 3 0
+dest 10101 10102
+dest 10101 0
+dest 10101 10102
+uldim 10101 3
+clock 2 100 0 0
+exits 0 10101
+clock 4 100 0 0
+exits 0 10101
+uldim 10101 2
+exits 0 10101
+uldim 10101 0
+summer 10101 2
+clock 8 100 0 1
+exits 0 10101
+clock 7 100 0 0
+exits 0 10101
+
+section ships sibling links inner rooms and moving arithmetic
+box 100 3 50 0
+box 10101 3 1 100
+box 201 9 66 10101
+box 202 9 31 10101
+box 203 9 67 10101
+box 204 3 46 10101
+box 301 3 46 201
+box 10102 3 3 100
+dest 201 10102
+clock 10 100 0 0
+moving 201 100
+moving 202 99
+exits 0 201
+clock 10 100 1 0
+exits 0 201
+clock 10 101 0 0
+exits 0 201
+moving 201 102
+moving 202 0
+exits 0 201
+exits 0 10101
+exits 0 203
+
+section dry dock boarding and ordinary nested building exits
+box 10101 3 3 0
+box 201 9 66 10101
+box 202 9 31 10101
+box 301 3 46 10101
+box 302 3 46 301
+box 303 9 66 301
+box 304 3 46 302
+exits 0 201
+exits 0 301
+exits 0 302
+nsew 0 301
+select 0 301 3 1
+ocean 301
+
+section filters shuffle sequential stream turn reset and legacy isolation
+master 17
+clock 11 100 0 0
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 10103 3 1 100
+box 10104 3 6 100
+box 10105 3 2 100
+box 10106 3 65 100
+box 10107 3 1 100
+dest 10101 10102
+dest 10101 10103
+dest 10101 10104
+dest 10101 10105
+dest 10101 10106
+dest 10101 10107
+select 0 10101 0 1
+select 0 10101 1 0
+select 0 10101 2 0
+select 0 10101 3 0
+legacy 1 1000000
+select 0 10101 3 1
+select 0 10101 3 1
+legacy 1 1000000
+select 0 10101 1 1
+select 0 10101 2 1
+clock 12 100 0 0
+select 0 10101 3 1
+clock 11 100 0 0
+select 0 10101 3 1
+ocean 10101
+
+section shuffle control no interleaved legacy draws
+master 17
+clock 11 100 0 0
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 10103 3 1 100
+box 10104 3 6 100
+box 10105 3 2 100
+box 10106 3 65 100
+box 10107 3 1 100
+dest 10101 10102
+dest 10101 10103
+dest 10101 10104
+dest 10101 10105
+dest 10101 10106
+dest 10101 10107
+select 0 10101 3 1
+select 0 10101 3 1
+select 0 10101 1 1
+select 0 10101 2 1
+clock 12 100 0 0
+select 0 10101 3 1
+clock 11 100 0 0
+select 0 10101 3 1
+legacy 1 1000000
+legacy 1 1000000
+
+section empty and singleton shuffles do not draw
+master 254
+clock 32769 1 0 0
+box 10101 3 3 0
+box 10102 3 2 0
+select 0 10101 3 1
+dest 10101 10102
+select 0 10101 3 1
+select 0 10101 2 1
+select 0 10101 1 -1
+
+section invalid distance region terrain assertion
+box 100 3 50 0
+box 101 3 50 0
+distance 100 101
+
+section unsupported exit depth assertion
+box 100 3 50 0
+exits 0 100
+
+section invalid province destination assertion
+box 10101 3 3 0
+dest 10101 149999
+exits 0 10101
+
+section invalid road destination assertion
+box 10101 3 3 0
+box 401 7 0 10101
+road 401 149999 0
+exits 0 10101
+
+section invalid province port depth assertion
+box 201 3 13 0
+province_port 201
+
+section unowned hidden route G3 353
+box 1001 2 0 0
+box 10101 3 3 0
+box 10102 3 2 0
+dest 10101 10102
+hidden 10102 1
+exits 1001 10101
+
+section hidden water roads bypass barriers and ocean access stays passable
+box 100 3 50 0
+box 101 3 50 0
+hades 101
+box 10101 3 4 100
+box 10102 3 1 101
+dest 10101 10102
+barrier 10102 1
+box 401 7 0 10101
+road 401 10102 1
+exits 0 10101
+ocean 10101
+box 402 7 0 10102
+road 402 10101 0
+exits 0 10102
+ocean 10102
+
+section singleton and empty selection preserve stream across day changes
+master 37
+clock 9 100 0 0
+box 10101 3 3 0
+box 10102 3 2 0
+box 10103 3 4 0
+box 10104 3 6 0
+select 0 10101 3 1
+dest 10101 10102
+select 0 10101 3 1
+select 0 10101 2 1
+dest 10101 10103
+dest 10101 10104
+select 0 10101 3 1
+day 14
+select 0 10101 3 1
+day 30
+select 0 10101 3 1
+
+section selection control without empty singleton or day changes
+master 37
+clock 9 100 0 0
+box 10101 3 3 0
+box 10102 3 2 0
+box 10103 3 4 0
+box 10104 3 6 0
+dest 10101 10102
+dest 10101 10103
+dest 10101 10104
+select 0 10101 3 1
+select 0 10101 3 1
+select 0 10101 3 1
+
+section ship timestamp int width wrap and nonzero negative flags
+box 10101 3 3 0
+box 201 9 66 10101
+box 202 9 30 10101
+moving 201 2147483647
+moving 202 -2147483648
+clock 10 -2147483648 0 0
+exits 0 201
+clock 10 2147483647 1 0
+exits 0 201
