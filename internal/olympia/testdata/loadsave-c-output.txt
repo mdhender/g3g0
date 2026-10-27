@@ -1068,8 +1068,6 @@ section load_orders: order files
 can't open lib/master: No such file or directory
 fast_scan failed, scan_all_boxes()
 > orders
-ERROR: orders/999 but no box [999]
-ERROR: orders/0 but no box [0]
 > print
 sysclock 0 0 0
 from_host=g3@olympia.v-labs.be
@@ -1159,6 +1157,24 @@ f 644 0 lib/road
 f 644 0 lib/ship
 f 644 0 lib/skill
 f 644 0 lib/unform
+section load_orders: a file naming no box
+> mkdir lib
+> mkdir lib/orders
+> orders
+ERROR: orders/999 but no box [999]
+> saveorders
+exit 0
+d 755 lib
+d 755 lib/orders
+section load_orders: a file naming box zero
+> mkdir lib
+> mkdir lib/orders
+> orders
+ERROR: orders/0 but no box [0]
+> saveorders
+exit 0
+d 755 lib
+d 755 lib/orders
 section load_orders: 250 orders a unit
 > mkdir lib
 > mkdir lib/fact

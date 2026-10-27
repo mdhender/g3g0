@@ -438,9 +438,10 @@ savetrade
 
 section load_orders: order files
 # Lines with and without a ':', an empty line, unit 0, white space, a
-# file whose name is not a number, a number with no box, a hidden file,
-# and orders for the gm player. Units that are not boxes keep their
-# queues, but save_orders() skips them.
+# file whose name is not a number, a hidden file, and orders for the gm
+# player. Units that are not boxes keep their queues, but save_orders()
+# skips them. Invalid player file names have separate cases below: their
+# diagnostics follow host readdir order, not a portable ordering (#54).
 mkdir lib
 mkdir lib/fact
 put lib/loc
@@ -508,11 +509,23 @@ put lib/orders/1001 1002:last line
 putl lib/orders/200 1002:gm order
 putl lib/orders/abc 1002:skipped
 putl lib/orders/.1001 1002:skipped
-putl lib/orders/999 1002:no box
-putl lib/orders/0 1002:no box
 boxes
 orders
 print
+saveorders
+
+section load_orders: a file naming no box
+mkdir lib
+mkdir lib/orders
+putl lib/orders/999 1002:no box
+orders
+saveorders
+
+section load_orders: a file naming box zero
+mkdir lib
+mkdir lib/orders
+putl lib/orders/0 1002:no box
+orders
 saveorders
 
 section load_orders: 250 orders a unit
