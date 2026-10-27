@@ -41,14 +41,19 @@ functions = {
     'move.c': ['restore_stack_actions'],
     'day.c': ['touch_loc_pl', 'touch_loc'],
     'seed.c': ['int_comp'],
-    'stack.c': ['stack_parent', 'stack_leader', 'here_pos'],
+    'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
+                'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack'],
     'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
-              'in_safe_now', 'province', 'building_owner', 'viewloc'],
+              'in_safe_now', 'province', 'building_owner', 'viewloc', 'all_char_here',
+              'in_here_list', 'add_to_here_list', 'remove_from_here_list', 'set_where'],
     'garr.c': ['garrison_here'],
     'u.c': ['min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
-            'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np'],
+            'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np',
+            'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
+            'destroy_unique_item', 'add_item', 'sub_item'],
+    'buy.c': ['investigate_possible_trade'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait'],
     'produce.c': ['init_collect_list'],
@@ -108,6 +113,7 @@ void drv_evening(void) { evening_phase(); }
 void drv_daily(void) { daily_command_loop(); }
 void drv_players(void) { process_player_orders(); }
 void drv_interrupted(void) { process_interrupted_units(); }
+int drv_sub_item(int who, int item, int qty) { return sub_item(who, item, qty); }
 void drv_sort_load(int pri) { sort_load_queue(load_q[pri]); }
 void drv_sort_run(void) { sort_run_queue(run_q); }
 ilist drv_collectors(void) { return collectors; }
@@ -137,6 +143,7 @@ with open(f'{dst}/stubs.c', 'w') as out:
 int is_port_city(int n) STUB("is_port_city")
 ilist players_who_rule_here(int n) STUB("players_who_rule_here")
 void check_validated_trades(void) STUB("check_validated_trades")
+void queue_lore(int who, int item, int anyway) STUB("queue_lore")
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1, pretty_data_files;

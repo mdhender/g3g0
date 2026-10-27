@@ -650,3 +650,320 @@ section setname of missing box
 > setname 1001 Nobody
 assertion failure: olympia/code.c (241): valid_box(n)
 exit 134
+section mint branch ranges and chain order at INIT
+> new 1 0
+new 52158
+> new 2 0
+new 9058
+> new 12 0
+new 2167
+> new 2 54
+new 118642
+> new 12 54
+new 104364
+> new 3 14
+new 57251
+> new 3 50
+new 58780
+> new 3 7
+new 36323
+> new 3 2
+new 21497
+> new 3 1
+new 46405
+> new 3 65
+new 38826
+> new 3 70
+new 37741
+> new 3 3
+new 67298
+> new 11 0
+new 100748
+> new 4 0
+new 62888
+> new 9 0
+new 70592
+> new 6 0
+new 73182
+> new 7 0
+new 65361
+> new 13 0
+new 60439
+> chains
+kind 1: 52158
+kind 2: 9058 118642
+kind 3: 21497 36323 37741 38826 46405 57251 58780 67298
+kind 4: 62888
+kind 6: 73182
+kind 7: 65361
+kind 9: 70592
+kind 11: 100748
+kind 12: 2167 104364
+kind 13: 60439
+sub 0: 2167 9058 52158 60439 62888 65361 70592 73182 100748
+sub 1: 46405
+sub 2: 21497
+sub 3: 67298
+sub 7: 36323
+sub 14: 57251
+sub 50: 58780
+sub 54: 104364 118642
+sub 65: 38826
+sub 70: 37741
+> seedstate
+master 00000000 00000000 00000000 00000000
+digest 00000000000000000000000000000000
+exit 0
+section mint inclusive upper scan
+> fill 1200 1209 1209
+> scan 1200 1209
+scan 1209
+> scan 1209 1209
+scan 1209
+> city
+city 2
+exit 0
+section mint scan start control
+> scan 1200 1209
+scan 1202
+> city
+city 2
+exit 0
+section mint wrap scan
+> fill 1200 1209 1200
+> scan 1200 1209
+scan 1200
+> city
+city 2
+exit 0
+section mint occupied and deleted unavailable
+> fill 1200 1209 0
+> delete 1205
+> scan 1200 1209
+scan -1
+> scan 1205 1205
+scan -1
+> city
+city 2
+exit 0
+section mint sparse holes and repeated allocation
+> alloc 1000 2 0
+> alloc 9999 2 0
+> alloc 5327 2 0
+> delete 5327
+> new 2 0
+new 3158
+> new 2 0
+new 9058
+> new 2 0
+new 2167
+> chains
+kind 2: 1000 2167 3158 9058 9999
+sub 0: 1000 2167 3158 9058 9999
+exit 0
+section mint player fallback
+> fill 50000 56759 0
+> new 1 0
+new 88129
+> city
+city 2
+exit 0
+section mint char first fallback
+> fill 1000 9999 0
+> new 2 0
+new 68129
+> city
+city 2
+exit 0
+section mint char second fallback
+> fill 1000 9999 0
+> fill 59000 78999 0
+> new 12 0
+new 104015
+> city
+city 3
+exit 0
+section mint ni first fallback
+> fill 79000 149999 0
+> new 2 54
+new 68129
+> city
+city 2
+exit 0
+section mint loc fallback
+> fill 56760 58759 0
+> new 3 14
+new 88129
+> city
+city 2
+exit 0
+section mint full general range fallback
+> fill 59000 78999 0
+> new 4 0
+new 88129
+> city
+city 2
+exit 0
+section mint region range fallback
+> fill 58760 58999 0
+> new 3 50
+new 88129
+> city
+city 2
+exit 0
+section mint exhausted char repeats final range
+> fill 1000 9999 0
+> fill 59000 149999 0
+> trace_abort
+> new 2 0
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+mint after assertion 239887124 291701227
+exit 134
+section mint exhausted ni repeats final range
+> fill 59000 149999 0
+> trace_abort
+> new 2 54
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+mint after assertion 239887124 291701227
+exit 134
+section mint exhausted storm repeats final range
+> fill 79000 149999 0
+> trace_abort
+> new 11 0
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+mint after assertion 313492623 501068954
+exit 134
+section mint skill forbidden
+> trace_abort
+> new 5 0
+assertion failure: olympia/code.c (864): FALSE
+mint after assertion 674974460 228860841
+exit 134
+section mint shared counter day turn master and legacy discrimination
+> master 0
+> seedstate
+master 03020100 07060504 0b0a0908 0f0e0d0c
+digest 000102030405060708090a0b0c0d0e0f
+> scan 1000 9999
+scan 3377
+> password 200 0 62
+password 18
+> password 200 0 62
+password 18
+> city
+city 4
+> shuffle
+shuffle: 13 11 15 14 10 12
+> scan 1000 9999
+scan 5964
+> clock 0 17
+> scan 1000 9999
+scan 9864
+> legacy 0 1000000
+legacy 873696
+> seedstate
+master 03020100 07060504 0b0a0908 0f0e0d0c
+digest e0542db5418c43d256a6a643afa553fe
+> scan 1000 9999
+scan 9717
+> master 32
+> seedstate
+master 23222120 27262524 2b2a2928 2f2e2d2c
+digest 202122232425262728292a2b2c2d2e2f
+> scan 1000 9999
+scan 7105
+> clock 1 0
+> scan 1000 9999
+scan 5708
+> new 4 0
+new 60588
+> scan 1000 9999
+scan 5618
+> clock 2 0
+> scan 1000 9999
+scan 6851
+> new 4 0
+new 67997
+> clock 1 0
+> scan 1000 9999
+scan 5708
+> new 4 0
+new 60589
+> seedstate
+master 23222120 27262524 2b2a2928 2f2e2d2c
+digest 202122232425262728292a2b2c2d2e2f
+exit 0
+section mint legacy control
+> master 0
+> scan 1000 9999
+scan 3377
+> scan 1000 9999
+scan 4707
+> legacy 0 1000000
+legacy 873696
+> scan 1000 9999
+scan 3543
+> clock 1 0
+> scan 1000 9999
+scan 7748
+> seedstate
+master 03020100 07060504 0b0a0908 0f0e0d0c
+digest e0542db5418c43d256a6a643afa553fe
+exit 0
+section mint no legacy control
+> master 0
+> scan 1000 9999
+scan 3377
+> scan 1000 9999
+scan 4707
+> scan 1000 9999
+scan 3543
+> clock 1 0
+> scan 1000 9999
+scan 7748
+> seedstate
+master 03020100 07060504 0b0a0908 0f0e0d0c
+digest 000102030405060708090a0b0c0d0e0f
+exit 0
+section mint master unchanged within turn control
+> master 0
+> scan 1000 9999
+scan 3377
+> master 32
+> scan 1000 9999
+scan 4707
+> clock 1 0
+> scan 1000 9999
+scan 5708
+exit 0
+section mint master same initial seed control
+> master 0
+> scan 1000 9999
+scan 3377
+> scan 1000 9999
+scan 4707
+> clock 1 0
+> scan 1000 9999
+scan 7748
+exit 0
+section mint initial minus-one guard and signed short turns
+> master 0
+> clock -1 0
+> new 2 0
+new 9883
+> clock 0 0
+> new 2 0
+new 3377
+> clock 32767 0
+> new 2 0
+new 2803
+> clock 32768 0
+> new 2 0
+new 4229
+> clock -32768 29
+> new 2 0
+new 8864
+> chains
+kind 2: 2803 3377 4229 8864 9883
+sub 0: 2803 3377 4229 8864 9883
+exit 0

@@ -61,6 +61,7 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 	w.pChar(1001).unitLord = 200
 	c := w.pCommand(1000)
 	c.who, c.state = 1000, stateDone
+	created := 0
 	waitDump := func() {
 		fmt.Fprintf(&stdout, "wait args %d\n", c.waitParse.Len())
 		for _, p := range c.waitParse {
@@ -113,6 +114,38 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "newchar":
+			sk, ni, where, health := args.num(t), args.num(t), args.num(t), args.num(t)
+			pl, lk, ll := args.num(t), args.num(t), args.num(t)
+			created = w.newChar(sk, ni, where, health, pl, lk, ll, strings.TrimLeft(args.rest, " \t"))
+			fmt.Fprintf(&stdout, "created %d\n", created)
+		case "newitem":
+			created = w.createUniqueItem(args.num(t), args.num(t))
+			fmt.Fprintf(&stdout, "created %d\n", created)
+		case "save_new":
+			w.saveBox(&stdout, created)
+		case "delete_new":
+			w.destroyUniqueItem(args.num(t), created)
+		case "created_state":
+			fmt.Fprintf(&stdout, "created kind %d sub %d unique %d\n", w.kind(created), w.subkind(created), w.itemUnique(created))
+		case "body_new":
+			p := w.pMisc(created)
+			p.oldLord = int32(args.num(t))
+			q := w.pChar(created)
+			q.prevLord, q.loyKind, q.loyRate = int32(args.num(t)), int8(args.num(t)), int32(args.num(t))
+			name := strings.TrimLeft(args.rest, " \t")
+			p.saveName = nil
+			if name != "" {
+				p.saveName = strSave(name)
+			}
+		case "destroy":
+			w.destroyUniqueItem(args.num(t), args.num(t))
+		case "subitem":
+			fmt.Fprintf(&stdout, "subitem %d\n", b2i(w.subItem(args.num(t), args.num(t), args.num(t))))
+		case "join":
+			w.joinStack(args.num(t), args.num(t))
+		case "leave":
+			w.leaveStack(args.num(t))
 		case "queue":
 			w.pOrderHead(w.player(int(c.who)), int(c.who)).l.Append(strings.TrimPrefix(line, "queue "))
 		case "orders":
@@ -249,6 +282,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pPlayer(n).noblePoints = int16(a)
 			case "skill_np":
 				w.pSkill(n).npReq = int32(a)
+			case "capturable":
+				w.pItem(n).capturable = int8(a)
+			case "release":
+				w.pMagic(n).swearOnRelease = int8(a)
 			case "health":
 				w.pChar(n).health = int8(a)
 			case "prisoner":

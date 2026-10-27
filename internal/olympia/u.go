@@ -6,6 +6,8 @@ package olympia
 import (
 	"fmt"
 	"time"
+
+	"github.com/mdhender/g3g0/internal/clib"
 )
 
 // Ported from olympia/u.c.
@@ -378,4 +380,86 @@ func (w *world) createUniqueItemAlloc(new, who, sk int) int {
 	w.addItem(who, new, 1)
 
 	return new
+}
+
+func (w *world) newChar(sk, ni, where, health, pl, loyKind, loyLev int, name string) int {
+	n := w.newEnt(tChar, sk)
+	if n < 0 {
+		return -1
+	}
+	if name != "" {
+		w.setName(n, name)
+	}
+	p := w.pChar(n)
+	p.health, p.unitItem, p.breakPoint = int8(health), int32(ni), 50
+	p.attack, p.defense = 60, 60
+	if w.kind(where) == tLoc || w.kind(where) == tShip {
+		w.setWhere(n, where)
+	} else {
+		w.setWhere(n, w.subloc(where))
+	}
+	w.setLord(n, pl, loyKind, loyLev)
+	if w.kind(where) == tChar {
+		w.joinStack(n, where)
+	}
+	if w.beastCapturable(n) || w.isNPC(n) {
+		p.breakPoint = 0
+	}
+	return n
+}
+
+func (w *world) beastCapturable(who int) bool {
+	if w.subkind(who) != subNi {
+		return false
+	}
+	p := w.rpItem(w.nobleItem(who))
+	return p != nil && p.capturable != 0
+}
+
+func (w *world) createUniqueItem(who, sk int) int {
+	n := w.newEnt(tItem, sk)
+	if n < 0 {
+		return -1
+	}
+	w.pItem(n).whoHas = int32(who)
+	w.addItem(who, n, 1)
+	return n
+}
+
+func (w *world) subItem(who, item, qty int) bool {
+	assert(w.validBox(who), "olympia/u.c", 643, "valid_box(who)")
+	assert(w.validBox(item), "olympia/u.c", 644, "valid_box(item)")
+	assert(qty >= 0, "olympia/u.c", 645, "qty >= 0")
+	for _, e := range w.bx[who].items {
+		if int(e.item) == item {
+			if int(e.qty) < qty {
+				return false
+			}
+			e.qty -= int32(qty)
+			return true
+		}
+	}
+	return false
+}
+
+func (w *world) destroyUniqueItem(who, item int) {
+	assert(w.kind(item) == tItem, "olympia/u.c", 1982, "kind(item) == T_item")
+	assert(w.itemUnique(item) != 0, "olympia/u.c", 1983, "item_unique(item)")
+	if w.subkind(item) == subDeadBody {
+		pl := 0
+		if p := w.rpMisc(item); p != nil {
+			pl = int(p.oldLord)
+		}
+		if pl == int(w.indepPlayer) {
+			pl = int(w.pChar(item).prevLord)
+		}
+		if w.kind(pl) == tPlayer {
+			nps := w.charNPTotal(item)
+			w.commandOut(pl, "%s~%s has passed on.  Gained %d NP%s.", clib.Str(w.rpMisc(item).saveName), w.boxCode(item), nps, addS(nps))
+			w.addNP(pl, nps)
+		}
+	}
+	ret := w.subItem(who, item, 1)
+	assert(ret, "olympia/u.c", 2004, "ret")
+	w.deleteBox(item)
 }

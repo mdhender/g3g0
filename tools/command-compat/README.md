@@ -343,4 +343,69 @@ All 24 added sections exit 0. The earlier 141 sections / 4852 lines are
 byte-for-byte unchanged; no callback reachability exception was needed.
 Helper-compat retains its aborting transfer-dependency stubs; these full
 transfer cases are in command-compat and never reach them.
-Whole-game checks remain opt-in in `turn-compat`. No cases consume RNG.
+Whole-game checks remain opt-in in `turn-compat`. The #62 cases consume no RNG.
+
+## Mint and entity lifecycle closure (#63)
+
+Added whole real u.c `new_char` (282–317), `create_unique_item`
+(1948–1961), `destroy_unique_item` (1978–2007), `beast_capturable`
+(2547–2560) and `sub_item` (639–658). The existing real
+`create_unique_item_alloc`/`add_item` are included unchanged, with actual
+buy.c `investigate_possible_trade` (764–806). **buy.c is a new input** in
+tools/README.md and affected.sh. There is no lore implementation here:
+new items have no lore, and the C `queue_lore` boundary aborts if reached.
+Its Go NYI remains for #64. No token, movement command, death conversion,
+kill_char or combat routine is replaced by a successful stub.
+
+`new_char` uses real `set_lord` and `set_where`. Its character-target branch
+uses the complete small stack.c join/leave closure: `stacked_beneath`,
+`first_prisoner_pos`, `promote`, `unstack`, `leave_stack`, `stack`,
+`join_stack` (55–73, 116–254), with loc.c `all_char_here` (87–104), here-list
+mutation and set_where (228–274, 299–311). Actual sout.c `vector_char_here` and VECT
+fanout remain linked; Go now preserves their persistent recipient list and
+output bits/logs. No report body is substituted for a database mutation.
+
+The new driver operations construct arguments, call these exact routines
+and observe `save_box`, kind/subkind/uniqueness, NP counters and raw logs:
+
+- Character defaults (60/60 attack/defense, 50 breakpoint), named/unnamed
+  entities, bracket replacement, signed-char health, ordinary ownership,
+  touched locations and sorted faction units. Location and ship placement;
+  actual stacking before prisoners with moving-day inheritance and logs.
+- Capturable/noncapturable NI, undead, NPC/summon loyalty and zero breakpoint.
+- Unique items held by characters or locations, consecutive allocations,
+  retained zero-quantity inventory entries, and deleted boxes whose unique
+  owner/subkind remain but whose serialization is omitted by real save_box.
+- Dead-body NP refund/logging to old lord, independent-owner previous-lord
+  fallback and absent-player control. No full death pipeline is claimed.
+- Wrong-kind/nonunique/absent inventory assertions; sub_item missing,
+  insufficient, zero and last quantity plus argument assertions.
+- Nested join/leave with descendants, persistent here order, release flag
+  cleanup, summon-to-NPC loyalty, recursive movement restoration, exact
+  VECT logs, and descendant/captive/different-location assertion controls.
+
+Two real C runs produce **186 sections / 6585 lines** and the Go test matches.
+The previous **165 sections / 5953 lines** are byte-identical. Full allocator
+branch/range, exhaustion and shared-stream discrimination live in
+[`code-compat`](../code-compat); these lifecycle cases consume that same
+actual C mint stream, not a driver RNG or assigned IDs.
+
+Pending-feature review adds two cases after the original 184 sections /
+6527 lines, preserving that entire recording prefix:
+
+- Joining the default unlocated characters succeeds in both actual C and
+  the unchanged Go: 1000 is placed under 1001, its here-list contains 1000,
+  both ordinary stack messages are logged, and status is 0. No missing
+  NULL guard was reproduced. `all_char_here` (loc.c:87–104) asserts
+  `valid_box(who)` first; oly.h:477 embeds `x_loc_info` in every box and
+  oly.h:947 defines `rp_loc_info(n)` as its address. The C NULL branch is
+  unreachable for a valid box, including one whose `where` is zero. Go's
+  existing translation remains unchanged apart from an explanatory comment.
+- An unnamed noble can leave `dead_char_body`'s saved name NULL
+  (u.c:625). Omitting the optional `body_new` name now constructs this state
+  without changing any previously named case. Real C destruction logs
+  `(null)~[x542] has passed on.  Gained 7 NPs.`, refunds 7 NP to player 201,
+  deletes item 77542 and omits it from subsequent `save_box` output, status 0.
+  Before correction the same Go case panicked, observed as status 139 with
+  no flushed stdout. `destroyUniqueItem` now uses the existing `clib.Str`
+  convention; the same recording matches without changing expected bytes.

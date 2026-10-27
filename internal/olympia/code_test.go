@@ -7,9 +7,13 @@ import (
 	"fmt"
 	"hash"
 	"hash/fnv"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"testing"
+
+	"github.com/mdhender/g3g0/internal/lists"
 )
 
 // TestCodeMatchesC runs testdata/code-cases.txt the way the C driver in
@@ -59,6 +63,8 @@ func runCodeSection(t *testing.T, lines []string) (output string) {
 	var out strings.Builder
 	w := newWorld()
 	w.stderr = &out // the driver sends stderr to stdout
+	w.stdout = &out
+	traceAbort := false
 
 	out.WriteString(lines[0] + "\n")
 	defer func() {
@@ -67,6 +73,10 @@ func runCodeSection(t *testing.T, lines []string) (output string) {
 			out.WriteString("exit 0\n")
 		case assertion:
 			out.WriteString(r.Error())
+			if traceAbort {
+				a, b := w.streams.MintAlloc(0, 1000000000), w.streams.MintAlloc(0, 1000000000)
+				fmt.Fprintf(&out, "mint after assertion %d %d\n", a, b)
+			}
 			out.WriteString("exit 134\n")
 		default:
 			panic(r)
@@ -79,6 +89,50 @@ func runCodeSection(t *testing.T, lines []string) (output string) {
 		c := &caseLine{rest: line}
 		op := c.word()
 		switch op {
+		case "trace_abort":
+			traceAbort = true
+		case "new":
+			fmt.Fprintf(&out, "new %d\n", w.newEnt(c.num(t), c.num(t)))
+		case "scan":
+			fmt.Fprintf(&out, "scan %d\n", w.rndAllocNum(c.num(t), c.num(t)))
+		case "fill":
+			low, high, except := c.num(t), c.num(t), c.num(t)
+			for n := low; n <= high; n++ {
+				if n != except {
+					w.allocBox(n, tItem, 0)
+				}
+			}
+		case "clock":
+			w.sysclock.turn, w.sysclock.day = int16(c.num(t)), int16(c.num(t))
+		case "master":
+			n := c.num(t)
+			seed := make([]byte, 16)
+			for i := range seed {
+				seed[i] = byte(n + i)
+			}
+			path := filepath.Join(t.TempDir(), "randseed")
+			if err := os.WriteFile(path, seed, 0o600); err != nil {
+				t.Fatal(err)
+			}
+			w.loadSeed(path)
+		case "legacy":
+			fmt.Fprintf(&out, "legacy %d\n", w.rnd.Rnd(c.num(t), c.num(t)))
+		case "city":
+			fmt.Fprintf(&out, "city %d\n", w.streams.MintCity())
+		case "password":
+			fmt.Fprintf(&out, "password %d\n", w.streams.MintPassword(c.num(t), c.num(t), c.num(t)))
+		case "shuffle":
+			l := lists.IList{10, 11, 12, 13, 14, 15}
+			w.streams.MintShuffle(l)
+			out.WriteString("shuffle:")
+			for _, n := range l {
+				fmt.Fprintf(&out, " %d", n)
+			}
+			out.WriteString("\n")
+		case "seedstate":
+			m := w.rnd.MasterSeed()
+			fmt.Fprintf(&out, "master %08x %08x %08x %08x\n", m[0], m[1], m[2], m[3])
+			fmt.Fprintf(&out, "digest %x\n", w.rnd.Seed())
 		case "alloc":
 			n, k, sk := c.num(t), c.num(t), c.num(t)
 			w.allocBox(n, k, sk)

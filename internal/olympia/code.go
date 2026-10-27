@@ -565,3 +565,62 @@ func (w *world) allocBox(n, kind, sk int) {
 	w.addNextChain(n)
 	w.addSubChain(n)
 }
+
+// rndAllocNum is code.c's one-draw, inclusive upper scan then wrap. Deleted
+// boxes still occupy their slots; valid_box is deliberately not used here.
+func (w *world) rndAllocNum(low, high int) int {
+	n := w.streams.MintAlloc(low, high)
+	for i := n; i <= high; i++ {
+		if w.bx[i] == nil {
+			return i
+		}
+	}
+	for i := low; i < n; i++ {
+		if w.bx[i] == nil {
+			return i
+		}
+	}
+	return -1
+}
+
+func (w *world) newEnt(kind, sk int) int {
+	n := -1
+	switch kind {
+	case tPlayer:
+		n = w.rndAllocNum(50000, 56759)
+	case tChar, tUnform:
+		if sk == subNi {
+			n = w.rndAllocNum(79000, maxBoxes-1)
+		} else {
+			n = w.rndAllocNum(1000, 9999)
+		}
+		if n < 0 {
+			n = w.rndAllocNum(59000, 78999)
+		}
+		if n < 0 {
+			n = w.rndAllocNum(79000, maxBoxes-1)
+		}
+	case tSkill:
+		assert(false, "olympia/code.c", 864, "FALSE")
+	case tLoc:
+		switch sk {
+		case subCity:
+			n = w.rndAllocNum(56760, 58759)
+		case subRegion:
+			n = w.rndAllocNum(58760, 58999)
+		case subUnder, subForest, subOcean, subCloud, subTunnel:
+			n = w.rndAllocNum(20000, 49999)
+		default:
+			n = w.rndAllocNum(59000, 78999)
+		}
+	case tStorm:
+		n = w.rndAllocNum(79000, maxBoxes-1)
+	default:
+		n = w.rndAllocNum(59000, 78999)
+	}
+	if n < 0 {
+		n = w.rndAllocNum(79000, maxBoxes-1)
+	}
+	w.allocBox(n, kind, sk)
+	return n
+}

@@ -113,6 +113,8 @@ func (w *world) setLord(who, newLord, k, lev int) {
 	}
 	if flag {
 		nps := w.charNPTotal(who)
+		// Match C: a failed deduction leaves the transfer/refund intact and
+		// still reports Paid. https://github.com/playbymail/olympia-g3/issues/352
 		if !w.deductNP(newPl, nps) {
 			w.logWrite(10, "assert fail: new_pl=%s, who=%s, nps=%d, old_pl=%s", w.boxCode(newPl), w.boxCode(who), nps, w.boxCode(oldPl))
 		}

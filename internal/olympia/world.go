@@ -9,6 +9,7 @@ import (
 
 	"github.com/mdhender/g3g0/internal/lists"
 	"github.com/mdhender/g3g0/internal/rnd"
+	"github.com/mdhender/g3g0/internal/rng"
 )
 
 // world holds the C engine's global state: the box table bx[], the heads of
@@ -165,6 +166,12 @@ type world struct {
 	// save_seed() writes back.
 	rnd rnd.Source
 
+	// Named streams retain their counters across calls, including INIT. Their
+	// callbacks read the current master (captured by load_seed, not rnd draws)
+	// and clock only when the C turn guard calls for reseeding.
+	streams   *rng.Streams
+	outVector lists.IList // sout.c out_vector
+
 	// testUseConstReportDate is test_use_const_report_date in main.c,
 	// which times_masthead() reads.
 	testUseConstReportDate bool
@@ -184,7 +191,7 @@ type world struct {
 // load_system() sets them with atoi() and save_system() prints them with
 // %d, so any value round-trips.
 func newWorld() *world {
-	return &world{
+	w := &world{
 		bx:      make([]*box, maxBoxes),
 		cmdWait: -1,
 
@@ -219,6 +226,10 @@ func newWorld() *world {
 		stderr: os.Stderr,
 		stdout: os.Stdout,
 	}
+	w.streams = rng.NewStreams(w.rnd.MasterSeed, func() (int, int) {
+		return int(w.sysclock.turn), int(w.sysclock.day)
+	})
+	return w
 }
 
 // kind is kind(): the kind of box n, or tDeleted if n is out of range or

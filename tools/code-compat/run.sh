@@ -44,7 +44,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985}"
+G3_REV="${G3_REV:-6a25f2d252ce45bd5adbe3baaccb3be3eed56279}"
 WORK="${WORK:-${ROOT}/tmp/code-compat}"
 CC="${CC:-cc}"
 CASES="${ROOT}/internal/olympia/testdata/code-cases.txt"
@@ -90,9 +90,10 @@ routines = set()
 for m in re.finditer(r"^\{[^,]*,[^,]*,\s*(\w+),\s*(\w+),\s*(\w+),", tbl, re.M):
     routines.update(r for r in m.groups() if r != "NULL")
 with open(f"{out}/stubs.c", "w") as f:
-    f.write('#include <stdarg.h>\n#include <stdio.h>\n#include "z.h"\n#include "oly.h"\n\n')
+    f.write('#include <stdarg.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include "z.h"\n#include "oly.h"\n\n')
+    f.write('#define STUB(n) { fprintf(stderr, "out-of-scope C dependency: %s\\n", n); abort(); }\n')
     for r in sorted(routines):
-        f.write(f"int {r}(struct command *c) {{ return 0; }}\n")
+        f.write(f'int {r}(struct command *c) STUB("{r}")\n')
     # sout() as olympia/sout.c has it, less its dependencies: a ring of
     # buffers.
     f.write("""
@@ -111,9 +112,9 @@ sout(const char *format, ...)
 }
 
 /* Called only by display_name() and its users, which are not under test. */
-char *cap(char *s) { return s; }
-int is_port_city(int where) { return 0; }
-char *nice_num(int n) { return ""; }
+char *cap(char *s) STUB("cap")
+int is_port_city(int where) STUB("is_port_city")
+char *nice_num(int n) STUB("nice_num")
 """)
 
 io = open(f"{src}/io.c").read()
@@ -122,6 +123,14 @@ if not m:
     sys.exit("if_name() not found in io.c")
 with open(f"{out}/if_name.c", "w") as f:
     f.write(m.group(0))
+EOF
+
+# Include the actual translation unit so the driver can call the static scan;
+# no allocator or RNG decisions are copied into the harness.
+cat >"${WORK}/g3/mint-wrapper.c" <<'EOF'
+#include "olympia/code.c"
+int drv_rnd_alloc_num(int low, int high) { return rnd_alloc_num(low, high); }
+int drv_mint_probe(void) { return mint_alloc(0, 1000000000); }
 EOF
 
 cat >"${WORK}/driver.c" <<'EOF'
@@ -137,12 +146,25 @@ cat >"${WORK}/driver.c" <<'EOF'
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <signal.h>
 #include "z.h"
 #include "oly.h"
 #include "loop.h"
 
 void glob_init(void);
 void init_lower(void);
+int drv_rnd_alloc_num(int low, int high);
+int drv_mint_probe(void);
+
+/* Single-threaded diagnostic only: after real asfail, observe the stream left
+ * by new_ent's failed fallbacks, then let abort terminate normally. */
+static void mint_after_assertion(int sig)
+{
+	int a, b;
+	signal(SIGABRT, SIG_DFL);
+	a = drv_mint_probe(); b = drv_mint_probe();
+	printf("mint after assertion %d %d\n", a, b);
+}
 
 int pretty_data_files = FALSE;
 
@@ -445,7 +467,54 @@ main(int argc, char **argv)
 		sscanf(line, "%15s%n", op, &nread);
 		pos = line + nread;
 
-		if (strcmp(op, "alloc") == 0)
+		if (strcmp(op, "new") == 0)
+		{
+			k = num(); sk = num();
+			printf("new %d\n", new_ent(k, sk));
+		}
+		else if (strcmp(op, "scan") == 0)
+		{
+			n = num(); k = num();
+			printf("scan %d\n", drv_rnd_alloc_num(n, k));
+		}
+		else if (strcmp(op, "fill") == 0)
+		{
+			int high, except;
+			n = num(); high = num(); except = num();
+			for (; n <= high; n++) if (n != except) alloc_box(n, T_item, 0);
+		}
+		else if (strcmp(op, "clock") == 0) { sysclock.turn = (short)num(); sysclock.day = (short)num(); }
+		else if (strcmp(op, "master") == 0)
+		{
+			unsigned char seed[16]; FILE *seedfp; int i;
+			n = num(); for (i = 0; i < 16; i++) seed[i] = n + i;
+			seedfp = fopen("randseed", "wb"); fwrite(seed, 1, 16, seedfp); fclose(seedfp);
+			load_seed("randseed");
+		}
+		else if (strcmp(op, "legacy") == 0) { n = num(); k = num(); printf("legacy %d\n", rnd(n, k)); }
+		else if (strcmp(op, "city") == 0) printf("city %d\n", mint_city());
+		else if (strcmp(op, "password") == 0)
+		{
+			n = num(); k = num(); sk = num(); printf("password %d\n", mint_password(n, k, sk));
+		}
+		else if (strcmp(op, "shuffle") == 0)
+		{
+			ilist l = NULL; int i;
+			for (i = 0; i < 6; i++) ilist_append(&l, i + 10);
+			mint_shuffle(l); printf("shuffle:");
+			for (i = 0; i < 6; i++) printf(" %d", l[i]);
+			printf("\n"); ilist_reclaim(&l);
+		}
+		else if (strcmp(op, "seedstate") == 0)
+		{
+			FILE *seedfp; int i; uint32_t m[4];
+			rng_master_seed(m); printf("master %08x %08x %08x %08x\n", m[0], m[1], m[2], m[3]);
+			save_seed("digest"); seedfp = fopen("digest", "rb"); printf("digest ");
+			for (i = 0; i < 16; i++) printf("%02x", fgetc(seedfp));
+			fclose(seedfp); printf("\n");
+		}
+		else if (strcmp(op, "trace_abort") == 0) signal(SIGABRT, mint_after_assertion);
+		else if (strcmp(op, "alloc") == 0)
 		{
 			n = num();
 			k = num();
@@ -532,7 +601,7 @@ EOF
 
 echo "building the C driver (log: ${WORK}/build.log)"
 (cd "${WORK}/g3" && "${CC}" -std=c11 -w -I "${WORK}/gen" -I olympia -I lib \
-	"${WORK}/driver.c" olympia/code.c olympia/glob.c olympia/z.c \
+	"${WORK}/driver.c" mint-wrapper.c olympia/glob.c olympia/z.c \
 	"${WORK}/gen/stubs.c" lib/checked_alloc.c lib/ilist.c lib/rng.c lib/rnd.c \
 	-o "${WORK}/code-driver") >"${WORK}/build.log" 2>&1 ||
 	die "C driver build failed; see ${WORK}/build.log"
@@ -544,9 +613,12 @@ for run in run1 run2; do
 	for ((i = 0; i < sections; i++)); do
 		status=0
 		(cd "${WORK}/${run}" && run_limited "${RUN_TIMEOUT}" code-driver "${WORK}/code-driver" "${CASES}" "${i}" >>out.txt) || status=$?
+		[ "${status}" != 124 ] || die "C section ${i} timed out"
+		case "${status}" in 0|134) ;; *) die "unexpected C status ${status} in section ${i}" ;; esac
 		echo "exit ${status}" >>"${WORK}/${run}/out.txt"
 	done
 done 2>/dev/null
+! grep -q 'out-of-scope C dependency:' "${WORK}/run1/out.txt" || die "C driver reached a stub"
 cmp -s "${WORK}/run1/out.txt" "${WORK}/run2/out.txt" || die "C driver is not deterministic"
 echo "C driver: ${sections} sections, $(wc -l <"${WORK}/run1/out.txt" | tr -d ' ') lines, deterministic"
 

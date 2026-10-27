@@ -13,6 +13,8 @@ import (
 
 // Ported from olympia/sout.c.
 
+const vect = -1 // sout.h VECT
+
 // sout is sout(): the formatted string, cut to BUF_LEN (LEN) bytes, the
 // size of the ring buffers C prints into. C's ring of 50 buffers is not
 // needed: each call returns a new string.
@@ -26,6 +28,13 @@ func sout(format string, a ...any) string {
 // framing even in immediate mode, and keep the player's output bit mutation.
 // Other routing/formatting and report assembly are stage 2, not no-op stubs.
 func (w *world) commandOut(who int, format string, a ...any) {
+	if who == vect {
+		for _, n := range w.outVector {
+			assert(n != vect, "olympia/sout.c", 457, "out_vector[i] != VECT")
+			w.commandOut(n, format, a...)
+		}
+		return
+	}
 	if w.isPrisoner(who) {
 		return
 	}
@@ -33,6 +42,21 @@ func (w *world) commandOut(who int, format string, a ...any) {
 		panic(notImplemented("command output routing"))
 	}
 	w.bottomOut(w.player(who), who, format, a...)
+}
+
+// vector_char_here uses all_char_here: descendants only, depth first,
+// excluding non-character branches. The vector persists until replaced.
+func (w *world) vectorCharHere(where int) {
+	assert(w.validBox(where), "olympia/loc.c", 92, "valid_box(who)")
+	w.outVector.Clear()
+	// all_char_here's NULL loc_info check cannot fire after valid_box:
+	// oly.h embeds x_loc_info in the box, and rp_loc_info takes its address.
+	// An unlocated character still has this structure (where == 0).
+	for _, n := range w.rpLocInfo(where).hereList {
+		if w.kind(n) == tChar {
+			w.addCharHere(n, &w.outVector)
+		}
+	}
 }
 
 // logWrite is the small MASTER route used for code alerts. It bypasses

@@ -25,6 +25,7 @@ int drv_fort_covers(int n);
 char *drv_wait_check(struct command *c);
 void drv_signal(int who, char *flag);
 void drv_interrupted(void);
+int drv_sub_item(int who, int item, int qty);
 
 static void wait_dump(struct command *c)
 {
@@ -64,7 +65,7 @@ int main(int argc, char **argv)
 {
  FILE *fp, *log;
  char line[8192], op[32], text[8192], label[32];
- int section = -1, want, n, a, b, d, i, result;
+ int section = -1, want, n, a, b, d, i, result, created = 0;
  struct command *c;
  if (argc != 4 || !(fp = fopen(argv[1], "r"))) return 2;
  want = atoi(argv[2]);
@@ -96,7 +97,34 @@ int main(int argc, char **argv)
   if (section != want) continue;
   printf("> %s\n", line);
   sscanf(line, "%31s", op);
-  if (!strcmp(op, "queue"))
+  if (!strcmp(op, "newchar")) {
+   int ni, where, health, pl, lk, ll;
+   text[0] = 0;
+   sscanf(line, "%*s %d %d %d %d %d %d %d %8191[^\n]", &n, &ni, &where, &health, &pl, &lk, &ll, text);
+   created = new_char(n, ni, where, health, pl, lk, ll, text);
+   printf("created %d\n", created);
+  }
+  else if (!strcmp(op, "newitem")) {
+   sscanf(line, "%*s %d %d", &n, &a);
+   created = create_unique_item(n, a); printf("created %d\n", created);
+  }
+  else if (!strcmp(op, "save_new")) save_box(stdout, created);
+  else if (!strcmp(op, "delete_new")) { sscanf(line, "%*s %d", &n); destroy_unique_item(n, created); }
+  else if (!strcmp(op, "created_state"))
+   printf("created kind %d sub %d unique %d\n",kind(created),subkind(created),item_unique(created));
+  else if (!strcmp(op, "body_new")) {
+   text[0] = 0;
+   sscanf(line,"%*s %d %d %d %d %8191[^\n]",&n,&a,&b,&d,text);
+   p_misc(created)->old_lord=n; p_misc(created)->save_name=*text ? str_save(text) : NULL;
+   p_char(created)->prev_lord=a; p_char(created)->loy_kind=b; p_char(created)->loy_rate=d;
+  }
+  else if (!strcmp(op, "destroy")) { sscanf(line,"%*s %d %d",&n,&a); destroy_unique_item(n,a); }
+  else if (!strcmp(op, "subitem")) {
+   sscanf(line,"%*s %d %d %d",&n,&a,&b); printf("subitem %d\n",drv_sub_item(n,a,b));
+  }
+  else if (!strcmp(op, "join")) { sscanf(line,"%*s %d %d",&n,&a); join_stack(n,a); }
+  else if (!strcmp(op, "leave")) { sscanf(line,"%*s %d",&n); leave_stack(n); }
+  else if (!strcmp(op, "queue"))
    cstrings_append(&drv_orders(player(c->who), c->who)->l, str_save(line + 6));
   else if (!strcmp(op, "orders")) {
    sscanf(line, "%*s %d %d %8191[^\n]", &n, &a, text);
@@ -202,6 +230,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"unit")) ilist_append(&p_player(n)->units,a);
    else if (!strcmp(text,"np")) p_player(n)->noble_points = (short)a;
    else if (!strcmp(text,"skill_np")) p_skill(n)->np_req = a;
+   else if (!strcmp(text,"capturable")) p_item(n)->capturable = (schar)a;
+   else if (!strcmp(text,"release")) p_magic(n)->swear_on_release = (schar)a;
    else if (!strcmp(text,"health")) p_char(n)->health = (schar)a;
    else if (!strcmp(text,"prisoner")) p_char(n)->prisoner = (schar)a;
    else if (!strcmp(text,"npc")) p_char(n)->npc_prog = (schar)a;

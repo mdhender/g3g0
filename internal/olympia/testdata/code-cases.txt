@@ -1,6 +1,6 @@
 # Differential cases for the entity allocation, kind and subkind chains,
 # codes and names of G3's olympia/code.c (and if_name() in olympia/io.c), at
-# G3 47535543d83fbc5649d54b63b49e578f2b11ab1c.
+# G3 6a25f2d252ce45bd5adbe3baaccb3be3eed56279.
 #
 # tools/code-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in code-c-output.txt;
@@ -403,3 +403,193 @@ name 1001
 
 section setname of missing box
 setname 1001 Nobody
+
+# kind/subkind values come from oly.h (numeric to exercise the real API).
+section mint branch ranges and chain order at INIT
+new 1 0
+new 2 0
+new 12 0
+new 2 54
+new 12 54
+new 3 14
+new 3 50
+new 3 7
+new 3 2
+new 3 1
+new 3 65
+new 3 70
+new 3 3
+new 11 0
+new 4 0
+new 9 0
+new 6 0
+new 7 0
+new 13 0
+chains
+seedstate
+
+section mint inclusive upper scan
+fill 1200 1209 1209
+scan 1200 1209
+scan 1209 1209
+city
+
+section mint scan start control
+scan 1200 1209
+city
+
+section mint wrap scan
+fill 1200 1209 1200
+scan 1200 1209
+city
+
+section mint occupied and deleted unavailable
+fill 1200 1209 0
+delete 1205
+scan 1200 1209
+scan 1205 1205
+city
+
+section mint sparse holes and repeated allocation
+alloc 1000 2 0
+alloc 9999 2 0
+alloc 5327 2 0
+delete 5327
+new 2 0
+new 2 0
+new 2 0
+chains
+
+section mint player fallback
+fill 50000 56759 0
+new 1 0
+city
+
+section mint char first fallback
+fill 1000 9999 0
+new 2 0
+city
+
+section mint char second fallback
+fill 1000 9999 0
+fill 59000 78999 0
+new 12 0
+city
+
+section mint ni first fallback
+fill 79000 149999 0
+new 2 54
+city
+
+section mint loc fallback
+fill 56760 58759 0
+new 3 14
+city
+
+section mint full general range fallback
+fill 59000 78999 0
+new 4 0
+city
+
+section mint region range fallback
+fill 58760 58999 0
+new 3 50
+city
+
+section mint exhausted char repeats final range
+fill 1000 9999 0
+fill 59000 149999 0
+trace_abort
+new 2 0
+
+section mint exhausted ni repeats final range
+fill 59000 149999 0
+trace_abort
+new 2 54
+
+section mint exhausted storm repeats final range
+fill 79000 149999 0
+trace_abort
+new 11 0
+
+section mint skill forbidden
+trace_abort
+new 5 0
+
+# Password is keyed (does not consume sequential draws); city and shuffle do.
+section mint shared counter day turn master and legacy discrimination
+master 0
+seedstate
+scan 1000 9999
+password 200 0 62
+password 200 0 62
+city
+shuffle
+scan 1000 9999
+clock 0 17
+scan 1000 9999
+legacy 0 1000000
+seedstate
+scan 1000 9999
+master 32
+seedstate
+scan 1000 9999
+clock 1 0
+scan 1000 9999
+new 4 0
+scan 1000 9999
+clock 2 0
+scan 1000 9999
+new 4 0
+clock 1 0
+scan 1000 9999
+new 4 0
+seedstate
+
+section mint legacy control
+master 0
+scan 1000 9999
+scan 1000 9999
+legacy 0 1000000
+scan 1000 9999
+clock 1 0
+scan 1000 9999
+seedstate
+
+section mint no legacy control
+master 0
+scan 1000 9999
+scan 1000 9999
+scan 1000 9999
+clock 1 0
+scan 1000 9999
+seedstate
+
+section mint master unchanged within turn control
+master 0
+scan 1000 9999
+master 32
+scan 1000 9999
+clock 1 0
+scan 1000 9999
+
+section mint master same initial seed control
+master 0
+scan 1000 9999
+scan 1000 9999
+clock 1 0
+scan 1000 9999
+
+section mint initial minus-one guard and signed short turns
+master 0
+clock -1 0
+new 2 0
+clock 0 0
+new 2 0
+clock 32767 0
+new 2 0
+clock 32768 0
+new 2 0
+clock -32768 29
+new 2 0
+chains
