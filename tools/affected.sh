@@ -11,7 +11,7 @@
 #
 # Prints one tool per line, then, on stderr, the changed files that no
 # tool reads. Tools that build the whole C engine (olympia-cli-compat,
-# olympia-roundtrip, olympia-spec) are listed whenever anything changed.
+# olympia-roundtrip, olympia-spec, turn-compat) are listed whenever anything changed.
 # genesis-compat, island-compat and mapgen-compat have pins of their own and
 # are not considered.
 #
@@ -91,14 +91,14 @@ reads() {
 		esac
 		[ "$1" = boxfile-compat ] && [ "$2" = olympia/swear.c ] && return 0
 		;;
-	olympia-cli-compat | olympia-roundtrip | olympia-spec)
+	olympia-cli-compat | olympia-roundtrip | olympia-spec | turn-compat)
 		return 0 ;;
 	esac
 	return 1
 }
 
 tools=(rng-compat lists-compat entity-compat code-compat helper-compat io-compat box-compat boxfile-compat
-	check-compat loadsave-compat scanf-compat olympia-cli-compat olympia-roundtrip olympia-spec)
+	check-compat loadsave-compat scanf-compat olympia-cli-compat olympia-roundtrip olympia-spec turn-compat)
 
 for t in "${tools[@]}"; do
 	for f in "${changed[@]}"; do

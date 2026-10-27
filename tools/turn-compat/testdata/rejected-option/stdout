@@ -1,0 +1,3 @@
+The Olympia C code is not 64-bit clean.
+at the least: it puts pointers into ilists
+	sizeof(struct box) = 144

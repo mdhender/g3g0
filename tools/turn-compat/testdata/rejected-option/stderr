@@ -1,0 +1,21 @@
+usage: oly [options]
+	-w		Windows mode
+	-a		Add new players mode
+	-e		Eat orders from libdir/spool
+	-E		Eat orders from libdir/spool and terminate
+	-f		Don't buffer files for debugging
+	-i		Immediate mode
+	-l dir		Specify libdir, default ./lib
+	-p		Don't make data files pretty
+	-r		Run a turn
+	-R		Test the random number generator
+	-s		Extract safe havens as start city list
+	-S		Save the database at completion
+	-t		Test ilist code
+	-T		Print timing info
+	-M		Mail reports and order acks
+	-A		Charge player accounts
+	-G seed		Set per-game trade-route seed (game creation only)
+	--coverage path	Write the command coverage dump to path
+	--use-coverage path	Write the use coverage dump to path
+	--state-export path	Write the faction state export to path
