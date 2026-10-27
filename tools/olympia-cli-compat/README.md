@@ -20,10 +20,10 @@ Every such mode reaches `load_db()` first, so the message names `load_db` and th
 ### `sizeof(struct box)`
 
 `main()` prints `sizeof(struct box) = N`, and the Go engine has to print the bytes of the C build it is compared with.
-The Go value is `unsafe.Sizeof` of `cBox` in [`internal/olympia/box.go`](../../internal/olympia/box.go), a struct that mirrors the C `struct box` field for field by size and alignment (`schar` as `int8`, `int` as `int32`, every pointer and `ilist` as a pointer).
-Go pads it the way the C compiler pads `struct box`, so it gives the size for the host it is built on, as a C build on that host does: 144 on the 64-bit reference hosts.
+The Go value is `sizeofBox` in [`internal/olympia/box.go`](../../internal/olympia/box.go): `cSizeof` walks the Go `box` type by reflection and lays it out as C does (`int8`/`int16`/`int32` as themselves, every pointer, slice, string and func as a C pointer, with C's padding).
+So it gives the size for the host it is built on, as a C build on that host does: 144 on the 64-bit reference hosts.
 The `sizeof(int) != sizeof(int *)` warning before it is printed on the same condition.
-`box.go` has to change when the pinned revision changes `struct box`; the `rng-selftest` gate and the matrix catch a mismatch.
+The entity types have to change when the pinned revision changes `struct box`, and nothing that isn't a C field may be added to them; the `rng-selftest` gate and the matrix catch a mismatch.
 
 ## Prerequisites
 
