@@ -1,0 +1,6 @@
+# Spec gates that pass against the Go engine (cmd/olympia), one per line.
+# Written by tools/olympia-spec/run.sh; do not edit by hand.
+# G3 revision: 6bbcd63055d051ade6f745f368281628441a2c27
+# A name is a tests/olympia/regress fixture; "golden" is golden_check.sh
+# after run/olympia-g3.sh.
+rng-selftest
