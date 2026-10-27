@@ -75,6 +75,16 @@ type world struct {
 	// io.c reads. C starts it FALSE and -p toggles it.
 	prettyDataFiles bool
 
+	// lr is the state of the readfile()/readlin() line reader in z.c.
+	lr lineReader
+
+	// line and extBoxnum are the statics of the same names in io.c: the
+	// line the scanners are looking at (nil for NULL, at end of file),
+	// which they move past its first byte, and the box load_box() is
+	// reading, for box_scan()'s diagnostic.
+	line      *string
+	extBoxnum int32
+
 	// stderr is C's stderr, which print_box_usage() and alloc_box() write
 	// to. newWorld sets it to os.Stderr; the engine sets it to its own.
 	stderr io.Writer
