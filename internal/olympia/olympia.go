@@ -11,7 +11,10 @@
 // The entity model of olympia/oly.h and olympia/glob.c is in entity.go
 // (the structures), oly.go (the constants), glob.go (the constant tables)
 // and world.go (the global state, as a world, and the p_xxx and rp_xxx
-// accessors). Nothing in main() uses it yet.
+// accessors). code.go ports olympia/code.c's box allocation, kind and
+// subkind chains, entity codes and names, loop.go the entity loops of
+// olympia/loop.h, and z.go the failed assert(). Nothing in main() uses them
+// yet.
 package olympia
 
 import (

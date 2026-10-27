@@ -46,10 +46,9 @@ func TestAccessors(t *testing.T) {
 // TestWorldsAreIndependent checks that two worlds share no state.
 func TestWorldsAreIndependent(t *testing.T) {
 	a, b := newWorld(), newWorld()
-	a.bx[5] = &box{kind: tItem}
-	a.boxHead[tItem] = 5
+	a.allocBox(5, tItem, 0)
 	a.indepPlayer = 101
-	if b.kind(5) != tDeleted || b.boxHead[tItem] != 0 || b.indepPlayer != 100 {
+	if b.kind(5) != tDeleted || b.boxHead[tItem] != 0 || b.subHead[0] != 0 || b.indepPlayer != 100 {
 		t.Fatal("worlds share state")
 	}
 }

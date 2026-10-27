@@ -1,0 +1,652 @@
+section codes
+> code -2147483648
+int_to_code [-2147483648] code_to_int 0
+> code -1
+int_to_code [-1] code_to_int 0
+> code 0
+int_to_code [0] code_to_int 0
+> code 1
+int_to_code [1] code_to_int 1
+> code 999
+int_to_code [999] code_to_int 999
+> code 1000
+int_to_code [1000] code_to_int 1000
+> code 9999
+int_to_code [9999] code_to_int 9999
+> code 10000
+int_to_code [aa00] code_to_int 10000
+> code 10001
+int_to_code [aa01] code_to_int 10001
+> code 10099
+int_to_code [aa99] code_to_int 10099
+> code 10100
+int_to_code [ab00] code_to_int 10100
+> code 11999
+int_to_code [az99] code_to_int 11999
+> code 12000
+int_to_code [ba00] code_to_int 12000
+> code 19999
+int_to_code [fz99] code_to_int 19999
+> code 20000
+int_to_code [ga00] code_to_int 20000
+> code 49999
+int_to_code [zz99] code_to_int 49999
+> code 50000
+int_to_code [aa0] code_to_int 50000
+> code 50009
+int_to_code [aa9] code_to_int 50009
+> code 50010
+int_to_code [ab0] code_to_int 50010
+> code 50259
+int_to_code [az9] code_to_int 50259
+> code 50260
+int_to_code [ba0] code_to_int 50260
+> code 56759
+int_to_code [zz9] code_to_int 56759
+> code 56760
+int_to_code [a00] code_to_int 56760
+> code 56769
+int_to_code [a09] code_to_int 56769
+> code 56770
+int_to_code [a10] code_to_int 56770
+> code 58759
+int_to_code [z99] code_to_int 58759
+> code 58760
+int_to_code [58760] code_to_int 58760
+> code 58999
+int_to_code [58999] code_to_int 58999
+> code 59000
+int_to_code [a000] code_to_int 59000
+> code 59999
+int_to_code [a999] code_to_int 59999
+> code 60000
+int_to_code [b000] code_to_int 60000
+> code 78999
+int_to_code [z999] code_to_int 78999
+> code 79000
+int_to_code [79000] code_to_int 79000
+> code 99999
+int_to_code [99999] code_to_int 99999
+> code 149999
+int_to_code [149999] code_to_int 149999
+> code 150000
+int_to_code [150000] code_to_int 150000
+> code 2147483647
+int_to_code [2147483647] code_to_int 2147483647
+> int
+code_to_int 0
+> int 0
+code_to_int 0
+> int 12
+code_to_int 12
+> int 0012
+code_to_int 12
+> int 12ab
+code_to_int 12
+> int 99999999999
+code_to_int 1215752191
+> int -5
+code_to_int 0
+> int  12
+code_to_int 0
+> int +12
+code_to_int 0
+> int aa00
+code_to_int 10000
+> int AA00
+code_to_int 10000
+> int aA00
+code_to_int 10000
+> int ab12
+code_to_int 10112
+> int dv99
+code_to_int 17699
+> int dw00
+code_to_int 17700
+> int zz99
+code_to_int 49999
+> int ZZ99
+code_to_int 49999
+> int ez99
+code_to_int 11999
+> int ze99
+code_to_int 48099
+> int aa0
+code_to_int 50000
+> int zz9
+code_to_int 56759
+> int ZZ9
+code_to_int 56759
+> int aZ9
+code_to_int 50259
+> int a00
+code_to_int 56760
+> int b00
+code_to_int 56860
+> int z99
+code_to_int 58759
+> int e99
+code_to_int 56859
+> int l99
+code_to_int 56859
+> int a000
+code_to_int 59000
+> int z999
+code_to_int 78999
+> int Z999
+code_to_int 78999
+> int e000
+code_to_int 59000
+> int ab1
+code_to_int 50011
+> int ab
+code_to_int 0
+> int a
+code_to_int 0
+> int a1
+code_to_int 0
+> int abc
+code_to_int 0
+> int abcd
+code_to_int 0
+> int abcde
+code_to_int 0
+> int ab123
+code_to_int 0
+> int a1b
+code_to_int 0
+> int a1b2
+code_to_int 0
+> int ab1c
+code_to_int 0
+> int a12b
+code_to_int 0
+> int [ab12]
+code_to_int 0
+> int \x80b1
+code_to_int 0
+> int a\x80\x31
+code_to_int 0
+> int ab\x80
+code_to_int 0
+> int \xffz99
+code_to_int 0
+> int a b1
+code_to_int 0
+> int aa 0
+code_to_int 0
+> scode [ab12]
+scode 0
+> scode [ab1
+scode 50011
+> scode (ab1
+scode 50011
+> scode [1234]
+scode 1234
+> scode (12
+scode 12
+> scode [(ab1
+scode 0
+> scode ((12
+scode 0
+> scode ab12
+scode 10112
+> scode [
+scode 0
+> scode
+scode 0
+> scode ]ab1
+scode 0
+> letter abcdefghijklmnopqrstuvwxyz
+letter_val: 0 1 2 3 0 4 5 6 0 7 8 0 9 10 0 11 12 13 14 15 0 16 17 18 0 19
+> letter ABZ\x80\xff
+letter_val: 0 0 0 0 0
+> codesum
+int_to_code(-10) = [-10] code_to_int = 0
+int_to_code(-9) = [-9] code_to_int = 0
+int_to_code(-8) = [-8] code_to_int = 0
+int_to_code(-7) = [-7] code_to_int = 0
+int_to_code(-6) = [-6] code_to_int = 0
+int_to_code(-5) = [-5] code_to_int = 0
+int_to_code(-4) = [-4] code_to_int = 0
+int_to_code(-3) = [-3] code_to_int = 0
+int_to_code(-2) = [-2] code_to_int = 0
+int_to_code(-1) = [-1] code_to_int = 0
+int_to_code -10..150010: 10 do not convert back, sum a1832b9135d75b03
+strings: 111151, sum 5ebb58318be1bfc3
+shapes: 354640, sum 0d88a17c1e234275
+exit 0
+section allocation order
+> alloc 1001 2 0
+> alloc 1003 2 0
+> alloc 1002 2 0
+> alloc 1000 2 0
+> alloc 1005 2 0
+> chains
+kind 2: 1000 1001 1002 1003 1005
+sub 0: 1000 1001 1002 1003 1005
+> alloc 5 4 0
+> alloc 3 4 10
+> alloc 1004 2 7
+> alloc 4 4 0
+> alloc 1006 2 7
+> alloc 2 4 10
+> chains
+kind 2: 1000 1001 1002 1003 1004 1005 1006
+kind 4: 2 3 4 5
+sub 0: 4 5 1000 1001 1002 1003 1005
+sub 7: 1004 1006
+sub 10: 2 3
+> alloc 1007 2 7
+> alloc 6 4 0
+> alloc 1008 2 0
+> alloc 7 4 10
+> alloc 1 4 7
+> chains
+kind 2: 1000 1001 1002 1003 1004 1005 1006 1007 1008
+kind 4: 1 2 3 4 5 6 7
+sub 0: 4 5 6 1000 1001 1002 1003 1005 1008
+sub 7: 1 1004 1006 1007
+sub 10: 2 3 7
+> loop kind 2
+visit: 1000 1001 1002 1003 1004 1005 1006 1007 1008
+> loop kind 4
+visit: 1 2 3 4 5 6 7
+> loop sub 0
+visit: 4 5 6 1000 1001 1002 1003 1005 1008
+> loop sub 7
+visit: 1 1004 1006 1007
+> loop sub 10
+visit: 2 3 7
+> loop kind 3
+visit:
+> loop boxes
+visit: 1 2 3 4 5 6 7 1000 1001 1002 1003 1004 1005 1006 1007 1008
+> usage
+entity space usage:
+	 1000 -  9999  char  9/8999 used (0%)
+	20000 - 59999  locs  0/39999 used (0%)
+	50000 - 56759  play  0/6759 used (0%)
+	56760 - 58759  lloc  0/1999 used (0%)
+	59000 - 78999  subl  0/19999 used (0%)
+	79900 - 149999  rest  0/70099 used (0%)
+exit 0
+section descending and mixed
+> alloc 9000 5 0
+> alloc 8000 2 0
+> alloc 7000 2 0
+> alloc 6000 2 1
+> alloc 6500 2 1
+> alloc 9500 5 0
+> alloc 9100 5 0
+> alloc 6200 2 1
+> alloc 9600 5 0
+> alloc 9700 5 0
+> alloc 6100 2 1
+> chains
+kind 2: 6000 6100 6200 6500 7000 8000
+kind 5: 9000 9100 9500 9600 9700
+sub 0: 7000 8000 9000 9100 9500 9600 9700
+sub 1: 6000 6100 6200 6500
+exit 0
+section delete
+> alloc 10 4 0
+> alloc 20 4 0
+> alloc 30 4 0
+> alloc 40 4 0
+> alloc 50 4 0
+> chains
+kind 4: 10 20 30 40 50
+sub 0: 10 20 30 40 50
+> delete 10
+> chains
+kind 4: 20 30 40 50
+sub 0: 20 30 40 50
+> delete 30
+> chains
+kind 4: 20 40 50
+sub 0: 20 40 50
+> delete 50
+> chains
+kind 4: 20 40
+sub 0: 20 40
+> alloc 60 4 0
+> alloc 55 4 0
+> alloc 45 4 0
+> alloc 70 4 0
+> chains
+kind 4: 20 40 45 55 60 70
+sub 0: 20 40 45 55 60 70
+> delete 70
+> alloc 80 4 0
+> alloc 75 4 0
+> chains
+kind 4: 20 40 45 55 60 75 80
+sub 0: 20 40 45 55 60 75 80
+> loop kind 4
+visit: 20 40 45 55 60 75 80
+> loop boxes
+visit: 20 40 45 55 60 75 80
+> name 20
+name []
+> setname 20 Twenty
+> name 20
+name [Twenty]
+> delete 20
+> chains
+kind 4: 40 45 55 60 75 80
+sub 0: 40 45 55 60 75 80
+> ifname 20 1
+if_name []
+> alloc 15 4 0
+> chains
+kind 4: 15 40 45 55 60 75 80
+sub 0: 15 40 45 55 60 75 80
+exit 0
+section delete inside loops
+> alloc 100 3 1
+> alloc 200 3 2
+> alloc 300 3 1
+> alloc 400 3 2
+> alloc 500 3 1
+> alloc 600 9 3
+> alloc 700 9 3
+> loop kind 3 add 350 3 1
+visit: 100 200 300 350 400 500
+> chains
+kind 3: 100 200 300 350 400 500
+kind 9: 600 700
+sub 1: 100 300 350 500
+sub 2: 200 400
+sub 3: 600 700
+> loop kind 3 add 50 3 1
+visit: 100 200 300 350 400 500
+> chains
+kind 3: 50 100 200 300 350 400 500
+kind 9: 600 700
+sub 1: 50 100 300 350 500
+sub 2: 200 400
+sub 3: 600 700
+> loop sub 1 del
+visit: 50 100 300 350 500
+> chains
+kind 3: 200 400
+kind 9: 600 700
+sub 2: 200 400
+sub 3: 600 700
+> loop kind 3 add 650 3 4
+visit: 200 400 650
+> chains
+kind 3: 200 400 650
+kind 9: 600 700
+sub 2: 200 400
+sub 3: 600 700
+sub 4: 650
+> loop locship
+visit: 600 700 200 400 650
+> loop kind 3 del
+visit: 200 400 650
+> chains
+kind 9: 600 700
+sub 3: 600 700
+> loop locship
+visit: 600 700
+> loop kind 9 del
+visit: 600 700
+> loop locship
+visit:
+> chains
+exit 0
+section change kind and subkind
+> alloc 1000 2 0
+> alloc 1001 2 0
+> alloc 1002 2 0
+> alloc 1003 2 0
+> alloc 1 4 0
+> alloc 2 4 0
+> chains
+kind 2: 1000 1001 1002 1003
+kind 4: 1 2
+sub 0: 1 2 1000 1001 1002 1003
+> kind 1001 4
+> chains
+kind 2: 1000 1002 1003
+kind 4: 1 2 1001
+sub 0: 1 2 1000 1001 1002 1003
+> kind 1001 4
+> chains
+kind 2: 1000 1002 1003
+kind 4: 1 2 1001
+sub 0: 1 2 1000 1001 1002 1003
+> kind 1 2
+> alloc 1004 2 0
+> chains
+kind 2: 1 1000 1002 1003 1004
+kind 4: 2 1001
+sub 0: 1 2 1000 1001 1002 1003 1004
+> kind 1002 2
+> chains
+kind 2: 1 1000 1002 1003 1004
+kind 4: 2 1001
+sub 0: 1 2 1000 1001 1002 1003 1004
+> alloc 1005 2 0
+> kind 1005 2
+> alloc 1006 2 0
+> chains
+kind 2: 1 1000 1002 1003 1004 1005 1006
+kind 4: 2 1001
+sub 0: 1 2 1000 1001 1002 1003 1004 1005 1006
+> sub 1000 0
+> chains
+kind 2: 1 1000 1002 1003 1004 1005 1006
+kind 4: 2 1001
+sub 0: 1 2 1000 1001 1002 1003 1004 1005 1006
+> sub 1000 20
+> sub 1003 20
+> sub 1001 20
+> chains
+kind 2: 1 1000 1002 1003 1004 1005 1006
+kind 4: 2 1001
+sub 0: 1 2 1002 1004 1005 1006
+sub 20: 1000 1001 1003
+> sub 1003 0
+> alloc 1010 2 0
+> chains
+kind 2: 1 1000 1002 1003 1004 1005 1006 1010
+kind 4: 2 1001
+sub 0: 1 2 1002 1003 1004 1005 1006 1010
+sub 20: 1000 1001
+> sub 1000 0
+> alloc 1011 2 20
+> chains
+kind 2: 1 1000 1002 1003 1004 1005 1006 1010 1011
+kind 4: 2 1001
+sub 0: 1 2 1000 1002 1003 1004 1005 1006 1010
+sub 20: 1001 1011
+> kind 2 0
+> chains
+kind 2: 1 1000 1002 1003 1004 1005 1006 1010 1011
+kind 4: 1001
+sub 0: 1 2 1000 1002 1003 1004 1005 1006 1010
+sub 20: 1001 1011
+> loop boxes
+visit: 1 1000 1001 1002 1003 1004 1005 1006 1010 1011
+exit 0
+section names and banners
+> alloc 1001 2 0
+> alloc 1002 2 0
+> alloc 1003 2 0
+> alloc 999 4 0
+> name 1001
+name []
+> ifname 1001 0
+if_name []
+> ifname 1001 1
+if_name []
+> setname 1001 Osswid the [Great]
+> name 1001
+name [Osswid the {Great}]
+> ifname 1001 0
+if_name []
+> ifname 1001 1
+if_name [ (Osswid the {Great})]
+> ifname 1002 1
+if_name []
+> setname 1002
+> name 1002
+name []
+> ifname 1002 1
+if_name []
+> ifname 1004 1
+if_name []
+> ifname 0 1
+if_name []
+> ifname 150000 1
+if_name []
+> setname 1003 ]]x[[ \xe9t\xe9
+> name 1003
+name [}}x{{ \xe9t\xe9]
+> setname 1003 renamed
+> name 1003
+name [renamed]
+> banner 1001
+banner NULL
+> banner 1001 Banner one
+banner [Banner one]
+> banner 1001
+banner NULL
+> banner 1002 12345678901234567890123456789012345678901234567890
+banner [12345678901234567890123456789012345678901234567890]
+> banner 1002 123456789012345678901234567890123456789012345678901
+banner [12345678901234567890123456789012345678901234567890]
+> banner 1002 123456789012345678901234567890123456789012345678901234567890
+banner [12345678901234567890123456789012345678901234567890]
+> banner 1003 [b]
+banner [[b]]
+> boxcode 1
+box_code [[1]] box_code_less [1]
+> boxcode 999
+box_code [Garrison] box_code_less [999]
+> boxcode 1001
+box_code [[1001]] box_code_less [1001]
+> boxcode 10000
+box_code [[aa00]] box_code_less [aa00]
+> boxcode 56760
+box_code [[a00]] box_code_less [a00]
+> boxcode 79000
+box_code [[79000]] box_code_less [79000]
+> boxcode 0
+box_code [[0]] box_code_less [0]
+> boxcode -3
+box_code [[-3]] box_code_less [-3]
+> loc 1001
+loc 0
+exit 0
+section usage
+> usage
+entity space usage:
+	 1000 -  9999  char  0/8999 used (0%)
+	20000 - 59999  locs  0/39999 used (0%)
+	50000 - 56759  play  0/6759 used (0%)
+	56760 - 58759  lloc  0/1999 used (0%)
+	59000 - 78999  subl  0/19999 used (0%)
+	79900 - 149999  rest  0/70099 used (0%)
+> alloc 1000 2 0
+> alloc 9999 2 0
+> alloc 10000 3 0
+> alloc 19999 3 0
+> alloc 20000 3 0
+> alloc 50000 1 0
+> alloc 56759 1 0
+> alloc 56760 3 14
+> alloc 58760 3 0
+> alloc 58999 3 0
+> alloc 59000 3 0
+> alloc 59999 3 0
+> alloc 78999 3 0
+> alloc 79000 11 0
+> alloc 79899 11 0
+> alloc 79900 11 0
+> alloc 149999 11 0
+> delete 9999
+> usage
+entity space usage:
+	 1000 -  9999  char  2/8999 used (0%)
+	20000 - 59999  locs  8/39999 used (0%)
+	50000 - 56759  play  2/6759 used (0%)
+	56760 - 58759  lloc  1/1999 used (0%)
+	59000 - 78999  subl  3/19999 used (0%)
+	79900 - 149999  rest  2/70099 used (0%)
+exit 0
+section alloc dup
+> alloc 1001 2 0
+> alloc 1002 2 0
+> alloc 1001 4 0
+alloc_box: DUP box 1001
+assertion failure: olympia/code.c (695): FALSE
+exit 134
+section alloc dup deleted
+> alloc 1001 2 0
+> delete 1001
+> alloc 1001 2 0
+alloc_box: DUP box 1001
+assertion failure: olympia/code.c (695): FALSE
+exit 134
+section alloc zero
+> alloc 0 2 0
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+exit 134
+section alloc max
+> alloc 149999 2 0
+> alloc 150000 2 0
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+exit 134
+section delete twice
+> alloc 1001 2 0
+> alloc 1002 2 0
+> delete 1001
+> delete 1001
+assertion failure: olympia/code.c (558): i > 0
+exit 134
+section delete only box twice
+> alloc 1001 2 0
+> delete 1001
+> delete 1001
+assertion failure: olympia/code.c (558): i > 0
+exit 134
+section delete missing
+> delete 1001
+assertion failure: olympia/code.c (545): bx[n] != NULL
+exit 134
+section change kind of deleted
+> alloc 1001 2 0
+> delete 1001
+> kind 1001 2
+assertion failure: olympia/code.c (558): i > 0
+exit 134
+section change subkind of deleted
+> alloc 1001 2 5
+> alloc 1002 2 5
+> delete 1001
+> sub 1001 5
+> sub 1001 6
+assertion failure: olympia/code.c (638): i > 0
+exit 134
+section name of missing box
+> alloc 1001 2 0
+> name 1001
+name []
+> name 1002
+assertion failure: olympia/code.c (228): valid_box(n)
+exit 134
+section name of deleted box
+> alloc 1001 2 0
+> setname 1001 Gone
+> delete 1001
+> name 1001
+assertion failure: olympia/code.c (228): valid_box(n)
+exit 134
+section setname of missing box
+> setname 1001 Nobody
+assertion failure: olympia/code.c (241): valid_box(n)
+exit 134

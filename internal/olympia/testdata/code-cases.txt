@@ -1,0 +1,405 @@
+# Differential cases for the entity allocation, kind and subkind chains,
+# codes and names of G3's olympia/code.c (and if_name() in olympia/io.c), at
+# G3 6bbcd63055d051ade6f745f368281628441a2c27.
+#
+# tools/code-compat/run.sh feeds this file to a C driver built from the
+# pinned sources and records its output in code-c-output.txt;
+# TestCodeMatchesC feeds it to the Go port and requires the same output.
+#
+# Each "section NAME" line starts a section. Every section runs in a fresh
+# process (a fresh world, after glob_init()), so a section may end in a
+# failed assertion: the driver prints what asfail() prints and the process
+# aborts, and run.sh adds "exit STATUS" after each section. stderr goes to
+# the same place as stdout, in order.
+#
+# One operation per line; a line that starts with '#' is a comment, and
+# blank lines are skipped. N, K, SK and L are integers, read with
+# strtol(s, NULL, 0). TEXT is the rest of the line after one space, with
+# \xHH and \\ escapes; with no space it is empty.
+#
+#   alloc N K SK      alloc_box(N, K, SK)
+#   delete N          delete_box(N)
+#   kind N K          change_box_kind(N, K)
+#   sub N SK          change_box_subkind(N, SK)
+#   chains            every non-empty kind and subkind chain, from
+#                     kind_first/kind_next and sub_first/sub_next
+#   loop kind K [del | add N K2 SK2]
+#   loop sub SK [del | add N K2 SK2]
+#                     loop_kind / loop_subkind, printing each box; "del"
+#                     deletes each box the loop visits, "add" allocates box
+#                     N on the first visit
+#   loop boxes        loop_boxes
+#   loop locship      loop_loc_or_ship
+#   usage             print_box_usage()
+#   name N            name(N)
+#   setname N TEXT    set_name(N, TEXT)
+#   banner N TEXT     set_banner(N, TEXT), then the banner (or NULL)
+#   ifname N P        if_name(N) with pretty_data_files = P
+#   loc N             loc(N)
+#   boxcode N         box_code(N) and box_code_less(N)
+#   code L            int_to_code(L), and code_to_int() of the result
+#   int TEXT          code_to_int(TEXT)
+#   scode TEXT        scode(TEXT)
+#   letter TEXT       letter_val(c, letters2) for each byte c of TEXT
+#   codesum           checksums over the whole code space (see the driver)
+
+section codes
+code -2147483648
+code -1
+code 0
+code 1
+code 999
+code 1000
+code 9999
+code 10000
+code 10001
+code 10099
+code 10100
+code 11999
+code 12000
+code 19999
+code 20000
+code 49999
+code 50000
+code 50009
+code 50010
+code 50259
+code 50260
+code 56759
+code 56760
+code 56769
+code 56770
+code 58759
+code 58760
+code 58999
+code 59000
+code 59999
+code 60000
+code 78999
+code 79000
+code 99999
+code 149999
+code 150000
+code 2147483647
+int
+int 0
+int 12
+int 0012
+int 12ab
+int 99999999999
+int -5
+int  12
+int +12
+int aa00
+int AA00
+int aA00
+int ab12
+int dv99
+int dw00
+int zz99
+int ZZ99
+int ez99
+int ze99
+int aa0
+int zz9
+int ZZ9
+int aZ9
+int a00
+int b00
+int z99
+int e99
+int l99
+int a000
+int z999
+int Z999
+int e000
+int ab1
+int ab
+int a
+int a1
+int abc
+int abcd
+int abcde
+int ab123
+int a1b
+int a1b2
+int ab1c
+int a12b
+int [ab12]
+int \x80b1
+int a\x80\x31
+int ab\x80
+int \xffz99
+int a b1
+int aa 0
+scode [ab12]
+scode [ab1
+scode (ab1
+scode [1234]
+scode (12
+scode [(ab1
+scode ((12
+scode ab12
+scode [
+scode
+scode ]ab1
+letter abcdefghijklmnopqrstuvwxyz
+letter ABZ\x80\xff
+codesum
+
+section allocation order
+alloc 1001 2 0
+alloc 1003 2 0
+alloc 1002 2 0
+alloc 1000 2 0
+alloc 1005 2 0
+chains
+alloc 5 4 0
+alloc 3 4 10
+alloc 1004 2 7
+alloc 4 4 0
+alloc 1006 2 7
+alloc 2 4 10
+chains
+alloc 1007 2 7
+alloc 6 4 0
+alloc 1008 2 0
+alloc 7 4 10
+alloc 1 4 7
+chains
+loop kind 2
+loop kind 4
+loop sub 0
+loop sub 7
+loop sub 10
+loop kind 3
+loop boxes
+usage
+
+section descending and mixed
+alloc 9000 5 0
+alloc 8000 2 0
+alloc 7000 2 0
+alloc 6000 2 1
+alloc 6500 2 1
+alloc 9500 5 0
+alloc 9100 5 0
+alloc 6200 2 1
+alloc 9600 5 0
+alloc 9700 5 0
+alloc 6100 2 1
+chains
+
+section delete
+alloc 10 4 0
+alloc 20 4 0
+alloc 30 4 0
+alloc 40 4 0
+alloc 50 4 0
+chains
+delete 10
+chains
+delete 30
+chains
+delete 50
+chains
+alloc 60 4 0
+alloc 55 4 0
+alloc 45 4 0
+alloc 70 4 0
+chains
+delete 70
+alloc 80 4 0
+alloc 75 4 0
+chains
+loop kind 4
+loop boxes
+name 20
+setname 20 Twenty
+name 20
+delete 20
+chains
+ifname 20 1
+alloc 15 4 0
+chains
+
+section delete inside loops
+alloc 100 3 1
+alloc 200 3 2
+alloc 300 3 1
+alloc 400 3 2
+alloc 500 3 1
+alloc 600 9 3
+alloc 700 9 3
+loop kind 3 add 350 3 1
+chains
+loop kind 3 add 50 3 1
+chains
+loop sub 1 del
+chains
+loop kind 3 add 650 3 4
+chains
+loop locship
+loop kind 3 del
+chains
+loop locship
+loop kind 9 del
+loop locship
+chains
+
+section change kind and subkind
+alloc 1000 2 0
+alloc 1001 2 0
+alloc 1002 2 0
+alloc 1003 2 0
+alloc 1 4 0
+alloc 2 4 0
+chains
+kind 1001 4
+chains
+kind 1001 4
+chains
+kind 1 2
+alloc 1004 2 0
+chains
+kind 1002 2
+chains
+alloc 1005 2 0
+kind 1005 2
+alloc 1006 2 0
+chains
+sub 1000 0
+chains
+sub 1000 20
+sub 1003 20
+sub 1001 20
+chains
+sub 1003 0
+alloc 1010 2 0
+chains
+sub 1000 0
+alloc 1011 2 20
+chains
+kind 2 0
+chains
+loop boxes
+
+section names and banners
+alloc 1001 2 0
+alloc 1002 2 0
+alloc 1003 2 0
+alloc 999 4 0
+name 1001
+ifname 1001 0
+ifname 1001 1
+setname 1001 Osswid the [Great]
+name 1001
+ifname 1001 0
+ifname 1001 1
+ifname 1002 1
+setname 1002
+name 1002
+ifname 1002 1
+ifname 1004 1
+ifname 0 1
+ifname 150000 1
+setname 1003 ]]x[[ \xe9t\xe9
+name 1003
+setname 1003 renamed
+name 1003
+banner 1001
+banner 1001 Banner one
+banner 1001
+banner 1002 12345678901234567890123456789012345678901234567890
+banner 1002 123456789012345678901234567890123456789012345678901
+banner 1002 123456789012345678901234567890123456789012345678901234567890
+banner 1003 [b]
+boxcode 1
+boxcode 999
+boxcode 1001
+boxcode 10000
+boxcode 56760
+boxcode 79000
+boxcode 0
+boxcode -3
+loc 1001
+
+section usage
+usage
+alloc 1000 2 0
+alloc 9999 2 0
+alloc 10000 3 0
+alloc 19999 3 0
+alloc 20000 3 0
+alloc 50000 1 0
+alloc 56759 1 0
+alloc 56760 3 14
+alloc 58760 3 0
+alloc 58999 3 0
+alloc 59000 3 0
+alloc 59999 3 0
+alloc 78999 3 0
+alloc 79000 11 0
+alloc 79899 11 0
+alloc 79900 11 0
+alloc 149999 11 0
+delete 9999
+usage
+
+section alloc dup
+alloc 1001 2 0
+alloc 1002 2 0
+alloc 1001 4 0
+chains
+
+section alloc dup deleted
+alloc 1001 2 0
+delete 1001
+alloc 1001 2 0
+
+section alloc zero
+alloc 0 2 0
+
+section alloc max
+alloc 149999 2 0
+alloc 150000 2 0
+
+section delete twice
+alloc 1001 2 0
+alloc 1002 2 0
+delete 1001
+delete 1001
+
+section delete only box twice
+alloc 1001 2 0
+delete 1001
+delete 1001
+
+section delete missing
+delete 1001
+
+section change kind of deleted
+alloc 1001 2 0
+delete 1001
+kind 1001 2
+
+section change subkind of deleted
+alloc 1001 2 5
+alloc 1002 2 5
+delete 1001
+sub 1001 5
+sub 1001 6
+
+section name of missing box
+alloc 1001 2 0
+name 1001
+name 1002
+
+section name of deleted box
+alloc 1001 2 0
+setname 1001 Gone
+delete 1001
+name 1001
+
+section setname of missing box
+setname 1001 Nobody

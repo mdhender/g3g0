@@ -4,6 +4,8 @@
 package olympia
 
 import (
+	"fmt"
+
 	"github.com/mdhender/g3g0/internal/rnd"
 	"github.com/mdhender/g3g0/internal/rng"
 )
@@ -50,5 +52,32 @@ func testRandom(out *cStdout, tty bool) {
 	out.Printf("Scramble:\n")
 	for _, v := range l {
 		out.Printf("%d\n", v)
+	}
+}
+
+// assertion is a failed assert(): asfail() in olympia/z.c prints it to
+// stderr and calls abort(). The port panics with it, and whatever runs the
+// engine recovers it, prints Error() to stderr and exits as abort() does
+// (status 134, without flushing stdout, which abort() discards).
+//
+// file stands in for the __FILE__ that C prints, which is whatever path the
+// C build compiled the source as (an absolute path in the CMake build);
+// the port uses the path in the G3 repository, "olympia/code.c".
+type assertion struct {
+	file string
+	line int
+	cond string
+}
+
+// Error is the line asfail() prints.
+func (a assertion) Error() string {
+	return fmt.Sprintf("assertion failure: %s (%d): %s\n", a.file, a.line, a.cond)
+}
+
+// assert is assert(cond): if ok is false it panics with an assertion for
+// the C source line file:line and the condition's text.
+func assert(ok bool, file string, line int, cond string) {
+	if !ok {
+		panic(assertion{file: file, line: line, cond: cond})
 	}
 }

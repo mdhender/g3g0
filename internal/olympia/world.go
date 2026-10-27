@@ -3,6 +3,11 @@
 
 package olympia
 
+import (
+	"io"
+	"os"
+)
+
 // world holds the C engine's global state: the box table bx[], the heads of
 // the kind and subkind chains, and the globals that loading and saving read
 // or write. In C they are file-scope globals; here each world is
@@ -58,6 +63,21 @@ type world struct {
 	nowhereRegion  int32
 	nowhereLoc     int32
 	cloudRegion    int32
+
+	// The static cache of add_next_chain() and add_sub_chain() in code.c.
+
+	nextCacheLast int32
+	nextCacheKind int32
+	subCacheLast  int32
+	subCacheKind  int32 // -1
+
+	// prettyDataFiles is pretty_data_files in main.c, which if_name() in
+	// io.c reads. C starts it FALSE and -p toggles it.
+	prettyDataFiles bool
+
+	// stderr is C's stderr, which print_box_usage() and alloc_box() write
+	// to. newWorld sets it to os.Stderr; the engine sets it to its own.
+	stderr io.Writer
 }
 
 // newWorld returns a world as olympia-g3 has it after glob_init(): the
@@ -92,6 +112,10 @@ func newWorld() *world {
 		combatPl:      0,
 		garrisonMagic: 999,
 		mountOlympus:  0,
+
+		subCacheKind: -1,
+
+		stderr: os.Stderr,
 	}
 }
 
@@ -118,6 +142,23 @@ func (w *world) subkind(n int) int {
 func (w *world) validBox(n int) bool {
 	return w.kind(n) != tDeleted
 }
+
+// kindFirst is kind_first(): the first box of kind k, or 0.
+func (w *world) kindFirst(k int) int { return int(w.boxHead[k]) }
+
+// kindNext is kind_next(): the box after n in the chain of its kind, or 0.
+// Box n must exist.
+func (w *world) kindNext(n int) int { return int(w.bx[n].xNextKind) }
+
+// subFirst is sub_first(): the first box of subkind sk, or 0.
+func (w *world) subFirst(sk int) int { return int(w.subHead[sk]) }
+
+// subNext is sub_next(): the box after n in the chain of its subkind, or 0.
+// Box n must exist.
+func (w *world) subNext(n int) int { return int(w.bx[n].xNextSub) }
+
+// loc is loc(): where box n is. Box n must exist.
+func (w *world) loc(n int) int { return int(w.rpLocInfo(n).where) }
 
 // The p_xxx accessors are the malloc-on-demand references of oly.h: each
 // returns box n's substructure, allocating a zeroed one first if it has
