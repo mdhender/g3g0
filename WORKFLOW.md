@@ -57,6 +57,29 @@ Both must pass before committing.
   If no local issue is opened, failing harness tests should reveal the mismatch.
   Follow the upstream fix and update the port and its issue references to match; do not close an upstream issue merely because our port changes.
 
+## Port stages
+
+The engine port is tracked in #19, one stage at a time.
+
+1. Review #19 for the stage's scope and create a sub-issue of #19 for the stage, with a detailed plan pinned to an upstream revision.
+2. Create a sub-issue of the stage for every task, all before work starts.
+   Size each task so one agent can finish it without exhausting its context; split anything larger.
+3. Ask the user before starting the stage's work, since they may want to start it in a fresh session.
+4. Work tasks in order, one at a time.
+   Before each task, work any open `follow-c` issues first.
+   A sub-agent implements the task and leaves its changes uncommitted.
+5. Accept the task only when `go vet ./...` and `go test ./...` pass, the task's byte-for-byte check against the C engine matches, the diff makes no independent fixes or behavior changes, and the version is bumped.
+   Then commit, push, and tick the task in #19.
+6. File every bug the task uncovers, in this repository or upstream, following the policy above.
+   We match the C engine; upstream bugs are reproduced, not fixed.
+   Bugs in this port, including those G3 files here after fixing their side, are fixed as tasks in the current stage.
+7. A blocker is an upstream bug that prevents further progress.
+   Stop and ask the user.
+8. When the stage is done, summarize the open bugs and call out any that must be fixed before the next stage.
+   If none must be, continue with the next stage.
+
+The local upstream clone is `~/Software/playbymail/olympia-g3`.
+
 ## CI
 
 Do not create GitHub Actions workflows or other GitHub CI actions.
