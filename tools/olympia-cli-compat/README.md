@@ -55,7 +55,9 @@ The script:
    Each must print `YES`.
 
 The script exits 0 only when every check passes.
-Each run's outputs are left under `tmp/olympia-cli-compat/runs/<case>/{c,go}`, and the summary is written to `tmp/olympia-cli-compat/results.tsv`.
+Each run's outputs are left under `tmp/olympia-cli-compat/runs/<number>-<label>/{c,go}`, and the summary is written to `tmp/olympia-cli-compat/results.tsv`.
+The number starts at 1 and increases for each noncomment case, keeping labels such as `a` and `A` separate even on case-insensitive filesystems.
+The summary keeps the original labels, without the numeric prefix.
 
 The gate can also be run by hand from the pinned clone:
 

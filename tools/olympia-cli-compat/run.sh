@@ -123,11 +123,13 @@ printf 'case\texpect\tc_status\tgo_status\tstdout_sha256\tstderr_sha256\tmerged_
 echo
 echo "argument vectors"
 labels=" "
+case_num=0
 while read -r label expect args; do
 	[[ -z "${label}" || "${label}" == \#* ]] && continue
 	case "${labels}" in *" ${label} "*) die "cases.txt: duplicate label ${label}" ;; esac
 	labels="${labels}${label} "
-	base="${WORK}/runs/${label}"
+	case_num=$((case_num + 1))
+	base="${WORK}/runs/${case_num}-${label}"
 	eval "set -- ${args}"
 	run_case "${C_BIN}" "${base}/c" ${1+"$@"}
 	run_case "${GO_BIN}" "${base}/go" ${1+"$@"}

@@ -1,7 +1,7 @@
 # Argument-vector matrix for tools/olympia-cli-compat/run.sh.
 #
 # Fields, separated by whitespace (args is the rest of the line):
-#   label   unique name; also the run directory
+#   label   unique name; run directory is <number>-<label>
 #   expect  same  Go must match C byte for byte: stdout, stderr, the two
 #                 merged into one file (2>&1), and the exit status
 #           nyi   the vector reaches a mode the port has not implemented:
