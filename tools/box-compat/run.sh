@@ -179,6 +179,8 @@ cat >"${WORK}/driver.c" <<'EOF'
  *                                with pretty_data_files = P: diagnostics
  *                                to stderr, saved boxes to stdout
  */
+#define _POSIX_C_SOURCE 200809L /* strdup() -- glibc hides it under -std=c11 (#92) */
+
 #include <dirent.h>
 #include <stdint.h>
 #include <stdio.h>

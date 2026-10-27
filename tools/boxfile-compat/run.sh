@@ -212,6 +212,8 @@ cat >"${WORK}/driver.c" <<'EOF'
  *                                write_master() on LIBDIR, with
  *                                pretty_data_files = P
  */
+#define _POSIX_C_SOURCE 200809L /* strdup(), symlink() -- glibc hides them under -std=c11 (#92) */
+
 #include <dirent.h>
 #include <stdint.h>
 #include <stdio.h>
