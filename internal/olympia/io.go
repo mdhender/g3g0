@@ -76,34 +76,16 @@ func lastIsBackslash(s string) bool {
 // first conversion that fails and leaves that target and the rest as they
 // were. It returns the number of conversions made.
 //
-// It follows the macOS libc (FreeBSD's vfscanf): each conversion skips
-// white space (isspace()), then takes an optional sign and at least one
-// digit, at most 512 bytes in all (the size of its buffer less one), and
-// converts them with strtoimax(), which saturates, and then truncates the
-// result to the target's width.
+// Each conversion is clib.Scanner.Int, which follows the macOS libc
+// (FreeBSD's vfscanf), truncated to the target's width as %hd stores the
+// low bits of the converted value.
 func sscanD(s string, ptrs ...any) int {
-	pos := 0
+	sc := clib.NewScanner(s)
 	for i, p := range ptrs {
-		for pos < len(s) && clib.IsSpace(s[pos]) {
-			pos++
-		}
-
-		const width = 512
-		start := pos
-		j := pos
-		if j < len(s) && (s[j] == '+' || s[j] == '-') {
-			j++
-		}
-		digits := j
-		for j < len(s) && j-start < width && isdigit(s[j]) {
-			j++
-		}
-		if j == digits {
+		v, ok := sc.Int()
+		if !ok {
 			return i
 		}
-		pos = j
-
-		v := clib.Atoi(s[start:j])
 		switch p := p.(type) {
 		case *int32:
 			*p = int32(v)

@@ -1,0 +1,107 @@
+# sscanf %d cases for tools/scanf-compat (C, the reference) and
+# TestScannerMatchesC (Go). One case per line: a format, a tab, an input.
+# Blank lines and lines starting with # are skipped.
+#
+# Formats (each ends with %n, so the output shows where scanning stopped):
+#   d      "%d%n"
+#   dd     "%d%d%n"      shows what a 512-character limit leaves behind
+#   d,d    "%d,%d%n"     mapgen's Regions lines (mapgen.c:1764)
+#   d,d c  "%d,%d %c%n"  mapgen's Land lines (mapgen.c:1940)
+#
+# Input escapes: \xHH is that byte, \\ a backslash, and {N:c} is the
+# character c repeated N times (c may itself be \xHH), so {0:x} is an
+# empty input. Trailing white space is always escaped.
+
+# plain values and signs
+d	0
+d	42
+d	+7
+d	-3
+d	-0
+d	007
+d	12abc
+d	1 2
+
+# white space before the number, none after a sign
+d	 \x09\x0a\x0b\x0c\x0d5
+d	  -111
+d	- 5
+d	+ 5
+d	--5
+d	+-5
+d	-+5
+
+# matching and input failures
+d	{0:x}
+d	\x20\x20\x20
+d	+
+d	-
+d	+x
+d	x
+d	\x09
+
+# hexadecimal is not %d
+d	0x10
+
+# overflow: saturate to the 64-bit range, then keep the low 32 bits
+d	2147483647
+d	2147483648
+d	-2147483648
+d	-2147483649
+d	4294967295
+d	4294967296
+d	4294967297
+d	-4294967297
+d	9223372036854775807
+d	9223372036854775808
+d	-9223372036854775808
+d	-9223372036854775809
+d	99999999999999999999
+d	-99999999999999999999
+d	18446744073709551617
+
+# the 512-character limit, sign and leading zeros included
+dd	{511:0}5 3
+dd	{512:0}5 3
+dd	{600:0}5 3
+dd	+{510:0}5 3
+dd	+{511:0}5 3
+dd	-{510:0}5 3
+dd	-{511:0}5 3
+dd	{512:1}
+dd	{513:1}
+dd	+{511:1}
+dd	+{512:1}
+dd	-{511:1}
+dd	-{512:1}
+dd	{1000:9}
+dd	  {511:0}12
+dd	{512:0}-1
+dd	{512:0}+1
+dd	{511:0}-1
+
+# mapgen's Regions lines
+d,d	1,2
+d,d	 10 , 20
+d,d	10, 20
+d,d	-1,-2
+d,d	3
+d,d	3,
+d,d	3,x
+d,d	x,3
+d,d	{0:x}
+d,d	99999999999999999999,4294967297
+d,d	{511:0}1,2
+d,d	{512:0}1,2
+d,d	1,{513:2}
+
+# mapgen's Land lines
+d,d c	1,2 a
+d,d c	1,2a
+d,d c	1,2	\x09\x0ab
+d,d c	1,2
+d,d c	1,2\x20
+d,d c	1,
+d,d c	-5,+6 #
+d,d c	4294967296,-4294967297 x
+d,d c	{512:7},1 z

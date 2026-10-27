@@ -97,30 +97,34 @@ func (sc *Scanner) SkipSpace() {
 	}
 }
 
-// Int implements %d. It reports false on a matching or input failure.
-// Overflow is undefined in C; the value simply wraps here.
+// scanWidth is the most characters macOS scanf reads for one numeric
+// conversion without a field width: its buffer holds 512 characters and a
+// NUL.
+const scanWidth = 512
+
+// Int implements %d as the macOS (BSD) libc does. It skips white space and
+// then reads an optional sign and decimal digits, at most scanWidth
+// characters in all, the sign and leading zeros included; any digits past
+// that stay in the input for the next directive. The value is converted
+// with strtoimax(), which saturates to the 64-bit range, and stored in an
+// int, which keeps its low 32 bits. Int reports false on a matching or
+// input failure: no digit after the optional sign.
 func (sc *Scanner) Int() (int, bool) {
 	sc.SkipSpace()
-	i := sc.pos
-	neg := false
+	start := sc.pos
+	i := start
 	if i < len(sc.s) && (sc.s[i] == '+' || sc.s[i] == '-') {
-		neg = sc.s[i] == '-'
 		i++
 	}
-	start := i
-	var n int32
-	for i < len(sc.s) && sc.s[i] >= '0' && sc.s[i] <= '9' {
-		n = n*10 + int32(sc.s[i]-'0')
+	digits := i
+	for i < len(sc.s) && i-start < scanWidth && sc.s[i] >= '0' && sc.s[i] <= '9' {
 		i++
 	}
-	if i == start {
+	if i == digits {
 		return 0, false
 	}
 	sc.pos = i
-	if neg {
-		n = -n
-	}
-	return int(n), true
+	return Atoi(sc.s[start:i]), true
 }
 
 // Literal matches a single ordinary character in the format.
