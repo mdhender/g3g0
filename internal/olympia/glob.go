@@ -335,6 +335,10 @@ func init() {
 		case "hide":
 			cmdTbl[i].start = (*world).vHide
 			cmdTbl[i].finish = (*world).dHide
+		case "wait":
+			cmdTbl[i].start = (*world).vWait
+			cmdTbl[i].finish = (*world).dWait
+			cmdTbl[i].interrupt = (*world).iWait
 		}
 	}
 }

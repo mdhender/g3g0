@@ -34,7 +34,7 @@ functions = {
                 'get_command', 'set_state', 'load_command', 'command_done',
                 'finish_command', 'do_command', 'init_load_sup', 'exec_precedence',
                 'exec_comp', 'sort_load_queue', 'sort_run_queue', 'initial_command_load',
-                'min_pri_ready', 'check_all_waits', 'start_phase', 'evening_phase',
+                'min_pri_ready', 'init_wait_list', 'check_all_waits', 'start_phase', 'evening_phase',
                 'daily_command_loop', 'process_player_orders'],
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order'],
     'swear.c': ['lord', 'player'],
@@ -46,7 +46,9 @@ functions = {
     'u.c': ['min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num'],
-    'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions'],
+    'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
+             'v_wait', 'd_wait', 'i_wait'],
+    'produce.c': ['init_collect_list'],
     'perm.c': ['is_hostile'],
     'storm.c': ['weather_here'],
     'use.c': ['rp_skill_ent', 'exp_level', 'has_skill'],
@@ -81,6 +83,8 @@ ilist wait_list, second_wait_list;
         if file == 'u.c':
             start, end = source.index('static char *num_s[]'), source.index('char *\nnice_num(')
             out.write(source[start:end])
+        if file == 'produce.c':
+            out.write(re.search(r'^static ilist collectors = NULL;\n', source, re.M).group(0))
         matches = []
         for name in names:
             m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
@@ -99,6 +103,7 @@ void drv_daily(void) { daily_command_loop(); }
 void drv_players(void) { process_player_orders(); }
 void drv_sort_load(int pri) { sort_load_queue(load_q[pri]); }
 void drv_sort_run(void) { sort_run_queue(run_q); }
+ilist drv_collectors(void) { return collectors; }
 int drv_fort_covers(int n) { return fort_covers(n); }
 char *drv_wait_check(struct command *c) { return check_wait_conditions(c); }
 void drv_signal(int who, char *flag) {

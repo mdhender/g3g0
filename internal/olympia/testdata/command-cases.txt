@@ -1754,3 +1754,388 @@ wait not ferry 9002
 wait ship 9003
 wait ferry 9003
 wait not ferry 9003
+
+section wait handler immediate satisfaction and same day successor
+place 9000
+resolve_wait
+set day 1
+queue wait time 0
+queue format 7
+load
+start
+dump
+lists
+wait_dump
+log
+
+section wait handler unresolved polling then evening time completion
+place 9000
+resolve_wait
+set day 1
+queue wait time 2
+queue notab 1
+load
+start
+init_wait
+init_wait
+poll_wait
+dump
+lists
+evening
+dump
+lists
+set day 2
+evening
+dump
+lists
+start
+dump
+log
+
+section wait handler same day signal satisfaction after another command
+place 9000
+resolve_wait
+set day 1
+queue wait flag ready
+queue format 11
+load
+start
+dump
+lists
+who 1001
+place 9000
+queue stop
+load
+signal 1001 ready
+start
+select 1000
+dump
+lists
+log
+
+section wait resumed command preserves elapsed days and parses lazily
+place 9000
+resolve_wait
+set day 10
+parse wait time 4
+set state 2
+set wait -1
+set poll 1
+set status 1
+set cmdpri 1
+set days 3
+queue format 13
+# Build saved running fields without inserting into run_q twice.
+initial
+init_wait
+lists
+wait_dump
+poll_wait
+dump
+wait_dump
+evening
+dump
+lists
+start
+dump
+log
+
+section wait and collector initializers append duplicates in character order only
+resolve_wait
+entity 999 2 0
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 1006 2 0
+entity 1007 2 0
+who 1006
+parse collect 79
+run -1 1 1 0
+who 1007
+parse collect 79
+set state 1
+who 1001
+parse collect 79
+run -1 1 1 0
+who 999
+parse wait day 30
+run -1 1 1 0
+who 1000
+parse wait time 9
+run -1 1 1 0
+who 1002
+parse wait day 30
+set state 1
+who 1003
+parse collect 79
+who 1004
+parse hide 1
+run -1 1 1 0
+who 200
+parse wait day 30
+run -1 1 1 0
+who 201
+parse collect 79
+run -1 1 1 0
+wait_add 1003
+init_wait
+init_collect
+lists
+init_wait
+init_collect
+lists
+select 1000
+dump
+select 1001
+dump
+
+section wait polling skips absent commands nonrunning states and other commands
+place 9000
+resolve_wait
+set day 7
+parse wait day 30
+run 1 1 1 0
+wait_add 1001
+wait_add 1000
+set state 0
+poll_wait
+dump
+set state 1
+poll_wait
+dump
+set state 3
+poll_wait
+dump
+set state 2
+parse xyzzy
+poll_wait
+dump
+parse wait day 30
+set wait -1
+poll_wait
+dump
+lists
+log
+
+section wait poll matching command asserts saved indefinite wait
+place 9000
+resolve_wait
+parse wait day 30
+run 1 1 1 0
+wait_add 1000
+poll_wait
+
+section wait handler empty rejects without clearing cached parse
+place 9000
+resolve_wait
+wait day 30
+queue wait
+load
+do
+dump
+wait_dump
+lists
+log
+
+section wait handler malformed conditions finish with real parse diagnostics
+place 9000
+resolve_wait
+queue wait time 9 bogus
+queue wait gold
+queue wait time 0 unknown
+queue wait not
+load
+start
+dump
+wait_dump
+lists
+log
+
+section wait handler clears earlier parse before new start
+place 9000
+resolve_wait
+wait time 0
+queue wait day 30
+load
+do
+dump
+wait_dump
+lists
+log
+
+section wait interrupt callback removes all duplicates but does not finish command
+place 9000
+resolve_wait
+queue wait day 30
+load
+do
+wait_add 1000
+wait_add 1001
+wait_add 1000
+init_wait
+lists
+interrupt
+dump
+wait_dump
+lists
+interrupt
+lists
+log
+
+section wait live shrinking poll skips adjacent satisfied command
+place 9000
+resolve_wait
+set day 1
+queue wait day 2
+queue format 14
+load
+do
+who 1001
+place 9000
+queue wait day 2
+queue notab 1
+load
+do
+lists
+set day 2
+poll_wait
+select 1000
+dump
+select 1001
+dump
+lists
+poll_wait
+dump
+lists
+log
+
+section wait live shrinking poll with asymmetric satisfaction
+place 9000
+resolve_wait
+set day 1
+queue wait day 2
+load
+do
+who 1001
+place 9000
+queue wait day 3
+load
+do
+entity 1002 2 0
+who 1002
+set lord 200
+place 9000
+queue wait day 2
+load
+do
+lists
+set day 2
+poll_wait
+lists
+select 1000
+dump
+select 1001
+dump
+select 1002
+dump
+poll_wait
+lists
+set day 3
+poll_wait
+select 1001
+dump
+lists
+log
+
+section wait second wait skips aging but does not suppress condition polling
+place 9000
+resolve_wait
+set day 1
+queue wait day 2
+queue format 15
+load
+do
+second
+second
+lists
+evening
+dump
+lists
+set day 2
+evening
+dump
+lists
+clear_second
+lists
+start
+dump
+log
+
+section wait daily clears only listed second waits before next day aging
+place 9000
+resolve_wait
+set day 1
+queue wait time 1
+load
+do
+second
+who 1001
+parse wait time 5
+set second 1
+select 1000
+daily
+dump
+lists
+select 1001
+lists
+select 1000
+set day 2
+daily
+dump
+lists
+log
+
+section wait shrinking poll must not touch shifted unresolved neighbor
+place 9000
+resolve_wait
+set day 1
+queue wait day 2
+load
+do
+who 1001
+place 9000
+queue wait day 3
+load
+do
+lists
+set day 2
+poll_wait
+lists
+dump
+poll_wait
+dump
+lists
+log
+
+section wait resumed malformed command finishes even with saved poll zero
+place 9000
+resolve_wait
+set day 9
+parse wait gold
+run -1 0 1 0
+init_wait
+lists
+poll_wait
+dump
+wait_dump
+lists
+log
+
+section wait resumed empty command keeps real predicate assertion
+place 9000
+resolve_wait
+parse wait
+run -1 1 1 0
+init_wait
+poll_wait

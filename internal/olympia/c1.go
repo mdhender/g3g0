@@ -5,9 +5,8 @@ package olympia
 
 import "fmt"
 
-// c1.c wait parsing and predicates only. Empty results represent C's NULL;
-// every actual diagnostic/completion string is nonempty. The wait handlers,
-// signal command and scheduler polling remain explicit unported boundaries.
+// Empty results represent C's NULL; every actual diagnostic/completion string
+// is nonempty. The signal command remains unported.
 var waitTags = []string{
 	"time", "day", "unit", "gold", "item", "flag", "loc", "stack", "top",
 	"ferry", "ship", "rain", "fog", "wind", "not", "owner", "raining",
@@ -36,6 +35,37 @@ func clearWaitParse(c *command) {
 		c.waitParse[i] = nil
 	}
 	c.waitParse.Clear()
+}
+
+func (w *world) vWait(c *command) int {
+	if c.parse.Len()-1 < 1 {
+		w.commandOut(int(c.who), "Must say what condition to wait for.")
+		return 0
+	}
+	clearWaitParse(c)
+	if s := w.checkWaitConditions(c); s != "" {
+		w.commandOut(int(c.who), "Wait finished: %s", s)
+		c.wait = 0
+		c.inhibitFinish = 1
+		return 1
+	}
+	w.waitList.Append(int(c.who))
+	return 1
+}
+
+func (w *world) dWait(c *command) int {
+	if s := w.checkWaitConditions(c); s != "" {
+		w.commandOut(int(c.who), "Wait finished: %s", s)
+		w.waitList.RemValue(int(c.who))
+		c.wait = 0
+		c.inhibitFinish = 1
+	}
+	return 1
+}
+
+func (w *world) iWait(c *command) int {
+	w.waitList.RemValue(int(c.who))
+	return 1
 }
 
 func (w *world) parseWaitArgs(c *command) string {

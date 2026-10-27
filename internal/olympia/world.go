@@ -131,14 +131,15 @@ type world struct {
 	runQ  lists.IList
 
 	// input.c statics. cmdWait stays -1 until process_orders resolves it;
-	// the wait command and full turn orchestration remain unported.
+	// full turn orchestration remains unported.
 	curPri         int32
 	cmdWait        int32
 	immediate      bool
 	showDay        bool // glob.c show_day; default formatting for command output
 	evening        int32
 	autoAttackFlag bool
-	waitList       lists.IList // wait/collect population and polling: #61
+	waitList       lists.IList // c1.c wait_list
+	collectors     lists.IList // produce.c collectors; command execution unported
 	secondWaitList lists.IList // combat.c second_wait_list
 	flags          []*flagEnt  // c1.c signals, not saved
 

@@ -17,7 +17,8 @@ struct order_list *drv_orders(int pl, int who);
 extern int cur_pri, cmd_wait;
 extern ilist load_q[5], run_q;
 extern int evening, auto_attack_flag;
-extern ilist second_wait_list;
+extern ilist second_wait_list, wait_list;
+ilist drv_collectors(void);
 void drv_evening(void), drv_daily(void), drv_players(void), drv_sort_run(void);
 void drv_sort_load(int pri);
 int drv_fort_covers(int n);
@@ -99,6 +100,19 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "load")) printf("load %d\n", drv_load(c));
   else if (!strcmp(op, "do")) do_command(c);
   else if (!strcmp(op, "finish")) printf("finish %d\n", finish_command(c));
+  else if (!strcmp(op, "interrupt")) printf("interrupt %d\n", cmd_tbl[c->cmd].interrupt(c));
+  else if (!strcmp(op, "init_wait")) init_wait_list();
+  else if (!strcmp(op, "init_collect")) init_collect_list();
+  else if (!strcmp(op, "poll_wait")) check_all_waits();
+  else if (!strcmp(op, "clear_second")) clear_second_waits();
+  else if (!strcmp(op, "wait_add")) { sscanf(line, "%*s %d", &n); ilist_append(&wait_list, n); }
+  else if (!strcmp(op, "lists"))
+  {
+   list("wait_list", wait_list);
+   list("collectors", drv_collectors());
+   list("second_wait_list", second_wait_list);
+   printf("second_wait %d\n", c->second_wait);
+  }
   else if (!strcmp(op, "done")) command_done(c);
   else if (!strcmp(op, "shift")) cmd_shift(c);
   else if (!strcmp(op, "wait") || !strcmp(op, "wait_check"))
@@ -256,6 +270,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "turn")) sysclock.turn = (short)n;
    else if (!strcmp(text, "priority")) cur_pri = n;
    else if (!strcmp(text, "status")) c->status = (schar)n;
+   else if (!strcmp(text, "wait")) c->wait = n;
+   else if (!strcmp(text, "poll")) c->poll = (schar)n;
    else if (!strcmp(text, "debug")) c->debug = (schar)n;
    else if (!strcmp(text, "days")) c->days_executing = n;
    else if (!strcmp(text, "restrict")) p_misc(c->who)->cmd_allow = (schar)n;

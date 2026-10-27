@@ -3826,3 +3826,1027 @@ wait result [[9003] is not a ship]
 stderr:
 
 exit 0
+stdout:
+section wait handler immediate satisfaction and same day successor
+> place 9000
+> resolve_wait
+> set day 1
+> queue wait time 0
+> queue format 7
+> load
+load 1
+> start
+> dump
+cmd 33 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 99
+args 7 0 0 0 0 0 0 0; parse [format] [7]
+player 200 count 2 last 0 format 7 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> wait_dump
+wait args 1
+wait arg 0 0 0 [NULL]
+> log
+log:
+1000:0::0::> wait time 0
+1000:0::0::Wait finished: zero days have passed.
+1000:0::0::> format 7
+1000:0::0::Formatting for Player~[200] set to 7.
+stderr:
+
+exit 0
+stdout:
+section wait handler unresolved polling then evening time completion
+> place 9000
+> resolve_wait
+> set day 1
+> queue wait time 2
+> queue notab 1
+> load
+load 1
+> start
+> init_wait
+> init_wait
+> poll_wait
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> lists
+wait_list: 1000 1000 1000
+collectors:
+second_wait_list:
+second_wait 0
+> evening
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> lists
+wait_list: 1000 1000 1000
+collectors:
+second_wait_list:
+second_wait 0
+> set day 2
+> evening
+> dump
+cmd 51 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 1 cur 1
+args 1 0 0 0 0 0 0 0; parse [notab] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> start
+> dump
+cmd 51 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 0 cur 99
+args 1 0 0 0 0 0 0 0; parse [notab] [1]
+player 200 count 2 last 0 format 0 notab 1 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> wait time 2
+1000:0::0::Wait finished: two days have passed.
+1000:0::0::> notab 1
+1000:0::0::No TAB characters will appear in turn reports.
+stderr:
+
+exit 0
+stdout:
+section wait handler same day signal satisfaction after another command
+> place 9000
+> resolve_wait
+> set day 1
+> queue wait flag ready
+> queue format 11
+> load
+load 1
+> start
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 99
+args 0 0 0 0 0 0 0 0; parse [wait] [flag] [ready]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> lists
+wait_list: 1000
+collectors:
+second_wait_list:
+second_wait 0
+> who 1001
+> place 9000
+> queue stop
+> load
+load 1
+> signal 1001 ready
+> start
+> select 1000
+> dump
+cmd 33 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 99
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 3 last 0 format 11 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+1000:0::0::> wait flag ready
+1001:0::0::> stop
+1000:0::0::Wait finished: <no subkind>~[1001] signaled 'ready'
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+stderr:
+
+exit 0
+stdout:
+section wait resumed command preserves elapsed days and parses lazily
+> place 9000
+> resolve_wait
+> set day 10
+> parse wait time 4
+parse 1
+> set state 2
+> set wait -1
+> set poll 1
+> set status 1
+> set cmdpri 1
+> set days 3
+> queue format 13
+> initial
+> init_wait
+> lists
+wait_list: 1000
+collectors:
+second_wait_list:
+second_wait 0
+> wait_dump
+wait args 0
+> poll_wait
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 3 debug 10 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [time] [4]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> wait_dump
+wait args 1
+wait arg 0 4 0 [NULL]
+> evening
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 10 inhibit 1 cur 0
+args 13 0 0 0 0 0 0 0; parse [format] [13]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> start
+> dump
+cmd 33 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 10 inhibit 0 cur 99
+args 13 0 0 0 0 0 0 0; parse [format] [13]
+player 200 count 1 last 0 format 13 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::Wait finished: four days have passed.
+1000:0::0::> format 13
+1000:0::0::Formatting for Player~[200] set to 13.
+stderr:
+
+exit 0
+stdout:
+section wait and collector initializers append duplicates in character order only
+> resolve_wait
+> entity 999 2 0
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> entity 1006 2 0
+> entity 1007 2 0
+> who 1006
+> parse collect 79
+parse 1
+> run -1 1 1 0
+> who 1007
+> parse collect 79
+parse 1
+> set state 1
+> who 1001
+> parse collect 79
+parse 1
+> run -1 1 1 0
+> who 999
+> parse wait day 30
+parse 1
+> run -1 1 1 0
+> who 1000
+> parse wait time 9
+parse 1
+> run -1 1 1 0
+> who 1002
+> parse wait day 30
+parse 1
+> set state 1
+> who 1003
+> parse collect 79
+parse 1
+> who 1004
+> parse hide 1
+parse 1
+> run -1 1 1 0
+> who 200
+> parse wait day 30
+parse 1
+> run -1 1 1 0
+> who 201
+> parse collect 79
+parse 1
+> run -1 1 1 0
+> wait_add 1003
+> init_wait
+> init_collect
+> lists
+wait_list: 1003 999 1000
+collectors: 1001 1006
+second_wait_list:
+second_wait 0
+> init_wait
+> init_collect
+> lists
+wait_list: 1003 999 1000 999 1000
+collectors: 1001 1006 1001 1006
+second_wait_list:
+second_wait 0
+> select 1000
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 9 0 0 0 0 0 0; parse [wait] [time] [9]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1006 1001 999 1000 1004 200 201
+> select 1001
+> dump
+cmd 14 who 1001 state 2 status 1 wait -1 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 79 0 0 0 0 0 0 0; parse [collect] [79]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1006 1001 999 1000 1004 200 201
+stderr:
+
+exit 0
+stdout:
+section wait polling skips absent commands nonrunning states and other commands
+> place 9000
+> resolve_wait
+> set day 7
+> parse wait day 30
+parse 1
+> run 1 1 1 0
+> wait_add 1001
+> wait_add 1000
+> set state 0
+> poll_wait
+> dump
+cmd 94 who 1000 state 0 status 1 wait 1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 30 0 0 0 0 0 0; parse [wait] [day] [30]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set state 1
+> poll_wait
+> dump
+cmd 94 who 1000 state 1 status 1 wait 1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 30 0 0 0 0 0 0; parse [wait] [day] [30]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set state 3
+> poll_wait
+> dump
+cmd 94 who 1000 state 3 status 1 wait 1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 30 0 0 0 0 0 0; parse [wait] [day] [30]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set state 2
+> parse xyzzy
+parse 1
+> poll_wait
+> dump
+cmd 96 who 1000 state 2 status 1 wait 1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> parse wait day 30
+parse 1
+> set wait -1
+> poll_wait
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 0
+args 0 30 0 0 0 0 0 0; parse [wait] [day] [30]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> lists
+wait_list: 1001 1000
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+stderr:
+
+exit 0
+stdout:
+section wait poll matching command asserts saved indefinite wait
+> place 9000
+> resolve_wait
+> parse wait day 30
+parse 1
+> run 1 1 1 0
+> wait_add 1000
+> poll_wait
+stderr:
+assertion failure: olympia/input.c (821): c->wait == -1
+
+exit 134
+stdout:
+section wait handler empty rejects without clearing cached parse
+> place 9000
+> resolve_wait
+> wait day 30
+wait result [NULL]
+> queue wait
+> load
+load 1
+> do
+> dump
+cmd 94 who 1000 state 0 status 0 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> wait_dump
+wait args 1
+wait arg 1 30 0 [NULL]
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+1000:0::0::> wait
+1000:0::0::Must say what condition to wait for.
+stderr:
+
+exit 0
+stdout:
+section wait handler malformed conditions finish with real parse diagnostics
+> place 9000
+> resolve_wait
+> queue wait time 9 bogus
+> queue wait gold
+> queue wait time 0 unknown
+> queue wait not
+> load
+load 1
+> start
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 0 0 0 0 0 0 0 0; parse [wait] [not]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> wait_dump
+wait args 1
+wait arg 14 0 0 [NULL]
+> lists
+wait_list: 1000
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+1000:0::0::> wait time 9 bogus
+1000:0::0::Wait finished: Unknown condition 'bogus'.
+1000:0::0::> wait gold
+1000:0::0::Wait finished: Argument missing for 'gold'.
+1000:0::0::> wait time 0 unknown
+1000:0::0::Wait finished: Unknown condition 'unknown'.
+1000:0::0::> wait not
+stderr:
+
+exit 0
+stdout:
+section wait handler clears earlier parse before new start
+> place 9000
+> resolve_wait
+> wait time 0
+wait result [zero days have passed.]
+> queue wait day 30
+> load
+load 1
+> do
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 30 0 0 0 0 0 0; parse [wait] [day] [30]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> wait_dump
+wait args 1
+wait arg 1 30 0 [NULL]
+> lists
+wait_list: 1000
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+1000:0::0::> wait day 30
+stderr:
+
+exit 0
+stdout:
+section wait interrupt callback removes all duplicates but does not finish command
+> place 9000
+> resolve_wait
+> queue wait day 30
+> load
+load 1
+> do
+> wait_add 1000
+> wait_add 1001
+> wait_add 1000
+> init_wait
+> lists
+wait_list: 1000 1000 1001 1000 1000
+collectors:
+second_wait_list:
+second_wait 0
+> interrupt
+interrupt 1
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 30 0 0 0 0 0 0; parse [wait] [day] [30]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> wait_dump
+wait args 1
+wait arg 1 30 0 [NULL]
+> lists
+wait_list: 1001
+collectors:
+second_wait_list:
+second_wait 0
+> interrupt
+interrupt 1
+> lists
+wait_list: 1001
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+1000:0::0::> wait day 30
+stderr:
+
+exit 0
+stdout:
+section wait live shrinking poll skips adjacent satisfied command
+> place 9000
+> resolve_wait
+> set day 1
+> queue wait day 2
+> queue format 14
+> load
+load 1
+> do
+> who 1001
+> place 9000
+> queue wait day 2
+> queue notab 1
+> load
+load 1
+> do
+> lists
+wait_list: 1000 1001
+collectors:
+second_wait_list:
+second_wait 0
+> set day 2
+> poll_wait
+> select 1000
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 1 cur 0
+args 14 0 0 0 0 0 0 0; parse [format] [14]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> select 1001
+> dump
+cmd 94 who 1001 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [day] [2]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> lists
+wait_list: 1001
+collectors:
+second_wait_list:
+second_wait 0
+> poll_wait
+> dump
+cmd 51 who 1001 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 1 cur 0
+args 1 0 0 0 0 0 0 0; parse [notab] [1]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+1000:0::0::> wait day 2
+1001:0::0::> wait day 2
+1000:0::0::Wait finished: today is day 2.
+1001:0::0::Wait finished: today is day 2.
+stderr:
+
+exit 0
+stdout:
+section wait live shrinking poll with asymmetric satisfaction
+> place 9000
+> resolve_wait
+> set day 1
+> queue wait day 2
+> load
+load 1
+> do
+> who 1001
+> place 9000
+> queue wait day 3
+> load
+load 1
+> do
+> entity 1002 2 0
+> who 1002
+> set lord 200
+> place 9000
+> queue wait day 2
+> load
+load 1
+> do
+> lists
+wait_list: 1000 1001 1002
+collectors:
+second_wait_list:
+second_wait 0
+> set day 2
+> poll_wait
+> lists
+wait_list: 1001
+collectors:
+second_wait_list:
+second_wait 0
+> select 1000
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 1 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [day] [2]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> select 1001
+> dump
+cmd 94 who 1001 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 3 0 0 0 0 0 0; parse [wait] [day] [3]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> select 1002
+> dump
+cmd 94 who 1002 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 1 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [day] [2]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> poll_wait
+> lists
+wait_list: 1001
+collectors:
+second_wait_list:
+second_wait 0
+> set day 3
+> poll_wait
+> select 1001
+> dump
+cmd 94 who 1001 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 3 inhibit 1 cur 0
+args 0 3 0 0 0 0 0 0; parse [wait] [day] [3]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+1000:0::0::> wait day 2
+1001:0::0::> wait day 3
+1002:0::0::> wait day 2
+1000:0::0::Wait finished: today is day 2.
+1002:0::0::Wait finished: today is day 2.
+1001:0::0::Wait finished: today is day 3.
+stderr:
+
+exit 0
+stdout:
+section wait second wait skips aging but does not suppress condition polling
+> place 9000
+> resolve_wait
+> set day 1
+> queue wait day 2
+> queue format 15
+> load
+load 1
+> do
+> second
+> second
+> lists
+wait_list: 1000
+collectors:
+second_wait_list: 1000 1000
+second_wait 1
+> evening
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [day] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> lists
+wait_list: 1000
+collectors:
+second_wait_list: 1000 1000
+second_wait 1
+> set day 2
+> evening
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 1 cur 0
+args 15 0 0 0 0 0 0 0; parse [format] [15]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> lists
+wait_list:
+collectors:
+second_wait_list: 1000 1000
+second_wait 1
+> clear_second
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> start
+> dump
+cmd 33 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 0 cur 99
+args 15 0 0 0 0 0 0 0; parse [format] [15]
+player 200 count 2 last 0 format 15 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> wait day 2
+1000:0::0::Wait finished: today is day 2.
+1000:0::0::> format 15
+1000:0::0::Formatting for Player~[200] set to 15.
+stderr:
+
+exit 0
+stdout:
+section wait daily clears only listed second waits before next day aging
+> place 9000
+> resolve_wait
+> set day 1
+> queue wait time 1
+> load
+load 1
+> do
+> second
+> who 1001
+> parse wait time 5
+parse 1
+> set second 1
+> select 1000
+> daily
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 99
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> lists
+wait_list: 1000
+collectors:
+second_wait_list:
+second_wait 0
+> select 1001
+> lists
+wait_list: 1000
+collectors:
+second_wait_list:
+second_wait 1
+> select 1000
+> set day 2
+> daily
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 1 debug 2 inhibit 1 cur 99
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+1000:0::0::> wait time 1
+1000:0::0::Wait finished: one day has passed.
+stderr:
+
+exit 0
+stdout:
+section wait shrinking poll must not touch shifted unresolved neighbor
+> place 9000
+> resolve_wait
+> set day 1
+> queue wait day 2
+> load
+load 1
+> do
+> who 1001
+> place 9000
+> queue wait day 3
+> load
+load 1
+> do
+> lists
+wait_list: 1000 1001
+collectors:
+second_wait_list:
+second_wait 0
+> set day 2
+> poll_wait
+> lists
+wait_list: 1001
+collectors:
+second_wait_list:
+second_wait 0
+> dump
+cmd 94 who 1001 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 3 0 0 0 0 0 0; parse [wait] [day] [3]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> poll_wait
+> dump
+cmd 94 who 1001 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 0 cur 0
+args 0 3 0 0 0 0 0 0; parse [wait] [day] [3]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> lists
+wait_list: 1001
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+1000:0::0::> wait day 2
+1001:0::0::> wait day 3
+1000:0::0::Wait finished: today is day 2.
+stderr:
+
+exit 0
+stdout:
+section wait resumed malformed command finishes even with saved poll zero
+> place 9000
+> resolve_wait
+> set day 9
+> parse wait gold
+parse 1
+> run -1 0 1 0
+> init_wait
+> lists
+wait_list: 1000
+collectors:
+second_wait_list:
+second_wait 0
+> poll_wait
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 9 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [gold]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> wait_dump
+wait args 1
+wait arg 3 0 0 [NULL]
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> log
+log:
+1000:0::0::Wait finished: Argument missing for 'gold'.
+stderr:
+
+exit 0
+stdout:
+section wait resumed empty command keeps real predicate assertion
+> place 9000
+> resolve_wait
+> parse wait
+parse 1
+> run -1 1 1 0
+> init_wait
+> poll_wait
+stderr:
+assertion failure: olympia/c1.c (1363): wait_args_len(c->wait_parse) > 0
+
+exit 134

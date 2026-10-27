@@ -14,8 +14,7 @@ import (
 // Ported from olympia/input.c: the command line parser that loading a
 // command (scan_command() in io.c) uses, and the loading of a unit's next
 // order into its command (init_load_sup() and what it calls), which
-// set_lord() uses, plus individual command dispatch and completion.
-// Wait handlers remain separate, unported tasks.
+// set_lord() uses, plus individual command dispatch, completion and wait polling.
 //
 // C works on its strings in place, writing NUL bytes into them. The ports
 // work on a []byte copy where C writes into the string, and give each
@@ -596,11 +595,24 @@ func (w *world) minPriReady() int {
 	return 99
 }
 
-// The empty-list path is real. Wait polling and collect completion belong
-// to #61; reaching a populated wait list must not look like success.
+func (w *world) initWaitList() {
+	for i := range w.loopKind(tChar) {
+		c := w.rpCommand(i)
+		if c != nil && c.state == stateRun && c.cmd == w.cmdWait {
+			w.waitList.Append(i)
+		}
+	}
+}
+
 func (w *world) checkAllWaits() {
-	if w.waitList.Len() != 0 {
-		panic(notImplemented("check_all_waits"))
+	// Index the live list: d_wait may remove the current entry, shifting the
+	// next one into its slot. C advances past that shifted entry.
+	for i := 0; i < w.waitList.Len(); i++ {
+		c := w.rpCommand(w.waitList[i])
+		if c != nil && c.state == stateRun && c.cmd == w.cmdWait {
+			assert(c.wait == -1, "olympia/input.c", 821, "c->wait == -1")
+			w.finishCommand(c)
+		}
 	}
 }
 

@@ -1,4 +1,4 @@
-# Command dispatch, scheduler, auto-attack selection and wait predicates
+# Command dispatch, scheduler, auto-attack selection and waits
 
 Pinned reference: [Olympia G3 at
 6a25f2d252ce45bd5adbe3baaccb3be3eed56279](https://github.com/playbymail/olympia-g3/tree/6a25f2d252ce45bd5adbe3baaccb3be3eed56279).
@@ -25,7 +25,8 @@ original `#line` locations: parser, `cmd_shift`, `check_allow`, `get_command`,
 and `init_load_sup`, precedence/comparison and both queue sorts,
 `initial_command_load`, `min_pri_ready`, `start_phase`, `evening_phase`,
 `process_player_orders`, and `daily_command_loop`. It also extracts the real
-`check_all_waits` (only its empty-list path is compared here), plus combat.c's
+`init_wait_list` and complete `check_all_waits`, plus produce.c's
+`init_collect_list` and original `collectors` storage, plus combat.c's
 complete `auto_attack`, `check_auto_attack_sup`, `check_all_auto_attacks` and
 `clear_second_waits`, plus `fort_covers`. Wrappers expose static helpers to the
 driver; no compared routine is rewritten or stubbed. It links the real
@@ -38,7 +39,7 @@ separately, without normalization. Two fresh C runs must be byte-identical befor
 comparing. Default Go tests use the recording without C or saved games.
 
 Real complete handlers: `v_stop`, `v_xyzzy`, `v_plugh`, `v_format`, `v_notab`,
-`v_hide`, `d_hide`. Real dependencies include order-head/top/pop operations,
+`v_hide`, `d_hide`, `v_wait`, `d_wait`, `i_wait`. Real dependencies include order-head/top/pop operations,
 player/lord and stack lookup, `all_stack`, `count_any`, `count_stack_any`,
 `rp_skill_ent`, `has_skill`, `exp_level`, `check_skill`, parser garrison lookup,
 `here_pos` and sparse output-bit operations. Target predicates are extracted
@@ -58,6 +59,14 @@ operation constructs flag records only; it is not a replacement `v_flag`.
 `wait` in the case language clears/reparses and checks conditions directly;
 it does **not** execute `v_wait`, `d_wait` or `i_wait`. `wait_check` reevaluates
 the cached parse, while `wait_parse`/`wait_dump` observe even partial parses.
+The handler cases use real queued `wait` orders through load/start/evening
+dispatch, or construct persisted commands and call `init_wait`/`poll_wait`.
+`interrupt` invokes the table's actual interrupt callback, not the still
+unported generic `interrupt_order`. `lists` observes wait/collector/second-wait
+storage and the selected command's second-wait flag. `wait_add` only constructs
+list state, including stale entries and duplicates; it models no decisions.
+Collector cases construct saved COLLECT commands and call `init_collect`;
+they never execute an aborting COLLECT handler or claim harvesting works.
 
 All other command routines named by the C table are **aborting** stubs,
 never successful substitutes. The remaining aborting dependencies are
@@ -83,7 +92,7 @@ or Go's CLI exit code. No production test hooks replace combat.
 Go preserves each saved command-table index and the C layout of
 `cmd_tbl_ent` (three function pointers). NULL stays nil; all unported
 non-NULL handlers raise the engine's explicit not-implemented error, including
-wait. Tests compare presence of all three pointers at **every** table index
+collect. Tests compare presence of all three pointers at **every** table index
 against actual C, independently of the existing entity layout/metadata test.
 The only implemented handlers are the complete real handlers listed above.
 The tiny no-op handlers really return TRUE in C. Skill lookup and counting
@@ -96,9 +105,9 @@ stdout with C framing, but without command echo; it does **not** bypass all
 allow checks. Other routing/formatting fails explicitly. Report assembly and
 the broader sout interface remain stage 2. No report-side mutations on these
 paths are omitted. `-r` remains disabled; these scheduler methods are not full
-turn orchestration. A nonempty wait list explicitly stops with
-`check_all_waits` not implemented until #61; actual wait/collect handlers
-and validated-trade settlement also stop explicitly. The real auto-attack
+turn orchestration. Wait callbacks and polling are ported; COLLECT execution,
+generic order interruption (#62) and validated-trade settlement still stop
+explicitly. The real auto-attack
 scan excludes stacked followers and leaders whose health is neither 100 nor
 -1, then completes the local and outer-ship target scans. Healthy nonhostile
 leaders return normally. Only a selected attack emits real auto-attack output
@@ -220,7 +229,7 @@ of all characters. Attitude command families remain unported.
   repeated NOT does not toggle, and a trailing NOT alone keeps waiting.
   Literal `OR`, `AND` and `hour` are **unknown conditions at this pin**, not
   extensions we implement. Empty predicates assert in this low-level checker;
-  wait-handler validation remains #61.
+  the start handler instead rejects an empty order before predicate checking.
 - Unit existence versus hidden/contact/fog visibility; direct `loc` versus
   outer `shiploc`/`ship`, nested stacks on ships, unfinished ships and rafts,
   and kind versus ship-subkind validation. Ferry checks require both local
@@ -243,6 +252,39 @@ of all characters. Attitude command families remain unported.
   sublocation**: a building or ship can be clear while its province is raining.
   Negative storm strength is not positive weather but still prevents clear.
 
-The recording contains 123 sections / 3828 lines on Linux x86-64.
-The earlier 102 sections / 2946 lines are byte-for-byte unchanged.
+- Real wait starts immediately satisfy, or append and remain indefinitely
+  running; same-day polling after another command can finish and load/execute
+  a successor. Unresolved polling does not age a command; evenings do.
+  Resumed waits preserve elapsed days and lazily reconstruct the predicate
+  parse. Saved poll zero does not suppress an indefinite wait's finish callback.
+- Both initializers append without clearing or deduplication, in `loop_char`
+  order, excluding players and absent/nonrunning/wrong-command records.
+  Collector initialization does not execute COLLECT or mutate its command.
+  Polling skips absent/nonrunning/wrong-command records before asserting the
+  selected wait is -1, preserving the actual input.c:821 assertion.
+- The poll loop indexes the **live shrinking list**, not a snapshot or Go
+  range. Adjacent satisfied waits leave the shifted neighbor for a later poll.
+  A satisfied/unresolved pair distinguishes an incorrect fixed-length range
+  by the unresolved command's debug field (0 on the first poll, 2 on the next).
+  A three-unit asymmetric case also observes later satisfied entries.
+- Empty starts fail without clearing an earlier cached parse. Malformed
+  arguments instead emit `Wait finished: <parse diagnostic>` and succeed,
+  exactly as C does; no independent validation fix. A deliberately constructed
+  resumed empty command bypasses start validation and retains c1.c:1363's
+  assertion; this raw state is not evidence of a publicly reachable engine bug.
+  The interrupt callback removes **all** matching list entries, but changes
+  neither the command nor its cached parse; repeated removal is harmless.
+- Second waits suppress evening aging, not the final wait-list poll, so a day
+  predicate can finish despite second_wait. The unchanged `clear_second_waits`
+  clears only listed commands, including duplicate entries, leaving an unlisted
+  flag intact. Daily clearing allows a time wait to age on the following day.
+
+New real-source functions are c1.c:1639–1692 (`v_wait`, `d_wait`, `i_wait`),
+input.c:793–825 (`init_wait_list`, `check_all_waits`), and produce.c:525–543
+(`init_collect_list`, with its original storage at line 522). The previously
+extracted combat.c `clear_second_waits` is reused unchanged.
+
+The recording contains 141 sections / 4852 lines on Linux x86-64.
+The earlier 123 sections / 3828 lines are byte-for-byte unchanged; no callback
+reachability exception to that prefix was needed.
 Whole-game checks remain opt-in in `turn-compat`. No cases consume RNG.

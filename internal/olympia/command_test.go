@@ -121,6 +121,23 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.doCommand(c)
 		case "finish":
 			fmt.Fprintf(&stdout, "finish %d\n", w.finishCommand(c))
+		case "interrupt":
+			fmt.Fprintf(&stdout, "interrupt %d\n", cmdTbl[c.cmd].interrupt(w, c))
+		case "init_wait":
+			w.initWaitList()
+		case "init_collect":
+			w.initCollectList()
+		case "poll_wait":
+			w.checkAllWaits()
+		case "clear_second":
+			w.clearSecondWaits()
+		case "wait_add":
+			w.waitList.Append(args.num(t))
+		case "lists":
+			helperList(&stdout, "wait_list", w.waitList)
+			helperList(&stdout, "collectors", w.collectors)
+			helperList(&stdout, "second_wait_list", w.secondWaitList)
+			fmt.Fprintf(&stdout, "second_wait %d\n", c.secondWait)
 		case "done":
 			w.commandDone(c)
 		case "shift":
@@ -344,6 +361,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.curPri = int32(n)
 			case "status":
 				c.status = int8(n)
+			case "wait":
+				c.wait = int32(n)
+			case "poll":
+				c.poll = int8(n)
 			case "debug":
 				c.debug = int8(n)
 			case "days":
@@ -426,7 +447,7 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 // success. This is a port-boundary contract, not a fabricated C recording.
 func TestCommandUnportedStops(t *testing.T) {
 	w := newWorld()
-	for _, name := range []string{"move", "wait", "collect", "attack"} {
+	for _, name := range []string{"move", "collect", "attack"} {
 		i := w.findCommand(name)
 		for phase, fn := range map[string]func(*world, *command) int{"start": cmdTbl[i].start, "finish": cmdTbl[i].finish, "interrupt": cmdTbl[i].interrupt} {
 			if fn == nil {
@@ -489,7 +510,7 @@ func TestCommandSchedulerBoundaries(t *testing.T) {
 			w.dailyCommandLoop()
 		})
 	}
-	for _, boundary := range []string{"wait/start", "wait/evening", "trades/evening"} {
+	for _, boundary := range []string{"trades/evening"} {
 		t.Run(boundary, func(t *testing.T) {
 			w := newWorld()
 			w.allocBox(200, tPlayer, subPlRegular)
@@ -500,13 +521,8 @@ func TestCommandSchedulerBoundaries(t *testing.T) {
 			w.pLocInfo(9000).hereList.Append(1000)
 			c := w.pCommand(1000)
 			c.who, c.state = 1000, stateDone
-			want := notImplemented("check_all_waits")
-			if boundary == "trades/evening" {
-				w.tradesToCheck.Append(1000)
-				want = notImplemented("check_validated_trades")
-			} else {
-				w.waitList.Append(1000)
-			}
+			w.tradesToCheck.Append(1000)
+			want := notImplemented("check_validated_trades")
 			defer func() {
 				if r := recover(); r != want {
 					t.Fatalf("boundary = %v, want %v", r, want)
@@ -515,16 +531,6 @@ func TestCommandSchedulerBoundaries(t *testing.T) {
 					t.Fatalf("command not completed before boundary: %+v, queue %v", c, w.runQ)
 				}
 			}()
-			if boundary == "wait/start" {
-				w.libdir = t.TempDir()
-				if err := os.Mkdir(filepath.Join(w.libdir, "log"), 0o755); err != nil {
-					t.Fatal(err)
-				}
-				w.pOrderHead(200, 1000).l.Append("stop")
-				w.loadCommand(c)
-				w.startPhase()
-				return
-			}
 			c.cmd = int32(w.findCommand("xyzzy"))
 			c.wait, c.status = 1, 1
 			w.setState(c, stateRun, 0)
