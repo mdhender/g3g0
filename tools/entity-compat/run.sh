@@ -35,6 +35,7 @@
 #   G3_REV   G3 revision to test against (default: the pinned revision)
 #   WORK     scratch directory, emptied first (default tmp/entity-compat)
 #   CC       C compiler (default cc)
+#   RUN_TIMEOUT  seconds per C driver / Go test process (default 10)
 #
 # Exits 0 only if the C output matches the recorded output and the Go test
 # passes.
@@ -43,6 +44,9 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
+
+. "${HERE}/../lib/timeout.sh"
+RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 G3_REV="${G3_REV:-47535543d83fbc5649d54b63b49e578f2b11ab1c}"
@@ -59,7 +63,7 @@ esac
 
 die() { echo "error: $*" >&2; exit 2; }
 
-for tool in git go python3 cmp diff "${CC}"; do
+for tool in git go perl python3 cmp diff "${CC}"; do
 	command -v "${tool}" >/dev/null || die "missing required tool: ${tool}"
 done
 git -C "${G3_REPO}" cat-file -e "${G3_REV}^{commit}" 2>/dev/null ||
@@ -335,8 +339,10 @@ echo "building the C driver (log: ${WORK}/build.log)"
 	die "C driver build failed; see ${WORK}/build.log"
 
 for run in run1 run2; do
-	(cd "${WORK}/${run}" && "${WORK}/entity-driver" >out.txt) ||
-		die "C driver failed in ${run}"
+	status=0
+	(cd "${WORK}/${run}" && run_limited "${RUN_TIMEOUT}" entity-driver "${WORK}/entity-driver" >out.txt) || status=$?
+	[ "${status}" != "${TIMEOUT_STATUS}" ] || die "C driver timed out in ${run} (status ${status})"
+	[ "${status}" -eq 0 ] || die "C driver failed in ${run} (status ${status})"
 done
 cmp -s "${WORK}/run1/out.txt" "${WORK}/run2/out.txt" || die "C driver is not deterministic"
 echo "C driver: $(wc -l <"${WORK}/run1/out.txt" | tr -d ' ') lines, deterministic"
@@ -353,5 +359,5 @@ else
 fi
 
 echo "running the Go port against it"
-(cd "${ROOT}" && go test -count=1 -run 'TestEntityMatchesC' ./internal/olympia)
+(cd "${ROOT}" && RUN_TIMEOUT="${RUN_TIMEOUT}" go test -exec "bash ${HERE}/../lib/run-limited.sh" -count=1 -run 'TestEntityMatchesC' ./internal/olympia)
 echo "PASS"

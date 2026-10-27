@@ -62,7 +62,7 @@ The game comparisons delete each game's output as soon as it matches, and keep o
 
 ## Time limits
 
-The affected engine tools (`rng`, `code`, `helper`, `io`, `box`, `boxfile`,
+The affected engine tools (`rng`, `entity`, `code`, `helper`, `io`, `box`, `boxfile`,
 `check`, `loadsave`, `mapgen` and `olympia-cli` compat, plus `olympia-roundtrip`
 and `olympia-spec`, `turn-compat`, `turn-driver-compat` and `command-compat`) run their C/Go processes under `run_limited` from
 [`lib/timeout.sh`](lib/timeout.sh), with a limit of `RUN_TIMEOUT` seconds.

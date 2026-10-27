@@ -21,7 +21,7 @@ The port follows:
 ## Prerequisites
 
 - A G3 clone that contains the pinned revision. The default is `~/Software/playbymail/olympia-g3`; set `G3_REPO` to use another.
-- A C11 compiler (`CC`, default `cc`), Go, Bash, Python 3, `git`, `cmp` and `diff`.
+- A C11 compiler (`CC`, default `cc`), Go, Bash, Perl, Python 3, `git`, `cmp` and `diff`.
 
 ## Running
 
@@ -38,6 +38,14 @@ The script:
 4. Runs the driver twice and requires the same output both times.
 5. Requires that output to equal [`internal/olympia/testdata/entity-c-output.txt`](../../internal/olympia/testdata/entity-c-output.txt), or with `--update`, writes it there.
 6. Runs `go test -run TestEntityMatchesC ./internal/olympia`, which prints the same lines from the Go model and requires the recorded C output line for line.
+
+Each C driver invocation and the Go test binary run under the shared
+[`run_limited`](../lib/timeout.sh) supervisor; Go uses the
+[`go test -exec` adapter](../lib/run-limited.sh). `RUN_TIMEOUT` sets the limit
+in seconds (default 10, as for code/helper compat). At the limit the supervisor
+sends SIGTERM, then SIGKILL after 2 seconds if needed, and returns status 124.
+The script reports a C timeout explicitly; Go reports `exit status 124` and
+fails its test run. Other statuses and engine output are not normalized.
 
 `go test ./...` runs `TestEntityMatchesC` too, so the port is held to the recorded C output without a G3 clone.
 The struct layouts are those of the recording host (LP64); on a host with another pointer size the test skips.
