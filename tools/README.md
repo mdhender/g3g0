@@ -48,6 +48,13 @@ Run these one at a time: `box-compat` and `boxfile-compat` read the games `olymp
 By default `box-compat` and `boxfile-compat` run only their recorded cases, and `olympia-roundtrip` checks C's determinism only on its fixed sample of cases when it builds its cache.
 The game comparisons delete each game's output as soon as it matches, and keep only failing games' output under the tool's `tmp/` directory.
 
+## Time limits
+
+`genesis-compat`, `island-compat`, `mapgen-compat`, `olympia-cli-compat` and `olympia-roundtrip` run each C and Go program under `run_limited` from [`lib/timeout.sh`](lib/timeout.sh), with a limit of `RUN_TIMEOUT` seconds.
+At the limit it sends SIGTERM, then SIGKILL 2 seconds later, so a hung Go binary is stopped as surely as a C one ([#47](https://github.com/mdhender/g3g0/issues/47): the Go runtime ignores the SIGALRM the scripts used to rely on).
+A run that times out has status 124, for both engines; any other status is the program's own, with 128 + N for death by signal N.
+The scripts report a status of 124 as a timeout.
+
 ## Upstream files each tool reads
 
 Paths are in the G3 repository.

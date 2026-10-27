@@ -78,12 +78,16 @@ OLYMPIA_ENGINE_BIN=/path/to/g3g0/tmp/olympia tests/olympia/regress/rng-selftest/
 
 ## Results
 
-Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
+Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
 
 - 92 vectors: 62 `same` and 30 `nyi`. All 92 PASS.
 - G3 gate: `rng-selftest` prints `YES` for the C build and for Go.
 
 The full table of hashes and exit statuses is in [`results.tsv`](results.tsv), copied from the run, not edited by hand.
+
+The C stderr and merged hashes of the 30 `nyi` vectors, where C aborts (134), changed with [#47](https://github.com/mdhender/g3g0/issues/47).
+Before it, the program ran as the shell's own child, and bash wrote its `Abort trap: 6` report, with the process ID and the script's line number and text, into the captured stderr, so those hashes differed on every run.
+Now the time limit (`tools/lib/timeout.sh`) runs it under a supervisor that exits with the same status, and the captured stderr is only what C wrote.
 
 ## Known differences
 

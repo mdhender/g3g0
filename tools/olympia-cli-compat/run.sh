@@ -34,6 +34,8 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
+# shellcheck source=../lib/timeout.sh
+. "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 G3_REV="${G3_REV:-47535543d83fbc5649d54b63b49e578f2b11ab1c}"
@@ -46,8 +48,7 @@ sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
 # run_as BIN ARGS... runs BIN with argv[0] set to olympia-g3, killing it
 # after RUN_TIMEOUT seconds.
 run_as() {
-	perl -e 'alarm shift; my $bin = shift; exec { $bin } "olympia-g3", @ARGV or die "exec: $!"' \
-		"${RUN_TIMEOUT}" "$@"
+	run_limited "${RUN_TIMEOUT}" olympia-g3 "$@"
 }
 
 for tool in git cmake go perl python3 shasum cmp diff; do
@@ -134,9 +135,9 @@ while read -r label expect args; do
 	result=PASS
 	c_status="$(cat "${base}/c/status")"
 	go_status="$(cat "${base}/go/status")"
-	# perl's alarm kills a run that takes longer than RUN_TIMEOUT with
-	# SIGALRM, which the shell reports as 142.
-	if grep -qx 142 "${base}"/*/status "${base}"/*/merged-status; then
+	# run_limited kills a run that takes longer than RUN_TIMEOUT and reports
+	# TIMEOUT_STATUS (tools/lib/timeout.sh).
+	if grep -qx "${TIMEOUT_STATUS}" "${base}"/*/status "${base}"/*/merged-status; then
 		fail "${label}: a run timed out after ${RUN_TIMEOUT}s"
 		result=FAIL
 	fi

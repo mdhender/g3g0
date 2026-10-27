@@ -28,6 +28,8 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
+# shellcheck source=../lib/timeout.sh
+. "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 G3_REV="${G3_REV:-2322a0474de5fb38308d795f6cd72beb811652e9}"
@@ -40,18 +42,14 @@ INPUTS=(Map Regions Land Cities)
 die() { echo "error: $*" >&2; exit 2; }
 sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
 
-# with_timeout runs a command, killing it after RUN_TIMEOUT seconds.
-with_timeout() { perl -e 'alarm shift; exec @ARGV or die "exec: $!"' "${RUN_TIMEOUT}" "$@"; }
+# with_timeout BIN ARGS... runs BIN, killing it after RUN_TIMEOUT seconds
+# (tools/lib/timeout.sh). A run that times out exits TIMEOUT_STATUS, for C
+# and Go alike.
+with_timeout() { run_limited "${RUN_TIMEOUT}" "$1" "$@"; }
 
 # run_capture BIN runs BIN under the same timeout, writing stdout and stderr in
-# the current directory. It calls perl directly rather than through
-# with_timeout: when a program dies by a signal (abort() on an assertion),
-# bash reports it ("Abort trap: 6") on the stderr in effect for the command,
-# which inside a function is the program's own stderr file. Here the report
-# goes to the caller's stderr, which run_one discards.
-run_capture() {
-	perl -e 'alarm shift; exec @ARGV or die "exec: $!"' "${RUN_TIMEOUT}" "$1" >stdout 2>stderr
-}
+# the current directory.
+run_capture() { with_timeout "$1" >stdout 2>stderr; }
 
 for tool in git cmake go perl shasum xxd cmp diff; do
 	command -v "${tool}" >/dev/null || die "missing required tool: ${tool}"
@@ -131,10 +129,11 @@ done <"${HERE}/seeds.txt"
 # Runs.
 # ---------------------------------------------------------------------------
 
-# run_one BIN INPUT SEED DIR runs BIN in a fresh DIR holding copies of the
-# input set and the original seed.
+# run_one BIN INPUT SEED DIR [SECONDS] runs BIN in a fresh DIR holding copies
+# of the input set and the original seed, with a limit of SECONDS (default
+# RUN_TIMEOUT).
 run_one() {
-	local bin="$1" input="$2" seed="$3" dir="$4"
+	local bin="$1" input="$2" seed="$3" dir="$4" RUN_TIMEOUT="${5:-${RUN_TIMEOUT}}"
 	mkdir -p "${dir}"
 	for f in "${INPUTS[@]}"; do cp -p "${WORK}/inputs/${input}/${f}" "${dir}/"; done
 	if [ -f "${WORK}/seeds/${seed}" ]; then cp -p "${WORK}/seeds/${seed}" "${dir}/randseed"; fi
@@ -228,7 +227,8 @@ done
 
 # ---------------------------------------------------------------------------
 # Failure cases: inputs on which the C program fails. The reference must exit
-# with the recorded status, and Go must match it on every output. asfail()
+# with the recorded status, and Go must match it on every output. A case may
+# set its own time limit; a run that hits it has status TIMEOUT_STATUS. asfail()
 # prints the compiler's __FILE__, the absolute path of the exported source,
 # where the port prints mapgen/mapgen.c, so that prefix is removed from the C
 # stderr before comparing.
@@ -243,11 +243,13 @@ strip_file_prefix() {
 
 echo
 echo "failure cases"
-while read -r label seed want; do
+while read -r label seed want limit; do
 	[[ -z "${label}" || "${label}" == \#* ]] && continue
 	src="${HERE}/failures/${label}"
 	[ -d "${src}" ] || die "failures.txt: no directory failures/${label}"
 	[ -n "${want}" ] || die "failures.txt: no status for ${label}"
+	[ "${want}" != timeout ] || want="${TIMEOUT_STATUS}"
+	limit="${limit:-${RUN_TIMEOUT}}"
 	printf '%s\n' "${seed_labels[@]}" | grep -qx -- "${seed}" || die "failures.txt: unknown seed '${seed}' for ${label}"
 	input="fail-${label}"
 	if [ ! -d "${WORK}/inputs/${input}" ]; then
@@ -259,10 +261,10 @@ while read -r label seed want; do
 		done
 	fi
 	base="${WORK}/runs/${input}/${seed}"
-	run_one "${C_BIN}" "${input}" "${seed}" "${base}/c1"
-	run_one "${C_BIN}" "${input}" "${seed}" "${base}/c2"
-	run_one "${GO_BIN}" "${input}" "${seed}" "${base}/go1"
-	run_one "${GO_BIN}" "${input}" "${seed}" "${base}/go2"
+	run_one "${C_BIN}" "${input}" "${seed}" "${base}/c1" "${limit}"
+	run_one "${C_BIN}" "${input}" "${seed}" "${base}/c2" "${limit}"
+	run_one "${GO_BIN}" "${input}" "${seed}" "${base}/go1" "${limit}"
+	run_one "${GO_BIN}" "${input}" "${seed}" "${base}/go2" "${limit}"
 	strip_file_prefix "${base}/c1"
 	strip_file_prefix "${base}/c2"
 

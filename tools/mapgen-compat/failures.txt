@@ -1,12 +1,15 @@
 # Failure cases for the mapgen differential test (see README.md).
 #
-# Each line is: <label> <seed> <status>
+# Each line is: <label> <seed> <status> [<seconds>]
 #   label   failures/<label>/ holds the inputs; any of Map, Regions, Land and
 #           Cities it lacks come from tests/mapgen/fixtures in the pinned
 #           G3 export.
 #   seed    a label from seeds.txt.
 #   status  the exit status the pinned C build gives (134 is SIGABRT, 139
-#           SIGSEGV).
+#           SIGSEGV), or "timeout" for a run that never ends.
+#   seconds the time limit for each run of the case (default RUN_TIMEOUT).
+#           A run that hits it is killed and has status 124
+#           (tools/lib/timeout.sh), for C and Go alike.
 #
 # Each case runs once per seed listed. With the "missing" seed, load_seed()
 # leaves "randseed could not be opened." in the stdout buffer, which only
@@ -37,3 +40,6 @@ all-water-1x1      fixture  139
 all-water-100x100  fixture  139
 all-water-mixed    fixture  139
 all-holes          missing  139
+# One land square in a 20x20 sea of ',': C and Go both loop forever
+# (G3 #329), so each run is cut off after 2 seconds (G3G0 #47)
+one-land-square    fixture  timeout  2

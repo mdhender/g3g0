@@ -48,6 +48,7 @@ The script:
    A port that ignored the seed would fail this check.
 7. Runs every failure case in `failures.txt`: inputs from `failures/<label>/` (with the fixtures standing in for any file it lacks) and one seed from `seeds.txt`.
    The C program must exit with the recorded status, and C and Go must agree on every output as in step 5.
+   A case can set its own time limit; a case recorded as `timeout` must hit it in C.
    `asfail()` prints the compiler's `__FILE__`, the absolute path of the exported source, so that prefix is removed from the C stderr before comparing.
 8. Runs G3's own mapgen regression scripts (`tests/mapgen/regress/*/check.sh`) from the export, unchanged, against the C build and against Go.
    They run the C build by default, and the Go binary through their `MAPGEN_BIN` setting (`tests/mapgen/mapgen.sh`).
@@ -78,6 +79,7 @@ G3_ROOT=tmp/mapgen-compat/g3 go test -count=1 ./internal/mapgen
 | all-water-100x100 | a 100×100 `Map` of `,` | the same crash |
 | all-water-mixed | a 20×20 `Map` of `,`, `;`, `.` and `~` bands | the same crash |
 | all-holes | a 20×20 `Map` of `#` holes, with no tiles at all | the same crash |
+| one-land-square | a 20×20 `Map` of `,` with one `p` square | never ends ([G3 #329](https://github.com/playbymail/olympia-g3/issues/329)); killed after 2 seconds |
 
 Each runs with the `fixture` seed, with no `randseed`, or both.
 Without one, `load_seed()` leaves `randseed could not be opened.` in the stdout buffer.
@@ -88,7 +90,15 @@ The port buffers stdout the same way and drops the buffer when it reports a cras
 With no land region, `random_tile_from_each_region()` returns an empty list.
 It keeps that list in a static that is still NULL on this first call, so `gate_continental_tour()` gets NULL for `l` and `m`, skips its loop, and dereferences `l[0]` for the last gate.
 `Continental gate tour:` is already on stderr by then.
-A `Map` with a single land square does not get this far: both C and Go loop forever earlier, so it is not a failure case.
+A `Map` with a single land square does not get this far: both C and Go loop forever earlier ([G3 #329](https://github.com/playbymail/olympia-g3/issues/329)).
+`one-land-square` runs it with a 2-second limit, so the suite stays fast and the time limit itself is tested on a real hang.
+
+## Time limits
+
+Every program run is limited to `RUN_TIMEOUT` seconds (default 120), or to a failure case's own limit, by `run_limited` in [`tools/lib/timeout.sh`](../lib/timeout.sh).
+At the limit it sends SIGTERM, then SIGKILL 2 seconds later, and the run's status is 124, for C and Go alike.
+Until [#47](https://github.com/mdhender/g3g0/issues/47) the limit was a Perl `alarm` before `exec`: C died of SIGALRM (status 142), but the Go runtime ignores SIGALRM, so a hung Go run stalled the script forever.
+A run that a signal kills has status 128 + the signal number (134 for SIGABRT, 139 for SIGSEGV), as before.
 
 ## Seed corpus
 
@@ -112,8 +122,8 @@ Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.
 
 - 11 input sets × 10 seeds = 110 cases.
   All 110 PASS: Go matches C byte for byte on every output, and both programs are deterministic.
-- 15 failure cases: 9 exiting 134 (SIGABRT) and 6 exiting 139 (SIGSEGV) in C.
-  All 15 PASS: Go matches C byte for byte on every output, apart from the source path removed from the C assertion message.
+- 16 failure cases: 9 exiting 134 (SIGABRT), 6 exiting 139 (SIGSEGV) and 1 timing out (status 124) in C.
+  All 16 PASS: Go matches C byte for byte on every output, apart from the source path removed from the C assertion message.
 - Each input set gives 8 distinct reference maps for its 8 full seeds.
 - The `fixtures`/`secret-sea-route` case reproduces upstream's `secret-sea-route/EXPECT.sha256` for `gate`, `loc` and `road`.
 - G3 regressions: every `tests/mapgen/regress/*/check.sh` at the pinned revision prints `YES` for the C build and for Go.
@@ -140,6 +150,7 @@ These are limited to failure paths that the C build cannot reproduce exactly:
 
 - An all-water `Map` (no land region) crashes `gate_continental_tour()` with SIGSEGV at `mapgen.c` line 2527 ([#46](https://github.com/mdhender/g3g0/issues/46); [G3 #328](https://github.com/playbymail/olympia-g3/issues/328)).
   The port exits 139 at the same point.
+- A `Map` with a single land square loops forever in C and in the port ([G3 #329](https://github.com/playbymail/olympia-g3/issues/329)); see the `one-land-square` failure case.
 
 When G3 has an unfixed defect, `WORKFLOW.md` requires the port to reproduce it, with a comment linking the G3 issue, and to list it here.
 

@@ -33,6 +33,8 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
+# shellcheck source=../lib/timeout.sh
+. "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 G3_REV="${G3_REV:-6bbcd63055d051ade6f745f368281628441a2c27}"
@@ -45,8 +47,7 @@ sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
 # run_as BIN ARGS... runs BIN with argv[0] set to island-g3, killing it after
 # RUN_TIMEOUT seconds.
 run_as() {
-	perl -e 'alarm shift; my $bin = shift; exec { $bin } "island-g3", @ARGV or die "exec: $!"' \
-		"${RUN_TIMEOUT}" "$@"
+	run_limited "${RUN_TIMEOUT}" island-g3 "$@"
 }
 
 for tool in git cmake go perl shasum xxd cmp diff; do
@@ -218,9 +219,9 @@ while read -r label expect group mapspec seed setup stages; do
 	result=PASS
 	statuses="$(cd "${base}/c1" && cat $(ls status.* | sort -t. -k2 -n) | paste -sd, -)"
 	last="${statuses##*,}"
-	# perl's alarm kills a run that takes longer than RUN_TIMEOUT with
-	# SIGALRM, which the shell reports as 142.
-	if grep -qx 142 "${base}"/*/status.*; then
+	# run_limited kills a run that takes longer than RUN_TIMEOUT and reports
+	# TIMEOUT_STATUS (tools/lib/timeout.sh).
+	if grep -qx "${TIMEOUT_STATUS}" "${base}"/*/status.*; then
 		fail "${label}: a run timed out after ${RUN_TIMEOUT}s"
 		result=FAIL
 	fi

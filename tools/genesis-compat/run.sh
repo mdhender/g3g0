@@ -33,6 +33,8 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
+# shellcheck source=../lib/timeout.sh
+. "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 G3_REV="${G3_REV:-2322a0474de5fb38308d795f6cd72beb811652e9}"
@@ -47,10 +49,10 @@ sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
 # run_as BIN ARGS... runs BIN with argv[0] set to genesis-g3, killing it after
 # RUN_TIMEOUT seconds. genesis prints argv[0] in its usage message.
 run_as() {
-	perl -e 'alarm shift; my $bin = shift; exec { $bin } "genesis-g3", @ARGV or die "exec: $!"' \
-		"${RUN_TIMEOUT}" "$@"
+	run_limited "${RUN_TIMEOUT}" genesis-g3 "$@"
 }
-with_timeout() { perl -e 'alarm shift; exec @ARGV or die "exec: $!"' "${RUN_TIMEOUT}" "$@"; }
+# with_timeout BIN ARGS... runs BIN under the same limit, with argv[0] its path.
+with_timeout() { run_limited "${RUN_TIMEOUT}" "$1" "$@"; }
 
 for tool in git cmake go perl shasum xxd cmp diff; do
 	command -v "${tool}" >/dev/null || die "missing required tool: ${tool}"

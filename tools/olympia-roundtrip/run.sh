@@ -54,6 +54,8 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
+# shellcheck source=../lib/timeout.sh
+. "${HERE}/../lib/timeout.sh"
 
 PINNED_REV=47535543d83fbc5649d54b63b49e578f2b11ab1c
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
@@ -75,10 +77,10 @@ die() { echo "error: $*" >&2; exit 2; }
 sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
 
 # run_as BIN ARGS... runs BIN with argv[0] set to olympia-g3 and stdin from
-# /dev/null, killing it after RUN_TIMEOUT seconds (exit status 142).
+# /dev/null, killing it after RUN_TIMEOUT seconds (exit status TIMEOUT_STATUS;
+# see tools/lib/timeout.sh).
 run_as() {
-	perl -e 'alarm shift; my $bin = shift; exec { $bin } "olympia-g3", @ARGV or die "exec: $!"' \
-		"${RUN_TIMEOUT}" "$@" </dev/null
+	run_limited "${RUN_TIMEOUT}" olympia-g3 "$@" </dev/null
 }
 
 fresh=0 list=0 determinism_all=0
@@ -316,7 +318,7 @@ for c in "${selected[@]}"; do
 	go_status="$(cat "${dir}/go/status")"
 	what=()
 	[ "${c_status}" = "${go_status}" ] || what+=("status C ${c_status} Go ${go_status}")
-	if [ "${go_status}" = 142 ]; then what+=("Go timed out after ${RUN_TIMEOUT}s"); fi
+	if [ "${go_status}" = "${TIMEOUT_STATUS}" ]; then what+=("Go timed out after ${RUN_TIMEOUT}s"); fi
 	so=same se=same
 	cmp -s "${dir}/c/stdout" "${dir}/go/stdout" || { so=differs; what+=(stdout); }
 	cmp -s "${dir}/c/stderr" "${dir}/go/stderr" || { se=differs; what+=(stderr); }
