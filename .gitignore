@@ -10,3 +10,6 @@
 # Local environment overrides may hold secrets such as G3G0_PEPPER.
 .env.local
 .env.*.local
+
+# Orb portal metadata is local to each machine.
+.amp/portals/*
