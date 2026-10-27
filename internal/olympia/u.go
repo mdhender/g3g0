@@ -101,6 +101,8 @@ func (w *world) testKnown(who, i int) bool {
 	}
 	assert(w.validBox(who), "olympia/u.c", 2334, "valid_box(who)")
 	assert(w.validBox(i), "olympia/u.c", 2335, "valid_box(i)")
+	// Preserve C's NULL bx[0] dereference for valid but unowned characters:
+	// https://github.com/playbymail/olympia-g3/issues/353 (nonblocking).
 	ep := w.rpPlayer(w.player(who))
 	return ep != nil && testBit(ep.known, i)
 }
@@ -335,10 +337,7 @@ func capitalize(s string) string {
 // addItem is add_item(), static in u.c: it gives who qty more of item,
 // adding an inventory entry at the end if who has none, and lets
 // investigate_possible_trade() see whether that completes a pending SELL.
-// The lore branch (queue_lore() for a character that does not know the
-// item's lore) is not yet ported; create_unique_item_alloc(), the one
-// caller so far, calls it before the item has an item_magic, so its lore
-// is always 0 there.
+// Item lore is queued before even a zero-quantity inventory change.
 func (w *world) addItem(who, item, qty int) {
 	assert(w.validBox(who), "olympia/u.c", 1849, "valid_box(who)")
 	assert(w.validBox(item), "olympia/u.c", 1850, "valid_box(item)")
@@ -350,8 +349,8 @@ func (w *world) addItem(who, item, qty int) {
 			lore = int(p.lore)
 		}
 
-		if lore != 0 && w.kind(who) == tChar {
-			panic("olympia: add_item: test_known and queue_lore are not yet implemented")
+		if lore != 0 && w.kind(who) == tChar && !w.testKnown(who, item) {
+			w.queueLore(who, item, false)
 		}
 	}
 

@@ -3,8 +3,7 @@
 
 package olympia
 
-// Ported from olympia/day.c: touch_loc() and touch_loc_pl(), which
-// set_lord() calls. The rest of day.c is left for later stages.
+// Ported from olympia/day.c: location-touching state, including day 0.
 
 // touchLocPl is touch_loc_pl(): it marks where's viewing location, and the
 // location around that if it is inside a province, as touched by player pl.
@@ -29,4 +28,24 @@ func (w *world) touchLoc(who int) {
 	where := w.subloc(who)
 
 	w.touchLocPl(w.player(who), where)
+}
+
+func (w *world) stormOwnerTouchLoc() {
+	for i := range w.loopKind(tStorm) {
+		if p := w.rpMisc(i); p != nil && p.summonedBy != 0 {
+			where := w.subloc(i)
+			if pl := w.player(int(p.summonedBy)); pl != 0 {
+				w.touchLocPl(pl, where)
+			}
+		}
+	}
+}
+
+func (w *world) initLocsTouched() {
+	for who := range w.loopKind(tChar) {
+		if !w.isPrisoner(who) {
+			w.touchLoc(who)
+		}
+	}
+	w.stormOwnerTouchLoc()
 }

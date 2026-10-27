@@ -114,6 +114,24 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "lore_state":
+			p := w.pPlayer(args.num(t))
+			helperList(&stdout, "known", p.known)
+			helperList(&stdout, "lore", p.deliverLore)
+			helperList(&stdout, "touched", p.locs)
+			helperList(&stdout, "weather", p.weatherSeen)
+		case "queue_lore":
+			w.queueLore(args.num(t), args.num(t), args.num(t) != 0)
+		case "set_known":
+			w.setKnown(args.num(t), args.num(t))
+		case "additem":
+			w.addItem(args.num(t), args.num(t), args.num(t))
+		case "scan_lore":
+			w.scanCharItemLore()
+		case "init_touched":
+			w.initLocsTouched()
+		case "init_weather":
+			w.initWeatherViews()
 		case "newchar":
 			sk, ni, where, health := args.num(t), args.num(t), args.num(t), args.num(t)
 			pl, lk, ll := args.num(t), args.num(t), args.num(t)
@@ -282,6 +300,18 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pPlayer(n).noblePoints = int16(a)
 			case "skill_np":
 				w.pSkill(n).npReq = int32(a)
+			case "lore":
+				w.pItemMagic(n).lore = int32(a)
+			case "queued_lore":
+				w.pPlayer(n).deliverLore.Append(a)
+			case "touched":
+				setBit(&w.pPlayer(n).locs, a)
+			case "weather_seen":
+				setBit(&w.pPlayer(n).weatherSeen, a)
+			case "weather_mage":
+				w.pMagic(n).knowsWeather = int8(a)
+			case "summoner":
+				w.pMisc(n).summonedBy = int32(a)
 			case "capturable":
 				w.pItem(n).capturable = int8(a)
 			case "release":

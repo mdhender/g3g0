@@ -39,7 +39,7 @@ functions = {
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders'],
     'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord'],
     'move.c': ['restore_stack_actions'],
-    'day.c': ['touch_loc_pl', 'touch_loc'],
+    'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched'],
     'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack'],
@@ -52,13 +52,14 @@ functions = {
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np',
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
-            'destroy_unique_item', 'add_item', 'sub_item'],
+            'destroy_unique_item', 'add_item', 'sub_item', 'set_known'],
+    'lore.c': ['queue_lore', 'scan_char_item_lore'],
     'buy.c': ['investigate_possible_trade'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait'],
     'produce.c': ['init_collect_list'],
     'perm.c': ['is_hostile', 'clear_all_att'],
-    'storm.c': ['weather_here'],
+    'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views'],
     'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total'],
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
@@ -114,6 +115,7 @@ void drv_daily(void) { daily_command_loop(); }
 void drv_players(void) { process_player_orders(); }
 void drv_interrupted(void) { process_interrupted_units(); }
 int drv_sub_item(int who, int item, int qty) { return sub_item(who, item, qty); }
+void drv_add_item(int who, int item, int qty) { add_item(who, item, qty); }
 void drv_sort_load(int pri) { sort_load_queue(load_q[pri]); }
 void drv_sort_run(void) { sort_run_queue(run_q); }
 ilist drv_collectors(void) { return collectors; }
@@ -143,7 +145,6 @@ with open(f'{dst}/stubs.c', 'w') as out:
 int is_port_city(int n) STUB("is_port_city")
 ilist players_who_rule_here(int n) STUB("players_who_rule_here")
 void check_validated_trades(void) STUB("check_validated_trades")
-void queue_lore(int who, int item, int anyway) STUB("queue_lore")
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1, pretty_data_files;

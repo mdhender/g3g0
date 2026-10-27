@@ -352,9 +352,8 @@ Added whole real u.c `new_char` (282–317), `create_unique_item`
 (2547–2560) and `sub_item` (639–658). The existing real
 `create_unique_item_alloc`/`add_item` are included unchanged, with actual
 buy.c `investigate_possible_trade` (764–806). **buy.c is a new input** in
-tools/README.md and affected.sh. There is no lore implementation here:
-new items have no lore, and the C `queue_lore` boundary aborts if reached.
-Its Go NYI remains for #64. No token, movement command, death conversion,
+tools/README.md and affected.sh. At #63, new items had no lore; #64 below
+completes that branch with the real lore routines. No token, movement command, death conversion,
 kill_char or combat routine is replaced by a successful stub.
 
 `new_char` uses real `set_lord` and `set_where`. Its character-target branch
@@ -409,3 +408,43 @@ Pending-feature review adds two cases after the original 184 sections /
   Before correction the same Go case panicked, observed as status 139 with
   no flushed stdout. `destroyUniqueItem` now uses the existing `clib.Str`
   convention; the same recording matches without changing expected bytes.
+
+## Item lore state and day-0 initialization (#64)
+
+The complete real pinned functions now include lore.c `queue_lore`
+(230–245), `scan_char_item_lore` (390–411), u.c `set_known`
+(2347–2367), day.c `storm_owner_touch_loc` (1681–1702) and
+`init_locs_touched` (2306–2322), storm.c `update_weather_view_loc_sup`
+(1616–1625) and `init_weather_views` (1647–1658). The existing real
+`add_item`/`test_known`, player/lord, inventory loops, sparse-bit helpers,
+viewloc and province close the dependency chain. The `queue_lore` aborting
+stub is removed. **lore.c is a new input** in tools/README.md and affected.sh.
+The new driver operations only construct or observe state or call these
+actual functions. Report bodies and lore-sheet delivery remain stage 2;
+no knowledge, queue, touched-location or weather-view mutation is skipped.
+
+18 new cases distinguish unknown from known, known-but-not-queued from
+prequeued-but-unknown, ordinary duplicate suppression from `anyway`
+duplicates, item IDs from their lore-sheet IDs, player and unit ownership,
+zero-quantity acquisition, repeat acquisition and faction changes. Scanning
+uses actual character/inventory order, rejects invalid and nonpositive
+inventory entries, includes prisoners and excludes player inventories.
+State dumps include unsaved queue/known insertion order, touched locations
+and weather views; real `save_box` checks the persistent/unsaved boundary.
+
+Day-0 cases cover nested city/building/stack locations, prisoner exclusion
+from character touching but inclusion for weather mages, player and unit
+storm owners, unowned/no-owner storm controls, repeated append-only init,
+preservation of existing bits, unlocated/region locations, nonmages and
+signed mage flags. A mage with no province records bit 0 exactly as C.
+Ownership assertions retain their exact C diagnostics and status 134.
+The unowned lore scan reproduces [G3 #353](https://github.com/playbymail/olympia-g3/issues/353):
+`test_known` dereferences `bx[0]`, status 139 with no flushed stdout/stderr.
+No NULL guard or independent fix was added. G3 #352's separate NP-transfer
+behavior remains unchanged.
+
+Two actual C runs produce **204 sections / 7002 lines**, byte-identical;
+Go matches their raw stdout, stderr, status and observed/serialized state.
+The prior **186 sections / 6585 lines** remain byte-identical. No new RNG
+calls or streams are introduced. Whole-game turns remain opt-in and full
+turn orchestration is still #65 and later work, not enabled by this task.

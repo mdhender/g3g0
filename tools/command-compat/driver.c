@@ -26,6 +26,7 @@ char *drv_wait_check(struct command *c);
 void drv_signal(int who, char *flag);
 void drv_interrupted(void);
 int drv_sub_item(int who, int item, int qty);
+void drv_add_item(int who, int item, int qty);
 
 static void wait_dump(struct command *c)
 {
@@ -97,7 +98,23 @@ int main(int argc, char **argv)
   if (section != want) continue;
   printf("> %s\n", line);
   sscanf(line, "%31s", op);
-  if (!strcmp(op, "newchar")) {
+  if (!strcmp(op, "lore_state")) {
+   struct entity_player *p;
+   sscanf(line,"%*s %d",&n); p = p_player(n);
+   list("known",p->known); list("lore",p->deliver_lore);
+   list("touched",p->locs); list("weather",p->weather_seen);
+  }
+  else if (!strcmp(op, "queue_lore")) {
+   sscanf(line,"%*s %d %d %d",&n,&a,&b); queue_lore(n,a,b);
+  }
+  else if (!strcmp(op, "set_known")) { sscanf(line,"%*s %d %d",&n,&a); set_known(n,a); }
+  else if (!strcmp(op, "additem")) {
+   sscanf(line,"%*s %d %d %d",&n,&a,&b); drv_add_item(n,a,b);
+  }
+  else if (!strcmp(op, "scan_lore")) scan_char_item_lore();
+  else if (!strcmp(op, "init_touched")) init_locs_touched();
+  else if (!strcmp(op, "init_weather")) init_weather_views();
+  else if (!strcmp(op, "newchar")) {
    int ni, where, health, pl, lk, ll;
    text[0] = 0;
    sscanf(line, "%*s %d %d %d %d %d %d %d %8191[^\n]", &n, &ni, &where, &health, &pl, &lk, &ll, text);
@@ -230,6 +247,12 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"unit")) ilist_append(&p_player(n)->units,a);
    else if (!strcmp(text,"np")) p_player(n)->noble_points = (short)a;
    else if (!strcmp(text,"skill_np")) p_skill(n)->np_req = a;
+   else if (!strcmp(text,"lore")) p_item_magic(n)->lore = a;
+   else if (!strcmp(text,"queued_lore")) ilist_append(&p_player(n)->deliver_lore,a);
+   else if (!strcmp(text,"touched")) set_bit(&p_player(n)->locs,a);
+   else if (!strcmp(text,"weather_seen")) set_bit(&p_player(n)->weather_seen,a);
+   else if (!strcmp(text,"weather_mage")) p_magic(n)->knows_weather = (schar)a;
+   else if (!strcmp(text,"summoner")) p_misc(n)->summoned_by = a;
    else if (!strcmp(text,"capturable")) p_item(n)->capturable = (schar)a;
    else if (!strcmp(text,"release")) p_magic(n)->swear_on_release = (schar)a;
    else if (!strcmp(text,"health")) p_char(n)->health = (schar)a;
