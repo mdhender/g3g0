@@ -6,9 +6,6 @@ package olympia
 // Ported from olympia/stack.c: stack_parent(), stack_leader() and here_pos(),
 // used by check_db() and command scheduling. The rest is left for later stages.
 
-// A loader-accepted nowhere character reaches a NULL dereference before
-// C's assertion here. Preserve that upstream defect rather than repairing it:
-// https://github.com/playbymail/olympia-g3/issues/347
 func (w *world) herePos(who int) int {
 	p := w.rpLocInfo(w.loc(who))
 	assert(p != nil, "olympia/stack.c", 16, "p != NULL")

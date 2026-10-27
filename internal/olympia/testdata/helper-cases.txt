@@ -1,5 +1,5 @@
 # Differential cases for the helpers check_db() (olympia/check.c) calls, at
-# G3 47535543d83fbc5649d54b63b49e578f2b11ab1c: the names of olympia/code.c
+# G3 6a25f2d252ce45bd5adbe3baaccb3be3eed56279: the names of olympia/code.c
 # (display_name, box_name, just_name, plural_item_name) and cap(); the
 # here lists, stacks and location walks of olympia/loc.c and stack.c;
 # set_lord() and is_unit() (swear.c) with the command loading set_lord()
@@ -909,3 +909,20 @@ where 1007 58760
 lord 1007 50000
 touch 1007
 dump 50000
+
+section raft depths and location walks
+alloc 59000 3 3
+alloc 59001 9 66
+alloc 59002 9 67
+where 59001 59000
+where 59002 59000
+depth 59001
+depth 59002
+alloc 1001 2 0
+alloc 1002 2 0
+where 1001 59001
+where 1002 59002
+subloc 1001
+subloc 1002
+viewloc 59001
+viewloc 59002

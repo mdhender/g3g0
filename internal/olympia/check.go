@@ -159,12 +159,17 @@ func (w *world) checkGlob() {
 }
 
 // checkNowhere is check_nowhere(): it warns of every unit, and of every
-// location or ship below a region, that is nowhere. loc_depth() fails an
+// location or ship below a region, that is nowhere. Units are moved to
+// nowhere_loc when it is valid. loc_depth() fails an
 // assertion for a location or ship whose subkind is not a location's.
 func (w *world) checkNowhere() {
 	for i := range w.loopKind(tChar) {
 		if w.loc(i) == 0 {
 			fmt.Fprintf(w.stderr, "\twarning: unit %s is nowhere\n", w.boxCode(i))
+			if w.validBox(int(w.nowhereLoc)) {
+				w.setWhere(i, int(w.nowhereLoc))
+				fmt.Fprintf(w.stderr, "\t\tmoved to %s\n", w.boxCode(int(w.nowhereLoc)))
+			}
 		}
 	}
 

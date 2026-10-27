@@ -1,6 +1,6 @@
-pin 2567e6a5dd0ba0d95516d8bed9e1bafb87a51985
+pin 6a25f2d252ce45bd5adbe3baaccb3be3eed56279
 args -r -l ./lib -S test-use-const-report-date
-binary 1de73d5c17d4e2948238be3933865235bdcf8c6e1b4755682ecfac2a7bdb17ea
+binary 64c58337b21fba2f7ecfddc837a541b4c7e58b47830cb007ab99a40317824083
 world.tgz 5c59fc014ea3d2f9a14e4756bfa7ccc8c7c11b23bf6611320713ec19760d8ce9
 C repeats: identical status, stdout, stderr, entire cwd (including reports)
 3f9e33ac7160ff329442cfc081f898bb06aa5b6f3630fde9da7f5f4f64a66786  cwd/lib/fact/100

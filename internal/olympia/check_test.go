@@ -146,6 +146,15 @@ func runCheckSection(t *testing.T, lines []string) (output string) {
 			w.checkDb()
 		case "save":
 			w.checkSave()
+		case "nowhere":
+			w.nowhereLoc = int32(c.num(t))
+		case "stderr":
+			fp, err := os.Create(c.ctext())
+			if err != nil {
+				t.Fatal(err)
+			}
+			t.Cleanup(func() { fp.Close() })
+			w.stderr = fp
 		default:
 			t.Fatalf("unknown operation %q", line)
 		}

@@ -6,7 +6,7 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `5a114320c05e37c6c521b4eb730af49017cb6fa8`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows:
@@ -65,7 +65,7 @@ The script:
 |---|---|
 | names | `display_name`, `box_name` and `just_name` for every kind and for subkinds of each, named and unnamed boxes, brackets in names, a name longer than `sout()`'s buffer, high-bit bytes, `garrison_magic`, deleted, missing and out-of-range boxes, and nobles made of an item (named, unnamed, missing, deleted, a noble made of a noble) |
 | cap, plural_item_name | `cap` on empty, lower-case, upper-case, punctuation, high-bit and long strings; `plural_item_name` for qty 1 and others, with no `entity_item`, a NULL and an empty plural name, and the stderr warning |
-| loc_depth | every location subkind, and the stderr message and assertion for subkinds that are not locations and for box 0 |
+| loc_depth | every location subkind, including completed and unfinished rafts at building depth and their subloc/viewloc walks; the stderr message and assertion for subkinds that are not locations and for box 0 |
 | here lists, stacks | `in_here_list`, `add_to_here_list` and `remove_from_here_list` (duplicates, and the assertions), `stack_parent`, `stack_leader` (and its loop and non-unit assertions), `loop_stack`, `loop_here` and `restore_stack_actions` over stacks with non-units, missing and deleted boxes in the here lists |
 | skill_school, macros | parent chains, a loop (the assertion), and the `oly.h` attribute macros with and without their substructures |
 | is_unit and player | members and non-members, a player with no `entity_player`, `loop_units`, a non-player (the assertion), and a lord loop in `player` (the assertion) |
@@ -77,6 +77,6 @@ The script:
 
 ## Results
 
-Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
+Last run: 2026-10-27, Linux amd64, GCC 12.2.0, Go 1.26.4.
 
-- 36 sections, 1463 lines. The C driver is deterministic, its output matches `helper-c-output.txt`, and `TestHelperMatchesC` passes.
+- 37 sections, 1487 lines. The C driver is deterministic, its output matches `helper-c-output.txt`, and `TestHelperMatchesC` passes.

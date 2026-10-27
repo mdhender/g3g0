@@ -15,7 +15,7 @@ func TestRecordedCProvenance(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.HasPrefix(string(metadata), "pin 2567e6a5dd0ba0d95516d8bed9e1bafb87a51985\n") {
+	if !strings.HasPrefix(string(metadata), "pin 6a25f2d252ce45bd5adbe3baaccb3be3eed56279\n") {
 		t.Fatal("recording is not from the stage pin")
 	}
 	for _, name := range []string{"world-sample", "rejected-option"} {

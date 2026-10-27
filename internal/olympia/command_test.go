@@ -212,6 +212,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				result = int(w.onlyDefeatable(n))
 			case "char_alloc":
 				result = b2i(w.rpChar(n) != nil)
+			case "fort_covers":
+				result = w.fortCovers(n)
+			case "depth":
+				result = w.locDepth(n)
 			default:
 				t.Fatalf("unknown predicate %s", name)
 			}

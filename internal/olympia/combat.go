@@ -3,6 +3,29 @@
 
 package olympia
 
+import "fmt"
+
+// fortCovers is combat.c's fort_covers(): the number a fort protects.
+// Rafts, completed or not, provide no fort protection.
+func (w *world) fortCovers(n int) int {
+	switch w.subkind(n) {
+	case subCastle, subCastleNotdone:
+		return 500
+	case subTower, subTowerNotdone:
+		return 100
+	case subGalley, subGalleyNotdone, subRoundship, subRoundshipNotdone,
+		subTemple, subTempleNotdone, subInn, subInnNotdone,
+		subMine, subMineNotdone, subSewer:
+		return 50
+	case subRaft, subRaftNotdone:
+		return 0
+	default:
+		fmt.Fprintf(w.stderr, "subkind is %s\n", subkindS[w.subkind(n)])
+		assert(false, "olympia/combat.c", 296, "FALSE")
+	}
+	return 0
+}
+
 // checkAllAutoAttacks is combat.c's leader/health gate and target scan.
 // Only an actual selected attack reaches the unported combat boundary.
 func (w *world) checkAllAutoAttacks() {

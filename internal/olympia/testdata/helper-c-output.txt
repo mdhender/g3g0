@@ -462,48 +462,47 @@ loc_depth 4
 loc_depth 2
 > depth 59042
 subkind is 42
-assertion failure: olympia/u.c (386): FALSE
+assertion failure: olympia/u.c (388): FALSE
 exit 134
 section loc_depth of subkind 0
 > alloc 1001 2 0
 > depth 1001
 subkind is 0
-assertion failure: olympia/u.c (386): FALSE
+assertion failure: olympia/u.c (388): FALSE
 exit 134
 section loc_depth of no box
 > depth 0
 subkind is 0
-assertion failure: olympia/u.c (386): FALSE
+assertion failure: olympia/u.c (388): FALSE
 exit 134
 section loc_depth of subkind 49
 > alloc 59000 3 49
 > depth 59000
 subkind is 49
-assertion failure: olympia/u.c (386): FALSE
+assertion failure: olympia/u.c (388): FALSE
 exit 134
 section loc_depth of subkind 52
 > alloc 59000 3 52
 > depth 59000
 subkind is 52
-assertion failure: olympia/u.c (386): FALSE
+assertion failure: olympia/u.c (388): FALSE
 exit 134
 section loc_depth of subkind 57
 > alloc 59000 3 57
 > depth 59000
 subkind is 57
-assertion failure: olympia/u.c (386): FALSE
+assertion failure: olympia/u.c (388): FALSE
 exit 134
 section loc_depth of subkind 66
 > alloc 59000 3 66
 > depth 59000
-subkind is 66
-assertion failure: olympia/u.c (386): FALSE
-exit 134
+loc_depth 4
+exit 0
 section loc_depth of subkind 73
 > alloc 59000 3 73
 > depth 59000
 subkind is 73
-assertion failure: olympia/u.c (386): FALSE
+assertion failure: olympia/u.c (388): FALSE
 exit 134
 section here lists
 > alloc 10000 3 2
@@ -924,7 +923,7 @@ section viewloc of a unit
 > alloc 1001 2 0
 > viewloc 1001
 subkind is 0
-assertion failure: olympia/u.c (386): FALSE
+assertion failure: olympia/u.c (388): FALSE
 exit 134
 section first_character, garrison_here and parse_arg
 > alloc 10000 3 2
@@ -1462,4 +1461,27 @@ box 50000: kind 1 sub 49 where 0 temp 0
   player: last_order_turn 0
   units:
   locs: 59000 10000
+exit 0
+section raft depths and location walks
+> alloc 59000 3 3
+> alloc 59001 9 66
+> alloc 59002 9 67
+> where 59001 59000
+> where 59002 59000
+> depth 59001
+loc_depth 4
+> depth 59002
+loc_depth 4
+> alloc 1001 2 0
+> alloc 1002 2 0
+> where 1001 59001
+> where 1002 59002
+> subloc 1001
+subloc 59001
+> subloc 1002
+subloc 59002
+> viewloc 59001
+viewloc 59000
+> viewloc 59002
+viewloc 59000
 exit 0

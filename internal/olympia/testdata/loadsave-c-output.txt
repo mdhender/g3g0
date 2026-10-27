@@ -2825,7 +2825,7 @@ section create_relics: nowhere_loc 0
 can't open lib/master: No such file or directory
 fast_scan failed, scan_all_boxes()
 > relics
-assertion failure: olympia/u.c (1847): valid_box(who)
+assertion failure: olympia/u.c (1849): valid_box(who)
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -2862,7 +2862,7 @@ section create_relics: nowhere_loc names no box
 can't open lib/master: No such file or directory
 fast_scan failed, scan_all_boxes()
 > relics
-assertion failure: olympia/u.c (1847): valid_box(who)
+assertion failure: olympia/u.c (1849): valid_box(who)
 exit 134
 d 755 lib
 d 755 lib/fact

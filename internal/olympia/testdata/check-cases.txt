@@ -1,5 +1,5 @@
 # Differential cases for G3's check_db() (olympia/check.c), at G3
-# 47535543d83fbc5649d54b63b49e578f2b11ab1c.
+# 6a25f2d252ce45bd5adbe3baaccb3be3eed56279.
 #
 # tools/check-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in check-c-output.txt;
@@ -19,6 +19,8 @@
 # blank lines are skipped. TEXT is the rest of the line after one space,
 # with \xHH and \\ escapes; with no space it is empty. NAME is one word.
 # Every operation but put and putl is echoed, after "> ".
+# nowhere N sets nowhere_loc; stderr NAME captures subsequent raw stderr
+# separately, preserving it in the recorded file tree rather than stdout.
 #
 #   put NAME TEXT    append TEXT to file NAME
 #   putl NAME TEXT   append TEXT and a newline to file NAME
@@ -753,8 +755,8 @@ load
 check
 save
 
-section check_nowhere on a ship that is a raft
-# loc_depth() does not know rafts.
+section check_nowhere on completed and unfinished rafts
+# Both raft subkinds have building depth; neither asserts.
 mkdir lib
 mkdir lib/fact
 put lib/loc
@@ -767,6 +769,8 @@ put lib/unform
 putl lib/misc 2001 ship raft
 putl lib/misc LI
 putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 2002 ship raft-in-progress
 putl lib/misc
 putl lib/misc 10001 loc region
 putl lib/misc LI
@@ -1177,5 +1181,43 @@ putl lib/misc 999 loc region
 putl lib/misc na Somewhere
 putl lib/misc
 load
+check
+save
+
+section nowhere relocation and invalid destination
+# Character iteration is sorted by id, not file order. Repeated checks
+# move each orphan once, keep a located unit and append after the resident.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 10001 loc region
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1005
+putl lib/misc
+putl lib/misc 1004 char 0
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc
+putl lib/misc 1005 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc
+load
+stderr diagnostics
+nowhere 0
+check
+nowhere 10102
+check
+nowhere 10101
+check
 check
 save

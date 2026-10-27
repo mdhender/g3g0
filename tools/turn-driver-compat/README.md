@@ -1,7 +1,7 @@
 # Clock and turn-driver helpers
 
 Pinned reference: [playbymail/olympia-g3 at
-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985](https://github.com/playbymail/olympia-g3/tree/2567e6a5dd0ba0d95516d8bed9e1bafb87a51985).
+6a25f2d252ce45bd5adbe3baaccb3be3eed56279](https://github.com/playbymail/olympia-g3/tree/6a25f2d252ce45bd5adbe3baaccb3be3eed56279).
 
 ```sh
 tools/turn-driver-compat/run.sh

@@ -587,7 +587,7 @@ sort_load 0
 
 # Malformed location zero is a NULL dereference, not a fabricated assert.
 # Real C drops buffered stdout on SIGSEGV; Go must preserve that status/bytes.
-# Upstream defect: https://github.com/playbymail/olympia-g3/issues/347
+# This raw malformed state bypasses check_db's nowhere relocation.
 section precedence missing location zero dies without flushing
 queue stop
 load
@@ -1211,9 +1211,8 @@ field 9001 subkind 35
 auto
 log
 
-# G3 #348: is_ship includes raft, but loc_depth omits it. Keep the actual
-# assertion, not a local repair or an expected successful combat recording.
-section hostile raft preserves real C loc depth assertion
+# G3 #351 gives rafts building depth: the real scan now selects combat.
+section combat boundary hostile completed raft
 entity 9000 3 3
 entity 9001 9 30
 entity 9002 9 66
@@ -1236,3 +1235,56 @@ link 9002 1001
 set health 100
 field 1000 hostile 9002
 auto
+
+section combat boundary hostile unfinished raft local target
+entity 9000 3 3
+entity 9002 9 67
+link 9000 9002
+link 9000 1000
+link 9002 1001
+field 1001 lord 201
+set health 100
+field 1000 hostile 9002
+auto
+
+section raft and fort protection controls
+entity 9000 9 66
+predicate depth 9000
+predicate fort_covers 9000
+field 9000 subkind 67
+predicate depth 9000
+predicate fort_covers 9000
+field 9000 subkind 30
+predicate fort_covers 9000
+field 9000 subkind 31
+predicate fort_covers 9000
+field 9000 subkind 33
+predicate fort_covers 9000
+field 9000 subkind 34
+predicate fort_covers 9000
+field 9000 subkind 32
+predicate fort_covers 9000
+field 9000 subkind 39
+predicate fort_covers 9000
+field 9000 subkind 46
+predicate fort_covers 9000
+field 9000 subkind 47
+predicate fort_covers 9000
+field 9000 subkind 29
+predicate fort_covers 9000
+field 9000 subkind 38
+predicate fort_covers 9000
+field 9000 subkind 36
+predicate fort_covers 9000
+field 9000 subkind 37
+predicate fort_covers 9000
+field 9000 subkind 40
+predicate fort_covers 9000
+field 9000 subkind 41
+predicate fort_covers 9000
+field 9000 subkind 71
+predicate fort_covers 9000
+
+section fort protection invalid subkind assertion
+entity 9000 3 3
+predicate fort_covers 9000

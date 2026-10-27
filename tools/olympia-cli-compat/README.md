@@ -10,7 +10,7 @@ Two sources of expectations are used:
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2567e6a5dd0ba0d95516d8bed9e1bafb87a51985`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows `main()` in `olympia/main.c` (the long-option pass, the BSD `oly_getopt()` loop, the usage text and what `main()` prints before it dispatches), `test_random()` in `olympia/z.c` and `ilist_test()` in `lib/ilist.c`, and from #52 its load and save (`load_db()`, `check_db()`, `save_db()` with `-S`, `times_masthead()` and the closing output), which [`olympia-roundtrip`](../olympia-roundtrip) checks on saved games.
@@ -41,6 +41,10 @@ The entity types have to change when the pinned revision changes `struct box`, a
 ```sh
 tools/olympia-cli-compat/run.sh
 ```
+
+Set `C_CACHE` to an `olympia-roundtrip` cache to reuse its C build. The tool
+requires the cache's `g3.rev` to equal the exact pin and an executable debug
+engine; otherwise it rejects the cache. The default still builds a clean archive.
 
 The script:
 

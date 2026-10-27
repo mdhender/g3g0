@@ -7,7 +7,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985}"
+G3_REV="${G3_REV:-6a25f2d252ce45bd5adbe3baaccb3be3eed56279}"
 WORK="${WORK:-${ROOT}/tmp/command-compat}"
 CC="${CC:-cc}"
 CASES="${ROOT}/internal/olympia/testdata/command-cases.txt"
@@ -39,7 +39,7 @@ functions = {
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order'],
     'swear.c': ['lord', 'player'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos'],
-    'combat.c': ['auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits'],
+    'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
               'in_safe_now', 'province', 'building_owner'],
     'garr.c': ['garrison_here'],
@@ -87,6 +87,7 @@ void drv_daily(void) { daily_command_loop(); }
 void drv_players(void) { process_player_orders(); }
 void drv_sort_load(int pri) { sort_load_queue(load_q[pri]); }
 void drv_sort_run(void) { sort_run_queue(run_q); }
+int drv_fort_covers(int n) { return fort_covers(n); }
 ''')
 glob = open(f'{src}/glob.c').read()
 table = glob[glob.index('struct cmd_tbl_ent cmd_tbl[]'):glob.index('char *kind_s[]')]

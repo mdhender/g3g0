@@ -45,7 +45,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985}"
+G3_REV="${G3_REV:-6a25f2d252ce45bd5adbe3baaccb3be3eed56279}"
 WORK="${WORK:-${ROOT}/tmp/io-compat}"
 CC="${CC:-cc}"
 CASES="${ROOT}/internal/olympia/testdata/io-cases.txt"

@@ -1416,7 +1416,7 @@ f 644 52 lib/ship
 | 
 f 644 0 lib/skill
 f 644 0 lib/unform
-section check_nowhere on a ship that is a raft
+section check_nowhere on completed and unfinished rafts
 > mkdir lib
 > mkdir lib/fact
 > load
@@ -1430,25 +1430,61 @@ check_db()
 	check_eat_player: creating eat player [203]
 	check_npc_player: creating npc player [206]
 	check_garr_player: creating garrison player [207]
-subkind is 66
-assertion failure: olympia/u.c (386): FALSE
-exit 134
+	warning: loc [2002] is nowhere
+> save
+exit 0
 d 755 lib
 d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
 f 644 0 lib/gate
 f 644 0 lib/item
-f 644 0 lib/loc
-f 644 59 lib/misc
+f 644 31 lib/loc
+| 10001 loc region
+| LI
+|  hl 2001 
+| 
+f 644 239 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 2001\x099.66\x09ship\x09\x09
+| 2002\x099.67\x09ship\x09\x09
+| 10001\x093.50\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 57 lib/ship
 | 2001 ship raft
 | LI
 |  wh 10001
 | 
-| 10001 loc region
-| LI
-|  hl 2001
+| 2002 ship raft-in-progress
 | 
-f 644 0 lib/road
-f 644 0 lib/ship
 f 644 0 lib/skill
 f 644 0 lib/unform
 section check_skills
@@ -2190,6 +2226,120 @@ f 644 212 lib/master
 | 206\x091.62\x09fact/206\x09NPC control
 | 207\x091.62\x09fact/207\x09Garrison units
 | 999\x093.50\x09loc\x09\x09Somewhere
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section nowhere relocation and invalid destination
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> stderr diagnostics
+> nowhere 0
+> check
+> nowhere 10102
+> check
+> nowhere 10101
+> check
+> check
+> save
+exit 0
+f 644 793 diagnostics
+| check_db()
+| \x09check_here: adding [10101] to here list of [10001]
+| \x09check_indep: creating independent player [100]
+| \x09check_indep: swearing unit [1003] to Independent player~[100]
+| \x09check_indep: swearing unit [1004] to Independent player~[100]
+| \x09check_indep: swearing unit [1005] to Independent player~[100]
+| \x09check_gm: creating gm player [200]
+| \x09check_skill_player: creating skill player [202]
+| \x09check_eat_player: creating eat player [203]
+| \x09check_npc_player: creating npc player [206]
+| \x09check_garr_player: creating garrison player [207]
+| \x09warning: unit [1003] is nowhere
+| \x09warning: unit [1004] is nowhere
+| check_db()
+| \x09warning: unit [1003] is nowhere
+| \x09warning: unit [1004] is nowhere
+| check_db()
+| \x09warning: unit [1003] is nowhere
+| \x09\x09moved to [ab01]
+| \x09warning: unit [1004] is nowhere
+| \x09\x09moved to [ab01]
+| check_db()
+d 755 lib
+d 755 lib/fact
+f 644 175 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| PL
+|  un 1003 1004 1005 
+| 
+| 1003 char 0
+| LI
+|  wh 10101
+| CH
+|  lo 100
+| 
+| 1004 char 0
+| LI
+|  wh 10101
+| CH
+|  lo 100
+| 
+| 1005 char 0
+| LI
+|  wh 10101
+| CH
+|  lo 100
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 82 lib/loc
+| 10001 loc region
+| LI
+|  hl 10101 
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+|  hl 1005 1003 1004 
+| 
+f 644 278 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1003\x092.0\x09fact/100\x09
+| 1004\x092.0\x09fact/100\x09
+| 1005\x092.0\x09fact/100\x09
+| 10001\x093.50\x09loc\x09\x09
+| 10101\x093.3\x09loc\x09\x09
 f 644 0 lib/misc
 f 644 0 lib/road
 f 644 0 lib/ship

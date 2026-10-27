@@ -45,8 +45,8 @@ func (w *world) testKnown(who, i int) bool {
 	if who == 0 {
 		return false
 	}
-	assert(w.validBox(who), "olympia/u.c", 2332, "valid_box(who)")
-	assert(w.validBox(i), "olympia/u.c", 2333, "valid_box(i)")
+	assert(w.validBox(who), "olympia/u.c", 2334, "valid_box(who)")
+	assert(w.validBox(i), "olympia/u.c", 2335, "valid_box(i)")
 	ep := w.rpPlayer(w.player(who))
 	return ep != nil && testBit(ep.known, i)
 }
@@ -59,8 +59,8 @@ func (w *world) locHidden(n int) int {
 }
 
 func (w *world) hasItem(who, item int) int32 {
-	assert(w.validBox(who), "olympia/u.c", 1820, "valid_box(who)")
-	assert(w.validBox(item), "olympia/u.c", 1830, "valid_box(item)")
+	assert(w.validBox(who), "olympia/u.c", 1822, "valid_box(who)")
+	assert(w.validBox(item), "olympia/u.c", 1832, "valid_box(item)")
 	for _, e := range w.bx[who].items {
 		if int(e.item) == item {
 			return e.qty
@@ -232,9 +232,6 @@ func (w *world) stageSup(s *string) {
 
 // locDepth is loc_depth(): the LOC_xxx depth of location n, by its
 // subkind. Any other subkind is reported on stderr and fails an assertion.
-// Raft subkinds are intentionally absent, reproducing G3 #348 even though
-// oly.h is_ship includes completed rafts:
-// https://github.com/playbymail/olympia-g3/issues/348
 func (w *world) locDepth(n int) int {
 	switch w.subkind(n) {
 	case subRegion:
@@ -246,12 +243,12 @@ func (w *world) locDepth(n int) int {
 	case subIsland, subStoneCir, subMallornGrove, subBog, subCave, subCity, subLair, subGraveyard, subRuins, subBattlefield, subEnchForest, subRockyHill, subTreeCircle, subPits, subPasture, subOasis, subYewGrove, subSandPit, subSacredGrove, subPoppyField, subFaeryHill, subHadesPit:
 		return locSubloc
 
-	case subTemple, subGalley, subRoundship, subCastle, subGalleyNotdone, subRoundshipNotdone, subGhostShip, subTempleNotdone, subInn, subInnNotdone, subCastleNotdone, subMine, subMineNotdone, subMineCollapsed, subTower, subTowerNotdone, subSewer:
+	case subTemple, subGalley, subRoundship, subCastle, subGalleyNotdone, subRoundshipNotdone, subRaft, subRaftNotdone, subGhostShip, subTempleNotdone, subInn, subInnNotdone, subCastleNotdone, subMine, subMineNotdone, subMineCollapsed, subTower, subTowerNotdone, subSewer:
 		return locBuild
 
 	default:
 		fmt.Fprintf(w.stderr, "subkind is %d\n", w.subkind(n))
-		assert(false, "olympia/u.c", 386, "FALSE")
+		assert(false, "olympia/u.c", 388, "FALSE")
 	}
 
 	return 0
@@ -289,9 +286,9 @@ func capitalize(s string) string {
 // caller so far, calls it before the item has an item_magic, so its lore
 // is always 0 there.
 func (w *world) addItem(who, item, qty int) {
-	assert(w.validBox(who), "olympia/u.c", 1847, "valid_box(who)")
-	assert(w.validBox(item), "olympia/u.c", 1848, "valid_box(item)")
-	assert(qty >= 0, "olympia/u.c", 1849, "qty >= 0")
+	assert(w.validBox(who), "olympia/u.c", 1849, "valid_box(who)")
+	assert(w.validBox(item), "olympia/u.c", 1850, "valid_box(item)")
+	assert(qty >= 0, "olympia/u.c", 1851, "qty >= 0")
 
 	{
 		var lore int

@@ -7,7 +7,7 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `2567e6a5dd0ba0d95516d8bed9e1bafb87a51985`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 The script exports that revision with `git archive`, so the clone's checkout does not matter.
 
@@ -21,7 +21,7 @@ The port follows `olympia/check.c` (all of it), in `check.go`:
 | `check_glob`, `check_nowhere`, `check_skills`, `check_item_counts`, `check_loc_name_lengths`, `check_moving`, `check_prisoner` | `checkGlob`, `checkNowhere`, `checkSkills`, `checkItemCounts`, `checkLocNameLengths`, `checkMoving`, `checkPrisoner` |
 
 The helpers it calls were ported in [#48](https://github.com/mdhender/g3g0/issues/48), and are checked by [`helper-compat`](../helper-compat).
-`loop_here` and `loop_inv` assert `valid_box()` of their box at the caller's line (`check.c` lines 49 and 401); both run inside `loop_boxes`, which yields only valid boxes, and nothing in those checks deletes a box, so the assertions cannot fail and the port leaves them out.
+`loop_here` and `loop_inv` assert `valid_box()` of their box at the caller's line (`check.c` lines 49 and 414); both run inside `loop_boxes`, which yields only valid boxes, and nothing in those checks deletes a box, so the assertions cannot fail and the port leaves them out.
 
 ## Prerequisites
 
@@ -67,7 +67,7 @@ In the engine, `load_db()` runs more between the box-file passes and `check_db()
 | check_here | units, a stacked unit, a location and a ship missing from their location's here list (added at the end); here lists naming boxes that are elsewhere or nowhere (removed), a box that lists itself, duplicates of a box that belongs; stale duplicates removed and reported once (G3 #331) |
 | check_swear | units missing from their player's list, directly and through a lord (added, and the list sorted), a unit of another player; lists naming another player's units, a location, and duplicates (each reported and removed, a duplicate reported twice); a lord loop (`player()`'s assertion) |
 | check_indep | units with no lord, sworn to a unit with no player, with no CH, sworn to a location, with a command that is loading and one that is running (each sworn to 100: `prev_lord` and loyalty cleared, CH and command created); the independent player created first; a unit whose command is in error (`init_load_sup()`'s assertion); orphan units nowhere or directly in a region repaired without touching location 0 (G3 #330) |
-| check_nowhere | a unit, locations and ships below a region that are nowhere (ships first), a region that is not reported; a raft (`loc_depth()`'s assertion) |
+| check_nowhere | a unit, locations and ships below a region that are nowhere (ships first), a region that is not reported; completed and unfinished rafts load and save; invalid nowhere_loc (zero and an absent box) only warns; a valid destination relocates orphan units in character iteration order, appends after a resident and preserves located units; a repeated check does not move them again. The new relocation case captures raw stderr separately in `diagnostics`, whose exact bytes and saved locations/here lists are recorded. |
 | check_skills | an orphaned subskill, skills with no learn time and no SK, a skill two schools offer, offered and researched skills in another school, an offered item, a skill no one offers; a loop of required skills (`skill_school()`'s assertion) |
 | check_item_counts | a unit in an inventory, a unique item held by the wrong unit and by a location (who_has repaired to each in turn), a quantity of 3, 0 and -1 of a unique item, a unique item no one holds, a unique item whose who_has is an item |
 | check_loc_name_lengths | names of 25 and 26 bytes, with high-bit bytes, an unnamed location, a ship (not checked) |
@@ -78,7 +78,7 @@ In the engine, `load_db()` runs more between the box-file passes and `check_db()
 ## Results
 
 Current pin: 2026-10-27, Linux amd64, GCC 12.2.0, Go 1.26.4:
-30 recorded sections, 2197 lines, deterministic C and matching Go.
+31 recorded sections, 2347 lines, deterministic C and matching Go.
 Whole-game checks were not rerun at this pin. Historical full run:
 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
@@ -89,3 +89,6 @@ Whole-game checks were not rerun at this pin. Historical full run:
 
 G3 #340 fixes orphan-location touches (#330) and duplicate stale here entries
 (#331). The recorded cases follow those repairs at the pinned revision.
+G3 #351 adds nowhere relocation (#347) and raft depths (#348). The C driver
+extracts the real `set_where` dependency; `nowhere N` only sets the global,
+and `stderr NAME` redirects the real stderr to the recorded file.

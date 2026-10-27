@@ -20,6 +20,7 @@ extern int evening, auto_attack_flag;
 extern ilist second_wait_list;
 void drv_evening(void), drv_daily(void), drv_players(void), drv_sort_run(void);
 void drv_sort_load(int pri);
+int drv_fort_covers(int n);
 
 static void list(char *label, ilist l)
 {
@@ -145,6 +146,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"npc")) result = is_npc(n);
    else if (!strcmp(text,"vulnerable")) result = only_defeatable(n);
    else if (!strcmp(text,"char_alloc")) result = rp_char(n) != NULL;
+   else if (!strcmp(text,"fort_covers")) result = drv_fort_covers(n);
+   else if (!strcmp(text,"depth")) result = loc_depth(n);
    else return 2;
    printf("predicate %d\n",result);
   }

@@ -2342,28 +2342,28 @@ stdout:
 section known asserts invalid observer
 > predicate known 99999 1000
 stderr:
-assertion failure: olympia/u.c (2332): valid_box(who)
+assertion failure: olympia/u.c (2334): valid_box(who)
 
 exit 134
 stdout:
 section known asserts invalid target
 > predicate known 1000 99999
 stderr:
-assertion failure: olympia/u.c (2333): valid_box(i)
+assertion failure: olympia/u.c (2335): valid_box(i)
 
 exit 134
 stdout:
 section inventory asserts invalid owner
 > predicate has_item 99999 1000
 stderr:
-assertion failure: olympia/u.c (1820): valid_box(who)
+assertion failure: olympia/u.c (1822): valid_box(who)
 
 exit 134
 stdout:
 section inventory asserts invalid item
 > predicate has_item 1000 99999
 stderr:
-assertion failure: olympia/u.c (1830): valid_box(item)
+assertion failure: olympia/u.c (1832): valid_box(item)
 
 exit 134
 stdout:
@@ -2820,7 +2820,7 @@ stderr:
 
 exit 0
 stdout:
-section hostile raft preserves real C loc depth assertion
+section combat boundary hostile completed raft
 > entity 9000 3 3
 > entity 9001 9 30
 > entity 9002 9 66
@@ -2831,9 +2831,11 @@ section hostile raft preserves real C loc depth assertion
 > set health 100
 > field 1000 hostile 9002
 > auto
+combat log:
+1000:0::0::> [auto-attack 9002]
+combat output 1
 stderr:
-subkind is 66
-assertion failure: olympia/u.c (386): FALSE
+combat boundary: regular_combat
 
 exit 134
 stdout:
@@ -2853,5 +2855,92 @@ combat log:
 combat output 1
 stderr:
 combat boundary: regular_combat
+
+exit 134
+stdout:
+section combat boundary hostile unfinished raft local target
+> entity 9000 3 3
+> entity 9002 9 67
+> link 9000 9002
+> link 9000 1000
+> link 9002 1001
+> field 1001 lord 201
+> set health 100
+> field 1000 hostile 9002
+> auto
+combat log:
+1000:0::0::> [auto-attack 9002]
+combat output 1
+stderr:
+combat boundary: regular_combat
+
+exit 134
+stdout:
+section raft and fort protection controls
+> entity 9000 9 66
+> predicate depth 9000
+predicate 4
+> predicate fort_covers 9000
+predicate 0
+> field 9000 subkind 67
+> predicate depth 9000
+predicate 4
+> predicate fort_covers 9000
+predicate 0
+> field 9000 subkind 30
+> predicate fort_covers 9000
+predicate 50
+> field 9000 subkind 31
+> predicate fort_covers 9000
+predicate 50
+> field 9000 subkind 33
+> predicate fort_covers 9000
+predicate 50
+> field 9000 subkind 34
+> predicate fort_covers 9000
+predicate 50
+> field 9000 subkind 32
+> predicate fort_covers 9000
+predicate 500
+> field 9000 subkind 39
+> predicate fort_covers 9000
+predicate 500
+> field 9000 subkind 46
+> predicate fort_covers 9000
+predicate 100
+> field 9000 subkind 47
+> predicate fort_covers 9000
+predicate 100
+> field 9000 subkind 29
+> predicate fort_covers 9000
+predicate 50
+> field 9000 subkind 38
+> predicate fort_covers 9000
+predicate 50
+> field 9000 subkind 36
+> predicate fort_covers 9000
+predicate 50
+> field 9000 subkind 37
+> predicate fort_covers 9000
+predicate 50
+> field 9000 subkind 40
+> predicate fort_covers 9000
+predicate 50
+> field 9000 subkind 41
+> predicate fort_covers 9000
+predicate 50
+> field 9000 subkind 71
+> predicate fort_covers 9000
+predicate 50
+stderr:
+
+exit 0
+stdout:
+section fort protection invalid subkind assertion
+> entity 9000 3 3
+> predicate fort_covers 9000
+stderr:
+subkind is plain
+assertion failure: olympia/combat.c (296): FALSE
 
 exit 134

@@ -68,7 +68,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985}"
+G3_REV="${G3_REV:-6a25f2d252ce45bd5adbe3baaccb3be3eed56279}"
 WORK="${WORK:-${ROOT}/tmp/check-compat}"
 GAMES="${GAMES:-${ROOT}/tmp/olympia-roundtrip/cases}"
 CC="${CC:-cc}"
@@ -177,7 +177,7 @@ helpers = {
     "u.c": ["loc_depth", "clear_temps", "min", "cap", "test_bit", "set_bit",
             "lookup", "stage"],
     "seed.c": ["int_comp"],
-    "loc.c": ["add_char_here", "all_stack", "subloc", "viewloc", "add_to_here_list",
+    "loc.c": ["set_where", "add_char_here", "all_stack", "subloc", "viewloc", "add_to_here_list",
               "remove_from_here_list", "in_here_list", "first_character"],
     "stack.c": ["stack_parent", "stack_leader"],
     "swear.c": ["lord", "player", "set_loyal", "set_lord", "is_unit"],
@@ -246,6 +246,7 @@ void check_db(void);
 int pretty_data_files = FALSE;
 int win_flag = FALSE;
 int time_self = FALSE;
+int nowhere_loc;
 
 /* the operation's text: decode \xHH and \\ in place, and return its length */
 static int
@@ -398,6 +399,13 @@ main(int argc, char **argv)
 			check_db();
 		else if (strcmp(op, "save") == 0)
 			save();
+		else if (strcmp(op, "nowhere") == 0)
+			nowhere_loc = atoi(text(NULL));
+		else if (strcmp(op, "stderr") == 0)
+		{
+			if (!freopen(text(NULL), "w", stderr))
+				return 2;
+		}
 		else
 		{
 			printf("unknown operation\n");

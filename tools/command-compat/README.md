@@ -1,7 +1,7 @@
 # Command dispatch, completion, scheduler and auto-attack selection
 
 Pinned reference: [Olympia G3 at
-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985](https://github.com/playbymail/olympia-g3/tree/2567e6a5dd0ba0d95516d8bed9e1bafb87a51985).
+6a25f2d252ce45bd5adbe3baaccb3be3eed56279](https://github.com/playbymail/olympia-g3/tree/6a25f2d252ce45bd5adbe3baaccb3be3eed56279).
 
 ```sh
 tools/command-compat/run.sh
@@ -27,7 +27,7 @@ and `init_load_sup`, precedence/comparison and both queue sorts,
 `process_player_orders`, and `daily_command_loop`. It also extracts the real
 `check_all_waits` (only its empty-list path is compared here), plus combat.c's
 complete `auto_attack`, `check_auto_attack_sup`, `check_all_auto_attacks` and
-`clear_second_waits`. Wrappers expose static helpers to the
+`clear_second_waits`, plus `fort_covers`. Wrappers expose static helpers to the
 driver; no compared routine is rewritten or stubbed. It links the real
 `glob.c` table (including original handler pointers), `code.c`, `z.c`,
 **sout.c**, and list/allocation libraries. The raw command output is therefore
@@ -147,8 +147,8 @@ of all characters. Attitude command families remain unported.
   and ready units at the same priority also test each snapshot exclusion.
   Bad saved state, priority and missing here-list membership preserve exact
   C assertions; malformed location zero preserves SIGSEGV status 139 and
-  unflushed stdout rather than inventing an assertion. This loader-accepted
-  upstream defect is tracked in [G3 #347](https://github.com/playbymail/olympia-g3/issues/347).
+  unflushed stdout rather than inventing an assertion. This raw-state case
+  bypasses `check_db`; G3 #351 now repairs nowhere units at load/save.
 - A failed priority-3 hide loads priority-1 format, which executes before the
   second priority-3 command: observable output distinguishes snapshot
   re-evaluation from draining the old queue. Timed hide spans three evenings,
@@ -192,11 +192,13 @@ of all characters. Attitude command families remain unported.
   same-faction owners. Local targets precede outer targets. Multiple eligible
   targets prove the first selection and exact precombat output, not combat
   resolution or a second successful attack.
-- `is_ship` is the actual subkind macro, not a T_ship kind check. Hostile rafts
-  preserve the real `loc_depth` assertion, now tracked in
-  [G3 #348](https://github.com/playbymail/olympia-g3/issues/348), not repaired
-  independently. A raft initiator with no local target can reach the outer scan.
+- `is_ship` is the actual subkind macro, not a T_ship kind check. Following
+  G3 #351, completed rafts reach the outer combat boundary and unfinished
+  rafts can be selected locally. Both have building depth and zero fort cover.
+  Every other `fort_covers` subkind and its invalid-subkind assertion are
+  real-C controls. A raft initiator with no local target can reach the outer scan.
 
-The recording contains 99 sections / 2857 lines on Linux x86-64.
-The earlier 78 sections / 2384 lines are byte-for-byte unchanged.
+The recording contains 102 sections / 2946 lines on Linux x86-64.
+Earlier cases change only for shifted u.c assertion lines and the former
+raft-depth assertion becoming actual precombat output and the aborting boundary.
 Whole-game checks remain opt-in in `turn-compat`. No cases consume RNG.

@@ -5,7 +5,7 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
-PINNED_REV=2567e6a5dd0ba0d95516d8bed9e1bafb87a51985
+PINNED_REV=6a25f2d252ce45bd5adbe3baaccb3be3eed56279
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 WORK="${WORK:-${ROOT}/tmp/turn-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"

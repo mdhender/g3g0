@@ -25,6 +25,7 @@
 #                (default ~/Software/playbymail/olympia-g3)
 #   G3_REV       G3 revision to test against (default: the pinned revision)
 #   WORK         scratch directory, emptied first (default tmp/olympia-cli-compat)
+#   C_CACHE      optional exact-revision olympia-roundtrip build cache
 #   RUN_TIMEOUT  seconds allowed per program run (default 60)
 #
 # Exits 0 only if every check passes. Results are written to
@@ -38,7 +39,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-2567e6a5dd0ba0d95516d8bed9e1bafb87a51985}"
+G3_REV="${G3_REV:-6a25f2d252ce45bd5adbe3baaccb3be3eed56279}"
 WORK="${WORK:-${ROOT}/tmp/olympia-cli-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-60}"
 
@@ -70,14 +71,22 @@ echo
 # ---------------------------------------------------------------------------
 # Build the reference from a clean export of the pinned revision, and the port.
 # ---------------------------------------------------------------------------
-echo "exporting and building G3 (log: ${LOG})"
+echo "exporting G3 (log: ${LOG})"
 git -C "${G3_REPO}" archive "${G3_REV}" | tar -x -C "${WORK}/g3"
-(
-	cd "${WORK}/g3"
-	cmake --preset debug
-	cmake --build --preset debug --target olympia-g3
-) >"${LOG}" 2>&1 || die "G3 build failed; see ${LOG}"
-C_BIN="${WORK}/g3/build/debug/olympia-g3"
+if [ -n "${C_CACHE:-}" ]; then
+	[ "$(cat "${C_CACHE}/g3.rev" 2>/dev/null)" = "${G3_REV}" ] &&
+		[ -x "${C_CACHE}/g3/build/debug/olympia-g3" ] || die "C_CACHE must contain the exact pinned build"
+	C_CACHE="$(cd "${C_CACHE}" && pwd -P)"
+	C_BIN="${C_CACHE}/g3/build/debug/olympia-g3"
+	echo "reusing C build: ${C_BIN}"
+else
+	(
+		cd "${WORK}/g3"
+		cmake --preset debug
+		cmake --build --preset debug --target olympia-g3
+	) >"${LOG}" 2>&1 || die "G3 build failed; see ${LOG}"
+	C_BIN="${WORK}/g3/build/debug/olympia-g3"
+fi
 
 echo "building the Go port"
 (
