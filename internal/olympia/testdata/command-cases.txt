@@ -653,3 +653,269 @@ evening
 dump
 start
 log
+
+section hostility faction guard and unit dispositions
+field 1000 hostile 1001
+predicate hostile 1000 1001
+field 1001 lord 201
+predicate hostile 1000 1001
+predicate hostile 1001 1000
+
+section hostility player disposition exact target not target faction
+field 1001 lord 201
+field 1000 neutral 1001
+field 1000 defend 1001
+predicate hostile 1000 1001
+field 200 hostile 201
+predicate hostile 1000 1001
+predicate hostile 1000 201
+field 200 hostile 1001
+predicate hostile 1000 1001
+
+section monster automatic hostility and npc classifications
+field 1001 lord 201
+predicate hostile 1000 1001
+field 1000 npc 2
+predicate hostile 1000 1001
+field 1001 loyal 4
+predicate npc 1001
+predicate hostile 1000 1001
+field 1001 loyal 5
+predicate hostile 1000 1001
+field 1001 loyal 0
+field 1001 subkind 55
+predicate hostile 1000 1001
+field 1001 subkind 0
+field 1000 vulnerable 500
+predicate vulnerable 1000
+predicate hostile 1000 1001
+field 1000 hostile 1001
+predicate hostile 1000 1001
+
+section garrison hostility list respects same faction and subkind
+field 1000 garr_host 1001
+field 1001 lord 201
+predicate hostile 1000 1001
+field 1000 subkind 64
+predicate hostile 1000 1001
+field 1001 lord 200
+predicate hostile 1000 1001
+
+section hidden visibility faction contact direction and different place
+entity 9000 3 3
+entity 9001 3 3
+link 9000 1000
+link 9000 1001
+field 1001 hidden 1
+predicate really_hidden 1001
+predicate char_here 1000 1001
+field 1001 lord 201
+predicate char_here 1000 1001
+field 1000 contact 1001
+predicate contacted 1000 1001
+predicate char_here 1000 1001
+field 1001 contact 1000
+predicate char_here 1000 1001
+predicate char_where 9001 1000 1001
+
+section hidden visibility faction contact and nonalone leader
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+field 1001 hidden 1
+field 1001 contact 200
+predicate contacted 1001 1000
+predicate char_here 1000 1001
+entity 1002 2 0
+field 1002 lord 201
+link 1001 1002
+predicate really_hidden 1001
+predicate char_here 1000 1002
+
+section hidden alone counts inventory quantities and follower
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+field 1001 hidden 1
+entity 500 4 0
+inventory 1001 500 12
+predicate really_hidden 1001
+entity 18 4 0
+inventory 1001 18 1
+predicate really_hidden 1001
+predicate char_here 1000 1001
+link 1000 1001
+predicate really_hidden 1001
+predicate char_here 1000 1001
+
+section fog masks nonhidden units but same faction still visible
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+predicate char_here 1000 1001
+entity 9100 11 57
+link 9000 9100
+field 9100 strength 4
+predicate weather 9000 57
+predicate char_here 1000 1001
+field 1001 lord 200
+predicate char_here 1000 1001
+field 1001 lord 201
+link 1000 1001
+predicate char_here 1000 1001
+
+section fog garrison exception only first character
+entity 9000 3 3
+link 9000 1001
+link 9000 1000
+field 1001 lord 201
+field 1001 subkind 64
+entity 9100 11 57
+link 9000 9100
+field 9100 strength 1
+predicate char_here 1000 1001
+
+section fog nonfirst garrison remains invisible
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+field 1001 subkind 64
+entity 9100 11 57
+link 9000 9100
+field 9100 strength 1
+predicate char_here 1000 1001
+
+section weather province sums widths building immunity and subloc visibility
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 3 32
+entity 9003 9 30
+link 9000 9001
+link 9001 9002
+link 9000 9003
+entity 9100 11 57
+entity 9101 11 57
+entity 9102 11 59
+entity 9103 11 57
+link 9000 9100
+link 9000 9101
+link 9000 9102
+link 9001 9103
+field 9100 strength 32767
+field 9101 strength 32770
+field 9102 strength 9
+field 9103 strength 100
+predicate weather 9000 57
+entity 9104 11 57
+link 9000 9104
+field 9104 strength 32767
+predicate weather 9000 57
+predicate weather 9001 57
+predicate weather 9002 57
+predicate weather 9003 57
+predicate weather 9000 59
+link 9001 1000
+link 9001 1001
+field 1001 lord 201
+predicate char_here 1000 1001
+predicate province 1001
+predicate province 9000
+predicate province 0
+
+section safe self ancestors nested stacks and movement do not matter
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 9 30
+link 9000 9001
+link 9001 9002
+link 9002 1000
+link 1000 1001
+predicate safe 1001
+field 9001 safe 1
+predicate safe 1001
+field 1001 moving 50
+predicate safe 1001
+field 9001 safe 256
+predicate safe 1001
+field 1001 safe 1
+predicate safe 1001
+predicate safe 9000
+field 9000 safe -1
+predicate safe 9000
+
+section known hidden locations use faction knowledge not visibility
+entity 9000 3 3
+entity 9001 3 13
+link 9000 9001
+predicate loc_hidden 9001
+predicate known 1000 9001
+field 9001 loc_hidden 130
+predicate loc_hidden 9001
+predicate known 1000 9001
+field 200 known 9001
+predicate known 1000 9001
+predicate known 1001 9001
+field 1001 lord 201
+predicate known 1001 9001
+predicate known 0 99999
+predicate loc_hidden 1000
+
+section inventory first exact signed quantity not count or filtered loop
+entity 500 4 61
+entity 501 4 61
+predicate has_item 1000 500
+inventory 1000 500 -3
+inventory 1000 500 9
+inventory 1000 501 2147483647
+predicate has_item 1000 500
+predicate has_item 1000 501
+predicate has_item 1001 501
+field 1001 vulnerable 501
+predicate vulnerable 1001
+
+section building and ship ownership first direct character not lord or nested
+entity 9000 3 32
+entity 9001 9 30
+entity 9002 3 46
+link 9000 9002
+link 9002 1000
+predicate owner 9000
+link 9000 1001
+field 1001 lord 201
+predicate owner 9000
+predicate owner 9001
+entity 500 4 0
+link 9001 500
+link 9001 1000
+link 9001 1001
+predicate owner 9001
+
+section contacted allocates missing character record
+entity 9000 3 3
+predicate char_alloc 9000
+predicate contacted 9000 1000
+predicate char_alloc 9000
+
+section known asserts invalid observer
+predicate known 99999 1000
+
+section known asserts invalid target
+predicate known 1000 99999
+
+section inventory asserts invalid owner
+predicate has_item 99999 1000
+
+section inventory asserts invalid item
+predicate has_item 1000 99999
+
+section building owner asserts nonbuilding
+entity 9000 3 3
+predicate owner 9000
+
+section weather without province preserves loop assertion
+entity 9000 3 14
+predicate weather 9000 57

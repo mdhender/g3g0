@@ -1,4 +1,4 @@
-# Command dispatch, completion and scheduler
+# Command dispatch, completion, scheduler and target predicates
 
 Pinned reference: [Olympia G3 at
 2567e6a5dd0ba0d95516d8bed9e1bafb87a51985](https://github.com/playbymail/olympia-g3/tree/2567e6a5dd0ba0d95516d8bed9e1bafb87a51985).
@@ -40,13 +40,16 @@ Real complete handlers: `v_stop`, `v_xyzzy`, `v_plugh`, `v_format`, `v_notab`,
 `v_hide`, `d_hide`. Real dependencies include order-head/top/pop operations,
 player/lord and stack lookup, `all_stack`, `count_any`, `count_stack_any`,
 `rp_skill_ent`, `has_skill`, `exp_level`, `check_skill`, parser garrison lookup,
-`here_pos` and sparse output-bit operations. The driver only constructs state and calls
-these functions; it does not emulate their decisions.
+`here_pos` and sparse output-bit operations. Target predicates are extracted
+whole from perm.c (`is_hostile`), u.c (`contacted`, `char_where`, `char_here`,
+`test_known`, `loc_hidden`, `has_item`, `loc_depth`), loc.c (`in_safe_now`,
+`province`, `building_owner`), and storm.c (`weather_here`), using
+the actual oly.h macros. The driver only constructs state and calls these
+functions; it does not emulate their decisions.
 
 All other command routines named by the C table are **aborting** stubs,
 never successful substitutes. The remaining aborting dependencies are
-unreachable location/garrison report routes (`players_who_rule_here`,
-`loc_depth`, `viewloc`, `loc_hidden`, `test_known`), unused display formatting
+unreachable location/garrison report routes (`players_who_rule_here`, `viewloc`), unused display formatting
 (`is_port_city`, `nice_num`), validated-trade settlement, and
 `check_auto_attack_sup` (actual combat beyond the real leader/health scan). Reaching any
 stub fails the script, including `--update`. Only `coverage_count` is a
@@ -78,8 +81,8 @@ scan excludes stacked followers and leaders whose health is neither 100 nor
 -1; every eligible leader explicitly stops at `check_auto_attack_sup` rather
 than silently pretending combat succeeded. Clearing second waits is the
 actual list-based combat.c operation, not a scan of all characters.
-That healthy-leader boundary is temporary: #101 ports target-selection
-predicates and #102 completes the non-combat scan before wait work begins.
+That healthy-leader boundary is temporary: #101 supplies real target-selection
+predicates without wiring them in; #102 completes the non-combat scan before wait work begins.
 It is not a claim that C stops on a healthy leader without a hostile target.
 
 ## Discriminating cases
@@ -144,5 +147,22 @@ It is not a claim that C stops on a healthy leader without a hostile target.
   tests verify health 100/-1 stops after actual low-priority state/output
   mutations but before the priority-3 handler, without C stub recordings.
 
-The recording contains 56 sections / 1966 lines on Linux x86-64.
+- Unit and player hostile lists versus neutral/defend lists, same-faction
+  short-circuit, exact target versus target-faction IDs, automatic sublocation
+  monsters, NPC subkind and both NPC loyalties, vulnerability exceptions,
+  and garrison-only hostile lists.
+- Hidden-alone versus inventory/stack visibility, contact direction and
+  faction contact, mismatched locations, fog versus same faction/shared stack,
+  first-character garrison exception versus a later garrison. Sublocations do
+  not acquire province fog's visibility rule. Buildings and ships suppress
+  weather; province storms sum in signed C widths, excluding nested storms.
+- Safe self/ancestors through nested stacks and ships, unchanged by movement;
+  hidden-location flags and faction knowledge independently; exact signed
+  first inventory quantity (including duplicate entries); building/ship owners
+  selected by direct here-list order, not faction or nested ownership.
+- `contacted` really allocates an absent character record. Invalid known/item
+  operands and nonbuilding ownership retain exact assertion file/line/condition.
+
+The recording contains 78 sections / 2384 lines on Linux x86-64.
+The first 56 sections / 1966 lines are unchanged.
 Whole-game checks remain opt-in in `turn-compat`. No cases consume RNG.

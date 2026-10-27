@@ -72,6 +72,64 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "finish")) printf("finish %d\n", finish_command(c));
   else if (!strcmp(op, "done")) command_done(c);
   else if (!strcmp(op, "shift")) cmd_shift(c);
+  else if (!strcmp(op, "entity"))
+  { sscanf(line,"%*s %d %d %d",&n,&a,&b); alloc_box(n,a,b); }
+  else if (!strcmp(op, "link"))
+  {
+   sscanf(line,"%*s %d %d",&n,&a);
+   if (loc(a)) ilist_rem_value(&p_loc_info(loc(a))->here_list,a);
+   p_loc_info(a)->where = n;
+   ilist_append(&p_loc_info(n)->here_list,a);
+  }
+  else if (!strcmp(op, "inventory"))
+  {
+   struct item_ent *e = my_malloc(sizeof(*e));
+   sscanf(line,"%*s %d %d %d",&n,&a,&b);
+   e->item = a; e->qty = b; item_ents_append(&bx[n]->items,e);
+  }
+  else if (!strcmp(op, "field"))
+  {
+   sscanf(line,"%*s %d %31s %d",&n,text,&a);
+   if (!strcmp(text,"lord")) p_char(n)->unit_lord = a;
+   else if (!strcmp(text,"npc")) p_char(n)->npc_prog = (schar)a;
+   else if (!strcmp(text,"loyal")) p_char(n)->loy_kind = (schar)a;
+   else if (!strcmp(text,"moving")) p_char(n)->moving = a;
+   else if (!strcmp(text,"hidden")) p_magic(n)->hide_self = (schar)a;
+   else if (!strcmp(text,"subkind")) bx[n]->skind = a;
+   else if (!strcmp(text,"vulnerable")) p_misc(n)->only_vulnerable = a;
+   else if (!strcmp(text,"strength")) p_misc(n)->storm_str = (short)a;
+   else if (!strcmp(text,"safe")) p_subloc(n)->safe = (schar)a;
+   else if (!strcmp(text,"loc_hidden")) p_loc(n)->hidden = (schar)a;
+   else if (!strcmp(text,"hostile")) ilist_append(&p_disp(n)->hostile,a);
+   else if (!strcmp(text,"neutral")) ilist_append(&p_disp(n)->neutral,a);
+   else if (!strcmp(text,"defend")) ilist_append(&p_disp(n)->defend,a);
+   else if (!strcmp(text,"contact")) ilist_append(&p_char(n)->contact,a);
+   else if (!strcmp(text,"garr_host")) ilist_append(&p_misc(n)->garr_host,a);
+   else if (!strcmp(text,"known")) set_bit(&p_player(n)->known,a);
+   else return 2;
+  }
+  else if (!strcmp(op, "predicate"))
+  {
+   n = a = b = 0;
+   sscanf(line,"%*s %31s %d %d %d",text,&n,&a,&b);
+   if (!strcmp(text,"hostile")) result = is_hostile(n,a);
+   else if (!strcmp(text,"contacted")) result = contacted(n,a);
+   else if (!strcmp(text,"char_where")) result = char_where(n,a,b);
+   else if (!strcmp(text,"char_here")) result = char_here(n,a);
+   else if (!strcmp(text,"known")) result = test_known(n,a);
+   else if (!strcmp(text,"loc_hidden")) result = loc_hidden(n);
+   else if (!strcmp(text,"has_item")) result = has_item(n,a);
+   else if (!strcmp(text,"safe")) result = in_safe_now(n);
+   else if (!strcmp(text,"province")) result = province(n);
+   else if (!strcmp(text,"owner")) result = building_owner(n);
+   else if (!strcmp(text,"weather")) result = weather_here(n,a);
+   else if (!strcmp(text,"really_hidden")) result = char_really_hidden(n);
+   else if (!strcmp(text,"npc")) result = is_npc(n);
+   else if (!strcmp(text,"vulnerable")) result = only_defeatable(n);
+   else if (!strcmp(text,"char_alloc")) result = rp_char(n) != NULL;
+   else return 2;
+   printf("predicate %d\n",result);
+  }
   else if (!strcmp(op, "initial")) initial_command_load();
   else if (!strcmp(op, "start")) start_phase();
   else if (!strcmp(op, "evening")) drv_evening();

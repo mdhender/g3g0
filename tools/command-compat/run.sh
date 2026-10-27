@@ -40,9 +40,13 @@ functions = {
     'swear.c': ['lord', 'player'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos'],
     'combat.c': ['check_all_auto_attacks', 'clear_second_waits'],
-    'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character'],
+    'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
+              'in_safe_now', 'province', 'building_owner'],
     'garr.c': ['garrison_here'],
-    'u.c': ['min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill'],
+    'u.c': ['min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
+            'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth'],
+    'perm.c': ['is_hostile'],
+    'storm.c': ['weather_here'],
     'use.c': ['rp_skill_ent', 'exp_level', 'has_skill'],
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
@@ -104,10 +108,7 @@ with open(f'{dst}/stubs.c', 'w') as out:
 int is_port_city(int n) STUB("is_port_city")
 char *nice_num(int n) STUB("nice_num")
 ilist players_who_rule_here(int n) STUB("players_who_rule_here")
-int loc_depth(int n) STUB("loc_depth")
 int viewloc(int n) STUB("viewloc")
-int loc_hidden(int n) STUB("loc_hidden")
-int test_known(int who, int n) STUB("test_known")
 void check_validated_trades(void) STUB("check_validated_trades")
 void check_auto_attack_sup(int n) STUB("check_auto_attack_sup")
 /* Instrumentation only; coverage artifacts belong to stage 3. */

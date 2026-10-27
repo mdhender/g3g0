@@ -141,3 +141,28 @@ func (w *world) firstCharacter(where int) int {
 
 	return 0
 }
+
+// inSafeNow checks who itself, then every ancestor, even while moving.
+func (w *world) inSafeNow(who int) bool {
+	for {
+		if w.safeHaven(who) != 0 {
+			return true
+		}
+		who = w.loc(who)
+		if who <= 0 {
+			return false
+		}
+	}
+}
+
+func (w *world) province(who int) int {
+	for who > 0 && (w.kind(who) != tLoc || w.locDepth(who) != locProvince) {
+		who = w.loc(who)
+	}
+	return who
+}
+
+func (w *world) buildingOwner(where int) int {
+	assert(w.locDepth(where) == locBuild, "olympia/loc.c", 395, "loc_depth(where) == LOC_build")
+	return w.firstCharacter(where)
+}

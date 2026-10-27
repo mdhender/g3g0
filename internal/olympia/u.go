@@ -10,6 +10,107 @@ import (
 
 // Ported from olympia/u.c.
 
+func (w *world) contacted(a, b int) bool {
+	p := w.pChar(a)
+	if p.contact.Lookup(b) >= 0 {
+		return true
+	}
+	return p.contact.Lookup(w.player(b)) >= 0
+}
+
+func (w *world) charWhere(where, who, target int) bool {
+	if where != w.subloc(target) {
+		return false
+	}
+	if w.charReallyHidden(target) || (w.locDepth(where) == locProvince && w.weatherHere(where, subFog) != 0) {
+		if w.player(who) == w.player(target) {
+			return true
+		}
+		if target == w.garrisonHere(where) {
+			return true
+		}
+		if w.contacted(target, who) {
+			return true
+		}
+		return w.stackLeader(target) == w.stackLeader(who)
+	}
+	return true
+}
+
+func (w *world) charHere(who, target int) bool {
+	return w.charWhere(w.subloc(who), who, target)
+}
+
+func (w *world) testKnown(who, i int) bool {
+	if who == 0 {
+		return false
+	}
+	assert(w.validBox(who), "olympia/u.c", 2332, "valid_box(who)")
+	assert(w.validBox(i), "olympia/u.c", 2333, "valid_box(i)")
+	ep := w.rpPlayer(w.player(who))
+	return ep != nil && testBit(ep.known, i)
+}
+
+func (w *world) locHidden(n int) int {
+	if p := w.rpLoc(n); p != nil {
+		return int(p.hidden)
+	}
+	return 0
+}
+
+func (w *world) hasItem(who, item int) int32 {
+	assert(w.validBox(who), "olympia/u.c", 1820, "valid_box(who)")
+	assert(w.validBox(item), "olympia/u.c", 1830, "valid_box(item)")
+	for _, e := range w.bx[who].items {
+		if int(e.item) == item {
+			return e.qty
+		}
+	}
+	return 0
+}
+
+// Actual oly.h macros used by the target predicates, with C field widths.
+func (w *world) npcProgram(n int) int {
+	if p := w.rpChar(n); p != nil {
+		return int(p.npcProg)
+	}
+	return 0
+}
+
+func (w *world) isNPC(n int) bool {
+	if w.subkind(n) != 0 {
+		return true
+	}
+	p := w.rpChar(n)
+	return p != nil && (p.loyKind == loyNpc || p.loyKind == loySummon)
+}
+
+func (w *world) onlyDefeatable(n int) int32 {
+	if p := w.rpMisc(n); p != nil {
+		return p.onlyVulnerable
+	}
+	return 0
+}
+
+func (w *world) safeHaven(n int) int {
+	if p := w.rpSubloc(n); p != nil {
+		return int(p.safe)
+	}
+	return 0
+}
+
+func (w *world) stormStrength(n int) int32 {
+	if p := w.rpMisc(n); p != nil {
+		return int32(p.stormStr)
+	}
+	return 0
+}
+
+func (w *world) charReallyHidden(n int) bool {
+	p := w.rpMagic(n)
+	return p != nil && p.hideSelf != 0 && w.stackParent(n) == 0 && w.countStackAny(n) == 1
+}
+
 func (w *world) checkSkill(who, skill int) bool {
 	if w.hasSkill(who, skill) < 1 {
 		w.commandOut(who, "Requires %s.", w.boxName(skill))

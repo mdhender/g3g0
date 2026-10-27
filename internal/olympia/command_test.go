@@ -97,6 +97,103 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.commandDone(c)
 		case "shift":
 			w.cmdShift(c)
+		case "entity":
+			n, k, sk := args.num(t), args.num(t), args.num(t)
+			w.allocBox(n, k, sk)
+		case "link":
+			n, a := args.num(t), args.num(t)
+			if old := w.loc(a); old != 0 {
+				w.pLocInfo(old).hereList.RemValue(a)
+			}
+			w.pLocInfo(a).where = int32(n)
+			w.pLocInfo(n).hereList.Append(a)
+		case "inventory":
+			n, a, b := args.num(t), args.num(t), args.num(t)
+			w.bx[n].items.Append(&itemEnt{item: int32(a), qty: int32(b)})
+		case "field":
+			n, field, a := args.num(t), args.word(), args.num(t)
+			switch field {
+			case "lord":
+				w.pChar(n).unitLord = int32(a)
+			case "npc":
+				w.pChar(n).npcProg = int8(a)
+			case "loyal":
+				w.pChar(n).loyKind = int8(a)
+			case "moving":
+				w.pChar(n).moving = int32(a)
+			case "hidden":
+				w.pMagic(n).hideSelf = int8(a)
+			case "subkind":
+				w.bx[n].skind = int8(a)
+			case "vulnerable":
+				w.pMisc(n).onlyVulnerable = int32(a)
+			case "strength":
+				w.pMisc(n).stormStr = int16(a)
+			case "safe":
+				w.pSubloc(n).safe = int8(a)
+			case "loc_hidden":
+				w.pLoc(n).hidden = int8(a)
+			case "hostile":
+				w.pDisp(n).hostile.Append(a)
+			case "neutral":
+				w.pDisp(n).neutral.Append(a)
+			case "defend":
+				w.pDisp(n).defend.Append(a)
+			case "contact":
+				w.pChar(n).contact.Append(a)
+			case "garr_host":
+				w.pMisc(n).garrHost.Append(a)
+			case "known":
+				setBit(&w.pPlayer(n).known, a)
+			default:
+				t.Fatalf("unknown field %s", field)
+			}
+		case "predicate":
+			name := args.word()
+			n := args.num(t)
+			var a, b int
+			if args.rest != "" {
+				a = args.num(t)
+			}
+			if args.rest != "" {
+				b = args.num(t)
+			}
+			var result int
+			switch name {
+			case "hostile":
+				result = b2i(w.isHostile(n, a))
+			case "contacted":
+				result = b2i(w.contacted(n, a))
+			case "char_where":
+				result = b2i(w.charWhere(n, a, b))
+			case "char_here":
+				result = b2i(w.charHere(n, a))
+			case "known":
+				result = b2i(w.testKnown(n, a))
+			case "loc_hidden":
+				result = w.locHidden(n)
+			case "has_item":
+				result = int(w.hasItem(n, a))
+			case "safe":
+				result = b2i(w.inSafeNow(n))
+			case "province":
+				result = w.province(n)
+			case "owner":
+				result = w.buildingOwner(n)
+			case "weather":
+				result = int(w.weatherHere(n, a))
+			case "really_hidden":
+				result = b2i(w.charReallyHidden(n))
+			case "npc":
+				result = b2i(w.isNPC(n))
+			case "vulnerable":
+				result = int(w.onlyDefeatable(n))
+			case "char_alloc":
+				result = b2i(w.rpChar(n) != nil)
+			default:
+				t.Fatalf("unknown predicate %s", name)
+			}
+			fmt.Fprintf(&stdout, "predicate %d\n", result)
 		case "initial":
 			w.initialCommandLoad()
 		case "start":
