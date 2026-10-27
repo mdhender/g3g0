@@ -2674,3 +2674,115 @@ func (w *world) cleanupPosts() {
 		w.deleteBox(i)
 	}
 }
+
+// loadDb is load_db(): it reads the game in libdir, in C's order, checks
+// it and readies it for a turn.
+//
+// For a world that does not exist yet, load_db() runs the steps that
+// build one (post_production(), seed_initial_locations(), the create_*
+// region builders, seed_phase_two() and creating the combat player, with
+// read_pw()). They are not ported yet: the first one a load reaches stops
+// the engine with a "not yet implemented" message, after any stage() line
+// C prints before it.
+func (w *world) loadDb() {
+	w.stage("load_db()")
+
+	// Assertions to verify the sanity of the linehash macro
+	// Switch the byte ordering if this fails
+
+	assert(linehash("ab f") == 'a'<<8|'b', "olympia/io.c", 2775, "linehash(\"ab f\") == 'ab'")
+	assert(linehash("") == 0, "olympia/io.c", 2776, "linehash(\"\") == 0")
+	assert(linehash("na") == 'n'<<8|'a', "olympia/io.c", 2777, "linehash(\"na\") == 'na'")
+	assert(linehash("ab ") == 'a'<<8|'b', "olympia/io.c", 2778, "linehash(\"ab \") == 'ab'")
+
+	w.loadSeed(sout("%s/randseed", w.libdir))
+	w.initTradeRoutes() // issue #46: per-game trade-route buyer secret
+	w.loadSystem()
+
+	if !w.fastScan() { // pass 1: call alloc_box for each entity
+		w.scanAllBoxes()
+	}
+
+	w.readAllBoxes() // pass 2: read the entity attributes
+	w.loadOrders()
+
+	w.checkDb()           // check database integrity
+	w.determineMapEdges() // initialization for map routines
+
+	if w.postHasBeenRun == 0 {
+		w.stage("INIT: post_production()")
+		panic(notImplemented("post_production"))
+	}
+
+	if w.seedHasBeenRun == 0 {
+		w.stage("INIT: seed_initial_locations()")
+		panic(notImplemented("seed_initial_locations"))
+	}
+
+	if w.faeryRegion == 0 {
+		panic(notImplemented("create_faery"))
+	}
+
+	if w.hadesRegion == 0 {
+		panic(notImplemented("create_hades"))
+	}
+
+	if w.nowhereRegion == 0 {
+		panic(notImplemented("create_nowhere"))
+	}
+
+	if w.cloudRegion == 0 {
+		panic(notImplemented("create_cloudlands"))
+	}
+
+	if w.tunnelRegion == 0 {
+		panic(notImplemented("create_tunnels"))
+	}
+
+	// seed_phase_two() runs only when seed_has_been_run is FALSE, which
+	// has stopped the load above.
+
+	if w.combatPl == 0 {
+		panic(notImplemented("creating the combat player"))
+	}
+
+	w.createRelics()
+	w.initOceanChars()
+	w.deleteDeadchars()
+
+	w.printBoxUsage()
+}
+
+// saveDb is save_db(): it writes the game back to libdir.
+func (w *world) saveDb() {
+	w.stage("save_db()")
+	w.cleanupPosts()
+	w.saveSeed(sout("%s/randseed", w.libdir))
+	w.saveTradeRoutes() // issue #46: persist per-game seed if customized
+	w.saveSystem()
+	w.writeAllBoxes()
+	w.writeMaster()
+	w.saveOrders()
+	w.renameActJoinFiles()
+}
+
+// loadSeed is load_seed() in olympia/rnd.c: the generator's state from
+// fnam, which also becomes the master seed of the addressable streams. A
+// file that cannot be opened leaves the state as it was, with a message on
+// stdout.
+func (w *world) loadSeed(fnam string) {
+	if err := w.rnd.Load(fnam); err != nil {
+		fmt.Fprintf(w.stdout, "%s could not be opened.\n", fnam)
+	}
+}
+
+// saveSeed is save_seed() in olympia/rnd.c: the generator's state to
+// fnam. A file that cannot be written gets a diagnostic, and the engine
+// exits with status 1.
+func (w *world) saveSeed(fnam string) {
+	if err := w.rnd.Save(fnam); err != nil {
+		fmt.Fprintf(w.stderr, "couldn't write %s:", fnam)
+		clib.Perror(w.stderr, "", err)
+		panic(exitStatus(1))
+	}
+}

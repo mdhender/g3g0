@@ -123,9 +123,25 @@ func TestIListTest(t *testing.T) {
 }
 
 func TestNotYetImplemented(t *testing.T) {
-	for _, args := range [][]string{nil, {"-r"}, {"-S"}, {"--coverage", "-R"}, {"foo", "-R"}} {
+	// A mode that runs after load_db() and is not ported stops before
+	// load_db().
+	for _, args := range [][]string{{"-r"}, {"-r", "-S"}, {"-e"}, {"--coverage", "-R"}} {
 		status, stdout, stderr := run(false, args...)
-		if status == 0 || stdout != header || !strings.HasSuffix(stderr, ": not yet implemented\n") {
+		if status != 2 || stdout != header || !strings.HasPrefix(stderr, "olympia-g3: load_db (") ||
+			!strings.HasSuffix(stderr, ": not yet implemented\n") {
+			t.Errorf("%q: status %d, stdout %q, stderr %q", args, status, stdout, stderr)
+		}
+	}
+
+	// Anything else loads the game. With no lib, load_db() makes a new
+	// world, which stops at post_production(), after C's messages for the
+	// missing files and the players check_db() creates.
+	t.Chdir(t.TempDir())
+	for _, args := range [][]string{nil, {"-S"}, {"foo", "-R"}, {"-l", "lib", "-T"}} {
+		status, stdout, stderr := run(false, args...)
+		if status != 2 || stdout != header+"lib/randseed could not be opened.\n" ||
+			!strings.HasPrefix(stderr, "load_db()") ||
+			!strings.HasSuffix(stderr, "olympia-g3: post_production: not yet implemented\n") {
 			t.Errorf("%q: status %d, stdout %q, stderr %q", args, status, stdout, stderr)
 		}
 	}

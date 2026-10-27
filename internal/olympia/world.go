@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/mdhender/g3g0/internal/lists"
+	"github.com/mdhender/g3g0/internal/rnd"
 )
 
 // world holds the C engine's global state: the box table bx[], the heads of
@@ -133,6 +134,19 @@ type world struct {
 	// to. newWorld sets it to os.Stderr; the engine sets it to its own.
 	stderr io.Writer
 
+	// stdout is C's stdout, which load_seed() writes to. newWorld sets it
+	// to os.Stdout; the engine sets it to its buffered cStdout.
+	stdout io.Writer
+
+	// rnd is the state of the MD5 generator of olympia/rnd.c (digest and
+	// master_seed), which load_seed() reads from libdir/randseed and
+	// save_seed() writes back.
+	rnd rnd.Source
+
+	// testUseConstReportDate is test_use_const_report_date in main.c,
+	// which times_masthead() reads.
+	testUseConstReportDate bool
+
 	// timeSelf is time_self in main.c (-T), which stage() reads, and
 	// stageOld and stageFirst are stage()'s statics old and first.
 	timeSelf   bool
@@ -180,6 +194,7 @@ func newWorld() *world {
 		subCacheKind: -1,
 
 		stderr: os.Stderr,
+		stdout: os.Stdout,
 	}
 }
 

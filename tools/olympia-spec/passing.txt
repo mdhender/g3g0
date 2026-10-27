@@ -3,4 +3,9 @@
 # G3 revision: 47535543d83fbc5649d54b63b49e578f2b11ab1c
 # A name is a tests/olympia/regress fixture; "golden" is golden_check.sh
 # after run/olympia-g3.sh.
+load-comment-lines
+load-continuation-blank
+load-continuation-eof
+load-short-entries
 rng-selftest
+save-fly-cap

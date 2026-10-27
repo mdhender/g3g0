@@ -13,9 +13,11 @@ Two sources of expectations are used:
 [playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `47535543d83fbc5649d54b63b49e578f2b11ab1c`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
-The port follows `main()` in `olympia/main.c` (the long-option pass, the `getopt()` loop, the usage text and what `main()` prints before it dispatches), `test_random()` in `olympia/z.c` and `ilist_test()` in `lib/ilist.c`.
-Every other mode stops with `<argv[0]>: <what>: not yet implemented` on stderr and exit status 2.
-Every such mode reaches `load_db()` first, so the message names `load_db` and the modes that were asked for.
+The port follows `main()` in `olympia/main.c` (the long-option pass, the `getopt()` loop, the usage text and what `main()` prints before it dispatches), `test_random()` in `olympia/z.c` and `ilist_test()` in `lib/ilist.c`, and from #52 its load and save (`load_db()`, `check_db()`, `save_db()` with `-S`, `times_masthead()` and the closing output), which [`olympia-roundtrip`](../olympia-roundtrip) checks on saved games.
+Every other mode stops with `<argv[0]>: <what>: not yet implemented` on stderr and exit status 2:
+
+- A vector that asks for a mode that runs after `load_db()` and is not ported (`-e`, `-E`, `-s`, `-r`, `-a`, `-i`, `-M`, `-h` or a `--` path option) stops before `load_db()`, so the message names `load_db` and the modes that were asked for.
+- Any other vector (no arguments, `-S`, `-l`, `-T`, `-w`, `-p`, `-f`, `-G`, `-A`, `test-use-const-report-date`, `--`, `-`, an operand) loads the game. Each runs in an empty directory, so there is no `lib`, and `load_db()` takes the branch that builds a new world: Go prints what C prints up to `INIT: post_production()` (on stdout, `lib/randseed could not be opened.`; on stderr, the missing files and the players `check_db()` creates) and stops there with `post_production: not yet implemented`, where C goes on and aborts in `create_faery()`. These vectors stay `nyi`.
 
 ### `sizeof(struct box)`
 
@@ -80,7 +82,7 @@ OLYMPIA_ENGINE_BIN=/path/to/g3g0/tmp/olympia tests/olympia/regress/rng-selftest/
 
 Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
 
-- 92 vectors: 62 `same` and 30 `nyi`. All 92 PASS.
+- 92 vectors: 62 `same` and 30 `nyi`. All 92 PASS. For the 15 `nyi` vectors that now load (#52), Go's stdout is all of C's and its stderr is C's up to the "not yet implemented" line.
 - G3 gate: `rng-selftest` prints `YES` for the C build and for Go.
 
 The full table of hashes and exit statuses is in [`results.tsv`](results.tsv), copied from the run, not edited by hand.

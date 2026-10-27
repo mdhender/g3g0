@@ -5,7 +5,7 @@ G3 is the reference.
 Expected results always come from running the pinned C build on the same input; nothing here is re-baselined from Go output, and `--update` is refused.
 
 This is the exit check for stage 0 (#20): load and save must match on every case before the turn is ported.
-Until `load_db` and `save_db` are ported (#28), every case fails.
+Since `load_db` and `save_db` were ported (#28), every case passes.
 
 ## Cases
 
@@ -86,14 +86,7 @@ It exits 0 only when every selected case passes.
 
 ## Results
 
-Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
+Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4, with `--fresh --determinism-all`.
 
-pass 0, fail 196, error 0.
-Every case fails on the exit status (C 0, Go 2), stdout (Go stops after `sizeof(struct box)`) and stderr (Go prints `olympia-g3: load_db (-S): not yet implemented`).
-Go writes nothing, so the files that differ are those C's load and save change:
-
-- `lib/times_0` in all 98 games before a turn: their masthead carries the date the game was built, and C writes the fixed date.
-- `lib/item` in all 98 games before a turn: C's save drops the 16 ` fc 0` lines of items that have a `ride_cap` and no `fly_cap`, since `print_item` prints `fc` only when `fly_cap` is set (G3 [#314](https://github.com/playbymail/olympia-g3/issues/314)). The `+turn` games were saved by C already, so they do not have them.
-- Nothing in 90 of the `+turn` cases.
-- `lib/master` and `lib/misc` in 7 `+turn` cases (`exploration-refused`, `governance-rule`, `guard-pillage`, `inventory-give`, `player-quit`, `use-items`, `use-necro`): the load deletes the `deadchar` entities the turn left in `misc`.
-- A faction file in 2 `+turn` cases (`lib/fact/301` in `governance-rule`, `lib/fact/300` in `loyalty-refused`): the save drops an empty `CM` section.
+pass 196, fail 0, error 0.
+C gave the same result twice on every case, and Go matches it on every case: exit status, stdout, stderr and every file of the run directory.

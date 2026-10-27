@@ -4,9 +4,11 @@
 // Package olympia ports G3's olympia-g3, the game engine.
 //
 // So far it ports main() in olympia/main.c: the command line, what main()
-// prints before it dispatches, the -R self-test and the -t ilist test. Every
-// other mode stops with a "not yet implemented" message until a later task
-// ports it.
+// prints before it dispatches, the -R self-test, the -t ilist test, and a
+// run that loads an existing game (load_db), checks it, saves it with -S
+// (save_db) and writes the Times masthead. Every other mode stops with a
+// "not yet implemented" message until a later task ports it, and so does
+// a load that has to build a new world.
 //
 // The entity model of olympia/oly.h and olympia/glob.c is in entity.go
 // (the structures), oly.go (the constants), glob.go (the constant tables)
@@ -15,15 +17,16 @@
 // subkind chains, entity codes and names, loop.go the entity loops of
 // olympia/loop.h, and z.go the failed assert(). io.go ports
 // olympia/io.c's entity reading and writing: the field helpers, the entity
-// sections, load_box and save_box, and the box-file passes and writers
+// sections, load_box and save_box, the box-file passes and writers
 // (fast_scan, scan_all_boxes, read_all_boxes, write_all_boxes and
-// write_master). Nothing in main() uses them yet.
+// write_master), and load_db and save_db.
 package olympia
 
 import (
 	"bufio"
 	"fmt"
 	"io"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -56,8 +59,9 @@ const usage = `usage: oly [options]
 `
 
 // options holds the flags main() sets, as the globals and locals of the
-// same names in olympia/main.c. Nothing reads them yet; the tasks that port
-// load_db and the modes will.
+// same names in olympia/main.c. runEngine copies those that load_db(),
+// save_db() and the end of main() read into the world; the others belong to
+// modes that are not ported yet.
 type options struct {
 	libdir string // -l; the C default is "lib" (libdir in glob.c)
 
@@ -104,8 +108,8 @@ func Run(args []string, stdout, stderr io.Writer, stdoutIsTTY bool) int {
 	out.Printf("\tsizeof(struct box) = %d\n", sizeofBox)
 
 	// call_init_routines() prints nothing. Its glob_init() is newWorld(),
-	// which the task that ports load_db will call; the rest of what it
-	// initializes belongs to later tasks.
+	// which runEngine calls; nothing seen before then depends on it. The
+	// rest of what it initializes belongs to later tasks.
 
 	o := &options{libdir: "lib"}
 	errflag := 0
@@ -203,9 +207,110 @@ func Run(args []string, stdout, stderr io.Writer, stdoutIsTTY bool) int {
 		return 1
 	}
 
-	// Every remaining path starts with load_db().
-	return notYetImplemented(stderr, args[0], "load_db"+o.modes())
+	// Every remaining path starts with load_db(). The modes that run after
+	// it are not ported yet, so a run that asks for one stops before it.
+	if o.unported() {
+		return notYetImplemented(stderr, args[0], "load_db"+o.modes())
+	}
+
+	return runEngine(o, args[0], out, stderr)
 }
+
+// unported reports whether o asks for a mode that runs after load_db() and
+// is not ported yet. Of the flags that are left, -w and -A change only
+// what those modes do, and -f, -p, -T, -G and test-use-const-report-date
+// are read by load_db(), save_db() and what main() runs after them.
+func (o *options) unported() bool {
+	return o.eatFlag || o.startlocFlag || o.runFlag || o.addFlag ||
+		o.immedAfter || o.mailNow || o.htmlFlag ||
+		o.coveragePath != "" || o.useCoveragePath != "" ||
+		o.phaseCoveragePath != "" || o.stateExportPath != ""
+}
+
+// runEngine is the rest of main(), from load_db() on, for a run that asks
+// for none of the unported modes: it loads the game, checks it, saves it
+// with -S, and writes the Times masthead. It returns the exit status.
+//
+// It recovers the ways the engine ends a C process early. A failed
+// assert() (an assertion) prints its message and calls abort(), which on
+// macOS flushes every stdio stream (stdout and the files clib.FlushAll
+// flushes) and exits 134. exit() (an exitStatus) flushes them too. A NULL
+// dereference, which Go reaches as a nil pointer dereference, kills C with
+// SIGSEGV: nothing is flushed, and the status is 139. A step that is not
+// ported (a notImplemented) stops with the "not yet implemented" message.
+// Any other panic is a bug in the port and is not recovered.
+//
+// C's integer division by zero would die with SIGFPE (136) on x86-64 and
+// give 0 on arm64; nothing from load_db() to the end of main() divides by
+// anything but a constant, so the port does not handle it.
+func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status int) {
+	// call_init_routines(): glob_init()
+	w := newWorld()
+	w.stdout = out
+	w.stderr = stderr
+	w.libdir = o.libdir
+	w.prettyDataFiles = o.prettyDataFiles
+	w.timeSelf = o.timeSelf
+	w.tradeRouteSeedPending = o.tradeRouteSeedPending
+	w.tradeRouteSeedValue = o.tradeRouteSeedValue
+	w.testUseConstReportDate = o.testUseConstReportDate
+
+	defer func() {
+		switch r := recover().(type) {
+		case nil:
+		case assertion:
+			fmt.Fprint(stderr, r.Error())
+			clib.FlushAll()
+			status = 134 // 128 + SIGABRT
+		case exitStatus:
+			clib.FlushAll()
+			status = int(r)
+		case notImplemented:
+			clib.FlushAll()
+			status = notYetImplemented(stderr, prog, string(r))
+		case runtime.Error:
+			if !strings.Contains(r.Error(), "nil pointer dereference") {
+				panic(r)
+			}
+			out.Discard()
+			status = 139 // 128 + SIGSEGV
+		default:
+			panic(r)
+		}
+	}()
+
+	w.loadDb()
+
+	// -e, -E, -s, -r, -a and -i, and the coverage dumps, stop before
+	// load_db() (unported). immediate is never set without them.
+
+	w.checkDb() // check database integrity
+
+	if o.saveFlag {
+		w.saveDb()
+	}
+
+	// write_state_export() and -M and -h stop before load_db() (unported).
+
+	w.timesMasthead()
+	// close_times(): open_times() runs only for -r, so nothing is open.
+	w.stageSup(nil)
+
+	// malloc_size and realloc_size in z.c are never counted.
+	out.Printf("\tmalloc, realloc = %d, %d\n", 0, 0)
+
+	// return from main(): exit() flushes every open stream
+	clib.FlushAll()
+	return 0
+}
+
+// notImplemented stops the engine at a step of a mode it runs that is not
+// ported yet; runEngine recovers it.
+type notImplemented string
+
+// exitStatus is exit(status) called from inside the engine; runEngine
+// recovers it.
+type exitStatus int
 
 // modes lists the requested modes, for the "not yet implemented" message.
 func (o *options) modes() string {
@@ -254,13 +359,14 @@ func notYetImplemented(stderr io.Writer, prog, what string) int {
 // the file; nothing ported so far writes enough to stdout for that to show
 // before something is written to stderr.)
 type cStdout struct {
+	dst      io.Writer
 	w        *bufio.Writer
 	lineBuf  bool
 	unbuffer bool
 }
 
 func newCStdout(w io.Writer, tty bool) *cStdout {
-	return &cStdout{w: bufio.NewWriterSize(w, 1<<16), lineBuf: tty}
+	return &cStdout{dst: w, w: bufio.NewWriterSize(w, 1<<16), lineBuf: tty}
 }
 
 // Printf is printf().
@@ -276,6 +382,18 @@ func (c *cStdout) Printf(format string, a ...any) {
 func (c *cStdout) Unbuffer() {
 	c.w.Flush()
 	c.unbuffer = true
+}
+
+// Write is fwrite() to stdout, buffered as Printf buffers it.
+func (c *cStdout) Write(p []byte) (int, error) {
+	c.Printf("%s", p)
+	return len(p), nil
+}
+
+// Discard drops what is buffered, as a process killed by a signal loses
+// it.
+func (c *cStdout) Discard() {
+	c.w.Reset(c.dst)
 }
 
 // Flush writes out anything still buffered, as exit() does.

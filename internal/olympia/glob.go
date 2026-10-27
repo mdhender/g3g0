@@ -14,7 +14,7 @@ package olympia
 // len(subkindS) == subMax.
 //
 // Not ported, because loading and saving do not use them: show_day,
-// short_dir_s, full_dir_s, exit_opposite, loc_depth_s and month_names.
+// short_dir_s, full_dir_s, exit_opposite and loc_depth_s.
 // libdir is options.libdir (olympia.go) and world.libdir. The command
 // routines of cmd_tbl are not ported yet either; see cmdTbl.
 
@@ -34,6 +34,19 @@ var kindS = []string{
 	"storm",    // T_storm
 	"unform",   // T_unform
 	"lore",     // T_lore
+}
+
+// monthNames is month_names, the name of each month of the Olympian
+// year, which times_masthead() prints.
+var monthNames = []string{
+	"Fierce winds",
+	"Snowmelt",
+	"Blossom bloom",
+	"Sunsear",
+	"Thunder and rain",
+	"Harvest",
+	"Waning days",
+	"Dark night",
 }
 
 // subkindS is subkind_s, the name of each subkind, indexed by sub_xxx.

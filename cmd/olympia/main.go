@@ -3,9 +3,11 @@
 
 // Command olympia is a port of G3's olympia-g3 game engine.
 //
-// It takes the C engine's command line. So far only -R, the random number
-// generator self-test, and the usage errors are ported; every other mode
-// stops with a "not yet implemented" message and a nonzero exit status.
+// It takes the C engine's command line. So far -R (the random number
+// generator self-test), -t (the ilist test), the usage errors, and loading
+// an existing game and saving it again (-l dir and -S) are ported; every
+// other mode stops with a "not yet implemented" message and a nonzero exit
+// status.
 package main
 
 import (
