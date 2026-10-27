@@ -1,0 +1,104 @@
+# Argument-vector matrix for tools/olympia-cli-compat/run.sh.
+#
+# Fields, separated by whitespace (args is the rest of the line):
+#   label   unique name; also the run directory
+#   expect  same  Go must match C byte for byte: stdout, stderr, the two
+#                 merged into one file (2>&1), and the exit status
+#           nyi   the vector reaches a mode the port has not implemented:
+#                 Go must exit nonzero with "not yet implemented" on stderr,
+#                 and its stdout must be the start of C's
+#   args    the argument vector after argv[0], split as bash words ('' is an
+#           empty argument). Empty means no arguments.
+#
+# Every run starts in an empty directory with stdin from /dev/null and
+# argv[0] set to olympia-g3.
+
+# -R, the self-test, alone and with everything getopt() can see first or
+# leave behind: it returns before errflag is looked at.
+R               same  -R
+R-twice         same  -R -R
+R-operand       same  -R foo
+R-then-unknown  same  -R -x
+R-cluster-x     same  -Rx
+x-cluster-R     same  -xR
+x-then-R        same  -x -R
+R-then-missing  same  -R -l
+w-cluster-R     same  -wR
+flags-then-R    same  -w -a -e -E -i -p -r -s -S -T -M -A -h -R
+l-then-R        same  -l dir -R
+l-attached-R    same  -ldir -R
+l-empty-R       same  -l '' -R
+G-then-R        same  -G 0x10 -R
+G-attached-R    same  -G0x10 -R
+f-then-R        same  -f -R
+R-then-f        same  -R -f
+q-then-R        same  -? -R
+R-double-dash   same  -R --
+R-after-dash    same  -R - -x
+long-then-R     same  test-use-const-report-date -R
+R-then-long     same  -R test-use-const-report-date
+coverage-R      same  --coverage cov -R
+all-long-R      same  --coverage c --use-coverage u --phase-coverage p --state-export s test-use-const-report-date -R
+R-coverage-none same  -R --coverage
+coverage-empty-R same --coverage '' -R
+
+# Usage errors: the getopt() diagnostic, if any, then the usage text, exit 1.
+unknown         same  -x
+unknown-many    same  -xyz
+question        same  -?
+colon           same  -:
+dash-dash-word  same  --foo
+dash-dash-eq    same  --coverage=x
+l-missing       same  -l
+G-missing       same  -G
+r-then-x        same  -r -x
+x-then-r        same  -x -r
+x-then-dashdash same  -x --
+f-then-x        same  -f -x
+x-then-f        same  -x -f
+all-flags-x     same  -w -a -e -E -f -i -p -r -s -S -T -M -A -h -x
+coverage-none   same  --coverage
+use-cov-none    same  --use-coverage
+phase-cov-none  same  --phase-coverage
+state-exp-none  same  --state-export
+coverage-empty  same  --coverage ''
+state-exp-empty same  --state-export ''
+r-coverage-none same  -r --coverage
+x-operand       same  -x foo
+x-l-missing     same  -x -l
+
+# Modes not ported yet. Every one of these reaches load_db() or ilist_test().
+none            nyi
+r               nyi   -r
+i               nyi   -i
+a               nyi   -a
+e               nyi   -e
+E               nyi   -E
+s               nyi   -s
+S               nyi   -S
+M               nyi   -M
+A               nyi   -A
+h               nyi   -h
+T               nyi   -T
+w               nyi   -w
+p               nyi   -p
+f               nyi   -f
+G               nyi   -G 5
+l               nyi   -l lib
+r-S             nyi   -r -S
+t               nyi   -t
+x-then-t        nyi   -x -t
+t-then-x        nyi   -t -x
+t-then-R        nyi   -t -R
+coverage        nyi   --coverage cov
+use-coverage    nyi   --use-coverage u
+phase-coverage  nyi   --phase-coverage p
+state-export    nyi   --state-export s
+const-date      nyi   test-use-const-report-date
+dashdash        nyi   --
+dashdash-R      nyi   -- -R
+dash            nyi   -
+operand-R       nyi   foo -R
+l-takes-R       nyi   -l -R
+coverage-is-R   nyi   --coverage -R
+coverage-takes-use nyi --coverage --use-coverage
