@@ -97,15 +97,6 @@ type world struct {
 	// to. newWorld sets it to os.Stderr; the engine sets it to its own.
 	stderr io.Writer
 
-	// stdout is the standard output that the commands write_all_boxes()
-	// runs with system() inherit. In C that is file descriptor 1, which
-	// stdio's buffer does not stand in front of. newWorld sets it to
-	// os.Stdout.
-	stdout io.Writer
-
-	// winFlag is win_flag in main.c (-w), which write_all_boxes() reads.
-	winFlag bool
-
 	// timeSelf is time_self in main.c (-T), which stage() reads, and
 	// stageOld and stageFirst are stage()'s statics old and first.
 	timeSelf   bool
@@ -151,7 +142,6 @@ func newWorld() *world {
 		subCacheKind: -1,
 
 		stderr: os.Stderr,
-		stdout: os.Stdout,
 	}
 }
 

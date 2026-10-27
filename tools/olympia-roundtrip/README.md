@@ -33,7 +33,7 @@ A case passes when the exit status, stdout and stderr match byte for byte, and s
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `a22bbf10804d5c05876fc3c991e3ab07c1e605d7`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `66b03fb09b541560268e66b553179d06ea30de80`.
 The revision is pinned in `run.sh` (`PINNED_REV`); `G3_REV` tests against another.
 Change the pin only on purpose, together with [`tools/olympia-spec`](../olympia-spec).
 
@@ -89,6 +89,7 @@ Every case fails on the exit status (C 0, Go 2), stdout (Go stops after `sizeof(
 Go writes nothing, so the files that differ are those C's load and save change:
 
 - `lib/times_0` in all 98 games before a turn: their masthead carries the date the game was built, and C writes the fixed date.
+- `lib/item` in all 98 games before a turn: C's save drops the 16 ` fc 0` lines of items that have a `ride_cap` and no `fly_cap`, since `print_item` prints `fc` only when `fly_cap` is set (G3 [#314](https://github.com/playbymail/olympia-g3/issues/314)). The `+turn` games were saved by C already, so they do not have them.
 - Nothing in 90 of the `+turn` cases.
 - `lib/master` and `lib/misc` in 7 `+turn` cases (`exploration-refused`, `governance-rule`, `guard-pillage`, `inventory-give`, `player-quit`, `use-items`, `use-necro`): the load deletes the `deadchar` entities the turn left in `misc`.
 - A faction file in 2 `+turn` cases (`lib/fact/301` in `governance-rule`, `lib/fact/300` in `loyalty-refused`): the save drops an empty `CM` section.

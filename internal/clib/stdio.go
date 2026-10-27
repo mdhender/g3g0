@@ -221,6 +221,39 @@ func (fp *File) Close() {
 	_ = fp.f.Close()
 }
 
+// Dir is a directory stream, as opendir() returns.
+type Dir struct {
+	f *os.File
+}
+
+// Opendir is opendir(): it fails on a path that is not a directory
+// (ENOTDIR) or cannot be opened.
+func Opendir(path string) (*Dir, error) {
+	f, err := os.OpenFile(path, os.O_RDONLY|syscall.O_DIRECTORY, 0)
+	if err != nil {
+		return nil, err
+	}
+	return &Dir{f: f}, nil
+}
+
+// Readdir is readdir(): the next name in the file system's order, less "."
+// and "..", or false at the end or on a read error, where readdir()
+// returns NULL. Names are read one at a time (on macOS, with libc's
+// readdir()), so a caller that removes entries between calls sees what C
+// would.
+func (d *Dir) Readdir() (string, bool) {
+	names, err := d.f.Readdirnames(1)
+	if err != nil || len(names) == 0 {
+		return "", false
+	}
+	return names[0], true
+}
+
+// Closedir is closedir().
+func (d *Dir) Closedir() {
+	_ = d.f.Close()
+}
+
 // ReadDir is the names opendir(path) and readdir() return, in readdir()'s
 // order (the file system's, not sorted), less "." and "..". opendir()
 // fails on a path that is not a directory (ENOTDIR) or cannot be opened. A

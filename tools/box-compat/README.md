@@ -6,7 +6,7 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `a22bbf10804d5c05876fc3c991e3ab07c1e605d7`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `66b03fb09b541560268e66b553179d06ea30de80`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows:
@@ -52,6 +52,7 @@ The driver's load loop is `read_boxes()`'s, except that a line that is not a box
 | unforseen box | `load_box` of a box pass 1 did not allocate: the diagnostic with `libdir`, and the assertion |
 | continuation at end of file | a continued field on the file's last line, at top level and in a section: the list ends there (G3 [#313](https://github.com/playbymail/olympia-g3/issues/313), fixed upstream), and `save_box` writes what was read |
 | empty continuation line | a continued `il`, `sl`, `tl` and `rq` followed by a blank or white-space line, at top level and in a section: the list ends there (G3 [#318](https://github.com/playbymail/olympia-g3/issues/318), fixed upstream), after a `bad item 0`/`bad skill 0` diagnostic for the empty entry; the blank line was the box separator, so `load_box` reads on into the next box's lines as bad lines and its later fields |
+| fly_cap and ride_cap | `fc` without `rc`, `rc` without `fc`, `rc` with `fc 0`, both set, a negative `fc`, and `fc 0` alone (an all-zero `IT`, not printed): `print_item` saves `fc` when `fly_cap` is set, whatever `ride_cap` is (G3 [#314](https://github.com/playbymail/olympia-g3/issues/314), fixed upstream) |
 | narrowing | every `(schar)`, `(short)`, `(uchar)` and `int` field past its range, `sscanf` of a short `ar` line, `%c` of a high byte |
 | commands | `oly_parse_cmd` and `find_command`: conditions, comments, quotes, control and high bytes, exact and fuzzy matches, unknown commands; `li` and `us` in a box, and the `bad cmd` diagnostic; `remove_comment`'s quotes (G3 [#315](https://github.com/playbymail/olympia-g3/issues/315), fixed upstream): a `#` inside a double- or single-quoted token is kept, an unterminated quote runs to the end of the line, a quote inside a word (`Joe's`, `a"#b"`) is ordinary text, a quote right after a closing quote starts another, and a quote after a `#` is ignored; in an `li` line too |
 | real boxes from world.tgz | 25 boxes chosen so that every section and list tag appears, with every box they reference allocated |
@@ -60,9 +61,9 @@ The driver's load loop is `read_boxes()`'s, except that a line that is not a box
 
 Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
-- Check 1: 19 sections, 3554 lines. The C driver is deterministic, its output matches `box-c-output.txt`, and `TestBoxMatchesC` passes.
+- Check 1: 20 sections, 3625 lines. The C driver is deterministic, its output matches `box-c-output.txt`, and `TestBoxMatchesC` passes.
 - Check 2: 197 games (`world.tgz` and the 196 cached round-trip inputs), 7,947,575 saved boxes (36,999 in `world.tgz`), plain and pretty: C and Go output identical.
 
 ## Upstream defects reproduced on purpose
 
-- `print_item()` prints `fc` (`fly_cap`) only when `ride_cap` is set. Not yet filed in G3.
+None at the pinned revision. (`print_item()` used to print `fc` (`fly_cap`) only when `ride_cap` was set, G3 [#314](https://github.com/playbymail/olympia-g3/issues/314); upstream fixed it at the pinned revision.)

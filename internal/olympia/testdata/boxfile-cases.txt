@@ -2,7 +2,7 @@
 # olympia/io.c (fast_scan, scan_boxes, scan_chars, scan_all_boxes,
 # read_boxes, read_chars, read_all_boxes, open_write_fp, write_kind,
 # write_player, write_chars, write_leftovers, write_all_boxes and
-# write_master), at G3 a22bbf10804d5c05876fc3c991e3ab07c1e605d7.
+# write_master), at G3 66b03fb09b541560268e66b553179d06ea30de80.
 #
 # tools/boxfile-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in boxfile-c-output.txt;
@@ -35,6 +35,7 @@
 #   putl NAME TEXT      append TEXT and a newline to file NAME
 #   mkdir TEXT          mkdir(TEXT, 0755)
 #   chmod MODE TEXT     chmod(TEXT, MODE)
+#   symlink NAME TEXT   symlink(TEXT, NAME)
 #   line                print line
 #   boxes               print every box (number, kind, subkind and temp),
 #                       then every non-empty kind chain, in chain order
@@ -650,10 +651,84 @@ section write_all_boxes with a libdir that has a space
 mkdir lib
 mkdir lib/fact
 putl lib/fact/1099 old
+mkdir my
+mkdir my/fact
+putl my/fact/1099 old
 mkdir my lib
 alloc 1001 1 49
 alloc 10101 3 14
+alloc 1099 1 49
 libdir my lib
+writeall
+delete 1099
+writeall
+
+section write_all_boxes with win_flag and a libdir that has a space
+mkdir lib
+mkdir lib/fact
+putl lib/fact/1099 old
+mkdir my lib
+mkdir my lib/fact
+mkdir my lib/fact/sub
+alloc 1001 1 49
+alloc 1099 1 49
+libdir my lib
+win 1
+writeall
+delete 1099
+writeall
+
+section write_all_boxes removes everything under fact
+mkdir lib
+mkdir lib/fact
+putl lib/fact/1099 old
+putl lib/fact/.hidden old
+mkdir lib/fact/sub
+putl lib/fact/sub/a old
+mkdir lib/fact/sub/deeper
+putl lib/fact/sub/deeper/b old
+mkdir lib/fact/empty
+mkdir lib/keep
+putl lib/keep/c old
+symlink lib/fact/dirlink ../keep
+symlink lib/fact/filelink ../keep/c
+symlink lib/fact/dangling nowhere
+alloc 1001 1 49
+alloc 1002 2 0
+unit 1001 1002
+writeall
+
+section write_all_boxes when fact is a file
+mkdir lib
+putl lib/fact old
+alloc 1001 1 49
+alloc 10101 3 14
+writeall
+
+section write_all_boxes when fact is a symbolic link
+mkdir lib
+mkdir lib/real
+putl lib/real/1099 old
+symlink lib/fact real
+alloc 1001 1 49
+writeall
+
+section write_all_boxes with an unreadable fact
+mkdir lib
+mkdir lib/fact
+putl lib/fact/1099 old
+chmod 0 lib/fact
+alloc 1001 1 49
+writeall
+
+section write_all_boxes with an entry under fact it cannot remove
+mkdir lib
+mkdir lib/fact
+putl lib/fact/1099 old
+mkdir lib/fact/sub
+putl lib/fact/sub/a old
+chmod 0555 lib/fact/sub
+alloc 1001 1 49
 writeall
 
 section write_all_boxes with win_flag

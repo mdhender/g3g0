@@ -1268,7 +1268,6 @@ section write_all_boxes in a read-only libdir
 > alloc 10 4 0
 > chmod 0555 lib
 > writeall
-rm: lib/fact: Permission denied
 open_write_fp: can't open lib/item: Permission denied
 open_write_fp: can't open lib/skill: Permission denied
 open_write_fp: can't open lib/gate: Permission denied
@@ -1292,13 +1291,26 @@ section write_all_boxes with a libdir that has a space
 > mkdir lib
 > mkdir lib/fact
 > putl lib/fact/1099 old
+> mkdir my
+> mkdir my/fact
+> putl my/fact/1099 old
 > mkdir my lib
 > alloc 1001 1 49
 > alloc 10101 3 14
+> alloc 1099 1 49
 > libdir my lib
+> writeall
+> delete 1099
 > writeall
 exit 0
 d 755 lib
+d 755 lib/fact
+f 644 4 lib/fact/1099
+| old
+d 755 my
+d 755 my/fact
+f 644 4 my/fact/1099
+| old
 d 755 my lib
 d 755 my lib/fact
 f 644 24 my lib/fact/1001
@@ -1314,17 +1326,57 @@ f 644 0 my lib/road
 f 644 0 my lib/ship
 f 644 0 my lib/skill
 f 644 0 my lib/unform
-section write_all_boxes with win_flag
+section write_all_boxes with win_flag and a libdir that has a space
 > mkdir lib
 > mkdir lib/fact
 > putl lib/fact/1099 old
-> putl lib/fact/1001 old
+> mkdir my lib
+> mkdir my lib/fact
+> mkdir my lib/fact/sub
+> alloc 1001 1 49
+> alloc 1099 1 49
+> libdir my lib
+> win 1
+> writeall
+> delete 1099
+> writeall
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 4 lib/fact/1099
+| old
+d 755 my lib
+d 755 my lib/fact
+f 644 24 my lib/fact/1001
+| 1001 player pl_regular
+| 
+f 644 0 my lib/gate
+f 644 0 my lib/item
+f 644 0 my lib/loc
+f 644 0 my lib/misc
+f 644 0 my lib/road
+f 644 0 my lib/ship
+f 644 0 my lib/skill
+f 644 0 my lib/unform
+section write_all_boxes removes everything under fact
+> mkdir lib
+> mkdir lib/fact
+> putl lib/fact/1099 old
+> putl lib/fact/.hidden old
+> mkdir lib/fact/sub
+> putl lib/fact/sub/a old
+> mkdir lib/fact/sub/deeper
+> putl lib/fact/sub/deeper/b old
+> mkdir lib/fact/empty
+> mkdir lib/keep
+> putl lib/keep/c old
+> symlink lib/fact/dirlink ../keep
+> symlink lib/fact/filelink ../keep/c
+> symlink lib/fact/dangling nowhere
 > alloc 1001 1 49
 > alloc 1002 2 0
 > unit 1001 1002
-> win 1
 > writeall
-sh: del: command not found
 exit 0
 d 755 lib
 d 755 lib/fact
@@ -1335,8 +1387,129 @@ f 644 50 lib/fact/1001
 | 
 | 1002 char 0
 | 
-f 644 4 lib/fact/1099
+f 644 0 lib/gate
+f 644 0 lib/item
+d 755 lib/keep
+f 644 4 lib/keep/c
 | old
+f 644 0 lib/loc
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section write_all_boxes when fact is a file
+> mkdir lib
+> putl lib/fact old
+> alloc 1001 1 49
+> alloc 10101 3 14
+> writeall
+open_write_fp: can't open lib/fact/1001: Not a directory
+exit 0
+d 755 lib
+f 644 4 lib/fact
+| old
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 16 lib/loc
+| 10101 loc city
+| 
+f 644 24 lib/misc
+| 1001 player pl_regular
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section write_all_boxes when fact is a symbolic link
+> mkdir lib
+> mkdir lib/real
+> putl lib/real/1099 old
+> symlink lib/fact real
+> alloc 1001 1 49
+> writeall
+exit 0
+d 755 lib
+? lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 0 lib/misc
+d 755 lib/real
+f 644 24 lib/real/1001
+| 1001 player pl_regular
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section write_all_boxes with an unreadable fact
+> mkdir lib
+> mkdir lib/fact
+> putl lib/fact/1099 old
+> chmod 0 lib/fact
+> alloc 1001 1 49
+> writeall
+open_write_fp: can't open lib/fact/1001: Permission denied
+exit 0
+d 755 lib
+d 000 lib/fact unreadable
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 24 lib/misc
+| 1001 player pl_regular
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section write_all_boxes with an entry under fact it cannot remove
+> mkdir lib
+> mkdir lib/fact
+> putl lib/fact/1099 old
+> mkdir lib/fact/sub
+> putl lib/fact/sub/a old
+> chmod 0555 lib/fact/sub
+> alloc 1001 1 49
+> writeall
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 24 lib/fact/1001
+| 1001 player pl_regular
+| 
+d 555 lib/fact/sub
+f 644 4 lib/fact/sub/a
+| old
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section write_all_boxes with win_flag
+> mkdir lib
+> mkdir lib/fact
+> putl lib/fact/1099 old
+> putl lib/fact/1001 old
+> alloc 1001 1 49
+> alloc 1002 2 0
+> unit 1001 1002
+> win 1
+> writeall
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 50 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| 
 f 644 0 lib/gate
 f 644 0 lib/item
 f 644 0 lib/loc
@@ -1352,20 +1525,20 @@ section write_all_boxes with win_flag and no fact
 > unit 1001 1002
 > win 1
 > writeall
-sh: del: command not found
-open_write_fp: can't open lib/fact/1001: No such file or directory
 exit 0
 d 755 lib
-f 644 0 lib/gate
-f 644 0 lib/item
-f 644 0 lib/loc
-f 644 50 lib/misc
+d 755 lib/fact
+f 644 50 lib/fact/1001
 | 1001 player pl_regular
 | PL
 |  un 1002 
 | 
 | 1002 char 0
 | 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 0 lib/misc
 f 644 0 lib/road
 f 644 0 lib/ship
 f 644 0 lib/skill

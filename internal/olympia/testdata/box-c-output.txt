@@ -385,6 +385,7 @@ IT
  pl peasants
  wt 100
  lc 150
+ fc 20
  mu 1
  pr 1
  an 1
@@ -419,7 +420,6 @@ IM
 1006 item 0
 IT
  rc 15
- fc 0
 
 1007 skill 0
 SK
@@ -685,6 +685,7 @@ IT
  pl peasants
  wt 100
  lc 150
+ fc 20
  mu 1
  pr 1
  an 1
@@ -719,7 +720,6 @@ IM
 1006 item 0
 IT
  rc 15
- fc 0
 
 1007 skill 0
 SK
@@ -1401,6 +1401,79 @@ temp 1
 temp 1
 > save 3605
 3605 skill 0
+
+temp 1
+exit 0
+section fly_cap and ride_cap
+> alloc 3701 4 0
+> alloc 3702 4 0
+> alloc 3703 4 0
+> alloc 3704 4 0
+> alloc 3705 4 0
+> alloc 3706 4 0
+> putl f 3701 item 0
+> putl f IT
+> putl f  fc 20
+> putl f 
+> putl f 3702 item 0
+> putl f IT
+> putl f  rc 15
+> putl f 
+> putl f 3703 item 0
+> putl f IT
+> putl f  rc 15
+> putl f  fc 0
+> putl f 
+> putl f 3704 item 0
+> putl f IT
+> putl f  rc 15
+> putl f  fc 25
+> putl f 
+> putl f 3705 item 0
+> putl f IT
+> putl f  fc -3
+> putl f 
+> putl f 3706 item 0
+> putl f IT
+> putl f  fc 0
+> putl f 
+> readfile f
+readfile 1
+> advance
+> loadall
+> save 3701
+3701 item 0
+IT
+ fc 20
+
+temp 1
+> save 3702
+3702 item 0
+IT
+ rc 15
+
+temp 1
+> save 3703
+3703 item 0
+IT
+ rc 15
+
+temp 1
+> save 3704
+3704 item 0
+IT
+ rc 15
+ fc 25
+
+temp 1
+> save 3705
+3705 item 0
+IT
+ fc -3
+
+temp 1
+> save 3706
+3706 item 0
 
 temp 1
 exit 0
@@ -2652,7 +2725,6 @@ IT
  wt 1100
  lc 100
  rc 100
- fc 0
  mu 1
  pr 1
  at 45
@@ -3121,7 +3193,6 @@ IT
  wt 1100
  lc 100
  rc 100
- fc 0
  mu 1
  pr 1
  at 45

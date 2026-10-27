@@ -12,10 +12,10 @@
 # olympia/z.c, olympia/code.c, olympia/glob.c and lib/ (with stubs for the
 # routines they call that are not under test). The passes are static, so
 # the driver includes a copy of io.c from its first line through
-# write_master(), taken from the export, along with copies of sout()
-# (olympia/sout.c), set_bit(), test_bit(), lookup() and stage()
-# (olympia/u.c), int_comp() (olympia/seed.c), lord() and player()
-# (olympia/swear.c), and the command parser of olympia/input.c.
+# write_master(), and of its remove_dir(), taken from the export, along
+# with copies of sout() (olympia/sout.c), set_bit(), test_bit(), lookup()
+# and stage() (olympia/u.c), int_comp() (olympia/seed.c), lord() and
+# player() (olympia/swear.c), and the command parser of olympia/input.c.
 #
 # It runs two checks:
 #
@@ -62,7 +62,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-a22bbf10804d5c05876fc3c991e3ab07c1e605d7}"
+G3_REV="${G3_REV:-66b03fb09b541560268e66b553179d06ea30de80}"
 WORK="${WORK:-${ROOT}/tmp/boxfile-compat}"
 GAMES="${GAMES:-${ROOT}/tmp/olympia-roundtrip/cases}"
 CC="${CC:-cc}"
@@ -103,7 +103,9 @@ git -C "${G3_REPO}" archive "${G3_REV}" lib olympia tests/olympia/fixtures/world
 #                lookup() and stage() from u.c; int_comp() from seed.c;
 #                lord() and player() from swear.c; and the command parser of
 #                input.c
-#   io_files.c   io.c up to load_system(), just past write_master()
+#   io_files.c   io.c up to load_system(), just past write_master(), and
+#                remove_dir() from further down, which write_all_boxes()
+#                calls
 python3 -I - "${WORK}/g3/olympia" "${WORK}/gen" <<'EOF'
 import re, sys
 
@@ -172,10 +174,16 @@ io = open(f"{src}/io.c").read()
 end = io.find("static void\nload_system(")
 if end < 0 or io.find("\nwrite_master(void)\n") > end:
     sys.exit("load_system() not found after write_master() in io.c")
+m = re.search(r"^/\*\n(?: \*[^\n]*\n)* \*/\nvoid\nremove_dir\(char \*dir\)\n\{.*?^\}\n", io, re.M | re.S)
+if not m:
+    sys.exit("remove_dir() not found in io.c")
 with open(f"{out}/io_files.c", "w") as f:
     # so that assert() names io.c and its lines, as the engine's build does
     f.write('#line 1 "olympia/io.c"\n')
     f.write(io[:end])
+    # remove_dir(), which write_all_boxes() calls, from further down io.c
+    f.write(f'\n#line {io[:m.start()].count(chr(10)) + 1} "olympia/io.c"\n')
+    f.write(m.group(0))
 EOF
 
 cat >"${WORK}/driver.c" <<'EOF'
@@ -412,6 +420,13 @@ main(int argc, char **argv)
 		{
 			n = num();
 			chmod(text(NULL), (mode_t) n);
+		}
+		else if (strcmp(op, "symlink") == 0)
+		{
+			char name[256];
+
+			strcpy(name, word());
+			symlink(text(NULL), name);
 		}
 		else if (strcmp(op, "line") == 0)
 			show_str("line", line);

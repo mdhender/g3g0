@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"reflect"
 	"slices"
+	"syscall"
 
 	"github.com/mdhender/g3g0/internal/clib"
 	"github.com/mdhender/g3g0/internal/lists"
@@ -1229,12 +1229,10 @@ func (w *world) scanSubloc(p *entitySubloc, boxNum int) {
 	})
 }
 
-// printItem is print_item(): the "IT" section, unless p is all zero.
-//
-// C prints the " fc" (fly_cap) line only if ride_cap is set, so a fly_cap
-// without a ride_cap is not saved, and one with it is saved even if it is
-// 0. Upstream defect:
-// https://github.com/playbymail/olympia-g3/issues/314
+// printItem is print_item(): the "IT" section, unless p is all zero. The
+// " fc" (fly_cap) line is printed when fly_cap is set, as G3 does since it
+// fixed https://github.com/playbymail/olympia-g3/issues/314 (before, it
+// was printed when ride_cap was set).
 func (w *world) printItem(fp io.Writer, p *entityItem) {
 	if zeroCheck(p) {
 		return
@@ -1258,7 +1256,7 @@ func (w *world) printItem(fp io.Writer, p *entityItem) {
 		fmt.Fprintf(fp, " rc %d\n", p.rideCap)
 	}
 
-	if p.rideCap != 0 {
+	if p.flyCap != 0 {
 		fmt.Fprintf(fp, " fc %d\n", p.flyCap)
 	}
 
@@ -2382,31 +2380,44 @@ func (w *world) readAllBoxes() {
 	w.readChars()
 }
 
-// system is system(): it runs command with sh -c, as a child that shares
-// stdin, stdout (w.stdout) and stderr (w.stderr), and waits for it. Its
-// status is ignored, as write_all_boxes() ignores it.
-func (w *world) system(command string) {
-	cmd := &exec.Cmd{
-		Path:   "/bin/sh",
-		Args:   []string{"sh", "-c", command},
-		Stdin:  os.Stdin,
-		Stdout: w.stdout,
-		Stderr: w.stderr,
+// removeDir is remove_dir(): it removes dir and everything under it,
+// without going through the shell, as G3 does since it fixed
+// https://github.com/playbymail/olympia-g3/issues/320. Each entry, in
+// readdir()'s order, is removed with remove_dir() if lstat() says it is a
+// directory (a symbolic link is not followed), and unlink()ed otherwise;
+// then dir is rmdir()ed. A dir that cannot be opened (missing, not a
+// directory, unreadable) is left alone. Every error is ignored and nothing
+// is printed.
+func removeDir(dir string) {
+	d, err := clib.Opendir(dir)
+
+	if err == nil {
+		for {
+			name, ok := d.Readdir()
+			if !ok {
+				break
+			}
+
+			fnam := sout("%s/%s", dir, name)
+
+			if st, err := os.Lstat(fnam); err == nil && st.IsDir() {
+				removeDir(fnam)
+			} else {
+				_ = syscall.Unlink(fnam)
+			}
+		}
+
+		d.Closedir()
+		_ = syscall.Rmdir(dir)
 	}
-	_ = cmd.Run()
 }
 
 // writeAllBoxes is write_all_boxes(): it clears every box's temp mark,
-// removes libdir/fact and makes it again (mode 0755 less the umask), and
-// writes the box files: loc, item, skill, gate, road, ship and unform by
-// kind, fact/N by player, and misc for every box those did not save.
-//
-// fact is removed with system("rm -rf LIBDIR/fact"), so libdir goes
-// through the shell as it is. With win_flag (-w) the command is instead
-// Windows' "del /s /Q /F LIBDIR\fact\*", which sh cannot run (it says so
-// on stderr), and fact is not made again: the old fact files stay, and
-// those of current players are overwritten. libdir unquoted is an upstream
-// defect: https://github.com/playbymail/olympia-g3/issues/320
+// removes libdir/fact with removeDir and makes it again (mode 0755 less the
+// umask), and writes the box files: loc, item, skill, gate, road, ship and
+// unform by kind, fact/N by player, and misc for every box those did not
+// save. Neither failing is reported; the writes that follow report what
+// they cannot open. win_flag (-w) does not change any of this.
 func (w *world) writeAllBoxes() {
 	for i := range maxBoxes {
 		if w.bx[i] != nil {
@@ -2414,12 +2425,8 @@ func (w *world) writeAllBoxes() {
 		}
 	}
 
-	if w.winFlag {
-		w.system(sout("del /s /Q /F %s\\fact\\*", w.libdir))
-	} else {
-		w.system(sout("rm -rf %s/fact", w.libdir))
-		_ = os.Mkdir(sout("%s/fact", w.libdir), 0o755)
-	}
+	removeDir(sout("%s/fact", w.libdir))
+	_ = os.Mkdir(sout("%s/fact", w.libdir), 0o755)
 
 	w.writeKind(tLoc, "loc")
 	w.writeKind(tItem, "item")

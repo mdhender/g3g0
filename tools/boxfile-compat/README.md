@@ -6,7 +6,7 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `a22bbf10804d5c05876fc3c991e3ab07c1e605d7`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `66b03fb09b541560268e66b553179d06ea30de80`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 The script exports that revision with `git archive`, so the clone's checkout does not matter.
 
@@ -31,7 +31,7 @@ tools/boxfile-compat/run.sh --update   # rewrite internal/olympia/testdata/boxfi
 The script:
 
 1. Exports `lib/`, `olympia/` and `tests/olympia/fixtures/world.tgz` at the pinned revision with `git archive` into `tmp/boxfile-compat/g3`.
-2. Generates the stubs that `tools/box-compat` uses, and copies out of the export, verbatim: `sout()`, `set_bit()`, `test_bit()`, `lookup()`, `stage()`, `int_comp()`, `lord()` and `player()` (under `#line`, so that `player()`'s assertion names `olympia/swear.c` and its line), the command parser of `olympia/input.c`, and `olympia/io.c` from its first line to just before `load_system()` (just after `write_master()`), under `#line 1 "olympia/io.c"`.
+2. Generates the stubs that `tools/box-compat` uses, and copies out of the export, verbatim: `sout()`, `set_bit()`, `test_bit()`, `lookup()`, `stage()`, `int_comp()`, `lord()` and `player()` (under `#line`, so that `player()`'s assertion names `olympia/swear.c` and its line), the command parser of `olympia/input.c`, and `olympia/io.c` from its first line to just before `load_system()` (just after `write_master()`), under `#line 1 "olympia/io.c"`, followed by io.c's `remove_dir()` (which `write_all_boxes()` calls), under `#line` with its own line number.
 3. Builds a C driver (`tmp/boxfile-compat/driver.c`) that `#include`s that copy of io.c, linked with the exported `code.c`, `glob.c`, `z.c` and the `lib/` modules.
 4. Check 1: runs each section of [`internal/olympia/testdata/boxfile-cases.txt`](../../internal/olympia/testdata/boxfile-cases.txt) in a fresh process and directory, with umask 022, twice, and lists the directory's tree after each (every file's mode and contents). It requires the same output both times and requires it to equal [`boxfile-c-output.txt`](../../internal/olympia/testdata/boxfile-c-output.txt). Then it runs `go test -run TestBoxfileMatchesC`, which runs the same cases on the Go port.
 5. Check 2: for `world.tgz` and every cached game input (`tmp/olympia-roundtrip/cases/*/input/lib`), three ways (with `master`; with `master` and `pretty_data_files`; and with `master` removed, so that pass 1 is `scan_all_boxes()`), the driver (`-g`) runs, from a copy of the game with `libdir` `lib`, what `load_db()` and `save_db()` run of these: `fast_scan()` or else `scan_all_boxes()`, `read_all_boxes()`, `write_all_boxes()` and `write_master()`. `TestBoxfileWorlds` (run with `BOXFILE_COMPAT_GAMES`) does the same in Go on its own copy. The two `lib` trees must be identical (`diff -r`, and every path's mode), and so must stdout and stderr.
@@ -58,7 +58,7 @@ On macOS `abort()` flushes every open stdio stream, so a section that fails an a
 | read_boxes, read_chars, read_all_boxes | box lines with leading white space, the end of the file, a continued field on the file's last line; a missing file; comment lines first, between boxes, last and alone, one and three extra blank lines between boxes, blank lines first and last, and junk, indented and box-number-0 lines between boxes and last, each skipped (G3 [#316](https://github.com/playbymail/olympia-g3/issues/316), fixed upstream); a line that is not a box and a negative box number; a box pass 1 did not allocate (`load_box()`'s assertion); `fact` with other names and a dot directory; no `fact`; a box in two files |
 | write_kind | chain order, deleted boxes, an empty kind, pretty names; no `libdir`; a read-only, a write-only and a directory in the file's place |
 | write_player, write_chars, write_leftovers | units in list order, a unit twice, a deleted unit, a unit with no box; no units; no `fact`; a unit that is a location or a player (assertion, with the file as `abort()` leaves it); what each leaves to `misc`, and `temp` |
-| write_all_boxes | every kind, an old `fact` file and stale box files; no `fact`, no `libdir`, a read-only `libdir` (`rm`'s message), a `libdir` with a space (which the shell splits), and `win_flag` (`del`, which `sh` cannot run) with and without `fact` |
+| write_all_boxes | every kind, an old `fact` file and stale box files; no `fact`, no `libdir`, a read-only `libdir`; `fact` cleared by `remove_dir()`, not the shell (G3 [#320](https://github.com/playbymail/olympia-g3/issues/320), fixed upstream): files, a dot file, nested and empty directories, and symbolic links to a directory, a file and nowhere (removed, not followed), `fact` a file, a symbolic link to a directory (its contents removed, the link kept), unreadable, and holding an entry it cannot remove (no message for any of them); a `libdir` with a space, which clears its own `fact` and nothing else, with and without `win_flag`; and `win_flag` (no effect) with and without `fact` |
 | write_master | every kind, roads in the misc lines, names with tabs, the lord chain to a player, no lord and a lord that is not a player (`fact/0`), pretty (no effect); a lord loop (assertion), a lord with no box (crash); no `libdir`; no boxes |
 | round trip | `scan_all_boxes`, `read_all_boxes`, `write_all_boxes` and `write_master` on a small game |
 
@@ -66,9 +66,9 @@ On macOS `abort()` flushes every open stdio stream, so a section that fails an a
 
 Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
-- Check 1: 64 sections, 1610 lines. The C driver is deterministic, its output matches `boxfile-c-output.txt`, and `TestBoxfileMatchesC` passes.
+- Check 1: 70 sections, 1783 lines. The C driver is deterministic, its output matches `boxfile-c-output.txt`, and `TestBoxfileMatchesC` passes.
 - Check 2: 197 games (`world.tgz` and the 196 cached round-trip inputs; 7,947,575 boxes in their written `master` files, 36,999 in `world.tgz`), each with `master`, with `master` and pretty, and without `master`: C and Go `lib` trees (files, modes and contents), stdout and stderr identical.
 
 ## Upstream defects reproduced on purpose
 
-None at the pinned revision. (`read_boxes()` used to loop forever on a comment line or a line that is not a box number, G3 [#316](https://github.com/playbymail/olympia-g3/issues/316); upstream fixed it at the pinned revision.)
+None at the pinned revision. (`read_boxes()` used to loop forever on a comment line or a line that is not a box number, G3 [#316](https://github.com/playbymail/olympia-g3/issues/316); and `write_all_boxes()` cleared `fact` with `system("rm -rf LIBDIR/fact")`, libdir unquoted, G3 [#320](https://github.com/playbymail/olympia-g3/issues/320); upstream fixed both at the pinned revision.)

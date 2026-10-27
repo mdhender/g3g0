@@ -81,7 +81,6 @@ func runBoxfileSection(t *testing.T, lines []string) (output string) {
 	var out strings.Builder
 	w := newWorld()
 	w.stderr = &out // the driver sends stderr to stdout
-	w.stdout = &out
 
 	out.WriteString(lines[0] + "\n")
 	defer func() {
@@ -125,7 +124,9 @@ func runBoxfileSection(t *testing.T, lines []string) (output string) {
 		case "pretty":
 			w.prettyDataFiles = c.cnum(t) != 0
 		case "win":
-			w.winFlag = c.cnum(t) != 0
+			// win_flag: nothing these cases run reads it since G3 fixed
+			// #320, and the cases check that it changes nothing.
+			c.cnum(t)
 		case "libdir":
 			w.libdir = c.ctext()
 		case "put", "putl":
@@ -144,6 +145,9 @@ func runBoxfileSection(t *testing.T, lines []string) (output string) {
 		case "chmod":
 			mode := c.cnum(t)
 			os.Chmod(c.ctext(), fs.FileMode(mode))
+		case "symlink":
+			name := c.word()
+			os.Symlink(c.ctext(), name)
 		case "line":
 			if w.line != nil {
 				fmt.Fprintf(&out, "line [%s]\n", esc(*w.line))
@@ -283,9 +287,8 @@ func TestBoxfileWorlds(t *testing.T) {
 			t.Fatalf("bad line in %s: %q", list, line)
 		}
 		t.Chdir(f[0])
-		var stdout, stderr bytes.Buffer
+		var stdout, stderr bytes.Buffer // nothing writes to stdout
 		w := newWorld()
-		w.stdout = &stdout
 		w.stderr = &stderr
 		w.prettyDataFiles = f[1] == "1"
 

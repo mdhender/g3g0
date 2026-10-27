@@ -65,3 +65,40 @@ func TestReadDir(t *testing.T) {
 		t.Errorf("ReadDir of a missing directory: %v", err)
 	}
 }
+
+// TestOpendir checks opendir()'s errors, and that readdir() leaves out "."
+// and ".." and returns each name once, even when entries are removed
+// between calls.
+func TestOpendir(t *testing.T) {
+	dir := t.TempDir()
+	for _, name := range []string{"a", "b", "c", "d"} {
+		os.WriteFile(filepath.Join(dir, name), nil, 0o644)
+	}
+
+	d, err := Opendir(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var names []string
+	for {
+		name, ok := d.Readdir()
+		if !ok {
+			break
+		}
+		names = append(names, name)
+		os.Remove(filepath.Join(dir, name))
+	}
+	d.Closedir()
+	slices.Sort(names)
+	if !slices.Equal(names, []string{"a", "b", "c", "d"}) {
+		t.Errorf("Readdir = %q", names)
+	}
+
+	if _, err := Opendir(filepath.Join(dir, "a")); Strerror(err) != "No such file or directory" {
+		t.Errorf("Opendir of a removed file: %v", err)
+	}
+	os.WriteFile(filepath.Join(dir, "f"), nil, 0o644)
+	if _, err := Opendir(filepath.Join(dir, "f")); Strerror(err) != "Not a directory" {
+		t.Errorf("Opendir of a file: %v", err)
+	}
+}

@@ -1,6 +1,6 @@
 # Differential cases for the line readers of G3's olympia/z.c and the field
 # scan and print helpers of olympia/io.c, at G3
-# a22bbf10804d5c05876fc3c991e3ab07c1e605d7.
+# 66b03fb09b541560268e66b553179d06ea30de80.
 #
 # tools/io-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in io-c-output.txt; TestIOMatchesC

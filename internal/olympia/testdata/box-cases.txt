@@ -1,6 +1,6 @@
 # Differential cases for the entity sections, load_box() and save_box() of
 # G3's olympia/io.c, and the command parser of olympia/input.c that
-# scan_command() uses, at G3 a22bbf10804d5c05876fc3c991e3ab07c1e605d7.
+# scan_command() uses, at G3 66b03fb09b541560268e66b553179d06ea30de80.
 #
 # tools/box-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in box-c-output.txt; TestBoxMatchesC
@@ -610,6 +610,49 @@ loadall
 save 3603
 save 3604
 save 3605
+
+section fly_cap and ride_cap
+alloc 3701 4 0
+alloc 3702 4 0
+alloc 3703 4 0
+alloc 3704 4 0
+alloc 3705 4 0
+alloc 3706 4 0
+putl f 3701 item 0
+putl f IT
+putl f  fc 20
+putl f 
+putl f 3702 item 0
+putl f IT
+putl f  rc 15
+putl f 
+putl f 3703 item 0
+putl f IT
+putl f  rc 15
+putl f  fc 0
+putl f 
+putl f 3704 item 0
+putl f IT
+putl f  rc 15
+putl f  fc 25
+putl f 
+putl f 3705 item 0
+putl f IT
+putl f  fc -3
+putl f 
+putl f 3706 item 0
+putl f IT
+putl f  fc 0
+putl f 
+readfile f
+advance
+loadall
+save 3701
+save 3702
+save 3703
+save 3704
+save 3705
+save 3706
 
 section narrowing
 alloc 3501 2 0
