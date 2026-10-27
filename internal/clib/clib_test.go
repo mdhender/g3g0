@@ -111,6 +111,33 @@ func TestScanner(t *testing.T) {
 	}
 }
 
+func TestScannerUint64(t *testing.T) {
+	tests := []struct {
+		in string
+		n  uint64
+		ok bool
+	}{
+		{"12345\n", 12345, true},
+		{" \t\n 7 junk", 7, true},
+		{"+7", 7, true},
+		{"-5", 1<<64 - 5, true},
+		{"99999999999999999999999", 1<<64 - 1, true},
+		{"-99999999999999999999999", 1<<64 - 1, true},
+		{"0x1f", 0, true},
+		{strings.Repeat("0", 511) + "13", 1, true},
+		{"+" + strings.Repeat("0", 510) + "13", 1, true},
+		{"-", 0, false},
+		{"abc", 0, false},
+		{"", 0, false},
+	}
+	for _, tc := range tests {
+		n, ok := NewScanner(tc.in).Uint64()
+		if n != tc.n || ok != tc.ok {
+			t.Errorf("Uint64(%.20q) = %d, %v, want %d, %v", tc.in, n, ok, tc.n, tc.ok)
+		}
+	}
+}
+
 func TestPad(t *testing.T) {
 	// C pads by bytes; "é" is two bytes.
 	if got := PadRight("é", 4); got != "é  " {

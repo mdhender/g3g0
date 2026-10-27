@@ -70,6 +70,27 @@ type world struct {
 	nowhereLoc     int32
 	cloudRegion    int32
 
+	// maxMapRow, maxMapCol and maxMapInit are max_map_row, max_map_col and
+	// max_map_init in dir.c, which determine_map_edges() sets.
+	maxMapRow  int32
+	maxMapCol  int32
+	maxMapInit bool
+
+	// The per-game trade-route buyer secret of buy.c (G3 issue #46):
+	// trade_route_have_seed, trade_route_seed and trade_route_secret, its
+	// statics, which init_trade_routes() sets and save_trade_routes()
+	// writes, and trade_route_seed_pending and trade_route_seed_value,
+	// which main() sets from -G before load_db().
+	tradeRouteHaveSeed    bool
+	tradeRouteSeed        uint64
+	tradeRouteSecret      uint32 // tradeRouteDefaultSecret
+	tradeRouteSeedPending bool
+	tradeRouteSeedValue   uint64
+
+	// newPlayers is new_players in add.c: the players added this turn,
+	// whose Join-g3 files rename_act_join_files() renames.
+	newPlayers lists.IList
+
 	// The static cache of add_next_chain() and add_sub_chain() in code.c.
 
 	nextCacheLast int32
@@ -145,6 +166,8 @@ func newWorld() *world {
 		mountOlympus:  0,
 
 		libdir: "lib",
+
+		tradeRouteSecret: tradeRouteDefaultSecret,
 
 		subCacheKind: -1,
 

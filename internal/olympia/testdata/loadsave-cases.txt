@@ -1,0 +1,1624 @@
+# Differential cases for the routines of G3's load_db() and save_db() that
+# read or write files of their own or set up globals: load_system(),
+# save_system(), cleanup_posts(), load_orders(), save_orders(),
+# init_trade_routes(), save_trade_routes(), determine_map_edges() and
+# rename_act_join_files(), at G3 47535543d83fbc5649d54b63b49e578f2b11ab1c.
+#
+# tools/loadsave-compat/run.sh feeds this file to a C driver built from the
+# pinned sources and records its output in loadsave-c-output.txt;
+# TestLoadSaveMatchesC feeds it to the Go port and requires the same
+# output.
+#
+# Each "section NAME" line starts a section. Every section runs in a fresh
+# process (a fresh world, after glob_init()) in a fresh, empty directory,
+# with umask 022, so a section may end in a failed assertion or a crash.
+# libdir starts as "lib". stderr goes to the same place as stdout, in
+# order, and run.sh lists the directory's tree after "exit STATUS".
+#
+# One operation per line; a line that starts with '#' is a comment, and
+# blank lines are skipped. TEXT is the rest of the line after one space,
+# with \xHH and \\ escapes; with no space it is empty. NAME and MODE are
+# one word. Every operation but put and putl is echoed, after "> ".
+#
+#   put NAME TEXT    append TEXT to file NAME
+#   putl NAME TEXT   append TEXT and a newline to file NAME
+#   mkdir TEXT       mkdir(TEXT, 0755)
+#   rm TEXT          unlink(TEXT)
+#   chmod MODE TEXT  chmod(TEXT, MODE), MODE in octal
+#   libdir TEXT      libdir = TEXT
+#   seed TEXT        what -G TEXT sets: trade_route_seed_pending, and
+#                    trade_route_seed_value = strtoull(TEXT, NULL, 0)
+#   newplayer TEXT   append atoi(TEXT) to new_players
+#   trade            init_trade_routes()
+#   system           load_system()
+#   boxes            the box-file passes: fast_scan(), or scan_all_boxes()
+#                    if it fails, then read_all_boxes()
+#   orders           load_orders()
+#   check            check_db()
+#   edges            determine_map_edges()
+#   load             what load_db() runs of these, in its order: trade,
+#                    system, boxes, orders, check, edges
+#   posts            cleanup_posts()
+#   savetrade        save_trade_routes()
+#   savesystem       save_system()
+#   saveboxes        write_all_boxes() and write_master()
+#   saveorders       save_orders()
+#   rename           rename_act_join_files()
+#   save             what save_db() runs of these, in its order: posts,
+#                    savetrade, savesystem, saveboxes, saveorders, rename
+#   print            the globals: sysclock, the settings in lib/system,
+#                    max_map_row, max_map_col, max_map_init, the trade-route
+#                    state (have_seed, seed, secret), and each player's
+#                    order queues, "orders PLAYER UNIT: [ORDER]..."
+#
+# The special players are 100 (independent), 200 (gm), 202 (skill), 203
+# (eat), 206 (npc) and 207 (garrison).
+
+section a whole load and save
+# A small game with lib/system and orders for player 1001: load, print
+# and save, as load_db() and save_db() run these routines.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+mkdir lib/orders
+putl lib/system sysclock: 12 3 45
+putl lib/system indep_player=100
+putl lib/system gm_player=200
+putl lib/system skill_player=202
+putl lib/system from_host=host@example.com (A Host)
+putl lib/system reply_host=reply@example.com
+putl lib/system gm_address=gm@example.com
+putl lib/system game_title=Test Game
+putl lib/system game_url=http://g
+putl lib/system rules_url=http://r
+putl lib/system times_url=http://t
+putl lib/system htpasswd_loc=/x/ht
+putl lib/system garrison_pay=3
+putl lib/system auto_quit=6
+putl lib/system army_slow_factor=25
+putl lib/system post=1
+putl lib/system init=1
+putl lib/system fr=0
+putl lib/system tr=0
+putl lib/system ur=0
+putl lib/system fp=0
+putl lib/system hr=0
+putl lib/system hp=0
+putl lib/system hl=0
+putl lib/system nr=0
+putl lib/system nl=0
+putl lib/system np=206
+putl lib/system cr=0
+putl lib/system cp=210
+putl lib/system mo=10101
+putl lib/orders/1001 1002:move north
+putl lib/orders/1001 1002:study 610
+putl lib/orders/1001 1001:# a note
+load
+print
+save
+
+section load_system: every line
+# Comments, blank lines, white space and control bytes, a partial
+# sysclock, junk after numbers, prefixes that are not recognized, a value
+# that is empty, and a last line with no newline.
+mkdir lib
+putl lib/system # a comment
+putl lib/system
+putl lib/system    
+putl lib/system 	sysclock: 7
+putl lib/system   from_host=  spaced host  	
+putl lib/system reply_host=
+putl lib/system gm_address=a\x01b\x7fc
+putl lib/system game_title=Caf\xe9 \xe9x
+putl lib/system game_url=u\x00v
+putl lib/system garrison_pay=12abc
+putl lib/system auto_quit=-4
+putl lib/system army_slow_factor= +9
+putl lib/system indep_player=0x10
+putl lib/system gm_player=99999999999
+putl lib/system skill_player=-2147483649
+putl lib/system postx=1
+putl lib/system post=7
+putl lib/system init=
+putl lib/system FR=3
+putl lib/system fr=10002
+putl lib/system tr=10003
+putl lib/system ur=10004
+putl lib/system fp=300
+putl lib/system hr=10005
+putl lib/system hp=10006
+putl lib/system hl=301
+putl lib/system nr=10007
+putl lib/system nl=10008
+putl lib/system np=302
+putl lib/system cr=10009
+putl lib/system cp=211
+putl lib/system mo=0
+putl lib/system sysclock:
+putl lib/system times_url=a\rb\r
+putl lib/system rules_url=x\\y
+putl lib/system htpasswd_loc=last
+put lib/system unknown=last line
+system
+print
+savesystem
+
+section load_system: sysclock values
+# A later sysclock line scans over an earlier one; fields it does not
+# give keep their values.
+mkdir lib
+putl lib/system sysclock: 1 2 3
+putl lib/system sysclock: 40000 -5
+putl lib/system mo=-1
+putl lib/system auto_quit=0
+system
+print
+savesystem
+
+section load_system: a long line
+# getlin() reads a line of any length; the last line, without a
+# newline, is cut to 1023 bytes.
+mkdir lib
+putl lib/system game_title=tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
+put lib/system game_url=uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+system
+print
+savesystem
+
+section load_system: no file
+# A diagnostic, and the globals keep their initial values;
+# save_system() writes them, without a sysclock line.
+mkdir lib
+system
+print
+savesystem
+
+section load_system: system is a directory
+# It opens and reads as empty; it cannot be written.
+mkdir lib
+mkdir lib/system
+system
+print
+savesystem
+
+section load_system: unreadable
+# A file that cannot be read.
+mkdir lib
+putl lib/system gm_player=5
+chmod 000 lib/system
+system
+print
+chmod 644 lib/system
+
+section save_system: no directory
+# libdir does not exist.
+savesystem
+
+section trade routes: none
+# The default secret; save_trade_routes() writes nothing.
+mkdir lib
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes
+# A continuing game's seed wins, and is written back.
+mkdir lib
+putl lib/trade_routes 12345
+putl lib/trade-route-seed 777
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes and -G
+# -G is ignored, with a warning.
+mkdir lib
+putl lib/trade_routes 12345
+seed 0x10
+trade
+print
+savetrade
+
+section trade routes: -G
+# -G wins over lib/trade-route-seed, and is written to lib/trade_routes.
+mkdir lib
+putl lib/trade-route-seed 777
+seed 0x10
+trade
+print
+savetrade
+
+section trade routes: -G 0
+# A seed of 0 is a seed.
+mkdir lib
+seed 0
+trade
+print
+savetrade
+
+section trade routes: lib/trade-route-seed
+# The input file seeds a new game, which keeps it in lib/trade_routes.
+mkdir lib
+putl lib/trade-route-seed  \t\n 18446744073709551615 junk
+trade
+print
+savetrade
+
+section trade routes: lib/trade-route-seed is not a number
+# The default stays, and nothing is written.
+mkdir lib
+putl lib/trade-route-seed x1
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes is not a number
+# It still wins: the default stays, -G and the input file are ignored.
+mkdir lib
+putl lib/trade_routes abc
+putl lib/trade-route-seed 5
+seed 9
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes is a directory
+# It opens, and does not scan; it wins, and -G is ignored.
+mkdir lib
+mkdir lib/trade_routes
+seed 9
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes is empty
+mkdir lib
+put lib/trade_routes
+trade
+print
+
+section trade routes: lib/trade_routes a minus sign
+mkdir lib
+putl lib/trade_routes -5
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes a plus sign
+mkdir lib
+putl lib/trade_routes +7
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes a sign alone
+mkdir lib
+putl lib/trade_routes -
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes overflow
+mkdir lib
+putl lib/trade_routes 99999999999999999999999
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes a negative overflow
+mkdir lib
+putl lib/trade_routes -99999999999999999999999
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes leading zeros
+mkdir lib
+putl lib/trade_routes 0000000000000000000042
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes 511 zeros
+mkdir lib
+putl lib/trade_routes 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000013
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes 512 zeros
+mkdir lib
+putl lib/trade_routes 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000013
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes 600 zeros
+mkdir lib
+putl lib/trade_routes 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000013
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes a sign and 511 zeros
+mkdir lib
+putl lib/trade_routes +00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000013
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes hexadecimal
+mkdir lib
+putl lib/trade_routes 0x1f
+trade
+print
+savetrade
+
+section trade routes: lib/trade_routes no newline
+mkdir lib
+put lib/trade_routes 8
+trade
+print
+savetrade
+
+section trade routes: cannot write
+# -G sets a seed, and libdir does not exist.
+seed 1
+trade
+print
+savetrade
+
+section load_orders: order files
+# Lines with and without a ':', an empty line, unit 0, white space, a
+# file whose name is not a number, a number with no box, a hidden file,
+# and orders for the gm player. Units that are not boxes keep their
+# queues, but save_orders() skips them.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+mkdir lib/orders
+putl lib/orders/1001 1002:move north
+putl lib/orders/1001 1002:  study 610  
+putl lib/orders/1001 no colon here
+putl lib/orders/1001
+putl lib/orders/1001 1001:a:b:c
+putl lib/orders/1001  1002 :x
+putl lib/orders/1001 5555:not a box
+putl lib/orders/1001 0:zero
+putl lib/orders/1001 1002:
+putl lib/orders/1001 1002:\tTAB
+put lib/orders/1001 1002:last line
+putl lib/orders/200 1002:gm order
+putl lib/orders/abc 1002:skipped
+putl lib/orders/.1001 1002:skipped
+putl lib/orders/999 1002:no box
+putl lib/orders/0 1002:no box
+boxes
+orders
+print
+saveorders
+
+section load_orders: 250 orders a unit
+# queue_order() drops orders past 250 for one unit.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+mkdir lib/orders
+putl lib/orders/1001 1002:order 0
+putl lib/orders/1001 1002:order 1
+putl lib/orders/1001 1002:order 2
+putl lib/orders/1001 1002:order 3
+putl lib/orders/1001 1002:order 4
+putl lib/orders/1001 1002:order 5
+putl lib/orders/1001 1002:order 6
+putl lib/orders/1001 1002:order 7
+putl lib/orders/1001 1002:order 8
+putl lib/orders/1001 1002:order 9
+putl lib/orders/1001 1002:order 10
+putl lib/orders/1001 1002:order 11
+putl lib/orders/1001 1002:order 12
+putl lib/orders/1001 1002:order 13
+putl lib/orders/1001 1002:order 14
+putl lib/orders/1001 1002:order 15
+putl lib/orders/1001 1002:order 16
+putl lib/orders/1001 1002:order 17
+putl lib/orders/1001 1002:order 18
+putl lib/orders/1001 1002:order 19
+putl lib/orders/1001 1002:order 20
+putl lib/orders/1001 1002:order 21
+putl lib/orders/1001 1002:order 22
+putl lib/orders/1001 1002:order 23
+putl lib/orders/1001 1002:order 24
+putl lib/orders/1001 1002:order 25
+putl lib/orders/1001 1002:order 26
+putl lib/orders/1001 1002:order 27
+putl lib/orders/1001 1002:order 28
+putl lib/orders/1001 1002:order 29
+putl lib/orders/1001 1002:order 30
+putl lib/orders/1001 1002:order 31
+putl lib/orders/1001 1002:order 32
+putl lib/orders/1001 1002:order 33
+putl lib/orders/1001 1002:order 34
+putl lib/orders/1001 1002:order 35
+putl lib/orders/1001 1002:order 36
+putl lib/orders/1001 1002:order 37
+putl lib/orders/1001 1002:order 38
+putl lib/orders/1001 1002:order 39
+putl lib/orders/1001 1002:order 40
+putl lib/orders/1001 1002:order 41
+putl lib/orders/1001 1002:order 42
+putl lib/orders/1001 1002:order 43
+putl lib/orders/1001 1002:order 44
+putl lib/orders/1001 1002:order 45
+putl lib/orders/1001 1002:order 46
+putl lib/orders/1001 1002:order 47
+putl lib/orders/1001 1002:order 48
+putl lib/orders/1001 1002:order 49
+putl lib/orders/1001 1002:order 50
+putl lib/orders/1001 1002:order 51
+putl lib/orders/1001 1002:order 52
+putl lib/orders/1001 1002:order 53
+putl lib/orders/1001 1002:order 54
+putl lib/orders/1001 1002:order 55
+putl lib/orders/1001 1002:order 56
+putl lib/orders/1001 1002:order 57
+putl lib/orders/1001 1002:order 58
+putl lib/orders/1001 1002:order 59
+putl lib/orders/1001 1002:order 60
+putl lib/orders/1001 1002:order 61
+putl lib/orders/1001 1002:order 62
+putl lib/orders/1001 1002:order 63
+putl lib/orders/1001 1002:order 64
+putl lib/orders/1001 1002:order 65
+putl lib/orders/1001 1002:order 66
+putl lib/orders/1001 1002:order 67
+putl lib/orders/1001 1002:order 68
+putl lib/orders/1001 1002:order 69
+putl lib/orders/1001 1002:order 70
+putl lib/orders/1001 1002:order 71
+putl lib/orders/1001 1002:order 72
+putl lib/orders/1001 1002:order 73
+putl lib/orders/1001 1002:order 74
+putl lib/orders/1001 1002:order 75
+putl lib/orders/1001 1002:order 76
+putl lib/orders/1001 1002:order 77
+putl lib/orders/1001 1002:order 78
+putl lib/orders/1001 1002:order 79
+putl lib/orders/1001 1002:order 80
+putl lib/orders/1001 1002:order 81
+putl lib/orders/1001 1002:order 82
+putl lib/orders/1001 1002:order 83
+putl lib/orders/1001 1002:order 84
+putl lib/orders/1001 1002:order 85
+putl lib/orders/1001 1002:order 86
+putl lib/orders/1001 1002:order 87
+putl lib/orders/1001 1002:order 88
+putl lib/orders/1001 1002:order 89
+putl lib/orders/1001 1002:order 90
+putl lib/orders/1001 1002:order 91
+putl lib/orders/1001 1002:order 92
+putl lib/orders/1001 1002:order 93
+putl lib/orders/1001 1002:order 94
+putl lib/orders/1001 1002:order 95
+putl lib/orders/1001 1002:order 96
+putl lib/orders/1001 1002:order 97
+putl lib/orders/1001 1002:order 98
+putl lib/orders/1001 1002:order 99
+putl lib/orders/1001 1002:order 100
+putl lib/orders/1001 1002:order 101
+putl lib/orders/1001 1002:order 102
+putl lib/orders/1001 1002:order 103
+putl lib/orders/1001 1002:order 104
+putl lib/orders/1001 1002:order 105
+putl lib/orders/1001 1002:order 106
+putl lib/orders/1001 1002:order 107
+putl lib/orders/1001 1002:order 108
+putl lib/orders/1001 1002:order 109
+putl lib/orders/1001 1002:order 110
+putl lib/orders/1001 1002:order 111
+putl lib/orders/1001 1002:order 112
+putl lib/orders/1001 1002:order 113
+putl lib/orders/1001 1002:order 114
+putl lib/orders/1001 1002:order 115
+putl lib/orders/1001 1002:order 116
+putl lib/orders/1001 1002:order 117
+putl lib/orders/1001 1002:order 118
+putl lib/orders/1001 1002:order 119
+putl lib/orders/1001 1002:order 120
+putl lib/orders/1001 1002:order 121
+putl lib/orders/1001 1002:order 122
+putl lib/orders/1001 1002:order 123
+putl lib/orders/1001 1002:order 124
+putl lib/orders/1001 1002:order 125
+putl lib/orders/1001 1002:order 126
+putl lib/orders/1001 1002:order 127
+putl lib/orders/1001 1002:order 128
+putl lib/orders/1001 1002:order 129
+putl lib/orders/1001 1002:order 130
+putl lib/orders/1001 1002:order 131
+putl lib/orders/1001 1002:order 132
+putl lib/orders/1001 1002:order 133
+putl lib/orders/1001 1002:order 134
+putl lib/orders/1001 1002:order 135
+putl lib/orders/1001 1002:order 136
+putl lib/orders/1001 1002:order 137
+putl lib/orders/1001 1002:order 138
+putl lib/orders/1001 1002:order 139
+putl lib/orders/1001 1002:order 140
+putl lib/orders/1001 1002:order 141
+putl lib/orders/1001 1002:order 142
+putl lib/orders/1001 1002:order 143
+putl lib/orders/1001 1002:order 144
+putl lib/orders/1001 1002:order 145
+putl lib/orders/1001 1002:order 146
+putl lib/orders/1001 1002:order 147
+putl lib/orders/1001 1002:order 148
+putl lib/orders/1001 1002:order 149
+putl lib/orders/1001 1002:order 150
+putl lib/orders/1001 1002:order 151
+putl lib/orders/1001 1002:order 152
+putl lib/orders/1001 1002:order 153
+putl lib/orders/1001 1002:order 154
+putl lib/orders/1001 1002:order 155
+putl lib/orders/1001 1002:order 156
+putl lib/orders/1001 1002:order 157
+putl lib/orders/1001 1002:order 158
+putl lib/orders/1001 1002:order 159
+putl lib/orders/1001 1002:order 160
+putl lib/orders/1001 1002:order 161
+putl lib/orders/1001 1002:order 162
+putl lib/orders/1001 1002:order 163
+putl lib/orders/1001 1002:order 164
+putl lib/orders/1001 1002:order 165
+putl lib/orders/1001 1002:order 166
+putl lib/orders/1001 1002:order 167
+putl lib/orders/1001 1002:order 168
+putl lib/orders/1001 1002:order 169
+putl lib/orders/1001 1002:order 170
+putl lib/orders/1001 1002:order 171
+putl lib/orders/1001 1002:order 172
+putl lib/orders/1001 1002:order 173
+putl lib/orders/1001 1002:order 174
+putl lib/orders/1001 1002:order 175
+putl lib/orders/1001 1002:order 176
+putl lib/orders/1001 1002:order 177
+putl lib/orders/1001 1002:order 178
+putl lib/orders/1001 1002:order 179
+putl lib/orders/1001 1002:order 180
+putl lib/orders/1001 1002:order 181
+putl lib/orders/1001 1002:order 182
+putl lib/orders/1001 1002:order 183
+putl lib/orders/1001 1002:order 184
+putl lib/orders/1001 1002:order 185
+putl lib/orders/1001 1002:order 186
+putl lib/orders/1001 1002:order 187
+putl lib/orders/1001 1002:order 188
+putl lib/orders/1001 1002:order 189
+putl lib/orders/1001 1002:order 190
+putl lib/orders/1001 1002:order 191
+putl lib/orders/1001 1002:order 192
+putl lib/orders/1001 1002:order 193
+putl lib/orders/1001 1002:order 194
+putl lib/orders/1001 1002:order 195
+putl lib/orders/1001 1002:order 196
+putl lib/orders/1001 1002:order 197
+putl lib/orders/1001 1002:order 198
+putl lib/orders/1001 1002:order 199
+putl lib/orders/1001 1002:order 200
+putl lib/orders/1001 1002:order 201
+putl lib/orders/1001 1002:order 202
+putl lib/orders/1001 1002:order 203
+putl lib/orders/1001 1002:order 204
+putl lib/orders/1001 1002:order 205
+putl lib/orders/1001 1002:order 206
+putl lib/orders/1001 1002:order 207
+putl lib/orders/1001 1002:order 208
+putl lib/orders/1001 1002:order 209
+putl lib/orders/1001 1002:order 210
+putl lib/orders/1001 1002:order 211
+putl lib/orders/1001 1002:order 212
+putl lib/orders/1001 1002:order 213
+putl lib/orders/1001 1002:order 214
+putl lib/orders/1001 1002:order 215
+putl lib/orders/1001 1002:order 216
+putl lib/orders/1001 1002:order 217
+putl lib/orders/1001 1002:order 218
+putl lib/orders/1001 1002:order 219
+putl lib/orders/1001 1002:order 220
+putl lib/orders/1001 1002:order 221
+putl lib/orders/1001 1002:order 222
+putl lib/orders/1001 1002:order 223
+putl lib/orders/1001 1002:order 224
+putl lib/orders/1001 1002:order 225
+putl lib/orders/1001 1002:order 226
+putl lib/orders/1001 1002:order 227
+putl lib/orders/1001 1002:order 228
+putl lib/orders/1001 1002:order 229
+putl lib/orders/1001 1002:order 230
+putl lib/orders/1001 1002:order 231
+putl lib/orders/1001 1002:order 232
+putl lib/orders/1001 1002:order 233
+putl lib/orders/1001 1002:order 234
+putl lib/orders/1001 1002:order 235
+putl lib/orders/1001 1002:order 236
+putl lib/orders/1001 1002:order 237
+putl lib/orders/1001 1002:order 238
+putl lib/orders/1001 1002:order 239
+putl lib/orders/1001 1002:order 240
+putl lib/orders/1001 1002:order 241
+putl lib/orders/1001 1002:order 242
+putl lib/orders/1001 1002:order 243
+putl lib/orders/1001 1002:order 244
+putl lib/orders/1001 1002:order 245
+putl lib/orders/1001 1002:order 246
+putl lib/orders/1001 1002:order 247
+putl lib/orders/1001 1002:order 248
+putl lib/orders/1001 1002:order 249
+putl lib/orders/1001 1002:order 250
+putl lib/orders/1001 1002:order 251
+putl lib/orders/1001 1002:order 252
+putl lib/orders/1001 1002:order 253
+putl lib/orders/1001 1002:order 254
+putl lib/orders/1001 1001:p 0
+putl lib/orders/1001 1001:p 1
+putl lib/orders/1001 1001:p 2
+boxes
+orders
+print
+saveorders
+
+section load_orders: a long line
+# readlin() cuts a line to 2047 bytes.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+mkdir lib/orders
+putl lib/orders/1001 1002:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+boxes
+orders
+print
+saveorders
+
+section load_orders: no directory
+# A diagnostic; save_orders() makes the directory, and writes nothing
+# for players with no orders.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+boxes
+orders
+print
+saveorders
+
+section load_orders: orders is a file
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+put lib/orders
+boxes
+orders
+saveorders
+
+section load_orders: a player's file is a directory
+# It opens, and reads as empty.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+mkdir lib/orders
+mkdir lib/orders/1001
+boxes
+orders
+print
+saveorders
+
+section load_orders: unreadable file
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+mkdir lib/orders
+putl lib/orders/1001 1002:x
+chmod 000 lib/orders/1001
+boxes
+orders
+print
+chmod 644 lib/orders/1001
+
+section load_orders: one player twice
+# Two names that atoi() reads as the same player fail an assertion.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+mkdir lib/orders
+putl lib/orders/1001 1002:x
+putl lib/orders/1001.bak 1002:y
+boxes
+orders
+print
+
+section load_orders: a player with no PL section
+# rp_player() is NULL, and load_player_orders() dereferences it.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+mkdir lib/orders
+putl lib/orders/100 1002:x
+boxes
+orders
+print
+
+section load_orders: a box that is not a player
+# rp_player() is NULL, and load_player_orders() dereferences it.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+mkdir lib/orders
+putl lib/orders/10101 1002:x
+boxes
+orders
+print
+
+section save_orders: dead characters and removal
+# A dead character's queue is not saved, and save_orders() removes
+# everything that was under lib/orders.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+putl lib/misc 1003 deadchar 0
+putl lib/misc na Dead
+putl lib/misc
+mkdir lib/orders
+putl lib/orders/1001 1002:kept
+putl lib/orders/1001 1003:dropped
+mkdir lib/orders/sub
+putl lib/orders/sub/x x
+putl lib/orders/stale x
+boxes
+orders
+print
+saveorders
+
+section save_orders: cannot write
+# The orders are loaded from lib, then saved to lib2, where orders is a
+# file: remove_dir() and mkdir() fail, and so does each fopen().
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+mkdir lib/orders
+putl lib/orders/1001 1002:x
+putl lib/orders/200 1002:y
+boxes
+orders
+mkdir lib2
+putl lib2/orders not a directory
+libdir lib2
+saveorders
+
+section cleanup_posts
+# Posts are taken out of their locations and deleted before the boxes
+# are written.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc PL
+putl lib/misc  pw secret
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002 20001
+putl lib/misc
+putl lib/misc 20001 post 0
+putl lib/misc na A post
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc
+putl lib/misc 20002 post 0
+putl lib/misc na Another
+putl lib/misc
+mkdir lib/orders
+boxes
+posts
+saveboxes
+
+section determine_map_edges
+# Provinces in the special regions are skipped, as is a province in no
+# region while any special region is 0.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101 10512 12307
+putl lib/misc
+putl lib/misc 10002 loc region
+putl lib/misc na Faery
+putl lib/misc LI
+putl lib/misc  hl 15599
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10512 loc forest
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 12307 loc ocean
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 15599 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10002
+putl lib/misc
+putl lib/misc 19999 loc plain
+putl lib/misc
+putl lib/system fr=10002
+system
+boxes
+edges
+print
+
+section determine_map_edges: no special regions
+# With every special region 0, the province in no region is skipped.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 19999 loc plain
+putl lib/misc
+boxes
+edges
+print
+
+section determine_map_edges: special regions set
+# With every special region set, the province in no region counts.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 19999 loc plain
+putl lib/misc
+putl lib/system fr=1
+putl lib/system hr=2
+putl lib/system cr=3
+putl lib/system tr=4
+putl lib/system nr=5
+system
+boxes
+edges
+print
+
+section rename_act_join_files
+# act is relative to the current directory. A missing file is reported.
+mkdir act
+mkdir act/1001
+putl act/1001/Join-g3 join
+mkdir act/1005
+mkdir act/1006
+mkdir act/1006/Join-g3
+mkdir act/1006/Join-g3-
+putl act/1006/Join-g3-/x x
+mkdir act/1007
+mkdir act/1007/Join-g3
+putl act/1007/Join-g3- file
+newplayer 1001
+newplayer 1005
+newplayer 1006
+newplayer 1007
+newplayer 1001
+rename

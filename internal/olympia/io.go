@@ -4,10 +4,12 @@
 package olympia
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"os"
 	"reflect"
+	"strings"
 	"syscall"
 
 	"github.com/mdhender/g3g0/internal/clib"
@@ -2498,4 +2500,163 @@ func (w *world) writeMaster() {
 	}
 
 	fp.Close()
+}
+
+// loadSystem is load_system(): the game's settings from libdir/system,
+// read with getlin_ew(). Each line sets the global its prefix names:
+// "sysclock:" is scanned as olytime_scan() scans it, the host, address,
+// title, URL and htpasswd lines keep the rest of the line, and the others
+// are atoi() of it. Blank lines and comments are skipped, and any other
+// line gets a diagnostic. A file that cannot be opened gets a diagnostic
+// and leaves every global as it was.
+func (w *world) loadSystem() {
+	fname := sout("%s/system", w.libdir)
+
+	data, err := clib.ReadFile(fname)
+
+	if err != nil {
+		fmt.Fprintf(w.stderr, "load_system: can't read %s: ", fname)
+		clib.Perror(w.stderr, "", err)
+		return
+	}
+
+	fp := bytes.NewReader(data)
+
+	for sp := getlinEw(fp); sp != nil; sp = getlinEw(fp) {
+		s := *sp
+		if s == "" || s[0] == '#' { // comments and blank lines
+			continue
+		}
+
+		atoi := func(n int) int32 { return int32(clib.Atoi(s[n:])) }
+
+		switch {
+		case strings.HasPrefix(s, "sysclock:"):
+			olytimeScan(s[9:], &w.sysclock)
+		case strings.HasPrefix(s, "from_host="):
+			w.fromHost = s[10:]
+		case strings.HasPrefix(s, "reply_host="):
+			w.replyHost = s[11:]
+		case strings.HasPrefix(s, "gm_address="):
+			w.gmAddress = s[11:]
+		case strings.HasPrefix(s, "game_title="):
+			w.gameTitle = s[11:]
+		case strings.HasPrefix(s, "game_url="):
+			w.gameURL = s[9:]
+		case strings.HasPrefix(s, "rules_url="):
+			w.rulesURL = s[10:]
+		case strings.HasPrefix(s, "times_url="):
+			w.timesURL = s[10:]
+		case strings.HasPrefix(s, "htpasswd_loc="):
+			w.htpasswdLoc = s[13:]
+		case strings.HasPrefix(s, "garrison_pay="):
+			w.garrisonPay = atoi(13)
+		case strings.HasPrefix(s, "auto_quit="):
+			w.autoQuitTurns = atoi(10)
+		case strings.HasPrefix(s, "army_slow_factor="):
+			w.armySlowFactor = atoi(17)
+		case strings.HasPrefix(s, "indep_player="):
+			w.indepPlayer = atoi(13)
+		case strings.HasPrefix(s, "gm_player="):
+			w.gmPlayer = atoi(10)
+		case strings.HasPrefix(s, "skill_player="):
+			w.skillPlayer = atoi(13)
+		case strings.HasPrefix(s, "post="):
+			w.postHasBeenRun = atoi(5)
+		case strings.HasPrefix(s, "init="):
+			w.seedHasBeenRun = atoi(5)
+		case strings.HasPrefix(s, "fr="):
+			w.faeryRegion = atoi(3)
+		case strings.HasPrefix(s, "tr="):
+			w.tunnelRegion = atoi(3)
+		case strings.HasPrefix(s, "ur="):
+			w.underRegion = atoi(3)
+		case strings.HasPrefix(s, "fp="):
+			w.faeryPlayer = atoi(3)
+		case strings.HasPrefix(s, "hr="):
+			w.hadesRegion = atoi(3)
+		case strings.HasPrefix(s, "hp="):
+			w.hadesPit = atoi(3)
+		case strings.HasPrefix(s, "hl="):
+			w.hadesPlayer = atoi(3)
+		case strings.HasPrefix(s, "nr="):
+			w.nowhereRegion = atoi(3)
+		case strings.HasPrefix(s, "nl="):
+			w.nowhereLoc = atoi(3)
+		case strings.HasPrefix(s, "np="):
+			w.npcPl = atoi(3)
+		case strings.HasPrefix(s, "cr="):
+			w.cloudRegion = atoi(3)
+		case strings.HasPrefix(s, "cp="):
+			w.combatPl = atoi(3)
+		case strings.HasPrefix(s, "mo="):
+			w.mountOlympus = atoi(3)
+		default:
+			fmt.Fprintf(w.stderr, "load_system: unrecognized "+
+				"line: %s\n", s)
+		}
+	}
+}
+
+// saveSystem is save_system(): the game's settings to libdir/system, in
+// the order and form loadSystem reads them. auto_quit and mo are written
+// only when positive, and sysclock only when not all zero. A file that
+// cannot be opened gets a diagnostic, which, as in C, names load_system
+// (upstream defect: https://github.com/playbymail/olympia-g3/issues/333).
+func (w *world) saveSystem() {
+	fname := sout("%s/system", w.libdir)
+
+	fp, err := clib.Fopen(fname)
+
+	if err != nil {
+		fmt.Fprintf(w.stderr, "load_system: can't write %s: ", fname)
+		clib.Perror(w.stderr, "", err)
+		return
+	}
+
+	olytimePrint(fp, "sysclock: ", &w.sysclock)
+	fmt.Fprintf(fp, "indep_player=%d\n", w.indepPlayer)
+	fmt.Fprintf(fp, "gm_player=%d\n", w.gmPlayer)
+	fmt.Fprintf(fp, "skill_player=%d\n", w.skillPlayer)
+	fmt.Fprintf(fp, "from_host=%s\n", w.fromHost)
+	fmt.Fprintf(fp, "reply_host=%s\n", w.replyHost)
+	fmt.Fprintf(fp, "gm_address=%s\n", w.gmAddress)
+	fmt.Fprintf(fp, "game_title=%s\n", w.gameTitle)
+	fmt.Fprintf(fp, "game_url=%s\n", w.gameURL)
+	fmt.Fprintf(fp, "rules_url=%s\n", w.rulesURL)
+	fmt.Fprintf(fp, "times_url=%s\n", w.timesURL)
+	fmt.Fprintf(fp, "htpasswd_loc=%s\n", w.htpasswdLoc)
+	fmt.Fprintf(fp, "garrison_pay=%d\n", w.garrisonPay)
+	if w.autoQuitTurns > 0 {
+		fmt.Fprintf(fp, "auto_quit=%d\n", w.autoQuitTurns)
+	}
+	fmt.Fprintf(fp, "army_slow_factor=%d\n", w.armySlowFactor)
+	fmt.Fprintf(fp, "post=%d\n", w.postHasBeenRun)
+	fmt.Fprintf(fp, "init=%d\n", w.seedHasBeenRun)
+	fmt.Fprintf(fp, "fr=%d\n", w.faeryRegion)
+	fmt.Fprintf(fp, "tr=%d\n", w.tunnelRegion)
+	fmt.Fprintf(fp, "ur=%d\n", w.underRegion)
+	fmt.Fprintf(fp, "fp=%d\n", w.faeryPlayer)
+	fmt.Fprintf(fp, "hr=%d\n", w.hadesRegion)
+	fmt.Fprintf(fp, "hp=%d\n", w.hadesPit)
+	fmt.Fprintf(fp, "hl=%d\n", w.hadesPlayer)
+	fmt.Fprintf(fp, "nr=%d\n", w.nowhereRegion)
+	fmt.Fprintf(fp, "nl=%d\n", w.nowhereLoc)
+	fmt.Fprintf(fp, "np=%d\n", w.npcPl)
+	fmt.Fprintf(fp, "cr=%d\n", w.cloudRegion)
+	fmt.Fprintf(fp, "cp=%d\n", w.combatPl)
+	if w.mountOlympus > 0 {
+		fmt.Fprintf(fp, "mo=%d\n", w.mountOlympus)
+	}
+
+	fp.Close()
+}
+
+// cleanupPosts is cleanup_posts(), which save_db() runs first: every post,
+// in chain order, is taken out of its location and deleted.
+func (w *world) cleanupPosts() {
+	for i := range w.loopKind(tPost) {
+		w.setWhere(i, 0)
+		w.deleteBox(i)
+	}
 }

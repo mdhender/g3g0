@@ -5,9 +5,10 @@ package olympia
 
 import "github.com/mdhender/g3g0/internal/lists"
 
-// Ported from olympia/loc.c: the here lists, all_stack() and the location
-// walks that check_db() reaches (subloc() and viewloc(), through set_lord()
-// and touch_loc()). The rest of loc.c is left for later stages.
+// Ported from olympia/loc.c: the here lists, all_stack(), set_where() and
+// the location walks that check_db() reaches (subloc() and viewloc(),
+// through set_lord() and touch_loc()) and determine_map_edges() reaches
+// (region()). The rest of loc.c is left for later stages.
 //
 // rp_loc_info() is the address of a member of the box, never NULL, so the
 // "p == NULL" tests of all_stack() and in_here_list(), and the assert(p !=
@@ -46,6 +47,17 @@ func (w *world) allStack(who int) lists.IList {
 	}
 
 	return l
+}
+
+// region is region(): who, or the first location out from it, that is a
+// region, or 0.
+func (w *world) region(who int) int {
+	for who > 0 &&
+		(w.kind(who) != tLoc || w.locDepth(who) != locRegion) {
+		who = w.loc(who)
+	}
+
+	return who
 }
 
 // subloc is subloc(): the location or ship who is in, irrespective of who
@@ -88,6 +100,28 @@ func (w *world) removeFromHereList(loc, who int) {
 	assert(w.inHereList(loc, who), "olympia/loc.c", 241, "in_here_list(loc, who)")
 	w.rpLocInfo(loc).hereList.RemValue(who)
 	assert(!w.inHereList(loc, who), "olympia/loc.c", 243, "!in_here_list(loc, who)")
+}
+
+// setWhere is set_where(): it moves who from the here list of the
+// location it is in, if any, to that of newLoc, if not 0, and makes newLoc
+// its location.
+func (w *world) setWhere(who, newLoc int) {
+	// This check could be expanded to make sure that new_loc is not
+	// anywhere inside of who, by walking up new_loc to the top and making
+	// sure we don't go through who.
+	assert(who != newLoc, "olympia/loc.c", 258, "who != new_loc")
+
+	oldLoc := w.loc(who)
+
+	if oldLoc > 0 {
+		w.removeFromHereList(oldLoc, who)
+	}
+
+	if newLoc > 0 {
+		w.addToHereList(newLoc, who)
+	}
+
+	w.pLocInfo(who).where = int32(newLoc)
 }
 
 // inHereList is in_here_list(): whether who is in the here list of loc.

@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"bytes"
 	"io"
+	"math"
 	"os"
 	"slices"
 	"strings"
@@ -129,6 +130,46 @@ func (sc *Scanner) Int() (int, bool) {
 	}
 	sc.pos = i
 	return Atoi(sc.s[start:i]), true
+}
+
+// Uint64 implements %llu as the macOS (BSD) libc does. It reads what Int
+// reads: white space, then an optional sign and decimal digits, at most
+// scanWidth characters in all. The value is converted with strtoumax(),
+// which saturates to the unsigned 64-bit range, and negates it, as an
+// unsigned value, after a minus sign. Uint64 reports false on a matching or
+// input failure: no digit after the optional sign.
+func (sc *Scanner) Uint64() (uint64, bool) {
+	sc.SkipSpace()
+	start := sc.pos
+	i := start
+	neg := false
+	if i < len(sc.s) && (sc.s[i] == '+' || sc.s[i] == '-') {
+		neg = sc.s[i] == '-'
+		i++
+	}
+	digits := i
+	var acc uint64
+	overflow := false
+	for i < len(sc.s) && i-start < scanWidth && sc.s[i] >= '0' && sc.s[i] <= '9' {
+		d := uint64(sc.s[i] - '0')
+		if overflow || acc > (math.MaxUint64-d)/10 {
+			overflow = true
+		} else {
+			acc = acc*10 + d
+		}
+		i++
+	}
+	if i == digits {
+		return 0, false
+	}
+	sc.pos = i
+	switch {
+	case overflow:
+		return math.MaxUint64, true
+	case neg:
+		return -acc, true
+	}
+	return acc, true
 }
 
 // Literal matches a single ordinary character in the format.

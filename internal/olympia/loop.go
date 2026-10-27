@@ -17,8 +17,9 @@ import (
 //     the body may delete the current box (the "delete problem" loop.h
 //     guards against). A box the body links in after the current one is
 //     visited; one linked in before it is not.
-//   - loopLocOrShip reads the next box after the body runs, as
-//     next_loc_or_ship does, so the body must not unlink the current box.
+//   - loopLocOrShip and loopProvince read the next box after the body
+//     runs, as next_loc_or_ship and next_province do, so the body must not
+//     unlink the current box.
 //   - loopBoxes tests each box number in turn as the loop reaches it.
 //
 // break works as it does in C. The loops that copy a list first (loopUnits,
@@ -87,6 +88,22 @@ func (w *world) loopLocOrShip() iter.Seq[int] {
 			if i <= 0 && state {
 				i = w.kindFirst(tLoc)
 				state = false
+			}
+		}
+	}
+}
+
+// loopProvince is loop_province: the locations, in chain order, whose
+// loc_depth() is LOC_province. Like loop_province, it reads the next
+// location after the body runs, so the body must not unlink the current
+// one.
+func (w *world) loopProvince() iter.Seq[int] {
+	return func(yield func(int) bool) {
+		for i := w.kindFirst(tLoc); i > 0; i = w.kindNext(i) {
+			if w.locDepth(i) == locProvince {
+				if !yield(i) {
+					return
+				}
 			}
 		}
 	}

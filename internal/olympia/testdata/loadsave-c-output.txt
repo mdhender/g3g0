@@ -1,0 +1,2420 @@
+section a whole load and save
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+check_db()
+> print
+sysclock 12 3 45
+from_host=host@example.com (A Host)
+reply_host=reply@example.com
+gm_address=gm@example.com
+game_title=Test Game
+game_url=http://g
+rules_url=http://r
+times_url=http://t
+htpasswd_loc=/x/ht
+garrison_pay=3 auto_quit=6 army_slow_factor=25
+indep=100 gm=200 skill=202 post=1 init=1
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=210 mo=10101
+max_map 1 1 1
+trade_route 0 0 11557902
+orders 1001 1002: [move north] [study 610]
+orders 1001 1001: [# a note]
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 98 lib/fact/1001
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+f 644 50 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 91 lib/loc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002 
+| 
+f 644 288 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09Player one
+| 1002\x092.0\x09fact/1001\x09Noble
+| 10001\x093.50\x09loc\x09\x09Region
+| 10101\x093.3\x09loc\x09\x09Plain
+f 644 0 lib/misc
+d 755 lib/orders
+f 644 45 lib/orders/1001
+| 1002:move north
+| 1002:study 610
+| 1001:# a note
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 387 lib/system
+| sysclock: 12 3 45
+| indep_player=100
+| gm_player=200
+| skill_player=202
+| from_host=host@example.com (A Host)
+| reply_host=reply@example.com
+| gm_address=gm@example.com
+| game_title=Test Game
+| game_url=http://g
+| rules_url=http://r
+| times_url=http://t
+| htpasswd_loc=/x/ht
+| garrison_pay=3
+| auto_quit=6
+| army_slow_factor=25
+| post=1
+| init=1
+| fr=0
+| tr=0
+| ur=0
+| fp=0
+| hr=0
+| hp=0
+| hl=0
+| nr=0
+| nl=0
+| np=206
+| cr=0
+| cp=210
+| mo=10101
+f 644 0 lib/unform
+section load_system: every line
+> mkdir lib
+> system
+load_system: unrecognized line: postx=1
+load_system: unrecognized line: FR=3
+load_system: unrecognized line: unknown=last line
+> print
+sysclock 7 0 0
+from_host=  spaced host
+reply_host=
+gm_address=a bc
+game_title=Caf   x
+game_url=u
+rules_url=x\y
+times_url=a\rb\r
+htpasswd_loc=last
+garrison_pay=12 auto_quit=-4 army_slow_factor=9
+indep=0 gm=1215752191 skill=2147483647 post=7 init=0
+fr=10002 tr=10003 ur=10004 fp=300 hr=10005 hp=10006 hl=301
+nr=10007 nl=10008 np=302 cr=10009 cp=211 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> savesystem
+exit 0
+d 755 lib
+f 644 357 lib/system
+| sysclock: 7 0 0
+| indep_player=0
+| gm_player=1215752191
+| skill_player=2147483647
+| from_host=  spaced host
+| reply_host=
+| gm_address=a b\x7fc
+| game_title=Caf   x
+| game_url=u
+| rules_url=x\x5cy
+| times_url=a\x5crb\x5cr
+| htpasswd_loc=last
+| garrison_pay=12
+| army_slow_factor=9
+| post=7
+| init=0
+| fr=10002
+| tr=10003
+| ur=10004
+| fp=300
+| hr=10005
+| hp=10006
+| hl=301
+| nr=10007
+| nl=10008
+| np=302
+| cr=10009
+| cp=211
+section load_system: sysclock values
+> mkdir lib
+> system
+> print
+sysclock -25536 -5 3
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=-1
+max_map 0 0 0
+trade_route 0 0 11557902
+> savesystem
+exit 0
+d 755 lib
+f 644 449 lib/system
+| sysclock: -25536 -5 3
+| indep_player=100
+| gm_player=200
+| skill_player=202
+| from_host=g3@olympia.v-labs.be
+| reply_host=g3@olympia.v-labs.be
+| gm_address=c@dvdc.be
+| game_title=Olympia G3
+| game_url=http://olympia.v-labs.be/g3
+| rules_url=http://oly.v-labs.be/g3/node/11
+| times_url=http://oly.v-labs.be/g3/node/409
+| htpasswd_loc=/u/oly/g2/lib/ht-passwords
+| garrison_pay=2
+| army_slow_factor=20
+| post=0
+| init=0
+| fr=0
+| tr=0
+| ur=0
+| fp=0
+| hr=0
+| hp=0
+| hl=0
+| nr=0
+| nl=0
+| np=206
+| cr=0
+| cp=0
+section load_system: a long line
+> mkdir lib
+> system
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
+game_url=uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> savesystem
+exit 0
+d 755 lib
+f 644 4404 lib/system
+| indep_player=100
+| gm_player=200
+| skill_player=202
+| from_host=g3@olympia.v-labs.be
+| reply_host=g3@olympia.v-labs.be
+| gm_address=c@dvdc.be
+| game_title=tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
+| game_url=uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+| rules_url=http://oly.v-labs.be/g3/node/11
+| times_url=http://oly.v-labs.be/g3/node/409
+| htpasswd_loc=/u/oly/g2/lib/ht-passwords
+| garrison_pay=2
+| army_slow_factor=20
+| post=0
+| init=0
+| fr=0
+| tr=0
+| ur=0
+| fp=0
+| hr=0
+| hp=0
+| hl=0
+| nr=0
+| nl=0
+| np=206
+| cr=0
+| cp=0
+section load_system: no file
+> mkdir lib
+> system
+load_system: can't read lib/system: No such file or directory
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> savesystem
+exit 0
+d 755 lib
+f 644 427 lib/system
+| indep_player=100
+| gm_player=200
+| skill_player=202
+| from_host=g3@olympia.v-labs.be
+| reply_host=g3@olympia.v-labs.be
+| gm_address=c@dvdc.be
+| game_title=Olympia G3
+| game_url=http://olympia.v-labs.be/g3
+| rules_url=http://oly.v-labs.be/g3/node/11
+| times_url=http://oly.v-labs.be/g3/node/409
+| htpasswd_loc=/u/oly/g2/lib/ht-passwords
+| garrison_pay=2
+| army_slow_factor=20
+| post=0
+| init=0
+| fr=0
+| tr=0
+| ur=0
+| fp=0
+| hr=0
+| hp=0
+| hl=0
+| nr=0
+| nl=0
+| np=206
+| cr=0
+| cp=0
+section load_system: system is a directory
+> mkdir lib
+> mkdir lib/system
+> system
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> savesystem
+load_system: can't write lib/system: Is a directory
+exit 0
+d 755 lib
+d 755 lib/system
+section load_system: unreadable
+> mkdir lib
+> chmod 000 lib/system
+> system
+load_system: can't read lib/system: Permission denied
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> chmod 644 lib/system
+exit 0
+d 755 lib
+f 644 12 lib/system
+| gm_player=5
+section save_system: no directory
+> savesystem
+load_system: can't write lib/system: No such file or directory
+exit 0
+section trade routes: none
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> savetrade
+exit 0
+d 755 lib
+section trade routes: lib/trade_routes
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 12345 2344653816
+> savetrade
+exit 0
+d 755 lib
+f 644 4 lib/trade-route-seed
+| 777
+f 644 6 lib/trade_routes
+| 12345
+section trade routes: lib/trade_routes and -G
+> mkdir lib
+> seed 0x10
+> trade
+trade-route seed: lib/trade_routes already exists; ignoring -G/lib/trade-route-seed
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 12345 2344653816
+> savetrade
+exit 0
+d 755 lib
+f 644 6 lib/trade_routes
+| 12345
+section trade routes: -G
+> mkdir lib
+> seed 0x10
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 16 3885372635
+> savetrade
+exit 0
+d 755 lib
+f 644 4 lib/trade-route-seed
+| 777
+f 644 3 lib/trade_routes
+| 16
+section trade routes: -G 0
+> mkdir lib
+> seed 0
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 0 2570937750
+> savetrade
+exit 0
+d 755 lib
+f 644 2 lib/trade_routes
+| 0
+section trade routes: lib/trade-route-seed
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> savetrade
+exit 0
+d 755 lib
+f 644 32 lib/trade-route-seed
+|  \x5ct\x5cn 18446744073709551615 junk
+section trade routes: lib/trade-route-seed is not a number
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> savetrade
+exit 0
+d 755 lib
+f 644 3 lib/trade-route-seed
+| x1
+section trade routes: lib/trade_routes is not a number
+> mkdir lib
+> seed 9
+> trade
+trade-route seed: lib/trade_routes already exists; ignoring -G/lib/trade-route-seed
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> savetrade
+exit 0
+d 755 lib
+f 644 2 lib/trade-route-seed
+| 5
+f 644 4 lib/trade_routes
+| abc
+section trade routes: lib/trade_routes is a directory
+> mkdir lib
+> mkdir lib/trade_routes
+> seed 9
+> trade
+trade-route seed: lib/trade_routes already exists; ignoring -G/lib/trade-route-seed
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> savetrade
+exit 0
+d 755 lib
+d 755 lib/trade_routes
+section trade routes: lib/trade_routes is empty
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+exit 0
+d 755 lib
+f 644 0 lib/trade_routes
+section trade routes: lib/trade_routes a minus sign
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 18446744073709551611 1232587211
+> savetrade
+exit 0
+d 755 lib
+f 644 21 lib/trade_routes
+| 18446744073709551611
+section trade routes: lib/trade_routes a plus sign
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 7 989457459
+> savetrade
+exit 0
+d 755 lib
+f 644 2 lib/trade_routes
+| 7
+section trade routes: lib/trade_routes a sign alone
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> savetrade
+exit 0
+d 755 lib
+f 644 2 lib/trade_routes
+| -
+section trade routes: lib/trade_routes overflow
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 18446744073709551615 4290534743
+> savetrade
+exit 0
+d 755 lib
+f 644 21 lib/trade_routes
+| 18446744073709551615
+section trade routes: lib/trade_routes a negative overflow
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 18446744073709551615 4290534743
+> savetrade
+exit 0
+d 755 lib
+f 644 21 lib/trade_routes
+| 18446744073709551615
+section trade routes: lib/trade_routes leading zeros
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 42 2453429427
+> savetrade
+exit 0
+d 755 lib
+f 644 3 lib/trade_routes
+| 42
+section trade routes: lib/trade_routes 511 zeros
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 13 1013431624
+> savetrade
+exit 0
+d 755 lib
+f 644 3 lib/trade_routes
+| 13
+section trade routes: lib/trade_routes 512 zeros
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 1 403206445
+> savetrade
+exit 0
+d 755 lib
+f 644 2 lib/trade_routes
+| 1
+section trade routes: lib/trade_routes 600 zeros
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 0 2570937750
+> savetrade
+exit 0
+d 755 lib
+f 644 2 lib/trade_routes
+| 0
+section trade routes: lib/trade_routes a sign and 511 zeros
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 1 403206445
+> savetrade
+exit 0
+d 755 lib
+f 644 2 lib/trade_routes
+| 1
+section trade routes: lib/trade_routes hexadecimal
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 0 2570937750
+> savetrade
+exit 0
+d 755 lib
+f 644 2 lib/trade_routes
+| 0
+section trade routes: lib/trade_routes no newline
+> mkdir lib
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 8 1908631430
+> savetrade
+exit 0
+d 755 lib
+f 644 2 lib/trade_routes
+| 8
+section trade routes: cannot write
+> seed 1
+> trade
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 1 1 403206445
+> savetrade
+couldn't write lib/trade_routes: No such file or directory
+exit 0
+section load_orders: order files
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+ERROR: orders/999 but no box [999]
+ERROR: orders/0 but no box [0]
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+orders 200 1002: [gm order]
+orders 1001 1002: [move north] [  study 610  ] [x] [] [\tTAB] [last line]
+orders 1001 0: [] [] [zero]
+orders 1001 1001: [a:b:c]
+orders 1001 5555: [not a box]
+> saveorders
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+d 755 lib/orders
+f 644 85 lib/orders/1001
+| 1002:move north
+| 1002:  study 610  
+| 1002:x
+| 1002:
+| 1002:\x5ctTAB
+| 1002:last line
+| 1001:a:b:c
+f 644 14 lib/orders/200
+| 1002:gm order
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section load_orders: 250 orders a unit
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+orders 1001 1002: [order 0] [order 1] [order 2] [order 3] [order 4] [order 5] [order 6] [order 7] [order 8] [order 9] [order 10] [order 11] [order 12] [order 13] [order 14] [order 15] [order 16] [order 17] [order 18] [order 19] [order 20] [order 21] [order 22] [order 23] [order 24] [order 25] [order 26] [order 27] [order 28] [order 29] [order 30] [order 31] [order 32] [order 33] [order 34] [order 35] [order 36] [order 37] [order 38] [order 39] [order 40] [order 41] [order 42] [order 43] [order 44] [order 45] [order 46] [order 47] [order 48] [order 49] [order 50] [order 51] [order 52] [order 53] [order 54] [order 55] [order 56] [order 57] [order 58] [order 59] [order 60] [order 61] [order 62] [order 63] [order 64] [order 65] [order 66] [order 67] [order 68] [order 69] [order 70] [order 71] [order 72] [order 73] [order 74] [order 75] [order 76] [order 77] [order 78] [order 79] [order 80] [order 81] [order 82] [order 83] [order 84] [order 85] [order 86] [order 87] [order 88] [order 89] [order 90] [order 91] [order 92] [order 93] [order 94] [order 95] [order 96] [order 97] [order 98] [order 99] [order 100] [order 101] [order 102] [order 103] [order 104] [order 105] [order 106] [order 107] [order 108] [order 109] [order 110] [order 111] [order 112] [order 113] [order 114] [order 115] [order 116] [order 117] [order 118] [order 119] [order 120] [order 121] [order 122] [order 123] [order 124] [order 125] [order 126] [order 127] [order 128] [order 129] [order 130] [order 131] [order 132] [order 133] [order 134] [order 135] [order 136] [order 137] [order 138] [order 139] [order 140] [order 141] [order 142] [order 143] [order 144] [order 145] [order 146] [order 147] [order 148] [order 149] [order 150] [order 151] [order 152] [order 153] [order 154] [order 155] [order 156] [order 157] [order 158] [order 159] [order 160] [order 161] [order 162] [order 163] [order 164] [order 165] [order 166] [order 167] [order 168] [order 169] [order 170] [order 171] [order 172] [order 173] [order 174] [order 175] [order 176] [order 177] [order 178] [order 179] [order 180] [order 181] [order 182] [order 183] [order 184] [order 185] [order 186] [order 187] [order 188] [order 189] [order 190] [order 191] [order 192] [order 193] [order 194] [order 195] [order 196] [order 197] [order 198] [order 199] [order 200] [order 201] [order 202] [order 203] [order 204] [order 205] [order 206] [order 207] [order 208] [order 209] [order 210] [order 211] [order 212] [order 213] [order 214] [order 215] [order 216] [order 217] [order 218] [order 219] [order 220] [order 221] [order 222] [order 223] [order 224] [order 225] [order 226] [order 227] [order 228] [order 229] [order 230] [order 231] [order 232] [order 233] [order 234] [order 235] [order 236] [order 237] [order 238] [order 239] [order 240] [order 241] [order 242] [order 243] [order 244] [order 245] [order 246] [order 247] [order 248] [order 249]
+orders 1001 1001: [p 0] [p 1] [p 2]
+> saveorders
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+d 755 lib/orders
+f 644 3667 lib/orders/1001
+| 1002:order 0
+| 1002:order 1
+| 1002:order 2
+| 1002:order 3
+| 1002:order 4
+| 1002:order 5
+| 1002:order 6
+| 1002:order 7
+| 1002:order 8
+| 1002:order 9
+| 1002:order 10
+| 1002:order 11
+| 1002:order 12
+| 1002:order 13
+| 1002:order 14
+| 1002:order 15
+| 1002:order 16
+| 1002:order 17
+| 1002:order 18
+| 1002:order 19
+| 1002:order 20
+| 1002:order 21
+| 1002:order 22
+| 1002:order 23
+| 1002:order 24
+| 1002:order 25
+| 1002:order 26
+| 1002:order 27
+| 1002:order 28
+| 1002:order 29
+| 1002:order 30
+| 1002:order 31
+| 1002:order 32
+| 1002:order 33
+| 1002:order 34
+| 1002:order 35
+| 1002:order 36
+| 1002:order 37
+| 1002:order 38
+| 1002:order 39
+| 1002:order 40
+| 1002:order 41
+| 1002:order 42
+| 1002:order 43
+| 1002:order 44
+| 1002:order 45
+| 1002:order 46
+| 1002:order 47
+| 1002:order 48
+| 1002:order 49
+| 1002:order 50
+| 1002:order 51
+| 1002:order 52
+| 1002:order 53
+| 1002:order 54
+| 1002:order 55
+| 1002:order 56
+| 1002:order 57
+| 1002:order 58
+| 1002:order 59
+| 1002:order 60
+| 1002:order 61
+| 1002:order 62
+| 1002:order 63
+| 1002:order 64
+| 1002:order 65
+| 1002:order 66
+| 1002:order 67
+| 1002:order 68
+| 1002:order 69
+| 1002:order 70
+| 1002:order 71
+| 1002:order 72
+| 1002:order 73
+| 1002:order 74
+| 1002:order 75
+| 1002:order 76
+| 1002:order 77
+| 1002:order 78
+| 1002:order 79
+| 1002:order 80
+| 1002:order 81
+| 1002:order 82
+| 1002:order 83
+| 1002:order 84
+| 1002:order 85
+| 1002:order 86
+| 1002:order 87
+| 1002:order 88
+| 1002:order 89
+| 1002:order 90
+| 1002:order 91
+| 1002:order 92
+| 1002:order 93
+| 1002:order 94
+| 1002:order 95
+| 1002:order 96
+| 1002:order 97
+| 1002:order 98
+| 1002:order 99
+| 1002:order 100
+| 1002:order 101
+| 1002:order 102
+| 1002:order 103
+| 1002:order 104
+| 1002:order 105
+| 1002:order 106
+| 1002:order 107
+| 1002:order 108
+| 1002:order 109
+| 1002:order 110
+| 1002:order 111
+| 1002:order 112
+| 1002:order 113
+| 1002:order 114
+| 1002:order 115
+| 1002:order 116
+| 1002:order 117
+| 1002:order 118
+| 1002:order 119
+| 1002:order 120
+| 1002:order 121
+| 1002:order 122
+| 1002:order 123
+| 1002:order 124
+| 1002:order 125
+| 1002:order 126
+| 1002:order 127
+| 1002:order 128
+| 1002:order 129
+| 1002:order 130
+| 1002:order 131
+| 1002:order 132
+| 1002:order 133
+| 1002:order 134
+| 1002:order 135
+| 1002:order 136
+| 1002:order 137
+| 1002:order 138
+| 1002:order 139
+| 1002:order 140
+| 1002:order 141
+| 1002:order 142
+| 1002:order 143
+| 1002:order 144
+| 1002:order 145
+| 1002:order 146
+| 1002:order 147
+| 1002:order 148
+| 1002:order 149
+| 1002:order 150
+| 1002:order 151
+| 1002:order 152
+| 1002:order 153
+| 1002:order 154
+| 1002:order 155
+| 1002:order 156
+| 1002:order 157
+| 1002:order 158
+| 1002:order 159
+| 1002:order 160
+| 1002:order 161
+| 1002:order 162
+| 1002:order 163
+| 1002:order 164
+| 1002:order 165
+| 1002:order 166
+| 1002:order 167
+| 1002:order 168
+| 1002:order 169
+| 1002:order 170
+| 1002:order 171
+| 1002:order 172
+| 1002:order 173
+| 1002:order 174
+| 1002:order 175
+| 1002:order 176
+| 1002:order 177
+| 1002:order 178
+| 1002:order 179
+| 1002:order 180
+| 1002:order 181
+| 1002:order 182
+| 1002:order 183
+| 1002:order 184
+| 1002:order 185
+| 1002:order 186
+| 1002:order 187
+| 1002:order 188
+| 1002:order 189
+| 1002:order 190
+| 1002:order 191
+| 1002:order 192
+| 1002:order 193
+| 1002:order 194
+| 1002:order 195
+| 1002:order 196
+| 1002:order 197
+| 1002:order 198
+| 1002:order 199
+| 1002:order 200
+| 1002:order 201
+| 1002:order 202
+| 1002:order 203
+| 1002:order 204
+| 1002:order 205
+| 1002:order 206
+| 1002:order 207
+| 1002:order 208
+| 1002:order 209
+| 1002:order 210
+| 1002:order 211
+| 1002:order 212
+| 1002:order 213
+| 1002:order 214
+| 1002:order 215
+| 1002:order 216
+| 1002:order 217
+| 1002:order 218
+| 1002:order 219
+| 1002:order 220
+| 1002:order 221
+| 1002:order 222
+| 1002:order 223
+| 1002:order 224
+| 1002:order 225
+| 1002:order 226
+| 1002:order 227
+| 1002:order 228
+| 1002:order 229
+| 1002:order 230
+| 1002:order 231
+| 1002:order 232
+| 1002:order 233
+| 1002:order 234
+| 1002:order 235
+| 1002:order 236
+| 1002:order 237
+| 1002:order 238
+| 1002:order 239
+| 1002:order 240
+| 1002:order 241
+| 1002:order 242
+| 1002:order 243
+| 1002:order 244
+| 1002:order 245
+| 1002:order 246
+| 1002:order 247
+| 1002:order 248
+| 1002:order 249
+| 1001:p 0
+| 1001:p 1
+| 1001:p 2
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section load_orders: a long line
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+orders 1001 1002: [xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
+> saveorders
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+d 755 lib/orders
+f 644 2048 lib/orders/1001
+| 1002:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section load_orders: no directory
+> mkdir lib
+> mkdir lib/fact
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+can't open lib/orders: No such file or directory
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> saveorders
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section load_orders: orders is a file
+> mkdir lib
+> mkdir lib/fact
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+can't open lib/orders: Not a directory
+> saveorders
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+f 644 0 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section load_orders: a player's file is a directory
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> mkdir lib/orders/1001
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> saveorders
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section load_orders: unreadable file
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> chmod 000 lib/orders/1001
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+can't open lib/orders/1001: Permission denied
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+> chmod 644 lib/orders/1001
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+d 755 lib/orders
+f 644 7 lib/orders/1001
+| 1002:x
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section load_orders: one player twice
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+assertion failure: olympia/order.c (266): rp_player(pl)->orders == NULL
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+d 755 lib/orders
+f 644 7 lib/orders/1001
+| 1002:x
+f 644 7 lib/orders/1001.bak
+| 1002:y
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section load_orders: a player with no PL section
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+exit 139
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+d 755 lib/orders
+f 644 7 lib/orders/100
+| 1002:x
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section load_orders: a box that is not a player
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+exit 139
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+d 755 lib/orders
+f 644 7 lib/orders/10101
+| 1002:x
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section save_orders: dead characters and removal
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> mkdir lib/orders/sub
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+orders 1001 1002: [kept]
+orders 1001 1003: [dropped]
+> saveorders
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 452 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+| 1003 deadchar 0
+| na Dead
+| 
+d 755 lib/orders
+f 644 10 lib/orders/1001
+| 1002:kept
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section save_orders: cannot write
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> orders
+> mkdir lib2
+> libdir lib2
+> saveorders
+can't write lib2/orders/200: Not a directory
+can't write lib2/orders/1001: Not a directory
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 427 lib/misc
+| 100 player pl_npc
+| na Independent player
+| 
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+| 202 player pl_system
+| na Skill list
+| 
+| 203 player pl_system
+| na Order eater
+| 
+| 206 player pl_silent
+| na NPC control
+| 
+| 207 player pl_silent
+| na Garrison units
+| 
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+d 755 lib/orders
+f 644 7 lib/orders/1001
+| 1002:x
+f 644 7 lib/orders/200
+| 1002:y
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+d 755 lib2
+f 644 16 lib2/orders
+| not a directory
+section cleanup_posts
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> posts
+> saveboxes
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 98 lib/fact/1001
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+f 644 50 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| PL
+|  pw secret
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 91 lib/loc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002 
+| 
+f 644 288 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09Player one
+| 1002\x092.0\x09fact/1001\x09Noble
+| 10001\x093.50\x09loc\x09\x09Region
+| 10101\x093.3\x09loc\x09\x09Plain
+f 644 0 lib/misc
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section determine_map_edges
+> mkdir lib
+> mkdir lib/fact
+> system
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> edges
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=10002 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 23 12 1
+trade_route 0 0 11557902
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 231 lib/misc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 10512 12307
+| 
+| 10002 loc region
+| na Faery
+| LI
+|  hl 15599
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+| 
+| 10512 loc forest
+| LI
+|  wh 10001
+| 
+| 12307 loc ocean
+| LI
+|  wh 10001
+| 
+| 15599 loc plain
+| LI
+|  wh 10002
+| 
+| 19999 loc plain
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 9 lib/system
+| fr=10002
+f 644 0 lib/unform
+section determine_map_edges: no special regions
+> mkdir lib
+> mkdir lib/fact
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> edges
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 1 1 1
+trade_route 0 0 11557902
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 88 lib/misc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+| 
+| 19999 loc plain
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section determine_map_edges: special regions set
+> mkdir lib
+> mkdir lib/fact
+> system
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> edges
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=1 tr=4 ur=0 fp=0 hr=2 hp=0 hl=0
+nr=5 nl=0 np=206 cr=3 cp=0 mo=0
+max_map 99 99 1
+trade_route 0 0 11557902
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 88 lib/misc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+| 
+| 19999 loc plain
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 25 lib/system
+| fr=1
+| hr=2
+| cr=3
+| tr=4
+| nr=5
+f 644 0 lib/unform
+section rename_act_join_files
+> mkdir act
+> mkdir act/1001
+> mkdir act/1005
+> mkdir act/1006
+> mkdir act/1006/Join-g3
+> mkdir act/1006/Join-g3-
+> mkdir act/1007
+> mkdir act/1007/Join-g3
+> newplayer 1001
+> newplayer 1005
+> newplayer 1006
+> newplayer 1007
+> newplayer 1001
+> rename
+rename(act/1005/Join-g3, act/1005/Join-g3-) failed:No such file or directory
+rename(act/1006/Join-g3, act/1006/Join-g3-) failed:Directory not empty
+rename(act/1007/Join-g3, act/1007/Join-g3-) failed:Not a directory
+rename(act/1001/Join-g3, act/1001/Join-g3-) failed:No such file or directory
+exit 0
+d 755 act
+d 755 act/1001
+f 644 5 act/1001/Join-g3-
+| join
+d 755 act/1005
+d 755 act/1006
+d 755 act/1006/Join-g3
+d 755 act/1006/Join-g3-
+f 644 2 act/1006/Join-g3-/x
+| x
+d 755 act/1007
+d 755 act/1007/Join-g3
+f 644 5 act/1007/Join-g3-
+| file
