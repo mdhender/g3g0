@@ -10,6 +10,26 @@ import (
 	"github.com/mdhender/g3g0/internal/clib"
 )
 
+// Minimal command handlers, ported whole from c2.c. In particular these
+// report settings mutate the player even though report assembly is stage 2.
+func (w *world) vFormat(c *command) int {
+	pl := w.player(int(c.who))
+	w.pPlayer(pl).format = int8(c.a)
+	w.commandOut(int(c.who), "Formatting for %s set to %d.", w.boxName(pl), c.a)
+	return 1
+}
+
+func (w *world) vNotab(c *command) int {
+	pl := w.player(int(c.who))
+	w.pPlayer(pl).notab = int8(c.a)
+	if c.a != 0 {
+		w.commandOut(int(c.who), "No TAB characters will appear in turn reports.")
+	} else {
+		w.commandOut(int(c.who), "TAB characters may appear in turn reports.")
+	}
+	return 1
+}
+
 // Ported from olympia/c2.c: times_masthead(), which main() runs at the
 // end of every run that loads the game.
 //

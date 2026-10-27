@@ -3,11 +3,18 @@
 
 package olympia
 
+import (
+	"fmt"
+	"strings"
+
+	"github.com/mdhender/g3g0/internal/clib"
+)
+
 // Ported from olympia/input.c: the command line parser that loading a
 // command (scan_command() in io.c) uses, and the loading of a unit's next
 // order into its command (init_load_sup() and what it calls), which
-// set_lord() uses. Running commands is left for later stages; so is
-// reporting an order that does not parse (do_command()).
+// set_lord() uses, plus individual command dispatch and completion.
+// The scheduler and wait handlers remain separate, unported tasks.
 //
 // C works on its strings in place, writing NUL bytes into them. The ports
 // work on a []byte copy where C writes into the string, and give each
@@ -342,9 +349,8 @@ func (w *world) setState(c *command, state, newPri int) {
 // and queues it to run (STATE_LOAD), or, with no order left, sets it to
 // STATE_DONE. It returns whether there was an order.
 //
-// An order that does not parse is set to STATE_ERROR and passed to
-// do_command(), which reports it and loads the next order; that is not
-// ported yet, and panics.
+// An order that does not parse is reported immediately; completion loads
+// the next order, so this returns whether that order is ready to load.
 func (w *world) loadCommand(c *command) bool {
 	assert(c != nil, "olympia/input.c", 537, "c != NULL")
 
@@ -367,10 +373,132 @@ func (w *world) loadCommand(c *command) bool {
 		// No queue holds STATE_ERROR, so report the bad order now.
 		// do_command fails it, and command_done loads the next order.
 		w.setState(c, stateError, 0)
-		panic("olympia: load_command: do_command is not yet implemented")
+		w.doCommand(c)
+		return c.state == stateLoad
 	}
 
 	return true
+}
+
+// cmdShift deletes argument 1, shifts the parsed numeric arguments and
+// parses the newly exposed eighth argument (not necessarily zero).
+func (w *world) cmdShift(c *command) {
+	if c.parse.Len() > 1 {
+		c.parse = append(c.parse[:1], c.parse[2:]...)
+	}
+	c.a, c.b, c.c, c.d, c.e, c.f, c.g = c.b, c.c, c.d, c.e, c.f, c.g, c.h
+	if c.parse.Len()-1 >= 8 {
+		c.h = int32(w.parseArg(int(c.who), c.parse[8]))
+	} else {
+		c.h = 0
+	}
+}
+
+// checkAllow is check_allow. nil is C NULL (unrestricted); a pointer to
+// the empty string is not NULL. The actual table contains empty strings.
+func (w *world) checkAllow(c *command, allow *string) bool {
+	if allow == nil || (w.immediate && strings.ContainsRune(*allow, 'i')) {
+		return true
+	}
+	var t byte
+	switch w.kind(int(c.who)) {
+	case tPlayer:
+		t = 'p'
+	case tChar:
+		if p := w.rpMisc(int(c.who)); p != nil {
+			t = byte(p.cmdAllow)
+		}
+		if t == 0 {
+			t = 'c'
+		}
+	default:
+		fmt.Fprintf(w.stderr, "check_allow: bad kind: %s\n", w.boxName(int(c.who)))
+		assert(false, "olympia/input.c", 352, "FALSE")
+	}
+	if strings.ContainsRune(*allow, 'm') && w.player(int(c.who)) == int(w.gmPlayer) {
+		return true
+	}
+	if !strings.ContainsRune(*allow, rune(t)) {
+		w.commandOut(int(c.who), "%s may not issue that order.", w.boxName(int(c.who)))
+		return false
+	}
+	return true
+}
+
+func (w *world) commandDone(c *command) {
+	if w.immediate {
+		w.setState(c, stateDone, 0)
+		return
+	}
+	if w.loadCommand(c) && int32(c.pri) < w.curPri {
+		w.curPri = int32(c.pri)
+	}
+}
+
+func (w *world) finishCommand(c *command) int {
+	assert(c != nil, "olympia/input.c", 594, "c != NULL")
+	assert(w.validBox(int(c.who)), "olympia/input.c", 595, "valid_box(c->who)")
+	if w.kind(int(c.who)) == tDeadchar {
+		w.commandDone(c)
+		return 0
+	}
+	if w.charMoving(int(c.who)) != 0 && w.stackLeader(int(c.who)) != int(c.who) && c.cmd != w.cmdWait {
+		return 1
+	}
+	if c.wait > 0 {
+		c.wait--
+	}
+	if c.wait > 0 && int16(c.debug) == w.sysclock.day {
+		w.commandOut(int(c.who), "finish_command called twice, wait=%d", c.wait)
+	}
+	c.debug = int8(w.sysclock.day)
+	if c.wait <= 0 || c.poll != 0 {
+		if finish := cmdTbl[c.cmd].finish; finish != nil && c.inhibitFinish == 0 {
+			c.status = int8(finish(w, c))
+		}
+	}
+	if c.state == stateRun && (c.status == 0 || c.wait == 0) {
+		w.commandDone(c)
+	}
+	return int(c.status)
+}
+
+func (w *world) doCommand(c *command) {
+	assert(c != nil, "olympia/input.c", 644, "c != NULL")
+	if !w.immediate {
+		w.commandOut(int(c.who), "> %s", clib.Str(c.line))
+		if c.fuzzy != 0 {
+			w.commandOut(int(c.who), "(assuming you meant '%s')", cmdTbl[c.cmd].name)
+		}
+	}
+	if c.state == stateError {
+		w.commandOut(int(c.who), "Unrecognized command.")
+		c.status = 0
+	} else if !w.checkAllow(c, &cmdTbl[c.cmd].allow) {
+		c.status = 0
+	} else if cmdTbl[c.cmd].start == nil {
+		w.commandOut(int(c.who), "Unimplemented command.")
+		c.status = 0
+	} else {
+		w.pPlayer(w.player(int(c.who))).cmdCount++
+		w.setState(c, stateRun, 0)
+		assert(c.daysExecuting == 0, "olympia/input.c", 680, "c->days_executing == 0")
+		c.debug = 0
+		c.inhibitFinish = 0
+		cmd := c.cmd // start may re-parse c
+		c.status = int8(cmdTbl[cmd].start(w, c))
+	}
+	// As in the pinned C, conditional is parsed and saved but not consulted
+	// here: neither '&' nor '?' suppresses execution based on old status.
+	// coverage_count is the stage-3 instrumentation boundary, not game state.
+	if c.status == 0 {
+		w.commandDone(c)
+	} else if c.wait == 0 && c.state == stateRun {
+		c.status = int8(w.finishCommand(c))
+	}
+	if w.tradesToCheck.Len() > 0 {
+		panic(notImplemented("check_validated_trades"))
+	}
 }
 
 // initLoadSup is init_load_sup(): it puts who's command on the queue for

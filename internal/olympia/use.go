@@ -3,8 +3,42 @@
 
 package olympia
 
-// Ported from olympia/use.c: skill_school(), which check_db() uses. The
-// rest of use.c is left for later stages.
+// Ported from olympia/use.c: skill_school(), which check_db() uses, and
+// the read-only skill lookup used by the minimal hide command handlers.
+
+func expLevel(exp int) int {
+	switch {
+	case exp <= 4:
+		return expNovice
+	case exp <= 11:
+		return expJourneyman
+	case exp <= 20:
+		return expTeacher
+	case exp <= 34:
+		return expMaster
+	default:
+		return expGrand
+	}
+}
+
+func (w *world) rpSkillEnt(who, skill int) *skillEnt {
+	if p := w.rpChar(who); p != nil {
+		for _, e := range p.skills {
+			if int(e.skill) == skill {
+				return e
+			}
+		}
+	}
+	return nil
+}
+
+func (w *world) hasSkill(who, skill int) int {
+	p := w.rpSkillEnt(who, skill)
+	if p == nil || p.know != skillKnow {
+		return 0
+	}
+	return expLevel(int(p.experience))
+}
 
 // skillSchool is skill_school(): the school of skill sk, found by
 // following its required skills up to one that requires none. A chain

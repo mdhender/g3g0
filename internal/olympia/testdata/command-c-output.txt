@@ -1,0 +1,1112 @@
+stdout:
+section handler presence and serialized indexes
+> table
+handler 0  0 0 0
+handler 1 accept 1 0 0
+handler 2 admit 1 0 0
+handler 3 attack 1 0 0
+handler 4 banner 1 0 0
+handler 5 behind 1 0 0
+handler 6 bind 1 1 0
+handler 7 board 1 0 0
+handler 8 breed 1 1 0
+handler 9 bribe 1 1 0
+handler 10 build 1 1 0
+handler 11 buy 1 0 0
+handler 12 catch 1 0 0
+handler 13 claim 1 0 0
+handler 14 collect 1 1 1
+handler 15 contact 1 0 0
+handler 16 credit 1 0 0
+handler 17 decree 1 0 0
+handler 18 default 1 0 0
+handler 19 defend 1 0 0
+handler 20 die 1 0 0
+handler 21 discard 1 0 0
+handler 22 drop 1 0 0
+handler 23 emote 1 0 0
+handler 24 execute 1 0 0
+handler 25 explore 1 1 0
+handler 26 fee 1 0 0
+handler 27 ferry 1 0 0
+handler 28 fish 1 0 0
+handler 29 flag 1 0 0
+handler 30 fly 1 1 0
+handler 31 forget 1 0 0
+handler 32 form 1 1 0
+handler 33 format 1 0 0
+handler 34 garrison 1 0 0
+handler 35 get 1 0 0
+handler 36 give 1 0 0
+handler 37 go 1 1 0
+handler 38 guard 1 0 0
+handler 39 hide 1 1 0
+handler 40 honor 1 0 0
+handler 41 honour 1 0 0
+handler 42 hostile 1 0 0
+handler 43 improve 1 1 0
+handler 44 incite 1 0 0
+handler 45 make 1 1 1
+handler 46 mallorn 1 0 0
+handler 47 message 1 0 0
+handler 48 move 1 1 0
+handler 49 name 1 0 0
+handler 50 neutral 1 0 0
+handler 51 notab 1 0 0
+handler 52 oath 1 0 0
+handler 53 opium 1 0 0
+handler 54 pay 1 0 0
+handler 55 pillage 1 1 0
+handler 56 pledge 1 0 0
+handler 57 plugh 1 0 0
+handler 58 post 1 0 0
+handler 59 press 1 0 0
+handler 60 promote 1 0 0
+handler 61 public 1 0 0
+handler 62 quarry 1 0 0
+handler 63 quest 1 1 0
+handler 64 quit 1 0 0
+handler 65 raise 1 1 0
+handler 66 rally 1 1 0
+handler 67 raze 1 1 0
+handler 68 realname 1 0 0
+handler 69 reclaim 1 0 0
+handler 70 recruit 1 0 0
+handler 71 repair 1 1 1
+handler 72 research 1 1 0
+handler 73 rumor 1 0 0
+handler 74 sail 1 1 1
+handler 75 sell 1 0 0
+handler 76 seek 1 1 0
+handler 77 sneak 1 1 0
+handler 78 split 1 0 0
+handler 79 stack 1 0 0
+handler 80 stone 1 0 0
+handler 81 study 1 1 0
+handler 82 surrender 1 0 0
+handler 83 swear 1 0 0
+handler 84 take 1 0 0
+handler 85 times 1 0 0
+handler 86 train 1 1 1
+handler 87 trance 1 1 0
+handler 88 terrorize 1 1 0
+handler 89 torture 1 1 0
+handler 90 unload 1 0 0
+handler 91 ungarrison 1 0 0
+handler 92 unstack 1 0 0
+handler 93 use 1 1 1
+handler 94 wait 1 1 1
+handler 95 wood 1 0 0
+handler 96 xyzzy 1 0 0
+handler 97 yew 1 0 0
+handler 98 north 1 0 0
+handler 99 n 1 0 0
+handler 100 s 1 0 0
+handler 101 south 1 0 0
+handler 102 east 1 0 0
+handler 103 e 1 0 0
+handler 104 west 1 0 0
+handler 105 w 1 0 0
+handler 106 enter 1 0 0
+handler 107 exit 1 0 0
+handler 108 in 1 0 0
+handler 109 out 1 0 0
+handler 110 begin 0 0 0
+handler 111 unit 0 0 0
+handler 112 email 0 0 0
+handler 113 vis_email 0 0 0
+handler 114 end 0 0 0
+handler 115 flush 0 0 0
+handler 116 lore 0 0 0
+handler 117 passwd 0 0 0
+handler 118 password 0 0 0
+handler 119 players 0 0 0
+handler 120 resend 0 0 0
+handler 121 stop 1 0 0
+handler 122 look 1 0 0
+handler 123 l 1 0 0
+handler 124 ct 1 0 0
+handler 125 be 1 0 0
+handler 126 additem 1 0 0
+handler 127 subitem 1 0 0
+handler 128 h 1 0 0
+handler 129 dump 1 0 0
+handler 130 i 1 0 0
+handler 131 fix 1 0 0
+handler 132 fix2 1 0 0
+handler 133 kill 1 0 0
+handler 134 los 1 0 0
+handler 135 relore 1 0 0
+handler 136 sk 1 0 0
+handler 137 know 1 0 0
+handler 138 seed 1 0 0
+handler 139 seedmarket 1 0 0
+handler 140 sheet 1 0 0
+handler 141 poof 1 0 0
+handler 142 postproc 1 0 0
+handler 143 save 1 0 0
+handler 144 seeall 1 0 0
+handler 145 tp 1 0 0
+handler 146 makeloc 1 0 0
+handler 147 remail 1 0 0
+stderr:
+
+exit 0
+stdout:
+section accepted zero time, fuzzy, report mutations and priority changes
+> set turn 17
+> set day 9
+> set show_day 1
+> set priority 4
+> set count 32767
+> queue fomrat 258
+> queue notab 256
+> queue stop
+> load
+load 1
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 1 days 0 debug 0 inhibit 0 cur 4
+args 258 0 0 0 0 0 0 0; parse [fomrat] [258]
+player 200 count 32767 last 17 format 0 notab 0 output 0 hidden 0 orders 2
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 51 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 9 inhibit 0 cur 1
+args 256 0 0 0 0 0 0 0; parse [notab] [256]
+player 200 count -32768 last 17 format 2 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 121 who 1000 state 1 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 9 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count -32767 last 17 format 2 notab 0 output 1 hidden 0 orders 0
+load_q 0: 1000
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 121 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 9 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count -32766 last 17 format 2 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0:9:> fomrat 258
+1000:0::0:9:(assuming you meant 'format')
+1000:0::0:9:Formatting for Player~[200] set to 258.
+1000:0::0:9:> notab 256
+1000:0::0:9:No TAB characters will appear in turn reports.
+1000:0::0:9:> stop
+stderr:
+
+exit 0
+stdout:
+section unknown chain loads next order and returns ready
+> set turn 23
+> set priority 4
+> queue unknown-command
+> queue another-unknown-command
+> queue xyzzy
+> load
+load 1
+> dump
+cmd 96 who 1000 state 1 status 0 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 3
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 23 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> do
+> dump
+cmd 96 who 1000 state 0 status 1 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 3
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 1 last 23 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> unknown-command
+1000:0::0::Unrecognized command.
+1000:0::0::> another-unknown-command
+1000:0::0::Unrecognized command.
+1000:0::0::> xyzzy
+stderr:
+
+exit 0
+stdout:
+section unknown chain exhausts queue and returns false
+> queue unknown-command
+> queue another-unknown-command
+> load
+load 0
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [another-unknown-command]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> unknown-command
+1000:0::0::Unrecognized command.
+1000:0::0::> another-unknown-command
+1000:0::0::Unrecognized command.
+stderr:
+
+exit 0
+stdout:
+section empty order is parsed, then rejected, rather than an unknown command
+> queue # only a comment
+> queue stop
+> load
+load 1
+> dump
+cmd 0 who 1000 state 1 status 0 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> do
+> dump
+cmd 121 who 1000 state 1 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0: 1000
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 121 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> 
+1000:0::0::<no subkind>~[1000] may not issue that order.
+1000:0::0::> stop
+stderr:
+
+exit 0
+stdout:
+section null line uses C string formatting rather than dereferencing
+> do
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> (null)
+1000:0::0::<no subkind>~[1000] may not issue that order.
+stderr:
+
+exit 0
+stdout:
+section condition markers do not suppress based on prior status
+> set status 0
+> queue &format 7
+> queue ?format 3
+> queue &stop
+> load
+load 1
+> do
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 2 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 3 0 0 0 0 0 0 0; parse [format] [3]
+player 200 count 1 last 0 format 7 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 121 who 1000 state 1 status 1 wait 0 poll 0 pri 0 cond 1 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 2 last 0 format 3 notab 0 output 1 hidden 0 orders 0
+load_q 0: 1000
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> set status 0
+> do
+> dump
+cmd 121 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 1 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 3 last 0 format 3 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> &format 7
+1000:0::0::Formatting for Player~[200] set to 7.
+1000:0::0::> ?format 3
+1000:0::0::Formatting for Player~[200] set to 3.
+1000:0::0::> &stop
+stderr:
+
+exit 0
+stdout:
+section restricted control rejection does not count, next allowed command does
+> set restrict 114
+> queue format 6
+> queue stop
+> load
+load 1
+> do
+> dump
+cmd 121 who 1000 state 1 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0: 1000
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 121 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> format 6
+1000:0::0::<no subkind>~[1000] may not issue that order.
+1000:0::0::> stop
+stderr:
+
+exit 0
+stdout:
+section real start failure counts and loads next command
+> set priority 4
+> queue hide 1
+> queue stop
+> load
+load 1
+> do
+> dump
+cmd 121 who 1000 state 1 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0: 1000
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> hide 1
+1000:0::0::Requires <no subkind>~[638].
+stderr:
+
+exit 0
+stdout:
+section being taught a skill is not knowing it
+> skill 1 200
+> queue hide 1
+> load
+load 1
+> do
+> dump
+cmd 39 who 1000 state 0 status 0 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> hide 1
+1000:0::0::Requires <no subkind>~[638].
+stderr:
+
+exit 0
+stdout:
+section real timed start and finish, then start inhibits zero-time finish
+> skill 2 0
+> queue hide 1
+> queue hide 0
+> queue stop
+> load
+load 1
+> set debug 91
+> do
+> dump
+cmd 39 who 1000 state 2 status 1 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 1
+> finish
+finish 1
+> dump
+cmd 39 who 1000 state 2 status 1 wait 2 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 2
+> finish
+finish 1
+> set day 3
+> finish
+finish 1
+> dump
+cmd 39 who 1000 state 1 status 1 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 3 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [hide] [0]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 1 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> do
+> dump
+cmd 121 who 1000 state 1 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 3 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0: 1000
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> hide 1
+1000:0::0::Now hidden.
+1000:0::0::> hide 0
+1000:0::0::No longer hidden.
+stderr:
+
+exit 0
+stdout:
+section allow null empty restricted GM player and immediate
+> allow NULL
+allow 1
+> allow EMPTY
+allow 0
+> allow p
+allow 0
+> allow c
+allow 1
+> allow m
+allow 1
+> set lord 201
+> allow m
+allow 0
+> set restrict 103
+> allow cpr
+allow 0
+> allow g
+allow 1
+> set immediate 1
+> allow i
+allow 1
+> allow c
+1000:0::0::<no subkind>~[1000] may not issue that order.
+allow 0
+> set restrict 0
+> allow c
+allow 1
+> who 201
+> allow c
+201:0::0::Player~[201] may not issue that order.
+allow 0
+> allow p
+allow 1
+> allow m
+201:0::0::Player~[201] may not issue that order.
+allow 0
+> log
+log:
+1000:0::0::<no subkind>~[1000] may not issue that order.
+1000:0::0::<no subkind>~[1000] may not issue that order.
+stderr:
+
+exit 0
+stdout:
+section immediate error does not load queued next order
+> set immediate 1
+> queue unknown-command
+> queue format 9
+> load
+1000:0::0::Unrecognized command.
+load 0
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [unknown-command]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+stderr:
+
+exit 0
+stdout:
+section immediate zero time has raw C framing but no echo
+> set immediate 1
+> queue format 257
+> queue stop
+> load
+load 1
+> do
+1000:0::0::Formatting for Player~[200] set to 257.
+> dump
+cmd 33 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 257 0 0 0 0 0 0 0; parse [format] [257]
+player 200 count 1 last 0 format 1 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+stderr:
+
+exit 0
+stdout:
+section persisted timed command no poll versus completion
+> parse hide 1
+parse 1
+> run 3 0 1 0
+> set day 2
+> finish
+finish 1
+> dump
+cmd 39 who 1000 state 2 status 1 wait 2 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 2 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 3
+> finish
+finish 1
+> dump
+cmd 39 who 1000 state 2 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 3 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 4
+> finish
+finish 1
+> dump
+cmd 39 who 1000 state 0 status 1 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 4 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 1 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::Now hidden.
+stderr:
+
+exit 0
+stdout:
+section persisted poll invokes real finish before timeout
+> parse hide 1
+parse 1
+> run 3 1 1 0
+> set day 2
+> finish
+finish 1
+> dump
+cmd 39 who 1000 state 2 status 1 wait 2 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 2 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 1 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 3
+> finish
+finish 1
+> dump
+cmd 39 who 1000 state 2 status 1 wait 1 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 3 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 1 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> log
+log:
+1000:0::0::Now hidden.
+1000:0::0::Now hidden.
+stderr:
+
+exit 0
+stdout:
+section poll failure completes early and loads different priority
+> parse hide 1
+parse 1
+> run 7 1 1 0
+> set parent 1001
+> queue stop
+> set priority 4
+> finish
+finish 0
+> dump
+cmd 121 who 1000 state 1 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0: 1000
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::finish_command called twice, wait=6
+1000:0::0::Must be alone to hide.
+stderr:
+
+exit 0
+stdout:
+section inhibited finish does not mutate hidden or replace status
+> parse hide 1
+parse 1
+> run 1 1 1 1
+> finish
+finish 1
+> dump
+cmd 39 who 1000 state 0 status 1 wait 0 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 1 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+stderr:
+
+exit 0
+stdout:
+section negative wait remains running, no finish for null handler
+> parse xyzzy
+parse 1
+> run -1 1 1 0
+> finish
+finish 1
+> dump
+cmd 96 who 1000 state 2 status 1 wait -1 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> finish
+finish 1
+> dump
+cmd 96 who 1000 state 2 status 1 wait -1 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+stderr:
+
+exit 0
+stdout:
+section double completion diagnostic and signed debug
+> parse xyzzy
+parse 1
+> run 5 0 1 0
+> set day 7
+> finish
+finish 1
+> finish
+finish 1
+> dump
+cmd 96 who 1000 state 2 status 1 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 130
+> finish
+finish 1
+> finish
+finish 1
+> dump
+cmd 96 who 1000 state 2 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug -126 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> log
+log:
+1000:0::0::finish_command called twice, wait=3
+stderr:
+
+exit 0
+stdout:
+section moving follower suspends even when status false
+> parse xyzzy
+parse 1
+> run 3 0 0 0
+> set parent 1001
+> set moving 37
+> finish
+finish 1
+> dump
+cmd 96 who 1000 state 2 status 0 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+stderr:
+
+exit 0
+stdout:
+section moving follower wait exception without implementing wait
+> parse wait
+parse 1
+> run 3 1 1 1
+> set parent 1001
+> set moving 37
+> resolve_wait
+> finish
+finish 1
+> dump
+cmd 94 who 1000 state 2 status 1 wait 2 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> log
+log:
+1000:0::0::finish_command called twice, wait=2
+stderr:
+
+exit 0
+stdout:
+section dead character completion does not consume orders or decrement wait
+> parse xyzzy
+parse 1
+> run 3 0 1 0
+> queue stop
+> set turn 19
+> set kind 8
+> finish
+finish 0
+> dump
+cmd 96 who 1000 state 0 status 1 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+stderr:
+
+exit 0
+stdout:
+section cmd shift exposes ninth and tenth numeric arguments
+> parse stop 11 22 33 44 55 66 77 88 99 123
+parse 1
+> shift
+> dump
+cmd 121 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 22 33 44 55 66 77 88 99; parse [stop] [22] [33] [44] [55] [66] [77] [88] [99] [123]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> shift
+> dump
+cmd 121 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 33 44 55 66 77 88 99 123; parse [stop] [33] [44] [55] [66] [77] [88] [99] [123]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> shift
+> dump
+cmd 121 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 44 55 66 77 88 99 123 0; parse [stop] [44] [55] [66] [77] [88] [99] [123]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> parse stop
+parse 1
+> shift
+> dump
+cmd 121 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+stderr:
+
+exit 0
+stdout:
+section player commands use player queues and do not need characters
+> who 201
+> queue format 5
+> queue stop
+> load
+load 1
+> do
+> dump
+cmd 121 who 201 state 1 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 201 count 1 last 0 format 5 notab 0 output 1 hidden 0 orders 0
+load_q 0: 201
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 121 who 201 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 201 count 2 last 0 format 5 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+201:0::0::> format 5
+201:0::0::Formatting for Player~[201] set to 5.
+201:0::0::> stop
+stderr:
+
+exit 0
+stdout:
+section prisoners suppress raw output, not handler mutations
+> set prisoner 1
+> queue format 8
+> load
+load 1
+> do
+> dump
+cmd 33 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 8 0 0 0 0 0 0 0; parse [format] [8]
+player 200 count 1 last 0 format 8 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+stderr:
+
+exit 0
+stdout:
+section done removes run queue without consuming next in immediate mode
+> parse xyzzy
+parse 1
+> run 5 0 1 0
+> queue stop
+> set immediate 1
+> done
+> dump
+cmd 96 who 1000 state 0 status 1 wait 5 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+stderr:
+
+exit 0
+stdout:
+section null dispatch assertion
+> null_do
+stderr:
+assertion failure: olympia/input.c (644): c != NULL
+
+exit 134
+stdout:
+section null finish assertion
+> null_finish
+stderr:
+assertion failure: olympia/input.c (594): c != NULL
+
+exit 134
+stdout:
+section invalid finish assertion
+> invalid_finish
+stderr:
+assertion failure: olympia/input.c (595): valid_box(c->who)
+
+exit 134
+stdout:
+section null load assertion
+> null_load
+stderr:
+assertion failure: olympia/input.c (537): c != NULL
+
+exit 134
+stdout:
+section bad kind check_allow assertion
+> set kind 3
+> allow c
+stderr:
+check_allow: bad kind: <no subkind>~[1000]
+assertion failure: olympia/input.c (352): FALSE
+
+exit 134
+stdout:
+section days executing assertion after state and counter mutation
+> queue stop
+> load
+load 1
+> set days 1
+> do
+stderr:
+assertion failure: olympia/input.c (680): c->days_executing == 0
+
+exit 134

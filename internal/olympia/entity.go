@@ -458,9 +458,9 @@ type cmdTblEnt struct {
 	allow string // who may execute the command
 	name  string // name of command
 
-	start     func(*command) int // initiator
-	finish    func(*command) int // conclusion
-	interrupt func(*command) int // interrupted order
+	start     func(*world, *command) int // initiator
+	finish    func(*world, *command) int // conclusion
+	interrupt func(*world, *command) int // interrupted order
 
 	time int32 // how long command takes
 	poll int32 // call finish each day, not just at end

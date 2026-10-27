@@ -10,6 +10,38 @@ import (
 
 // Ported from olympia/u.c.
 
+func (w *world) checkSkill(who, skill int) bool {
+	if w.hasSkill(who, skill) < 1 {
+		w.commandOut(who, "Requires %s.", w.boxName(skill))
+		return false
+	}
+	return true
+}
+
+// countAny and countStackAny are count_any and count_stack_any, used by
+// char_alone in d_hide. Accumulate in C int width, in inventory/stack order.
+func (w *world) countAny(who int) int32 {
+	sum := int32(1)
+	if w.subkind(who) == subGarrison {
+		sum = 0
+	}
+	for e := range w.loopInv(who) {
+		p := w.rpItem(int(e.item))
+		if int(e.item) == itemGhostWarrior || (p != nil && (p.isManItem != 0 || p.attack != 0 || p.defense != 0 || p.missile != 0)) {
+			sum += e.qty
+		}
+	}
+	return sum
+}
+
+func (w *world) countStackAny(who int) int32 {
+	var sum int32
+	for i := range w.loopStack(who) {
+		sum += w.countAny(i)
+	}
+	return sum
+}
+
 // olytimeIncrement is olytime_increment(): advance the epoch and day,
 // without rolling over the day or changing the turn.
 func olytimeIncrement(p *olytime) {

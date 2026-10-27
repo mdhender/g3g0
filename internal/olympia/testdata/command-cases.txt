@@ -1,0 +1,313 @@
+# Scripted calls into pinned C input.c, its real table and minimal handlers.
+# run W P S I constructs an already-running command (as loaded from a DB).
+# It intentionally permits nondefault poll flags: poll is a saved field.
+section handler presence and serialized indexes
+table
+
+section accepted zero time, fuzzy, report mutations and priority changes
+set turn 17
+set day 9
+set show_day 1
+set priority 4
+set count 32767
+queue fomrat 258
+queue notab 256
+queue stop
+load
+dump
+do
+dump
+do
+dump
+do
+dump
+log
+
+section unknown chain loads next order and returns ready
+set turn 23
+set priority 4
+queue unknown-command
+queue another-unknown-command
+queue xyzzy
+load
+dump
+do
+dump
+log
+
+section unknown chain exhausts queue and returns false
+queue unknown-command
+queue another-unknown-command
+load
+dump
+log
+
+section empty order is parsed, then rejected, rather than an unknown command
+queue # only a comment
+queue stop
+load
+dump
+do
+dump
+do
+dump
+log
+
+section null line uses C string formatting rather than dereferencing
+do
+dump
+log
+
+section condition markers do not suppress based on prior status
+set status 0
+queue &format 7
+queue ?format 3
+queue &stop
+load
+do
+dump
+do
+dump
+set status 0
+do
+dump
+log
+
+section restricted control rejection does not count, next allowed command does
+set restrict 114
+queue format 6
+queue stop
+load
+do
+dump
+do
+dump
+log
+
+section real start failure counts and loads next command
+set priority 4
+queue hide 1
+queue stop
+load
+do
+dump
+log
+
+section being taught a skill is not knowing it
+skill 1 200
+queue hide 1
+load
+do
+dump
+log
+
+section real timed start and finish, then start inhibits zero-time finish
+skill 2 0
+queue hide 1
+queue hide 0
+queue stop
+load
+set debug 91
+do
+dump
+set day 1
+finish
+dump
+set day 2
+finish
+set day 3
+finish
+dump
+do
+dump
+log
+
+section allow null empty restricted GM player and immediate
+allow NULL
+allow EMPTY
+allow p
+allow c
+allow m
+set lord 201
+allow m
+set restrict 103
+allow cpr
+allow g
+set immediate 1
+allow i
+allow c
+set restrict 0
+allow c
+who 201
+allow c
+allow p
+allow m
+log
+
+section immediate error does not load queued next order
+set immediate 1
+queue unknown-command
+queue format 9
+load
+dump
+log
+
+section immediate zero time has raw C framing but no echo
+set immediate 1
+queue format 257
+queue stop
+load
+do
+dump
+log
+
+section persisted timed command no poll versus completion
+parse hide 1
+run 3 0 1 0
+set day 2
+finish
+dump
+set day 3
+finish
+dump
+set day 4
+finish
+dump
+log
+
+section persisted poll invokes real finish before timeout
+parse hide 1
+run 3 1 1 0
+set day 2
+finish
+dump
+set day 3
+finish
+dump
+log
+
+section poll failure completes early and loads different priority
+parse hide 1
+run 7 1 1 0
+set parent 1001
+queue stop
+set priority 4
+finish
+dump
+log
+
+section inhibited finish does not mutate hidden or replace status
+parse hide 1
+run 1 1 1 1
+finish
+dump
+log
+
+section negative wait remains running, no finish for null handler
+parse xyzzy
+run -1 1 1 0
+finish
+dump
+finish
+dump
+
+section double completion diagnostic and signed debug
+parse xyzzy
+run 5 0 1 0
+set day 7
+finish
+finish
+dump
+set day 130
+finish
+finish
+dump
+log
+
+section moving follower suspends even when status false
+parse xyzzy
+run 3 0 0 0
+set parent 1001
+set moving 37
+finish
+dump
+
+section moving follower wait exception without implementing wait
+parse wait
+run 3 1 1 1
+set parent 1001
+set moving 37
+resolve_wait
+finish
+dump
+log
+
+section dead character completion does not consume orders or decrement wait
+parse xyzzy
+run 3 0 1 0
+queue stop
+set turn 19
+set kind 8
+finish
+dump
+
+section cmd shift exposes ninth and tenth numeric arguments
+parse stop 11 22 33 44 55 66 77 88 99 123
+shift
+dump
+shift
+dump
+shift
+dump
+parse stop
+shift
+dump
+
+section player commands use player queues and do not need characters
+who 201
+queue format 5
+queue stop
+load
+do
+dump
+do
+dump
+log
+
+section prisoners suppress raw output, not handler mutations
+set prisoner 1
+queue format 8
+load
+do
+dump
+log
+
+section done removes run queue without consuming next in immediate mode
+parse xyzzy
+run 5 0 1 0
+queue stop
+set immediate 1
+done
+dump
+
+section null dispatch assertion
+null_do
+
+section null finish assertion
+null_finish
+
+section invalid finish assertion
+invalid_finish
+
+section null load assertion
+null_load
+
+section bad kind check_allow assertion
+set kind 3
+allow c
+
+section days executing assertion after state and counter mutation
+queue stop
+load
+set days 1
+do

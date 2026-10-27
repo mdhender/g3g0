@@ -1,0 +1,108 @@
+# Command dispatch and completion
+
+Pinned reference: [Olympia G3 at
+2567e6a5dd0ba0d95516d8bed9e1bafb87a51985](https://github.com/playbymail/olympia-g3/tree/2567e6a5dd0ba0d95516d8bed9e1bafb87a51985).
+
+```sh
+tools/command-compat/run.sh
+tools/command-compat/run.sh --update # ONLY real C generates the recording
+```
+
+Requires Bash, git, Python 3, a C11 compiler (`CC`, default `cc`, with GNU
+section GC or Darwin dead stripping), Go, Perl (timeout supervision), cmp and diff.
+`G3_REPO` defaults to `~/Software/playbymail/olympia-g3`; a bare cache containing
+the pin also works. `G3_REV` deliberately overrides the pin.
+`WORK` defaults to `tmp/command-compat` and is emptied first.
+Only archives under `tmp/` are compiled; no upstream working tree is modified
+or built. Each C driver and Go test binary runs under shared `run_limited`,
+via `tools/lib/timeout.sh` / `run-limited.sh`, with `RUN_TIMEOUT` seconds.
+
+## Reference and stub boundary
+
+The script extracts complete functions from **real pinned input.c**, retaining
+original `#line` locations: parser, `cmd_shift`, `check_allow`, `get_command`,
+`set_state`, `load_command`, `command_done`, `finish_command`, `do_command`,
+and `init_load_sup`. Wrappers expose its static load/state helpers to the
+driver; no compared routine is rewritten or stubbed. It links the real
+`glob.c` table (including original handler pointers), `code.c`, `z.c`,
+**sout.c**, and list/allocation libraries. The raw command output is therefore
+real `out`/`wout` → `vout` → `out_sup` → `bottom_out`, not a printf stub.
+The driver observes output files only through the `log` operation, after
+flushing C stdio. stdout, stderr and status are recorded separately, without
+normalization. Two fresh C runs must be byte-identical before recording or
+comparing. Default Go tests use the recording without C or saved games.
+
+Real complete handlers: `v_stop`, `v_xyzzy`, `v_plugh`, `v_format`, `v_notab`,
+`v_hide`, `d_hide`. Real dependencies include order-head/top/pop operations,
+player/lord and stack lookup, `all_stack`, `count_any`, `count_stack_any`,
+`rp_skill_ent`, `has_skill`, `exp_level`, `check_skill`, parser garrison lookup,
+and sparse output-bit operations. The driver only constructs state and calls
+these functions; it does not emulate their decisions.
+
+All other command routines named by the C table are **aborting** stubs,
+never successful substitutes. The remaining aborting dependencies are
+unreachable location/garrison report routes (`players_who_rule_here`,
+`loc_depth`, `viewloc`, `loc_hidden`, `test_known`), unused display formatting
+(`is_port_city`, `nice_num`), and validated-trade settlement. Reaching any
+stub fails the script, including `--update`. Only `coverage_count` is a
+no-op: it writes stage-3 instrumentation, not gameplay state. No scheduling,
+wait predicates or wait handlers are stubbed into successful execution.
+
+## Production boundary
+
+Go preserves each saved command-table index and the C layout of
+`cmd_tbl_ent` (three function pointers). NULL stays nil; all unported
+non-NULL handlers raise the engine's explicit not-implemented error, including
+wait. Tests compare presence of all three pointers at **every** table index
+against actual C, independently of the existing entity layout/metadata test.
+The only implemented handlers are the complete real handlers listed above.
+The tiny no-op handlers really return TRUE in C. Skill lookup and counting
+are real dependencies, not successful placeholders.
+
+The minimal `commandOut` route implements default character/player output,
+prisoner suppression, real raw C line framing and LEN-1 truncation, append-only
+log writes and the player's output-bit mutation. Immediate output goes to
+stdout with C framing, but without command echo; it does **not** bypass all
+allow checks. Other routing/formatting fails explicitly. Report assembly and
+the broader sout interface remain stage 2. No report-side mutations on these
+paths are omitted. `-r` remains disabled; no scheduler or wait implementation
+is enabled by these individual dispatcher methods.
+
+## Discriminating cases
+
+- All 148 table entries: actual NULL/start/finish/interrupt presence and
+  serialized indexes, in addition to existing entity layout checks.
+- Unknown → unknown → valid versus unknown queue exhaustion: recursive
+  reporting, `load_command`'s actual return value, status, next-order
+  consumption, `last_order_turn` and exact load/run queue membership.
+- A comment-only/empty command is valid parse index 0, then **disallowed**;
+  it is not reported as unrecognized and does not increment command count.
+  A NULL line uses actual C `%s` formatting, not a Go pointer dereference.
+- `fomrat 258` distinguishes fuzzy correction and its echo; formatting is
+  stored as signed char **2**, while raw output still prints **258**.
+  `notab 256` stores zero but prints the nonzero-argument message. Command
+  count crosses signed-short 32767. Next orders lower current priority.
+- Both condition markers execute despite the opposite previous status:
+  pinned C parses/saves `conditional` but never tests it in dispatch.
+- NULL/empty allow, player/character, restricted `r`/`g`, GM override, and
+  immediate `i` exemption versus still-disallowed non-`i` orders.
+- A real failing hide start increments command count, unlike allow rejection;
+  learning a skill is not knowing it. A real timed hide start/finish changes
+  hidden state, then hide 0 sets wait zero and inhibits its finish routine.
+- Persisted hide with wait **3**, poll **0 versus 1**: the poll case mutates
+  hidden state before timeout and emits two real finish messages. These
+  deliberately constructed saved fields test the generic dispatcher; the
+  table's default hide poll remains 0. Failure while stacked completes early
+  and loads the priority-0 next order. Inhibition preserves status/state.
+- Negative wait remains negative/running; double same-day calls print C's
+  diagnostic; day 130 stores a signed-char debug value, not an int.
+- A moving follower suspends even with failed status; the wait-ID exception
+  decrements wait without calling any wait handler (`inhibit_finish=1`).
+  A dead character completes without decrementing wait or consuming orders.
+- Shift exposes ninth and tenth numeric arguments instead of always zeroing
+  h. Player queues, prisoner output suppression versus real mutations,
+  immediate completion preserving queued orders, and all dispatcher NULL /
+  invalid-unit / days-executing assertion locations are observed.
+
+The recording contains 33 sections / 1112 lines on Linux x86-64.
+Whole-game checks remain opt-in in `turn-compat`. No cases consume RNG.

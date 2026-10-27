@@ -130,6 +130,13 @@ type world struct {
 	loadQ [maxPri]lists.IList
 	runQ  lists.IList
 
+	// input.c statics. cmdWait stays -1 until process_orders resolves it;
+	// defining this field does not implement the wait command or scheduler.
+	curPri    int32
+	cmdWait   int32
+	immediate bool
+	showDay   bool // glob.c show_day; default formatting for command output
+
 	// monthDone is month_done in input.c, set after the daily loop.
 	monthDone int32
 
@@ -169,7 +176,8 @@ type world struct {
 // %d, so any value round-trips.
 func newWorld() *world {
 	return &world{
-		bx: make([]*box, maxBoxes),
+		bx:      make([]*box, maxBoxes),
+		cmdWait: -1,
 
 		fromHost:       "g3@olympia.v-labs.be",
 		replyHost:      "g3@olympia.v-labs.be",

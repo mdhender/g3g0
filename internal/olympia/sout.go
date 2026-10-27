@@ -3,7 +3,13 @@
 
 package olympia
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"os"
+
+	"github.com/mdhender/g3g0/internal/clib"
+)
 
 // Ported from olympia/sout.c.
 
@@ -13,4 +19,42 @@ import "fmt"
 func sout(format string, a ...any) string {
 	s := fmt.Sprintf(format, a...)
 	return s[:min(len(s), lenMax)]
+}
+
+// commandOut is the default character/player route through out/vout,
+// out_sup and bottom_out. wout is an alias for out in C. Keep raw output
+// framing even in immediate mode, and keep the player's output bit mutation.
+// Other routing/formatting and report assembly are stage 2, not no-op stubs.
+func (w *world) commandOut(who int, format string, a ...any) {
+	if w.isPrisoner(who) {
+		return
+	}
+	if w.subkind(who) == subGarrison || (w.kind(who) != tChar && w.kind(who) != tPlayer) {
+		panic(notImplemented("command output routing"))
+	}
+	var fp io.Writer = w.stdout
+	if !w.immediate {
+		pl := w.player(who)
+		if pl == 0 {
+			return
+		}
+		name := sout("%s/log/%d", w.libdir, pl)
+		f, err := os.OpenFile(name, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0o666)
+		if err != nil {
+			fmt.Fprintf(w.stderr, "alloc_fp: can't open %s: ", name)
+			clib.Perror(w.stderr, "", err)
+			assert(false, "olympia/sout.c", 158, "FALSE")
+		}
+		defer f.Close()
+		fp = f
+		setBit(&w.pPlayer(pl).output, who)
+	}
+	// vout's buffer has LEN bytes, unlike sout's LEN+1.
+	s := fmt.Sprintf(format, a...)
+	s = s[:min(len(s), lenMax-1)]
+	day := ""
+	if w.showDay {
+		day = fmt.Sprintf("%d", w.sysclock.day)
+	}
+	fmt.Fprintf(fp, "%d:0::0:%s:%s\n", who, day, s)
 }

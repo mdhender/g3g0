@@ -13,10 +13,10 @@ package olympia
 // the NULL; with no terminator that is len(kindS) == tMax and
 // len(subkindS) == subMax.
 //
-// Not ported, because loading and saving do not use them: show_day,
+// Not ported, because loading and saving do not use them:
 // short_dir_s, full_dir_s, exit_opposite and loc_depth_s.
-// libdir is options.libdir (olympia.go) and world.libdir. The command
-// routines of cmd_tbl are not ported yet either; see cmdTbl.
+// libdir is options.libdir (olympia.go) and world.libdir; show_day is
+// world.showDay. See cmdTbl for the command-handler boundaries.
 
 // kindS is kind_s, the name of each entity kind, indexed by T_xxx.
 var kindS = []string{
@@ -129,11 +129,9 @@ var subkindS = []string{
 
 // cmdTbl is cmd_tbl, the command table. A command is its index here.
 //
-// The start, finish and interrupt routines are nil until the commands are
-// ported: the C routines each row names are in its comment, in that order,
-// with - for NULL. Loading reads the other columns (oly_parse_cmd() looks
-// up the name, and the pri, time and poll columns seed a command); whether
-// a routine is NULL is only seen when a turn runs.
+// init installs the handlers below, preserving NULL versus an unported
+// routine. The C routine names are in each row's comment, in that order,
+// with - for NULL. Never reorder rows: command indexes are saved in the DB.
 //
 // Allow field:
 //
@@ -296,4 +294,53 @@ var cmdTbl = []cmdTblEnt{
 	{"i", "tp", nil, nil, nil, 0, 0, 1},         // v_take_pris - -
 	{"i", "makeloc", nil, nil, nil, 0, 0, 1},    // v_makeloc - -
 	{"i", "remail", nil, nil, nil, 0, 0, 1},     // v_remail - -
+}
+
+func init() {
+	// All nonempty allow rows have a start routine in the pinned cmd_tbl.
+	// Keep real C NULLs nil, but never mistake an unported routine for NULL.
+	for i := range cmdTbl {
+		if cmdTbl[i].allow != "" {
+			cmdTbl[i].start = unportedCommand(cmdTbl[i].name, "start")
+		}
+	}
+	for _, name := range []string{
+		"bind", "breed", "bribe", "build", "collect", "explore", "fly", "form",
+		"go", "hide", "improve", "make", "move", "pillage", "quest", "raise",
+		"rally", "raze", "repair", "research", "sail", "seek", "sneak", "study",
+		"train", "trance", "terrorize", "torture", "use", "wait",
+	} {
+		for i := range cmdTbl {
+			if cmdTbl[i].name == name {
+				cmdTbl[i].finish = unportedCommand(name, "finish")
+			}
+		}
+	}
+	for _, name := range []string{"collect", "make", "repair", "sail", "train", "use", "wait"} {
+		for i := range cmdTbl {
+			if cmdTbl[i].name == name {
+				cmdTbl[i].interrupt = unportedCommand(name, "interrupt")
+			}
+		}
+	}
+	for i := range cmdTbl {
+		switch cmdTbl[i].name {
+		case "stop", "xyzzy", "plugh":
+			// These three real C handlers do nothing except return TRUE.
+			cmdTbl[i].start = func(*world, *command) int { return 1 }
+		case "format":
+			cmdTbl[i].start = (*world).vFormat
+		case "notab":
+			cmdTbl[i].start = (*world).vNotab
+		case "hide":
+			cmdTbl[i].start = (*world).vHide
+			cmdTbl[i].finish = (*world).dHide
+		}
+	}
+}
+
+func unportedCommand(name, phase string) func(*world, *command) int {
+	return func(*world, *command) int {
+		panic(notImplemented("command " + name + " " + phase))
+	}
 }
