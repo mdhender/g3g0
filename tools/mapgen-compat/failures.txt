@@ -1,0 +1,27 @@
+# Failure cases for the mapgen differential test (see README.md).
+#
+# Each line is: <label> <seed> <status>
+#   label   failures/<label>/ holds the inputs; any of Map, Regions, Land and
+#           Cities it lacks come from tests/mapgen/fixtures in the pinned
+#           G3 export.
+#   seed    a label from seeds.txt.
+#   status  the exit status the pinned C build gives (134 is SIGABRT).
+#
+# Each case runs once per seed listed. With the "missing" seed, load_seed()
+# leaves "randseed could not be opened." in the stdout buffer, which only
+# abort()'s flush of every open stream writes out (G3G0 #39).
+
+# read_map(): an unknown terrain glyph (mapgen.c 680)
+unknown-terrain   missing  134
+unknown-terrain   fixture  134
+# alloc_inside(): more than 199 regions (mapgen.c 768)
+too-many-regions  missing  134
+too-many-regions  fixture  134
+# rc_to_region() from read_map(): a Map column past 99 (mapgen.c 1056)
+wide-map          missing  134
+wide-map          fixture  134
+# ... in the last row, where the C store lands past the whole map array
+wide-last-row     missing  134
+# ... and a Map row past 99 (mapgen.c 1055)
+tall-map          missing  134
+tall-map          fixture  134

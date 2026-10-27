@@ -110,7 +110,8 @@ The full table of hashes is in [`results.tsv`](results.tsv), and the gate result
 These are limited to failure paths the C build cannot reproduce exactly. None is reached by any case:
 
 - **Assertion failures.** `assert()` prints the compiler's `__FILE__`, which is the absolute path of the source on the build machine.
-  The port prints `genesis/genesis.c` with the C line number, and exits 134 as `abort()` does.
+  The port prints `genesis/genesis.c` with the C line number, and exits 134, the status the shell sees for `abort()`'s SIGABRT.
+  On macOS `abort()` also flushes every open stdio stream, but genesis writes nothing to stdout and opens no output file until after the last assertion, so there is nothing to flush and the port leaves the same files (none) behind ([#39](https://github.com/mdhender/g3g0/issues/39)).
 - **Undefined behavior.** More than 100 water bodies under `--defer-oceans` would overrun fixed-size C arrays before the assertion that guards them.
   The port panics with an index error there instead.
 - **Byte order.** `randseed` is two `uint64_t` values written with `fwrite`, so its bytes are in the host's byte order.

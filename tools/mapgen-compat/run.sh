@@ -43,6 +43,16 @@ sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
 # with_timeout runs a command, killing it after RUN_TIMEOUT seconds.
 with_timeout() { perl -e 'alarm shift; exec @ARGV or die "exec: $!"' "${RUN_TIMEOUT}" "$@"; }
 
+# run_capture BIN runs BIN under the same timeout, writing stdout and stderr in
+# the current directory. It calls perl directly rather than through
+# with_timeout: when a program dies by a signal (abort() on an assertion),
+# bash reports it ("Abort trap: 6") on the stderr in effect for the command,
+# which inside a function is the program's own stderr file. Here the report
+# goes to the caller's stderr, which run_one discards.
+run_capture() {
+	perl -e 'alarm shift; exec @ARGV or die "exec: $!"' "${RUN_TIMEOUT}" "$1" >stdout 2>stderr
+}
+
 for tool in git cmake go perl shasum xxd cmp diff; do
 	command -v "${tool}" >/dev/null || die "missing required tool: ${tool}"
 done
@@ -129,7 +139,7 @@ run_one() {
 	for f in "${INPUTS[@]}"; do cp -p "${WORK}/inputs/${input}/${f}" "${dir}/"; done
 	if [ -f "${WORK}/seeds/${seed}" ]; then cp -p "${WORK}/seeds/${seed}" "${dir}/randseed"; fi
 	local ec=0
-	(cd "${dir}" && with_timeout "${bin}" >stdout 2>stderr) || ec=$?
+	(cd "${dir}" && run_capture "${bin}") 2>/dev/null || ec=$?
 	echo "${ec}" >"${dir}/status"
 	# A run that writes no randseed must still compare against one that does.
 	[ -e "${dir}/randseed" ] || : >"${dir}/randseed.absent"
@@ -215,6 +225,67 @@ for input in "${input_labels[@]}"; do
 		echo "  ${distinct} seeds gave ${distinct} distinct reference maps"
 	fi
 done
+
+# ---------------------------------------------------------------------------
+# Failure cases: inputs on which the C program fails. The reference must exit
+# with the recorded status, and Go must match it on every output. asfail()
+# prints the compiler's __FILE__, the absolute path of the exported source,
+# where the port prints mapgen/mapgen.c, so that prefix is removed from the C
+# stderr before comparing.
+# ---------------------------------------------------------------------------
+G3_ABS="${WORK}/g3/"
+G3_PHYS="$(cd "${WORK}/g3" && pwd -P)/"
+
+# strip_file_prefix DIR removes the export's path from DIR's stderr.
+strip_file_prefix() {
+	G3_ABS="${G3_ABS}" G3_PHYS="${G3_PHYS}" perl -pi -e 's/\Q$ENV{G3_PHYS}\E//g; s/\Q$ENV{G3_ABS}\E//g' "$1/stderr"
+}
+
+echo
+echo "failure cases"
+while read -r label seed want; do
+	[[ -z "${label}" || "${label}" == \#* ]] && continue
+	src="${HERE}/failures/${label}"
+	[ -d "${src}" ] || die "failures.txt: no directory failures/${label}"
+	[ -n "${want}" ] || die "failures.txt: no status for ${label}"
+	printf '%s\n' "${seed_labels[@]}" | grep -qx -- "${seed}" || die "failures.txt: unknown seed '${seed}' for ${label}"
+	input="fail-${label}"
+	if [ ! -d "${WORK}/inputs/${input}" ]; then
+		mkdir -p "${WORK}/inputs/${input}"
+		for f in "${INPUTS[@]}"; do
+			from="${src}/${f}"
+			[ -f "${from}" ] || from="${WORK}/g3/tests/mapgen/fixtures/${f}"
+			cp -p "${from}" "${WORK}/inputs/${input}/"
+		done
+	fi
+	base="${WORK}/runs/${input}/${seed}"
+	run_one "${C_BIN}" "${input}" "${seed}" "${base}/c1"
+	run_one "${C_BIN}" "${input}" "${seed}" "${base}/c2"
+	run_one "${GO_BIN}" "${input}" "${seed}" "${base}/go1"
+	run_one "${GO_BIN}" "${input}" "${seed}" "${base}/go2"
+	strip_file_prefix "${base}/c1"
+	strip_file_prefix "${base}/c2"
+
+	result=PASS
+	status="$(cat "${base}/c1/status")"
+	if [ "${status}" != "${want}" ]; then
+		fail "${input}/${seed}: reference mapgen-g3 exited ${status}, not ${want}"
+		result=FAIL
+	fi
+	same "${base}/c1" "${base}/c2" "C determinism" || { fail "${input}/${seed}: C runs disagree"; result=FAIL; }
+	same "${base}/go1" "${base}/go2" "Go determinism" || { fail "${input}/${seed}: Go runs disagree"; result=FAIL; }
+	same "${base}/c1" "${base}/go1" "C vs Go" || { fail "${input}/${seed}: Go output differs from C"; result=FAIL; }
+
+	seed_hex=missing
+	[ -f "${WORK}/seeds/${seed}" ] && seed_hex="$(xxd -p "${WORK}/seeds/${seed}")"
+	final_hex=none
+	[ -f "${base}/c1/randseed" ] && final_hex="$(xxd -p "${base}/c1/randseed")"
+	printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "${input}" "${seed}" "${seed_hex}" "${status}" \
+		"$(sha "${base}/c1/loc")" "$(sha "${base}/c1/gate")" "$(sha "${base}/c1/road")" \
+		"${final_hex}" "${result}" >>"${RESULTS}"
+	printf '  %-6s %-18s %-8s status %s  stdout %s bytes  %s\n' "${result}" "${label}" "${seed}" "${status}" \
+		"$(wc -c <"${base}/c1/stdout" | tr -d ' ')" "$(tail -1 "${base}/c1/stderr")"
+done <"${HERE}/failures.txt"
 
 # ---------------------------------------------------------------------------
 # G3's mapgen regression checks, unchanged. They run the C reference by

@@ -242,7 +242,12 @@ func Run(dir string, stdout, stderr io.Writer) (status int) {
 			// asfail() prints the compiler's __FILE__, which is the absolute
 			// path of the upstream source; the relative path stands in for it.
 			fmt.Fprintf(g.stderr, "assertion failure: %s (%d): %s\n", "mapgen/mapgen.c", r.line, r.cond)
-			status = 134 // abort()
+			// abort() exits 134 and, on macOS, flushes every open stdio
+			// stream. Every reachable asfail() comes before print_map(), so
+			// loc, gate and road are still empty, and the only buffered
+			// stdout is load_seed()'s message, which the port has already
+			// written to g.stdout.
+			status = 134
 		case runtime.Error:
 			// The C code dereferences NULL on several inputs and dies with
 			// SIGSEGV, printing nothing. The port reaches the same points as nil
@@ -422,11 +427,17 @@ func (g *generator) readMap() {
 				g.maxCol = col
 			}
 
+			// The C code stores map[row][col] before rc_to_region() checks
+			// the bounds. Past row or column 99 that store is out of range,
+			// but the assertion aborts before anything reads it, so the port
+			// checks first and fails as C does instead of panicking.
+			region := g.rcToRegion(row, col)
+
 			t := &tile{}
 			g.m[row][col] = t
 			t.row = row
 			t.col = col
-			t.region = g.rcToRegion(row, col)
+			t.region = region
 			t.depth = 2
 
 			color := 0
@@ -1257,7 +1268,7 @@ func (g *generator) bridgeMountainSup(row, col int) {
 	from := g.m[row][col]
 	to := g.adjacentTileWater(row, col)
 
-	g.assert(to.terrain == terrOcean, 1579, "to->terrain == terr_ocean")
+	g.assert(to.terrain == terrOcean, 1581, "to->terrain == terr_ocean")
 
 	var name *string
 	switch g.rnd(1, 3) {
@@ -1515,7 +1526,7 @@ func (g *generator) floodLandInside(row, col, ins int) int {
 
 		if p.inside != 0 {
 			g.errf("flood_land_inside(%d,%d,%s) error\n", row, col, clib.Str(g.insideNames[ins]))
-			g.assert(false, 1858, "FALSE")
+			g.assert(false, 1871, "FALSE")
 		}
 
 		count += g.floodLandInside(p.row, p.col, ins)
@@ -1542,7 +1553,7 @@ func (g *generator) floodWaterInside(row, col, ins int) int {
 
 		if p.inside != 0 {
 			g.errf("flood_water_inside(%d,%d,%s) error\n", row, col, clib.Str(g.insideNames[ins]))
-			g.assert(false, 1890, "FALSE")
+			g.assert(false, 1903, "FALSE")
 		}
 
 		count += g.floodWaterInside(p.row, p.col, ins)
@@ -1662,7 +1673,7 @@ func (g *generator) floodLandClumps(row, col int, name *string) int {
 
 		if p.name != nil {
 			g.errf("flood_land_clumps(%d,%d,%s) error\n", row, col, *name)
-			g.assert(false, 2010, "FALSE")
+			g.assert(false, 2031, "FALSE")
 		}
 
 		count += g.floodLandClumps(p.row, p.col, name)
@@ -1710,7 +1721,7 @@ func (g *generator) islandAllowed(row, col int) bool {
 
 func (g *generator) createASubloc(row, col, hidden, kind int) int {
 	g.topSubloc++
-	g.assert(g.topSubloc < maxSubloc, 2122, "top_subloc < MAX_SUBLOC")
+	g.assert(g.topSubloc < maxSubloc, 2143, "top_subloc < MAX_SUBLOC")
 
 	s := &tile{}
 	g.subloc[g.topSubloc] = s
@@ -1969,7 +1980,7 @@ func (g *generator) gateContinentalTour() {
 	l := g.randomTileFromEachRegion()
 	m := g.shiftTourEndpoints(l)
 
-	g.assert(len(l) == len(m), 2493, "tiles_len(l) == tiles_len(m)")
+	g.assert(len(l) == len(m), 2515, "tiles_len(l) == tiles_len(m)")
 
 	g.errf("\nContinental gate tour:\n")
 
@@ -2158,7 +2169,7 @@ func (g *generator) randomProvince(terr int) (int, int) {
 		}
 	}
 
-	g.assert(false, 2794, "FALSE")
+	g.assert(false, 2818, "FALSE")
 	return 0, 0
 }
 
@@ -2178,7 +2189,7 @@ func (g *generator) randomIsland() int {
 			i++
 		}
 
-		g.assert(n <= g.topSubloc, 2824, "n <= top_subloc")
+		g.assert(n <= g.topSubloc, 2848, "n <= top_subloc")
 
 		if g.subloc[i].mark == 0 {
 			break
@@ -2245,7 +2256,7 @@ func (g *generator) nameGuild(skill int) string {
 		}
 	}
 
-	g.assert(sum > 0, 2892, "sum > 0")
+	g.assert(sum > 0, 2916, "sum > 0")
 
 	n := g.rnd(1, sum)
 
@@ -2259,7 +2270,7 @@ func (g *generator) nameGuild(skill int) string {
 		}
 	}
 
-	g.assert(false, 2905, "FALSE")
+	g.assert(false, 2929, "FALSE")
 	return ""
 }
 

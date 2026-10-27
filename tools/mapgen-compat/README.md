@@ -46,7 +46,10 @@ The script:
    On a mismatch it prints both SHA-256 hashes, the first differing byte, and the start of a unified diff.
 6. For each input set, requires that every full 16-byte seed gives a different reference map.
    A port that ignored the seed would fail this check.
-7. Runs G3's own mapgen regression scripts (`tests/mapgen/regress/*/check.sh`) from the export, unchanged, against the C build and against Go.
+7. Runs every failure case in `failures.txt`: inputs from `failures/<label>/` (with the fixtures standing in for any file it lacks) and one seed from `seeds.txt`.
+   The C program must exit with the recorded status, and C and Go must agree on every output as in step 5.
+   `asfail()` prints the compiler's `__FILE__`, the absolute path of the exported source, so that prefix is removed from the C stderr before comparing.
+8. Runs G3's own mapgen regression scripts (`tests/mapgen/regress/*/check.sh`) from the export, unchanged, against the C build and against Go.
    They run the C build by default, and the Go binary through their `MAPGEN_BIN` setting (`tests/mapgen/mapgen.sh`).
 
 The script exits 0 only when every check passes.
@@ -58,6 +61,22 @@ They read the seed and `EXPECT.sha256` from that checkout:
 ```sh
 G3_ROOT=tmp/mapgen-compat/g3 go test -count=1 ./internal/mapgen
 ```
+
+## Failure cases
+
+`failures.txt` lists inputs on which the pinned C build fails, with the exit status it gives:
+
+| label | input | C result |
+|---|---|---|
+| unknown-terrain | a `Z` in `Map` | `read_map()` prints `unknown terrain Z` and asserts (line 680) |
+| too-many-regions | a 15×15 `Map` of four water glyphs, so that no two neighbors join | `alloc_inside()` asserts on the 200th region (line 768) |
+| wide-map | a `Map` row 101 squares wide | `rc_to_region()` asserts on column 100 (line 1056) |
+| wide-last-row | the same in row 99, where the C store lands past the whole `map` array | the same assertion |
+| tall-map | a `Map` 101 rows tall | `rc_to_region()` asserts on row 100 (line 1055) |
+
+Each runs with the `fixture` seed and with no `randseed`.
+Without one, `load_seed()` leaves `randseed could not be opened.` in the stdout buffer, and only `abort()`'s flush of every open stream writes it out ([#39](https://github.com/mdhender/g3g0/issues/39)); the port writes stdout unbuffered, so it prints the same bytes.
+`loc`, `gate` and `road` are open but still empty when each fires: nothing writes to them before `print_map()`, and no assertion is reachable from there on.
 
 ## Seed corpus
 
@@ -77,10 +96,12 @@ G3_ROOT=tmp/mapgen-compat/g3 go test -count=1 ./internal/mapgen
 
 ## Results
 
-Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
+Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
 
 - 11 input sets × 10 seeds = 110 cases.
   All 110 PASS: Go matches C byte for byte on every output, and both programs are deterministic.
+- 9 failure cases, each exiting 134 in C.
+  All 9 PASS: Go matches C byte for byte on every output, apart from the source path removed from the C assertion message.
 - Each input set gives 8 distinct reference maps for its 8 full seeds.
 - The `fixtures`/`secret-sea-route` case reproduces upstream's `secret-sea-route/EXPECT.sha256` for `gate`, `loc` and `road`.
 - G3 regressions: every `tests/mapgen/regress/*/check.sh` at the pinned revision prints `YES` for the C build and for Go.
@@ -94,10 +115,12 @@ The full table of hashes and final seeds is in [`results.tsv`](results.tsv). It 
 These are limited to failure paths that the C build cannot reproduce exactly:
 
 - **Assertion failures.** `asfail()` prints the compiler's `__FILE__`, which is the absolute path of the source on the build machine.
-  The port prints `mapgen/mapgen.c` with the C line number, and exits 134 as `abort()` does.
+  The port prints `mapgen/mapgen.c` with the C line number, and exits 134, the status the shell sees for `abort()`'s SIGABRT.
+  The process is not actually killed by a signal.
+  On macOS `abort()` also flushes every open stdio stream; at every reachable assertion the only buffered data is `load_seed()`'s stdout message, which the port has already written.
 - **Crashes.** Where the C code dereferences NULL, the port exits 139 and prints nothing, which is what the shell sees for SIGSEGV.
   The process is not actually killed by a signal.
-  Out-of-range input, such as a map wider or taller than 100 squares, is undefined behavior in C; the port panics there instead.
+  A `Map` wider or taller than 100 squares makes the C code store past `map[row]` before `rc_to_region()` asserts; the port asserts first, so it fails the same way (see the failure cases).
 
 ## Upstream defects reproduced on purpose
 

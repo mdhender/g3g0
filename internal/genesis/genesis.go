@@ -1622,7 +1622,10 @@ func Run(dir string, args []string, stderr io.Writer) (status int) {
 			// path of the upstream source; the relative path stands in for it.
 			fmt.Fprintf(stderr, "Assertion failed: (%s), function %s, file %s, line %d.\n",
 				r.cond, r.function, "genesis/genesis.c", r.line)
-			status = 134 // abort()
+			// abort() exits 134 and, on macOS, flushes every open stdio
+			// stream. genesis.c never writes stdout and opens no output
+			// file before its last assert(), so there is nothing to flush.
+			status = 134
 		default:
 			panic(r)
 		}
