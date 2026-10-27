@@ -158,13 +158,7 @@ func Run(dir string, args []string, stdin io.Reader, stdout, stderr io.Writer) i
 		}
 	}
 	// exclude any square within shelf of a land square
-	for y := range ySize {
-		for x := range xSize {
-			if working[y][x] == 'p' {
-				g.makeShelf(y, x, shelf)
-			}
-		}
-	}
+	g.makeShelf(shelf)
 	// exclude border squares around each edge
 	// A border wider than the map stops at its edge (G3 #302)
 	for y := range ySize {
@@ -464,28 +458,43 @@ func Run(dir string, args []string, stdin io.Reader, stdout, stderr io.Writer) i
 // continental-shelf exclusion marker. '_' is only ever written to working,
 // never to the printed map.
 //
-// Like the C code it recurses four ways at every step, so it takes about
-// 4^shelf calls per land square, and a large enough shelf overflows the
-// stack (G3 #307).
-func (g *generator) makeShelf(y, x, shelf int) {
-	if g.working[y][x] == '~' {
-		g.working[y][x] = '_'
-	}
-	if shelf < 1 {
-		return
+// "Within shelf squares" counts north/south/east/west steps through any
+// square on the map. One breadth-first pass from every land square marks the
+// same squares the old per-square recursion did, which took 4^shelf calls per
+// land square and shelf stack frames (G3 #307).
+func (g *generator) makeShelf(shelf int) {
+	var steps [maxMap][maxMap]int
+	queue := make([]location, 0, maxMap*maxMap)
+	dy := [4]int{-1, 1, 0, 0}
+	dx := [4]int{0, 0, -1, 1}
+
+	for y := range g.ySize {
+		for x := range g.xSize {
+			if g.working[y][x] == 'p' {
+				steps[y][x] = 0
+				queue = append(queue, location{x: x, y: y})
+			} else {
+				steps[y][x] = -1
+			}
+		}
 	}
 
-	if y > 0 {
-		g.makeShelf(y-1, x, shelf-1)
-	}
-	if y < g.ySize-1 {
-		g.makeShelf(y+1, x, shelf-1)
-	}
-	if x > 0 {
-		g.makeShelf(y, x-1, shelf-1)
-	}
-	if x < g.xSize-1 {
-		g.makeShelf(y, x+1, shelf-1)
+	for head := 0; head < len(queue); head++ {
+		p := queue[head]
+		if steps[p.y][p.x] >= shelf {
+			continue
+		}
+		for k := range 4 {
+			ny, nx := p.y+dy[k], p.x+dx[k]
+			if ny < 0 || ny >= g.ySize || nx < 0 || nx >= g.xSize || steps[ny][nx] >= 0 {
+				continue
+			}
+			steps[ny][nx] = steps[p.y][p.x] + 1
+			if g.working[ny][nx] == '~' {
+				g.working[ny][nx] = '_'
+			}
+			queue = append(queue, location{x: nx, y: ny})
+		}
 	}
 }
 

@@ -35,7 +35,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-6cbf9a3d971801dfcb67b7b017551aa675c8db11}"
+G3_REV="${G3_REV:-6bbcd63055d051ade6f745f368281628441a2c27}"
 WORK="${WORK:-${ROOT}/tmp/island-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-60}"
 

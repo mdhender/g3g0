@@ -75,6 +75,12 @@ shelf-0             ok    -         fx:land-40.map      fx:seed-c   -     -c 0 -
 shelf-1             ok    -         fx:land-40.map      fx:seed-c   -     -c 1 -s 200
 shelf-6             ok    -         fx:land-40.map      fx:seed-c   -     -c 6 -s 200
 shelf-8             ok    -         fx:land-40.map      fx:seed-c   -     -c 8
+shelf-13            ok    -         fx:land-40.map      fx:seed-c   -     -b 0 -c 13
+shelf-20            ok    -         fx:land-40.map      fx:seed-c   -     -b 0 -c 20
+shelf-29            ok    -         fx:land-40.map      fx:seed-c   -     -b 0 -c 29
+shelf-30            fail  -         fx:land-40.map      fx:seed-c   -     -b 0 -c 30
+shelf-huge          fail  -         fx:land-40.map      fx:seed-c   -     -b 0 -c 100000000
+shelf-int-max       fail  -         fx:land-40.map      fx:seed-c   -     -b 0 -c 2147483647
 shelf-neg           ok    -         fx:land-40.map      fx:seed-c   -     -c -1 -s 200
 shelf-all           fail  -         file:one-peak-8.map fx:seed-c   -     -c 8
 shelf-ocean-20      ok    -         fx:ocean-40.map     fx:seed-c   -     -c 20

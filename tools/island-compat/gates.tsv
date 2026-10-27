@@ -25,6 +25,8 @@ ocean-glyph-output	c	YES
 ocean-glyph-output	go	YES
 ocean-glyphs	c	YES
 ocean-glyphs	go	YES
+shelf-large	c	YES
+shelf-large	go	YES
 size	c	YES
 size	go	YES
 usage-errors	c	YES
