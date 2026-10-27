@@ -1,0 +1,12 @@
+The Olympia C code is not 64-bit clean.
+at the least: it puts pointers into ilists
+	sizeof(struct box) = 144
+ilist_test: starting
+ilist_test: len of empty list = 0
+ilist_test: after append, len = 100
+ilist_test: copy verified
+ilist_test: after delete, len = 99
+ilist_test: after prepend, len = 100
+ilist_test: lookup verified
+ilist_test: after clear, len = 0
+ilist_test: all tests passed

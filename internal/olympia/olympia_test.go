@@ -12,7 +12,8 @@ import (
 
 // The expected output in testdata comes from the pinned C olympia-g3:
 // rng-selftest.txt is G3's tests/olympia/regress/rng-selftest/EXPECT.txt,
-// and usage-x.txt is the C engine's stderr for "olympia-g3 -x". The full
+// usage-x.txt is the C engine's stderr for "olympia-g3 -x", and
+// ilist-test.txt is its stdout for "olympia-g3 -t". The full
 // comparison against the C build is tools/olympia-cli-compat/run.sh.
 
 // header is what main() prints before it dispatches, on a 64-bit host.
@@ -93,10 +94,23 @@ func TestUsage(t *testing.T) {
 	if status, _, _ := run(false, "-x", "-R"); status != 0 {
 		t.Errorf("-x -R: status %d, want 0", status)
 	}
+	if status, _, _ := run(false, "-x", "-t"); status != 0 {
+		t.Errorf("-x -t: status %d, want 0", status)
+	}
+}
+
+func TestIListTest(t *testing.T) {
+	want := readTestdata(t, "ilist-test.txt")
+	for _, args := range [][]string{{"-t"}, {"-t", "-R"}, {"-t", "-x"}} {
+		status, stdout, stderr := run(false, args...)
+		if status != 0 || stdout != want || stderr != "" {
+			t.Errorf("%q: status %d, stdout %q, stderr %q", args, status, stdout, stderr)
+		}
+	}
 }
 
 func TestNotYetImplemented(t *testing.T) {
-	for _, args := range [][]string{nil, {"-r"}, {"-S"}, {"-t"}, {"-x", "-t"}, {"--coverage", "-R"}, {"foo", "-R"}} {
+	for _, args := range [][]string{nil, {"-r"}, {"-S"}, {"--coverage", "-R"}, {"foo", "-R"}} {
 		status, stdout, stderr := run(false, args...)
 		if status == 0 || stdout != header || !strings.HasSuffix(stderr, ": not yet implemented\n") {
 			t.Errorf("%q: status %d, stdout %q, stderr %q", args, status, stdout, stderr)

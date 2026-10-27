@@ -4,8 +4,9 @@
 // Package olympia ports G3's olympia-g3, the game engine.
 //
 // So far it ports main() in olympia/main.c: the command line, what main()
-// prints before it dispatches, and the -R self-test. Every other mode stops
-// with a "not yet implemented" message until a later task ports it.
+// prints before it dispatches, the -R self-test and the -t ilist test. Every
+// other mode stops with a "not yet implemented" message until a later task
+// ports it.
 package olympia
 
 import (
@@ -16,6 +17,7 @@ import (
 	"unsafe"
 
 	"github.com/mdhender/g3g0/internal/clib"
+	"github.com/mdhender/g3g0/internal/lists"
 )
 
 // usage is the text main() prints to stderr when errflag is set.
@@ -164,8 +166,10 @@ func Run(args []string, stdout, stderr io.Writer, stdoutIsTTY bool) int {
 		case 'S':
 			o.saveFlag = true
 		case 't':
-			// ilist_test() in lib/ilist.c.
-			return notYetImplemented(stderr, args[0], "-t (ilist_test)")
+			// ilist_test() in lib/ilist.c starts with setbuf(stdout, NULL).
+			out.Unbuffer()
+			lists.ILTest(out.Printf)
+			return 0
 		case 'T':
 			o.timeSelf = true
 		case 'M':

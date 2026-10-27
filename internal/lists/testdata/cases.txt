@@ -1,0 +1,1054 @@
+# Differential matrix for the reallocing arrays in G3's lib/ilist.c and the
+# template list modules (lib/accept_ents.c ... lib/wait_args.c), at G3
+# 6bbcd63055d051ade6f745f368281628441a2c27.
+#
+# tools/lists-compat/run.sh feeds this file to a C driver built from the
+# pinned sources and records its output in c-output.txt; TestMatchesC feeds it
+# to the Go port and requires the same output. The whole file runs in one
+# process, so lists and the RNG state carry from line to line.
+#
+# One operation per line; '#' starts a comment. Integers are read with
+# strtol(s, NULL, 0).
+#
+#   master HEX            write the bytes HEX to ./randseed and load_seed() it
+#   rnd LOW HIGH          legacy rnd() on the global digest
+#   root                  cur = rng_seed(master)
+#   of KEY TAG            cur = rng_stream_of(&cur, KEY, TAG)
+#   MODULE SLOT OP ARGS   an operation on list SLOT (a, b or c) of MODULE
+#                         (ilist, or a template module's name)
+#
+# A list operation prints its result, if any, then the list: "NULL", or
+# "len N:" and the elements. Elements of the pointer lists are written as
+# indexes k of the driver's objs array; the element is &objs[k] (0..255).
+#
+#   append V      <m>_append              fill N V   append V, V+1, ... V+N-1
+#   prepend V     <m>_prepend             clear      <m>_clear
+#   copy S        this = <m>_copy(S)      delete I   <m>_delete
+#   len           <m>_len                 lookup V   <m>_lookup
+#   reclaim       <m>_reclaim             remvalue V <m>_rem_value
+#   scramble      <m>_scramble            shuffle    <m>_shuffle
+#   add V         ilist_add               remuniq V  ilist_rem_value_uniq
+#   shufflerng    ilist_shuffle_rng and exit_views_shuffle_rng on cur; prints
+#                 the stream counter first
+
+master 00112233445566778899aabbccddeeff
+root
+of 7 0x4c495354
+
+# --- ilist
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+ilist a len
+ilist a lookup 5
+ilist a clear
+ilist b copy a
+ilist a shuffle
+ilist a scramble
+ilist a remvalue 5
+ilist a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+ilist a prepend 7
+ilist a clear
+ilist a len
+ilist b copy a
+ilist b append 3
+ilist a len
+ilist a reclaim
+ilist b reclaim
+# Growth through several reallocs, then copy.
+ilist a fill 40 10
+ilist b copy a
+ilist b len
+ilist a append 200
+ilist b lookup 200
+# Delete at the front, the back and the middle.
+ilist a delete 0
+ilist a delete 39
+ilist a delete 17
+ilist a prepend 1
+ilist a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+ilist c append 5
+ilist c append 6
+ilist c append 5
+ilist c prepend 5
+ilist c append 7
+ilist c append 5
+ilist c lookup 5
+ilist c lookup 7
+ilist c lookup 99
+ilist c remvalue 99
+ilist c remvalue 5
+ilist c remvalue 6
+ilist c remvalue 7
+ilist c len
+ilist c append 9
+ilist c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+ilist c append 4
+ilist c shuffle
+rnd 0 1000
+ilist c append 8
+ilist c shuffle
+ilist c shuffle
+ilist c scramble
+rnd 0 1000
+ilist a shuffle
+ilist a scramble
+ilist b shuffle
+rnd 0 1000
+# ilist-only operations.
+ilist c add 8
+ilist c add 3
+ilist c add 3
+ilist c append 4
+ilist c append 3
+ilist c remuniq 3
+ilist c remuniq 3
+ilist c remuniq 3
+ilist c remuniq 4
+ilist c remuniq 4
+ilist c shufflerng
+ilist c reclaim
+ilist c shufflerng
+ilist c append 1
+ilist c shufflerng
+ilist a shufflerng
+ilist a shufflerng
+ilist b shufflerng
+ilist a reclaim
+ilist b reclaim
+ilist c reclaim
+
+# --- accept_ents
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+accept_ents a len
+accept_ents a lookup 5
+accept_ents a clear
+accept_ents b copy a
+accept_ents a shuffle
+accept_ents a scramble
+accept_ents a remvalue 5
+accept_ents a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+accept_ents a prepend 7
+accept_ents a clear
+accept_ents a len
+accept_ents b copy a
+accept_ents b append 3
+accept_ents a len
+accept_ents a reclaim
+accept_ents b reclaim
+# Growth through several reallocs, then copy.
+accept_ents a fill 40 10
+accept_ents b copy a
+accept_ents b len
+accept_ents a append 200
+accept_ents b lookup 200
+# Delete at the front, the back and the middle.
+accept_ents a delete 0
+accept_ents a delete 39
+accept_ents a delete 17
+accept_ents a prepend 1
+accept_ents a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+accept_ents c append 5
+accept_ents c append 6
+accept_ents c append 5
+accept_ents c prepend 5
+accept_ents c append 7
+accept_ents c append 5
+accept_ents c lookup 5
+accept_ents c lookup 7
+accept_ents c lookup 99
+accept_ents c remvalue 99
+accept_ents c remvalue 5
+accept_ents c remvalue 6
+accept_ents c remvalue 7
+accept_ents c len
+accept_ents c append 9
+accept_ents c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+accept_ents c append 4
+accept_ents c shuffle
+rnd 0 1000
+accept_ents c append 8
+accept_ents c shuffle
+accept_ents c shuffle
+accept_ents c scramble
+rnd 0 1000
+accept_ents a shuffle
+accept_ents a scramble
+accept_ents b shuffle
+rnd 0 1000
+accept_ents a reclaim
+accept_ents b reclaim
+accept_ents c reclaim
+
+# --- admits
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+admits a len
+admits a lookup 5
+admits a clear
+admits b copy a
+admits a shuffle
+admits a scramble
+admits a remvalue 5
+admits a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+admits a prepend 7
+admits a clear
+admits a len
+admits b copy a
+admits b append 3
+admits a len
+admits a reclaim
+admits b reclaim
+# Growth through several reallocs, then copy.
+admits a fill 40 10
+admits b copy a
+admits b len
+admits a append 200
+admits b lookup 200
+# Delete at the front, the back and the middle.
+admits a delete 0
+admits a delete 39
+admits a delete 17
+admits a prepend 1
+admits a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+admits c append 5
+admits c append 6
+admits c append 5
+admits c prepend 5
+admits c append 7
+admits c append 5
+admits c lookup 5
+admits c lookup 7
+admits c lookup 99
+admits c remvalue 99
+admits c remvalue 5
+admits c remvalue 6
+admits c remvalue 7
+admits c len
+admits c append 9
+admits c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+admits c append 4
+admits c shuffle
+rnd 0 1000
+admits c append 8
+admits c shuffle
+admits c shuffle
+admits c scramble
+rnd 0 1000
+admits a shuffle
+admits a scramble
+admits b shuffle
+rnd 0 1000
+admits a reclaim
+admits b reclaim
+admits c reclaim
+
+# --- cstrings
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+cstrings a len
+cstrings a lookup 5
+cstrings a clear
+cstrings b copy a
+cstrings a shuffle
+cstrings a scramble
+cstrings a remvalue 5
+cstrings a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+cstrings a prepend 7
+cstrings a clear
+cstrings a len
+cstrings b copy a
+cstrings b append 3
+cstrings a len
+cstrings a reclaim
+cstrings b reclaim
+# Growth through several reallocs, then copy.
+cstrings a fill 40 10
+cstrings b copy a
+cstrings b len
+cstrings a append 200
+cstrings b lookup 200
+# Delete at the front, the back and the middle.
+cstrings a delete 0
+cstrings a delete 39
+cstrings a delete 17
+cstrings a prepend 1
+cstrings a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+cstrings c append 5
+cstrings c append 6
+cstrings c append 5
+cstrings c prepend 5
+cstrings c append 7
+cstrings c append 5
+cstrings c lookup 5
+cstrings c lookup 7
+cstrings c lookup 99
+cstrings c remvalue 99
+cstrings c remvalue 5
+cstrings c remvalue 6
+cstrings c remvalue 7
+cstrings c len
+cstrings c append 9
+cstrings c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+cstrings c append 4
+cstrings c shuffle
+rnd 0 1000
+cstrings c append 8
+cstrings c shuffle
+cstrings c shuffle
+cstrings c scramble
+rnd 0 1000
+cstrings a shuffle
+cstrings a scramble
+cstrings b shuffle
+rnd 0 1000
+cstrings a reclaim
+cstrings b reclaim
+cstrings c reclaim
+
+# --- exit_views
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+exit_views a len
+exit_views a lookup 5
+exit_views a clear
+exit_views b copy a
+exit_views a shuffle
+exit_views a scramble
+exit_views a remvalue 5
+exit_views a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+exit_views a prepend 7
+exit_views a clear
+exit_views a len
+exit_views b copy a
+exit_views b append 3
+exit_views a len
+exit_views a reclaim
+exit_views b reclaim
+# Growth through several reallocs, then copy.
+exit_views a fill 40 10
+exit_views b copy a
+exit_views b len
+exit_views a append 200
+exit_views b lookup 200
+# Delete at the front, the back and the middle.
+exit_views a delete 0
+exit_views a delete 39
+exit_views a delete 17
+exit_views a prepend 1
+exit_views a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+exit_views c append 5
+exit_views c append 6
+exit_views c append 5
+exit_views c prepend 5
+exit_views c append 7
+exit_views c append 5
+exit_views c lookup 5
+exit_views c lookup 7
+exit_views c lookup 99
+exit_views c remvalue 99
+exit_views c remvalue 5
+exit_views c remvalue 6
+exit_views c remvalue 7
+exit_views c len
+exit_views c append 9
+exit_views c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+exit_views c append 4
+exit_views c shuffle
+rnd 0 1000
+exit_views c append 8
+exit_views c shuffle
+exit_views c shuffle
+exit_views c scramble
+rnd 0 1000
+exit_views a shuffle
+exit_views a scramble
+exit_views b shuffle
+rnd 0 1000
+exit_views c shufflerng
+exit_views c reclaim
+exit_views c shufflerng
+exit_views c append 1
+exit_views c shufflerng
+exit_views a shufflerng
+exit_views a shufflerng
+exit_views b shufflerng
+exit_views a reclaim
+exit_views b reclaim
+exit_views c reclaim
+
+# --- fights
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+fights a len
+fights a lookup 5
+fights a clear
+fights b copy a
+fights a shuffle
+fights a scramble
+fights a remvalue 5
+fights a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+fights a prepend 7
+fights a clear
+fights a len
+fights b copy a
+fights b append 3
+fights a len
+fights a reclaim
+fights b reclaim
+# Growth through several reallocs, then copy.
+fights a fill 40 10
+fights b copy a
+fights b len
+fights a append 200
+fights b lookup 200
+# Delete at the front, the back and the middle.
+fights a delete 0
+fights a delete 39
+fights a delete 17
+fights a prepend 1
+fights a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+fights c append 5
+fights c append 6
+fights c append 5
+fights c prepend 5
+fights c append 7
+fights c append 5
+fights c lookup 5
+fights c lookup 7
+fights c lookup 99
+fights c remvalue 99
+fights c remvalue 5
+fights c remvalue 6
+fights c remvalue 7
+fights c len
+fights c append 9
+fights c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+fights c append 4
+fights c shuffle
+rnd 0 1000
+fights c append 8
+fights c shuffle
+fights c shuffle
+fights c scramble
+rnd 0 1000
+fights a shuffle
+fights a scramble
+fights b shuffle
+rnd 0 1000
+fights a reclaim
+fights b reclaim
+fights c reclaim
+
+# --- flag_ents
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+flag_ents a len
+flag_ents a lookup 5
+flag_ents a clear
+flag_ents b copy a
+flag_ents a shuffle
+flag_ents a scramble
+flag_ents a remvalue 5
+flag_ents a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+flag_ents a prepend 7
+flag_ents a clear
+flag_ents a len
+flag_ents b copy a
+flag_ents b append 3
+flag_ents a len
+flag_ents a reclaim
+flag_ents b reclaim
+# Growth through several reallocs, then copy.
+flag_ents a fill 40 10
+flag_ents b copy a
+flag_ents b len
+flag_ents a append 200
+flag_ents b lookup 200
+# Delete at the front, the back and the middle.
+flag_ents a delete 0
+flag_ents a delete 39
+flag_ents a delete 17
+flag_ents a prepend 1
+flag_ents a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+flag_ents c append 5
+flag_ents c append 6
+flag_ents c append 5
+flag_ents c prepend 5
+flag_ents c append 7
+flag_ents c append 5
+flag_ents c lookup 5
+flag_ents c lookup 7
+flag_ents c lookup 99
+flag_ents c remvalue 99
+flag_ents c remvalue 5
+flag_ents c remvalue 6
+flag_ents c remvalue 7
+flag_ents c len
+flag_ents c append 9
+flag_ents c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+flag_ents c append 4
+flag_ents c shuffle
+rnd 0 1000
+flag_ents c append 8
+flag_ents c shuffle
+flag_ents c shuffle
+flag_ents c scramble
+rnd 0 1000
+flag_ents a shuffle
+flag_ents a scramble
+flag_ents b shuffle
+rnd 0 1000
+flag_ents a reclaim
+flag_ents b reclaim
+flag_ents c reclaim
+
+# --- item_ents
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+item_ents a len
+item_ents a lookup 5
+item_ents a clear
+item_ents b copy a
+item_ents a shuffle
+item_ents a scramble
+item_ents a remvalue 5
+item_ents a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+item_ents a prepend 7
+item_ents a clear
+item_ents a len
+item_ents b copy a
+item_ents b append 3
+item_ents a len
+item_ents a reclaim
+item_ents b reclaim
+# Growth through several reallocs, then copy.
+item_ents a fill 40 10
+item_ents b copy a
+item_ents b len
+item_ents a append 200
+item_ents b lookup 200
+# Delete at the front, the back and the middle.
+item_ents a delete 0
+item_ents a delete 39
+item_ents a delete 17
+item_ents a prepend 1
+item_ents a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+item_ents c append 5
+item_ents c append 6
+item_ents c append 5
+item_ents c prepend 5
+item_ents c append 7
+item_ents c append 5
+item_ents c lookup 5
+item_ents c lookup 7
+item_ents c lookup 99
+item_ents c remvalue 99
+item_ents c remvalue 5
+item_ents c remvalue 6
+item_ents c remvalue 7
+item_ents c len
+item_ents c append 9
+item_ents c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+item_ents c append 4
+item_ents c shuffle
+rnd 0 1000
+item_ents c append 8
+item_ents c shuffle
+item_ents c shuffle
+item_ents c scramble
+rnd 0 1000
+item_ents a shuffle
+item_ents a scramble
+item_ents b shuffle
+rnd 0 1000
+item_ents a reclaim
+item_ents b reclaim
+item_ents c reclaim
+
+# --- orders
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+orders a len
+orders a lookup 5
+orders a clear
+orders b copy a
+orders a shuffle
+orders a scramble
+orders a remvalue 5
+orders a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+orders a prepend 7
+orders a clear
+orders a len
+orders b copy a
+orders b append 3
+orders a len
+orders a reclaim
+orders b reclaim
+# Growth through several reallocs, then copy.
+orders a fill 40 10
+orders b copy a
+orders b len
+orders a append 200
+orders b lookup 200
+# Delete at the front, the back and the middle.
+orders a delete 0
+orders a delete 39
+orders a delete 17
+orders a prepend 1
+orders a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+orders c append 5
+orders c append 6
+orders c append 5
+orders c prepend 5
+orders c append 7
+orders c append 5
+orders c lookup 5
+orders c lookup 7
+orders c lookup 99
+orders c remvalue 99
+orders c remvalue 5
+orders c remvalue 6
+orders c remvalue 7
+orders c len
+orders c append 9
+orders c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+orders c append 4
+orders c shuffle
+rnd 0 1000
+orders c append 8
+orders c shuffle
+orders c shuffle
+orders c scramble
+rnd 0 1000
+orders a shuffle
+orders a scramble
+orders b shuffle
+rnd 0 1000
+orders a reclaim
+orders b reclaim
+orders c reclaim
+
+# --- req_ents
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+req_ents a len
+req_ents a lookup 5
+req_ents a clear
+req_ents b copy a
+req_ents a shuffle
+req_ents a scramble
+req_ents a remvalue 5
+req_ents a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+req_ents a prepend 7
+req_ents a clear
+req_ents a len
+req_ents b copy a
+req_ents b append 3
+req_ents a len
+req_ents a reclaim
+req_ents b reclaim
+# Growth through several reallocs, then copy.
+req_ents a fill 40 10
+req_ents b copy a
+req_ents b len
+req_ents a append 200
+req_ents b lookup 200
+# Delete at the front, the back and the middle.
+req_ents a delete 0
+req_ents a delete 39
+req_ents a delete 17
+req_ents a prepend 1
+req_ents a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+req_ents c append 5
+req_ents c append 6
+req_ents c append 5
+req_ents c prepend 5
+req_ents c append 7
+req_ents c append 5
+req_ents c lookup 5
+req_ents c lookup 7
+req_ents c lookup 99
+req_ents c remvalue 99
+req_ents c remvalue 5
+req_ents c remvalue 6
+req_ents c remvalue 7
+req_ents c len
+req_ents c append 9
+req_ents c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+req_ents c append 4
+req_ents c shuffle
+rnd 0 1000
+req_ents c append 8
+req_ents c shuffle
+req_ents c shuffle
+req_ents c scramble
+rnd 0 1000
+req_ents a shuffle
+req_ents a scramble
+req_ents b shuffle
+rnd 0 1000
+req_ents a reclaim
+req_ents b reclaim
+req_ents c reclaim
+
+# --- roads
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+roads a len
+roads a lookup 5
+roads a clear
+roads b copy a
+roads a shuffle
+roads a scramble
+roads a remvalue 5
+roads a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+roads a prepend 7
+roads a clear
+roads a len
+roads b copy a
+roads b append 3
+roads a len
+roads a reclaim
+roads b reclaim
+# Growth through several reallocs, then copy.
+roads a fill 40 10
+roads b copy a
+roads b len
+roads a append 200
+roads b lookup 200
+# Delete at the front, the back and the middle.
+roads a delete 0
+roads a delete 39
+roads a delete 17
+roads a prepend 1
+roads a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+roads c append 5
+roads c append 6
+roads c append 5
+roads c prepend 5
+roads c append 7
+roads c append 5
+roads c lookup 5
+roads c lookup 7
+roads c lookup 99
+roads c remvalue 99
+roads c remvalue 5
+roads c remvalue 6
+roads c remvalue 7
+roads c len
+roads c append 9
+roads c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+roads c append 4
+roads c shuffle
+rnd 0 1000
+roads c append 8
+roads c shuffle
+roads c shuffle
+roads c scramble
+rnd 0 1000
+roads a shuffle
+roads a scramble
+roads b shuffle
+rnd 0 1000
+roads a reclaim
+roads b reclaim
+roads c reclaim
+
+# --- skill_ents
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+skill_ents a len
+skill_ents a lookup 5
+skill_ents a clear
+skill_ents b copy a
+skill_ents a shuffle
+skill_ents a scramble
+skill_ents a remvalue 5
+skill_ents a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+skill_ents a prepend 7
+skill_ents a clear
+skill_ents a len
+skill_ents b copy a
+skill_ents b append 3
+skill_ents a len
+skill_ents a reclaim
+skill_ents b reclaim
+# Growth through several reallocs, then copy.
+skill_ents a fill 40 10
+skill_ents b copy a
+skill_ents b len
+skill_ents a append 200
+skill_ents b lookup 200
+# Delete at the front, the back and the middle.
+skill_ents a delete 0
+skill_ents a delete 39
+skill_ents a delete 17
+skill_ents a prepend 1
+skill_ents a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+skill_ents c append 5
+skill_ents c append 6
+skill_ents c append 5
+skill_ents c prepend 5
+skill_ents c append 7
+skill_ents c append 5
+skill_ents c lookup 5
+skill_ents c lookup 7
+skill_ents c lookup 99
+skill_ents c remvalue 99
+skill_ents c remvalue 5
+skill_ents c remvalue 6
+skill_ents c remvalue 7
+skill_ents c len
+skill_ents c append 9
+skill_ents c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+skill_ents c append 4
+skill_ents c shuffle
+rnd 0 1000
+skill_ents c append 8
+skill_ents c shuffle
+skill_ents c shuffle
+skill_ents c scramble
+rnd 0 1000
+skill_ents a shuffle
+skill_ents a scramble
+skill_ents b shuffle
+rnd 0 1000
+skill_ents a reclaim
+skill_ents b reclaim
+skill_ents c reclaim
+
+# --- tiles
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+tiles a len
+tiles a lookup 5
+tiles a clear
+tiles b copy a
+tiles a shuffle
+tiles a scramble
+tiles a remvalue 5
+tiles a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+tiles a prepend 7
+tiles a clear
+tiles a len
+tiles b copy a
+tiles b append 3
+tiles a len
+tiles a reclaim
+tiles b reclaim
+# Growth through several reallocs, then copy.
+tiles a fill 40 10
+tiles b copy a
+tiles b len
+tiles a append 200
+tiles b lookup 200
+# Delete at the front, the back and the middle.
+tiles a delete 0
+tiles a delete 39
+tiles a delete 17
+tiles a prepend 1
+tiles a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+tiles c append 5
+tiles c append 6
+tiles c append 5
+tiles c prepend 5
+tiles c append 7
+tiles c append 5
+tiles c lookup 5
+tiles c lookup 7
+tiles c lookup 99
+tiles c remvalue 99
+tiles c remvalue 5
+tiles c remvalue 6
+tiles c remvalue 7
+tiles c len
+tiles c append 9
+tiles c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+tiles c append 4
+tiles c shuffle
+rnd 0 1000
+tiles c append 8
+tiles c shuffle
+tiles c shuffle
+tiles c scramble
+rnd 0 1000
+tiles a shuffle
+tiles a scramble
+tiles b shuffle
+rnd 0 1000
+tiles a reclaim
+tiles b reclaim
+tiles c reclaim
+
+# --- trades
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+trades a len
+trades a lookup 5
+trades a clear
+trades b copy a
+trades a shuffle
+trades a scramble
+trades a remvalue 5
+trades a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+trades a prepend 7
+trades a clear
+trades a len
+trades b copy a
+trades b append 3
+trades a len
+trades a reclaim
+trades b reclaim
+# Growth through several reallocs, then copy.
+trades a fill 40 10
+trades b copy a
+trades b len
+trades a append 200
+trades b lookup 200
+# Delete at the front, the back and the middle.
+trades a delete 0
+trades a delete 39
+trades a delete 17
+trades a prepend 1
+trades a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+trades c append 5
+trades c append 6
+trades c append 5
+trades c prepend 5
+trades c append 7
+trades c append 5
+trades c lookup 5
+trades c lookup 7
+trades c lookup 99
+trades c remvalue 99
+trades c remvalue 5
+trades c remvalue 6
+trades c remvalue 7
+trades c len
+trades c append 9
+trades c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+trades c append 4
+trades c shuffle
+rnd 0 1000
+trades c append 8
+trades c shuffle
+trades c shuffle
+trades c scramble
+rnd 0 1000
+trades a shuffle
+trades a scramble
+trades b shuffle
+rnd 0 1000
+trades a reclaim
+trades b reclaim
+trades c reclaim
+
+# --- wait_args
+# A NULL list: length 0, lookup -1, clear and copy keep it NULL.
+wait_args a len
+wait_args a lookup 5
+wait_args a clear
+wait_args b copy a
+wait_args a shuffle
+wait_args a scramble
+wait_args a remvalue 5
+wait_args a reclaim
+rnd 0 1000
+# Prepend into a NULL list, then clear: the list stays non-NULL.
+wait_args a prepend 7
+wait_args a clear
+wait_args a len
+wait_args b copy a
+wait_args b append 3
+wait_args a len
+wait_args a reclaim
+wait_args b reclaim
+# Growth through several reallocs, then copy.
+wait_args a fill 40 10
+wait_args b copy a
+wait_args b len
+wait_args a append 200
+wait_args b lookup 200
+# Delete at the front, the back and the middle.
+wait_args a delete 0
+wait_args a delete 39
+wait_args a delete 17
+wait_args a prepend 1
+wait_args a prepend 2
+# Duplicates: lookup finds the first; rem_value takes them all.
+wait_args c append 5
+wait_args c append 6
+wait_args c append 5
+wait_args c prepend 5
+wait_args c append 7
+wait_args c append 5
+wait_args c lookup 5
+wait_args c lookup 7
+wait_args c lookup 99
+wait_args c remvalue 99
+wait_args c remvalue 5
+wait_args c remvalue 6
+wait_args c remvalue 7
+wait_args c len
+wait_args c append 9
+wait_args c reclaim
+# Shuffles of 1, 2 and many elements, and their draws.
+wait_args c append 4
+wait_args c shuffle
+rnd 0 1000
+wait_args c append 8
+wait_args c shuffle
+wait_args c shuffle
+wait_args c scramble
+rnd 0 1000
+wait_args a shuffle
+wait_args a scramble
+wait_args b shuffle
+rnd 0 1000
+wait_args a reclaim
+wait_args b reclaim
+wait_args c reclaim
+

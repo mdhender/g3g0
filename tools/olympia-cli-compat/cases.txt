@@ -42,6 +42,22 @@ all-long-R      same  --coverage c --use-coverage u --phase-coverage p --state-e
 R-coverage-none same  -R --coverage
 coverage-empty-R same --coverage '' -R
 
+# -t, ilist_test(): it returns before errflag is looked at, and its
+# setbuf(stdout, NULL) changes how stdout and stderr interleave.
+t               same  -t
+t-twice         same  -t -t
+x-then-t        same  -x -t
+t-then-x        same  -t -x
+t-then-R        same  -t -R
+R-then-t        same  -R -t
+t-cluster-x     same  -tx
+x-cluster-t     same  -xt
+f-then-t        same  -f -t
+l-then-t        same  -l dir -t
+r-then-t        same  -r -S -t
+long-then-t     same  --coverage cov -t
+t-operand       same  -t foo
+
 # Usage errors: the getopt() diagnostic, if any, then the usage text, exit 1.
 unknown         same  -x
 unknown-many    same  -xyz
@@ -86,10 +102,6 @@ f               nyi   -f
 G               nyi   -G 5
 l               nyi   -l lib
 r-S             nyi   -r -S
-t               nyi   -t
-x-then-t        nyi   -x -t
-t-then-x        nyi   -t -x
-t-then-R        nyi   -t -R
 coverage        nyi   --coverage cov
 use-coverage    nyi   --use-coverage u
 phase-coverage  nyi   --phase-coverage p

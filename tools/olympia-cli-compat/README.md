@@ -13,9 +13,9 @@ Two sources of expectations are used:
 [playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6bbcd63055d051ade6f745f368281628441a2c27`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
-The port follows `main()` in `olympia/main.c` (the long-option pass, the `getopt()` loop, the usage text and what `main()` prints before it dispatches) and `test_random()` in `olympia/z.c`.
+The port follows `main()` in `olympia/main.c` (the long-option pass, the `getopt()` loop, the usage text and what `main()` prints before it dispatches), `test_random()` in `olympia/z.c` and `ilist_test()` in `lib/ilist.c`.
 Every other mode stops with `<argv[0]>: <what>: not yet implemented` on stderr and exit status 2.
-`-t` names `ilist_test`; everything else reaches `load_db()` first, so it names `load_db` and the modes that were asked for.
+Every such mode reaches `load_db()` first, so the message names `load_db` and the modes that were asked for.
 
 ### `sizeof(struct box)`
 
@@ -63,7 +63,7 @@ cd ~/Software/playbymail/olympia-g3
 OLYMPIA_ENGINE_BIN=/path/to/g3g0/tmp/olympia tests/olympia/regress/rng-selftest/check.sh
 ```
 
-`go test ./internal/olympia` checks `-R` (on a pipe and on a terminal), the usage errors and the unported modes against output recorded from the pinned C build.
+`go test ./internal/olympia` checks `-R` (on a pipe and on a terminal), `-t`, the usage errors and the unported modes against output recorded from the pinned C build.
 `go test ./internal/clib` checks the `getopt()` emulation.
 
 ## Case matrix
@@ -72,14 +72,15 @@ OLYMPIA_ENGINE_BIN=/path/to/g3g0/tmp/olympia tests/olympia/regress/rng-selftest/
 |---|---|
 | `-R` | alone, twice, with an operand, unknown options before and after it and clustered with it (`-xR`, `-Rx`), a missing argument after it, every flag before it, `-l` and `-G` attached and apart, `-l ''`, `-f` before and after it, `-?`, `--` and `-` after it |
 | long options | `test-use-const-report-date` and each `--` path option before and after `-R`; a path that is missing or empty, which is an error but still lets `-R` win; a path that looks like an option (`--coverage -R`, `--coverage --use-coverage`), which is taken as the path; `--coverage=x`, which is not a long option and reaches `getopt()` as a cluster |
+| `-t` | alone, twice, before and after an unknown option and `-R`, clustered with an unknown option (`-tx`, `-xt`), after `-f`, `-l dir`, mode flags and a long option, and with an operand after it |
 | usage errors | unknown options alone, in a cluster and around valid ones; `-?` and `-:`; `--foo`; `-l` and `-G` without an argument; every flag before an unknown option; `-f` before and after one, which changes how stdout and stderr interleave; an operand after one |
-| not yet implemented | no arguments, each mode flag, `-r -S`, `-t` before and after an unknown option and before `-R`, each long option, `--`, `-- -R`, a lone `-`, an operand before `-R`, and `-l -R` |
+| not yet implemented | no arguments, each mode flag, `-r -S`, each long option, `--`, `-- -R`, a lone `-`, an operand before `-R`, and `-l -R` |
 
 ## Results
 
 Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
 
-- 83 vectors: 49 `same` and 34 `nyi`. All 83 PASS.
+- 92 vectors: 62 `same` and 30 `nyi`. All 92 PASS.
 - G3 gate: `rng-selftest` prints `YES` for the C build and for Go.
 
 The full table of hashes and exit statuses is in [`results.tsv`](results.tsv), copied from the run, not edited by hand.
