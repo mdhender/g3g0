@@ -6,6 +6,8 @@ package olympia
 import (
 	"io"
 	"os"
+
+	"github.com/mdhender/g3g0/internal/lists"
 )
 
 // world holds the C engine's global state: the box table bx[], the heads of
@@ -92,6 +94,11 @@ type world struct {
 	// fuzzyFind is fuzzy_find in input.c: whether the last find_command()
 	// matched a command name only fuzzily.
 	fuzzyFind bool
+
+	// loadQ and runQ are the statics load_q and run_q of input.c: the units
+	// whose commands are loaded, by priority, and running.
+	loadQ [maxPri]lists.IList
+	runQ  lists.IList
 
 	// stderr is C's stderr, which print_box_usage() and alloc_box() write
 	// to. newWorld sets it to os.Stderr; the engine sets it to its own.
@@ -352,4 +359,57 @@ func (w *world) rpItemMagic(n int) *itemMagic {
 		return p.xItemMagic
 	}
 	return nil
+}
+
+// The attribute macros of oly.h that check_db() uses. Each reads a
+// substructure through its rp_xxx accessor and is 0 (FALSE) if the box has
+// none. Box n must exist.
+
+// nobleItem is noble_item(): the item unit n is made of, or 0.
+func (w *world) nobleItem(n int) int {
+	if p := w.rpChar(n); p != nil {
+		return int(p.unitItem)
+	}
+	return 0
+}
+
+// charMoving is char_moving(): the day unit n began to move, or 0.
+func (w *world) charMoving(n int) int {
+	if p := w.rpChar(n); p != nil {
+		return int(p.moving)
+	}
+	return 0
+}
+
+// isPrisoner is is_prisoner(): whether unit n is a prisoner.
+func (w *world) isPrisoner(n int) bool {
+	if p := w.rpChar(n); p != nil {
+		return p.prisoner != 0
+	}
+	return false
+}
+
+// itemUnique is item_unique(): who has unique item n, or 0 if it is not
+// unique.
+func (w *world) itemUnique(n int) int {
+	if p := w.rpItem(n); p != nil {
+		return int(p.whoHas)
+	}
+	return 0
+}
+
+// learnTime is learn_time(): the days of study skill n takes, or 0.
+func (w *world) learnTime(n int) int {
+	if p := w.rpSkill(n); p != nil {
+		return int(p.timeToLearn)
+	}
+	return 0
+}
+
+// reqSkill is req_skill(): the skill n requires (its parent), or 0.
+func (w *world) reqSkill(n int) int {
+	if p := w.rpSkill(n); p != nil {
+		return int(p.requiredSkill)
+	}
+	return 0
 }

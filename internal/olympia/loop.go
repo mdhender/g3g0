@@ -21,9 +21,12 @@ import (
 //     next_loc_or_ship does, so the body must not unlink the current box.
 //   - loopBoxes tests each box number in turn as the loop reaches it.
 //
-// break works as it does in C. Of the loops that copy a list first,
-// loopUnits is here; loop_here and the rest belong with the code that
-// builds those lists.
+// break works as it does in C. The loops that copy a list first (loopUnits,
+// loopHere, loopStack and loopInv) take the copy when the range starts, so
+// the body may change the list. loop_here and loop_inv assert
+// valid_box(where) or valid_box(who) at the call site, so the text and line
+// of the assertion are the caller's; the port's callers assert before the
+// loop, where it is reachable, and the loops do not.
 
 // loopBoxes is loop_boxes: every box that is not T_deleted, in box number
 // order.
@@ -101,6 +104,50 @@ func (w *world) loopUnits(pl int) iter.Seq[int] {
 		for _, i := range l {
 			if !yield(i) {
 				return
+			}
+		}
+	}
+}
+
+// loopHere is loop_here: the boxes in the here list of where, from a copy
+// taken when the loop starts.
+func (w *world) loopHere(where int) iter.Seq[int] {
+	return func(yield func(int) bool) {
+		l := w.rpLocInfo(where).hereList.Copy()
+		for _, i := range l {
+			if !yield(i) {
+				return
+			}
+		}
+	}
+}
+
+// loopStack is loop_stack: who and every unit stacked under it, from
+// all_stack() when the loop starts.
+func (w *world) loopStack(who int) iter.Seq[int] {
+	return func(yield func(int) bool) {
+		l := w.allStack(who)
+		for _, i := range l {
+			if !yield(i) {
+				return
+			}
+		}
+	}
+}
+
+// loopInv is loop_inv: who's inventory entries whose item is a valid box
+// and whose qty is positive. The list of entries is copied when the loop
+// starts; each entry is tested when the loop reaches it, and the body gets
+// a copy of it, so changing *e changes nothing.
+func (w *world) loopInv(who int) iter.Seq[*itemEnt] {
+	return func(yield func(*itemEnt) bool) {
+		l := w.bx[who].items.Copy()
+		for _, p := range l {
+			if w.validBox(int(p.item)) && p.qty > 0 {
+				e := *p
+				if !yield(&e) {
+					return
+				}
 			}
 		}
 	}

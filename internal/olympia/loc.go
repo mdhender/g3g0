@@ -1,0 +1,109 @@
+// Copyright (c) 2026 Michael D Henderson.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+package olympia
+
+import "github.com/mdhender/g3g0/internal/lists"
+
+// Ported from olympia/loc.c: the here lists, all_stack() and the location
+// walks that check_db() reaches (subloc() and viewloc(), through set_lord()
+// and touch_loc()). The rest of loc.c is left for later stages.
+//
+// rp_loc_info() is the address of a member of the box, never NULL, so the
+// "p == NULL" tests of all_stack() and in_here_list(), and the assert(p !=
+// NULL) of add_char_here(), cannot fire; they are left out. A box number
+// with no box is a NULL dereference in C and a panic here.
+
+// addCharHere is add_char_here(): it appends who to l, then, depth first,
+// each unit in who's here list.
+func (w *world) addCharHere(who int, l *lists.IList) {
+	assert(w.validBox(who), "olympia/loc.c", 73, "valid_box(who)")
+
+	l.Append(who)
+
+	p := w.rpLocInfo(who)
+
+	for i := 0; i < p.hereList.Len(); i++ {
+		if w.kind(p.hereList[i]) == tChar {
+			w.addCharHere(p.hereList[i], l)
+		}
+	}
+}
+
+// allStack is all_stack(): who, then every unit stacked under it, depth
+// first in here-list order.
+func (w *world) allStack(who int) lists.IList {
+	assert(w.validBox(who), "olympia/loc.c", 113, "valid_box(who)")
+
+	l := lists.IList{who}
+
+	p := w.rpLocInfo(who)
+
+	for i := 0; i < p.hereList.Len(); i++ {
+		if w.kind(p.hereList[i]) == tChar {
+			w.addCharHere(p.hereList[i], &l)
+		}
+	}
+
+	return l
+}
+
+// subloc is subloc(): the location or ship who is in, irrespective of who
+// it is stacked with, or 0 if there is none.
+func (w *world) subloc(who int) int {
+	for {
+		who = w.loc(who)
+		if !(who > 0 && w.kind(who) != tLoc && w.kind(who) != tShip) {
+			return who
+		}
+	}
+}
+
+// viewloc is viewloc(): who, or the first location out from it, that is a
+// province, a city, a graveyard, a sewer or a faery hill, or 0.
+func (w *world) viewloc(who int) int {
+	for who > 0 &&
+		w.locDepth(who) != locProvince &&
+		w.subkind(who) != subCity &&
+		w.subkind(who) != subGraveyard &&
+		w.subkind(who) != subSewer &&
+		w.subkind(who) != subFaeryHill {
+		who = w.loc(who)
+	}
+
+	return who
+}
+
+// addToHereList is add_to_here_list(): it appends who to the here list of
+// loc, which must not hold it.
+func (w *world) addToHereList(loc, who int) {
+	assert(!w.inHereList(loc, who), "olympia/loc.c", 231, "!in_here_list(loc, who)")
+	w.pLocInfo(loc).hereList.Append(who)
+	assert(w.inHereList(loc, who), "olympia/loc.c", 233, "in_here_list(loc, who)")
+}
+
+// removeFromHereList is remove_from_here_list(): it removes who, every
+// time it appears, from the here list of loc, which must hold it.
+func (w *world) removeFromHereList(loc, who int) {
+	assert(w.inHereList(loc, who), "olympia/loc.c", 241, "in_here_list(loc, who)")
+	w.rpLocInfo(loc).hereList.RemValue(who)
+	assert(!w.inHereList(loc, who), "olympia/loc.c", 243, "!in_here_list(loc, who)")
+}
+
+// inHereList is in_here_list(): whether who is in the here list of loc.
+func (w *world) inHereList(loc, who int) bool {
+	return w.rpLocInfo(loc).hereList.Lookup(who) != -1
+}
+
+// firstCharacter is first_character(): the first unit in the here list of
+// where, or 0.
+func (w *world) firstCharacter(where int) int {
+	assert(w.validBox(where), "olympia/loc.c", 318, "valid_box(where)")
+	for i := range w.loopHere(where) {
+		if w.kind(i) == tChar {
+			return i
+		}
+	}
+
+	return 0
+}

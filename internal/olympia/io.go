@@ -8,7 +8,6 @@ import (
 	"io"
 	"os"
 	"reflect"
-	"slices"
 	"syscall"
 
 	"github.com/mdhender/g3g0/internal/clib"
@@ -370,13 +369,9 @@ func (w *world) ilistScan(s string, l *lists.IList) {
 
 // sortKnown is the safe_qsort(kn, ilist_len(kn), sizeof(int), int_comp)
 // that loop_known() in olympia/loop.h does first: it sorts kn in place, in
-// the caller's list. int_comp() (olympia/seed.c) returns *a - *b, which
-// overflows if two elements are more than INT_MAX apart; a known list holds
-// box numbers, which never are, so the order is ascending.
+// the caller's list.
 func sortKnown(kn sparse) {
-	if kn.Len() > 1 {
-		slices.SortFunc(kn, func(a, b int) int { return int(int32(a) - int32(b)) })
-	}
+	safeQsort(kn, intComp)
 }
 
 // knownPrint is known_print(): header and the valid boxes of kn, each

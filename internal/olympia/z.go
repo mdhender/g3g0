@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"slices"
 	"strings"
 
 	"github.com/mdhender/g3g0/internal/clib"
@@ -438,4 +439,16 @@ func fuzzyStrcmp(one, two string) bool {
 	}
 
 	return false
+}
+
+// safeQsort is safe_qsort(base, nmemb, size, comp): qsort() of l by comp,
+// skipped for fewer than two elements. qsort() is not stable, and neither
+// is slices.SortFunc, so the two can order elements that comp finds equal
+// differently. Every comp in the engine either is int_comp() on ints,
+// where equal elements are the same, or breaks ties, so the order is the
+// same.
+func safeQsort[T any](l []T, comp func(a, b T) int) {
+	if len(l) > 1 {
+		slices.SortFunc(l, comp)
+	}
 }

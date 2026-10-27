@@ -68,3 +68,51 @@ func (w *world) stageSup(s *string) {
 		fmt.Fprintf(w.stderr, "%d seconds\n", int32(t-w.stageFirst))
 	}
 }
+
+// locDepth is loc_depth(): the LOC_xxx depth of location n, by its
+// subkind. Any other subkind is reported on stderr and fails an assertion.
+func (w *world) locDepth(n int) int {
+	switch w.subkind(n) {
+	case subRegion:
+		return locRegion
+
+	case subOcean, subForest, subPlain, subMountain, subDesert, subSwamp, subUnder, subCloud, subTunnel, subChamber:
+		return locProvince
+
+	case subIsland, subStoneCir, subMallornGrove, subBog, subCave, subCity, subLair, subGraveyard, subRuins, subBattlefield, subEnchForest, subRockyHill, subTreeCircle, subPits, subPasture, subOasis, subYewGrove, subSandPit, subSacredGrove, subPoppyField, subFaeryHill, subHadesPit:
+		return locSubloc
+
+	case subTemple, subGalley, subRoundship, subCastle, subGalleyNotdone, subRoundshipNotdone, subGhostShip, subTempleNotdone, subInn, subInnNotdone, subCastleNotdone, subMine, subMineNotdone, subMineCollapsed, subTower, subTowerNotdone, subSewer:
+		return locBuild
+
+	default:
+		fmt.Fprintf(w.stderr, "subkind is %d\n", w.subkind(n))
+		assert(false, "olympia/u.c", 386, "FALSE")
+	}
+
+	return 0
+}
+
+// clearTemps is clear_temps(): it zeroes the temp of every box of kind k.
+func (w *world) clearTemps(k int) {
+	for i := range w.loopKind(k) {
+		w.bx[i].temp = 0
+	}
+}
+
+// capitalize is cap(): s with its first byte made upper case, by C's
+// toupper() in the "C" locale (the engine never calls setlocale()), which
+// changes only 'a' to 'z'. "" is returned as is. C copies s into a sout()
+// buffer first, cutting it to LEN bytes.
+func capitalize(s string) string {
+	if s == "" {
+		return s
+	}
+
+	t := []byte(sout("%s", s))
+	if 'a' <= t[0] && t[0] <= 'z' {
+		t[0] -= 'a' - 'A'
+	}
+
+	return string(t)
+}

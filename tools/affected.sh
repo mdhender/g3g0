@@ -57,6 +57,15 @@ reads() {
 		olympia/code.c | olympia/glob.c | olympia/z.c | olympia/io.c | olympia/sout.c) return 0 ;;
 		lib/checked_alloc.c | lib/ilist.c | lib/rng.c | lib/rnd.c) return 0 ;;
 		esac ;;
+	helper-compat)
+		case "$2" in
+		olympia/*.h | lib/*.h) return 0 ;;
+		olympia/code.c | olympia/glob.c | olympia/z.c | olympia/sout.c | olympia/u.c) return 0 ;;
+		olympia/seed.c | olympia/loc.c | olympia/stack.c | olympia/swear.c | olympia/use.c) return 0 ;;
+		olympia/move.c | olympia/day.c | olympia/garr.c | olympia/order.c | olympia/input.c) return 0 ;;
+		lib/checked_alloc.c | lib/ilist.c | lib/rng.c | lib/rnd.c) return 0 ;;
+		lib/cstrings.c | lib/item_ents.c | lib/orders.c) return 0 ;;
+		esac ;;
 	io-compat | box-compat | boxfile-compat)
 		case "$2" in
 		olympia/*.h | lib/*.h) return 0 ;;
@@ -77,7 +86,7 @@ reads() {
 	return 1
 }
 
-tools=(rng-compat lists-compat entity-compat code-compat io-compat box-compat boxfile-compat
+tools=(rng-compat lists-compat entity-compat code-compat helper-compat io-compat box-compat boxfile-compat
 	scanf-compat olympia-cli-compat olympia-roundtrip olympia-spec)
 
 for t in "${tools[@]}"; do

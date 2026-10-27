@@ -11,9 +11,12 @@ import (
 )
 
 // Ported from olympia/code.c: the entity codes, the names, print_box_usage,
-// and the allocation of boxes and the kind and subkind chains. new_ent and
-// the mint allocator are left for stage 1, along with display_name and the
-// name helpers built on it (box_name, just_name and the rest).
+// and the allocation of boxes and the kind and subkind chains, and of the
+// name helpers built on display_name, those check_db() uses (box_name,
+// just_name and plural_item_name). new_ent and the mint allocator are left
+// for stage 1, along with display_kind (and the is_port_city it calls),
+// just_name_qty, plural_item_box, box_name_qty and box_name_kind, which
+// check_db() does not use.
 //
 // G2 entity coding system:
 //
@@ -280,6 +283,93 @@ func (w *world) boxCode(n int) string {
 	}
 
 	return "[" + intToCode(n) + "]"
+}
+
+// displayName is display_name(): box n's name, or if it has none, a name
+// from what it is: "Player", "Gate" or "Sign" for those kinds, the item a
+// noble is made of, or its subkind, with the first letter capitalized. It
+// is "" for a box that is not valid.
+func (w *world) displayName(n int) string {
+	if !w.validBox(n) {
+		return ""
+	}
+
+	s := w.name(n)
+
+	if s != "" {
+		return s
+	}
+
+	switch w.kind(n) {
+	case tPlayer:
+		return "Player"
+	case tGate:
+		return "Gate"
+	case tPost:
+		return "Sign"
+	}
+
+	if i := w.nobleItem(n); i != 0 {
+		return capitalize(w.pluralItemName(i, 1))
+	}
+
+	return capitalize(subkindS[w.subkind(n)])
+}
+
+// boxName is box_name(): box n's display name and code, as "Name~[code]",
+// or only the code if it has no display name or is not valid, or
+// "Garrison" for garrison_magic.
+func (w *world) boxName(n int) string {
+	if n == int(w.garrisonMagic) {
+		return "Garrison"
+	}
+
+	if w.validBox(n) {
+		s := w.displayName(n)
+		if s != "" {
+			return sout("%s~%s", s, w.boxCode(n))
+		}
+	}
+
+	return w.boxCode(n)
+}
+
+// justName is just_name(): box n's display name, or its code if it has
+// none or is not valid, or "Garrison" for garrison_magic.
+func (w *world) justName(n int) string {
+	if n == int(w.garrisonMagic) {
+		return "Garrison"
+	}
+
+	if w.validBox(n) {
+		s := w.displayName(n)
+		if s != "" {
+			return s
+		}
+	}
+
+	return w.boxCode(n)
+}
+
+// pluralItemName is plural_item_name(): the display name of item for one,
+// or its plural name for any other qty. An item with no plural name is
+// reported on stderr and gets its display name. The item's box must exist.
+func (w *world) pluralItemName(item, qty int) string {
+	if qty == 1 {
+		return w.displayName(item)
+	}
+
+	s := ""
+	if p := w.rpItem(item); p != nil && p.pluralName != nil {
+		s = *p.pluralName
+	}
+
+	if s == "" {
+		fmt.Fprintf(w.stderr, "warning: plural name not set for item %s\n", w.boxCode(item))
+		s = w.displayName(item)
+	}
+
+	return s
 }
 
 // Allocating entities and threading like entities together (kind_first,

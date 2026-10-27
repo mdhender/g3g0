@@ -12,7 +12,7 @@ The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and re
 The port follows, from `olympia/code.c`: `letter_val`, `int_to_code`, `code_to_int`, `print_box_usage`, `scode`, `name`, `set_name`, `set_banner`, `box_code`, `box_code_less`, the chains (`add_next_chain`, `remove_next_chain`, `add_sub_chain`, `remove_sub_chain` and their cache), `delete_box`, `change_box_kind`, `change_box_subkind` and `alloc_box`.
 From `olympia/oly.h`: `kind_first`, `kind_next`, `sub_first`, `sub_next` and `loc`.
 From `olympia/loop.h`: `loop_boxes`, `loop_kind`, `loop_subkind` and `loop_loc_or_ship`.
-`new_ent` and the mint allocator, and `display_name` and the name helpers built on it (`box_name`, `just_name` and the rest), are left for later tasks.
+`new_ent` and the mint allocator are left for later tasks. `display_name` and the name helpers built on it that `check_db` uses (`box_name`, `just_name`, `plural_item_name`) are checked by [`helper-compat`](../helper-compat); `display_kind` and the rest are left for later tasks.
 
 ## Prerequisites
 

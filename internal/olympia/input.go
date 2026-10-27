@@ -4,7 +4,10 @@
 package olympia
 
 // Ported from olympia/input.c: the command line parser that loading a
-// command (scan_command() in io.c) uses.
+// command (scan_command() in io.c) uses, and the loading of a unit's next
+// order into its command (init_load_sup() and what it calls), which
+// set_lord() uses. Running commands is left for later stages; so is
+// reporting an order that does not parse (do_command()).
 //
 // C works on its strings in place, writing NUL bytes into them. The ports
 // work on a []byte copy where C writes into the string, and give each
@@ -224,4 +227,181 @@ func (w *world) olyParseCmd(c *command, s *string) bool {
 	}
 
 	return true
+}
+
+// maxPri is MAX_PRI in input.c: the number of command priorities, and of
+// load queues.
+const maxPri = 5
+
+// parseArg is parse_arg(): the entity or number s names (see scode), or 0
+// if it is negative. If it is 0 and s is a near miss for "garrison" (see
+// fuzzyStrcmp), it is the garrison in who's location, or garrison_magic if
+// there is none.
+func (w *world) parseArg(who int, s string) int {
+	n := scode(s)
+
+	if n < 0 {
+		n = 0
+	}
+
+	if n == 0 && who != 0 && w.subloc(who) != 0 && fuzzyStrcmp(s, "garrison") {
+		n = w.garrisonHere(w.subloc(who))
+		if n == 0 {
+			n = int(w.garrisonMagic)
+		}
+	}
+
+	return n
+}
+
+// olyParse is oly_parse(): olyParseCmd, then the first eight arguments
+// after the command name, each through parseArg, into c's a to h, which it
+// clears first.
+func (w *world) olyParse(c *command, s *string) bool {
+	c.a = 0
+	c.b = 0
+	c.c = 0
+	c.d = 0
+	c.e = 0
+	c.f = 0
+	c.g = 0
+	c.h = 0
+
+	if !w.olyParseCmd(c, s) {
+		return false
+	}
+
+	args := []*int32{&c.a, &c.b, &c.c, &c.d, &c.e, &c.f, &c.g, &c.h}
+	for i := min(c.parse.Len(), 9) - 1; i >= 1; i-- {
+		*args[i-1] = int32(w.parseArg(int(c.who), c.parse[i]))
+	}
+
+	return true
+}
+
+// getCommand is get_command(): it takes the next order queued for unit
+// who by the player who controls it now, and returns it and true, or false
+// if there is none or who is not a valid, living unit. Taking an order
+// sets the player's last_order_turn to this turn.
+func (w *world) getCommand(who int) (string, bool) {
+	if !w.validBox(who) || w.kind(who) == tDeadchar {
+		return "", false
+	}
+
+	fact := w.player(who) // who controls us now?
+
+	if fact == 0 {
+		return "", false
+	}
+
+	order, ok := w.topOrder(fact, who)
+
+	// If we don't have any orders, then fail.
+
+	if !ok {
+		return "", false
+	}
+
+	// Update the player's last turn field so we know if he's been playing
+	// or not.
+
+	w.pPlayer(fact).lastOrderTurn = int32(w.sysclock.turn)
+
+	assert(len(order) < lenMax, "olympia/input.c", 403, "strlen(order) < LEN") // maybe not a valid assert
+
+	w.popOrder(fact, who)
+
+	return order, true
+}
+
+// setState is set_state(): it moves c's unit from the queue of its state
+// (the run queue, or the load queue of its priority) to the queue of the
+// new state (the load queue of newPri for STATE_LOAD). STATE_DONE and
+// STATE_ERROR have no queue. The state is stored as a schar.
+func (w *world) setState(c *command, state, newPri int) {
+	switch c.state {
+	case stateRun:
+		w.runQ.RemValueUniq(int(c.who))
+
+	case stateLoad:
+		w.loadQ[c.pri].RemValueUniq(int(c.who))
+	}
+
+	c.state = int8(state)
+
+	switch c.state {
+	case stateRun:
+		w.runQ.Append(int(c.who))
+
+	case stateLoad:
+		w.loadQ[newPri].Append(int(c.who))
+	}
+}
+
+// loadCommand is load_command(): it loads c with its unit's next order
+// and queues it to run (STATE_LOAD), or, with no order left, sets it to
+// STATE_DONE. It returns whether there was an order.
+//
+// An order that does not parse is set to STATE_ERROR and passed to
+// do_command(), which reports it and loads the next order; that is not
+// ported yet, and panics.
+func (w *world) loadCommand(c *command) bool {
+	assert(c != nil, "olympia/input.c", 537, "c != NULL")
+
+	buf, ok := w.getCommand(int(c.who))
+	if !ok {
+		w.setState(c, stateDone, 0)
+		return false
+	}
+
+	if w.olyParse(c, &buf) {
+		pri := int(cmdTbl[c.cmd].pri)
+
+		w.setState(c, stateLoad, pri)
+
+		c.pri = int8(pri)
+		c.wait = cmdTbl[c.cmd].time
+		c.poll = int8(cmdTbl[c.cmd].poll)
+		c.daysExecuting = 0
+	} else {
+		// No queue holds STATE_ERROR, so report the bad order now.
+		// do_command fails it, and command_done loads the next order.
+		w.setState(c, stateError, 0)
+		panic("olympia: load_command: do_command is not yet implemented")
+	}
+
+	return true
+}
+
+// initLoadSup is init_load_sup(): it puts who's command on the queue for
+// its state, or, if it is done, loads the next order into it. A unit with
+// no command gets one, done. A command must belong to its unit, and be
+// loading, running or done.
+func (w *world) initLoadSup(who int) {
+	c := w.rpCommand(who)
+
+	// All characters should have a command structure. Create one if they
+	// don't.
+
+	if c == nil {
+		c = w.pCommand(who)
+		c.who = int32(who)
+		c.state = stateDone
+	}
+
+	assert(who == int(c.who), "olympia/input.c", 722, "who == c->who")
+
+	switch c.state {
+	case stateLoad:
+		w.loadQ[c.pri].Append(int(c.who))
+
+	case stateRun:
+		w.runQ.Append(int(c.who))
+
+	case stateDone:
+		w.loadCommand(c)
+
+	default:
+		assert(false, "olympia/input.c", 739, "FALSE")
+	}
 }
