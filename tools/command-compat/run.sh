@@ -47,7 +47,7 @@ functions = {
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
               'in_safe_now', 'province', 'building_owner', 'viewloc', 'all_char_here',
               'in_here_list', 'add_to_here_list', 'remove_from_here_list', 'set_where'],
-    'garr.c': ['garrison_here'],
+    'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here'],
     'u.c': ['min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np',
@@ -143,7 +143,6 @@ with open(f'{dst}/stubs.c', 'w') as out:
     out.write('''
 /* Only unreachable reporting routes and unrelated code.c dependencies. */
 int is_port_city(int n) STUB("is_port_city")
-ilist players_who_rule_here(int n) STUB("players_who_rule_here")
 void check_validated_trades(void) STUB("check_validated_trades")
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }

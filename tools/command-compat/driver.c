@@ -98,7 +98,13 @@ int main(int argc, char **argv)
   if (section != want) continue;
   printf("> %s\n", line);
   sscanf(line, "%31s", op);
-  if (!strcmp(op, "lore_state")) {
+  if (!strcmp(op, "emit")) {
+   sscanf(line,"%*s %d %d",&n,&a); out(n,"routing %d  ",a);
+  }
+  else if (!strcmp(op, "garrison_view")) {
+   sscanf(line,"%*s %d",&n); show_to_garrison = n;
+  }
+  else if (!strcmp(op, "lore_state")) {
    struct entity_player *p;
    sscanf(line,"%*s %d",&n); p = p_player(n);
    list("known",p->known); list("lore",p->deliver_lore);
@@ -244,6 +250,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"prev")) p_char(n)->prev_lord = a;
    else if (!strcmp(text,"rate")) p_char(n)->loy_rate = a;
    else if (!strcmp(text,"pledge")) p_magic(n)->pledge = a;
+   else if (!strcmp(text,"castle")) p_misc(n)->garr_castle = a;
    else if (!strcmp(text,"unit")) ilist_append(&p_player(n)->units,a);
    else if (!strcmp(text,"np")) p_player(n)->noble_points = (short)a;
    else if (!strcmp(text,"skill_np")) p_skill(n)->np_req = a;

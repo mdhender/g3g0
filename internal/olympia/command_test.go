@@ -114,6 +114,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "emit":
+			w.commandOut(args.num(t), "routing %d  ", args.num(t))
+		case "garrison_view":
+			w.showToGarrison = args.num(t) != 0
 		case "lore_state":
 			p := w.pPlayer(args.num(t))
 			helperList(&stdout, "known", p.known)
@@ -294,6 +298,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pChar(n).loyRate = int32(a)
 			case "pledge":
 				w.pMagic(n).pledge = int32(a)
+			case "castle":
+				w.pMisc(n).garrCastle = int32(a)
 			case "unit":
 				w.pPlayer(n).units.Append(a)
 			case "np":
@@ -704,8 +710,8 @@ func TestCommandSchedulerBoundaries(t *testing.T) {
 	}
 }
 
-// Garrison output fan-out is outside this task. Its scan must still return
-// normally without a target and stop only at an actual auto_attack invocation.
+// A garrison without a castle has no output recipients, but still reaches
+// the real regular_combat boundary after auto_attack's output routing.
 func TestCommandGarrisonAutoAttackBoundary(t *testing.T) {
 	w := newWorld()
 	var stdout, stderr strings.Builder
@@ -722,7 +728,7 @@ func TestCommandGarrisonAutoAttackBoundary(t *testing.T) {
 	w.checkAllAutoAttacks()
 	w.pMisc(1000).garrHost.Append(1001)
 	defer func() {
-		if r := recover(); r != notImplemented("auto_attack") {
+		if r := recover(); r != notImplemented("regular_combat") {
 			t.Fatalf("garrison combat boundary = %v", r)
 		}
 		if stdout.Len() != 0 || stderr.Len() != 0 || w.rpPlayer(200) != nil {

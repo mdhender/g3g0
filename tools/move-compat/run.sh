@@ -56,6 +56,8 @@ functions = {
     'stack.c': ['here_pos', 'stack_parent', 'stack_leader', 'promote',
                 'unstack', 'leave_stack'],
     'storm.c': ['weather_here'],
+    'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here'],
+    'day.c': ['touch_loc_pl'],
 }
 with open(dest, 'w') as out:
     out.write('#include <stdlib.h>\nint fuzzy_find;\n')

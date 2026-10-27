@@ -170,6 +170,43 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 			}
 		case "show_day":
 			w.showDay = n != 0
+		case "frame":
+			w.indent, w.secondIndent = int32(n), int32(b)
+		case "garrison_view":
+			w.showToGarrison = n != 0
+		case "touch":
+			w.touchLocPl(n, b)
+		case "touched":
+			setBit(&w.pPlayer(n).locs, b)
+		case "pledge":
+			w.pMagic(n).pledge = int32(b)
+		case "castle":
+			w.pMisc(n).garrCastle = int32(b)
+		case "emit":
+			w.commandOut(n, "routing %d  ", b)
+		case "rulers":
+			rulers := w.playersWhoRuleHere(n)
+			fmt.Fprint(&stdout, "rulers:")
+			for _, pl := range rulers {
+				fmt.Fprintf(&stdout, " %d", pl)
+			}
+			fmt.Fprintln(&stdout)
+		case "routing_state":
+			for n := range w.loopBoxes() {
+				if p := w.rpMisc(n); p != nil {
+					fmt.Fprintf(&stdout, "castle %d %d\n", n, p.garrCastle)
+				}
+				if p := w.rpMagic(n); p != nil {
+					fmt.Fprintf(&stdout, "pledge %d %d\n", n, p.pledge)
+				}
+				p := w.rpPlayer(n)
+				fmt.Fprintf(&stdout, "player_data %d %d\n", n, b2i(p != nil))
+				if p != nil {
+					helperList(&stdout, fmt.Sprintf("touched %d", n), p.locs)
+					helperList(&stdout, fmt.Sprintf("known %d", n), p.known)
+					helperList(&stdout, fmt.Sprintf("output_order %d", n), p.output)
+				}
+			}
 		case "see_all":
 			w.immedSeeAll = int32(n)
 		case "admission":

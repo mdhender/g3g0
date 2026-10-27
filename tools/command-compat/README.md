@@ -70,8 +70,7 @@ they never execute an aborting COLLECT handler or claim harvesting works.
 
 All other command routines named by the C table are **aborting** stubs,
 never successful substitutes. The remaining aborting dependencies are
-unreachable garrison report routes (`players_who_rule_here`), unused display formatting
-(`is_port_city`), and validated-trade settlement. Reaching any
+unused display formatting (`is_port_city`) and validated-trade settlement. Reaching any
 stub fails the script, including `--update`. Only instrumentation
 (`coverage_count` and phase markers) is a no-op: stage 3, not gameplay state. No compared
 scheduler, auto-attack scan, wait predicate or wait handler is a successful stub.
@@ -98,16 +97,16 @@ The only implemented handlers are the complete real handlers listed above.
 The tiny no-op handlers really return TRUE in C. Skill lookup and counting
 are real dependencies, not successful placeholders.
 
-The minimal `commandOut` route implements default character/player output,
-prisoner suppression, real raw C line framing and LEN-1 truncation, append-only
+The `commandOut` route implements default character/player and location/garrison
+output, prisoner suppression, real raw C line framing and LEN-1 truncation, append-only
 log writes and the player's output-bit mutation. The small `logWrite` MASTER
 route shares that same bottom writer; code alerts preserve GM output bits
 and raw log bytes, not just diagnostics. Immediate output goes to
 stdout with C framing, but without command echo; it does **not** bypass all
-allow checks. Other routing/formatting fails explicitly. Report assembly and
-the broader sout interface remain stage 2. No report-side mutations on these
-paths are omitted. `-r` remains disabled; these scheduler methods are not full
-turn orchestration. Wait callbacks, polling, generic order interruption and
+allow checks. Indentation, secondary indentation and garrison unit prefixes
+are preserved. Report assembly and the broader sout interface remain stage 2.
+No report-side mutations on these paths are omitted. Full turn execution still
+stops at explicit unfinished subsystem boundaries. Wait callbacks, polling, generic order interruption and
 the full ownership-transfer closure are ported. COLLECT execution and
 validated-trade settlement still stop explicitly. SAIL and COLLECT
 interrupt callbacks remain explicit unported boundaries, not successful stubs.
@@ -118,11 +117,9 @@ scan excludes stacked followers and leaders whose health is neither 100 nor
 -1, then completes the local and outer-ship target scans. Healthy nonhostile
 leaders return normally. Only a selected attack emits real auto-attack output
 and stops explicitly at `regular_combat`; combat resolution is not implemented.
-For a nonprisoner garrison, stage-2 report fan-out remains unported: its selected
-attack stops at the actual `auto_attack` entry, before `out`, with no fabricated
-report output or player-bit changes. A separate production-boundary test covers
-its no-target return versus actual attack stop; no C garrison-output stub is
-recorded or blessed. Prisoners retain C's output suppression.
+Garrison fan-out now uses real `players_who_rule_here` and `province_admin`;
+selected garrison attacks emit actual routed output and stop at
+`regular_combat`, just like ordinary units. Prisoners retain C's output suppression.
 Clearing second waits is the actual list-based combat.c operation, not a scan
 of all characters. Attitude command families remain unported.
 
@@ -443,8 +440,29 @@ The unowned lore scan reproduces [G3 #353](https://github.com/playbymail/olympia
 No NULL guard or independent fix was added. G3 #352's separate NP-transfer
 behavior remains unchanged.
 
-Two actual C runs produce **204 sections / 7002 lines**, byte-identical;
+Before #109, two actual C runs produced **204 sections / 7002 lines**, byte-identical;
 Go matches their raw stdout, stderr, status and observed/serialized state.
 The prior **186 sections / 6585 lines** remain byte-identical. No new RNG
 calls or streams are introduced. Whole-game turns remain opt-in and full
 turn orchestration is still #65 and later work, not enabled by this task.
+
+## Location and garrison output (#109)
+
+The former aborting `players_who_rule_here` dependency is replaced by its
+complete pinned definition (garr.c 168–201) and `province_admin` (73–98),
+using original structs/macros and `#line` locations. The existing complete
+`garrison_here`, `building_owner`, player/lord walks and sparse bits close
+the dependency chain; original sout.c is still linked unchanged.
+
+Three appended cases compare actual hidden-location logs for direct/outer
+touching and silent factions; garrison versus ordinary silent-unit routing;
+and garrison output before the real, still-aborting regular-combat boundary.
+Before/after `save_box` records show persistent knowledge, pledge and castle
+fields unchanged, while explicit state captures retain unsaved touched/output
+mutations. Report assembly and MOVE/SAIL callback integration are not included.
+
+Two fresh bounded C runs produce **207 sections / 7193 lines / 137909 bytes**,
+and the Go recording test matches. All prior **204 sections / 7002 lines /
+135225 bytes** remain byte-exact, with no rewritten prefix. Literal trailing
+spaces in the new recordings are actual C output. The corresponding move
+recording has 83 sections / 4067 lines / 81524 bytes and broader routing controls.

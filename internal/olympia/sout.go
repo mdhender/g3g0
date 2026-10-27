@@ -38,7 +38,7 @@ func sout(format string, a ...any) string {
 // commandOut is the default character/player route through out/vout,
 // out_sup and bottom_out. wout is an alias for out in C. Keep raw output
 // framing even in immediate mode, and keep the player's output bit mutation.
-// Other routing/formatting and report assembly are stage 2, not no-op stubs.
+// Report assembly remains stage 2; location and garrison routing is real.
 func (w *world) commandOut(who int, format string, a ...any) {
 	if who == vect {
 		for _, n := range w.outVector {
@@ -50,10 +50,54 @@ func (w *world) commandOut(who int, format string, a ...any) {
 	if w.isPrisoner(who) {
 		return
 	}
-	if w.subkind(who) == subGarrison || (w.kind(who) != tChar && w.kind(who) != tPlayer) {
-		panic(notImplemented("command output routing"))
+	if w.subkind(who) == subGarrison {
+		w.outGarrison(who, format, a...)
+	} else if w.isLocOrShip(who) {
+		w.outLocation(who, format, a...)
+	} else {
+		w.bottomOut(w.player(who), who, format, a...)
 	}
-	w.bottomOut(w.player(who), who, format, a...)
+}
+
+func (w *world) canViewLoc(pl int, p *entityPlayer, where, outer int) bool {
+	var rulers []int
+	if w.showToGarrison && w.locDepth(outer) == locProvince {
+		rulers = w.playersWhoRuleHere(outer)
+	}
+	if testBit(p.locs, where) {
+		return true
+	}
+	if testBit(p.locs, outer) {
+		if w.locHidden(where) != 0 && !w.testKnown(pl, where) {
+			return false
+		}
+		return true
+	}
+	if w.showToGarrison {
+		for _, n := range rulers {
+			if n == pl {
+				return where == outer || w.locHidden(where) == 0
+			}
+		}
+	}
+	return false
+}
+
+func (w *world) outLocation(where int, format string, a ...any) {
+	outer := w.viewloc(where)
+	for pl := range w.loopKind(tPlayer) {
+		if w.canViewLoc(pl, w.pPlayer(pl), where, outer) {
+			w.bottomOut(pl, outer, format, a...)
+		}
+	}
+}
+
+func (w *world) outGarrison(garr int, format string, a ...any) {
+	for _, pl := range w.playersWhoRuleHere(garr) {
+		if pl != 0 && w.subkind(pl) != subPlSilent {
+			w.bottomOutUnit(pl, 6, garr, format, a...) // sout.h OUT_GARR
+		}
+	}
 }
 
 // vector_char_here uses all_char_here: descendants only, depth first,
@@ -81,6 +125,10 @@ func (w *world) logWrite(k int, format string, a ...any) {
 }
 
 func (w *world) bottomOut(pl, who int, format string, a ...any) {
+	w.bottomOutUnit(pl, who, 0, format, a...)
+}
+
+func (w *world) bottomOutUnit(pl, who, unit int, format string, a ...any) {
 	var fp io.Writer = w.stdout
 	if !w.immediate {
 		if pl == 0 {
@@ -104,5 +152,13 @@ func (w *world) bottomOut(pl, who int, format string, a ...any) {
 	if w.showDay {
 		day = fmt.Sprintf("%d", w.sysclock.day)
 	}
-	fmt.Fprintf(fp, "%d:0::0:%s:%s\n", who, day, s)
+	ind := fmt.Sprint(w.indent)
+	if w.secondIndent != 0 {
+		ind += fmt.Sprintf("/%d", w.secondIndent)
+	}
+	code := ""
+	if unit != 0 {
+		code = boxCodeLess(unit)
+	}
+	fmt.Fprintf(fp, "%d:%d:%s:%s:%s:%s\n", who, w.styleHTML, code, ind, day, s)
 }

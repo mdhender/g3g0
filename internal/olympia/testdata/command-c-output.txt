@@ -7000,3 +7000,194 @@ stderr:
 assertion failure: olympia/storm.c (1622): valid_box(pl)
 
 exit 134
+stdout:
+section routing persistent serialization and unsaved touched output state
+> place 9000
+> entity 9001 3 13
+> link 9000 9001
+> field 201 subkind 62
+> field 200 touched 9000
+> field 201 touched 9001
+> field 200 known 9001
+> field 9001 loc_hidden 1
+> save 200
+200 player pl_regular
+PL
+ kn 9001 
+
+> save 201
+201 player pl_silent
+PL
+
+> lore_state 200
+known: 9001
+lore:
+touched: 9000
+weather:
+> lore_state 201
+known:
+lore:
+touched: 9001
+weather:
+> emit 9001 111
+> emit 9000 112
+> readlog 200
+log 200:
+9000:0::0::routing 111  
+9000:0::0::routing 112  
+> readlog 201
+log 201:
+9000:0::0::routing 111  
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 1 0
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 1
+> lore_state 200
+known: 9001
+lore:
+touched: 9000
+weather:
+> lore_state 201
+known:
+lore:
+touched: 9001
+weather:
+> save 200
+200 player pl_regular
+PL
+ kn 9001 
+
+> save 201
+201 player pl_silent
+PL
+
+> save 9001
+9001 loc cave
+LI
+ wh 9000
+LO
+ hi 1
+
+stderr:
+
+exit 0
+stdout:
+section garrison routing serialization silent lord and ordinary unit difference
+> place 9000
+> entity 9001 3 32
+> link 9000 9001
+> link 9001 1001
+> field 1001 lord 201
+> field 1001 pledge 1000
+> entity 1002 2 64
+> link 9000 1002
+> link 9000 1000
+> field 1002 castle 9001
+> field 201 subkind 62
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_silent
+PL
+
+> save 1001
+1001 char 0
+LI
+ wh 9001
+CH
+ lo 201
+CM
+ pl 1000
+
+> save 1002
+1002 char garrison
+LI
+ wh 9000
+MI
+ gc 9001
+
+> emit 1002 121
+> emit 1001 122
+> garrison_view 1
+> emit 9000 123
+> readlog 200
+log 200:
+6:0:1002:0::routing 121  
+9000:0::0::routing 123  
+> readlog 201
+log 201:
+1001:0::0::routing 122  
+9000:0::0::routing 123  
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 1 touched 0 0
+> lore_state 200
+known:
+lore:
+touched:
+weather:
+> lore_state 201
+known:
+lore:
+touched:
+weather:
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_silent
+PL
+
+> save 1001
+1001 char 0
+LI
+ wh 9001
+CH
+ lo 201
+CM
+ pl 1000
+
+> save 1002
+1002 char garrison
+LI
+ wh 9000
+MI
+ gc 9001
+
+stderr:
+
+exit 0
+stdout:
+section combat boundary garrison now routes actual output before regular combat
+> place 9000
+> entity 9001 3 32
+> link 9000 9001
+> entity 1002 2 0
+> field 1002 lord 200
+> link 9001 1002
+> field 1000 subkind 64
+> field 1000 castle 9001
+> field 1001 lord 201
+> link 9000 1001
+> set health 100
+> field 1000 garr_host 1001
+> auto
+combat log:
+6:0:1000:0::> [auto-attack 1001]
+combat output 0
+stderr:
+combat boundary: regular_combat
+
+exit 134

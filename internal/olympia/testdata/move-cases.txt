@@ -1698,3 +1698,277 @@ lord 1000 200
 voyage 1000 2 0 1
 voyage_state
 lose 14 1000 200
+
+section location touched untapped known only and silent recipient order
+output 1
+box 203 1 49 0
+box 201 1 62 0
+box 200 1 49 0
+box 202 1 49 0
+box 10101 3 3 0
+box 301 3 13 10101
+known 202 301
+touched 201 10101
+touched 200 301
+routing_state
+emit 301 11
+emit 10101 12
+routing_state
+state
+
+section hidden direct touch versus outer known unknown and untapped knowledge
+output 1
+box 200 1 49 0
+box 201 1 49 0
+box 202 1 49 0
+box 203 1 62 0
+box 10101 3 3 0
+box 301 3 13 10101
+hidden 301 -1
+touched 200 301
+touched 201 10101
+touched 203 10101
+known 203 301
+known 202 301
+emit 301 21
+known 201 301
+emit 301 22
+routing_state
+state
+
+section real touching city boundaries nested building and ship routes
+output 1
+box 200 1 49 0
+box 201 1 49 0
+box 202 1 49 0
+box 10101 3 3 0
+box 301 3 14 10101
+box 302 3 32 301
+box 303 9 30 10101
+box 304 3 13 302
+touched 200 10101
+touch 200 302
+touch 201 303
+touched 202 304
+garrison_view 1
+emit 302 31
+emit 301 32
+emit 303 33
+emit 304 34
+routing_state
+state
+
+section rulers follow pledge order skip zero and deduplicate factions including silent
+output 1
+box 200 1 49 0
+box 201 1 62 0
+box 202 1 49 0
+box 10101 3 3 0
+box 301 3 32 10101
+box 1000 2 64 10101
+box 1001 2 0 301
+box 1002 2 0 0
+box 1003 2 0 0
+box 1004 2 0 0
+box 1005 2 0 0
+lord 1001 202
+lord 1002 201
+lord 1003 202
+lord 1005 200
+pledge 1001 1002
+pledge 1002 1003
+pledge 1003 1004
+pledge 1004 1005
+castle 1000 301
+rulers 1000
+rulers 10101
+emit 1000 41
+garrison_view 1
+emit 10101 42
+routing_state
+state
+
+section garrison visibility hidden known is insufficient without touch and early refusal
+output 1
+box 200 1 49 0
+box 201 1 49 0
+box 202 1 49 0
+box 10101 3 3 0
+box 301 3 32 10101
+box 302 3 13 10101
+box 1000 2 64 10101
+box 1001 2 0 301
+box 1002 2 0 0
+box 1003 2 0 0
+lord 1001 200
+lord 1002 201
+lord 1003 202
+pledge 1001 1002
+pledge 1002 1003
+castle 1000 301
+emit 302 50
+garrison_view 1
+emit 302 51
+hidden 302 1
+known 200 302
+emit 302 52
+touched 201 10101
+emit 302 53
+touched 202 302
+emit 302 54
+known 201 302
+emit 302 55
+hidden 10101 1
+emit 10101 56
+garrison_view 0
+emit 302 57
+routing_state
+state
+
+section garrison bottom framing all eight day secondary and unit combinations
+output 1
+box 200 1 49 0
+box 10101 3 3 0
+box 301 3 32 10101
+box 1000 2 64 10101
+box 1001 2 0 301
+lord 1001 200
+castle 1000 301
+day -7
+frame -3 0
+emit 1001 60
+emit 1000 61
+show_day 1
+emit 1001 62
+emit 1000 63
+frame 5 -8
+emit 1001 64
+emit 1000 65
+show_day 0
+emit 1001 66
+emit 1000 67
+state
+
+section log routes output bits known touched and prisoner suppression
+box 200 1 49 0
+box 201 1 62 0
+box 202 1 49 0
+box 10101 3 3 0
+box 301 3 32 10101
+box 1000 2 64 10101
+box 1001 2 0 301
+box 1002 2 0 0
+box 1003 2 0 0
+lord 1001 200
+lord 1002 201
+lord 1003 202
+pledge 1001 1002
+pledge 1002 1003
+castle 1000 301
+touch 201 10101
+frame 3 7
+show_day 1
+day 19
+routing_state
+garrison_view 1
+emit 10101 70
+garrison_view 0
+emit 1000 71
+emit 10101 72
+garrison_view 1
+emit 10101 73
+unit 1000 0 1 0
+castle 1000 999
+emit 1000 74
+unit 1001 0 1 0
+emit 1001 75
+report 200
+report 201
+report 202
+output_bit 200 6
+output_bit 201 6
+output_bit 202 6
+output_bit 200 1000
+routing_state
+state
+
+section vector preserves duplicates mixed routing and prisoner bypass
+output 1
+box 200 1 49 0
+box 201 1 62 0
+box 10101 3 3 0
+box 301 3 32 10101
+box 1000 2 64 10101
+box 1001 2 0 301
+box 1002 2 0 0
+box 1003 2 0 0
+lord 1001 200
+lord 1002 201
+lord 1003 200
+unit 1003 0 1 0
+castle 1000 301
+pledge 1001 1002
+touch 201 10101
+vector 1002
+vector 1000
+vector 10101
+vector 1003
+vector 1000
+emit -1 81
+routing_state
+state
+
+section absent invalid and empty castles no rulers then first character controls garrison
+output 1
+box 200 1 49 0
+box 10101 3 3 0
+box 301 3 32 10101
+box 1001 2 0 10101
+box 1000 2 64 10101
+rulers 1000
+castle 1000 301
+rulers 1000
+rulers 10101
+castle 1000 999
+rulers 1000
+emit 1000 90
+castle 1000 301
+box 1002 2 0 301
+lord 1002 200
+rulers 1000
+rulers 10101
+garrison_view 1
+emit 10101 91
+emit 1000 92
+routing_state
+state
+
+section invalid ruler province depth assertion
+box 301 3 16 0
+rulers 301
+
+section invalid ruler non garrison assertion
+box 1001 2 0 0
+rulers 1001
+
+section invalid eager garrison lookup before touched shortcut
+output 1
+box 200 1 49 0
+box 10101 3 3 0
+box 301 3 16 10101
+box 1000 2 64 10101
+castle 1000 301
+touched 200 10101
+garrison_view 1
+emit 10101 101
+
+section invalid ruler pledge loop guard diagnostics
+box 200 1 49 0
+box 10101 3 3 0
+box 301 3 32 10101
+box 1000 2 64 10101
+box 1001 2 0 301
+lord 1001 200
+pledge 1001 1001
+castle 1000 301
+rulers 1000

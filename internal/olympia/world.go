@@ -141,6 +141,10 @@ type world struct {
 	immediate      bool
 	immedSeeAll    int32 // oly.h see_all(n), independent of immediate output
 	showDay        bool  // glob.c show_day; default formatting for command output
+	indent         int32 // sout.c output framing, not report assembly
+	secondIndent   int32
+	styleHTML      int32
+	showToGarrison bool
 	evening        int32
 	autoAttackFlag bool
 	waitList       lists.IList // c1.c wait_list

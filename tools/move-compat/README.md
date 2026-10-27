@@ -22,7 +22,9 @@ exit save/restore, stack action/guard bookkeeping and `check_captain_loses_sailo
 input.c's `find_command` using the original glob.c command table; u.c's real
 `sub_item` for mid-voyage crew removal; perm.c's `rp_admit` and
 `will_admit`; stack.c's actual leave/unstack closure; and storm.c's actual
-`weather_here`. It preserves dir.c's original
+`weather_here`. Garrison routing uses complete garr.c `garrison_here`
+(41–52), `province_admin` (73–98), `players_who_rule_here` (168–201),
+and day.c `touch_loc_pl` (2274–2294). It preserves dir.c's original
 includes, tag constants, stream declaration, turn guard and `begin_exitdir`,
 and u.c's original number table. It links original code.c/glob.c/z.c/**sout.c**
 and the actual lib checked allocator, ilist, **exit_views.c**, rng.c, rnd.c and
@@ -30,8 +32,7 @@ item_ents.c, admits.c and cstrings.c. Initialization calls real `glob_init` and
 `init_lower`, as main.c does. Original headers provide structs, macros and
 integer field widths.
 There are **no successful gameplay stubs**: unreachable command callbacks
-(including SAIL) and the report dependency `players_who_rule_here` abort if
-reached, and the tool rejects their out-of-scope marker
+(including SAIL) abort if reached, and the tool rejects their out-of-scope marker
 even in assertion cases or `--update` mode. The driver only constructs fixtures,
 invokes helpers and dumps observed state; output comes through real sout.
 
@@ -103,12 +104,37 @@ Coverage:
   day-prefixed faction and GM logs, output bits, inform zero/self/other-player/
   same-player and prisoner suppression. No output text is synthesized by the driver.
 
-The current recording has 70 sections / 3380 lines, from two deterministic C runs.
-The original 59 sections / 2868 lines are an unchanged prefix (including the
-earlier 40 sections / 1703 lines and 25 sections / 814 lines).
-The command recording remains unchanged at 204 sections / 7002 lines.
+## Location/garrison output routing (#109)
+
+The original linked sout.c supplies complete `bottom_out` (288–362),
+`can_view_loc` (376–404), `out_location` (407–429), `out_garrison` (432–445),
+`out_sup` (448–482) and `vout` (485–492), including original format strings.
+No recipient decision or output text is modeled in the C driver.
+
+Thirteen new cases cover direct/outer touched versus untapped/known-only,
+hidden known/unknown, city versus province view boundaries, nested buildings
+and ships, real touching and its outer-bit mutation, and allocation of player
+data even for factions denied output. Garrison controls check first-character
+selection, absent/invalid/empty castles, ownership and pledge order with
+duplicates/zero owners, silent recipients, visibility off/on, hidden sublocation
+refusal even when known, hidden provinces, and the touched-hidden early return.
+Prisoners bypass even malformed garrison routes; mixed vectors retain duplicates
+and order. All eight day/secondary-indent/unit framing combinations use signed,
+asymmetric values. Real faction logs and output bits distinguish location IDs
+from OUT_GARR (6), and preserve two literal trailing spaces in routing messages.
+Sparse touched/known/output lists are dumped in actual insertion order, with
+nonascending touched and output controls rather than sorted membership only.
+Assertions retain the actual file/line/condition, including eager ruler lookup
+before a touched-location shortcut and the 5000-iteration pledge guard.
+
+The recording has **83 sections / 4067 lines / 81524 bytes**, from two
+deterministic bounded C runs. The previous **70 sections / 3380 lines / 69134
+bytes** are an unchanged prefix (including 59/2868, 40/1703 and 25/814).
+Command compat adds serialized-state and real garrison auto-attack boundary
+controls: **207 sections / 7193 lines / 137909 bytes**; its previous
+**204 sections / 7002 lines / 135225 bytes** remain an unchanged prefix.
 Move callbacks remain explicit NYI for #67; departure/arrival and prisoner
-escape dependencies belong to the separately precreated #109–#113 tasks.
+escape dependencies belong to the separately precreated #110–#113 tasks.
 This harness accepts movement helpers, not whole movement execution or
 arrival callbacks. Report rendering and unrelated LOS-distance helpers are not
 extracted; report-path output mutations are checked, not skipped.

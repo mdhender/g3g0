@@ -14,6 +14,7 @@ void init_lower(void);
 int hades_region, month_done, evening;
 int immediate, flush_always = 1;
 int immed_see_all;
+extern int second_indent;
 int drv_land(struct command *, struct exit_view *, int);
 int drv_fly(struct command *, struct exit_view *, int);
 int drv_water(struct command *, struct exit_view *, int, int);
@@ -26,13 +27,6 @@ void drv_suspend(int);
 void drv_unstack(int);
 int drv_sub_item(int, int, int);
 int find_command(char *);
-
-/* Unreachable report routes must abort, never decide gameplay. */
-ilist players_who_rule_here(int n)
-{
-    fprintf(stderr, "out-of-scope C dependency: players_who_rule_here\n");
-    abort();
-}
 
 static void weights_dump(struct weights *w)
 {
@@ -159,6 +153,36 @@ int main(int argc, char **argv)
             } next_box;
         }
         else if (!strcmp(op, "show_day")) show_day = a;
+        else if (!strcmp(op, "frame")) { indent = a; second_indent = b; }
+        else if (!strcmp(op, "garrison_view")) show_to_garrison = a;
+        else if (!strcmp(op, "touch")) touch_loc_pl(a, b);
+        else if (!strcmp(op, "touched")) set_bit(&p_player(a)->locs, b);
+        else if (!strcmp(op, "pledge")) p_magic(a)->pledge = b;
+        else if (!strcmp(op, "castle")) p_misc(a)->garr_castle = b;
+        else if (!strcmp(op, "emit")) out(a, "routing %d  ", b);
+        else if (!strcmp(op, "rulers")) {
+            ilist l = players_who_rule_here(a); int i;
+            printf("rulers:");
+            for (i = 0; i < ilist_len(l); i++) printf(" %d", l[i]);
+            printf("\n");
+        }
+        else if (!strcmp(op, "routing_state")) {
+            int n, i;
+            loop_boxes(n) {
+                if (rp_misc(n)) printf("castle %d %d\n", n, garrison_castle(n));
+                if (rp_magic(n)) printf("pledge %d %d\n", n, char_pledge(n));
+                printf("player_data %d %d\n", n, rp_player(n) != NULL);
+                if (rp_player(n)) {
+                    printf("touched %d:", n);
+                    for (i = 0; i < ilist_len(rp_player(n)->locs); i++) printf(" %d", rp_player(n)->locs[i]);
+                    printf("\nknown %d:", n);
+                    for (i = 0; i < ilist_len(rp_player(n)->known); i++) printf(" %d", rp_player(n)->known[i]);
+                    printf("\noutput_order %d:", n);
+                    for (i = 0; i < ilist_len(rp_player(n)->output); i++) printf(" %d", rp_player(n)->output[i]);
+                    printf("\n");
+                }
+            } next_box;
+        }
         else if (!strcmp(op, "see_all")) immed_see_all = a;
         else if (!strcmp(op, "admission")) {
             struct admit *p = my_malloc(sizeof(*p));

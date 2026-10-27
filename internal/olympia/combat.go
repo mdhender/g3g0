@@ -113,12 +113,6 @@ func (w *world) isShip(n int) bool {
 }
 
 func (w *world) autoAttack(who, target int) {
-	// Garrison report fan-out is still stage 2. Stop at the actual
-	// auto_attack entry, before its out(), rather than fake that output or
-	// its player output-bit mutations. Ordinary units can reach regular_combat.
-	if w.subkind(who) == subGarrison && !w.isPrisoner(who) {
-		panic(notImplemented("auto_attack"))
-	}
 	w.commandOut(who, "> [auto-attack %s]", boxCodeLess(target))
 	panic(notImplemented("regular_combat"))
 }
