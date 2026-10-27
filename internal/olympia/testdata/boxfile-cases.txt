@@ -1,0 +1,675 @@
+# Differential cases for the box-file passes and writers of G3's
+# olympia/io.c (fast_scan, scan_boxes, scan_chars, scan_all_boxes,
+# read_boxes, read_chars, read_all_boxes, open_write_fp, write_kind,
+# write_player, write_chars, write_leftovers, write_all_boxes and
+# write_master), at G3 6bbcd63055d051ade6f745f368281628441a2c27.
+#
+# tools/boxfile-compat/run.sh feeds this file to a C driver built from the
+# pinned sources and records its output in boxfile-c-output.txt;
+# TestBoxfileMatchesC feeds it to the Go port and requires the same output.
+#
+# Each "section NAME" line starts a section. Every section runs in a fresh
+# process (a fresh world, after glob_init()) in a fresh, empty directory,
+# with umask 022, so a section may end in a crash, and the files it writes
+# are its own. libdir starts as "lib", which a section makes if it wants
+# one. run.sh adds how the section ended, "exit STATUS" or "hang" (see
+# run.sh), and then the directory's tree, every file with its mode and
+# contents. stderr goes to the same place as stdout, in order.
+#
+# One operation per line; a line that starts with '#' is a comment, and
+# blank lines are skipped. N, K, SK, P and MODE are integers, read with
+# strtol(s, NULL, 0) and stored in a C int. TEXT is the rest of the line
+# after one space, with \xHH and \\ escapes; with no space it is empty.
+# NAME is one word. Strings print with bytes outside ' '..'~', and '\', as
+# \xHH, and NULL prints as NULL.
+#
+#   alloc N K SK        alloc_box(N, K, SK)
+#   delete N            delete_box(N)
+#   name N TEXT         set_name(N, TEXT)
+#   unit PL N           append N to p_player(PL)->units
+#   lord N K            p_char(N)->unit_lord = K
+#   pretty P            pretty_data_files = P
+#   win P               win_flag = P
+#   libdir TEXT         libdir = TEXT
+#   put NAME TEXT       append TEXT to file NAME
+#   putl NAME TEXT      append TEXT and a newline to file NAME
+#   mkdir TEXT          mkdir(TEXT, 0755)
+#   chmod MODE TEXT     chmod(TEXT, MODE)
+#   line                print line
+#   boxes               print every box (number, kind, subkind and temp),
+#                       then every non-empty kind chain, in chain order
+#   fast                fast_scan(), and its result
+#   scan NAME           scan_boxes(NAME)
+#   scanchars           scan_chars()
+#   scanall             scan_all_boxes()
+#   read NAME           read_boxes(NAME)
+#   readchars           read_chars()
+#   readall             read_all_boxes()
+#   writekind K NAME    write_kind(K, NAME)
+#   writeplayer N       write_player(N)
+#   writechars          write_chars()
+#   leftovers           write_leftovers()
+#   writeall            write_all_boxes()
+#   master              write_master()
+#
+# fact/ holds at most one file in each section that has diagnostics, since
+# readdir()'s order is the file system's.
+#
+# Kinds: 1 player, 2 char, 3 loc, 4 item, 5 skill, 6 gate, 7 road,
+# 8 deadchar, 9 ship, 10 post, 11 storm, 12 unform, 13 lore. Subkinds:
+# 3 plain, 14 city, 30 galley, 49 pl_regular.
+
+section fast_scan
+mkdir lib
+putl lib/master 1001\x091.49\x09fact/1001\x09Player one
+putl lib/master 1002\x092.0\x09fact/1001\x09Noble
+putl lib/master 10101  \x09 \x093.14\x09loc\x09\x09City
+putl lib/master 10102\x093
+putl lib/master 10103 3.x
+putl lib/master 10104x4.5.6
+putl lib/master 78\x094.300
+putl lib/master 79 7.\x092
+put lib/master 80\x0912.0
+fast
+boxes
+line
+
+section fast_scan with no master
+mkdir lib
+fast
+boxes
+
+section fast_scan of an empty master
+mkdir lib
+put lib/master
+fast
+boxes
+
+section fast_scan of a blank line
+mkdir lib
+putl lib/master 1001\x091.49\x09fact/1001\x09Player one
+putl lib/master
+putl lib/master 1002\x092.0\x09fact/1001\x09Noble
+fast
+
+section fast_scan of a duplicate box
+mkdir lib
+putl lib/master 1001\x091.49
+putl lib/master 1001\x092.0
+fast
+
+section fast_scan of a comment
+mkdir lib
+putl lib/master # a comment
+fast
+
+section fast_scan with libdir elsewhere
+mkdir data
+putl data/master 1001\x091.49
+libdir data
+fast
+boxes
+
+section scan_boxes
+mkdir lib
+putl lib/loc # a comment before the first box
+putl lib/loc 10101 loc city
+putl lib/loc na City
+putl lib/loc # a comment inside a box
+putl lib/loc LI
+putl lib/loc  wh 10102
+putl lib/loc
+putl lib/loc 10102 LOC Plain
+putl lib/loc  \x09
+putl lib/loc 10103 loc 0
+putl lib/loc
+putl lib/loc 10104 loc 0x
+putl lib/loc
+putl lib/loc 10105 loc faery hill
+putl lib/loc
+putl lib/loc 10106 Loc   city
+putl lib/loc
+putl lib/loc 10107 location city
+putl lib/loc
+putl lib/loc 10108 loc town
+putl lib/loc
+putl lib/loc 10109 loc
+putl lib/loc
+putl lib/loc 10110
+putl lib/loc
+putl lib/loc 10111\x09loc city
+putl lib/loc
+putl lib/loc 10112 deleted 0
+putl lib/loc
+putl lib/loc #
+putl lib/loc 10113 item 0
+put lib/loc na no blank line at the end
+scan loc
+boxes
+
+section scan_boxes of a missing file
+mkdir lib
+scan loc
+boxes
+
+section scan_boxes of a blank line between boxes
+mkdir lib
+putl lib/loc 10101 loc city
+putl lib/loc
+putl lib/loc
+putl lib/loc 10102 loc city
+scan loc
+
+section scan_boxes of a box number 0
+mkdir lib
+putl lib/loc abc loc city
+scan loc
+
+section scan_boxes of a duplicate box
+mkdir lib
+putl lib/loc 10101 loc city
+putl lib/item 10101 item 0
+scan loc
+scan item
+
+section scan_chars
+mkdir lib
+mkdir lib/fact
+putl lib/fact/1001 1001 player pl_regular
+putl lib/fact/1001 na Player one
+putl lib/fact/1001
+putl lib/fact/1001 1002 char 0
+putl lib/fact/1001
+putl lib/fact/1001 1003 chars 0
+putl lib/fact/1001
+putl lib/fact/x 1004 char 0
+putl lib/fact/.1005 1005 char 0
+mkdir lib/fact/9
+scanchars
+boxes
+
+section scan_chars with no fact
+mkdir lib
+scanchars
+boxes
+
+section scan_chars when fact is a file
+mkdir lib
+putl lib/fact 1001 player pl_regular
+scanchars
+
+section scan_chars of an unreadable fact
+mkdir lib
+mkdir lib/fact
+putl lib/fact/1001 1001 player pl_regular
+chmod 0 lib/fact
+scanchars
+chmod 0755 lib/fact
+
+section scan_all_boxes
+mkdir lib
+putl lib/loc 10101 loc city
+putl lib/loc
+putl lib/item 10 item 0
+putl lib/item
+putl lib/skill 600 skill 0
+putl lib/skill
+putl lib/gate 20000 gate 0
+putl lib/gate
+putl lib/road 20001 road 0
+putl lib/road
+putl lib/ship 20002 ship galley
+putl lib/ship
+putl lib/unform 20003 unform 0
+putl lib/unform
+putl lib/misc 20004 storm 0
+putl lib/misc
+putl lib/misc 20005 post 0
+putl lib/misc
+mkdir lib/fact
+putl lib/fact/1001 1001 player pl_regular
+putl lib/fact/1001
+putl lib/fact/1001 1002 char 0
+putl lib/fact/1001
+putl lib/fact/1001 1003 deadchar 0
+putl lib/fact/1001
+putl lib/fact/1001 1004 lore 0
+scanall
+boxes
+
+section scan_all_boxes with no files
+mkdir lib
+scanall
+boxes
+
+section read_boxes
+mkdir lib
+alloc 10101 3 14
+alloc 10102 3 3
+alloc 10103 3 3
+putl lib/loc 10101 loc city
+putl lib/loc na City
+putl lib/loc LI
+putl lib/loc  wh 10102
+putl lib/loc
+putl lib/loc   10102 loc plain
+putl lib/loc na Plain
+putl lib/loc
+put lib/loc 10103 xyz 0
+read loc
+line
+writekind 3 loc
+boxes
+
+section read_boxes of a missing file
+mkdir lib
+read loc
+line
+
+section read_boxes of a comment line
+mkdir lib
+alloc 10101 3 14
+putl lib/loc 10101 loc city
+putl lib/loc na City
+putl lib/loc
+putl lib/loc # a comment
+putl lib/loc 10102 loc city
+read loc
+
+section read_boxes of a comment line first
+mkdir lib
+putl lib/loc # a comment
+read loc
+
+section read_boxes of a blank line between boxes
+mkdir lib
+alloc 10101 3 14
+alloc 10102 3 14
+putl lib/loc 10101 loc city
+putl lib/loc
+putl lib/loc
+putl lib/loc 10102 loc city
+read loc
+
+section read_boxes of a line that is not a box
+mkdir lib
+putl lib/loc loc 10101 city
+read loc
+
+section read_boxes of a negative box number
+mkdir lib
+putl lib/loc -10101 loc city
+read loc
+
+section read_boxes of an unforseen box
+mkdir lib
+alloc 10101 3 14
+putl lib/loc 10101 loc city
+putl lib/loc
+putl lib/loc 10102 loc city
+read loc
+
+section read_chars
+mkdir lib
+mkdir lib/fact
+alloc 1001 1 49
+alloc 1002 2 0
+putl lib/fact/1001 1001 player pl_regular
+putl lib/fact/1001 na Player one
+putl lib/fact/1001 PL
+putl lib/fact/1001  un 1002
+putl lib/fact/1001
+putl lib/fact/1001 1002 char 0
+putl lib/fact/1001 na Noble
+putl lib/fact/1001 CH
+putl lib/fact/1001  lo 1001
+putl lib/fact/1001
+putl lib/fact/x 1003 char 0
+mkdir lib/fact/.1004
+readchars
+writeplayer 1001
+boxes
+
+section read_chars with no fact
+mkdir lib
+readchars
+
+section read_all_boxes
+mkdir lib
+alloc 10101 3 14
+alloc 10 4 0
+alloc 1001 1 49
+putl lib/loc 10101 loc city
+putl lib/loc na City
+putl lib/loc
+putl lib/item 10 item 0
+putl lib/item na gold
+putl lib/item
+putl lib/item 10101 loc city
+putl lib/item na Again
+putl lib/item
+mkdir lib/fact
+putl lib/fact/1001 1001 player pl_regular
+putl lib/fact/1001 na Player one
+putl lib/fact/1001
+readall
+boxes
+
+section read_all_boxes with no files
+mkdir lib
+readall
+
+section write_kind
+mkdir lib
+alloc 10102 3 3
+alloc 10101 3 14
+alloc 10103 3 3
+alloc 20001 7 0
+name 10101 City
+delete 10103
+writekind 3 loc
+writekind 7 road
+writekind 9 ship
+boxes
+
+section write_kind pretty
+mkdir lib
+alloc 10102 3 3
+alloc 10101 3 14
+name 10101 City
+name 10102 Plain
+pretty 1
+writekind 3 loc
+
+section write_kind with no libdir
+alloc 10101 3 14
+writekind 3 loc
+boxes
+
+section write_kind over a read-only file
+mkdir lib
+alloc 10101 3 14
+putl lib/loc old contents
+chmod 0444 lib/loc
+writekind 3 loc
+boxes
+
+section write_kind over a write-only file
+mkdir lib
+alloc 10101 3 14
+putl lib/loc old contents
+chmod 0200 lib/loc
+writekind 3 loc
+chmod 0644 lib/loc
+
+section write_kind over a directory
+mkdir lib
+mkdir lib/loc
+alloc 10101 3 14
+writekind 3 loc
+
+section write_player
+mkdir lib
+mkdir lib/fact
+alloc 1001 1 49
+alloc 1002 2 0
+alloc 1003 2 0
+alloc 1004 2 0
+alloc 1005 2 0
+delete 1004
+name 1001 Player one
+unit 1001 1003
+unit 1001 1002
+unit 1001 1004
+unit 1001 1009
+unit 1001 1002
+unit 1001 1005
+writeplayer 1001
+boxes
+
+section write_player with no units
+mkdir lib
+mkdir lib/fact
+alloc 1001 1 49
+writeplayer 1001
+
+section write_player with no fact
+mkdir lib
+alloc 1001 1 49
+alloc 1002 2 0
+unit 1001 1002
+writeplayer 1001
+boxes
+
+section write_player of a unit that is not a character
+mkdir lib
+mkdir lib/fact
+alloc 1001 1 49
+alloc 1002 2 0
+alloc 10101 3 14
+unit 1001 1002
+unit 1001 10101
+writeplayer 1001
+
+section write_player of a unit that is a player
+mkdir lib
+mkdir lib/fact
+alloc 1001 1 49
+alloc 1002 1 49
+unit 1001 1002
+writeplayer 1001
+
+section write_chars and write_leftovers
+mkdir lib
+mkdir lib/fact
+alloc 1001 1 49
+alloc 1002 2 0
+alloc 1003 2 0
+alloc 1004 1 49
+alloc 1005 2 0
+alloc 10101 3 14
+alloc 20001 11 0
+alloc 20002 8 0
+alloc 20003 3 3
+delete 20003
+unit 1001 1002
+unit 1004 1005
+writechars
+boxes
+leftovers
+boxes
+
+section write_leftovers with no libdir
+alloc 20001 11 0
+leftovers
+
+section write_all_boxes
+mkdir lib
+mkdir lib/fact
+putl lib/fact/1099 1099 player pl_regular
+putl lib/loc old
+putl lib/storm old
+alloc 10101 3 14
+alloc 10102 3 3
+alloc 10 4 0
+alloc 600 5 0
+alloc 20000 6 0
+alloc 20001 7 0
+alloc 20002 9 30
+alloc 20003 12 0
+alloc 20004 11 0
+alloc 20005 10 0
+alloc 20006 13 0
+alloc 20007 8 0
+alloc 1001 1 49
+alloc 1002 2 0
+alloc 1003 2 0
+alloc 1004 2 0
+alloc 20008 3 3
+delete 20008
+name 10101 City
+name 1001 Player one
+name 1002 Noble
+unit 1001 1002
+unit 1001 1003
+writeall
+boxes
+
+section write_all_boxes with no fact
+mkdir lib
+alloc 1001 1 49
+alloc 1002 2 0
+unit 1001 1002
+writeall
+
+section write_all_boxes with no libdir
+alloc 1001 1 49
+alloc 10101 3 14
+writeall
+boxes
+
+section write_all_boxes in a read-only libdir
+mkdir lib
+mkdir lib/fact
+putl lib/fact/1001 old
+putl lib/loc old
+alloc 1001 1 49
+alloc 10101 3 14
+alloc 10 4 0
+chmod 0555 lib
+writeall
+master
+chmod 0755 lib
+
+section write_all_boxes with a libdir that has a space
+mkdir lib
+mkdir lib/fact
+putl lib/fact/1099 old
+mkdir my lib
+alloc 1001 1 49
+alloc 10101 3 14
+libdir my lib
+writeall
+
+section write_all_boxes with win_flag
+mkdir lib
+mkdir lib/fact
+putl lib/fact/1099 old
+putl lib/fact/1001 old
+alloc 1001 1 49
+alloc 1002 2 0
+unit 1001 1002
+win 1
+writeall
+
+section write_all_boxes with win_flag and no fact
+mkdir lib
+alloc 1001 1 49
+alloc 1002 2 0
+unit 1001 1002
+win 1
+writeall
+
+section write_master
+mkdir lib
+putl lib/master old
+alloc 10101 3 14
+alloc 10102 3 3
+alloc 10 4 0
+alloc 600 5 0
+alloc 20000 6 0
+alloc 20001 7 0
+alloc 20002 9 30
+alloc 20003 12 0
+alloc 20004 11 0
+alloc 20005 10 0
+alloc 20006 13 0
+alloc 20007 8 0
+alloc 1001 1 49
+alloc 1002 2 0
+alloc 1003 2 0
+alloc 1004 2 0
+alloc 1005 2 0
+alloc 20008 3 3
+delete 20008
+name 10101 City
+name 10102 Plain\x09with a tab
+name 1001 Player one
+name 1002 Noble
+name 20001 Road
+lord 1002 1001
+lord 1003 1002
+lord 1004 10101
+master
+boxes
+
+section write_master pretty
+mkdir lib
+alloc 10101 3 14
+name 10101 City
+pretty 1
+master
+
+section write_master of a lord loop
+mkdir lib
+alloc 1001 1 49
+alloc 1002 2 0
+alloc 1003 2 0
+lord 1002 1003
+lord 1003 1002
+master
+
+section write_master of a lord with no box
+mkdir lib
+alloc 1001 1 49
+alloc 1002 2 0
+lord 1002 1009
+master
+
+section write_master with no libdir
+alloc 10101 3 14
+master
+boxes
+
+section write_master with nothing
+mkdir lib
+master
+
+section round trip
+mkdir lib
+putl lib/loc 10101 loc city
+putl lib/loc na City
+putl lib/loc LI
+putl lib/loc  wh 10102
+putl lib/loc  hl 1002
+putl lib/loc
+putl lib/loc 10102 loc plain
+putl lib/loc na Plain
+putl lib/loc LI
+putl lib/loc  hl 10101
+putl lib/loc
+putl lib/road 20001 road 0
+putl lib/road na Road
+putl lib/road GA
+putl lib/road  tl 10102
+putl lib/road
+putl lib/misc 20004 storm 0
+putl lib/misc
+mkdir lib/fact
+putl lib/fact/1001 1001 player pl_regular
+putl lib/fact/1001 na Player one
+putl lib/fact/1001 PL
+putl lib/fact/1001  un 1002
+putl lib/fact/1001
+putl lib/fact/1001 1002 char 0
+putl lib/fact/1001 na Noble
+putl lib/fact/1001 LI
+putl lib/fact/1001  wh 10101
+putl lib/fact/1001 CH
+putl lib/fact/1001  lo 1001
+putl lib/fact/1001
+scanall
+readall
+writeall
+master
+boxes

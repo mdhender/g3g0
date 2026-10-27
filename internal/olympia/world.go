@@ -96,6 +96,28 @@ type world struct {
 	// stderr is C's stderr, which print_box_usage() and alloc_box() write
 	// to. newWorld sets it to os.Stderr; the engine sets it to its own.
 	stderr io.Writer
+
+	// stdout is the standard output that the commands write_all_boxes()
+	// runs with system() inherit. In C that is file descriptor 1, which
+	// stdio's buffer does not stand in front of. newWorld sets it to
+	// os.Stdout.
+	stdout io.Writer
+
+	// winFlag is win_flag in main.c (-w), which write_all_boxes() reads.
+	winFlag bool
+
+	// timeSelf is time_self in main.c (-T), which stage() reads, and
+	// stageOld and stageFirst are stage()'s statics old and first.
+	timeSelf   bool
+	stageOld   int64
+	stageFirst int64
+
+	// readBoxesStuck is a test hook. read_boxes() never moves past a
+	// comment line or a line that is not a box number, and loops on it
+	// forever (see readBoxes). If readBoxesStuck is set, readBoxes calls it
+	// each time round that loop, so that a test can stop it. It is nil in
+	// the engine.
+	readBoxesStuck func()
 }
 
 // newWorld returns a world as olympia-g3 has it after glob_init(): the
@@ -136,6 +158,7 @@ func newWorld() *world {
 		subCacheKind: -1,
 
 		stderr: os.Stderr,
+		stdout: os.Stdout,
 	}
 }
 

@@ -1,0 +1,1439 @@
+section fast_scan
+> mkdir lib
+> putl lib/master 1001\x091.49\x09fact/1001\x09Player one
+> putl lib/master 1002\x092.0\x09fact/1001\x09Noble
+> putl lib/master 10101  \x09 \x093.14\x09loc\x09\x09City
+> putl lib/master 10102\x093
+> putl lib/master 10103 3.x
+> putl lib/master 10104x4.5.6
+> putl lib/master 78\x094.300
+> putl lib/master 79 7.\x092
+> put lib/master 80\x0912.0
+> fast
+fast_scan 1
+> boxes
+box 78 kind 4 skind 44 temp 0
+box 79 kind 7 skind 2 temp 0
+box 80 kind 12 skind 0 temp 0
+box 1001 kind 1 skind 49 temp 0
+box 1002 kind 2 skind 0 temp 0
+box 10101 kind 3 skind 14 temp 0
+box 10102 kind 3 skind 0 temp 0
+box 10103 kind 3 skind 0 temp 0
+box 10104 kind 0 skind 5 temp 0
+kind 1: 1001
+kind 2: 1002
+kind 3: 10101 10102 10103
+kind 4: 78
+kind 7: 79
+kind 12: 80
+> line
+line NULL
+exit 0
+d 755 lib
+f 644 135 lib/master
+| 1001\x091.49\x09fact/1001\x09Player one
+| 1002\x092.0\x09fact/1001\x09Noble
+| 10101  \x09 \x093.14\x09loc\x09\x09City
+| 10102\x093
+| 10103 3.x
+| 10104x4.5.6
+| 78\x094.300
+| 79 7.\x092
+| 80\x0912.0
+\ no newline at end
+section fast_scan with no master
+> mkdir lib
+> fast
+can't open lib/master: No such file or directory
+fast_scan 0
+> boxes
+exit 0
+d 755 lib
+section fast_scan of an empty master
+> mkdir lib
+> put lib/master
+> fast
+fast_scan 1
+> boxes
+exit 0
+d 755 lib
+f 644 0 lib/master
+section fast_scan of a blank line
+> mkdir lib
+> putl lib/master 1001\x091.49\x09fact/1001\x09Player one
+> putl lib/master
+> putl lib/master 1002\x092.0\x09fact/1001\x09Noble
+> fast
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+exit 134
+d 755 lib
+f 644 57 lib/master
+| 1001\x091.49\x09fact/1001\x09Player one
+| 
+| 1002\x092.0\x09fact/1001\x09Noble
+section fast_scan of a duplicate box
+> mkdir lib
+> putl lib/master 1001\x091.49
+> putl lib/master 1001\x092.0
+> fast
+alloc_box: DUP box 1001
+assertion failure: olympia/code.c (695): FALSE
+exit 134
+d 755 lib
+f 644 19 lib/master
+| 1001\x091.49
+| 1001\x092.0
+section fast_scan of a comment
+> mkdir lib
+> putl lib/master # a comment
+> fast
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+exit 134
+d 755 lib
+f 644 12 lib/master
+| # a comment
+section fast_scan with libdir elsewhere
+> mkdir data
+> putl data/master 1001\x091.49
+> libdir data
+> fast
+fast_scan 1
+> boxes
+box 1001 kind 1 skind 49 temp 0
+kind 1: 1001
+exit 0
+d 755 data
+f 644 10 data/master
+| 1001\x091.49
+section scan_boxes
+> mkdir lib
+> putl lib/loc # a comment before the first box
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
+> putl lib/loc # a comment inside a box
+> putl lib/loc LI
+> putl lib/loc  wh 10102
+> putl lib/loc
+> putl lib/loc 10102 LOC Plain
+> putl lib/loc  \x09
+> putl lib/loc 10103 loc 0
+> putl lib/loc
+> putl lib/loc 10104 loc 0x
+> putl lib/loc
+> putl lib/loc 10105 loc faery hill
+> putl lib/loc
+> putl lib/loc 10106 Loc   city
+> putl lib/loc
+> putl lib/loc 10107 location city
+> putl lib/loc
+> putl lib/loc 10108 loc town
+> putl lib/loc
+> putl lib/loc 10109 loc
+> putl lib/loc
+> putl lib/loc 10110
+> putl lib/loc
+> putl lib/loc 10111\x09loc city
+> putl lib/loc
+> putl lib/loc 10112 deleted 0
+> putl lib/loc
+> putl lib/loc #
+> putl lib/loc 10113 item 0
+> put lib/loc na no blank line at the end
+> scan loc
+read_boxes(10106): bad subkind:   city
+read_boxes(10107): bad kind: location
+read_boxes(10108): bad subkind: town
+read_boxes(10109): bad subkind: 
+read_boxes(10110): bad kind: 
+read_boxes(10110): bad subkind: 
+read_boxes(10111): bad kind: city
+read_boxes(10111): bad subkind: 
+> boxes
+box 10101 kind 3 skind 14 temp 0
+box 10102 kind 3 skind 3 temp 0
+box 10103 kind 3 skind 0 temp 0
+box 10104 kind 3 skind 0 temp 0
+box 10105 kind 3 skind 8 temp 0
+box 10106 kind 3 skind 0 temp 0
+box 10107 kind 0 skind 14 temp 0
+box 10108 kind 3 skind 0 temp 0
+box 10109 kind 3 skind 0 temp 0
+box 10110 kind 0 skind 0 temp 0
+box 10111 kind 0 skind 0 temp 0
+box 10112 kind 0 skind 0 temp 0
+box 10113 kind 4 skind 0 temp 0
+kind 3: 10101 10102 10103 10104 10105 10106 10108 10109
+kind 4: 10113
+exit 0
+d 755 lib
+f 644 311 lib/loc
+| # a comment before the first box
+| 10101 loc city
+| na City
+| # a comment inside a box
+| LI
+|  wh 10102
+| 
+| 10102 LOC Plain
+|  \x09
+| 10103 loc 0
+| 
+| 10104 loc 0x
+| 
+| 10105 loc faery hill
+| 
+| 10106 Loc   city
+| 
+| 10107 location city
+| 
+| 10108 loc town
+| 
+| 10109 loc
+| 
+| 10110
+| 
+| 10111\x09loc city
+| 
+| 10112 deleted 0
+| 
+| #
+| 10113 item 0
+| na no blank line at the end
+\ no newline at end
+section scan_boxes of a missing file
+> mkdir lib
+> scan loc
+can't open lib/loc: No such file or directory
+> boxes
+exit 0
+d 755 lib
+section scan_boxes of a blank line between boxes
+> mkdir lib
+> putl lib/loc 10101 loc city
+> putl lib/loc
+> putl lib/loc
+> putl lib/loc 10102 loc city
+> scan loc
+read_boxes(0): bad kind: 
+read_boxes(0): bad subkind: 
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+exit 134
+d 755 lib
+f 644 32 lib/loc
+| 10101 loc city
+| 
+| 
+| 10102 loc city
+section scan_boxes of a box number 0
+> mkdir lib
+> putl lib/loc abc loc city
+> scan loc
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+exit 134
+d 755 lib
+f 644 13 lib/loc
+| abc loc city
+section scan_boxes of a duplicate box
+> mkdir lib
+> putl lib/loc 10101 loc city
+> putl lib/item 10101 item 0
+> scan loc
+> scan item
+alloc_box: DUP box 10101
+assertion failure: olympia/code.c (695): FALSE
+exit 134
+d 755 lib
+f 644 13 lib/item
+| 10101 item 0
+f 644 15 lib/loc
+| 10101 loc city
+section scan_chars
+> mkdir lib
+> mkdir lib/fact
+> putl lib/fact/1001 1001 player pl_regular
+> putl lib/fact/1001 na Player one
+> putl lib/fact/1001
+> putl lib/fact/1001 1002 char 0
+> putl lib/fact/1001
+> putl lib/fact/1001 1003 chars 0
+> putl lib/fact/1001
+> putl lib/fact/x 1004 char 0
+> putl lib/fact/.1005 1005 char 0
+> mkdir lib/fact/9
+> scanchars
+read_boxes(1003): bad kind: chars
+> boxes
+box 1001 kind 1 skind 49 temp 0
+box 1002 kind 2 skind 0 temp 0
+box 1003 kind 0 skind 0 temp 0
+kind 1: 1001
+kind 2: 1002
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 12 lib/fact/.1005
+| 1005 char 0
+f 644 65 lib/fact/1001
+| 1001 player pl_regular
+| na Player one
+| 
+| 1002 char 0
+| 
+| 1003 chars 0
+| 
+d 755 lib/fact/9
+f 644 12 lib/fact/x
+| 1004 char 0
+section scan_chars with no fact
+> mkdir lib
+> scanchars
+scan_chars: can't open lib/fact: No such file or directory
+> boxes
+exit 0
+d 755 lib
+section scan_chars when fact is a file
+> mkdir lib
+> putl lib/fact 1001 player pl_regular
+> scanchars
+scan_chars: can't open lib/fact: Not a directory
+exit 0
+d 755 lib
+f 644 23 lib/fact
+| 1001 player pl_regular
+section scan_chars of an unreadable fact
+> mkdir lib
+> mkdir lib/fact
+> putl lib/fact/1001 1001 player pl_regular
+> chmod 0 lib/fact
+> scanchars
+scan_chars: can't open lib/fact: Permission denied
+> chmod 0755 lib/fact
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 23 lib/fact/1001
+| 1001 player pl_regular
+section scan_all_boxes
+> mkdir lib
+> putl lib/loc 10101 loc city
+> putl lib/loc
+> putl lib/item 10 item 0
+> putl lib/item
+> putl lib/skill 600 skill 0
+> putl lib/skill
+> putl lib/gate 20000 gate 0
+> putl lib/gate
+> putl lib/road 20001 road 0
+> putl lib/road
+> putl lib/ship 20002 ship galley
+> putl lib/ship
+> putl lib/unform 20003 unform 0
+> putl lib/unform
+> putl lib/misc 20004 storm 0
+> putl lib/misc
+> putl lib/misc 20005 post 0
+> putl lib/misc
+> mkdir lib/fact
+> putl lib/fact/1001 1001 player pl_regular
+> putl lib/fact/1001
+> putl lib/fact/1001 1002 char 0
+> putl lib/fact/1001
+> putl lib/fact/1001 1003 deadchar 0
+> putl lib/fact/1001
+> putl lib/fact/1001 1004 lore 0
+> scanall
+fast_scan failed, scan_all_boxes()
+> boxes
+box 10 kind 4 skind 0 temp 0
+box 600 kind 5 skind 0 temp 0
+box 1001 kind 1 skind 49 temp 0
+box 1002 kind 2 skind 0 temp 0
+box 1003 kind 8 skind 0 temp 0
+box 1004 kind 13 skind 0 temp 0
+box 10101 kind 3 skind 14 temp 0
+box 20000 kind 6 skind 0 temp 0
+box 20001 kind 7 skind 0 temp 0
+box 20002 kind 9 skind 30 temp 0
+box 20003 kind 12 skind 0 temp 0
+box 20004 kind 11 skind 0 temp 0
+box 20005 kind 10 skind 0 temp 0
+kind 1: 1001
+kind 2: 1002
+kind 3: 10101
+kind 4: 10
+kind 5: 600
+kind 6: 20000
+kind 7: 20001
+kind 8: 1003
+kind 9: 20002
+kind 10: 20005
+kind 11: 20004
+kind 12: 20003
+kind 13: 1004
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 66 lib/fact/1001
+| 1001 player pl_regular
+| 
+| 1002 char 0
+| 
+| 1003 deadchar 0
+| 
+| 1004 lore 0
+f 644 14 lib/gate
+| 20000 gate 0
+| 
+f 644 11 lib/item
+| 10 item 0
+| 
+f 644 16 lib/loc
+| 10101 loc city
+| 
+f 644 29 lib/misc
+| 20004 storm 0
+| 
+| 20005 post 0
+| 
+f 644 14 lib/road
+| 20001 road 0
+| 
+f 644 19 lib/ship
+| 20002 ship galley
+| 
+f 644 13 lib/skill
+| 600 skill 0
+| 
+f 644 16 lib/unform
+| 20003 unform 0
+| 
+section scan_all_boxes with no files
+> mkdir lib
+> scanall
+fast_scan failed, scan_all_boxes()
+can't open lib/loc: No such file or directory
+can't open lib/item: No such file or directory
+can't open lib/skill: No such file or directory
+can't open lib/gate: No such file or directory
+can't open lib/road: No such file or directory
+can't open lib/ship: No such file or directory
+can't open lib/unform: No such file or directory
+can't open lib/misc: No such file or directory
+scan_chars: can't open lib/fact: No such file or directory
+> boxes
+exit 0
+d 755 lib
+section read_boxes
+> mkdir lib
+> alloc 10101 3 14
+> alloc 10102 3 3
+> alloc 10103 3 3
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
+> putl lib/loc LI
+> putl lib/loc  wh 10102
+> putl lib/loc
+> putl lib/loc   10102 loc plain
+> putl lib/loc na Plain
+> putl lib/loc
+> put lib/loc 10103 xyz 0
+> read loc
+> line
+line NULL
+> writekind 3 loc
+> boxes
+box 10101 kind 3 skind 14 temp 1
+box 10102 kind 3 skind 3 temp 1
+box 10103 kind 3 skind 3 temp 1
+kind 3: 10101 10102 10103
+exit 0
+d 755 lib
+f 644 80 lib/loc
+| 10101 loc city
+| na City
+| LI
+|  wh 10102
+| 
+| 10102 loc plain
+| na Plain
+| 
+| 10103 loc plain
+| 
+section read_boxes of a missing file
+> mkdir lib
+> read loc
+can't open lib/loc: No such file or directory
+> line
+line NULL
+exit 0
+d 755 lib
+section read_boxes of a comment line
+> mkdir lib
+> alloc 10101 3 14
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
+> putl lib/loc
+> putl lib/loc # a comment
+> putl lib/loc 10102 loc city
+> read loc
+hang
+d 755 lib
+f 644 51 lib/loc
+| 10101 loc city
+| na City
+| 
+| # a comment
+| 10102 loc city
+section read_boxes of a comment line first
+> mkdir lib
+> putl lib/loc # a comment
+> read loc
+hang
+d 755 lib
+f 644 12 lib/loc
+| # a comment
+section read_boxes of a blank line between boxes
+> mkdir lib
+> alloc 10101 3 14
+> alloc 10102 3 14
+> putl lib/loc 10101 loc city
+> putl lib/loc
+> putl lib/loc
+> putl lib/loc 10102 loc city
+> read loc
+read_boxes: unexpected line 
+read_boxes: unexpected line 
+read_boxes: unexpected line 
+hang
+d 755 lib
+f 644 32 lib/loc
+| 10101 loc city
+| 
+| 
+| 10102 loc city
+section read_boxes of a line that is not a box
+> mkdir lib
+> putl lib/loc loc 10101 city
+> read loc
+read_boxes: unexpected line loc 10101 city
+read_boxes: unexpected line loc 10101 city
+read_boxes: unexpected line loc 10101 city
+hang
+d 755 lib
+f 644 15 lib/loc
+| loc 10101 city
+section read_boxes of a negative box number
+> mkdir lib
+> putl lib/loc -10101 loc city
+> read loc
+read_boxes: unexpected line -10101 loc city
+read_boxes: unexpected line -10101 loc city
+read_boxes: unexpected line -10101 loc city
+hang
+d 755 lib
+f 644 16 lib/loc
+| -10101 loc city
+section read_boxes of an unforseen box
+> mkdir lib
+> alloc 10101 3 14
+> putl lib/loc 10101 loc city
+> putl lib/loc
+> putl lib/loc 10102 loc city
+> read loc
+Unforseen box 10102 found in load phase.
+Remove lib/master and retry.
+assertion failure: olympia/io.c (1906): FALSE
+exit 134
+d 755 lib
+f 644 31 lib/loc
+| 10101 loc city
+| 
+| 10102 loc city
+section read_chars
+> mkdir lib
+> mkdir lib/fact
+> alloc 1001 1 49
+> alloc 1002 2 0
+> putl lib/fact/1001 1001 player pl_regular
+> putl lib/fact/1001 na Player one
+> putl lib/fact/1001 PL
+> putl lib/fact/1001  un 1002
+> putl lib/fact/1001
+> putl lib/fact/1001 1002 char 0
+> putl lib/fact/1001 na Noble
+> putl lib/fact/1001 CH
+> putl lib/fact/1001  lo 1001
+> putl lib/fact/1001
+> putl lib/fact/x 1003 char 0
+> mkdir lib/fact/.1004
+> readchars
+> writeplayer 1001
+> boxes
+box 1001 kind 1 skind 49 temp 1
+box 1002 kind 2 skind 0 temp 1
+kind 1: 1001
+kind 2: 1002
+exit 0
+d 755 lib
+d 755 lib/fact
+d 755 lib/fact/.1004
+f 644 85 lib/fact/1001
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| na Noble
+| CH
+|  lo 1001
+| 
+f 644 12 lib/fact/x
+| 1003 char 0
+section read_chars with no fact
+> mkdir lib
+> readchars
+read_chars: can't open lib/fact: No such file or directory
+exit 0
+d 755 lib
+section read_all_boxes
+> mkdir lib
+> alloc 10101 3 14
+> alloc 10 4 0
+> alloc 1001 1 49
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
+> putl lib/loc
+> putl lib/item 10 item 0
+> putl lib/item na gold
+> putl lib/item
+> putl lib/item 10101 loc city
+> putl lib/item na Again
+> putl lib/item
+> mkdir lib/fact
+> putl lib/fact/1001 1001 player pl_regular
+> putl lib/fact/1001 na Player one
+> putl lib/fact/1001
+> readall
+can't open lib/skill: No such file or directory
+can't open lib/gate: No such file or directory
+can't open lib/road: No such file or directory
+can't open lib/ship: No such file or directory
+can't open lib/unform: No such file or directory
+can't open lib/misc: No such file or directory
+> boxes
+box 10 kind 4 skind 0 temp 0
+box 1001 kind 1 skind 49 temp 0
+box 10101 kind 3 skind 14 temp 0
+kind 1: 1001
+kind 3: 10101
+kind 4: 10
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 38 lib/fact/1001
+| 1001 player pl_regular
+| na Player one
+| 
+f 644 44 lib/item
+| 10 item 0
+| na gold
+| 
+| 10101 loc city
+| na Again
+| 
+f 644 24 lib/loc
+| 10101 loc city
+| na City
+| 
+section read_all_boxes with no files
+> mkdir lib
+> readall
+can't open lib/loc: No such file or directory
+can't open lib/item: No such file or directory
+can't open lib/skill: No such file or directory
+can't open lib/gate: No such file or directory
+can't open lib/road: No such file or directory
+can't open lib/ship: No such file or directory
+can't open lib/unform: No such file or directory
+can't open lib/misc: No such file or directory
+read_chars: can't open lib/fact: No such file or directory
+exit 0
+d 755 lib
+section write_kind
+> mkdir lib
+> alloc 10102 3 3
+> alloc 10101 3 14
+> alloc 10103 3 3
+> alloc 20001 7 0
+> name 10101 City
+> delete 10103
+> writekind 3 loc
+> writekind 7 road
+> writekind 9 ship
+> boxes
+box 10101 kind 3 skind 14 temp 1
+box 10102 kind 3 skind 3 temp 1
+box 10103 kind 0 skind 3 temp 0
+box 20001 kind 7 skind 0 temp 1
+kind 3: 10101 10102
+kind 7: 20001
+exit 0
+d 755 lib
+f 644 41 lib/loc
+| 10101 loc city
+| na City
+| 
+| 10102 loc plain
+| 
+f 644 14 lib/road
+| 20001 road 0
+| 
+f 644 0 lib/ship
+section write_kind pretty
+> mkdir lib
+> alloc 10102 3 3
+> alloc 10101 3 14
+> name 10101 City
+> name 10102 Plain
+> pretty 1
+> writekind 3 loc
+exit 0
+d 755 lib
+f 644 50 lib/loc
+| 10101 loc city
+| na City
+| 
+| 10102 loc plain
+| na Plain
+| 
+section write_kind with no libdir
+> alloc 10101 3 14
+> writekind 3 loc
+open_write_fp: can't open lib/loc: No such file or directory
+> boxes
+box 10101 kind 3 skind 14 temp 0
+kind 3: 10101
+exit 0
+section write_kind over a read-only file
+> mkdir lib
+> alloc 10101 3 14
+> putl lib/loc old contents
+> chmod 0444 lib/loc
+> writekind 3 loc
+open_write_fp: can't open lib/loc: Permission denied
+> boxes
+box 10101 kind 3 skind 14 temp 0
+kind 3: 10101
+exit 0
+d 755 lib
+f 444 13 lib/loc
+| old contents
+section write_kind over a write-only file
+> mkdir lib
+> alloc 10101 3 14
+> putl lib/loc old contents
+> chmod 0200 lib/loc
+> writekind 3 loc
+> chmod 0644 lib/loc
+exit 0
+d 755 lib
+f 644 16 lib/loc
+| 10101 loc city
+| 
+section write_kind over a directory
+> mkdir lib
+> mkdir lib/loc
+> alloc 10101 3 14
+> writekind 3 loc
+open_write_fp: can't open lib/loc: Is a directory
+exit 0
+d 755 lib
+d 755 lib/loc
+section write_player
+> mkdir lib
+> mkdir lib/fact
+> alloc 1001 1 49
+> alloc 1002 2 0
+> alloc 1003 2 0
+> alloc 1004 2 0
+> alloc 1005 2 0
+> delete 1004
+> name 1001 Player one
+> unit 1001 1003
+> unit 1001 1002
+> unit 1001 1004
+> unit 1001 1009
+> unit 1001 1002
+> unit 1001 1005
+> writeplayer 1001
+> boxes
+box 1001 kind 1 skind 49 temp 1
+box 1002 kind 2 skind 0 temp 1
+box 1003 kind 2 skind 0 temp 1
+box 1004 kind 0 skind 0 temp 0
+box 1005 kind 2 skind 0 temp 1
+kind 1: 1001
+kind 2: 1002 1003 1005
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 118 lib/fact/1001
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1003 1002 1002 1005 
+| 
+| 1003 char 0
+| 
+| 1002 char 0
+| 
+| 1002 char 0
+| 
+| 1005 char 0
+| 
+section write_player with no units
+> mkdir lib
+> mkdir lib/fact
+> alloc 1001 1 49
+> writeplayer 1001
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 24 lib/fact/1001
+| 1001 player pl_regular
+| 
+section write_player with no fact
+> mkdir lib
+> alloc 1001 1 49
+> alloc 1002 2 0
+> unit 1001 1002
+> writeplayer 1001
+open_write_fp: can't open lib/fact/1001: No such file or directory
+> boxes
+box 1001 kind 1 skind 49 temp 0
+box 1002 kind 2 skind 0 temp 0
+kind 1: 1001
+kind 2: 1002
+exit 0
+d 755 lib
+section write_player of a unit that is not a character
+> mkdir lib
+> mkdir lib/fact
+> alloc 1001 1 49
+> alloc 1002 2 0
+> alloc 10101 3 14
+> unit 1001 1002
+> unit 1001 10101
+> writeplayer 1001
+assertion failure: olympia/io.c (2099): kind(who) == T_char || kind(who) == T_deleted
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 56 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 10101 
+| 
+| 1002 char 0
+| 
+section write_player of a unit that is a player
+> mkdir lib
+> mkdir lib/fact
+> alloc 1001 1 49
+> alloc 1002 1 49
+> unit 1001 1002
+> writeplayer 1001
+assertion failure: olympia/io.c (2099): kind(who) == T_char || kind(who) == T_deleted
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 37 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 
+| 
+section write_chars and write_leftovers
+> mkdir lib
+> mkdir lib/fact
+> alloc 1001 1 49
+> alloc 1002 2 0
+> alloc 1003 2 0
+> alloc 1004 1 49
+> alloc 1005 2 0
+> alloc 10101 3 14
+> alloc 20001 11 0
+> alloc 20002 8 0
+> alloc 20003 3 3
+> delete 20003
+> unit 1001 1002
+> unit 1004 1005
+> writechars
+> boxes
+box 1001 kind 1 skind 49 temp 1
+box 1002 kind 2 skind 0 temp 1
+box 1003 kind 2 skind 0 temp 0
+box 1004 kind 1 skind 49 temp 1
+box 1005 kind 2 skind 0 temp 1
+box 10101 kind 3 skind 14 temp 0
+box 20001 kind 11 skind 0 temp 0
+box 20002 kind 8 skind 0 temp 0
+box 20003 kind 0 skind 3 temp 0
+kind 1: 1001 1004
+kind 2: 1002 1003 1005
+kind 3: 10101
+kind 8: 20002
+kind 11: 20001
+> leftovers
+> boxes
+box 1001 kind 1 skind 49 temp 1
+box 1002 kind 2 skind 0 temp 1
+box 1003 kind 2 skind 0 temp 1
+box 1004 kind 1 skind 49 temp 1
+box 1005 kind 2 skind 0 temp 1
+box 10101 kind 3 skind 14 temp 1
+box 20001 kind 11 skind 0 temp 1
+box 20002 kind 8 skind 0 temp 1
+box 20003 kind 0 skind 3 temp 0
+kind 1: 1001 1004
+kind 2: 1002 1003 1005
+kind 3: 10101
+kind 8: 20002
+kind 11: 20001
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 50 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| 
+f 644 50 lib/fact/1004
+| 1004 player pl_regular
+| PL
+|  un 1005 
+| 
+| 1005 char 0
+| 
+f 644 62 lib/misc
+| 1003 char 0
+| 
+| 10101 loc city
+| 
+| 20001 storm 0
+| 
+| 20002 deadchar 0
+| 
+section write_leftovers with no libdir
+> alloc 20001 11 0
+> leftovers
+open_write_fp: can't open lib/misc: No such file or directory
+exit 0
+section write_all_boxes
+> mkdir lib
+> mkdir lib/fact
+> putl lib/fact/1099 1099 player pl_regular
+> putl lib/loc old
+> putl lib/storm old
+> alloc 10101 3 14
+> alloc 10102 3 3
+> alloc 10 4 0
+> alloc 600 5 0
+> alloc 20000 6 0
+> alloc 20001 7 0
+> alloc 20002 9 30
+> alloc 20003 12 0
+> alloc 20004 11 0
+> alloc 20005 10 0
+> alloc 20006 13 0
+> alloc 20007 8 0
+> alloc 1001 1 49
+> alloc 1002 2 0
+> alloc 1003 2 0
+> alloc 1004 2 0
+> alloc 20008 3 3
+> delete 20008
+> name 10101 City
+> name 1001 Player one
+> name 1002 Noble
+> unit 1001 1002
+> unit 1001 1003
+> writeall
+> boxes
+box 10 kind 4 skind 0 temp 1
+box 600 kind 5 skind 0 temp 1
+box 1001 kind 1 skind 49 temp 1
+box 1002 kind 2 skind 0 temp 1
+box 1003 kind 2 skind 0 temp 1
+box 1004 kind 2 skind 0 temp 1
+box 10101 kind 3 skind 14 temp 1
+box 10102 kind 3 skind 3 temp 1
+box 20000 kind 6 skind 0 temp 1
+box 20001 kind 7 skind 0 temp 1
+box 20002 kind 9 skind 30 temp 1
+box 20003 kind 12 skind 0 temp 1
+box 20004 kind 11 skind 0 temp 1
+box 20005 kind 10 skind 0 temp 1
+box 20006 kind 13 skind 0 temp 1
+box 20007 kind 8 skind 0 temp 1
+box 20008 kind 0 skind 3 temp 0
+kind 1: 1001
+kind 2: 1002 1003 1004
+kind 3: 10101 10102
+kind 4: 10
+kind 5: 600
+kind 6: 20000
+kind 7: 20001
+kind 8: 20007
+kind 9: 20002
+kind 10: 20005
+kind 11: 20004
+kind 12: 20003
+kind 13: 20006
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 91 lib/fact/1001
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002 1003 
+| 
+| 1002 char 0
+| na Noble
+| 
+| 1003 char 0
+| 
+f 644 14 lib/gate
+| 20000 gate 0
+| 
+f 644 11 lib/item
+| 10 item 0
+| 
+f 644 41 lib/loc
+| 10101 loc city
+| na City
+| 
+| 10102 loc plain
+| 
+f 644 74 lib/misc
+| 1004 char 0
+| 
+| 20004 storm 0
+| 
+| 20005 post 0
+| 
+| 20006 lore 0
+| 
+| 20007 deadchar 0
+| 
+f 644 14 lib/road
+| 20001 road 0
+| 
+f 644 19 lib/ship
+| 20002 ship galley
+| 
+f 644 13 lib/skill
+| 600 skill 0
+| 
+f 644 4 lib/storm
+| old
+f 644 16 lib/unform
+| 20003 unform 0
+| 
+section write_all_boxes with no fact
+> mkdir lib
+> alloc 1001 1 49
+> alloc 1002 2 0
+> unit 1001 1002
+> writeall
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 50 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section write_all_boxes with no libdir
+> alloc 1001 1 49
+> alloc 10101 3 14
+> writeall
+open_write_fp: can't open lib/loc: No such file or directory
+open_write_fp: can't open lib/item: No such file or directory
+open_write_fp: can't open lib/skill: No such file or directory
+open_write_fp: can't open lib/gate: No such file or directory
+open_write_fp: can't open lib/road: No such file or directory
+open_write_fp: can't open lib/ship: No such file or directory
+open_write_fp: can't open lib/unform: No such file or directory
+open_write_fp: can't open lib/fact/1001: No such file or directory
+open_write_fp: can't open lib/misc: No such file or directory
+> boxes
+box 1001 kind 1 skind 49 temp 0
+box 10101 kind 3 skind 14 temp 0
+kind 1: 1001
+kind 3: 10101
+exit 0
+section write_all_boxes in a read-only libdir
+> mkdir lib
+> mkdir lib/fact
+> putl lib/fact/1001 old
+> putl lib/loc old
+> alloc 1001 1 49
+> alloc 10101 3 14
+> alloc 10 4 0
+> chmod 0555 lib
+> writeall
+rm: lib/fact: Permission denied
+open_write_fp: can't open lib/item: Permission denied
+open_write_fp: can't open lib/skill: Permission denied
+open_write_fp: can't open lib/gate: Permission denied
+open_write_fp: can't open lib/road: Permission denied
+open_write_fp: can't open lib/ship: Permission denied
+open_write_fp: can't open lib/unform: Permission denied
+open_write_fp: can't open lib/misc: Permission denied
+> master
+can't write lib/master: Permission denied
+> chmod 0755 lib
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 24 lib/fact/1001
+| 1001 player pl_regular
+| 
+f 644 16 lib/loc
+| 10101 loc city
+| 
+section write_all_boxes with a libdir that has a space
+> mkdir lib
+> mkdir lib/fact
+> putl lib/fact/1099 old
+> mkdir my lib
+> alloc 1001 1 49
+> alloc 10101 3 14
+> libdir my lib
+> writeall
+exit 0
+d 755 lib
+d 755 my lib
+d 755 my lib/fact
+f 644 24 my lib/fact/1001
+| 1001 player pl_regular
+| 
+f 644 0 my lib/gate
+f 644 0 my lib/item
+f 644 16 my lib/loc
+| 10101 loc city
+| 
+f 644 0 my lib/misc
+f 644 0 my lib/road
+f 644 0 my lib/ship
+f 644 0 my lib/skill
+f 644 0 my lib/unform
+section write_all_boxes with win_flag
+> mkdir lib
+> mkdir lib/fact
+> putl lib/fact/1099 old
+> putl lib/fact/1001 old
+> alloc 1001 1 49
+> alloc 1002 2 0
+> unit 1001 1002
+> win 1
+> writeall
+sh: del: command not found
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 50 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| 
+f 644 4 lib/fact/1099
+| old
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section write_all_boxes with win_flag and no fact
+> mkdir lib
+> alloc 1001 1 49
+> alloc 1002 2 0
+> unit 1001 1002
+> win 1
+> writeall
+sh: del: command not found
+open_write_fp: can't open lib/fact/1001: No such file or directory
+exit 0
+d 755 lib
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 50 lib/misc
+| 1001 player pl_regular
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section write_master
+> mkdir lib
+> putl lib/master old
+> alloc 10101 3 14
+> alloc 10102 3 3
+> alloc 10 4 0
+> alloc 600 5 0
+> alloc 20000 6 0
+> alloc 20001 7 0
+> alloc 20002 9 30
+> alloc 20003 12 0
+> alloc 20004 11 0
+> alloc 20005 10 0
+> alloc 20006 13 0
+> alloc 20007 8 0
+> alloc 1001 1 49
+> alloc 1002 2 0
+> alloc 1003 2 0
+> alloc 1004 2 0
+> alloc 1005 2 0
+> alloc 20008 3 3
+> delete 20008
+> name 10101 City
+> name 10102 Plain\x09with a tab
+> name 1001 Player one
+> name 1002 Noble
+> name 20001 Road
+> lord 1002 1001
+> lord 1003 1002
+> lord 1004 10101
+> master
+> boxes
+box 10 kind 4 skind 0 temp 1
+box 600 kind 5 skind 0 temp 1
+box 1001 kind 1 skind 49 temp 1
+box 1002 kind 2 skind 0 temp 1
+box 1003 kind 2 skind 0 temp 1
+box 1004 kind 2 skind 0 temp 1
+box 1005 kind 2 skind 0 temp 1
+box 10101 kind 3 skind 14 temp 1
+box 10102 kind 3 skind 3 temp 1
+box 20000 kind 6 skind 0 temp 1
+box 20001 kind 7 skind 0 temp 0
+box 20002 kind 9 skind 30 temp 1
+box 20003 kind 12 skind 0 temp 1
+box 20004 kind 11 skind 0 temp 0
+box 20005 kind 10 skind 0 temp 0
+box 20006 kind 13 skind 0 temp 0
+box 20007 kind 8 skind 0 temp 0
+box 20008 kind 0 skind 3 temp 0
+kind 1: 1001
+kind 2: 1002 1003 1004 1005
+kind 3: 10101 10102
+kind 4: 10
+kind 5: 600
+kind 6: 20000
+kind 7: 20001
+kind 8: 20007
+kind 9: 20002
+kind 10: 20005
+kind 11: 20004
+kind 12: 20003
+kind 13: 20006
+exit 0
+d 755 lib
+f 644 335 lib/master
+| 10\x094.0\x09item\x09\x09
+| 600\x095.0\x09skill\x09\x09
+| 1001\x091.49\x09fact/1001\x09Player one
+| 1002\x092.0\x09fact/1001\x09Noble
+| 1003\x092.0\x09fact/1001\x09
+| 1004\x092.0\x09fact/0\x09
+| 1005\x092.0\x09fact/0\x09
+| 10101\x093.14\x09loc\x09\x09City
+| 10102\x093.3\x09loc\x09\x09Plain\x09with a tab
+| 20000\x096.0\x09gate\x09\x09
+| 20002\x099.30\x09ship\x09\x09
+| 20003\x0912.0\x09unform\x09\x09
+| 20001\x097.0\x09misc\x09Road
+| 20004\x0911.0\x09misc\x09
+| 20005\x0910.0\x09misc\x09
+| 20006\x0913.0\x09misc\x09
+| 20007\x098.0\x09misc\x09
+section write_master pretty
+> mkdir lib
+> alloc 10101 3 14
+> name 10101 City
+> pretty 1
+> master
+exit 0
+d 755 lib
+f 644 21 lib/master
+| 10101\x093.14\x09loc\x09\x09City
+section write_master of a lord loop
+> mkdir lib
+> alloc 1001 1 49
+> alloc 1002 2 0
+> alloc 1003 2 0
+> lord 1002 1003
+> lord 1003 1002
+> master
+assertion failure: olympia/swear.c (32): loop_check-- > 0
+exit 134
+d 755 lib
+f 644 21 lib/master
+| 1001\x091.49\x09fact/1001\x09
+section write_master of a lord with no box
+> mkdir lib
+> alloc 1001 1 49
+> alloc 1002 2 0
+> lord 1002 1009
+> master
+exit 139
+d 755 lib
+f 644 0 lib/master
+section write_master with no libdir
+> alloc 10101 3 14
+> master
+can't write lib/master: No such file or directory
+> boxes
+box 10101 kind 3 skind 14 temp 0
+kind 3: 10101
+exit 0
+section write_master with nothing
+> mkdir lib
+> master
+exit 0
+d 755 lib
+f 644 0 lib/master
+section round trip
+> mkdir lib
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
+> putl lib/loc LI
+> putl lib/loc  wh 10102
+> putl lib/loc  hl 1002
+> putl lib/loc
+> putl lib/loc 10102 loc plain
+> putl lib/loc na Plain
+> putl lib/loc LI
+> putl lib/loc  hl 10101
+> putl lib/loc
+> putl lib/road 20001 road 0
+> putl lib/road na Road
+> putl lib/road GA
+> putl lib/road  tl 10102
+> putl lib/road
+> putl lib/misc 20004 storm 0
+> putl lib/misc
+> mkdir lib/fact
+> putl lib/fact/1001 1001 player pl_regular
+> putl lib/fact/1001 na Player one
+> putl lib/fact/1001 PL
+> putl lib/fact/1001  un 1002
+> putl lib/fact/1001
+> putl lib/fact/1001 1002 char 0
+> putl lib/fact/1001 na Noble
+> putl lib/fact/1001 LI
+> putl lib/fact/1001  wh 10101
+> putl lib/fact/1001 CH
+> putl lib/fact/1001  lo 1001
+> putl lib/fact/1001
+> scanall
+fast_scan failed, scan_all_boxes()
+can't open lib/item: No such file or directory
+can't open lib/skill: No such file or directory
+can't open lib/gate: No such file or directory
+can't open lib/ship: No such file or directory
+can't open lib/unform: No such file or directory
+> readall
+can't open lib/item: No such file or directory
+can't open lib/skill: No such file or directory
+can't open lib/gate: No such file or directory
+can't open lib/ship: No such file or directory
+can't open lib/unform: No such file or directory
+> writeall
+> master
+> boxes
+box 1001 kind 1 skind 49 temp 1
+box 1002 kind 2 skind 0 temp 1
+box 10101 kind 3 skind 14 temp 1
+box 10102 kind 3 skind 3 temp 1
+box 20001 kind 7 skind 0 temp 0
+box 20004 kind 11 skind 0 temp 0
+kind 1: 1001
+kind 2: 1002
+kind 3: 10101 10102
+kind 7: 20001
+kind 11: 20004
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 98 lib/fact/1001
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| na Noble
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 87 lib/loc
+| 10101 loc city
+| na City
+| LI
+|  wh 10102
+|  hl 1002 
+| 
+| 10102 loc plain
+| na Plain
+| LI
+|  hl 10101 
+| 
+f 644 135 lib/master
+| 1001\x091.49\x09fact/1001\x09Player one
+| 1002\x092.0\x09fact/1001\x09Noble
+| 10101\x093.14\x09loc\x09\x09City
+| 10102\x093.3\x09loc\x09\x09Plain
+| 20001\x097.0\x09misc\x09Road
+| 20004\x0911.0\x09misc\x09
+f 644 15 lib/misc
+| 20004 storm 0
+| 
+f 644 35 lib/road
+| 20001 road 0
+| na Road
+| GA
+|  tl 10102
+| 
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform

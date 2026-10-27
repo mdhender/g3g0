@@ -13,8 +13,11 @@
 // and world.go (the global state, as a world, and the p_xxx and rp_xxx
 // accessors). code.go ports olympia/code.c's box allocation, kind and
 // subkind chains, entity codes and names, loop.go the entity loops of
-// olympia/loop.h, and z.go the failed assert(). Nothing in main() uses them
-// yet.
+// olympia/loop.h, and z.go the failed assert(). io.go ports
+// olympia/io.c's entity reading and writing: the field helpers, the entity
+// sections, load_box and save_box, and the box-file passes and writers
+// (fast_scan, scan_all_boxes, read_all_boxes, write_all_boxes and
+// write_master). Nothing in main() uses them yet.
 package olympia
 
 import (

@@ -4,10 +4,14 @@
 package clib
 
 import (
+	"bufio"
 	"bytes"
 	"io"
 	"os"
+	"slices"
 	"strings"
+	"sync"
+	"syscall"
 )
 
 // This file holds the pieces of C stdio behavior: reading files and lines,
@@ -144,4 +148,91 @@ func (sc *Scanner) Char() (byte, bool) {
 		return c, true
 	}
 	return 0, false
+}
+
+// File is a FILE * that fopen(path, "w") opened: writes go through a
+// buffer of the size the macOS libc gives a file (its st_blksize, or BUFSIZ
+// if that is not set), which Close flushes. Write errors are ignored, as
+// fprintf() and fclose() callers that do not check them ignore them.
+//
+// abort() on macOS flushes every open stream before it kills the process,
+// so a failed assert() leaves each file with all that was written to it;
+// whatever recovers the port's assertion panic calls FlushAll to do the
+// same. A crash (SIGSEGV) flushes nothing, and a file keeps only what its
+// buffer had already written.
+type File struct {
+	*bufio.Writer
+	f *os.File
+}
+
+// files is every File that is open, in the order Fopen opened them, for
+// FlushAll.
+var (
+	filesMu sync.Mutex
+	files   []*File
+)
+
+// FlushAll flushes every open File, as abort() does on macOS (and as
+// fflush(NULL) does). Each stays open.
+func FlushAll() {
+	filesMu.Lock()
+	defer filesMu.Unlock()
+
+	for _, fp := range files {
+		_ = fp.Flush()
+	}
+}
+
+// bufsiz is BUFSIZ in the macOS <stdio.h>.
+const bufsiz = 1024
+
+// Fopen is fopen(path, "w"): it creates path (mode 0666, less the umask)
+// or truncates it, and opens it for writing only.
+func Fopen(path string) (*File, error) {
+	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o666)
+	if err != nil {
+		return nil, err
+	}
+
+	size := bufsiz
+	var st syscall.Stat_t
+	if syscall.Fstat(int(f.Fd()), &st) == nil && st.Blksize > 0 {
+		size = int(st.Blksize)
+	}
+
+	fp := &File{Writer: bufio.NewWriterSize(f, size), f: f}
+
+	filesMu.Lock()
+	files = append(files, fp)
+	filesMu.Unlock()
+
+	return fp, nil
+}
+
+// Close is fclose(): it flushes the buffer and closes the file.
+func (fp *File) Close() {
+	filesMu.Lock()
+	if i := slices.Index(files, fp); i >= 0 {
+		files = slices.Delete(files, i, i+1)
+	}
+	filesMu.Unlock()
+
+	_ = fp.Flush()
+	_ = fp.f.Close()
+}
+
+// ReadDir is the names opendir(path) and readdir() return, in readdir()'s
+// order (the file system's, not sorted), less "." and "..". opendir()
+// fails on a path that is not a directory (ENOTDIR) or cannot be opened. A
+// read error after a successful open ends the list, as readdir() returning
+// NULL does.
+func ReadDir(path string) ([]string, error) {
+	d, err := os.OpenFile(path, os.O_RDONLY|syscall.O_DIRECTORY, 0)
+	if err != nil {
+		return nil, err
+	}
+	defer d.Close()
+
+	names, _ := d.Readdirnames(-1)
+	return names, nil
 }

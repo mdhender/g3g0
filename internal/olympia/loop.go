@@ -3,7 +3,11 @@
 
 package olympia
 
-import "iter"
+import (
+	"iter"
+
+	"github.com/mdhender/g3g0/internal/lists"
+)
 
 // The entity loops of olympia/loop.h, as iterators. Each visits boxes in
 // the order its C macro does, and has the macro's behavior when the body
@@ -17,8 +21,9 @@ import "iter"
 //     next_loc_or_ship does, so the body must not unlink the current box.
 //   - loopBoxes tests each box number in turn as the loop reaches it.
 //
-// break works as it does in C. The loops that copy a list first
-// (loop_here and the rest) belong with the code that builds those lists.
+// break works as it does in C. Of the loops that copy a list first,
+// loopUnits is here; loop_here and the rest belong with the code that
+// builds those lists.
 
 // loopBoxes is loop_boxes: every box that is not T_deleted, in box number
 // order.
@@ -79,6 +84,23 @@ func (w *world) loopLocOrShip() iter.Seq[int] {
 			if i <= 0 && state {
 				i = w.kindFirst(tLoc)
 				state = false
+			}
+		}
+	}
+}
+
+// loopUnits is loop_units: the units of player pl, from a copy of its
+// units list taken when the loop starts, so the body may change the list.
+// A player with no entity_player has none.
+func (w *world) loopUnits(pl int) iter.Seq[int] {
+	return func(yield func(int) bool) {
+		var l lists.IList
+		if p := w.rpPlayer(pl); p != nil {
+			l = p.units.Copy()
+		}
+		for _, i := range l {
+			if !yield(i) {
+				return
 			}
 		}
 	}

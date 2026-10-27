@@ -38,7 +38,7 @@ The script:
 
 `go test ./...` runs `TestBoxMatchesC` too, so the port is held to the recorded C output without a G3 clone. `TestBoxWorlds` is skipped unless `run.sh` runs it.
 
-The driver's load loop is `read_boxes()`'s, except that a line that is not a box number ends the file: `read_boxes()` loops forever on such a line, and on a comment line (it `continue`s without reading the next line). Pass 1 (`scan_boxes`) and pass 2 (`read_boxes`) themselves are #34.
+The driver's load loop is `read_boxes()`'s, except that a line that is not a box number ends the file: `read_boxes()` loops forever on such a line, and on a comment line (it `continue`s without reading the next line). Pass 1 (`scan_boxes`) and pass 2 (`read_boxes`) themselves are tested by [`tools/boxfile-compat`](../boxfile-compat/README.md).
 
 ## What the cases cover
 

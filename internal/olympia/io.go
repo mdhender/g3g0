@@ -6,6 +6,8 @@ package olympia
 import (
 	"fmt"
 	"io"
+	"os"
+	"os/exec"
 	"reflect"
 	"slices"
 
@@ -2023,4 +2025,466 @@ func (w *world) saveBox(fp io.Writer, n int) {
 	fmt.Fprintf(fp, "\n")
 
 	w.bx[n].temp = 1 // mark for write_leftovers()
+}
+
+// The box files. Pass 1 (fastScan, or scanAllBoxes if libdir/master
+// cannot be read) allocates every box; pass 2 (readAllBoxes) loads each
+// box with loadBox. writeAllBoxes and writeMaster write them back. The
+// files are, under libdir: loc, item, skill, gate, road, ship, unform and
+// misc, one per kind (misc holding every box the others do not), fact/N for
+// player N and its units, and master, the index pass 1 reads first.
+//
+// Files are written with fopen(path, "w") (clib.Fopen): created with mode
+// 0666 less the umask, or truncated. C ignores write errors, and so do
+// these.
+
+// openWriteFp is open_write_fp(): libdir/fnam opened for writing, or nil,
+// with a diagnostic, if it cannot be.
+func (w *world) openWriteFp(fnam string) *clib.File {
+	path := sout("%s/%s", w.libdir, fnam)
+
+	fp, err := clib.Fopen(path)
+
+	if err != nil {
+		fmt.Fprintf(w.stderr, "open_write_fp: can't open %s: ", path)
+		clib.Perror(w.stderr, "", err)
+		return nil
+	}
+
+	return fp
+}
+
+// writeKind is write_kind(): every box of kind boxKind, in chain order, to
+// libdir/fnam.
+func (w *world) writeKind(boxKind int, fnam string) {
+	fp := w.openWriteFp(fnam)
+
+	if fp != nil {
+		for i := range w.loopKind(boxKind) {
+			w.saveBox(fp, i)
+		}
+
+		fp.Close()
+	}
+}
+
+// writePlayer is write_player(): player pl and then its units, in the
+// order of its units list, to libdir/fact/pl. A unit that is neither a
+// character nor deleted fails an assertion, leaving the file with what
+// stdio had written of it.
+func (w *world) writePlayer(pl int) {
+	fp := w.openWriteFp(sout("fact/%d", pl))
+
+	if fp == nil {
+		return
+	}
+
+	w.saveBox(fp, pl)
+
+	for who := range w.loopUnits(pl) {
+		assert(w.kind(who) == tChar || w.kind(who) == tDeleted,
+			"olympia/io.c", 2099, "kind(who) == T_char || kind(who) == T_deleted")
+
+		w.saveBox(fp, who)
+	}
+
+	fp.Close()
+}
+
+// writeChars is write_chars(): writePlayer for every player.
+func (w *world) writeChars() {
+	for i := range w.loopKind(tPlayer) {
+		w.writePlayer(i)
+	}
+}
+
+// writeLeftovers is write_leftovers(): every box that is not deleted and
+// that no other file has saved (temp is 0), in box number order, to
+// libdir/misc.
+func (w *world) writeLeftovers() {
+	fp := w.openWriteFp("misc")
+
+	if fp != nil {
+		for i := range maxBoxes {
+			if w.bx[i] != nil && w.bx[i].temp == 0 {
+				if w.kind(i) != tDeleted {
+					w.saveBox(fp, i)
+				}
+			}
+		}
+
+		fp.Close()
+	}
+}
+
+// closeBox is close_box(): closefile() of libdir/fnam.
+func (w *world) closeBox(fnam string) {
+	path := sout("%s/%s", w.libdir, fnam)
+	w.closefile(path)
+}
+
+// readBoxes is read_boxes(), pass 2 for one file: loadBox for each box of
+// libdir/fnam. A file that cannot be opened gets readfile()'s diagnostic
+// and is skipped.
+//
+// A comment line, or a line that is not a box number (atoi() of it is not
+// positive, such as a second blank line between boxes), is never moved
+// past: C's loop goes round again on the same line forever, printing
+// "unexpected line" each time for the second kind. The port does the same.
+// Upstream defect: https://github.com/playbymail/olympia-g3/issues/316
+func (w *world) readBoxes(fnam string) {
+	path := sout("%s/%s", w.libdir, fnam)
+	if !w.readfile(path) {
+		return
+	}
+
+	w.advance()
+
+	for w.line != nil {
+		if at(*w.line, 0) == '#' {
+			w.stuckInReadBoxes()
+			continue // skip comment lines
+		}
+
+		boxNum := clib.Atoi(*w.line)
+		if boxNum > 0 {
+			w.loadBox(boxNum)
+		} else {
+			fmt.Fprintf(w.stderr, "read_boxes: unexpected line %s\n", *w.line)
+			w.stuckInReadBoxes()
+		}
+	}
+
+	w.closeBox(fnam)
+}
+
+// stuckInReadBoxes calls the readBoxesStuck test hook, if it is set, each
+// time readBoxes goes round its loop without reading a line.
+func (w *world) stuckInReadBoxes() {
+	if w.readBoxesStuck != nil {
+		w.readBoxesStuck()
+	}
+}
+
+// readChars is read_chars(): readBoxes for every file in libdir/fact whose
+// name starts with a digit, in the directory's order.
+func (w *world) readChars() {
+	fnam := sout("%s/fact", w.libdir)
+	names, err := clib.ReadDir(fnam)
+
+	if err != nil {
+		fmt.Fprintf(w.stderr, "read_chars: can't open %s: ", fnam)
+		clib.Perror(w.stderr, "", err)
+		return
+	}
+
+	for _, e := range names {
+		if e[0] >= '0' && e[0] <= '9' {
+			lastE := sout("fact/%s", e)
+			w.readBoxes(lastE)
+		}
+	}
+}
+
+// fastScan is fast_scan(), pass 1 from libdir/master: allocBox for each of
+// its lines, "n<white>kind.subkind...". It returns false, after
+// readfile()'s diagnostic, if master cannot be opened. It never closes
+// master; read_boxes() opens the next file over it.
+//
+// Each line is taken as it is: a line without a box number (0) fails
+// alloc_box()'s assertion, and one without a '.' has subkind 0. Kind and
+// subkind are not range-checked, and master is never closed: upstream
+// defects https://github.com/playbymail/olympia-g3/issues/321 and
+// https://github.com/playbymail/olympia-g3/issues/322
+func (w *world) fastScan() bool {
+	path := sout("%s/master", w.libdir)
+	if !w.readfile(path) {
+		return false
+	}
+
+	for sp := w.readlin(); sp != nil; sp = w.readlin() {
+		s := *sp
+		num := clib.Atoi(s)
+
+		p := 0
+		for p < len(s) && isdigit(s[p]) {
+			p++
+		}
+		for p < len(s) && iswhite(s[p]) {
+			p++
+		}
+
+		q := p
+		for q < len(s) && s[q] != '.' {
+			q++
+		}
+		kindPart, skPart := s[p:q], ""
+		if q < len(s) { // *q == '.'
+			skPart = s[q+1:]
+		}
+
+		kind := clib.Atoi(kindPart)
+		sk := clib.Atoi(skPart)
+
+		w.allocBox(num, kind, sk)
+	}
+
+	return true
+}
+
+// scanBoxes is scan_boxes(), the slow pass 1 for one file: allocBox for
+// each box of libdir/fnam, from its "n kind subkind" line. Kind and
+// subkind are names, matched without regard to case; a subkind that starts
+// with '0' is 0. An unknown kind or subkind gets a diagnostic (which says
+// read_boxes) and becomes 0. The lines after the box's first, up to one
+// that is blank or all white space, are skipped, and so are comment lines.
+// A file that cannot be opened gets readfile()'s diagnostic. Like C, it
+// does not close the file. Upstream defects:
+// https://github.com/playbymail/olympia-g3/issues/322
+func (w *world) scanBoxes(fnam string) {
+	path := sout("%s/%s", w.libdir, fnam)
+	if !w.readfile(path) {
+		return
+	}
+
+	for sp := w.readlin(); sp != nil; sp = w.readlin() {
+		s := *sp
+		if at(s, 0) == '#' {
+			continue // skip comment lines
+		}
+
+		// Parse something of the form: box-number kind subkind
+		// example:  10 item artifact
+
+		boxNum := clib.Atoi(s)
+
+		i := 0
+		for i < len(s) && s[i] != ' ' { // skip over space to kind
+			i++
+		}
+		if at(s, i) == ' ' {
+			i++
+		}
+		s = s[i:]
+
+		j := 0
+		for j < len(s) && s[j] != ' ' { // to subkind
+			j++
+		}
+		t := ""
+		if at(s, j) == ' ' {
+			t = s[j+1:]
+		}
+		s = s[:j]
+
+		kind := lookup(kindS, s)
+
+		if kind < 0 {
+			fmt.Fprintf(w.stderr, "read_boxes(%d): bad kind: %s\n", boxNum, s)
+			kind = 0
+		}
+
+		var sk int
+		if at(t, 0) == '0' {
+			sk = 0
+		} else {
+			sk = lookup(subkindS, t)
+		}
+
+		if sk < 0 {
+			fmt.Fprintf(w.stderr, "read_boxes(%d): bad subkind: %s\n", boxNum, t)
+			sk = 0
+		}
+
+		w.allocBox(boxNum, kind, sk)
+
+		for sp = w.readlin(); sp != nil; sp = w.readlin() {
+			s := *sp
+			if at(s, 0) == '#' { // skip comments
+				continue
+			}
+
+			i := 0
+			for i < len(s) && iswhite(s[i]) {
+				i++
+			}
+
+			if i == len(s) { // blank line, end of entry
+				break
+			}
+		}
+	}
+}
+
+// scanChars is scan_chars(): scanBoxes, then closefile(), for every file in
+// libdir/fact whose name starts with a digit, in the directory's order.
+func (w *world) scanChars() {
+	fnam := sout("%s/fact", w.libdir)
+	names, err := clib.ReadDir(fnam)
+
+	if err != nil {
+		fmt.Fprintf(w.stderr, "scan_chars: can't open %s: ", fnam)
+		clib.Perror(w.stderr, "", err)
+		return
+	}
+
+	for _, e := range names {
+		if e[0] >= '0' && e[0] <= '9' {
+			w.scanBoxes(sout("fact/%s", e))
+			w.closefile(sout("fact/%s", e))
+		}
+	}
+}
+
+// scanAllBoxes is scan_all_boxes(), the slow pass 1, which load_db() runs
+// when fast_scan() fails: scanBoxes for each box file, then scanChars.
+//
+// Scanning through all of the entity data files, calling alloc_box for
+// each entity once its number and kind are known, makes it possible to
+// perform type and sanity checking when the contents of the boxes are read
+// in the second pass (read_boxes).
+func (w *world) scanAllBoxes() {
+	w.stage("fast_scan failed, scan_all_boxes()")
+
+	w.scanBoxes("loc")
+	w.scanBoxes("item")
+	w.scanBoxes("skill")
+	w.scanBoxes("gate")
+	w.scanBoxes("road")
+	w.scanBoxes("ship")
+	w.scanBoxes("unform")
+	w.scanBoxes("misc")
+
+	w.scanChars()
+}
+
+// readAllBoxes is read_all_boxes(), pass 2: readBoxes for each box file,
+// then readChars.
+func (w *world) readAllBoxes() {
+	w.readBoxes("loc")
+	w.readBoxes("item")
+	w.readBoxes("skill")
+	w.readBoxes("gate")
+	w.readBoxes("road")
+	w.readBoxes("ship")
+	w.readBoxes("unform")
+	w.readBoxes("misc")
+
+	w.readChars()
+}
+
+// system is system(): it runs command with sh -c, as a child that shares
+// stdin, stdout (w.stdout) and stderr (w.stderr), and waits for it. Its
+// status is ignored, as write_all_boxes() ignores it.
+func (w *world) system(command string) {
+	cmd := &exec.Cmd{
+		Path:   "/bin/sh",
+		Args:   []string{"sh", "-c", command},
+		Stdin:  os.Stdin,
+		Stdout: w.stdout,
+		Stderr: w.stderr,
+	}
+	_ = cmd.Run()
+}
+
+// writeAllBoxes is write_all_boxes(): it clears every box's temp mark,
+// removes libdir/fact and makes it again (mode 0755 less the umask), and
+// writes the box files: loc, item, skill, gate, road, ship and unform by
+// kind, fact/N by player, and misc for every box those did not save.
+//
+// fact is removed with system("rm -rf LIBDIR/fact"), so libdir goes
+// through the shell as it is. With win_flag (-w) the command is instead
+// Windows' "del /s /Q /F LIBDIR\fact\*", which sh cannot run (it says so
+// on stderr), and fact is not made again: the old fact files stay, and
+// those of current players are overwritten. libdir unquoted is an upstream
+// defect: https://github.com/playbymail/olympia-g3/issues/320
+func (w *world) writeAllBoxes() {
+	for i := range maxBoxes {
+		if w.bx[i] != nil {
+			w.bx[i].temp = 0
+		}
+	}
+
+	if w.winFlag {
+		w.system(sout("del /s /Q /F %s\\fact\\*", w.libdir))
+	} else {
+		w.system(sout("rm -rf %s/fact", w.libdir))
+		_ = os.Mkdir(sout("%s/fact", w.libdir), 0o755)
+	}
+
+	w.writeKind(tLoc, "loc")
+	w.writeKind(tItem, "item")
+	w.writeKind(tSkill, "skill")
+	w.writeKind(tGate, "gate")
+	w.writeKind(tRoad, "road")
+	w.writeKind(tShip, "ship")
+	w.writeKind(tUnform, "unform")
+
+	w.writeChars()
+	w.writeLeftovers()
+}
+
+// writeMaster is write_master(): libdir/master, the index fast_scan()
+// reads, one line per box that is not deleted, in box number order: first
+// the boxes of the kinds that have their own file, with that file's name
+// (players and characters name their player's fact/N), and then every
+// other box, naming misc. Roads go to the misc lines, although
+// write_all_boxes() saves them to road (upstream defect:
+// https://github.com/playbymail/olympia-g3/issues/322). It clears every box's temp mark,
+// and leaves it set on the boxes of the first lines.
+func (w *world) writeMaster() {
+	fnam := sout("%s/master", w.libdir)
+	fp, err := clib.Fopen(fnam)
+
+	if err != nil {
+		fmt.Fprintf(w.stderr, "can't write %s: ", fnam)
+		clib.Perror(w.stderr, "", err)
+		return
+	}
+
+	for i := range maxBoxes {
+		if w.bx[i] != nil {
+			w.bx[i].temp = 0
+		}
+	}
+
+	for i := range maxBoxes {
+		if w.kind(i) != tDeleted {
+			s := w.name(i)
+			b := w.bx[i]
+
+			// C's switch has a case 0 too, which is T_deleted and so
+			// never reached.
+			switch w.kind(i) {
+			case tLoc, tItem, tSkill, tGate, tShip, tUnform:
+				fmt.Fprintf(fp, "%d\t%d.%d\t%s\t\t%s\n",
+					i,
+					b.kind, b.skind,
+					kindS[b.kind], s)
+				b.temp = 1
+
+			case tPlayer:
+				fmt.Fprintf(fp, "%d\t%d.%d\tfact/%d\t%s\n",
+					i, b.kind, b.skind, i, s)
+				b.temp = 1
+
+			case tChar:
+				fmt.Fprintf(fp, "%d\t%d.%d\tfact/%d\t%s\n",
+					i,
+					b.kind, b.skind,
+					w.player(i), s)
+				b.temp = 1
+			}
+		}
+	}
+
+	for i := range maxBoxes {
+		if w.kind(i) != tDeleted && w.bx[i].temp == 0 {
+			s := w.name(i)
+			fmt.Fprintf(fp, "%d\t%d.%d\tmisc\t%s\n",
+				i, w.bx[i].kind, w.bx[i].skind, s)
+		}
+	}
+
+	fp.Close()
 }

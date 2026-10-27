@@ -61,8 +61,9 @@ func testRandom(out *cStdout, tty bool) {
 
 // assertion is a failed assert(): asfail() in olympia/z.c prints it to
 // stderr and calls abort(). The port panics with it, and whatever runs the
-// engine recovers it, prints Error() to stderr and exits as abort() does
-// (status 134, without flushing stdout, which abort() discards).
+// engine recovers it, prints Error() to stderr and exits as abort() does:
+// with status 134, after flushing every open stdio stream, which abort()
+// does on macOS (stdout, and the files that clib.FlushAll flushes).
 //
 // file stands in for the __FILE__ that C prints, which is whatever path the
 // C build compiled the source as (an absolute path in the CMake build);
