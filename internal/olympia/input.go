@@ -680,3 +680,37 @@ func (w *world) processPlayerOrders() {
 		}
 	}
 }
+
+func (w *world) interruptOrder(who int) {
+	if w.stackLeader(who) == who {
+		w.restoreStackActions(who)
+	}
+	c := w.rpCommand(who)
+	if c == nil {
+		return
+	}
+	if c.state == stateRun {
+		if fn := cmdTbl[c.cmd].interrupt; fn != nil {
+			c.status = int8(fn(w, c))
+		}
+		w.commandDone(c)
+		assert(c.state != stateRun, "olympia/input.c", 1016, "c->state != STATE_RUN")
+	}
+}
+
+func (w *world) processInterruptedUnits() {
+	for who := range w.loopKind(tChar) {
+		if !w.stopOrder(w.player(who), who) {
+			continue
+		}
+		w.popOrder(w.player(who), who)
+		w.commandOut(who, "> stop")
+		c := w.rpCommand(who)
+		if c != nil && c.cmd != 0 && c.wait != 0 {
+			w.commandOut(who, "Interrupt current order.")
+			w.interruptOrder(who)
+		} else {
+			w.commandOut(who, "No order is currently executing.")
+		}
+	}
+}

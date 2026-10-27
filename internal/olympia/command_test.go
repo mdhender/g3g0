@@ -115,6 +115,47 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		switch op := args.word(); op {
 		case "queue":
 			w.pOrderHead(w.player(int(c.who)), int(c.who)).l.Append(strings.TrimPrefix(line, "queue "))
+		case "orders":
+			n, a := args.num(t), args.num(t)
+			w.pOrderHead(n, a).l.Append(strings.TrimLeft(args.rest, " \t"))
+		case "transfer":
+			n, a, b, d := args.num(t), args.num(t), args.num(t), args.num(t)
+			w.setLord(n, a, b, d)
+		case "generic_interrupt":
+			w.interruptOrder(args.num(t))
+		case "stops":
+			w.processInterruptedUnits()
+		case "flush":
+			n, a := args.num(t), args.num(t)
+			w.flushUnitOrders(n, a)
+		case "stop_check":
+			n, a := args.num(t), args.num(t)
+			fmt.Fprintf(&stdout, "stop %d\n", b2i(w.stopOrder(n, a)))
+		case "np_total":
+			fmt.Fprintf(&stdout, "np %d\n", w.charNPTotal(args.num(t)))
+		case "save":
+			w.saveBox(&stdout, args.num(t))
+		case "pstate":
+			n := args.num(t)
+			p := w.pPlayer(n)
+			fmt.Fprintf(&stdout, "player %d np %d gained %d spent %d backlinks %d\n", n, p.noblePoints, p.npGained, p.npSpent, b2i(w.pledgeBacklinks))
+			helperList(&stdout, "units", p.units)
+			fmt.Fprintf(&stdout, "output %d %d %d %d %d touched %d %d\n", b2i(testBit(p.output, 10)), b2i(testBit(p.output, 200)), b2i(testBit(p.output, 201)), b2i(testBit(p.output, 1000)), b2i(testBit(p.output, 1001)), b2i(testBit(p.locs, 9000)), b2i(testBit(p.locs, 9001)))
+			for _, q := range p.orders {
+				fmt.Fprintf(&stdout, "orders %d:", q.unit)
+				for _, s := range q.l {
+					fmt.Fprintf(&stdout, " [%s]", s)
+				}
+				fmt.Fprintln(&stdout)
+			}
+		case "readlog":
+			n := args.num(t)
+			fmt.Fprintf(&stdout, "log %d:\n", n)
+			data, err := os.ReadFile(filepath.Join(w.libdir, "log", fmt.Sprint(n)))
+			if err != nil && !os.IsNotExist(err) {
+				t.Fatal(err)
+			}
+			stdout.Write(data)
 		case "load":
 			fmt.Fprintf(&stdout, "load %d\n", b2i(w.loadCommand(c)))
 		case "do":
@@ -196,6 +237,18 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch field {
 			case "lord":
 				w.pChar(n).unitLord = int32(a)
+			case "prev":
+				w.pChar(n).prevLord = int32(a)
+			case "rate":
+				w.pChar(n).loyRate = int32(a)
+			case "pledge":
+				w.pMagic(n).pledge = int32(a)
+			case "unit":
+				w.pPlayer(n).units.Append(a)
+			case "np":
+				w.pPlayer(n).noblePoints = int16(a)
+			case "skill_np":
+				w.pSkill(n).npReq = int32(a)
 			case "health":
 				w.pChar(n).health = int8(a)
 			case "prisoner":
@@ -351,6 +404,12 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch field {
 			case "immediate":
 				w.immediate = n != 0
+			case "indep":
+				w.indepPlayer = int32(n)
+			case "gm":
+				w.gmPlayer = int32(n)
+			case "backlinks":
+				w.pledgeBacklinks = n != 0
 			case "show_day":
 				w.showDay = n != 0
 			case "day":
@@ -460,6 +519,45 @@ func TestCommandUnportedStops(t *testing.T) {
 					}
 				}()
 				fn(w, &command{})
+			})
+		}
+	}
+}
+
+// Real transfer/interrupt orchestration must not turn unported non-NULL
+// callbacks into success. This tests the explicit boundary, not C results.
+func TestCommandInterruptionBoundaries(t *testing.T) {
+	for _, name := range []string{"sail", "collect"} {
+		for _, transfer := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s/transfer=%v", name, transfer), func(t *testing.T) {
+				w := newWorld()
+				w.allocBox(200, tPlayer, subPlRegular)
+				w.allocBox(201, tPlayer, subPlRegular)
+				w.allocBox(1000, tChar, 0)
+				w.allocBox(9000, tLoc, subPlain)
+				w.pChar(1000).unitLord = 200
+				w.setWhere(1000, 9000)
+				w.pPlayer(200).units.Append(1000)
+				w.queueOrder(200, 1000, "format 9")
+				c := w.pCommand(1000)
+				c.who, c.cmd, c.state = 1000, int32(w.findCommand(name)), stateRun
+				defer func() {
+					if r := recover(); r != notImplemented("command "+name+" interrupt") {
+						t.Fatalf("interrupt boundary = %v", r)
+					}
+					if w.player(1000) != 200 || c.state != stateRun {
+						t.Fatal("unported interruption falsely completed transfer/command")
+					}
+					_, queued := w.topOrder(200, 1000)
+					if queued == transfer {
+						t.Fatal("transfer must flush before interruption; standalone interrupt must not flush")
+					}
+				}()
+				if transfer {
+					w.setLord(1000, 201, loyUnchanged, 0)
+				} else {
+					w.interruptOrder(1000)
+				}
 			})
 		}
 	}

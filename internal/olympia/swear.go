@@ -46,15 +46,9 @@ func (w *world) setLoyal(who, k, lev int) {
 // setLord is set_lord(): it swears who to newLord (0 for none), moving it
 // to newLord's player's unit list, and sets its loyalty to k and lev unless
 // k is LOY_UNCHANGED.
-//
-// Only the case check_db() reaches is ported: who belongs to no player.
-// Moving a unit from one player to another flushes its orders, interrupts
-// its command, clears its attitudes, reswears the units sworn to it, and
-// moves noble points, all through code not ported yet, so a unit that
-// belongs to a player panics. With no old player, the noble point exchange
-// at the end cannot happen either.
 func (w *world) setLord(who, newLord, k, lev int) {
 	var newPl int
+	flag := false
 
 	oldPl := w.player(who)
 
@@ -65,10 +59,15 @@ func (w *world) setLord(who, newLord, k, lev int) {
 	}
 
 	if oldPl != 0 && oldPl != newPl {
-		// flush_unit_orders, interrupt_order, clear_all_att,
-		// reswear_all_sworn, the pledge, and the removal from the old
-		// player's units.
-		panic("olympia: set_lord: changing a unit's player is not yet implemented")
+		w.flushUnitOrders(oldPl, who)
+		w.interruptOrder(who)
+		w.clearAllAtt(who)
+		w.reswearAllSworn(who)
+		if p := w.rpMagic(who); p != nil && p.pledge != 0 {
+			w.pMagic(who).pledge = 0
+			w.pledgeBacklinks = false
+		}
+		w.pPlayer(oldPl).units.RemValue(who)
 	}
 
 	prevLord := int(w.pChar(who).prevLord)
@@ -101,13 +100,33 @@ func (w *world) setLord(who, newLord, k, lev int) {
 	}
 
 	if oldPl != 0 && newPl != 0 && oldPl != newPl && newPl != int(w.indepPlayer) {
-		// Not reached: oldPl is 0, or the panic above was. With it, the
-		// noble points (char_np_total, add_np, deduct_np) and wout.
-		panic("olympia: set_lord: noble point exchange is not yet implemented")
+		if w.kind(oldPl) == tPlayer {
+			nps := w.charNPTotal(who)
+			w.addNP(oldPl, nps)
+			w.commandOut(oldPl, "Received %d NP%s for %s.", nps, addS(nps), w.boxName(who))
+		}
+		flag = true
 	}
 
 	if k != loyUnchanged {
 		w.setLoyal(who, k, lev)
+	}
+	if flag {
+		nps := w.charNPTotal(who)
+		if !w.deductNP(newPl, nps) {
+			w.logWrite(10, "assert fail: new_pl=%s, who=%s, nps=%d, old_pl=%s", w.boxCode(newPl), w.boxCode(who), nps, w.boxCode(oldPl))
+		}
+		w.commandOut(newPl, "Paid %d NP%s for %s.", nps, addS(nps), w.boxName(who))
+	}
+}
+
+// Dependents stay with the old direct lord, before who's own lord changes.
+func (w *world) reswearAllSworn(who int) {
+	pl, newLord := w.player(who), w.lord(who)
+	for i := range w.loopUnits(pl) {
+		if w.lord(i) == who {
+			w.setLord(i, newLord, loyUnchanged, 0)
+		}
 	}
 }
 

@@ -65,6 +65,40 @@ func (w *world) topOrder(pl, who int) (string, bool) {
 	return "", false
 }
 
+func isStopOrder(s string) bool {
+	for len(s) > 0 && iswhite(s[0]) {
+		s = s[1:]
+	}
+	i := 0
+	for i < len(s) && !iswhite(s[i]) && i < lenMax {
+		i++
+	}
+	// The pinned C fuzzy comparison uses the remainder, not the token.
+	return iStrcmp(s[:i], "stop") == 0 || fuzzyStrcmp(s[i:], "stop")
+}
+
+func (w *world) stopOrder(pl, who int) bool {
+	s, ok := w.topOrder(pl, who)
+	return ok && isStopOrder(s)
+}
+
+func (w *world) flushUnitOrders(pl, who int) {
+	if w.bx[who] == nil {
+		return
+	}
+	for {
+		if _, ok := w.topOrder(pl, who); !ok {
+			break
+		}
+		w.popOrder(pl, who)
+	}
+	if w.player(who) == pl {
+		if c := w.rpCommand(who); c != nil && c.state == stateLoad {
+			w.commandDone(c)
+		}
+	}
+}
+
 // popOrder is pop_order(): it removes the first order in player pl's queue
 // for unit who, which must have one.
 func (w *world) popOrder(pl, who int) {

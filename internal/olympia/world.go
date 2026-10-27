@@ -49,6 +49,9 @@ type world struct {
 	garrisonMagic  int32
 	mountOlympus   int32
 
+	// report.c cache validity; transfers invalidate it even before stage 2.
+	pledgeBacklinks bool
+
 	// libdir is libdir, the data directory (-l), which load_box()'s
 	// diagnostic names. C starts it "lib".
 	libdir string

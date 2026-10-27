@@ -21,6 +21,26 @@ func expLevel(exp int) int {
 	}
 }
 
+// charNPTotal counts every skill entry, not just known skills.
+func (w *world) charNPTotal(who int) int {
+	if w.isNPC(who) && w.subkind(who) != subDeadBody {
+		return 0
+	}
+	sum := int32(1)
+	assert(w.validBox(who), "olympia/use.c", 2126, "valid_box(who)")
+	if p := w.rpChar(who); p != nil {
+		if p.loyKind == loyOath {
+			sum += p.loyRate
+		}
+		for _, e := range p.skills.Copy() {
+			if sk := w.rpSkill(int(e.skill)); sk != nil {
+				sum += sk.npReq
+			}
+		}
+	}
+	return int(sum)
+}
+
 func (w *world) rpSkillEnt(who, skill int) *skillEnt {
 	if p := w.rpChar(who); p != nil {
 		for _, e := range p.skills {

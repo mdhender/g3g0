@@ -78,10 +78,12 @@ reads() {
 		olympia/order.c | olympia/swear.c | olympia/stack.c | olympia/loc.c | olympia/garr.c) return 0 ;;
 		olympia/perm.c | olympia/storm.c) return 0 ;;
 		olympia/c1.c | olympia/produce.c) return 0 ;;
+		olympia/move.c | olympia/day.c | olympia/seed.c | olympia/io.c) return 0 ;;
 		olympia/u.c | olympia/use.c | olympia/c2.c | olympia/immed.c | olympia/stealth.c) return 0 ;;
 		lib/checked_alloc.c | lib/ilist.c | lib/rng.c | lib/rnd.c) return 0 ;;
 		lib/cstrings.c | lib/item_ents.c | lib/skill_ents.c | lib/orders.c) return 0 ;;
 		lib/wait_args.c | lib/flag_ents.c) return 0 ;;
+		lib/admits.c | lib/trades.c | lib/req_ents.c) return 0 ;;
 		esac ;;
 	check-compat)
 		reads helper-compat "$2" && return 0

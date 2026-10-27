@@ -4850,3 +4850,1104 @@ stderr:
 assertion failure: olympia/c1.c (1363): wait_args_len(c->wait_parse) > 0
 
 exit 134
+stdout:
+section full transfer between ordinary players interrupts WAIT before ownership changes
+> place 9000
+> entity 9001 3 14
+> link 9000 9001
+> link 9001 1000
+> entity 1002 2 0
+> field 1002 lord 201
+> entity 1003 2 0
+> field 1003 lord 200
+> field 1000 lord 1003
+> field 200 unit 1000
+> field 200 unit 1001
+> field 200 unit 1003
+> field 201 unit 1002
+> field 1001 lord 1000
+> field 1001 loyal 2
+> field 1001 rate 7
+> field 1001 pledge 1002
+> field 1001 hostile 201
+> link 1000 1001
+> field 1000 loyal 2
+> field 1000 rate 3
+> field 1000 pledge 1002
+> field 1000 neutral 201
+> field 1000 hostile 1002
+> field 1000 defend 1001
+> field 201 np 40
+> field 638 skill_np 5
+> skill 1 0
+> skill 0 0
+> name 1000 Traveler
+> set backlinks 1
+> resolve_wait
+> queue wait time 100
+> load
+load 1
+> do
+> queue hide 1
+> queue move north
+> orders 201 1000 format 9
+> field 1000 moving 8
+> field 1001 moving 9
+> np_total 1000
+np 14
+> transfer 1000 201 2 8
+> save 1000
+1000 char 0
+na Traveler
+LI
+ wh 9001
+ hl 1001 
+CH
+ lo 201
+ pl 200
+ lk 2
+ lr 8
+ sl	638 1 0 0 0 \
+	638 0 0 0 0
+CO
+ li format 9
+ ar 9 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+> save 1001
+1001 char 0
+ah 201 
+LI
+ wh 1000
+CH
+ lo 1003
+ lk 2
+ lr 7
+CM
+ pl 1002
+
+> save 200
+200 player pl_regular
+PL
+ np 14
+ un 1001 1003 
+
+> save 201
+201 player pl_regular
+PL
+ np 21
+ un 1000 1002 
+
+> save 9000
+9000 loc plain
+LI
+ hl 9001 
+
+> save 9001
+9001 loc city
+LI
+ wh 9000
+ hl 1000 
+
+> pstate 200
+player 200 np 14 gained 14 spent 0 backlinks 0
+units: 1001 1003
+output 0 1 0 1 0 touched 0 0
+orders 1000:
+> pstate 201
+player 201 np 21 gained 0 spent 19 backlinks 0
+units: 1000 1002
+output 0 0 1 0 0 touched 1 1
+orders 1000:
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9 0 0 0 0 0 0 0; parse [format] [9]
+player 201 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> wait_dump
+wait args 1
+wait arg 0 100 0 [NULL]
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> readlog 200
+log 200:
+1000:0::0::> wait time 100
+200:0::0::Received 14 NPs for Traveler~[1000].
+> readlog 201
+log 201:
+201:0::0::Paid 19 NPs for Traveler~[1000].
+stderr:
+
+exit 0
+stdout:
+section same faction transfer preserves orders WAIT attitudes pledge movement and dependents
+> place 9000
+> link 9000 1001
+> entity 1002 2 0
+> field 1002 lord 200
+> field 1000 lord 1002
+> field 200 unit 1000
+> field 200 unit 1001
+> field 200 unit 1002
+> field 1001 lord 1000
+> field 1000 loyal 2
+> field 1000 rate 3
+> field 1000 pledge 1001
+> field 1000 hostile 201
+> set backlinks 1
+> resolve_wait
+> queue wait time 100
+> load
+load 1
+> do
+> queue hide 1
+> field 1000 moving 3
+> transfer 1000 200 -1 0
+> save 1000
+1000 char 0
+ah 201 
+LI
+ wh 9000
+CH
+ lo 200
+ lk 2
+ lr 3
+ mo 3
+CM
+ pl 1001
+CO
+ li wait time 100
+ ar 0 100 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 1000
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 1
+units: 1000 1001 1002
+output 0 0 0 1 0 touched 0 0
+orders 1000: [hide 1]
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 100 0 0 0 0 0 0; parse [wait] [time] [100]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> lists
+wait_list: 1000
+collectors:
+second_wait_list:
+second_wait 0
+> readlog 200
+log 200:
+1000:0::0::> wait time 100
+stderr:
+
+exit 0
+stdout:
+section transfer loaded order is flushed not executed and new player loads its queue
+> place 9000
+> field 200 unit 1000
+> field 201 np 8
+> queue hide 1
+> queue move north
+> load
+load 1
+> orders 201 1000 notab 1
+> transfer 1000 201 1 40
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pl 200
+ lk 1
+ lr 40
+CO
+ li notab 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+> pstate 200
+player 200 np 1 gained 1 spent 0 backlinks 0
+units:
+output 0 1 0 0 0 touched 0 0
+orders 1000:
+> pstate 201
+player 201 np 7 gained 0 spent 1 backlinks 0
+units: 1000
+output 0 0 1 0 0 touched 1 0
+orders 1000:
+> dump
+cmd 51 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [notab] [1]
+player 201 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> start
+> save 201
+201 player pl_regular
+PL
+ np 7
+ nt 1
+ un 1000 
+
+> readlog 200
+log 200:
+200:0::0::Received 1 NP for <no subkind>~[1000].
+> readlog 201
+log 201:
+201:0::0::Paid 1 NP for <no subkind>~[1000].
+1000:0::0::> notab 1
+1000:0::0::No TAB characters will appear in turn reports.
+stderr:
+
+exit 0
+stdout:
+section transfer absent command initializes new command and sorted units
+> place 9000
+> entity 1002 2 0
+> field 1002 lord 200
+> link 9000 1002
+> field 200 unit 1002
+> field 1001 lord 201
+> field 201 unit 1001
+> field 201 np 9
+> transfer 1002 201 0 0
+> save 1002
+1002 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pl 200
+
+> pstate 200
+player 200 np 1 gained 1 spent 0 backlinks 0
+units:
+output 0 1 0 0 0 touched 0 0
+> pstate 201
+player 201 np 8 gained 0 spent 1 backlinks 0
+units: 1001 1002
+output 0 0 1 0 0 touched 1 0
+> readlog 200
+log 200:
+200:0::0::Received 1 NP for <no subkind>~[1002].
+> readlog 201
+log 201:
+201:0::0::Paid 1 NP for <no subkind>~[1002].
+stderr:
+
+exit 0
+stdout:
+section player independent different player refunds prevLord with before and after oath rates
+> place 9000
+> entity 202 1 48
+> set indep 202
+> field 200 unit 1000
+> field 201 np 50
+> field 1000 loyal 2
+> field 1000 rate 2
+> transfer 1000 202 2 4
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 202
+ pl 200
+ lk 2
+ lr 4
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> pstate 202
+player 202 np 0 gained 0 spent 0 backlinks 0
+units: 1000
+output 0 0 0 0 0 touched 1 0
+> transfer 1000 201 2 9
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pl 202
+ lk 2
+ lr 9
+
+> pstate 200
+player 200 np 5 gained 5 spent 0 backlinks 0
+units:
+output 0 1 0 0 0 touched 0 0
+> pstate 201
+player 201 np 40 gained 0 spent 10 backlinks 0
+units: 1000
+output 0 0 1 0 0 touched 1 0
+> pstate 202
+player 202 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 1 0
+> readlog 200
+log 200:
+200:0::0::Received 5 NPs for <no subkind>~[1000].
+> readlog 201
+log 201:
+201:0::0::Paid 10 NPs for <no subkind>~[1000].
+> readlog 202
+log 202:
+stderr:
+
+exit 0
+stdout:
+section player independent same previous player reacquires without NP exchange
+> place 9000
+> entity 202 1 48
+> set indep 202
+> field 200 unit 1000
+> field 200 np 12
+> transfer 1000 202 -1 0
+> transfer 1000 200 2 6
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ pl 202
+ lk 2
+ lr 6
+
+> pstate 200
+player 200 np 12 gained 0 spent 0 backlinks 0
+units: 1000
+output 0 0 0 0 0 touched 1 0
+> pstate 202
+player 202 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 1 0
+> readlog 200
+log 200:
+> readlog 202
+log 202:
+stderr:
+
+exit 0
+stdout:
+section independent missing previous lord falls back to independent player
+> place 9000
+> entity 202 1 48
+> set indep 202
+> field 1000 lord 202
+> field 202 unit 1000
+> field 201 np 5
+> transfer 1000 201 -1 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pl 202
+
+> pstate 201
+player 201 np 4 gained 0 spent 1 backlinks 0
+units: 1000
+output 0 0 1 0 0 touched 1 0
+> pstate 202
+player 202 np 1 gained 1 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> readlog 201
+log 201:
+201:0::0::Paid 1 NP for <no subkind>~[1000].
+> readlog 202
+log 202:
+202:0::0::Received 1 NP for <no subkind>~[1000].
+stderr:
+
+exit 0
+stdout:
+section independent invalid nonplayer previous lord charges without refund
+> place 9000
+> entity 202 1 48
+> set indep 202
+> field 1000 lord 202
+> field 1000 prev 1001
+> field 202 unit 1000
+> field 201 np 6
+> transfer 1000 201 2 2
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pl 202
+ lk 2
+ lr 2
+
+> pstate 201
+player 201 np 3 gained 0 spent 3 backlinks 0
+units: 1000
+output 0 0 1 0 0 touched 1 0
+> pstate 202
+player 202 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> readlog 201
+log 201:
+201:0::0::Paid 3 NPs for <no subkind>~[1000].
+> readlog 202
+log 202:
+stderr:
+
+exit 0
+stdout:
+section transfer insufficient NP logs real code alert but still transfers and emits paid
+> place 9000
+> entity 203 1 48
+> set gm 203
+> field 200 unit 1000
+> field 201 np 1
+> field 1000 loyal 2
+> field 1000 rate 2
+> transfer 1000 201 2 7
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pl 200
+ lk 2
+ lr 7
+
+> save 201
+201 player pl_regular
+PL
+ np 1
+ un 1000 
+
+> pstate 200
+player 200 np 3 gained 3 spent 0 backlinks 0
+units:
+output 0 1 0 0 0 touched 0 0
+> pstate 201
+player 201 np 1 gained 0 spent 0 backlinks 0
+units: 1000
+output 0 0 1 0 0 touched 1 0
+> pstate 203
+player 203 np 0 gained 0 spent 0 backlinks 0
+units:
+output 1 0 0 0 0 touched 0 0
+> readlog 200
+log 200:
+200:0::0::Received 3 NPs for <no subkind>~[1000].
+> readlog 201
+log 201:
+201:0::0::Paid 8 NPs for <no subkind>~[1000].
+> readlog 203
+log 203:
+10:0::0::assert fail: new_pl=[201], who=[1000], nps=8, old_pl=[200]
+stderr:
+
+exit 0
+stdout:
+section transfer insufficient NP immediate MASTER framing does not mutate output bits
+> place 9000
+> entity 203 1 48
+> set gm 203
+> set immediate 1
+> set show_day 1
+> set day 0
+> field 200 unit 1000
+> transfer 1000 201 2 3
+200:0::0:0:Received 1 NP for <no subkind>~[1000].
+10:0::0:0:assert fail: new_pl=[201], who=[1000], nps=4, old_pl=[200]
+201:0::0:0:Paid 4 NPs for <no subkind>~[1000].
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pl 200
+ lk 2
+ lr 3
+
+> pstate 200
+player 200 np 1 gained 1 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units: 1000
+output 0 0 0 0 0 touched 1 0
+> pstate 203
+player 203 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+stderr:
+
+exit 0
+stdout:
+section detach to no lord clears old effects without init or NP exchange
+> place 9000
+> field 200 unit 1000
+> field 200 unit 1001
+> field 1001 lord 1000
+> field 1000 pledge 1001
+> field 1000 defend 1001
+> set backlinks 1
+> queue hide 1
+> load
+load 1
+> transfer 1000 0 -1 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+CO
+ li hide 1
+ ar 1 0 0 0 0 0 0 0
+ wa 3
+ pr 3
+
+> save 1001
+1001 char 0
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units: 1001
+output 0 0 0 0 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section char NP counts every entry and preserves NPC and dead body exception
+> field 638 skill_np 5
+> skill 0 0
+> skill 1 0
+> skill 2 0
+> np_total 1000
+np 16
+> field 1000 loyal 2
+> field 1000 rate 4
+> np_total 1000
+np 20
+> field 1000 loyal 4
+> np_total 1000
+np 0
+> field 1000 loyal 5
+> np_total 1000
+np 0
+> field 1000 loyal 2
+> field 1000 subkind 56
+> np_total 1000
+np 20
+> field 1000 subkind 0
+> np_total 1000
+np 20
+stderr:
+
+exit 0
+stdout:
+section generic interruption WAIT removes duplicates and loads next old owner order
+> place 9000
+> resolve_wait
+> queue wait time 100
+> load
+load 1
+> do
+> wait_add 1000
+> queue format 7
+> generic_interrupt 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li format 7
+ ar 7 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 7 0 0 0 0 0 0 0; parse [format] [7]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> wait_dump
+wait args 1
+wait arg 0 100 0 [NULL]
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> readlog 200
+log 200:
+1000:0::0::> wait time 100
+stderr:
+
+exit 0
+stdout:
+section generic interruption restores stack even without command
+> place 9000
+> link 9000 1001
+> entity 1002 2 0
+> link 1001 1002
+> field 1001 moving 7
+> field 1002 moving 9
+> generic_interrupt 1001
+> save 1001
+1001 char 0
+LI
+ wh 9000
+ hl 1002 
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+LI
+ wh 1001
+CH
+
+stderr:
+
+exit 0
+stdout:
+section generic interruption follower does not restore its movement
+> place 9000
+> link 1000 1001
+> field 1001 moving 7
+> generic_interrupt 1001
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ mo 7
+
+stderr:
+
+exit 0
+stdout:
+section generic interruption loaded command is unchanged except movement
+> place 9000
+> queue hide 1
+> load
+load 1
+> field 1000 moving 9
+> generic_interrupt 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li hide 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ wa 3
+ pr 3
+
+> dump
+cmd 39 who 1000 state 1 status 0 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+stderr:
+
+exit 0
+stdout:
+section generic interruption NULL callback completes and retains status
+> place 9000
+> parse move north
+parse 1
+> run 3 0 0 0
+> queue format 12
+> generic_interrupt 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li format 12
+ ar 12 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 12 0 0 0 0 0 0 0; parse [format] [12]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+stderr:
+
+exit 0
+stdout:
+section flush other owner preserves loaded command and own orders
+> place 9000
+> queue hide 1
+> queue format 2
+> load
+load 1
+> orders 201 1000 move north
+> flush 201 1000
+> flush 201 1001
+> flush 201 9999
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li hide 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ wa 3
+ pr 3
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [format 2]
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000:
+> dump
+cmd 39 who 1000 state 1 status 0 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+stderr:
+
+exit 0
+stdout:
+section day zero stop interrupts real running WAIT and loads successor
+> place 9000
+> resolve_wait
+> set show_day 1
+> set day 0
+> queue wait time 100
+> load
+load 1
+> do
+> queue STOP extra
+> queue format 21
+> field 1000 moving 5
+> stops
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li format 21
+ ar 21 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 21 0 0 0 0 0 0 0; parse [format] [21]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> wait_dump
+wait args 1
+wait arg 0 100 0 [NULL]
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> readlog 200
+log 200:
+1000:0::0:0:> wait time 100
+1000:0::0:0:> stop
+1000:0::0:0:Interrupt current order.
+stderr:
+
+exit 0
+stdout:
+section day zero idle and loaded STOP consume just one and do not complete loaded command
+> place 9000
+> link 9000 1001
+> entity 1002 2 0
+> field 1002 lord 200
+> link 9000 1002
+> queue hide 1
+> load
+load 1
+> queue stop
+> queue format 31
+> orders 200 1001 stop
+> orders 200 1001 stop
+> orders 200 1002 stop
+> stops
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li hide 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ wa 3
+ pr 3
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 1 touched 0 0
+orders 1000: [format 31]
+orders 1001: [stop]
+orders 1002:
+> readlog 200
+log 200:
+1000:0::0::> stop
+1000:0::0::Interrupt current order.
+1001:0::0::> stop
+1001:0::0::No order is currently executing.
+1002:0::0::> stop
+1002:0::0::No order is currently executing.
+stderr:
+
+exit 0
+stdout:
+section stop top order filters exact case whitespace trailing comment typo and buried STOP
+> queue stop
+> stop_check 200 1000
+stop 1
+> flush 200 1000
+> queue   sToP arguments
+> stop_check 200 1000
+stop 1
+> flush 200 1000
+> queue stop#comment
+> stop_check 200 1000
+stop 0
+> flush 200 1000
+> queue sto
+> stop_check 200 1000
+stop 0
+> flush 200 1000
+> queue stpo
+> stop_check 200 1000
+stop 0
+> flush 200 1000
+> queue # stop
+> stop_check 200 1000
+stop 0
+> flush 200 1000
+> queue format 2
+> queue stop
+> stop_check 200 1000
+stop 0
+> stop_check 201 1000
+stop 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [format 2] [stop]
+stderr:
+
+exit 0
+stdout:
+section NP transfer short overflow and negative costs retain pinned arithmetic
+> place 9000
+> field 200 unit 1000
+> field 200 np 32767
+> field 201 np 32767
+> field 1000 loyal 2
+> field 1000 rate 7
+> transfer 1000 201 2 -3
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pl 200
+ lk 2
+ lr -3
+
+> pstate 200
+player 200 np -32761 gained 8 spent 0 backlinks 0
+units:
+output 0 1 0 0 0 touched 0 0
+> pstate 201
+player 201 np -32767 gained 0 spent -2 backlinks 0
+units: 1000
+output 0 0 1 0 0 touched 1 0
+> readlog 200
+log 200:
+200:0::0::Received 8 NPs for <no subkind>~[1000].
+> readlog 201
+log 201:
+201:0::0::Paid -2 NPs for <no subkind>~[1000].
+stderr:
+
+exit 0
+stdout:
+section NPC to ordinary refund precedes loyalty change and ordinary charge follows
+> place 9000
+> field 200 unit 1000
+> field 201 np 20
+> field 1000 loyal 4
+> transfer 1000 201 2 6
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pl 200
+ lk 2
+ lr 6
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 1 0 0 0 touched 0 0
+> pstate 201
+player 201 np 13 gained 0 spent 7 backlinks 0
+units: 1000
+output 0 0 1 0 0 touched 1 0
+> readlog 200
+log 200:
+200:0::0::Received 0 NPs for <no subkind>~[1000].
+> readlog 201
+log 201:
+201:0::0::Paid 7 NPs for <no subkind>~[1000].
+stderr:
+
+exit 0
+stdout:
+section ordinary to NPC refund precedes zero NPC charge
+> place 9000
+> field 200 unit 1000
+> field 1000 loyal 2
+> field 1000 rate 5
+> transfer 1000 201 4 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pl 200
+ lk 4
+
+> pstate 200
+player 200 np 6 gained 6 spent 0 backlinks 0
+units:
+output 0 1 0 0 0 touched 0 0
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units: 1000
+output 0 0 1 0 0 touched 1 0
+> readlog 200
+log 200:
+200:0::0::Received 6 NPs for <no subkind>~[1000].
+> readlog 201
+log 201:
+201:0::0::Paid 0 NPs for <no subkind>~[1000].
+stderr:
+
+exit 0

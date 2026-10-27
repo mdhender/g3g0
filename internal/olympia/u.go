@@ -10,6 +10,31 @@ import (
 
 // Ported from olympia/u.c.
 
+func addS(n int) string {
+	if n == 1 {
+		return ""
+	}
+	return "s"
+}
+
+func (w *world) deductNP(pl, num int) bool {
+	assert(w.kind(pl) == tPlayer, "olympia/u.c", 1746, "kind(pl) == T_player")
+	p := w.pPlayer(pl)
+	if int(p.noblePoints) < num {
+		return false
+	}
+	p.noblePoints = int16(int32(p.noblePoints) - int32(num))
+	p.npSpent = int16(int32(p.npSpent) + int32(num))
+	return true
+}
+
+func (w *world) addNP(pl, num int) {
+	assert(w.kind(pl) == tPlayer, "olympia/u.c", 1764, "kind(pl) == T_player")
+	p := w.pPlayer(pl)
+	p.noblePoints = int16(int32(p.noblePoints) + int32(num))
+	p.npGained = int16(int32(p.npGained) + int32(num))
+}
+
 func commaNum(n int) string {
 	further := n / 1000000000
 	n %= 1000000000

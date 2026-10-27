@@ -25,3 +25,11 @@ func (w *world) isHostile(who, targ int) bool {
 	}
 	return false
 }
+
+func (w *world) clearAllAtt(who int) {
+	if p := w.rpDisp(who); p != nil {
+		p.neutral.Clear()
+		p.hostile.Clear()
+		p.defend.Clear()
+	}
+}

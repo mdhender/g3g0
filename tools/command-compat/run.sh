@@ -35,23 +35,26 @@ functions = {
                 'finish_command', 'do_command', 'init_load_sup', 'exec_precedence',
                 'exec_comp', 'sort_load_queue', 'sort_run_queue', 'initial_command_load',
                 'min_pri_ready', 'init_wait_list', 'check_all_waits', 'start_phase', 'evening_phase',
-                'daily_command_loop', 'process_player_orders'],
-    'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order'],
-    'swear.c': ['lord', 'player'],
+                'daily_command_loop', 'process_player_orders', 'interrupt_order', 'process_interrupted_units'],
+    'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders'],
+    'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord'],
+    'move.c': ['restore_stack_actions'],
+    'day.c': ['touch_loc_pl', 'touch_loc'],
+    'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos'],
     'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
-              'in_safe_now', 'province', 'building_owner'],
+              'in_safe_now', 'province', 'building_owner', 'viewloc'],
     'garr.c': ['garrison_here'],
     'u.c': ['min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
-            'lookup', 'gold_s', 'comma_num', 'nice_num'],
+            'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait'],
     'produce.c': ['init_collect_list'],
-    'perm.c': ['is_hostile'],
+    'perm.c': ['is_hostile', 'clear_all_att'],
     'storm.c': ['weather_here'],
-    'use.c': ['rp_skill_ent', 'exp_level', 'has_skill'],
+    'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total'],
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide'],
@@ -71,6 +74,9 @@ ilist load_q[MAX_PRI], run_q;
 int cur_pri, cmd_wait = -1, fuzzy_find;
 int evening, auto_attack_flag;
 ilist wait_list, second_wait_list;
+int pledge_backlinks;
+#define phase_ran(x) ((void)0)
+#define phase_acted(x) ((void)0)
 ''')
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
@@ -101,6 +107,7 @@ struct order_list *drv_orders(int pl, int who) { return p_order_head(pl, who); }
 void drv_evening(void) { evening_phase(); }
 void drv_daily(void) { daily_command_loop(); }
 void drv_players(void) { process_player_orders(); }
+void drv_interrupted(void) { process_interrupted_units(); }
 void drv_sort_load(int pri) { sort_load_queue(load_q[pri]); }
 void drv_sort_run(void) { sort_run_queue(run_q); }
 ilist drv_collectors(void) { return collectors; }
@@ -129,11 +136,10 @@ with open(f'{dst}/stubs.c', 'w') as out:
 /* Only unreachable reporting routes and unrelated code.c dependencies. */
 int is_port_city(int n) STUB("is_port_city")
 ilist players_who_rule_here(int n) STUB("players_who_rule_here")
-int viewloc(int n) STUB("viewloc")
 void check_validated_trades(void) STUB("check_validated_trades")
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
-int immediate, flush_always = 1;
+int immediate, flush_always = 1, pretty_data_files;
 ilist trades_to_check;
 ''')
 PY
@@ -145,8 +151,8 @@ esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -w -ffunction-sections -fdata-sections "${ldflags[@]}" \
  -I olympia -I lib \
  "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" \
- olympia/{code,glob,z,sout}.c \
- lib/{checked_alloc,ilist,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents}.c \
+ olympia/{code,glob,z,sout,io}.c \
+ lib/{checked_alloc,ilist,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents,admits,trades,req_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
 sections=$(grep -c '^section ' "${CASES}")
 section_names=() # Bash 3 (Darwin) has no mapfile.

@@ -32,9 +32,21 @@ func (w *world) commandOut(who int, format string, a ...any) {
 	if w.subkind(who) == subGarrison || (w.kind(who) != tChar && w.kind(who) != tPlayer) {
 		panic(notImplemented("command output routing"))
 	}
+	w.bottomOut(w.player(who), who, format, a...)
+}
+
+// logWrite is the small MASTER route used for code alerts. It bypasses
+// ordinary character routing but shares bottom_out framing and output bits.
+func (w *world) logWrite(k int, format string, a ...any) {
+	assert(k >= 10 && k <= 20, "olympia/sout.c", 708, "k >= 10 && k <= 20")
+	if !w.isPrisoner(int(w.gmPlayer)) {
+		w.bottomOut(int(w.gmPlayer), k, format, a...)
+	}
+}
+
+func (w *world) bottomOut(pl, who int, format string, a ...any) {
 	var fp io.Writer = w.stdout
 	if !w.immediate {
-		pl := w.player(who)
 		if pl == 0 {
 			return
 		}

@@ -24,6 +24,7 @@ void drv_sort_load(int pri);
 int drv_fort_covers(int n);
 char *drv_wait_check(struct command *c);
 void drv_signal(int who, char *flag);
+void drv_interrupted(void);
 
 static void wait_dump(struct command *c)
 {
@@ -97,6 +98,40 @@ int main(int argc, char **argv)
   sscanf(line, "%31s", op);
   if (!strcmp(op, "queue"))
    cstrings_append(&drv_orders(player(c->who), c->who)->l, str_save(line + 6));
+  else if (!strcmp(op, "orders")) {
+   sscanf(line, "%*s %d %d %8191[^\n]", &n, &a, text);
+   cstrings_append(&drv_orders(n,a)->l,str_save(text));
+  }
+  else if (!strcmp(op, "transfer")) {
+   sscanf(line, "%*s %d %d %d %d", &n, &a, &b, &d);
+   set_lord(n,a,b,d);
+  }
+  else if (!strcmp(op, "generic_interrupt")) { sscanf(line,"%*s %d",&n); interrupt_order(n); }
+  else if (!strcmp(op, "stops")) drv_interrupted();
+  else if (!strcmp(op, "flush")) { sscanf(line,"%*s %d %d",&n,&a); flush_unit_orders(n,a); }
+  else if (!strcmp(op, "stop_check")) {
+   sscanf(line,"%*s %d %d",&n,&a); printf("stop %d\n",stop_order(n,a));
+  }
+  else if (!strcmp(op, "np_total")) { sscanf(line,"%*s %d",&n); printf("np %d\n",char_np_total(n)); }
+  else if (!strcmp(op, "save")) { sscanf(line,"%*s %d",&n); save_box(stdout,n); }
+  else if (!strcmp(op, "pstate")) {
+   struct entity_player *p;
+   sscanf(line,"%*s %d",&n); p = p_player(n);
+   printf("player %d np %d gained %d spent %d backlinks %d\n",n,p->noble_points,p->np_gained,p->np_spent,pledge_backlinks);
+   list("units",p->units);
+   printf("output %d %d %d %d %d touched %d %d\n",test_bit(p->output,10),test_bit(p->output,200),test_bit(p->output,201),test_bit(p->output,1000),test_bit(p->output,1001),test_bit(p->locs,9000),test_bit(p->locs,9001));
+   for (i=0;i<orders_len(p->orders);i++) {
+    int j; struct order_list *q = p->orders[i];
+    printf("orders %d:",q->unit);
+    for(j=0;j<cstrings_len(q->l);j++) printf(" [%s]",q->l[j]);
+    printf("\n");
+   }
+  }
+  else if (!strcmp(op, "readlog")) {
+   sscanf(line,"%*s %d",&n); fflush(NULL);
+   printf("log %d:\n",n); log = fopen(sout("%s/log/%d",libdir,n),"r");
+   if(log) { while((n=fgetc(log)) != EOF) putchar(n); fclose(log); }
+  }
   else if (!strcmp(op, "load")) printf("load %d\n", drv_load(c));
   else if (!strcmp(op, "do")) do_command(c);
   else if (!strcmp(op, "finish")) printf("finish %d\n", finish_command(c));
@@ -161,6 +196,12 @@ int main(int argc, char **argv)
   {
    sscanf(line,"%*s %d %31s %d",&n,text,&a);
    if (!strcmp(text,"lord")) p_char(n)->unit_lord = a;
+   else if (!strcmp(text,"prev")) p_char(n)->prev_lord = a;
+   else if (!strcmp(text,"rate")) p_char(n)->loy_rate = a;
+   else if (!strcmp(text,"pledge")) p_magic(n)->pledge = a;
+   else if (!strcmp(text,"unit")) ilist_append(&p_player(n)->units,a);
+   else if (!strcmp(text,"np")) p_player(n)->noble_points = (short)a;
+   else if (!strcmp(text,"skill_np")) p_skill(n)->np_req = a;
    else if (!strcmp(text,"health")) p_char(n)->health = (schar)a;
    else if (!strcmp(text,"prisoner")) p_char(n)->prisoner = (schar)a;
    else if (!strcmp(text,"npc")) p_char(n)->npc_prog = (schar)a;
@@ -265,6 +306,9 @@ int main(int argc, char **argv)
   {
    sscanf(line, "%*s %31s %d", text, &n);
    if (!strcmp(text, "immediate")) immediate = n;
+   else if (!strcmp(text, "indep")) indep_player = n;
+   else if (!strcmp(text, "gm")) gm_player = n;
+   else if (!strcmp(text, "backlinks")) pledge_backlinks = n;
    else if (!strcmp(text, "show_day")) show_day = n;
    else if (!strcmp(text, "day")) sysclock.day = (short)n;
    else if (!strcmp(text, "turn")) sysclock.turn = (short)n;

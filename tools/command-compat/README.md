@@ -1,4 +1,4 @@
-# Command dispatch, scheduler, auto-attack selection and waits
+# Command dispatch, scheduler, waits, interruptions and ownership transfers
 
 Pinned reference: [Olympia G3 at
 6a25f2d252ce45bd5adbe3baaccb3be3eed56279](https://github.com/playbymail/olympia-g3/tree/6a25f2d252ce45bd5adbe3baaccb3be3eed56279).
@@ -61,8 +61,8 @@ it does **not** execute `v_wait`, `d_wait` or `i_wait`. `wait_check` reevaluates
 the cached parse, while `wait_parse`/`wait_dump` observe even partial parses.
 The handler cases use real queued `wait` orders through load/start/evening
 dispatch, or construct persisted commands and call `init_wait`/`poll_wait`.
-`interrupt` invokes the table's actual interrupt callback, not the still
-unported generic `interrupt_order`. `lists` observes wait/collector/second-wait
+`interrupt` invokes the table's actual interrupt callback; `generic_interrupt`
+calls the complete real `interrupt_order`. `lists` observes wait/collector/second-wait
 storage and the selected command's second-wait flag. `wait_add` only constructs
 list state, including stale entries and duplicates; it models no decisions.
 Collector cases construct saved COLLECT commands and call `init_collect`;
@@ -70,10 +70,10 @@ they never execute an aborting COLLECT handler or claim harvesting works.
 
 All other command routines named by the C table are **aborting** stubs,
 never successful substitutes. The remaining aborting dependencies are
-unreachable location/garrison report routes (`players_who_rule_here`, `viewloc`), unused display formatting
+unreachable garrison report routes (`players_who_rule_here`), unused display formatting
 (`is_port_city`), and validated-trade settlement. Reaching any
-stub fails the script, including `--update`. Only `coverage_count` is a
-no-op: it writes stage-3 instrumentation, not gameplay state. No compared
+stub fails the script, including `--update`. Only instrumentation
+(`coverage_count` and phase markers) is a no-op: stage 3, not gameplay state. No compared
 scheduler, auto-attack scan, wait predicate or wait handler is a successful stub.
 
 Positive selection controls are named `section combat boundary ...`. The only
@@ -100,14 +100,20 @@ are real dependencies, not successful placeholders.
 
 The minimal `commandOut` route implements default character/player output,
 prisoner suppression, real raw C line framing and LEN-1 truncation, append-only
-log writes and the player's output-bit mutation. Immediate output goes to
+log writes and the player's output-bit mutation. The small `logWrite` MASTER
+route shares that same bottom writer; code alerts preserve GM output bits
+and raw log bytes, not just diagnostics. Immediate output goes to
 stdout with C framing, but without command echo; it does **not** bypass all
 allow checks. Other routing/formatting fails explicitly. Report assembly and
 the broader sout interface remain stage 2. No report-side mutations on these
 paths are omitted. `-r` remains disabled; these scheduler methods are not full
-turn orchestration. Wait callbacks and polling are ported; COLLECT execution,
-generic order interruption (#62) and validated-trade settlement still stop
-explicitly. The real auto-attack
+turn orchestration. Wait callbacks, polling, generic order interruption and
+the full ownership-transfer closure are ported. COLLECT execution and
+validated-trade settlement still stop explicitly. SAIL and COLLECT
+interrupt callbacks remain explicit unported boundaries, not successful stubs.
+MOVE's interrupt pointer is genuinely NULL in C, so generic interruption can
+complete a persisted MOVE without calling unported movement start/finish code.
+The real auto-attack
 scan excludes stacked followers and leaders whose health is neither 100 nor
 -1, then completes the local and outer-ship target scans. Healthy nonhostile
 leaders return normally. Only a selected attack emits real auto-attack output
@@ -284,7 +290,57 @@ input.c:793–825 (`init_wait_list`, `check_all_waits`), and produce.c:525–543
 (`init_collect_list`, with its original storage at line 522). The previously
 extracted combat.c `clear_second_waits` is reused unchanged.
 
-The recording contains 141 sections / 4852 lines on Linux x86-64.
-The earlier 123 sections / 3828 lines are byte-for-byte unchanged; no callback
-reachability exception to that prefix was needed.
+## Interruption and transfer closure (#62)
+
+Complete real functions added: input.c `interrupt_order` and
+`process_interrupted_units`; order.c `is_stop_order`, `stop_order`,
+`flush_unit_orders`; swear.c `set_loyal`, `set_lord`, `reswear_all_sworn`;
+perm.c `clear_all_att`; use.c `char_np_total`; u.c `add_np`, `deduct_np`;
+move.c `restore_stack_actions`; day.c `touch_loc`, `touch_loc_pl`;
+loc.c `viewloc`; seed.c `int_comp`. The full real io.c writer provides
+`save_box` and its serialization dependencies, linked with admits/trades/req
+lists. Only `phase_ran`/`phase_acted` are instrumentation no-ops (stage 3).
+No transfer effects or command callbacks are replaced by successful stubs.
+
+`transfer`, `stops`, `flush`, `stop_check` and `np_total` call those functions.
+`save` calls **actual C save_box**, compared against Go's existing saveBox;
+`pstate` observes unsaved NP gained/spent, output bits (including LOG_CODE),
+touched locations, units and exact remaining order strings. `readlog` reads
+the real specified player's raw sout log, including GM code alerts.
+Additional field/order operations only construct state.
+
+- Two ordinary players transfer a running WAIT unit with two skill entries
+  (learning and unknown, each np_req 5). Refund is **14**, charge **19**:
+  oath rate 3 is read before loyalty changes to rate 8. Old queued hide/move
+  orders must be flushed before interruption, never executed or loaded;
+  the new owner's format order is loaded. WAIT list removal, retained cached
+  parse, both priority queues, serialized command fields and logs are observed.
+- A dependent is resworn to the **old direct character lord**, not its faction;
+  its own loyalty, pledge and attitudes stay intact. Transfer clears who's
+  attitudes and pledge, invalidates backlinks, restores stack movement,
+  removes old-player membership, sorts new membership and touches both a city
+  and its province. Same-player reparenting preserves these effects instead.
+- Loaded and absent commands, ordinary → independent → different ordinary
+  player, same-previous-player reacquisition, zero and nonplayer prevLord,
+  detachment to lord zero, NPC loyalty transitions, negative costs and signed
+  short overflow are recorded. Deliberately raw nonplayer prevLord and
+  negative/overflow fields are low-level contracts, not public-engine defects.
+- Insufficient funds leaves the new player's NP/spent unchanged but still
+  transfers, refunds, emits **Paid**, and logs actual LOG_CODE (10) through
+  MASTER to the GM. Immediate mode preserves day-0 framing without output-bit
+  mutation. The port does not independently assert or roll back this C path.
+- Generic interruption calls real WAIT i_wait, removes duplicate wait-list
+  entries and loads the successor. NULL callback, loaded command, absent
+  command, stack leader and follower behavior are distinct controls.
+- Day-0 STOP consumes only the top queued order, distinguishes running WAIT
+  from loaded/idle commands, and preserves C's sometimes surprising output:
+  loaded hide says **Interrupt current order** but stays loaded. Case/leading
+  spaces/trailing arguments match, whereas attached comments and misspellings
+  do not; the pinned fuzzy comparison is of the remainder, not the token.
+
+The recording contains 165 sections / 5953 lines on Linux x86-64.
+All 24 added sections exit 0. The earlier 141 sections / 4852 lines are
+byte-for-byte unchanged; no callback reachability exception was needed.
+Helper-compat retains its aborting transfer-dependency stubs; these full
+transfer cases are in command-compat and never reach them.
 Whole-game checks remain opt-in in `turn-compat`. No cases consume RNG.
