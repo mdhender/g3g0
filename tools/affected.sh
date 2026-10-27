@@ -66,6 +66,12 @@ reads() {
 		lib/checked_alloc.c | lib/ilist.c | lib/rng.c | lib/rnd.c) return 0 ;;
 		lib/cstrings.c | lib/item_ents.c | lib/orders.c) return 0 ;;
 		esac ;;
+	check-compat)
+		reads helper-compat "$2" && return 0
+		case "$2" in
+		olympia/check.c | olympia/io.c | tests/olympia/fixtures/world.tgz) return 0 ;;
+		lib/admits.c | lib/req_ents.c | lib/skill_ents.c | lib/trades.c) return 0 ;;
+		esac ;;
 	io-compat | box-compat | boxfile-compat)
 		case "$2" in
 		olympia/*.h | lib/*.h) return 0 ;;
@@ -87,7 +93,7 @@ reads() {
 }
 
 tools=(rng-compat lists-compat entity-compat code-compat helper-compat io-compat box-compat boxfile-compat
-	scanf-compat olympia-cli-compat olympia-roundtrip olympia-spec)
+	check-compat scanf-compat olympia-cli-compat olympia-roundtrip olympia-spec)
 
 for t in "${tools[@]}"; do
 	for f in "${changed[@]}"; do
@@ -101,7 +107,7 @@ done
 # The files only the whole-engine tools read, for a reviewer's eye.
 for f in "${changed[@]}"; do
 	hit=0
-	for t in rng-compat lists-compat entity-compat code-compat io-compat box-compat boxfile-compat; do
+	for t in rng-compat lists-compat entity-compat code-compat helper-compat io-compat box-compat boxfile-compat check-compat; do
 		if reads "${t}" "${f}"; then hit=1; break; fi
 	done
 	[ "${hit}" -eq 1 ] || echo "only the whole-engine tools read: ${f}" >&2

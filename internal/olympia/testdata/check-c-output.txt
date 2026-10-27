@@ -1,0 +1,2071 @@
+section a consistent game
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 106 lib/fact/1001
+| 1001 player pl_regular
+| na Player one
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| na Noble
+| il\x0977 1
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 31 lib/item
+| 77 item 0
+| na Ring
+| IT
+|  un 1002
+| 
+f 644 91 lib/loc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1002 
+| 
+f 644 349 lib/master
+| 77\x094.0\x09item\x09\x09Ring
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 600\x095.0\x09skill\x09\x09School
+| 610\x095.0\x09skill\x09\x09Skill
+| 1001\x091.49\x09fact/1001\x09Player one
+| 1002\x092.0\x09fact/1001\x09Noble
+| 10001\x093.50\x09loc\x09\x09Region
+| 10101\x093.3\x09loc\x09\x09Plain
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 81 lib/skill
+| 600 skill 0
+| na School
+| SK
+|  tl 7
+|  of 610 
+| 
+| 610 skill 0
+| na Skill
+| SK
+|  tl 14
+|  rs 600
+| 
+f 644 0 lib/unform
+section the special players are missing
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 28 lib/loc
+| 10001 loc region
+| na Region
+| 
+f 644 211 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 10001\x093.50\x09loc\x09\x09Region
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section the special players have no names
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 45 lib/fact/100
+| 100 player pl_regular
+| na Independent player
+| 
+f 644 37 lib/fact/200
+| 200 player pl_regular
+| na Gamemaster
+| 
+f 644 37 lib/fact/202
+| 202 player pl_regular
+| na Skill list
+| 
+f 644 38 lib/fact/203
+| 203 player pl_regular
+| na Order eater
+| 
+f 644 38 lib/fact/206
+| 206 player pl_regular
+| na NPC control
+| 
+f 644 41 lib/fact/207
+| 207 player pl_regular
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 188 lib/master
+| 100\x091.49\x09fact/100\x09Independent player
+| 200\x091.49\x09fact/200\x09Gamemaster
+| 202\x091.49\x09fact/202\x09Skill list
+| 203\x091.49\x09fact/203\x09Order eater
+| 206\x091.49\x09fact/206\x09NPC control
+| 207\x091.49\x09fact/207\x09Garrison units
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section the independent player is not a player
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+assertion failure: olympia/check.c (136): kind(indep_player) == T_player
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 54 lib/misc
+| 100 char 0
+| LI
+|  wh 10001
+| 
+| 10001 loc region
+| LI
+|  hl 100
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section the gm player is not a player
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+assertion failure: olympia/check.c (167): kind(gm_player) == T_player
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 16 lib/misc
+| 200 loc region
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section the skill player is not a player
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+assertion failure: olympia/check.c (186): kind(skill_player) == T_player
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 12 lib/misc
+| 202 gate 0
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section the eat player is not a player
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+assertion failure: olympia/check.c (205): kind(eat_pl) == T_player
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 22 lib/misc
+| 203 skill 0
+| SK
+|  tl 1
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section the npc player is not a player
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+assertion failure: olympia/check.c (224): kind(npc_pl) == T_player
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 12 lib/misc
+| 206 item 0
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section the garrison player is not a player
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+assertion failure: olympia/check.c (243): kind(garr_pl) == T_player
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 59 lib/misc
+| 207 ship galley
+| LI
+|  wh 10001
+| 
+| 10001 loc region
+| LI
+|  hl 207
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_here adds to here lists
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_here: adding [1002] to here list of [10101]
+	check_here: adding [1004] to here list of [1002]
+	check_here: adding [10101] to here list of [10001]
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 170 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 1003 1004 
+| 
+| 1002 char 0
+| LI
+|  wh 10101
+|  hl 1004 
+| CH
+|  lo 1001
+| 
+| 1003 char 0
+| LI
+|  wh 10101
+| CH
+|  lo 1001
+| 
+| 1004 char 0
+| LI
+|  wh 1002
+| CH
+|  lo 1001
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 82 lib/loc
+| 10001 loc region
+| LI
+|  hl 10101 
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+|  hl 1003 2001 1002 
+| 
+f 644 319 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09
+| 1002\x092.0\x09fact/1001\x09
+| 1003\x092.0\x09fact/1001\x09
+| 1004\x092.0\x09fact/1001\x09
+| 2001\x099.30\x09ship\x09\x09
+| 10001\x093.50\x09loc\x09\x09
+| 10101\x093.3\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 31 lib/ship
+| 2001 ship galley
+| LI
+|  wh 10101
+| 
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_here removes from here lists
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_here: adding [1003] to here list of [10102]
+	check_here: removing [1003] from here list of [10101]
+	check_here: removing [1005] from here list of [10101]
+	check_here: removing [1002] from here list of [10101]
+	check_here: removing [1005] from here list of [10101]
+assertion failure: olympia/loc.c (241): in_here_list(loc, who)
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 282 lib/misc
+| 1001 player pl_regular
+| PL
+|  un 1002 1003 1005
+| 
+| 1002 char 0
+| LI
+|  wh 10102
+| CH
+|  lo 1001
+| 
+| 1003 char 0
+| LI
+|  wh 10102
+| CH
+|  lo 1001
+| 
+| 1005 char 0
+| CH
+|  lo 1001
+| 
+| 10001 loc region
+| LI
+|  hl 10101 10102
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+|  hl 1003 1005 1002 1005
+| 
+| 10102 loc plain
+| LI
+|  wh 10001
+|  hl 1002 1002
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_here removes from here lists, once each
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_here: adding [1003] to here list of [10102]
+	check_here: removing [10001] from here list of [10001]
+	check_here: removing [1003] from here list of [10101]
+	check_here: removing [1005] from here list of [10101]
+	check_here: removing [1002] from here list of [10101]
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+	warning: unit [1005] is nowhere
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 148 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 1003 1005 
+| 
+| 1002 char 0
+| LI
+|  wh 10102
+| CH
+|  lo 1001
+| 
+| 1003 char 0
+| LI
+|  wh 10102
+| CH
+|  lo 1001
+| 
+| 1005 char 0
+| CH
+|  lo 1001
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 118 lib/loc
+| 10001 loc region
+| LI
+|  hl 10101 10102 
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+| 
+| 10102 loc plain
+| LI
+|  wh 10001
+|  hl 1002 1002 1003 
+| 
+f 644 318 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09
+| 1002\x092.0\x09fact/1001\x09
+| 1003\x092.0\x09fact/1001\x09
+| 1005\x092.0\x09fact/1001\x09
+| 10001\x093.50\x09loc\x09\x09
+| 10101\x093.3\x09loc\x09\x09
+| 10102\x093.3\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_swear adds to unit lists
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_swear: adding [1003] to player [1001]
+	check_swear: adding [1004] to player [1001]
+	check_swear: adding [1006] to player [1007]
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 204 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 1003 1004 1005 
+| 
+| 1002 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1001
+| 
+| 1003 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1001
+| 
+| 1004 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1003
+| 
+| 1005 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1001
+| 
+f 644 75 lib/fact/1007
+| 1007 player pl_regular
+| PL
+|  un 1006 
+| 
+| 1006 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1007
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 51 lib/loc
+| 10001 loc region
+| LI
+|  hl 1002 1003 1004 1005 1006 
+| 
+f 644 347 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09
+| 1002\x092.0\x09fact/1001\x09
+| 1003\x092.0\x09fact/1001\x09
+| 1004\x092.0\x09fact/1001\x09
+| 1005\x092.0\x09fact/1001\x09
+| 1006\x092.0\x09fact/1007\x09
+| 1007\x091.49\x09fact/1007\x09
+| 10001\x093.50\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_swear removes from unit lists
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_swear: adding [1002] to player [1007]
+	check_swear: adding [1003] to player [1007]
+	check_swear: removing [1002] from player list of [1001]
+	check_swear: removing [1003] from player list of [1001]
+	check_swear: removing [10001] from player list of [1001]
+	check_swear: removing [1003] from player list of [1001]
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 118 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1004 1004 
+| 
+| 1004 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1001
+| 
+| 1004 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1001
+| 
+f 644 118 lib/fact/1007
+| 1007 player pl_regular
+| PL
+|  un 1002 1003 
+| 
+| 1002 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1007
+| 
+| 1003 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1007
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 41 lib/loc
+| 10001 loc region
+| LI
+|  hl 1002 1003 1004 
+| 
+f 644 307 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09
+| 1002\x092.0\x09fact/1007\x09
+| 1003\x092.0\x09fact/1007\x09
+| 1004\x092.0\x09fact/1001\x09
+| 1007\x091.49\x09fact/1007\x09
+| 10001\x093.50\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section a lord loop
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+assertion failure: olympia/swear.c (32): loop_check-- > 0
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 111 lib/misc
+| 1002 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1003
+| 
+| 1003 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1002
+| 
+| 10001 loc region
+| LI
+|  hl 1002 1003
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_indep swears units to the independent player
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_here: adding [1003] to here list of [1002]
+	check_indep: swearing unit [1002] to Indep~[100]
+	check_indep: swearing unit [1004] to Indep~[100]
+	check_indep: swearing unit [1005] to Indep~[100]
+	check_indep: swearing unit [1006] to Indep~[100]
+	check_indep: swearing unit [1007] to Indep~[100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 349 lib/fact/100
+| 100 player pl_npc
+| na Indep
+| PL
+|  un 1002 1004 1005 1006 1007 
+| 
+| 1002 char 0
+| LI
+|  wh 10101
+|  hl 1003 
+| CH
+|  lo 100
+| 
+| 1004 char 0
+| LI
+|  wh 10101
+| CH
+|  lo 100
+| 
+| 1005 char 0
+| LI
+|  wh 10101
+| CH
+|  lo 100
+| 
+| 1006 char 0
+| LI
+|  wh 10101
+| CH
+|  lo 100
+| CO
+|  li study 600
+|  ar 0 0 0 0 0 0 0 0
+|  cs 1
+|  pr 2
+| 
+| 1007 char 0
+| LI
+|  wh 10101
+| CH
+|  lo 100
+| CO
+|  li move north
+|  ar 0 0 0 0 0 0 0 0
+|  cs 2
+| 
+f 644 24 lib/fact/1001
+| 1001 player pl_regular
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 92 lib/loc
+| 10001 loc region
+| LI
+|  hl 10101 
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+|  hl 1002 1004 1005 1006 1007 
+| 
+f 644 343 lib/master
+| 100\x091.52\x09fact/100\x09Indep
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09
+| 1002\x092.0\x09fact/100\x09
+| 1003\x092.0\x09fact/100\x09
+| 1004\x092.0\x09fact/100\x09
+| 1005\x092.0\x09fact/100\x09
+| 1006\x092.0\x09fact/100\x09
+| 1007\x092.0\x09fact/100\x09
+| 10001\x093.50\x09loc\x09\x09
+| 10101\x093.3\x09loc\x09\x09
+f 644 49 lib/misc
+| 1003 char 0
+| LI
+|  wh 1002
+| CH
+|  lo 1002
+|  lk 2
+|  lr 7
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_indep creates the independent player first
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_indep: swearing unit [1002] to Independent player~[100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 91 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| PL
+|  un 1002 
+| 
+| 1002 char 0
+| LI
+|  wh 10101
+| CH
+|  lo 100
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 72 lib/loc
+| 10001 loc region
+| LI
+|  hl 10101 
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+|  hl 1002 
+| 
+f 644 240 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1002\x092.0\x09fact/100\x09
+| 10001\x093.50\x09loc\x09\x09
+| 10101\x093.3\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_indep on a unit whose command is in error
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_indep: swearing unit [1002] to Independent player~[100]
+assertion failure: olympia/input.c (739): FALSE
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 120 lib/misc
+| 1002 char 0
+| LI
+|  wh 10101
+| CO
+|  li move north
+|  cs 3
+| 
+| 10001 loc region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+|  hl 1002
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_indep on a unit that is nowhere
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_indep: swearing unit [1002] to Independent player~[100]
+subkind is 0
+assertion failure: olympia/u.c (386): FALSE
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 13 lib/misc
+| 1002 char 0
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_indep on a unit in a region
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_indep: swearing unit [1002] to Independent player~[100]
+subkind is 0
+assertion failure: olympia/u.c (386): FALSE
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 56 lib/misc
+| 1002 char 0
+| LI
+|  wh 10001
+| 
+| 10001 loc region
+| LI
+|  hl 1002
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_nowhere
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_here: adding [2002] to here list of [10001]
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+	warning: unit [1003] is nowhere
+	warning: loc [2001] is nowhere
+	warning: loc [ab01] is nowhere
+	warning: loc [ab02] is nowhere
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 62 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1003 
+| 
+| 1003 char 0
+| CH
+|  lo 1001
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 64 lib/loc
+| 10001 loc region
+| LI
+|  hl 2002 
+| 
+| 10101 loc plain
+| 
+| 10102 loc city
+| 
+f 644 313 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09
+| 1003\x092.0\x09fact/1001\x09
+| 2001\x099.30\x09ship\x09\x09
+| 2002\x099.31\x09ship\x09\x09
+| 10001\x093.50\x09loc\x09\x09
+| 10101\x093.3\x09loc\x09\x09
+| 10102\x093.14\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 52 lib/ship
+| 2001 ship galley
+| 
+| 2002 ship roundship
+| LI
+|  wh 10001
+| 
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_nowhere on a ship that is a raft
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+subkind is 66
+assertion failure: olympia/u.c (386): FALSE
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 59 lib/misc
+| 2001 ship raft
+| LI
+|  wh 10001
+| 
+| 10001 loc region
+| LI
+|  hl 2001
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_skills
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+	warning: orphaned subskill [9001]
+	warning: School one~[600] offers 77, but 77 is in school 77
+	warning: School one~[600] offers 620, but 620 is in school 601
+	warning: both School two~[601] and School one~[600] offer skill 610
+	warning: School two~[601] offers 610, but 610 is in school 600
+	warning: learn time of <no subkind>~[650] is 0
+	warning: learn time of <no subkind>~[651] is 0
+	warning: non-offered skill Lost skill~[630]
+	warning: non-offered skill <no subkind>~[9002]
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 19 lib/item
+| 77 item 0
+| na Ring
+| 
+f 644 0 lib/loc
+f 644 404 lib/master
+| 77\x094.0\x09item\x09\x09Ring
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 600\x095.0\x09skill\x09\x09School one
+| 601\x095.0\x09skill\x09\x09School two
+| 610\x095.0\x09skill\x09\x09
+| 620\x095.0\x09skill\x09\x09
+| 621\x095.0\x09skill\x09\x09
+| 630\x095.0\x09skill\x09\x09Lost skill
+| 650\x095.0\x09skill\x09\x09
+| 651\x095.0\x09skill\x09\x09
+| 9001\x095.0\x09skill\x09\x09Orphan
+| 9002\x095.0\x09skill\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 343 lib/skill
+| 600 skill 0
+| na School one
+| SK
+|  tl 7
+|  of 610 77 
+|  re 620 
+| 
+| 601 skill 0
+| na School two
+| SK
+|  tl 7
+|  of 610 621 
+| 
+| 610 skill 0
+| SK
+|  tl 14
+|  rs 600
+| 
+| 620 skill 0
+| SK
+|  tl 14
+|  rs 621
+| 
+| 621 skill 0
+| SK
+|  tl 14
+|  rs 601
+| 
+| 630 skill 0
+| na Lost skill
+| SK
+|  tl 14
+|  rs 600
+| 
+| 650 skill 0
+| 
+| 651 skill 0
+| SK
+|  tl 0
+| 
+| 9001 skill 0
+| na Orphan
+| SK
+|  tl 3
+| 
+| 9002 skill 0
+| SK
+|  tl 3
+|  rs 600
+| 
+f 644 0 lib/unform
+section check_skills on a loop of required skills
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+assertion failure: olympia/use.c (1182): count++ < 1000
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 64 lib/misc
+| 9001 skill 0
+| SK
+|  tl 3
+|  rs 9002
+| 
+| 9002 skill 0
+| SK
+|  tl 3
+|  rs 9001
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_item_counts
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+	<no subkind>~[1002] has non-item <no subkind>~[1003]
+	unique item Ring~[77]: whohas=<no subkind>~[1003], actual=<no subkind>~[1002]
+	<no subkind>~[1002] has qty 3 of unique item Crown~[78]
+	unique item <no subkind>~[80]: whohas=Sword~[76], actual=<no subkind>~[1003]
+	unique item Ring~[77]: whohas=<no subkind>~[1002], actual=Region~[aa01]
+	unique item Ring~[77] count 2
+	unique item Crown~[78] count 3
+	unique item <no subkind>~[79] count 0
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 160 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 1003 
+| 
+| 1002 char 0
+| il\x091003 1 \x5c
+| \x0976 5 \x5c
+| \x0977 1 \x5c
+| \x0978 3
+| LI
+|  wh 10001
+| CH
+|  lo 1001
+| 
+| 1003 char 0
+| il\x0980 1
+| LI
+|  wh 10001
+| CH
+|  lo 1001
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 130 lib/item
+| 76 item 0
+| na Sword
+| 
+| 77 item 0
+| na Ring
+| IT
+|  un 10001
+| 
+| 78 item 0
+| na Crown
+| IT
+|  un 1002
+| 
+| 79 item 0
+| IT
+|  un 1002
+| 
+| 80 item 0
+| IT
+|  un 1003
+| 
+f 644 44 lib/loc
+| 10001 loc region
+| il\x0977 1
+| LI
+|  hl 1002 1003 
+| 
+f 644 350 lib/master
+| 76\x094.0\x09item\x09\x09Sword
+| 77\x094.0\x09item\x09\x09Ring
+| 78\x094.0\x09item\x09\x09Crown
+| 79\x094.0\x09item\x09\x09
+| 80\x094.0\x09item\x09\x09
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09
+| 1002\x092.0\x09fact/1001\x09
+| 1003\x092.0\x09fact/1001\x09
+| 10001\x093.50\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_loc_name_lengths
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_here: adding [2001] to here list of [10001]
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+	warning: Abcdefghijklmnopqrstuvwxyz~[aa02] name too long
+	warning: Café abcdefghijklmnopqrstu~[aa03] name too long
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 175 lib/loc
+| 10001 loc region
+| na Abcdefghijklmnopqrstuvwxy
+| LI
+|  hl 2001 
+| 
+| 10002 loc region
+| na Abcdefghijklmnopqrstuvwxyz
+| 
+| 10003 loc region
+| na Caf\xc3\xa9 abcdefghijklmnopqrstu
+| 
+| 10004 loc region
+| 
+f 644 379 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 2001\x099.30\x09ship\x09\x09A ship with a long name, too
+| 10001\x093.50\x09loc\x09\x09Abcdefghijklmnopqrstuvwxy
+| 10002\x093.50\x09loc\x09\x09Abcdefghijklmnopqrstuvwxyz
+| 10003\x093.50\x09loc\x09\x09Caf\xc3\xa9 abcdefghijklmnopqrstu
+| 10004\x093.50\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 63 lib/ship
+| 2001 ship galley
+| na A ship with a long name, too
+| LI
+|  wh 10001
+| 
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_moving
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: swearing unit [1009] to Indep~[100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+	<no subkind>~[1002] moving but no command
+	<no subkind>~[1005] moving but no command
+	<no subkind>~[1008] moving disagrees with leader
+	<no subkind>~[1009] moving disagrees with leader
+	<no subkind>~[1010] moving disagrees with leader
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 83 lib/fact/100
+| 100 player pl_npc
+| na Indep
+| PL
+|  un 1009 
+| 
+| 1009 char 0
+| LI
+|  wh 1007
+| CH
+|  lo 100
+|  mo 7
+| 
+f 644 569 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 1003 1004 1005 1006 1007 1008 1010 1011 
+| 
+| 1002 char 0
+| LI
+|  wh 10101
+|  hl 1003 
+| CH
+|  lo 1001
+| 
+| 1003 char 0
+| LI
+|  wh 1002
+|  hl 1004 
+| CH
+|  lo 1001
+| 
+| 1004 char 0
+| LI
+|  wh 1003
+| CH
+|  lo 1001
+| 
+| 1005 char 0
+| LI
+|  wh 10101
+|  hl 1006 
+| CH
+|  lo 1001
+| CO
+|  li move north
+|  ar 0 0 0 0 0 0 0 0
+|  cs 1
+| 
+| 1006 char 0
+| LI
+|  wh 1005
+| CH
+|  lo 1001
+| 
+| 1007 char 0
+| LI
+|  wh 10101
+|  hl 1008 1009 
+| CH
+|  lo 1001
+|  mo 7
+| CO
+|  li move north
+|  ar 0 0 0 0 0 0 0 0
+|  cs 2
+| 
+| 1008 char 0
+| LI
+|  wh 1007
+| CH
+|  lo 1001
+|  mo 7
+| 
+| 1010 char 0
+| LI
+|  wh 1011
+| CH
+|  lo 1001
+| 
+| 1011 char 0
+| LI
+|  wh 10101
+|  hl 1010 
+| CH
+|  lo 1001
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 87 lib/loc
+| 10001 loc region
+| LI
+|  hl 10101 
+| 
+| 10101 loc plain
+| LI
+|  wh 10001
+|  hl 1002 1005 1007 1011 
+| 
+f 644 428 lib/master
+| 100\x091.52\x09fact/100\x09Indep
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09
+| 1002\x092.0\x09fact/1001\x09
+| 1003\x092.0\x09fact/1001\x09
+| 1004\x092.0\x09fact/1001\x09
+| 1005\x092.0\x09fact/1001\x09
+| 1006\x092.0\x09fact/1001\x09
+| 1007\x092.0\x09fact/1001\x09
+| 1008\x092.0\x09fact/1001\x09
+| 1009\x092.0\x09fact/100\x09
+| 1010\x092.0\x09fact/1001\x09
+| 1011\x092.0\x09fact/1001\x09
+| 10001\x093.50\x09loc\x09\x09
+| 10101\x093.3\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_moving on a stack loop
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+assertion failure: olympia/stack.c (104): count++ < 1000
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 133 lib/misc
+| 1001 player pl_regular
+| PL
+|  un 1002 1003
+| 
+| 1002 char 0
+| LI
+|  wh 1003
+|  hl 1003
+| CH
+|  lo 1001
+| 
+| 1003 char 0
+| LI
+|  wh 1002
+|  hl 1002
+| CH
+|  lo 1001
+| 
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section check_prisoner
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+	warning: unit [1005] is nowhere
+	<no subkind>~[1002] prisoner but unstacked
+	<no subkind>~[1005] prisoner but unstacked
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 206 lib/fact/1001
+| 1001 player pl_regular
+| PL
+|  un 1002 1003 1004 1005 
+| 
+| 1002 char 0
+| LI
+|  wh 10001
+| CH
+|  lo 1001
+| 
+| 1003 char 0
+| LI
+|  wh 1004
+| CH
+|  lo 1001
+|  pr 1
+| 
+| 1004 char 0
+| LI
+|  wh 10001
+|  hl 1003 
+| CH
+|  lo 1001
+| 
+| 1005 char 0
+| CH
+|  lo 1001
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 36 lib/loc
+| 10001 loc region
+| LI
+|  hl 1002 1004 
+| 
+f 644 306 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 1001\x091.49\x09fact/1001\x09
+| 1002\x092.0\x09fact/1001\x09
+| 1003\x092.0\x09fact/1001\x09
+| 1004\x092.0\x09fact/1001\x09
+| 1005\x092.0\x09fact/1001\x09
+| 10001\x093.50\x09loc\x09\x09
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section garrison_magic allocated
+> mkdir lib
+> mkdir lib/fact
+> load
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> check
+check_db()
+	check_indep: creating independent player [100]
+	check_gm: creating gm player [200]
+	check_skill_player: creating skill player [202]
+	check_eat_player: creating eat player [203]
+	check_npc_player: creating npc player [206]
+	check_garr_player: creating garrison player [207]
+	warning: Garrison should not be allocated,
+		reserved for garrison_magic
+> save
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 41 lib/fact/100
+| 100 player pl_npc
+| na Independent player
+| 
+f 644 36 lib/fact/200
+| 200 player pl_system
+| na Gamemaster
+| 
+f 644 36 lib/fact/202
+| 202 player pl_system
+| na Skill list
+| 
+f 644 37 lib/fact/203
+| 203 player pl_system
+| na Order eater
+| 
+f 644 37 lib/fact/206
+| 206 player pl_silent
+| na NPC control
+| 
+f 644 40 lib/fact/207
+| 207 player pl_silent
+| na Garrison units
+| 
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 29 lib/loc
+| 999 loc region
+| na Somewhere
+| 
+f 644 212 lib/master
+| 100\x091.52\x09fact/100\x09Independent player
+| 200\x091.48\x09fact/200\x09Gamemaster
+| 202\x091.48\x09fact/202\x09Skill list
+| 203\x091.48\x09fact/203\x09Order eater
+| 206\x091.62\x09fact/206\x09NPC control
+| 207\x091.62\x09fact/207\x09Garrison units
+| 999\x093.50\x09loc\x09\x09Somewhere
+f 644 0 lib/misc
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform

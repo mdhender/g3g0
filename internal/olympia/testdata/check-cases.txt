@@ -1,0 +1,1183 @@
+# Differential cases for G3's check_db() (olympia/check.c), at G3
+# 47535543d83fbc5649d54b63b49e578f2b11ab1c.
+#
+# tools/check-compat/run.sh feeds this file to a C driver built from the
+# pinned sources and records its output in check-c-output.txt;
+# TestCheckMatchesC feeds it to the Go port and requires the same output.
+#
+# Each "section NAME" line starts a section. Every section runs in a fresh
+# process (a fresh world, after glob_init()) in a fresh, empty directory,
+# with umask 022, so a section may end in a failed assertion. libdir is
+# "lib". Each section writes a small database into lib/misc (the other box
+# files are empty, and there is no master), loads it with
+# the box-file passes, runs check_db() and writes the database back out,
+# so that the tree run.sh lists after "exit STATUS" shows every change
+# check_db() made that the database keeps. stderr goes to the same place
+# as stdout, in order.
+#
+# One operation per line; a line that starts with '#' is a comment, and
+# blank lines are skipped. TEXT is the rest of the line after one space,
+# with \xHH and \\ escapes; with no space it is empty. NAME is one word.
+# Every operation but put and putl is echoed, after "> ".
+#
+#   put NAME TEXT    append TEXT to file NAME
+#   putl NAME TEXT   append TEXT and a newline to file NAME
+#   mkdir TEXT       mkdir(TEXT, 0755)
+#   load             what load_db() runs of the box-file passes: fast_scan(),
+#                    or scan_all_boxes() if it fails, then read_all_boxes()
+#   check            check_db()
+#   save             what save_db() runs of the writers: write_all_boxes()
+#                    and write_master()
+#
+# The special players are 100 (independent), 200 (gm), 202 (skill), 203
+# (eat), 206 (npc) and 207 (garrison); garrison_magic is 999.
+
+section a consistent game
+# Every special player, a player with one noble in a province, a school
+# with one skill, and a unique item where its who_has says. check_db()
+# prints only its stage line, and nothing changes.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Independent player
+putl lib/misc
+putl lib/misc 200 player pl_system
+putl lib/misc na Gamemaster
+putl lib/misc
+putl lib/misc 202 player pl_system
+putl lib/misc na Skill list
+putl lib/misc
+putl lib/misc 203 player pl_system
+putl lib/misc na Order eater
+putl lib/misc
+putl lib/misc 206 player pl_silent
+putl lib/misc na NPC control
+putl lib/misc
+putl lib/misc 207 player pl_silent
+putl lib/misc na Garrison units
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc na Player one
+putl lib/misc PL
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc il\x0977 1
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+putl lib/misc 600 skill 0
+putl lib/misc na School
+putl lib/misc SK
+putl lib/misc  tl 7
+putl lib/misc  of 610
+putl lib/misc
+putl lib/misc 610 skill 0
+putl lib/misc na Skill
+putl lib/misc SK
+putl lib/misc  tl 14
+putl lib/misc  rs 600
+putl lib/misc
+putl lib/misc 77 item 0
+putl lib/misc na Ring
+putl lib/misc IT
+putl lib/misc  un 1002
+putl lib/misc
+load
+check
+save
+
+section the special players are missing
+# check_db() creates each, with its subkind, and names it.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc
+load
+check
+save
+
+section the special players have no names
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_regular
+putl lib/misc
+putl lib/misc 200 player pl_regular
+putl lib/misc
+putl lib/misc 202 player pl_regular
+putl lib/misc
+putl lib/misc 203 player pl_regular
+putl lib/misc
+putl lib/misc 206 player pl_regular
+putl lib/misc
+putl lib/misc 207 player pl_regular
+putl lib/misc
+load
+check
+save
+
+section the independent player is not a player
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 100
+putl lib/misc
+load
+check
+save
+
+section the gm player is not a player
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 200 loc region
+putl lib/misc
+load
+check
+save
+
+section the skill player is not a player
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 202 gate 0
+putl lib/misc
+load
+check
+save
+
+section the eat player is not a player
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 203 skill 0
+putl lib/misc SK
+putl lib/misc  tl 1
+putl lib/misc
+load
+check
+save
+
+section the npc player is not a player
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 206 item 0
+putl lib/misc
+load
+check
+save
+
+section the garrison player is not a player
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 207 ship galley
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 207
+putl lib/misc
+load
+check
+save
+
+section check_here adds to here lists
+# Units, a location and a ship that are not in their location's here list
+# are added at its end, in box number order.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1001 player pl_regular
+putl lib/misc PL
+putl lib/misc  un 1002 1003 1004
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1004 char 0
+putl lib/misc LI
+putl lib/misc  wh 1002
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1003 2001
+putl lib/misc
+putl lib/misc 2001 ship galley
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc
+load
+check
+save
+
+section check_here removes from here lists
+# 10101 lists 1003, which is in 10102, and 1005 twice, which is nowhere;
+# 10102 lists 1002 twice and 1003, which are both its. The first loop
+# adds 1003 to 10102 and nothing else; the second removes 1003 from
+# 10101, and 1005 there, both copies at once, so the loop's second visit
+# of 1005 fails remove_from_here_list()'s assertion.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1001 player pl_regular
+putl lib/misc PL
+putl lib/misc  un 1002 1003 1005
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10102
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc LI
+putl lib/misc  wh 10102
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1005 char 0
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1003 1005 1002 1005
+putl lib/misc
+putl lib/misc 10102 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002 1002
+putl lib/misc
+load
+check
+save
+
+section check_here removes from here lists, once each
+# As above, with 1005 listed once. A box that lists itself is removed.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1001 player pl_regular
+putl lib/misc PL
+putl lib/misc  un 1002 1003 1005
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10102
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc LI
+putl lib/misc  wh 10102
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1005 char 0
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102 10001
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1003 1005 1002
+putl lib/misc
+putl lib/misc 10102 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002 1002
+putl lib/misc
+load
+check
+save
+
+section check_swear adds to unit lists
+# 1003 and 1004 are 1001's (1004 through 1003) but not in its list; each
+# is added and the list sorted. 1006 is sworn to 1007, another player,
+# whose list is empty.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1001 player pl_regular
+putl lib/misc PL
+putl lib/misc  un 1005 1002
+putl lib/misc
+putl lib/misc 1007 player pl_regular
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1004 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1003
+putl lib/misc
+putl lib/misc 1005 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1006 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1007
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 1002 1003 1004 1005 1006
+putl lib/misc
+load
+check
+save
+
+section check_swear removes from unit lists
+# 1001 lists 1002 (1007's), 1003 twice (1007's), its own 1004 twice, and
+# a location. Each wrong entry is reported, and removed with every copy
+# of it, and the list's second 1003 is reported again. The first loop
+# adds 1002 and 1003 to 1007.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1001 player pl_regular
+putl lib/misc PL
+putl lib/misc  un 1002 1003 1004 10001 1003 1004
+putl lib/misc
+putl lib/misc 1007 player pl_regular
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1007
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1007
+putl lib/misc
+putl lib/misc 1004 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 1002 1003 1004
+putl lib/misc
+load
+check
+save
+
+section a lord loop
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1003
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1002
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 1002 1003
+putl lib/misc
+load
+check
+save
+
+section check_indep swears units to the independent player
+# 1002 has no lord, 1003 is sworn to 1002, and 1004 has no CH. Each is
+# sworn to 100 with loyalty unsworn 0: its prev_lord becomes 0, its
+# commands are loaded, and its location is touched. 1003 then belongs to
+# 100, through 1002, but check_swear() has run, so it is not in 100's
+# list. 1005 is sworn to a location. 1006 has a command that is loading,
+# and 1007 one that is running.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 100 player pl_npc
+putl lib/misc na Indep
+putl lib/misc
+putl lib/misc 1001 player pl_regular
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  pl 1001
+putl lib/misc  lk 3
+putl lib/misc  lr 50
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc LI
+putl lib/misc  wh 1002
+putl lib/misc CH
+putl lib/misc  lo 1002
+putl lib/misc  lk 2
+putl lib/misc  lr 7
+putl lib/misc
+putl lib/misc 1004 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc
+putl lib/misc 1005 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CH
+putl lib/misc  lo 10101
+putl lib/misc
+putl lib/misc 1006 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CO
+putl lib/misc  li study 600
+putl lib/misc  cs 1
+putl lib/misc  pr 2
+putl lib/misc
+putl lib/misc 1007 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CO
+putl lib/misc  li move north
+putl lib/misc  cs 2
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002 1004 1005 1006 1007
+putl lib/misc
+load
+check
+save
+
+section check_indep creates the independent player first
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+load
+check
+save
+
+section check_indep on a unit whose command is in error
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc CO
+putl lib/misc  li move north
+putl lib/misc  cs 3
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002
+putl lib/misc
+load
+check
+save
+
+section check_indep on a unit that is nowhere
+# touch_loc() fails loc_depth()'s assertion (G3 #330).
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1002 char 0
+putl lib/misc
+load
+check
+save
+
+section check_indep on a unit in a region
+# viewloc() steps out of the region to 0, and loc_depth(0) fails its
+# assertion, as for a unit that is nowhere.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 1002
+putl lib/misc
+load
+check
+save
+
+section check_nowhere
+# 1003 belongs to a player and is nowhere. Locations and ships below a
+# region with no location are reported, ships first; a region is not.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1001 player pl_regular
+putl lib/misc PL
+putl lib/misc  un 1003
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc
+putl lib/misc 10102 loc city
+putl lib/misc
+putl lib/misc 2001 ship galley
+putl lib/misc
+putl lib/misc 2002 ship roundship
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+load
+check
+save
+
+section check_nowhere on a ship that is a raft
+# loc_depth() does not know rafts.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 2001 ship raft
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 2001
+putl lib/misc
+load
+check
+save
+
+section check_skills
+# 9001 is a subskill with no school. 650 has no SK and 651 a learn time
+# of 0. 610 is offered by 600 and 601, and 620, which 600 researches, is
+# in 601's school. 600 also offers an item. 630 is in 600's school but
+# not offered.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 77 item 0
+putl lib/misc na Ring
+putl lib/misc
+putl lib/misc 600 skill 0
+putl lib/misc na School one
+putl lib/misc SK
+putl lib/misc  tl 7
+putl lib/misc  of 610 77
+putl lib/misc  re 620
+putl lib/misc
+putl lib/misc 601 skill 0
+putl lib/misc na School two
+putl lib/misc SK
+putl lib/misc  tl 7
+putl lib/misc  of 610 621
+putl lib/misc
+putl lib/misc 610 skill 0
+putl lib/misc SK
+putl lib/misc  tl 14
+putl lib/misc  rs 600
+putl lib/misc
+putl lib/misc 620 skill 0
+putl lib/misc SK
+putl lib/misc  tl 14
+putl lib/misc  rs 621
+putl lib/misc
+putl lib/misc 621 skill 0
+putl lib/misc SK
+putl lib/misc  tl 14
+putl lib/misc  rs 601
+putl lib/misc
+putl lib/misc 630 skill 0
+putl lib/misc na Lost skill
+putl lib/misc SK
+putl lib/misc  tl 14
+putl lib/misc  rs 600
+putl lib/misc
+putl lib/misc 650 skill 0
+putl lib/misc
+putl lib/misc 651 skill 0
+putl lib/misc SK
+putl lib/misc  tl 0
+putl lib/misc
+putl lib/misc 9001 skill 0
+putl lib/misc na Orphan
+putl lib/misc SK
+putl lib/misc  tl 3
+putl lib/misc
+putl lib/misc 9002 skill 0
+putl lib/misc SK
+putl lib/misc  tl 3
+putl lib/misc  rs 600
+putl lib/misc
+load
+check
+save
+
+section check_skills on a loop of required skills
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 9001 skill 0
+putl lib/misc SK
+putl lib/misc  tl 3
+putl lib/misc  rs 9002
+putl lib/misc
+putl lib/misc 9002 skill 0
+putl lib/misc SK
+putl lib/misc  tl 3
+putl lib/misc  rs 9001
+putl lib/misc
+load
+check
+save
+
+section check_item_counts
+# 1002 holds a unit, a non-unique item, unique item 77 (whose who_has
+# says 1003), 3 of unique item 78, and 0 and -1 of unique item 79, which
+# no one holds. Location 10001 also holds 77, and 1003 holds an item
+# whose who_has is another item.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1001 player pl_regular
+putl lib/misc PL
+putl lib/misc  un 1002 1003
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc il\x091003 1 \\
+putl lib/misc \x0976 5 \\
+putl lib/misc \x0977 1 \\
+putl lib/misc \x0978 3 \\
+putl lib/misc \x0979 0 \\
+putl lib/misc \x0979 -1
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc il\x0980 1
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc il\x0977 1
+putl lib/misc LI
+putl lib/misc  hl 1002 1003
+putl lib/misc
+putl lib/misc 76 item 0
+putl lib/misc na Sword
+putl lib/misc
+putl lib/misc 77 item 0
+putl lib/misc na Ring
+putl lib/misc IT
+putl lib/misc  un 1003
+putl lib/misc
+putl lib/misc 78 item 0
+putl lib/misc na Crown
+putl lib/misc IT
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 79 item 0
+putl lib/misc IT
+putl lib/misc  un 1002
+putl lib/misc
+putl lib/misc 80 item 0
+putl lib/misc IT
+putl lib/misc  un 76
+putl lib/misc
+load
+check
+save
+
+section check_loc_name_lengths
+# Names of 25 and 26 bytes, high-bit bytes, a location with no name, and
+# a ship, which is not checked.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 10001 loc region
+putl lib/misc na Abcdefghijklmnopqrstuvwxy
+putl lib/misc
+putl lib/misc 10002 loc region
+putl lib/misc na Abcdefghijklmnopqrstuvwxyz
+putl lib/misc
+putl lib/misc 10003 loc region
+putl lib/misc na Caf\xc3\xa9 abcdefghijklmnopqrstu
+putl lib/misc
+putl lib/misc 10004 loc region
+putl lib/misc
+putl lib/misc 2001 ship galley
+putl lib/misc na A ship with a long name, too
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+load
+check
+save
+
+section check_moving
+# 1002 leads a moving stack (1003, and 1004 under it) with no command;
+# 1005 leads one with a command that is loading; 1007 one with a command
+# that is running, and its unit 1008 is not moving, nor is 1009, which
+# has no CH until check_indep() swears it to 100. 1010 is moving under
+# 1011, which is not.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1001 player pl_regular
+putl lib/misc PL
+putl lib/misc  un 1002 1003 1004 1005 1006 1007 1008 1010 1011
+putl lib/misc
+putl lib/misc 100 player pl_npc
+putl lib/misc na Indep
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc  hl 1003
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc  mo 5
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc LI
+putl lib/misc  wh 1002
+putl lib/misc  hl 1004
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc  mo 5
+putl lib/misc
+putl lib/misc 1004 char 0
+putl lib/misc LI
+putl lib/misc  wh 1003
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc  mo 4
+putl lib/misc
+putl lib/misc 1005 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc  hl 1006
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc  mo 6
+putl lib/misc CO
+putl lib/misc  li move north
+putl lib/misc  cs 1
+putl lib/misc
+putl lib/misc 1006 char 0
+putl lib/misc LI
+putl lib/misc  wh 1005
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc  mo 6
+putl lib/misc
+putl lib/misc 1007 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc  hl 1008 1009
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc  mo 7
+putl lib/misc CO
+putl lib/misc  li move north
+putl lib/misc  cs 2
+putl lib/misc
+putl lib/misc 1008 char 0
+putl lib/misc LI
+putl lib/misc  wh 1007
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1009 char 0
+putl lib/misc LI
+putl lib/misc  wh 1007
+putl lib/misc
+putl lib/misc 1010 char 0
+putl lib/misc LI
+putl lib/misc  wh 1011
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc  mo 8
+putl lib/misc
+putl lib/misc 1011 char 0
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc  hl 1010
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1002 1005 1007 1011
+putl lib/misc
+load
+check
+save
+
+section check_moving on a stack loop
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1001 player pl_regular
+putl lib/misc PL
+putl lib/misc  un 1002 1003
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 1003
+putl lib/misc  hl 1003
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc LI
+putl lib/misc  wh 1002
+putl lib/misc  hl 1002
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+load
+check
+save
+
+section check_prisoner
+# 1002 is a prisoner in a location, 1003 one stacked under 1004, and 1005
+# one that is nowhere.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 1001 player pl_regular
+putl lib/misc PL
+putl lib/misc  un 1002 1003 1004 1005
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc  pr 1
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc LI
+putl lib/misc  wh 1004
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc  pr 1
+putl lib/misc
+putl lib/misc 1004 char 0
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1003
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc
+putl lib/misc 1005 char 0
+putl lib/misc CH
+putl lib/misc  lo 1001
+putl lib/misc  pr 2
+putl lib/misc
+putl lib/misc 10001 loc region
+putl lib/misc LI
+putl lib/misc  hl 1002 1004
+putl lib/misc
+load
+check
+save
+
+section garrison_magic allocated
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/item
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+putl lib/misc 999 loc region
+putl lib/misc na Somewhere
+putl lib/misc
+load
+check
+save
