@@ -120,3 +120,37 @@ func TestPad(t *testing.T) {
 		t.Errorf("PadLeft = %q", got)
 	}
 }
+
+func TestGetopt(t *testing.T) {
+	type opt struct {
+		c   int
+		arg string
+	}
+	for _, tc := range []struct {
+		args []string
+		want []opt
+	}{
+		{[]string{"p", "-s", "5", "-b3"}, []opt{{'s', "5"}, {'b', "3"}}},
+		{[]string{"p", "foo", "-s", "5"}, nil}, // no permuting
+		{[]string{"p", "-s", "5", "foo", "-b", "1"}, []opt{{'s', "5"}}},
+		{[]string{"p", "--", "-s", "5"}, nil},
+		{[]string{"p", "-", "-s", "5"}, nil},
+		{[]string{"p", "--s", "5"}, []opt{{'?', ""}, {'s', "5"}}}, // "-" is unknown; the cluster goes on
+		{[]string{"p", "-x"}, []opt{{'?', ""}}},
+		{[]string{"p", "-:"}, []opt{{'?', ""}}},
+		{[]string{"p", "-s"}, []opt{{'?', ""}}},
+		{[]string{"p", "-b1c1"}, []opt{{'b', "1c1"}}},
+		{[]string{"p", "-s", "-b"}, []opt{{'s', "-b"}}},
+	} {
+		var stderr strings.Builder
+		g := NewGetopt(tc.args, "b:c:s:", &stderr)
+		g.Opterr = false
+		var got []opt
+		for c := g.Next(); c != -1; c = g.Next() {
+			got = append(got, opt{c, g.Optarg})
+		}
+		if !reflect.DeepEqual(got, tc.want) || stderr.Len() != 0 {
+			t.Errorf("getopt %q = %v (stderr %q), want %v", tc.args, got, stderr.String(), tc.want)
+		}
+	}
+}

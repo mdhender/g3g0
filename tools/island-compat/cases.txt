@@ -1,0 +1,153 @@
+# Differential test cases for tools/island-compat/run.sh.
+#
+# Fields, separated by whitespace (stages is the rest of the line):
+#   label   unique name; also the run directory
+#   expect  ok    every reference stage must exit 0
+#           fail  the last reference stage must exit nonzero
+#   group   cases in the same group must all produce different output, so a
+#           port that ignored the seed cannot pass; "-" for none
+#   map     the input map (see make_map in run.sh):
+#             fx:NAME           tests/island/fixtures/NAME
+#             file:NAME         maps/NAME
+#             gen:W:H:XX[:crlf] H rows of W copies of byte 0xXX
+#             genesis:ARGS      the Map genesis-g3 writes for ARGS (commas
+#                               stand for blanks)
+#   seed    the starting randseed: fx:NAME, hex:BYTES (any length), none,
+#           or dir (randseed is a directory)
+#   setup   "-", or ro (randseed is read-only)
+#   stages  island argument vectors after argv[0], separated by '|'; each
+#           is split as bash words. Empty means one run with no arguments.
+#
+# Every case runs the C reference twice and the Go port twice, each in a fresh
+# directory with argv[0] set to island-g3.
+
+# --- defaults and distinct seeds -------------------------------------------
+default-a           ok    ocean40   fx:ocean-40.map     fx:seed-a   -
+default-b           ok    ocean40   fx:ocean-40.map     fx:seed-b   -
+default-c           ok    ocean40   fx:ocean-40.map     fx:seed-c   -
+default-1           ok    ocean40   fx:ocean-40.map     fx:seed-1   -
+default-zero        ok    ocean40   fx:ocean-40.map     hex:00000000000000000000000000000000   -
+default-ff          ok    ocean40   fx:ocean-40.map     hex:ffffffffffffffffffffffffffffffff   -
+default-mixed       ok    ocean40   fx:ocean-40.map     hex:0123456789abcdeffedcba9876543210   -
+default-text        ok    ocean40   fx:ocean-40.map     hex:736c61727469626172746661737421   -
+
+# --- seed files ------------------------------------------------------------
+seed-short          ok    -         fx:ocean-40.map     hex:0102030405   -
+seed-empty          ok    -         fx:ocean-40.map     hex:   -
+seed-long           ok    -         fx:ocean-40.map     hex:0123456789abcdeffedcba9876543210aabbccdd   -
+seed-missing        ok    -         fx:ocean-40.map     none        -
+seed-missing-chain  ok    -         fx:ocean-40.map     none        -     -s 20 | -s 20
+seed-directory      fail  -         fx:ocean-40.map     dir         -
+seed-read-only      fail  -         fx:ocean-40.map     fx:seed-a   ro    -s 10
+
+# --- sizes (-s, atoi) ------------------------------------------------------
+size-1              ok    -         fx:ocean-40.map     fx:seed-a   -     -s 1
+size-2              ok    -         fx:ocean-40.map     fx:seed-a   -     -s 2
+size-50             ok    -         fx:ocean-40.map     fx:seed-a   -     -s 50
+size-300            ok    -         fx:ocean-40.map     fx:seed-a   -     -s 300
+size-0              ok    -         fx:ocean-40.map     fx:seed-a   -     -s 0
+size-neg            ok    -         fx:ocean-40.map     fx:seed-a   -     -s -5
+size-neg-large      ok    -         fx:ocean-40.map     fx:seed-a   -     -s -2147483648
+size-blank          ok    -         fx:ocean-40.map     fx:seed-a   -     -s ' 7'
+size-junk           ok    -         fx:ocean-40.map     fx:seed-a   -     -s 7x
+size-none           ok    -         fx:ocean-40.map     fx:seed-a   -     -s x
+size-wrap           ok    -         fx:ocean-40.map     fx:seed-a   -     -s 4294967301
+size-saturate       ok    -         fx:ocean-40.map     fx:seed-a   -     -s 99999999999
+size-no-room        ok    -         fx:tiny-8.map       fx:seed-a   -     -s 100
+size-int-max-1      ok    -         fx:ocean-40.map     fx:seed-a   -     -s 2147483646
+size-int-max        fail  -         fx:ocean-40.map     fx:seed-a   -     -s 2147483647
+
+# --- border (-b) and shelf (-c) --------------------------------------------
+border-0            ok    -         fx:ocean-40.map     fx:seed-b   -     -b 0 -s 400
+border-1            ok    -         fx:ocean-40.map     fx:seed-b   -     -b 1 -s 400
+border-10           ok    -         fx:ocean-40.map     fx:seed-b   -     -b 10 -s 400
+border-19           ok    -         fx:ocean-40.map     fx:seed-b   -     -b 19 -s 400
+border-20           fail  -         fx:ocean-40.map     fx:seed-b   -     -b 20
+border-40           fail  -         fx:ocean-40.map     fx:seed-b   -     -b 40
+border-wide-15      fail  -         fx:wide-30x15.map   fx:seed-b   -     -b 15
+border-41           fail  -         fx:ocean-40.map     fx:seed-b   -     -b 41
+border-1000         fail  -         fx:ocean-40.map     fx:seed-b   -     -b 1000
+border-wide-7       ok    -         fx:wide-30x15.map   fx:seed-b   -     -b 7
+border-wide-8       fail  -         fx:wide-30x15.map   fx:seed-b   -     -b 8
+border-wide-16      fail  -         fx:wide-30x15.map   fx:seed-b   -     -b 16
+border-neg          ok    -         fx:ocean-40.map     fx:seed-b   -     -b -3 -s 400
+shelf-0             ok    -         fx:land-40.map      fx:seed-c   -     -c 0 -s 200
+shelf-1             ok    -         fx:land-40.map      fx:seed-c   -     -c 1 -s 200
+shelf-6             ok    -         fx:land-40.map      fx:seed-c   -     -c 6 -s 200
+shelf-8             ok    -         fx:land-40.map      fx:seed-c   -     -c 8
+shelf-neg           ok    -         fx:land-40.map      fx:seed-c   -     -c -1 -s 200
+shelf-all           fail  -         file:one-peak-8.map fx:seed-c   -     -c 8
+shelf-ocean-20      ok    -         fx:ocean-40.map     fx:seed-c   -     -c 20
+
+# --- maps with land --------------------------------------------------------
+land-40             ok    land40    fx:land-40.map      fx:seed-a   -
+land-40-b           ok    land40    fx:land-40.map      fx:seed-b   -
+land-40-c           ok    land40    fx:land-40.map      fx:seed-c   -
+all-land            fail  -         gen:20:20:70        fx:seed-a   -
+ocean-80            ok    -         gen:80:80:2e        fx:seed-a   -     -s 150
+genesis-40-default  fail  -         genesis:--seed,5,--size,40      fx:seed-a   -
+genesis-40          ok    genesis   genesis:--seed,5,--size,40      fx:seed-a   -     -b 0 -c 0
+genesis-40-b        ok    genesis   genesis:--seed,5,--size,40      fx:seed-b   -     -b 0 -c 0
+genesis-99          ok    genesis   genesis:--seed,1,--size,99      fx:seed-a   -
+genesis-defer       ok    genesis   genesis:-D,--seed,7,--size,60   fx:seed-c   -     -b 0 -c 0
+genesis-chain       ok    -         genesis:--seed,3,--size,30      fx:seed-a   -     -b 0 -c 0 -s 40 | -b 0 -c 0 -s 40 | -b 0 -c 0 | -b 0 -c 1
+
+# --- map shapes and glyphs -------------------------------------------------
+tiny                ok    -         fx:tiny-8.map       fx:seed-a   -
+one-cell            fail  -         gen:1:1:2e          fx:seed-a   -
+one-row             ok    -         gen:30:1:2e         fx:seed-a   -     -b 0
+one-column          ok    -         gen:1:30:2e         fx:seed-a   -     -b 0
+wide                ok    -         fx:wide-30x15.map   fx:seed-a   -
+ragged              ok    -         fx:ragged-20.map    fx:seed-a   -
+mixed-glyphs        ok    -         file:mixed-glyphs-24.map   fx:seed-a   -     -c 1
+glyph-semicolon     ok    -         gen:20:20:3b        fx:seed-a   -
+glyph-tilde         ok    -         gen:20:20:7e        fx:seed-a   -
+glyph-space         ok    -         gen:20:20:20        fx:seed-a   -
+glyph-quote         ok    -         gen:20:20:22        fx:seed-a   -
+glyph-apostrophe    ok    -         gen:20:20:27        fx:seed-a   -
+glyph-colon         ok    -         gen:20:20:3a        fx:seed-a   -
+glyph-comma         ok    -         gen:20:20:2c        fx:seed-a   -
+glyph-high-byte     fail  -         gen:20:20:e9        fx:seed-a   -
+crlf                ok    -         file:crlf-20.map    fx:seed-a   -
+crlf-gen            ok    -         gen:30:30:2e:crlf   fx:seed-b   -
+blank-lines         ok    -         file:blank-lines-20.map    fx:seed-a   -
+cr-only             ok    -         file:cr-only.map    fx:seed-a   -     -b 0
+nul-first           ok    -         file:nul-first-20.map      fx:seed-a   -     -s 3
+nul-middle          ok    -         file:nul-middle-20.map     fx:seed-a   -     -s 3
+nul-last            ok    -         file:nul-last-20.map       fx:seed-a   -     -s 3
+nul-after-skip      ok    -         file:nul-after-skip-20.map fx:seed-a   -     -s 3
+nul-only            fail  -         file:nul-only.map          fx:seed-a   -
+no-final-newline    ok    -         file:no-final-newline-20.map   fx:seed-a   -
+
+# --- input bounds and empty input ------------------------------------------
+max-map             ok    -         gen:119:120:2e      fx:seed-a   -     -s 500
+row-120             fail  -         gen:120:5:2e        fx:seed-a   -
+rows-121            fail  -         gen:20:121:2e       fx:seed-a   -
+line-250            fail  -         gen:250:5:2e        fx:seed-a   -
+empty               fail  -         file:empty.map      fx:seed-a   -
+blank-only          fail  -         file:blank-only.map fx:seed-a   -
+
+# --- chains ----------------------------------------------------------------
+chain-4             ok    -         fx:ocean-40.map     fx:seed-a   -     | | |
+chain-up            ok    -         fx:ocean-40.map     fx:seed-b   -     -s 30 | -s 60 | -s 90
+chain-down          ok    -         fx:ocean-40.map     fx:seed-b   -     -s 90 | -s 60 | -s 30
+chain-fill          ok    -         fx:tiny-8.map       fx:seed-c   -     -b 0 -c 0 | -b 0 -c 0 | -b 0 -c 0 | -b 0 -c 0
+chain-fail          fail  -         fx:ocean-40.map     fx:seed-a   -     -s 10 | -x
+
+# --- getopt(3) -------------------------------------------------------------
+opt-attached        ok    -         fx:ocean-40.map     fx:seed-a   -     -s5
+opt-cluster-arg     ok    -         fx:ocean-40.map     fx:seed-a   -     -b1c1 -s 5
+opt-repeated        ok    -         fx:ocean-40.map     fx:seed-a   -     -s 5 -s 9
+opt-dash-arg        ok    -         fx:ocean-40.map     fx:seed-a   -     -s -b
+opt-operand-first   ok    -         fx:ocean-40.map     fx:seed-a   -     foo -s 5
+opt-operand-last    ok    -         fx:ocean-40.map     fx:seed-a   -     -s 5 foo
+opt-double-dash     ok    -         fx:ocean-40.map     fx:seed-a   -     -- -s 5
+opt-lone-dash       ok    -         fx:ocean-40.map     fx:seed-a   -     - -s 5
+opt-empty-arg       ok    -         fx:ocean-40.map     fx:seed-a   -     '' -s 5
+opt-unknown         fail  -         fx:ocean-40.map     fx:seed-a   -     -x
+opt-unknown-after   fail  -         fx:ocean-40.map     fx:seed-a   -     -s 5 -x
+opt-colon           fail  -         fx:ocean-40.map     fx:seed-a   -     -:
+opt-long            fail  -         fx:ocean-40.map     fx:seed-a   -     --s 5
+opt-missing-arg     fail  -         fx:ocean-40.map     fx:seed-a   -     -s
+opt-missing-arg-b   fail  -         fx:ocean-40.map     fx:seed-a   -     -c 1 -b
+opt-help            fail  -         fx:ocean-40.map     fx:seed-a   -     -h

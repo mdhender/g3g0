@@ -10,11 +10,14 @@ import (
 	"strings"
 )
 
-// This file reproduces getopt_long(3) from the BSD libc on macOS, the
-// reference platform. Its error messages differ from glibc's. Like the C
-// library it permutes: options after a non-option argument are still parsed,
+// This file reproduces getopt(3) and getopt_long(3) from the BSD libc on
+// macOS, the reference platform. Both are getopt_internal() there; getopt()
+// passes no long options and does not permute. Its error messages differ from
+// glibc's, and glibc's getopt() permutes.
+//
+// getopt_long permutes: options after a non-option argument are still parsed,
 // unless POSIXLY_CORRECT is set. Non-option arguments are only skipped here;
-// no ported program uses them.
+// no ported program uses them. getopt() stops at the first non-option.
 
 // Values for LongOption.HasArg.
 const (
@@ -35,12 +38,15 @@ type LongOption struct {
 	Val    int
 }
 
-// GetoptLong holds the state that getopt_long keeps in globals.
-type GetoptLong struct {
+// Getopt holds the state that getopt and getopt_long keep in globals.
+type Getopt struct {
 	args      []string
 	optstring string
+	long      bool // getopt_long: long options and permuting
 	longopts  []LongOption
 	stderr    io.Writer
+
+	Opterr bool // print diagnostics, as opterr; true by default
 
 	optind int
 	Optarg string // the current option's argument, as optarg
@@ -49,23 +55,40 @@ type GetoptLong struct {
 	posixlyCorrect bool
 }
 
-// NewGetoptLong returns a parser over argv, starting at optind 1, that writes
-// its diagnostics to stderr.
-func NewGetoptLong(args []string, optstring string, longopts []LongOption, stderr io.Writer) *GetoptLong {
+// NewGetopt returns a getopt(3) parser over argv, starting at optind 1, that
+// writes its diagnostics to stderr.
+func NewGetopt(args []string, optstring string, stderr io.Writer) *Getopt {
+	return &Getopt{
+		args:      args,
+		optstring: optstring,
+		stderr:    stderr,
+		Opterr:    true,
+		optind:    1,
+	}
+}
+
+// NewGetoptLong returns a getopt_long(3) parser over argv, starting at
+// optind 1, that writes its diagnostics to stderr.
+func NewGetoptLong(args []string, optstring string, longopts []LongOption, stderr io.Writer) *Getopt {
 	_, posixly := os.LookupEnv("POSIXLY_CORRECT")
-	return &GetoptLong{
+	return &Getopt{
 		args:           args,
 		optstring:      optstring,
+		long:           true,
 		longopts:       longopts,
 		stderr:         stderr,
+		Opterr:         true,
 		optind:         1,
 		posixlyCorrect: posixly,
 	}
 }
 
 // warnx prints a diagnostic prefixed with the program name, which is the
-// last element of argv[0].
-func (g *GetoptLong) warnx(format string, a ...any) {
+// last element of argv[0], unless Opterr is false.
+func (g *Getopt) warnx(format string, a ...any) {
+	if !g.Opterr {
+		return
+	}
 	prog := ""
 	if len(g.args) > 0 {
 		prog = g.args[0]
@@ -78,7 +101,7 @@ func (g *GetoptLong) warnx(format string, a ...any) {
 
 // Next returns the next option character or long option value, or -1 when
 // the options are exhausted. The option's argument is left in g.Optarg.
-func (g *GetoptLong) Next() int {
+func (g *Getopt) Next() int {
 	g.Optarg = ""
 	if g.place == "" {
 		for {
@@ -88,7 +111,7 @@ func (g *GetoptLong) Next() int {
 			arg := g.args[g.optind]
 			if arg == "" || arg[0] != '-' || arg == "-" {
 				// A non-option argument.
-				if g.posixlyCorrect {
+				if !g.long || g.posixlyCorrect {
 					return -1
 				}
 				g.optind++
@@ -105,7 +128,7 @@ func (g *GetoptLong) Next() int {
 
 	// A '-' after the leading dash, at the start of an argument or inside a
 	// cluster such as "-D-size", introduces a long option.
-	if g.place[0] == '-' {
+	if g.long && g.place[0] == '-' {
 		current := g.place[1:]
 		g.place = ""
 		if current == "" {
@@ -118,7 +141,8 @@ func (g *GetoptLong) Next() int {
 	optchar := g.place[0]
 	g.place = g.place[1:]
 	oli := strings.IndexByte(g.optstring, optchar)
-	if optchar == ':' || oli < 0 {
+	// Without long options, "--x" is an unknown option '-'.
+	if optchar == ':' || (optchar == '-' && g.place != "") || oli < 0 {
 		if g.place == "" {
 			g.optind++
 		}
@@ -152,7 +176,7 @@ func (g *GetoptLong) Next() int {
 }
 
 // parseLong handles a long option; current is its text after "--".
-func (g *GetoptLong) parseLong(current string) int {
+func (g *Getopt) parseLong(current string) int {
 	g.optind++
 
 	name, value, hasEqual := strings.Cut(current, "=")

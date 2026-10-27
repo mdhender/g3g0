@@ -348,28 +348,18 @@ func (g *generator) closeFps() {
 
 // loadSeed is load_seed() from lib/rnd.c.
 func (g *generator) loadSeed(fnam string) {
-	fp, err := os.Open(g.path(fnam))
-	if err != nil {
+	if err := g.rng.Load(g.path(fnam)); err != nil {
 		fmt.Fprintf(g.stdout, "%s could not be opened.\n", fnam)
-		return
 	}
-	defer fp.Close()
-	var buf [16]byte
-	n, _ := io.ReadFull(fp, buf[:])
-	g.rng.SetSeed(buf[:n])
 }
 
 // saveSeed is save_seed() from lib/rnd.c.
 func (g *generator) saveSeed(fnam string) {
-	fp, err := os.OpenFile(g.path(fnam), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0o666)
-	if err != nil {
+	if err := g.rng.Save(g.path(fnam)); err != nil {
 		g.errf("couldn't write %s:", fnam)
 		clib.Perror(g.stderr, "", err)
 		g.exit(1)
 	}
-	seed := g.rng.Seed()
-	_, _ = fp.Write(seed[:])
-	_ = fp.Close()
 }
 
 func (g *generator) clearAllocFlag() {

@@ -13,6 +13,8 @@ package rnd
 import (
 	"crypto/md5"
 	"encoding/binary"
+	"io"
+	"os"
 )
 
 // Source is the mutable generator state.
@@ -35,6 +37,33 @@ func (s *Source) Seed() [16]byte {
 // behavior for a truncated randseed file should start from a zero Source.
 func (s *Source) SetSeed(b []byte) {
 	copy(s.digest[:], b)
+}
+
+// Load is load_seed() without its message: it replaces the start of the
+// state with up to 16 bytes read from path. A read error after a successful
+// open (for example, a directory) reads nothing, as fread() does.
+func (s *Source) Load(path string) error {
+	fp, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+	var buf [16]byte
+	n, _ := io.ReadFull(fp, buf[:])
+	s.SetSeed(buf[:n])
+	return nil
+}
+
+// Save is save_seed() without its message: it writes the state to path,
+// opened the way fopen(path, "wb+") opens it.
+func (s *Source) Save(path string) error {
+	fp, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0o666)
+	if err != nil {
+		return err
+	}
+	_, _ = fp.Write(s.digest[:])
+	_ = fp.Close()
+	return nil
 }
 
 // Rnd returns a value in [low, high], matching rnd() in lib/rnd.c, including

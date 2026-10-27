@@ -4,6 +4,8 @@
 package rnd_test
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/mdhender/g3g0/internal/rnd"
@@ -58,5 +60,43 @@ func TestRndMatchesC(t *testing.T) {
 	}
 	if got := s.Seed(); got != want {
 		t.Errorf("final seed = % x, want % x", got, want)
+	}
+}
+
+func TestLoadSave(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "randseed")
+
+	// A short file replaces only the start of the state.
+	if err := os.WriteFile(path, []byte{1, 2, 3}, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	s := rnd.New([16]byte{})
+	if err := s.Load(path); err != nil {
+		t.Fatal(err)
+	}
+	if got, want := s.Seed(), [16]byte{1, 2, 3}; got != want {
+		t.Errorf("Load short seed = %x, want %x", got, want)
+	}
+	if err := s.Save(path); err != nil {
+		t.Fatal(err)
+	}
+	if got, err := os.ReadFile(path); err != nil || len(got) != 16 || got[0] != 1 {
+		t.Errorf("Save wrote %x, %v", got, err)
+	}
+
+	// A missing file is an error and leaves the state alone; a directory
+	// opens, reads nothing, and cannot be saved.
+	if err := s.Load(filepath.Join(dir, "missing")); err == nil {
+		t.Error("Load of a missing file succeeded")
+	}
+	if err := s.Load(dir); err != nil {
+		t.Errorf("Load of a directory: %v", err)
+	}
+	if got, want := s.Seed(), [16]byte{1, 2, 3}; got != want {
+		t.Errorf("state after failed loads = %x, want %x", got, want)
+	}
+	if err := s.Save(dir); err == nil {
+		t.Error("Save to a directory succeeded")
 	}
 }
