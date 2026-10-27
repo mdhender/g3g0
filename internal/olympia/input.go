@@ -714,3 +714,35 @@ func (w *world) processInterruptedUnits() {
 		}
 	}
 }
+
+// processOrders follows input.c, including day zero before the first increment.
+// Unfinished world phases below are hard boundaries, not successful no-ops.
+func (w *world) processOrders() {
+	w.stage("process_orders()")
+	w.cmdWait = int32(w.findCommand("wait"))
+	assert(w.cmdWait > 0, "olympia/input.c", 1064, "cmd_wait > 0")
+	w.initLocsTouched()
+	w.initWeatherViews()
+	olytimeTurnChange(&w.sysclock)
+	w.initWaitList()
+	w.initCollectList()
+	w.initialCommandLoad()
+	w.queueNpcOrders()
+	w.pingGarrisons()
+	w.checkTokenUnits()
+	w.processInterruptedUnits()
+	w.processPlayerOrders()
+	w.scanCharItemLore()
+	w.stage("")
+	for w.sysclock.day < monthDays {
+		olytimeIncrement(&w.sysclock)
+		if w.sysclock.day == 1 {
+			w.matchAllTrades()
+		}
+		w.printDot('.')
+		w.dailyCommandLoop()
+		w.dailyEvents()
+	}
+	fmt.Fprintln(w.stderr)
+	w.monthDone = 1
+}

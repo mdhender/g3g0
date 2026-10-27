@@ -1,0 +1,46 @@
+# Instrumented orchestration only. Phase bodies are callbacks, NOT gameplay.
+section process day zero through day thirty and settlement
+clock 13 27 913
+state
+process_orders
+state
+post_month
+state
+
+section summer opening and positive auto quit
+clock 3 30 117
+auto_quit 1
+post_month
+state
+
+section winter closure and negative auto quit
+clock 7 30 981
+auto_quit -1
+post_month
+state
+
+section daily schedule persists with collisions and four weather cap
+clock 8 1 301
+daily_events
+clock 8 3 303
+daily_events
+clock 8 7 307
+daily_events
+clock 8 14 314
+daily_events
+clock 8 15 315
+daily_events
+clock 8 2 302
+daily_events
+clock 8 21 321
+daily_events
+clock 8 28 328
+daily_events
+clock 8 30 330
+daily_events
+state
+
+section new process resets daily statics
+clock 9 15 812
+daily_events
+state

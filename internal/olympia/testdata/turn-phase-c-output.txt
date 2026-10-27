@@ -1,0 +1,484 @@
+stdout:
+section process day zero through day thirty and settlement
+> clock 13 27 913
+> state
+state: 13 27 913 wait=-1 auto=0 month=0 post=0
+sent: 7 -5
+> process_orders
+phase wait: 13 27 913 auto=0 month=0 post=0
+phase init_locs_touched: 13 27 913 auto=0 month=0 post=0
+phase init_weather_views: 13 27 913 auto=0 month=0 post=0
+phase init_wait_list: 14 0 913 auto=0 month=0 post=0
+phase init_collect_list: 14 0 913 auto=0 month=0 post=0
+phase initial_command_load: 14 0 913 auto=0 month=0 post=0
+phase queue_npc_orders: 14 0 913 auto=0 month=0 post=0
+phase ping_garrisons: 14 0 913 auto=0 month=0 post=0
+phase check_token_units: 14 0 913 auto=0 month=0 post=0
+phase process_interrupted_units: 14 0 913 auto=0 month=0 post=0
+phase process_player_orders: 14 0 913 auto=0 month=0 post=0
+phase scan_char_item_lore: 14 0 913 auto=0 month=0 post=0
+phase match_all_trades: 14 1 914 auto=0 month=0 post=0
+phase start_phase: 14 1 914 auto=1 month=0 post=0
+phase evening_phase: 14 1 914 auto=1 month=0 post=0
+phase clear_second_waits: 14 1 914 auto=1 month=0 post=0
+cal_day 0 1 30
+cal_day 1 15 30
+cal_day 2 1 30
+phase wthr_shuffle: 14 1 914 auto=1 month=0 post=0
+phase default_garrison_pay: 14 1 914 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 1 914 auto=1 month=0 post=0
+phase random_loc_damage: 14 1 914 auto=1 month=0 post=0
+phase check_ocean_chars: 14 1 914 auto=1 month=0 post=0
+phase natural_weather: 14 1 914 auto=1 month=0 post=0
+phase start_phase: 14 2 915 auto=1 month=0 post=0
+phase evening_phase: 14 2 915 auto=1 month=0 post=0
+phase clear_second_waits: 14 2 915 auto=1 month=0 post=0
+phase default_garrison_pay: 14 2 915 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 2 915 auto=1 month=0 post=0
+phase random_loc_damage: 14 2 915 auto=1 month=0 post=0
+phase check_ocean_chars: 14 2 915 auto=1 month=0 post=0
+phase start_phase: 14 3 916 auto=1 month=0 post=0
+phase evening_phase: 14 3 916 auto=1 month=0 post=0
+phase clear_second_waits: 14 3 916 auto=1 month=0 post=0
+phase default_garrison_pay: 14 3 916 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 3 916 auto=1 month=0 post=0
+phase random_loc_damage: 14 3 916 auto=1 month=0 post=0
+phase check_ocean_chars: 14 3 916 auto=1 month=0 post=0
+phase natural_weather: 14 3 916 auto=1 month=0 post=0
+phase start_phase: 14 4 917 auto=1 month=0 post=0
+phase evening_phase: 14 4 917 auto=1 month=0 post=0
+phase clear_second_waits: 14 4 917 auto=1 month=0 post=0
+phase default_garrison_pay: 14 4 917 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 4 917 auto=1 month=0 post=0
+phase random_loc_damage: 14 4 917 auto=1 month=0 post=0
+phase check_ocean_chars: 14 4 917 auto=1 month=0 post=0
+phase start_phase: 14 5 918 auto=1 month=0 post=0
+phase evening_phase: 14 5 918 auto=1 month=0 post=0
+phase clear_second_waits: 14 5 918 auto=1 month=0 post=0
+phase default_garrison_pay: 14 5 918 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 5 918 auto=1 month=0 post=0
+phase random_loc_damage: 14 5 918 auto=1 month=0 post=0
+phase check_ocean_chars: 14 5 918 auto=1 month=0 post=0
+phase start_phase: 14 6 919 auto=1 month=0 post=0
+phase evening_phase: 14 6 919 auto=1 month=0 post=0
+phase clear_second_waits: 14 6 919 auto=1 month=0 post=0
+phase default_garrison_pay: 14 6 919 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 6 919 auto=1 month=0 post=0
+phase random_loc_damage: 14 6 919 auto=1 month=0 post=0
+phase check_ocean_chars: 14 6 919 auto=1 month=0 post=0
+phase start_phase: 14 7 920 auto=1 month=0 post=0
+phase evening_phase: 14 7 920 auto=1 month=0 post=0
+phase clear_second_waits: 14 7 920 auto=1 month=0 post=0
+phase default_garrison_pay: 14 7 920 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 7 920 auto=1 month=0 post=0
+phase random_loc_damage: 14 7 920 auto=1 month=0 post=0
+phase check_ocean_chars: 14 7 920 auto=1 month=0 post=0
+phase heal_characters: 14 7 920 auto=1 month=0 post=0
+phase weekly_prisoner_escape_check: 14 7 920 auto=1 month=0 post=0
+phase noncreator_curse_erode: 14 7 920 auto=1 month=0 post=0
+phase natural_weather: 14 7 920 auto=1 month=0 post=0
+phase start_phase: 14 8 921 auto=1 month=0 post=0
+phase evening_phase: 14 8 921 auto=1 month=0 post=0
+phase clear_second_waits: 14 8 921 auto=1 month=0 post=0
+phase default_garrison_pay: 14 8 921 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 8 921 auto=1 month=0 post=0
+phase random_loc_damage: 14 8 921 auto=1 month=0 post=0
+phase check_ocean_chars: 14 8 921 auto=1 month=0 post=0
+phase start_phase: 14 9 922 auto=1 month=0 post=0
+phase evening_phase: 14 9 922 auto=1 month=0 post=0
+phase clear_second_waits: 14 9 922 auto=1 month=0 post=0
+phase default_garrison_pay: 14 9 922 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 9 922 auto=1 month=0 post=0
+phase random_loc_damage: 14 9 922 auto=1 month=0 post=0
+phase check_ocean_chars: 14 9 922 auto=1 month=0 post=0
+phase start_phase: 14 10 923 auto=1 month=0 post=0
+phase evening_phase: 14 10 923 auto=1 month=0 post=0
+phase clear_second_waits: 14 10 923 auto=1 month=0 post=0
+phase default_garrison_pay: 14 10 923 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 10 923 auto=1 month=0 post=0
+phase random_loc_damage: 14 10 923 auto=1 month=0 post=0
+phase check_ocean_chars: 14 10 923 auto=1 month=0 post=0
+phase start_phase: 14 11 924 auto=1 month=0 post=0
+phase evening_phase: 14 11 924 auto=1 month=0 post=0
+phase clear_second_waits: 14 11 924 auto=1 month=0 post=0
+phase default_garrison_pay: 14 11 924 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 11 924 auto=1 month=0 post=0
+phase random_loc_damage: 14 11 924 auto=1 month=0 post=0
+phase check_ocean_chars: 14 11 924 auto=1 month=0 post=0
+phase start_phase: 14 12 925 auto=1 month=0 post=0
+phase evening_phase: 14 12 925 auto=1 month=0 post=0
+phase clear_second_waits: 14 12 925 auto=1 month=0 post=0
+phase default_garrison_pay: 14 12 925 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 12 925 auto=1 month=0 post=0
+phase random_loc_damage: 14 12 925 auto=1 month=0 post=0
+phase check_ocean_chars: 14 12 925 auto=1 month=0 post=0
+phase start_phase: 14 13 926 auto=1 month=0 post=0
+phase evening_phase: 14 13 926 auto=1 month=0 post=0
+phase clear_second_waits: 14 13 926 auto=1 month=0 post=0
+phase default_garrison_pay: 14 13 926 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 13 926 auto=1 month=0 post=0
+phase random_loc_damage: 14 13 926 auto=1 month=0 post=0
+phase check_ocean_chars: 14 13 926 auto=1 month=0 post=0
+phase start_phase: 14 14 927 auto=1 month=0 post=0
+phase evening_phase: 14 14 927 auto=1 month=0 post=0
+phase clear_second_waits: 14 14 927 auto=1 month=0 post=0
+phase default_garrison_pay: 14 14 927 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 14 927 auto=1 month=0 post=0
+phase random_loc_damage: 14 14 927 auto=1 month=0 post=0
+phase check_ocean_chars: 14 14 927 auto=1 month=0 post=0
+phase heal_characters: 14 14 927 auto=1 month=0 post=0
+phase weekly_prisoner_escape_check: 14 14 927 auto=1 month=0 post=0
+phase start_phase: 14 15 928 auto=1 month=0 post=0
+phase evening_phase: 14 15 928 auto=1 month=0 post=0
+phase clear_second_waits: 14 15 928 auto=1 month=0 post=0
+phase default_garrison_pay: 14 15 928 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 15 928 auto=1 month=0 post=0
+phase random_loc_damage: 14 15 928 auto=1 month=0 post=0
+phase check_ocean_chars: 14 15 928 auto=1 month=0 post=0
+phase increment_stone_ring_aura: 14 15 928 auto=1 month=0 post=0
+phase dogs_bark_at_hidden_chars: 14 15 928 auto=1 month=0 post=0
+phase natural_weather: 14 15 928 auto=1 month=0 post=0
+phase auto_faery: 14 15 928 auto=1 month=0 post=0
+phase start_phase: 14 16 929 auto=1 month=0 post=0
+phase evening_phase: 14 16 929 auto=1 month=0 post=0
+phase clear_second_waits: 14 16 929 auto=1 month=0 post=0
+phase default_garrison_pay: 14 16 929 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 16 929 auto=1 month=0 post=0
+phase random_loc_damage: 14 16 929 auto=1 month=0 post=0
+phase check_ocean_chars: 14 16 929 auto=1 month=0 post=0
+phase start_phase: 14 17 930 auto=1 month=0 post=0
+phase evening_phase: 14 17 930 auto=1 month=0 post=0
+phase clear_second_waits: 14 17 930 auto=1 month=0 post=0
+phase default_garrison_pay: 14 17 930 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 17 930 auto=1 month=0 post=0
+phase random_loc_damage: 14 17 930 auto=1 month=0 post=0
+phase check_ocean_chars: 14 17 930 auto=1 month=0 post=0
+phase start_phase: 14 18 931 auto=1 month=0 post=0
+phase evening_phase: 14 18 931 auto=1 month=0 post=0
+phase clear_second_waits: 14 18 931 auto=1 month=0 post=0
+phase default_garrison_pay: 14 18 931 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 18 931 auto=1 month=0 post=0
+phase random_loc_damage: 14 18 931 auto=1 month=0 post=0
+phase check_ocean_chars: 14 18 931 auto=1 month=0 post=0
+phase start_phase: 14 19 932 auto=1 month=0 post=0
+phase evening_phase: 14 19 932 auto=1 month=0 post=0
+phase clear_second_waits: 14 19 932 auto=1 month=0 post=0
+phase default_garrison_pay: 14 19 932 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 19 932 auto=1 month=0 post=0
+phase random_loc_damage: 14 19 932 auto=1 month=0 post=0
+phase check_ocean_chars: 14 19 932 auto=1 month=0 post=0
+phase start_phase: 14 20 933 auto=1 month=0 post=0
+phase evening_phase: 14 20 933 auto=1 month=0 post=0
+phase clear_second_waits: 14 20 933 auto=1 month=0 post=0
+phase default_garrison_pay: 14 20 933 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 20 933 auto=1 month=0 post=0
+phase random_loc_damage: 14 20 933 auto=1 month=0 post=0
+phase check_ocean_chars: 14 20 933 auto=1 month=0 post=0
+phase start_phase: 14 21 934 auto=1 month=0 post=0
+phase evening_phase: 14 21 934 auto=1 month=0 post=0
+phase clear_second_waits: 14 21 934 auto=1 month=0 post=0
+phase default_garrison_pay: 14 21 934 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 21 934 auto=1 month=0 post=0
+phase random_loc_damage: 14 21 934 auto=1 month=0 post=0
+phase check_ocean_chars: 14 21 934 auto=1 month=0 post=0
+phase heal_characters: 14 21 934 auto=1 month=0 post=0
+phase weekly_prisoner_escape_check: 14 21 934 auto=1 month=0 post=0
+phase start_phase: 14 22 935 auto=1 month=0 post=0
+phase evening_phase: 14 22 935 auto=1 month=0 post=0
+phase clear_second_waits: 14 22 935 auto=1 month=0 post=0
+phase default_garrison_pay: 14 22 935 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 22 935 auto=1 month=0 post=0
+phase random_loc_damage: 14 22 935 auto=1 month=0 post=0
+phase check_ocean_chars: 14 22 935 auto=1 month=0 post=0
+phase start_phase: 14 23 936 auto=1 month=0 post=0
+phase evening_phase: 14 23 936 auto=1 month=0 post=0
+phase clear_second_waits: 14 23 936 auto=1 month=0 post=0
+phase default_garrison_pay: 14 23 936 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 23 936 auto=1 month=0 post=0
+phase random_loc_damage: 14 23 936 auto=1 month=0 post=0
+phase check_ocean_chars: 14 23 936 auto=1 month=0 post=0
+phase start_phase: 14 24 937 auto=1 month=0 post=0
+phase evening_phase: 14 24 937 auto=1 month=0 post=0
+phase clear_second_waits: 14 24 937 auto=1 month=0 post=0
+phase default_garrison_pay: 14 24 937 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 24 937 auto=1 month=0 post=0
+phase random_loc_damage: 14 24 937 auto=1 month=0 post=0
+phase check_ocean_chars: 14 24 937 auto=1 month=0 post=0
+phase start_phase: 14 25 938 auto=1 month=0 post=0
+phase evening_phase: 14 25 938 auto=1 month=0 post=0
+phase clear_second_waits: 14 25 938 auto=1 month=0 post=0
+phase default_garrison_pay: 14 25 938 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 25 938 auto=1 month=0 post=0
+phase random_loc_damage: 14 25 938 auto=1 month=0 post=0
+phase check_ocean_chars: 14 25 938 auto=1 month=0 post=0
+phase start_phase: 14 26 939 auto=1 month=0 post=0
+phase evening_phase: 14 26 939 auto=1 month=0 post=0
+phase clear_second_waits: 14 26 939 auto=1 month=0 post=0
+phase default_garrison_pay: 14 26 939 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 26 939 auto=1 month=0 post=0
+phase random_loc_damage: 14 26 939 auto=1 month=0 post=0
+phase check_ocean_chars: 14 26 939 auto=1 month=0 post=0
+phase start_phase: 14 27 940 auto=1 month=0 post=0
+phase evening_phase: 14 27 940 auto=1 month=0 post=0
+phase clear_second_waits: 14 27 940 auto=1 month=0 post=0
+phase default_garrison_pay: 14 27 940 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 27 940 auto=1 month=0 post=0
+phase random_loc_damage: 14 27 940 auto=1 month=0 post=0
+phase check_ocean_chars: 14 27 940 auto=1 month=0 post=0
+phase start_phase: 14 28 941 auto=1 month=0 post=0
+phase evening_phase: 14 28 941 auto=1 month=0 post=0
+phase clear_second_waits: 14 28 941 auto=1 month=0 post=0
+phase default_garrison_pay: 14 28 941 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 28 941 auto=1 month=0 post=0
+phase random_loc_damage: 14 28 941 auto=1 month=0 post=0
+phase check_ocean_chars: 14 28 941 auto=1 month=0 post=0
+phase heal_characters: 14 28 941 auto=1 month=0 post=0
+phase weekly_prisoner_escape_check: 14 28 941 auto=1 month=0 post=0
+phase start_phase: 14 29 942 auto=1 month=0 post=0
+phase evening_phase: 14 29 942 auto=1 month=0 post=0
+phase clear_second_waits: 14 29 942 auto=1 month=0 post=0
+phase default_garrison_pay: 14 29 942 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 29 942 auto=1 month=0 post=0
+phase random_loc_damage: 14 29 942 auto=1 month=0 post=0
+phase check_ocean_chars: 14 29 942 auto=1 month=0 post=0
+phase start_phase: 14 30 943 auto=1 month=0 post=0
+phase evening_phase: 14 30 943 auto=1 month=0 post=0
+phase clear_second_waits: 14 30 943 auto=1 month=0 post=0
+phase default_garrison_pay: 14 30 943 auto=1 month=0 post=0
+phase ship_coastal_damage: 14 30 943 auto=1 month=0 post=0
+phase random_loc_damage: 14 30 943 auto=1 month=0 post=0
+phase check_ocean_chars: 14 30 943 auto=1 month=0 post=0
+> state
+state: 14 30 943 wait=42 auto=1 month=1 post=0
+sent: 7 -5
+> post_month
+phase move_city_gold: 14 30 943 auto=1 month=1 post=0
+phase garrison_gold: 14 30 943 auto=1 month=1 post=0
+phase collect_taxes: 14 30 943 auto=1 month=1 post=0
+phase add_claim_gold: 14 30 943 auto=1 month=1 post=0
+phase add_noble_points: 14 30 943 auto=1 month=1 post=0
+phase add_unformed: 14 30 943 auto=1 month=1 post=0
+phase increment_current_aura: 14 30 943 auto=1 month=1 post=0
+phase decrement_ability_shroud: 14 30 943 auto=1 month=1 post=0
+phase decrement_region_shroud: 14 30 943 auto=1 month=1 post=0
+phase decrement_meditation_hinder: 14 30 943 auto=1 month=1 post=0
+phase decrement_loc_barrier: 14 30 943 auto=1 month=1 post=0
+phase loyalty_decay: 14 30 943 auto=1 month=1 post=0
+phase pillage_decay: 14 30 943 auto=1 month=1 post=0
+phase relic_decay: 14 30 943 auto=1 month=1 post=0
+phase hide_mage_decay: 14 30 943 auto=1 month=1 post=0
+phase inn_income: 14 30 943 auto=1 month=1 post=0
+phase temple_income: 14 30 943 auto=1 month=1 post=0
+phase charge_maint_costs: 14 30 943 auto=1 month=1 post=0
+phase animal_deaths: 14 30 943 auto=1 month=1 post=0
+phase ghost_warrior_decay: 14 30 943 auto=1 month=1 post=0
+phase corpse_decay: 14 30 943 auto=1 month=1 post=0
+phase dead_body_rot: 14 30 943 auto=1 month=1 post=0
+phase storm_decay: 14 30 943 auto=1 month=1 post=0
+phase storm_move: 14 30 943 auto=1 month=1 post=0
+phase collapsed_mine_decay: 14 30 943 auto=1 month=1 post=0
+phase post_production: 14 30 943 auto=1 month=1 post=0
+phase link_decay: 14 30 943 auto=1 month=1 post=0
+phase quest_decay: 14 30 943 auto=1 month=1 post=0
+phase check_token_units: 14 30 943 auto=1 month=1 post=0
+phase determine_noble_ranks: 14 30 943 auto=1 month=1 post=0
+> state
+state: 14 30 943 wait=42 auto=1 month=1 post=1
+sent: 0 0
+stderr:
+process_orders()
+
+   ..............................
+post_month()
+
+exit 0
+stdout:
+section summer opening and positive auto quit
+> clock 3 30 117
+> auto_quit 1
+> post_month
+phase special_locs_open: 3 30 117 auto=0 month=0 post=0
+phase move_city_gold: 3 30 117 auto=0 month=0 post=0
+phase garrison_gold: 3 30 117 auto=0 month=0 post=0
+phase collect_taxes: 3 30 117 auto=0 month=0 post=0
+phase add_claim_gold: 3 30 117 auto=0 month=0 post=0
+phase add_noble_points: 3 30 117 auto=0 month=0 post=0
+phase add_unformed: 3 30 117 auto=0 month=0 post=0
+phase increment_current_aura: 3 30 117 auto=0 month=0 post=0
+phase decrement_ability_shroud: 3 30 117 auto=0 month=0 post=0
+phase decrement_region_shroud: 3 30 117 auto=0 month=0 post=0
+phase decrement_meditation_hinder: 3 30 117 auto=0 month=0 post=0
+phase decrement_loc_barrier: 3 30 117 auto=0 month=0 post=0
+phase loyalty_decay: 3 30 117 auto=0 month=0 post=0
+phase pillage_decay: 3 30 117 auto=0 month=0 post=0
+phase relic_decay: 3 30 117 auto=0 month=0 post=0
+phase hide_mage_decay: 3 30 117 auto=0 month=0 post=0
+phase inn_income: 3 30 117 auto=0 month=0 post=0
+phase temple_income: 3 30 117 auto=0 month=0 post=0
+phase charge_maint_costs: 3 30 117 auto=0 month=0 post=0
+phase animal_deaths: 3 30 117 auto=0 month=0 post=0
+phase ghost_warrior_decay: 3 30 117 auto=0 month=0 post=0
+phase corpse_decay: 3 30 117 auto=0 month=0 post=0
+phase dead_body_rot: 3 30 117 auto=0 month=0 post=0
+phase storm_decay: 3 30 117 auto=0 month=0 post=0
+phase storm_move: 3 30 117 auto=0 month=0 post=0
+phase collapsed_mine_decay: 3 30 117 auto=0 month=0 post=0
+phase post_production: 3 30 117 auto=0 month=0 post=0
+phase auto_drop: 3 30 117 auto=0 month=0 post=0
+phase link_decay: 3 30 117 auto=0 month=0 post=0
+phase quest_decay: 3 30 117 auto=0 month=0 post=0
+phase check_token_units: 3 30 117 auto=0 month=0 post=0
+phase determine_noble_ranks: 3 30 117 auto=0 month=0 post=0
+> state
+state: 3 30 117 wait=-1 auto=0 month=0 post=1
+sent: 0 0
+stderr:
+post_month()
+
+exit 0
+stdout:
+section winter closure and negative auto quit
+> clock 7 30 981
+> auto_quit -1
+> post_month
+phase special_locs_close: 7 30 981 auto=0 month=0 post=0
+phase move_city_gold: 7 30 981 auto=0 month=0 post=0
+phase garrison_gold: 7 30 981 auto=0 month=0 post=0
+phase collect_taxes: 7 30 981 auto=0 month=0 post=0
+phase add_claim_gold: 7 30 981 auto=0 month=0 post=0
+phase add_noble_points: 7 30 981 auto=0 month=0 post=0
+phase add_unformed: 7 30 981 auto=0 month=0 post=0
+phase increment_current_aura: 7 30 981 auto=0 month=0 post=0
+phase decrement_ability_shroud: 7 30 981 auto=0 month=0 post=0
+phase decrement_region_shroud: 7 30 981 auto=0 month=0 post=0
+phase decrement_meditation_hinder: 7 30 981 auto=0 month=0 post=0
+phase decrement_loc_barrier: 7 30 981 auto=0 month=0 post=0
+phase loyalty_decay: 7 30 981 auto=0 month=0 post=0
+phase pillage_decay: 7 30 981 auto=0 month=0 post=0
+phase relic_decay: 7 30 981 auto=0 month=0 post=0
+phase hide_mage_decay: 7 30 981 auto=0 month=0 post=0
+phase inn_income: 7 30 981 auto=0 month=0 post=0
+phase temple_income: 7 30 981 auto=0 month=0 post=0
+phase charge_maint_costs: 7 30 981 auto=0 month=0 post=0
+phase animal_deaths: 7 30 981 auto=0 month=0 post=0
+phase ghost_warrior_decay: 7 30 981 auto=0 month=0 post=0
+phase corpse_decay: 7 30 981 auto=0 month=0 post=0
+phase dead_body_rot: 7 30 981 auto=0 month=0 post=0
+phase storm_decay: 7 30 981 auto=0 month=0 post=0
+phase storm_move: 7 30 981 auto=0 month=0 post=0
+phase collapsed_mine_decay: 7 30 981 auto=0 month=0 post=0
+phase post_production: 7 30 981 auto=0 month=0 post=0
+phase link_decay: 7 30 981 auto=0 month=0 post=0
+phase quest_decay: 7 30 981 auto=0 month=0 post=0
+phase check_token_units: 7 30 981 auto=0 month=0 post=0
+phase determine_noble_ranks: 7 30 981 auto=0 month=0 post=0
+> state
+state: 7 30 981 wait=-1 auto=0 month=0 post=1
+sent: 0 0
+stderr:
+post_month()
+
+exit 0
+stdout:
+section daily schedule persists with collisions and four weather cap
+> clock 8 1 301
+> daily_events
+cal_day 0 1 30
+cal_day 1 15 30
+cal_day 2 1 30
+phase wthr_shuffle: 8 1 301 auto=0 month=0 post=0
+phase default_garrison_pay: 8 1 301 auto=0 month=0 post=0
+phase ship_coastal_damage: 8 1 301 auto=0 month=0 post=0
+phase random_loc_damage: 8 1 301 auto=0 month=0 post=0
+phase check_ocean_chars: 8 1 301 auto=0 month=0 post=0
+phase natural_weather: 8 1 301 auto=0 month=0 post=0
+> clock 8 3 303
+> daily_events
+phase default_garrison_pay: 8 3 303 auto=0 month=0 post=0
+phase ship_coastal_damage: 8 3 303 auto=0 month=0 post=0
+phase random_loc_damage: 8 3 303 auto=0 month=0 post=0
+phase check_ocean_chars: 8 3 303 auto=0 month=0 post=0
+phase natural_weather: 8 3 303 auto=0 month=0 post=0
+> clock 8 7 307
+> daily_events
+phase default_garrison_pay: 8 7 307 auto=0 month=0 post=0
+phase ship_coastal_damage: 8 7 307 auto=0 month=0 post=0
+phase random_loc_damage: 8 7 307 auto=0 month=0 post=0
+phase check_ocean_chars: 8 7 307 auto=0 month=0 post=0
+phase heal_characters: 8 7 307 auto=0 month=0 post=0
+phase weekly_prisoner_escape_check: 8 7 307 auto=0 month=0 post=0
+phase noncreator_curse_erode: 8 7 307 auto=0 month=0 post=0
+phase natural_weather: 8 7 307 auto=0 month=0 post=0
+> clock 8 14 314
+> daily_events
+phase default_garrison_pay: 8 14 314 auto=0 month=0 post=0
+phase ship_coastal_damage: 8 14 314 auto=0 month=0 post=0
+phase random_loc_damage: 8 14 314 auto=0 month=0 post=0
+phase check_ocean_chars: 8 14 314 auto=0 month=0 post=0
+phase heal_characters: 8 14 314 auto=0 month=0 post=0
+phase weekly_prisoner_escape_check: 8 14 314 auto=0 month=0 post=0
+> clock 8 15 315
+> daily_events
+phase default_garrison_pay: 8 15 315 auto=0 month=0 post=0
+phase ship_coastal_damage: 8 15 315 auto=0 month=0 post=0
+phase random_loc_damage: 8 15 315 auto=0 month=0 post=0
+phase check_ocean_chars: 8 15 315 auto=0 month=0 post=0
+phase increment_stone_ring_aura: 8 15 315 auto=0 month=0 post=0
+phase dogs_bark_at_hidden_chars: 8 15 315 auto=0 month=0 post=0
+phase natural_weather: 8 15 315 auto=0 month=0 post=0
+phase auto_faery: 8 15 315 auto=0 month=0 post=0
+> clock 8 2 302
+> daily_events
+phase default_garrison_pay: 8 2 302 auto=0 month=0 post=0
+phase ship_coastal_damage: 8 2 302 auto=0 month=0 post=0
+phase random_loc_damage: 8 2 302 auto=0 month=0 post=0
+phase check_ocean_chars: 8 2 302 auto=0 month=0 post=0
+> clock 8 21 321
+> daily_events
+phase default_garrison_pay: 8 21 321 auto=0 month=0 post=0
+phase ship_coastal_damage: 8 21 321 auto=0 month=0 post=0
+phase random_loc_damage: 8 21 321 auto=0 month=0 post=0
+phase check_ocean_chars: 8 21 321 auto=0 month=0 post=0
+phase heal_characters: 8 21 321 auto=0 month=0 post=0
+phase weekly_prisoner_escape_check: 8 21 321 auto=0 month=0 post=0
+> clock 8 28 328
+> daily_events
+phase default_garrison_pay: 8 28 328 auto=0 month=0 post=0
+phase ship_coastal_damage: 8 28 328 auto=0 month=0 post=0
+phase random_loc_damage: 8 28 328 auto=0 month=0 post=0
+phase check_ocean_chars: 8 28 328 auto=0 month=0 post=0
+phase heal_characters: 8 28 328 auto=0 month=0 post=0
+phase weekly_prisoner_escape_check: 8 28 328 auto=0 month=0 post=0
+> clock 8 30 330
+> daily_events
+phase default_garrison_pay: 8 30 330 auto=0 month=0 post=0
+phase ship_coastal_damage: 8 30 330 auto=0 month=0 post=0
+phase random_loc_damage: 8 30 330 auto=0 month=0 post=0
+phase check_ocean_chars: 8 30 330 auto=0 month=0 post=0
+> state
+state: 8 30 330 wait=-1 auto=0 month=0 post=0
+sent: 7 -5
+stderr:
+
+exit 0
+stdout:
+section new process resets daily statics
+> clock 9 15 812
+> daily_events
+cal_day 0 1 30
+cal_day 1 15 30
+cal_day 2 1 30
+phase wthr_shuffle: 9 15 812 auto=0 month=0 post=0
+phase default_garrison_pay: 9 15 812 auto=0 month=0 post=0
+phase ship_coastal_damage: 9 15 812 auto=0 month=0 post=0
+phase random_loc_damage: 9 15 812 auto=0 month=0 post=0
+phase check_ocean_chars: 9 15 812 auto=0 month=0 post=0
+phase increment_stone_ring_aura: 9 15 812 auto=0 month=0 post=0
+phase dogs_bark_at_hidden_chars: 9 15 812 auto=0 month=0 post=0
+phase auto_faery: 9 15 812 auto=0 month=0 post=0
+> state
+state: 9 15 812 wait=-1 auto=0 month=0 post=0
+sent: 7 -5
+stderr:
+
+exit 0

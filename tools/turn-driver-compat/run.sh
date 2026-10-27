@@ -67,6 +67,46 @@ if [ "$update" = 1 ]; then
 else
 	diff -u "${EXPECT}" "${WORK}/run1/out.txt"
 fi
-(cd "${ROOT}" && RUN_TIMEOUT="${RUN_TIMEOUT}" go test -exec "bash ${HERE}/../lib/run-limited.sh" \
+(cd "${ROOT}" && RUN_TIMEOUT="${RUN_TIMEOUT}" go test -exec "bash ${ROOT}/tools/lib/run-limited.sh" \
 	-count=1 -run '^TestTurnDriverMatchesC$' ./internal/olympia)
+
+# Isolated phase callbacks run the actual C orchestration bodies, and the
+# actual Go bodies under a test-only source overlay. No production hooks.
+python3 -I "${HERE}/prepare-phases.py" "${ROOT}" "${WORK}"
+case "$(uname -s)" in
+ Darwin) ldflags=(-Wl,-dead_strip) ;;
+ *) ldflags=(-Wl,--gc-sections) ;;
+esac
+"${CC}" -std=c11 -Wall -Wextra -ffunction-sections -fdata-sections \
+	-I "${WORK}/g3/olympia" -I "${WORK}/g3/lib" \
+	"${HERE}/phase-driver.c" "${WORK}/phases.c" "${WORK}/helpers.c" \
+	"${WORK}/g3/lib/ilist.c" "${ldflags[@]}" -o "${WORK}/phase-driver" \
+	>"${WORK}/phase-build.log" 2>&1 || die "C phase driver build failed; see ${WORK}/phase-build.log"
+CASES="${ROOT}/internal/olympia/testdata/turn-phase-cases.txt"
+EXPECT="${ROOT}/internal/olympia/testdata/turn-phase-c-output.txt"
+sections=$(grep -c '^section ' "${CASES}")
+for run in run1 run2; do
+	for ((i=0; i<sections; i++)); do
+		status=0
+		run_limited "${RUN_TIMEOUT}" turn-phases "${WORK}/phase-driver" "${CASES}" "$i" \
+			>"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
+		[ "$status" != 124 ] || die "C phase section $i timed out"
+		[ "$status" = 0 ] || die "C phase section $i failed ($status)"
+		{
+			printf 'stdout:\n'; cat "${WORK}/${run}/stdout"
+			printf 'stderr:\n'; cat "${WORK}/${run}/stderr"
+			printf '\nexit %d\n' "$status"
+		} >>"${WORK}/${run}/phases.txt"
+	done
+done
+cmp "${WORK}/run1/phases.txt" "${WORK}/run2/phases.txt" || die "C phase trace is not deterministic"
+echo "C phase callbacks: ${sections} sections, $(wc -l <"${WORK}/run1/phases.txt") lines, deterministic (NOT gameplay acceptance)"
+if [ "$update" = 1 ]; then
+	cp "${WORK}/run1/phases.txt" "${EXPECT}"
+else
+	diff -u "${EXPECT}" "${WORK}/run1/phases.txt"
+fi
+(cd "${ROOT}" && G3G0_PHASE_TRACE=1 RUN_TIMEOUT="${RUN_TIMEOUT}" go test \
+	-overlay "${WORK}/overlay.json" -exec "bash ${ROOT}/tools/lib/run-limited.sh" \
+	-count=1 -run '^TestTurnPhaseMatchesC$' ./internal/olympia)
 echo PASS

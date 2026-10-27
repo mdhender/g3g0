@@ -5,6 +5,7 @@ package olympia
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/mdhender/g3g0/internal/clib"
@@ -33,10 +34,33 @@ func (w *world) vNotab(c *command) int {
 // Ported from olympia/c2.c: times_masthead(), which main() runs at the
 // end of every run that loads the game.
 //
-// open_times() and close_times() are not ported: open_times() opens
-// libdir/times_press and libdir/times_rumor only for a turn (-r), so the
-// close_times() that main() runs after times_masthead() has nothing to
-// close.
+// openTimes preserves main.c's file-open failures before process_orders.
+// These headers are explicitly fflush'd in C, so unbuffered writes suffice
+// until report-body handlers are implemented. close_times remains behind
+// the explicit main turn integration boundary.
+func (w *world) openTimes() {
+	const dashLine = "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n"
+	if w.pressFP == nil {
+		fnam := sout("%s/times_press", w.libdir)
+		var err error
+		w.pressFP, err = os.OpenFile(fnam, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o666)
+		if err != nil {
+			fmt.Fprintf(w.stderr, "can't write %s", fnam)
+			panic(exitStatus(1))
+		}
+	}
+	fmt.Fprint(w.pressFP, "\n"+dashLine+"\n                        Player-contributed press\n\n"+dashLine+"\n")
+	if w.rumorFP == nil {
+		fnam := sout("%s/times_rumor", w.libdir)
+		var err error
+		w.rumorFP, err = os.OpenFile(fnam, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o666)
+		if err != nil {
+			fmt.Fprintf(w.stderr, "can't write %s", fnam)
+			panic(exitStatus(1))
+		}
+	}
+	fmt.Fprint(w.rumorFP, "                                 Rumors\n\n"+dashLine+"\n")
+}
 
 // months is months[] in c2.c, the calendar months of the masthead date.
 var months = []string{

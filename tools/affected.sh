@@ -69,6 +69,7 @@ reads() {
 	turn-driver-compat)
 		case "$2" in
 		olympia/*.h | lib/*.h | olympia/u.c) return 0 ;;
+		olympia/input.c | olympia/day.c | olympia/z.c | lib/ilist.c) return 0 ;;
 		esac ;;
 	command-compat)
 		case "$2" in

@@ -221,15 +221,14 @@ func Run(args []string, stdout, stderr io.Writer, stdoutIsTTY bool) int {
 // what those modes do, and -f, -p, -T, -G and test-use-const-report-date
 // are read by load_db(), save_db() and what main() runs after them.
 func (o *options) unported() bool {
-	return o.eatFlag || o.startlocFlag || o.runFlag || o.addFlag ||
+	return o.eatFlag || o.startlocFlag || o.addFlag ||
 		o.immedAfter || o.mailNow || o.htmlFlag ||
 		o.coveragePath != "" || o.useCoveragePath != "" ||
 		o.phaseCoveragePath != "" || o.stateExportPath != ""
 }
 
-// runEngine is the rest of main(), from load_db() on, for a run that asks
-// for none of the unported modes: it loads the game, checks it, saves it
-// with -S, and writes the Times masthead. It returns the exit status.
+// runEngine is main() from load_db() on. A turn runs until the first real
+// unfinished phase; -S must not save a partially executed turn.
 //
 // It recovers the ways the engine ends a C process early. A failed
 // assert() (an assertion) prints its message and calls abort(), which on
@@ -256,6 +255,13 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	w.testUseConstReportDate = o.testUseConstReportDate
 
 	defer func() {
+		// Process termination closes open stdio files, including at an NYI.
+		if w.pressFP != nil {
+			defer w.pressFP.Close()
+		}
+		if w.rumorFP != nil {
+			defer w.rumorFP.Close()
+		}
 		switch r := recover().(type) {
 		case nil:
 		case assertion:
@@ -281,8 +287,19 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 
 	w.loadDb()
 
-	// -e, -E, -s, -r, -a and -i, and the coverage dumps, stop before
+	// -e, -E, -s, -a and -i, and the coverage dumps, stop before
 	// load_db() (unported). immediate is never set without them.
+	if o.runFlag {
+		w.openLogfile(o.winFlag)
+		w.openTimes()
+		w.showDay = true
+		w.processOrders()
+		w.postMonth()
+		w.showDay = false
+		// #90 must integrate the remaining main.c report paths in order.
+		// Their DB mutations are NOT deferred along with report rendering.
+		panic(notImplemented("determine_output_order and main turn report paths"))
+	}
 
 	w.checkDb() // check database integrity
 

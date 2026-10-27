@@ -3,6 +3,8 @@
 
 package olympia
 
+import "slices"
+
 // Ported from olympia/day.c: location-touching state, including day 0.
 
 // touchLocPl is touch_loc_pl(): it marks where's viewing location, and the
@@ -48,4 +50,105 @@ func (w *world) initLocsTouched() {
 		}
 	}
 	w.stormOwnerTouchLoc()
+}
+
+func (w *world) clearOrdersSent() {
+	for pl := range w.loopKind(tPlayer) {
+		if p := w.rpPlayer(pl); p != nil {
+			p.sentOrders = 0
+		}
+	}
+}
+
+// postMonth is day.c's settlement sequence. Even report-producing phases
+// may mutate the world; none may be skipped on the way to save_db.
+func (w *world) postMonth() {
+	w.stage("post_month()")
+	w.clearOrdersSent()
+	if olyMonth(w.sysclock) == 2 {
+		w.specialLocsOpen()
+	}
+	if olyMonth(w.sysclock) == 6 {
+		w.specialLocsClose()
+	}
+	w.moveCityGold()
+	w.garrisonGold()
+	w.collectTaxes()
+	w.addClaimGold()
+	w.addNoblePoints()
+	w.addUnformed()
+	w.incrementCurrentAura()
+	w.decrementAbilityShroud()
+	w.decrementRegionShroud()
+	w.decrementMeditationHinder()
+	w.decrementLocBarrier()
+	w.loyaltyDecay()
+	w.pillageDecay()
+	w.relicDecay()
+	w.hideMageDecay()
+	w.innIncome()
+	w.templeIncome()
+	w.chargeMaintCosts()
+	w.animalDeaths()
+	w.ghostWarriorDecay()
+	w.corpseDecay()
+	w.deadBodyRot()
+	w.stormDecay()
+	w.stormMove()
+	w.collapsedMineDecay()
+	w.postProduction()
+	if w.autoQuitTurns > 0 {
+		w.autoDrop()
+	}
+	w.linkDecay()
+	w.questDecay()
+	w.checkTokenUnits()
+	w.determineNobleRanks()
+	w.postHasBeenRun = 1
+}
+
+// dailyEvents retains the C statics on the world, including the weather
+// cursor. Only the first four shuffled days are sorted (G3 #229).
+func (w *world) dailyEvents() {
+	if w.curseErodeDay == 0 {
+		w.curseErodeDay = w.calDay(0, 1, monthDays)
+	}
+	if w.faeryDay == 0 {
+		w.faeryDay = w.calDay(1, monthDays/2, monthDays)
+	}
+	if w.dogBarkDay == 0 {
+		w.dogBarkDay = w.calDay(2, 1, monthDays)
+	}
+	if len(w.weatherDays) == 0 {
+		for i := 1; i <= monthDays; i++ {
+			w.weatherDays = append(w.weatherDays, i)
+		}
+		assert(4 <= monthDays, "olympia/day.c", 2234, "4 <= MONTH_DAYS")
+		w.wthrShuffle(w.weatherDays)
+		slices.Sort(w.weatherDays[:4])
+	}
+	w.defaultGarrisonPay()
+	w.shipCoastalDamage()
+	w.randomLocDamage()
+	w.checkOceanChars()
+	if w.sysclock.day%7 == 0 {
+		w.healCharacters()
+		w.weeklyPrisonerEscapeCheck()
+	}
+	if int(w.sysclock.day) == w.curseErodeDay {
+		w.noncreatorCurseErode()
+	}
+	if w.sysclock.day == 15 {
+		w.incrementStoneRingAura()
+	}
+	if int(w.sysclock.day) == w.dogBarkDay {
+		w.dogsBarkAtHiddenChars()
+	}
+	if w.wdayIndex < 4 && int(w.sysclock.day) == w.weatherDays[w.wdayIndex] {
+		w.wdayIndex++
+		w.naturalWeather()
+	}
+	if int(w.sysclock.day) == w.faeryDay {
+		w.autoFaery()
+	}
 }

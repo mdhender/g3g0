@@ -134,8 +134,7 @@ type world struct {
 	loadQ [maxPri]lists.IList
 	runQ  lists.IList
 
-	// input.c statics. cmdWait stays -1 until process_orders resolves it;
-	// full turn orchestration remains unported.
+	// input.c statics. cmdWait stays -1 until process_orders resolves it.
 	curPri         int32
 	cmdWait        int32
 	immediate      bool
@@ -149,6 +148,13 @@ type world struct {
 
 	// monthDone is month_done in input.c, set after the daily loop.
 	monthDone int32
+
+	// daily_events' process-lifetime schedule and weather cursor in day.c.
+	curseErodeDay int
+	faeryDay      int
+	dogBarkDay    int
+	weatherDays   []int
+	wdayIndex     int
 
 	// dotCount is print_dot()'s static dot_count in u.c.
 	dotCount int32
@@ -175,6 +181,10 @@ type world struct {
 	// testUseConstReportDate is test_use_const_report_date in main.c,
 	// which times_masthead() reads.
 	testUseConstReportDate bool
+
+	// open_times' header streams; headers are flushed before it returns.
+	pressFP *os.File
+	rumorFP *os.File
 
 	// timeSelf is time_self in main.c (-T), which stage() reads, and
 	// stageOld and stageFirst are stage()'s statics old and first.

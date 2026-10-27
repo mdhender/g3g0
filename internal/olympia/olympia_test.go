@@ -125,7 +125,7 @@ func TestIListTest(t *testing.T) {
 func TestNotYetImplemented(t *testing.T) {
 	// A mode that runs after load_db() and is not ported stops before
 	// load_db().
-	for _, args := range [][]string{{"-r"}, {"-r", "-S"}, {"-e"}, {"--coverage", "-R"}} {
+	for _, args := range [][]string{{"-e"}, {"--coverage", "-R"}} {
 		status, stdout, stderr := run(false, args...)
 		if status != 2 || stdout != header || !strings.HasPrefix(stderr, "olympia-g3: load_db (") ||
 			!strings.HasSuffix(stderr, ": not yet implemented\n") {
@@ -137,7 +137,7 @@ func TestNotYetImplemented(t *testing.T) {
 	// world, which stops at post_production(), after C's messages for the
 	// missing files and the players check_db() creates.
 	t.Chdir(t.TempDir())
-	for _, args := range [][]string{nil, {"-S"}, {"foo", "-R"}, {"-l", "lib", "-T"}} {
+	for _, args := range [][]string{nil, {"-S"}, {"-r"}, {"-r", "-S"}, {"foo", "-R"}, {"-l", "lib", "-T"}} {
 		status, stdout, stderr := run(false, args...)
 		if status != 2 || stdout != header+"lib/randseed could not be opened.\n" ||
 			!strings.HasPrefix(stderr, "load_db()") ||

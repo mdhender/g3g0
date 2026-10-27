@@ -15,6 +15,18 @@ import (
 
 const vect = -1 // sout.h VECT
 
+func (w *world) openLogfile(win bool) {
+	if w.immediate {
+		return
+	}
+	name := sout("%s/log", w.libdir)
+	if win {
+		name = sout("%s\\log", w.libdir)
+	}
+	removeDir(name)
+	_ = os.Mkdir(name, 0o755)
+}
+
 // sout is sout(): the formatted string, cut to BUF_LEN (LEN) bytes, the
 // size of the ring buffers C prints into. C's ring of 50 buffers is not
 // needed: each call returns a new string.

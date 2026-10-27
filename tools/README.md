@@ -46,7 +46,7 @@ tools/box-compat/run.sh --full       # after olympia-roundtrip, whose games it r
 tools/boxfile-compat/run.sh --full
 tools/check-compat/run.sh --full
 tools/loadsave-compat/run.sh --full
-tools/turn-compat/run.sh --full      # stage 1 exit; currently fails on Go's unported -r
+tools/turn-compat/run.sh --full      # stage 1 exit; currently fails at queue_npc_orders
 ```
 
 Run these one at a time: `box-compat`, `boxfile-compat`, `check-compat` and `loadsave-compat` read the games `olympia-roundtrip` caches, so do not run them while `olympia-roundtrip --fresh` rebuilds that cache.
@@ -98,7 +98,7 @@ A tool needs rerunning after a pin move if any file it reads changed; [`affected
 | [`olympia-roundtrip`](olympia-roundtrip) | nothing | the whole tree: it builds `olympia-g3` and runs the regress fixtures' saved games |
 | [`olympia-spec`](olympia-spec) | `passing.txt` | the whole tree: it runs G3's spec |
 | [`turn-compat`](turn-compat) | `testdata/` small real C snapshots and determinism manifest | the whole tree: it builds `olympia-g3` and turns `tests/olympia/fixtures/world.tgz` |
-| [`turn-driver-compat`](turn-driver-compat) | `internal/olympia/testdata/turn-driver-c-output.txt` | `olympia/*.h`, `lib/*.h`, `olympia/u.c` |
+| [`turn-driver-compat`](turn-driver-compat) | `internal/olympia/testdata/turn-{driver,phase}-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `u.c`, `input.c`, `day.c`, `z.c`; `lib/ilist.c` |
 | [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `combat.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `u.c`, `perm.c`, `storm.c`, `use.c`, `c1.c`, `produce.c`, `c2.c`, `immed.c`, `stealth.c`, `move.c`, `day.c`, `seed.c`, `io.c`, `buy.c`, `lore.c`; `lib/` `checked_alloc.c`, `ilist.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c`, `wait_args.c`, `flag_ents.c`, `admits.c`, `trades.c`, `req_ents.c` |
 
 `genesis-compat`, `island-compat` and `mapgen-compat` have pins of their own and are not covered here.
