@@ -61,6 +61,16 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 	w.pChar(1001).unitLord = 200
 	c := w.pCommand(1000)
 	c.who, c.state = 1000, stateDone
+	waitDump := func() {
+		fmt.Fprintf(&stdout, "wait args %d\n", c.waitParse.Len())
+		for _, p := range c.waitParse {
+			flag := "NULL"
+			if p.flag != nil {
+				flag = *p.flag
+			}
+			fmt.Fprintf(&stdout, "wait arg %d %d %d [%s]\n", p.tag, p.a1, p.a2, flag)
+		}
+	}
 	fmt.Fprintln(&stdout, lines[0])
 	defer func() {
 		status := 0
@@ -115,6 +125,42 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.commandDone(c)
 		case "shift":
 			w.cmdShift(c)
+		case "wait", "wait_check":
+			if op == "wait" {
+				clearWaitParse(c)
+				text := line
+				if !w.olyParse(c, &text) {
+					t.Fatal("wait parse failed")
+				}
+			}
+			ret := w.checkWaitConditions(c)
+			if ret == "" {
+				ret = "NULL"
+			}
+			fmt.Fprintf(&stdout, "wait result [%s]\n", ret)
+		case "wait_parse":
+			ret := w.parseWaitArgs(c)
+			if ret == "" {
+				ret = "NULL"
+			}
+			fmt.Fprintf(&stdout, "wait parse [%s]\n", ret)
+			waitDump()
+		case "wait_clear":
+			clearWaitParse(c)
+			waitDump()
+		case "wait_dump":
+			waitDump()
+		case "signal":
+			n := args.num(t)
+			w.flags = append(w.flags, &flagEnt{who: int32(n), flag: strings.TrimLeft(args.rest, " \t")})
+		case "name", "plural":
+			n := args.num(t)
+			s := strings.TrimLeft(args.rest, " \t")
+			if op == "name" {
+				w.setName(n, s)
+			} else {
+				w.pItem(n).pluralName = &s
+			}
 		case "entity":
 			n, k, sk := args.num(t), args.num(t), args.num(t)
 			w.allocBox(n, k, sk)
@@ -145,6 +191,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pChar(n).moving = int32(a)
 			case "hidden":
 				w.pMagic(n).hideSelf = int8(a)
+			case "horn":
+				w.pMagic(n).ferryFlag = int8(a)
 			case "subkind":
 				w.bx[n].skind = int8(a)
 			case "vulnerable":

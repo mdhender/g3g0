@@ -2944,3 +2944,885 @@ subkind is plain
 assertion failure: olympia/combat.c (296): FALSE
 
 exit 134
+stdout:
+section wait tags aliases operands and clear preserve partial parsing
+> place 9000
+> parse wait TIME -3 day 31 unit 1001 gold 1001 item 10 2 flag "Green Light" 0 loc 9000 stack 1001 top ferry 9001 ship 9002 RAINING foggy windy not owner clear shiploc 9000 month 12 turn 13
+parse 1
+> wait_parse
+wait parse [NULL]
+wait args 20
+wait arg 0 0 0 [NULL]
+wait arg 1 31 0 [NULL]
+wait arg 2 1001 0 [NULL]
+wait arg 3 1001 0 [NULL]
+wait arg 4 10 2 [NULL]
+wait arg 5 0 0 [Green Light]
+wait arg 6 9000 0 [NULL]
+wait arg 7 1001 0 [NULL]
+wait arg 8 0 0 [NULL]
+wait arg 9 9001 0 [NULL]
+wait arg 10 9002 0 [NULL]
+wait arg 11 0 0 [NULL]
+wait arg 12 0 0 [NULL]
+wait arg 13 0 0 [NULL]
+wait arg 14 0 0 [NULL]
+wait arg 15 0 0 [NULL]
+wait arg 19 0 0 [NULL]
+wait arg 20 9000 0 [NULL]
+wait arg 21 12 0 [NULL]
+wait arg 22 13 0 [NULL]
+> wait_clear
+wait args 0
+> wait_clear
+wait args 0
+> parse wait time 3 bogus
+parse 1
+> wait_parse
+wait parse [Unknown condition 'bogus'.]
+wait args 1
+wait arg 0 3 0 [NULL]
+> wait_clear
+wait args 0
+> parse wait item 10
+parse 1
+> wait_parse
+wait parse [NULL]
+wait args 1
+wait arg 4 10 1 [NULL]
+> wait_clear
+wait args 0
+> parse wait item 10 day 4
+parse 1
+> wait_parse
+wait parse [Unknown condition '4'.]
+wait args 1
+wait arg 4 10 0 [NULL]
+> wait_clear
+wait args 0
+> parse wait flag "" top
+parse 1
+> wait_parse
+wait parse [NULL]
+wait args 2
+wait arg 5 200 0 []
+wait arg 8 0 0 [NULL]
+stderr:
+
+exit 0
+stdout:
+section wait parser malformed and missing operands
+> place 9000
+> wait time
+wait result [Argument missing for 'time'.]
+> wait day
+wait result [Argument missing for 'day'.]
+> wait unit
+wait result [Argument missing for 'unit'.]
+> wait gold
+wait result [Argument missing for 'gold'.]
+> wait item
+wait result [Argument missing for 'item'.]
+> wait flag
+wait result [Flag missing.]
+> wait loc
+wait result [Argument missing for 'loc'.]
+> wait stack
+wait result [Argument missing for 'stack'.]
+> wait ferry
+wait result [Argument missing for 'ferry'.]
+> wait ship
+wait result [Argument missing for 'ship'.]
+> wait shiploc
+wait result [Argument missing for 'shiploc'.]
+> wait month
+wait result [Argument missing for 'month'.]
+> wait turn
+wait result [Argument missing for 'turn'.]
+> wait hour 1
+wait result [Unknown condition 'hour'.]
+> wait time 0 OR day 2
+wait result [Unknown condition 'OR'.]
+> wait time 0 AND day 2
+wait result [Unknown condition 'AND'.]
+> wait ""
+wait result [Unknown condition ''.]
+> wait TIME potato
+wait result [zero days have passed.]
+> wait day -9
+wait result [today is day 0.]
+> wait item -9 -2
+wait result [NULL]
+> wait loc -3
+wait result [[0] is not a location or ship.]
+> wait not
+wait result [NULL]
+> wait not not
+wait result [NULL]
+stderr:
+
+exit 0
+stdout:
+section wait parse requires cleared argument list assertion
+> place 9000
+> parse wait day 7
+parse 1
+> wait_parse
+wait parse [NULL]
+wait args 1
+wait arg 1 7 0 [NULL]
+> wait_parse
+stderr:
+assertion failure: olympia/c1.c (1236): wait_args_len(c->wait_parse) == 0
+
+exit 134
+stdout:
+section wait empty predicate list assertion is not wait handler validation
+> place 9000
+> wait
+stderr:
+assertion failure: olympia/c1.c (1363): wait_args_len(c->wait_parse) > 0
+
+exit 134
+stdout:
+section wait time day and turn comparisons use independent clocks and actual values
+> place 9000
+> set days 3
+> set day 9
+> set turn 17
+> wait time 4
+wait result [NULL]
+> wait not time 4
+wait result [four days have not passed.]
+> wait time 3
+wait result [three days have passed.]
+> wait time 1
+wait result [one day has passed.]
+> wait time 0
+wait result [zero days have passed.]
+> wait time -1
+wait result [zero days have passed.]
+> wait time 2147483647
+wait result [NULL]
+> wait day 10
+wait result [NULL]
+> wait not day 10
+wait result [today is not day 10.]
+> wait day 9
+wait result [today is day 9.]
+> wait day 2
+wait result [today is day 9.]
+> wait not day 2
+wait result [NULL]
+> wait month 18
+wait result [NULL]
+> wait not month 18
+wait result [it is not turn 18.]
+> wait month 17
+wait result [it is turn 17.]
+> wait turn 16
+wait result [it is turn 17.]
+> wait not turn 16
+wait result [NULL]
+> wait month -1
+wait result [it is turn 17.]
+> set day 32768
+> set turn 65535
+> wait not day 0
+wait result [today is not day 0.]
+> wait not turn 0
+wait result [it is not turn 0.]
+> set days 1234567890
+> wait time 1234567890
+wait result [1,234,567,890 days have passed.]
+> wait time 1001
+wait result [1,001 days have passed.]
+> wait time 11
+wait result [11 days have passed.]
+> wait time 10
+wait result [ten days have passed.]
+stderr:
+
+exit 0
+stdout:
+section wait implicit OR parses whole input then checks in order and not lasts one term
+> place 9000
+> set days 2
+> set day 8
+> wait time 3 day 7
+wait result [today is day 8.]
+> wait day 7 time 3
+wait result [today is day 8.]
+> wait time 3 day 9
+wait result [NULL]
+> wait not time 1 day 7
+wait result [today is day 8.]
+> wait not time 1 day 9
+wait result [NULL]
+> wait not time 3 day 7
+wait result [three days have not passed.]
+> wait not not time 3 day 7
+wait result [three days have not passed.]
+> wait not not time 1 day 7
+wait result [today is day 8.]
+> wait time 0 loc 9999
+wait result [zero days have passed.]
+> wait loc 9999 time 0
+wait result [[9999] is not a location or ship.]
+> wait time 0 nonsense
+wait result [Unknown condition 'nonsense'.]
+> wait time 0 day
+wait result [Argument missing for 'day'.]
+> wait time 0 item
+wait result [Argument missing for 'item'.]
+stderr:
+
+exit 0
+stdout:
+section wait cached conditions reevaluate state until explicitly cleared
+> place 9000
+> set days 2
+> parse wait time 3
+parse 1
+> wait_check
+wait result [NULL]
+> wait_dump
+wait args 1
+wait arg 0 3 0 [NULL]
+> set days 4
+> wait_check
+wait result [three days have passed.]
+> wait_dump
+wait args 1
+wait arg 0 3 0 [NULL]
+> wait_clear
+wait args 0
+> wait_check
+wait result [three days have passed.]
+stderr:
+
+exit 0
+stdout:
+section wait units require real visibility and existence not mere colocation
+> place 9000
+> entity 9001 3 3
+> link 9000 1001
+> name 1001 Lookout
+> field 1001 lord 201
+> wait unit 1001
+wait result [[1001] is here.]
+> field 1001 hidden 1
+> wait unit 1001
+wait result [NULL]
+> wait not unit 1001
+wait result [[1001] is not here.]
+> field 1001 contact 200
+> wait unit 1001
+wait result [[1001] is here.]
+> link 9001 1001
+> wait unit 1001
+wait result [NULL]
+> wait not unit 1001
+wait result [[1001] is not here.]
+> wait unit 9999
+wait result [[9999] does not exist.]
+> wait not unit 9999
+wait result [[9999] does not exist.]
+> wait unit 9000
+wait result [NULL]
+> wait not unit 9000
+wait result [[9000] is not here.]
+stderr:
+
+exit 0
+stdout:
+section wait units in fog differ from clear and self faction
+> place 9000
+> link 9000 1001
+> field 1001 lord 201
+> entity 9001 11 57
+> link 9000 9001
+> field 9001 strength 3
+> wait unit 1001
+wait result [NULL]
+> wait not unit 1001
+wait result [[1001] is not here.]
+> field 1001 lord 200
+> wait unit 1001
+wait result [[1001] is here.]
+stderr:
+
+exit 0
+stdout:
+section wait gold reports actual holdings positive and requested negative
+> place 9000
+> entity 1 4 0
+> name 1000 Treasurer
+> inventory 1000 1 1234567
+> wait gold 1234568
+wait result [NULL]
+> wait not gold 1234568
+wait result [Treasurer doesn't have 1,234,568~gold.]
+> wait gold 1234567
+wait result [Treasurer has 1,234,567~gold.]
+> wait gold 1
+wait result [Treasurer has 1,234,567~gold.]
+> wait not gold 1
+wait result [NULL]
+> wait gold -1
+wait result [Treasurer has 1,234,567~gold.]
+> wait not gold 2147483647
+wait result [Treasurer doesn't have 2,147,483,647~gold.]
+stderr:
+
+exit 0
+stdout:
+section wait inventory default quantity invalid kinds and first signed quantity
+> place 9000
+> entity 10 4 0
+> name 10 stone
+> plural 10 stones
+> name 1000 Porter
+> wait item 10
+wait result [NULL]
+> wait not item 10
+wait result [Porter doesn't have one~stone.]
+> inventory 1000 10 3
+> wait item 10
+wait result [Porter has three~stones.]
+> wait item 10 3
+wait result [Porter has three~stones.]
+> wait item 10 4
+wait result [NULL]
+> wait not item 10 4
+wait result [Porter doesn't have four~stones.]
+> wait item 10 0
+wait result [Porter has three~stones.]
+> wait item 10 -1
+wait result [Porter has three~stones.]
+> wait item 9999
+wait result [NULL]
+> wait not item 9999
+wait result [Porter doesn't have one~.]
+> wait item 1001 0
+wait result [NULL]
+> wait not item 1001 1
+wait result [Porter doesn't have one~<no subkind>.]
+> wait item 10 day 3
+wait result [Unknown condition '3'.]
+> wait item 10 time 0
+wait result [Unknown condition '0'.]
+> wait item 10 1 day 99
+wait result [Porter has three~stones.]
+> wait item 10 0 day 0
+wait result [Porter has three~stones.]
+stderr:
+
+exit 0
+stdout:
+section wait negative inventory and duplicate quantities are not summed
+> place 9000
+> entity 10 4 0
+> name 10 stone
+> plural 10 stones
+> inventory 1000 10 -1234
+> inventory 1000 10 9999
+> wait item 10 0
+wait result [NULL]
+> wait not item 10 0
+wait result [<no subkind> doesn't have zero~stones.]
+> inventory 1000 1 -1
+> entity 1 4 0
+> wait gold 0
+wait result [NULL]
+> wait not gold 0
+wait result [<no subkind> doesn't have 0~gold.]
+stderr:
+
+exit 0
+stdout:
+section wait location checks direct sublocation and validates before negation
+> place 9000
+> entity 9001 3 12
+> name 9000 Plain
+> name 9001 Hall
+> link 9000 9001
+> wait loc 9000
+wait result [at Plain~[9000].]
+> wait loc 9001
+wait result [NULL]
+> wait not loc 9001
+wait result [not at Hall~[9001].]
+> link 9001 1000
+> wait loc 9000
+wait result [NULL]
+> wait not loc 9000
+wait result [not at Plain~[9000].]
+> wait loc 9001
+wait result [at Hall~[9001].]
+> wait loc 1001
+wait result [[1001] is not a location or ship.]
+> wait not loc 9999
+wait result [[9999] is not a location or ship.]
+> wait shiploc 9000
+wait result [<no subkind>~[1000] is not on a ship.]
+stderr:
+
+exit 0
+stdout:
+section wait ships distinguish kind from completed and unfinished ship subkinds
+> place 9000
+> entity 9001 9 30
+> entity 9002 9 33
+> entity 9003 3 30
+> entity 9004 3 3
+> link 9000 9001
+> link 9000 9002
+> link 9000 9003
+> wait ship 9001
+wait result [[9001] is here.]
+> wait not ship 9001
+wait result [NULL]
+> wait ship 9002
+wait result [[9002] is here.]
+> wait ship 9003
+wait result [[9003] is not a ship.]
+> wait ferry 9002
+wait result [[9002] is not a ship]
+> wait ferry 9003
+wait result [NULL]
+> link 9004 9001
+> wait ship 9001
+wait result [NULL]
+> wait not ship 9001
+wait result [[9001] is not here.]
+> link 9000 9001
+> link 9002 1000
+> wait loc 9002
+wait result [at Galley-in-progress~[9002].]
+> wait loc 9000
+wait result [NULL]
+> wait shiploc 9000
+wait result [at Plain~[9000].]
+> wait not shiploc 9000
+wait result [NULL]
+> wait shiploc 9004
+wait result [NULL]
+> wait not shiploc 9004
+wait result [not at Plain~[9004].]
+> wait shiploc 1001
+wait result [[1001] is not a location or ship.]
+> wait not shiploc 9999
+wait result [[9999] is not a location or ship.]
+> wait ship 9001
+wait result [[9001] is here.]
+> link 9001 1001
+> link 1001 1000
+> wait shiploc 9000
+wait result [at Plain~[9000].]
+> wait ship 9002
+wait result [[9002] is here.]
+> link 9003 1000
+> wait shiploc 9000
+wait result [at Plain~[9000].]
+> wait ship 9001
+wait result [[9001] is here.]
+> field 9003 subkind 67
+> wait shiploc 9000
+wait result [at Plain~[9000].]
+> wait ship 9002
+wait result [[9002] is here.]
+> field 9003 subkind 66
+> wait shiploc 9000
+wait result [at Plain~[9000].]
+> wait ship 9002
+wait result [[9002] is here.]
+stderr:
+
+exit 0
+stdout:
+section wait ferry requires local completed subkind and nonzero signed horn
+> place 9000
+> entity 9001 9 30
+> entity 9002 3 3
+> link 9000 9001
+> wait ferry 9001
+wait result [NULL]
+> wait not ferry 9001
+wait result [the ferry has not signaled.]
+> field 9001 horn 1
+> wait ferry 9001
+wait result [the ferry has signaled.]
+> wait not ferry 9001
+wait result [NULL]
+> link 9002 9001
+> wait ferry 9001
+wait result [NULL]
+> wait not ferry 9001
+wait result [the ferry has not signaled.]
+> link 9000 9001
+> field 9001 horn 256
+> wait ferry 9001
+wait result [NULL]
+> field 9001 horn 255
+> wait ferry 9001
+wait result [the ferry has signaled.]
+> wait ferry 1001
+wait result [[1001] is not a ship]
+> wait not ferry 9999
+wait result [[9999] is not a ship]
+stderr:
+
+exit 0
+stdout:
+section wait stack top owner and GM use different definitions of leader and owner
+> place 9000
+> link 9000 1001
+> wait top
+wait result [we are the stack leader]
+> wait owner
+wait result [we are the first character here]
+> wait not owner
+wait result [NULL]
+> wait stack 1001
+wait result [NULL]
+> wait not stack 1001
+wait result [<no subkind>~[1001] is not stacked with us.]
+> link 1001 1000
+> wait top
+wait result [NULL]
+> wait not top
+wait result [we are not the stack leader]
+> wait owner
+wait result [NULL]
+> wait not owner
+wait result [we are not the first character here]
+> wait stack 1001
+wait result [<no subkind>~[1001] is stacked with us.]
+> wait not stack 1001
+wait result [NULL]
+> wait stack 9999
+wait result [NULL]
+> wait not stack 9999
+wait result [NULL]
+> who 200
+> wait top
+wait result [we are the stack leader]
+> wait not top
+wait result [NULL]
+> wait stack 1001
+wait result [NULL]
+> wait not stack 1001
+wait result [<no subkind>~[1001] is not stacked with us.]
+stderr:
+
+exit 0
+stdout:
+section wait flags default faction explicit unit global and case insensitive first match
+> place 9000
+> field 1001 lord 201
+> name 1000 Sender One
+> name 1001 Sender Two
+> wait flag ready
+wait result [NULL]
+> wait not flag ready
+wait result [received no signal]
+> signal 1001 ReAdY
+> wait flag ready
+wait result [NULL]
+> wait flag ready 201
+wait result [Sender Two~[1001] signaled 'ReAdY']
+> wait flag ready 1001
+wait result [Sender Two~[1001] signaled 'ReAdY']
+> wait flag ready 0
+wait result [Sender Two~[1001] signaled 'ReAdY']
+> wait not flag ready 0
+wait result [NULL]
+> signal 1000 READY
+> wait flag ready
+wait result [Sender One~[1000] signaled 'READY']
+> wait flag ready 200
+wait result [Sender One~[1000] signaled 'READY']
+> wait flag ready 1000
+wait result [Sender One~[1000] signaled 'READY']
+> wait flag ready 0
+wait result [Sender Two~[1001] signaled 'ReAdY']
+> wait flag missing 0
+wait result [NULL]
+> wait not flag missing 0
+wait result [received no signal]
+> wait flag ready 9999
+wait result [[9999] does not exist.]
+> wait not flag ready 9999
+wait result [[9999] does not exist.]
+> wait flag ready -1
+wait result [Unknown condition '-1'.]
+> wait flag ready 0junk
+wait result [Sender Two~[1001] signaled 'ReAdY']
+> wait flag ready aa0
+wait result [[aa0] does not exist.]
+> wait flag "" 0
+wait result [NULL]
+stderr:
+
+exit 0
+stdout:
+section wait flag optional argument consumption and quoted flag parsing
+> place 9000
+> parse wait flag "all ready" top
+parse 1
+> wait_parse
+wait parse [NULL]
+wait args 2
+wait arg 5 200 0 [all ready]
+wait arg 8 0 0 [NULL]
+> wait_clear
+wait args 0
+> parse wait flag ready 0 top
+parse 1
+> wait_parse
+wait parse [NULL]
+wait args 2
+wait arg 5 0 0 [ready]
+wait arg 8 0 0 [NULL]
+> wait_clear
+wait args 0
+> parse wait flag ready -1 top
+parse 1
+> wait_parse
+wait parse [Unknown condition '-1'.]
+wait args 1
+wait arg 5 200 0 [ready]
+> wait_clear
+wait args 0
+> parse wait flag ready aa0 top
+parse 1
+> wait_parse
+wait parse [NULL]
+wait args 2
+wait arg 5 50000 0 [ready]
+wait arg 8 0 0 [NULL]
+> wait_clear
+wait args 0
+> parse wait flag ready 0junk top
+parse 1
+> wait_parse
+wait parse [NULL]
+wait args 2
+wait arg 5 0 0 [ready]
+wait arg 8 0 0 [NULL]
+> wait_clear
+wait args 0
+> parse wait flag ready "" top
+parse 1
+> wait_parse
+wait parse [Unknown condition ''.]
+wait args 1
+wait arg 5 200 0 [ready]
+> wait_clear
+wait args 0
+> parse wait day
+parse 1
+> wait_parse
+wait parse [Argument missing for 'day'.]
+wait args 1
+wait arg 1 0 0 [NULL]
+> wait_clear
+wait args 0
+> parse wait item
+parse 1
+> wait_parse
+wait parse [Argument missing for 'item'.]
+wait args 1
+wait arg 4 0 0 [NULL]
+> wait_clear
+wait args 0
+> parse wait flag
+parse 1
+> wait_parse
+wait parse [Flag missing.]
+wait args 1
+wait arg 5 0 0 [NULL]
+stderr:
+
+exit 0
+stdout:
+section wait weather province predicates differ from direct clear inside a building
+> place 9000
+> entity 9001 3 32
+> entity 9002 11 59
+> entity 9003 11 57
+> entity 9004 11 58
+> link 9000 9001
+> link 9000 9002
+> link 9000 9003
+> link 9000 9004
+> wait clear
+wait result [it is clear.]
+> wait rain
+wait result [NULL]
+> wait not raining
+wait result [it is not raining.]
+> field 9002 strength 2
+> field 9003 strength 3
+> field 9004 strength 4
+> wait rain
+wait result [it is raining.]
+> wait raining
+wait result [it is raining.]
+> wait fog
+wait result [it is foggy.]
+> wait foggy
+wait result [it is foggy.]
+> wait wind
+wait result [it is windy.]
+> wait windy
+wait result [it is windy.]
+> wait clear
+wait result [NULL]
+> wait not clear
+wait result [it is not clear.]
+> link 9001 1000
+> wait rain
+wait result [it is raining.]
+> wait fog
+wait result [it is foggy.]
+> wait wind
+wait result [it is windy.]
+> wait clear
+wait result [it is clear.]
+> wait not clear
+wait result [NULL]
+> field 9002 strength -2
+> field 9003 strength -3
+> field 9004 strength -4
+> link 9000 1000
+> wait rain
+wait result [NULL]
+> wait not rain
+wait result [it is not raining.]
+> wait fog
+wait result [NULL]
+> wait not fog
+wait result [it is not foggy.]
+> wait wind
+wait result [NULL]
+> wait not wind
+wait result [it is not windy.]
+> wait clear
+wait result [NULL]
+> wait not clear
+wait result [it is not clear.]
+stderr:
+
+exit 0
+stdout:
+section wait weather inside ship uses province for rain and direct ship for clear
+> place 9000
+> entity 9001 9 30
+> entity 9002 11 59
+> link 9000 9001
+> link 9000 9002
+> field 9002 strength 7
+> link 9001 1000
+> wait raining
+wait result [it is raining.]
+> wait clear
+wait result [it is clear.]
+stderr:
+
+exit 0
+stdout:
+section wait ferry invalid ID guard and same state controls
+> place 9000
+> entity 9001 9 30
+> entity 9002 9 66
+> entity 9003 9 67
+> entity 9004 3 3
+> entity 9005 0 30
+> link 9000 9001
+> link 9000 9002
+> link 9000 9003
+> field 9001 horn 1
+> field 9002 horn 255
+> wait unit 2147483647
+wait result [[2147483647] does not exist.]
+> wait loc 2147483647
+wait result [[2147483647] is not a location or ship.]
+> wait ship 2147483647
+wait result [[2147483647] is not a ship.]
+> wait ferry 2147483647
+wait result [[2147483647] is not a ship]
+> wait not ferry 2147483647
+wait result [[2147483647] is not a ship]
+> wait ferry 150000
+wait result [[150000] is not a ship]
+> wait ferry 149999
+wait result [[149999] is not a ship]
+> wait unit 0
+wait result [[0] does not exist.]
+> wait loc 0
+wait result [[0] is not a location or ship.]
+> wait ship 0
+wait result [[0] is not a ship.]
+> wait ferry 0
+wait result [[0] is not a ship]
+> wait not ferry 0
+wait result [[0] is not a ship]
+> wait ferry
+wait result [Argument missing for 'ferry'.]
+> wait ferry 9006
+wait result [[9006] is not a ship]
+> wait not ferry 9006
+wait result [[9006] is not a ship]
+> wait unit 9005
+wait result [[9005] does not exist.]
+> wait loc 9005
+wait result [[9005] is not a location or ship.]
+> wait ship 9005
+wait result [[9005] is not a ship.]
+> wait ferry 9005
+wait result [[9005] is not a ship]
+> wait not ferry 9005
+wait result [[9005] is not a ship]
+> wait unit 9004
+wait result [NULL]
+> wait loc 9004
+wait result [NULL]
+> wait ship 9004
+wait result [[9004] is not a ship.]
+> wait ferry 9004
+wait result [[9004] is not a ship]
+> wait not ferry 9004
+wait result [[9004] is not a ship]
+> wait ferry -7
+wait result [[0] is not a ship]
+> wait_dump
+wait args 1
+wait arg 9 0 0 [NULL]
+> wait ferry -2147483648
+wait result [[0] is not a ship]
+> wait_dump
+wait args 1
+wait arg 9 0 0 [NULL]
+> wait ship 9001
+wait result [[9001] is here.]
+> wait ferry 9001
+wait result [the ferry has signaled.]
+> wait not ferry 9001
+wait result [NULL]
+> wait ship 9002
+wait result [[9002] is here.]
+> wait ferry 9002
+wait result [the ferry has signaled.]
+> wait not ferry 9002
+wait result [NULL]
+> wait ship 9003
+wait result [[9003] is here.]
+> wait ferry 9003
+wait result [[9003] is not a ship]
+> wait not ferry 9003
+wait result [[9003] is not a ship]
+stderr:
+
+exit 0

@@ -15,7 +15,7 @@ import (
 // name helpers built on display_name, those check_db() uses (box_name,
 // just_name and plural_item_name). new_ent and the mint allocator are left
 // for stage 1, along with display_kind (and the is_port_city it calls),
-// just_name_qty, plural_item_box, box_name_qty and box_name_kind, which
+// plural_item_box, box_name_qty and box_name_kind, which
 // check_db() does not use.
 //
 // G2 entity coding system:
@@ -362,6 +362,11 @@ func (w *world) pluralItemName(item, qty int) string {
 	}
 
 	return s
+}
+
+// justNameQty is code.c's just_name_qty, used by wait item predicates.
+func (w *world) justNameQty(item, qty int) string {
+	return sout("%s~%s", niceNum(qty), w.pluralItemName(item, qty))
 }
 
 // Allocating entities and threading like entities together (kind_first,

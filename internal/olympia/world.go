@@ -138,8 +138,9 @@ type world struct {
 	showDay        bool // glob.c show_day; default formatting for command output
 	evening        int32
 	autoAttackFlag bool
-	waitList       lists.IList // wait/collect population and polling: #60/#61
+	waitList       lists.IList // wait/collect population and polling: #61
 	secondWaitList lists.IList // combat.c second_wait_list
+	flags          []*flagEnt  // c1.c signals, not saved
 
 	// monthDone is month_done in input.c, set after the daily loop.
 	monthDone int32

@@ -1,4 +1,4 @@
-# Command dispatch, completion, scheduler and auto-attack selection
+# Command dispatch, scheduler, auto-attack selection and wait predicates
 
 Pinned reference: [Olympia G3 at
 6a25f2d252ce45bd5adbe3baaccb3be3eed56279](https://github.com/playbymail/olympia-g3/tree/6a25f2d252ce45bd5adbe3baaccb3be3eed56279).
@@ -48,10 +48,21 @@ whole from perm.c (`is_hostile`), u.c (`contacted`, `char_where`, `char_here`,
 the actual oly.h macros. The driver only constructs state and calls these
 functions; it does not emulate their decisions.
 
+Wait comparisons extract complete c1.c `clear_wait_parse`, `parse_wait_args`,
+`wait_leader`, `check_wait_conditions` and the small real `flag_raised`
+dependency, plus the original `wait_tags`, flag structure/storage and u.c
+number-name table. Real u.c `lookup`, `nice_num`, `comma_num`, `gold_s` and
+code.c `just_name_qty` provide the exact diagnostics; existing visibility,
+inventory, weather and location helpers are reused. The `signal` driver
+operation constructs flag records only; it is not a replacement `v_flag`.
+`wait` in the case language clears/reparses and checks conditions directly;
+it does **not** execute `v_wait`, `d_wait` or `i_wait`. `wait_check` reevaluates
+the cached parse, while `wait_parse`/`wait_dump` observe even partial parses.
+
 All other command routines named by the C table are **aborting** stubs,
 never successful substitutes. The remaining aborting dependencies are
 unreachable location/garrison report routes (`players_who_rule_here`, `viewloc`), unused display formatting
-(`is_port_city`, `nice_num`), and validated-trade settlement. Reaching any
+(`is_port_city`), and validated-trade settlement. Reaching any
 stub fails the script, including `--update`. Only `coverage_count` is a
 no-op: it writes stage-3 instrumentation, not gameplay state. No compared
 scheduler, auto-attack scan, wait predicate or wait handler is a successful stub.
@@ -86,7 +97,7 @@ allow checks. Other routing/formatting fails explicitly. Report assembly and
 the broader sout interface remain stage 2. No report-side mutations on these
 paths are omitted. `-r` remains disabled; these scheduler methods are not full
 turn orchestration. A nonempty wait list explicitly stops with
-`check_all_waits` not implemented until #60/#61; actual wait/collect handlers
+`check_all_waits` not implemented until #61; actual wait/collect handlers
 and validated-trade settlement also stop explicitly. The real auto-attack
 scan excludes stacked followers and leaders whose health is neither 100 nor
 -1, then completes the local and outer-ship target scans. Healthy nonhostile
@@ -198,7 +209,40 @@ of all characters. Attitude command families remain unported.
   Every other `fort_covers` subkind and its invalid-subkind assertion are
   real-C controls. A raft initiator with no local target can reach the outer scan.
 
-The recording contains 102 sections / 2946 lines on Linux x86-64.
-Earlier cases change only for shifted u.c assertion lines and the former
-raft-depth assertion becoming actual precombat output and the aborting boundary.
+- All wait predicate families and weather aliases, case-insensitive tags,
+  complete and partial parse contents, clear/reparse and cached reevaluation.
+  Missing operands for every argument-taking tag, unknown/empty conditions,
+  negative operands clamped by the real `parse_arg`, zero/default quantities,
+  large signed-int quantities and independent signed-short clocks are covered.
+- Ordered implicit OR returns the first true condition, not a conjunction.
+  Parsing still validates the entire input before testing the first condition;
+  an early true term cannot hide a malformed later term. NOT lasts one term,
+  repeated NOT does not toggle, and a trailing NOT alone keeps waiting.
+  Literal `OR`, `AND` and `hour` are **unknown conditions at this pin**, not
+  extensions we implement. Empty predicates assert in this low-level checker;
+  wait-handler validation remains #61.
+- Unit existence versus hidden/contact/fog visibility; direct `loc` versus
+  outer `shiploc`/`ship`, nested stacks on ships, unfinished ships and rafts,
+  and kind versus ship-subkind validation. Ferry checks require both local
+  presence and a nonzero signed-char horn, not merely a ship's existence.
+- G3 #349's formerly crashing `ferry 2147483647`, one-past-table and highest
+  in-range missing IDs, zero, missing operand, deleted ship-subkind box,
+  ordinary nonship and negative IDs, with same-state unit/loc/ship controls.
+  Real `parse_arg` clamps negative IDs to zero. Completed ships/rafts with
+  raised horns succeed; unfinished rafts remain invalid ferries.
+- Gold/item positive messages show actual holdings, while negative messages
+  show requested holdings. Duplicate inventories are not summed; invalid
+  item kinds keep waiting (or produce C's negative message), rather than
+  receiving an invented item-validation error. Item's optional quantity
+  greedily consumes the following token even when it is another condition.
+- Stack, top and first-character ownership are distinct; the GM player is
+  its own wait leader. Flag lookup distinguishes default faction, explicit
+  unit/faction and global zero, case-insensitive first-match order, quoted
+  flags and digit-leading zero versus negative optional sender tokens.
+- Rain/fog/wind check the **province**, while clear checks the **direct
+  sublocation**: a building or ship can be clear while its province is raining.
+  Negative storm strength is not positive weather but still prevents clear.
+
+The recording contains 123 sections / 3828 lines on Linux x86-64.
+The earlier 102 sections / 2946 lines are byte-for-byte unchanged.
 Whole-game checks remain opt-in in `turn-compat`. No cases consume RNG.

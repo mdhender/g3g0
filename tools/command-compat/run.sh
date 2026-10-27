@@ -44,7 +44,9 @@ functions = {
               'in_safe_now', 'province', 'building_owner'],
     'garr.c': ['garrison_here'],
     'u.c': ['min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
-            'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth'],
+            'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
+            'lookup', 'gold_s', 'comma_num', 'nice_num'],
+    'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions'],
     'perm.c': ['is_hostile'],
     'storm.c': ['weather_here'],
     'use.c': ['rp_skill_ent', 'exp_level', 'has_skill'],
@@ -57,6 +59,7 @@ with open(f'{dst}/helpers.c', 'w') as out:
     out.write('''#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "z.h"
 #include "oly.h"
 #define MAX_PRI 5
@@ -69,6 +72,15 @@ ilist wait_list, second_wait_list;
 ''')
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
+        # Original data declarations too: no copied or modeled tag/number table.
+        if file == 'c1.c':
+            start, end = source.index('struct flag_ent {'), source.index('static int\nflag_raised(')
+            out.write(source[start:end])
+            start, end = source.index('static char *wait_tags[]'), source.index('void\nclear_wait_parse(')
+            out.write(source[start:end])
+        if file == 'u.c':
+            start, end = source.index('static char *num_s[]'), source.index('char *\nnice_num(')
+            out.write(source[start:end])
         matches = []
         for name in names:
             m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
@@ -88,6 +100,11 @@ void drv_players(void) { process_player_orders(); }
 void drv_sort_load(int pri) { sort_load_queue(load_q[pri]); }
 void drv_sort_run(void) { sort_run_queue(run_q); }
 int drv_fort_covers(int n) { return fort_covers(n); }
+char *drv_wait_check(struct command *c) { return check_wait_conditions(c); }
+void drv_signal(int who, char *flag) {
+ struct flag_ent *p = my_malloc(sizeof(*p));
+ p->who = who; p->flag = str_save(flag); flag_ents_append(&flags, p);
+}
 ''')
 glob = open(f'{src}/glob.c').read()
 table = glob[glob.index('struct cmd_tbl_ent cmd_tbl[]'):glob.index('char *kind_s[]')]
@@ -106,7 +123,6 @@ with open(f'{dst}/stubs.c', 'w') as out:
     out.write('''
 /* Only unreachable reporting routes and unrelated code.c dependencies. */
 int is_port_city(int n) STUB("is_port_city")
-char *nice_num(int n) STUB("nice_num")
 ilist players_who_rule_here(int n) STUB("players_who_rule_here")
 int viewloc(int n) STUB("viewloc")
 void check_validated_trades(void) STUB("check_validated_trades")
@@ -125,7 +141,7 @@ esac
  -I olympia -I lib \
  "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" \
  olympia/{code,glob,z,sout}.c \
- lib/{checked_alloc,ilist,rng,rnd,cstrings,item_ents,skill_ents,orders}.c \
+ lib/{checked_alloc,ilist,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
 sections=$(grep -c '^section ' "${CASES}")
 section_names=() # Bash 3 (Darwin) has no mapfile.

@@ -10,6 +10,33 @@ import (
 
 // Ported from olympia/u.c.
 
+func commaNum(n int) string {
+	further := n / 1000000000
+	n %= 1000000000
+	millions := n / 1000000
+	n %= 1000000
+	thousands, ones := n/1000, n%1000
+	if further == 0 && millions == 0 && thousands == 0 {
+		return sout("%d", ones)
+	} else if further == 0 && millions == 0 {
+		return sout("%d,%.3d", thousands, ones)
+	} else if further == 0 {
+		return sout("%d,%.3d,%.3d", millions, thousands, ones)
+	}
+	return sout("%d,%.3d,%.3d,%.3d", further, millions, thousands, ones)
+}
+
+var numS = []string{"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"}
+
+func niceNum(n int) string {
+	if n > 10 || n < 0 {
+		return sout("%s", commaNum(n))
+	}
+	return numS[n]
+}
+
+func goldS(n int) string { return sout("%s~gold", commaNum(n)) }
+
 func (w *world) contacted(a, b int) bool {
 	p := w.pChar(a)
 	if p.contact.Lookup(b) >= 0 {

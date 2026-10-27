@@ -21,6 +21,18 @@ extern ilist second_wait_list;
 void drv_evening(void), drv_daily(void), drv_players(void), drv_sort_run(void);
 void drv_sort_load(int pri);
 int drv_fort_covers(int n);
+char *drv_wait_check(struct command *c);
+void drv_signal(int who, char *flag);
+
+static void wait_dump(struct command *c)
+{
+ int i;
+ printf("wait args %d\n", wait_args_len(c->wait_parse));
+ for (i = 0; i < wait_args_len(c->wait_parse); i++) {
+  struct wait_arg *p = c->wait_parse[i];
+  printf("wait arg %d %d %d [%s]\n", p->tag, p->a1, p->a2, p->flag ? p->flag : "NULL");
+ }
+}
 
 static void list(char *label, ilist l)
 {
@@ -89,6 +101,33 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "finish")) printf("finish %d\n", finish_command(c));
   else if (!strcmp(op, "done")) command_done(c);
   else if (!strcmp(op, "shift")) cmd_shift(c);
+  else if (!strcmp(op, "wait") || !strcmp(op, "wait_check"))
+  {
+   char *ret;
+   if (!strcmp(op, "wait")) {
+    clear_wait_parse(c);
+    strcpy(text, line);
+    if (!oly_parse(c, text)) return 2;
+   }
+   ret = drv_wait_check(c);
+   printf("wait result [%s]\n", ret ? ret : "NULL");
+  }
+  else if (!strcmp(op, "wait_parse"))
+  {
+   char *ret = parse_wait_args(c);
+   printf("wait parse [%s]\n", ret ? ret : "NULL");
+   wait_dump(c);
+  }
+  else if (!strcmp(op, "wait_clear")) { clear_wait_parse(c); wait_dump(c); }
+  else if (!strcmp(op, "wait_dump")) wait_dump(c);
+  else if (!strcmp(op, "signal"))
+  { sscanf(line,"%*s %d %8191[^\n]", &n, text); drv_signal(n, text); }
+  else if (!strcmp(op, "name") || !strcmp(op, "plural"))
+  {
+   sscanf(line,"%*s %d %8191[^\n]", &n, text);
+   if (!strcmp(op, "name")) set_name(n, text);
+   else p_item(n)->plural_name = str_save(text);
+  }
   else if (!strcmp(op, "entity"))
   { sscanf(line,"%*s %d %d %d",&n,&a,&b); alloc_box(n,a,b); }
   else if (!strcmp(op, "link"))
@@ -114,6 +153,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"loyal")) p_char(n)->loy_kind = (schar)a;
    else if (!strcmp(text,"moving")) p_char(n)->moving = a;
    else if (!strcmp(text,"hidden")) p_magic(n)->hide_self = (schar)a;
+   else if (!strcmp(text,"horn")) p_magic(n)->ferry_flag = (schar)a;
    else if (!strcmp(text,"subkind")) bx[n]->skind = a;
    else if (!strcmp(text,"vulnerable")) p_misc(n)->only_vulnerable = a;
    else if (!strcmp(text,"strength")) p_misc(n)->storm_str = (short)a;

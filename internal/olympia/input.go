@@ -597,7 +597,7 @@ func (w *world) minPriReady() int {
 }
 
 // The empty-list path is real. Wait polling and collect completion belong
-// to #60/#61; reaching a populated wait list must not look like success.
+// to #61; reaching a populated wait list must not look like success.
 func (w *world) checkAllWaits() {
 	if w.waitList.Len() != 0 {
 		panic(notImplemented("check_all_waits"))
