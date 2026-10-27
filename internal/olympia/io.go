@@ -458,17 +458,13 @@ func (w *world) skillListPrint(fp io.Writer, header string, l skillEntsList) {
 // continuation line while the last one ends in a backslash, appended to l
 // if its skill is a valid box. The fifth number is read and ignored.
 //
-// C reads know, experience and the fifth number into uninitialized locals,
-// so a line with fewer than four numbers gives know or experience whatever
-// was on the stack, which is undefined. Here they start at 0 and keep their
-// values from one entry to the next, as the locals of an unoptimized build
-// do. Upstream defect:
-// https://github.com/playbymail/olympia-g3/issues/311
+// A field that a short line leaves out is 0 for that entry. (Fixed
+// upstream in https://github.com/playbymail/olympia-g3/issues/311; before,
+// C read know and experience from uninitialized locals.)
 func (w *world) skillListScan(s string, l *skillEntsList, boxNum int) {
-	var dummy, know, experience int
-
 	for {
 		p := &skillEnt{}
+		var dummy, know, experience int // a short line leaves them unset
 		sscanD(s, &p.skill, &know, &p.daysStudied, &experience, &dummy)
 
 		p.know = int8(know)
@@ -657,15 +653,13 @@ func (w *world) reqListPrint(fp io.Writer, header string, l reqEntsList) {
 // continuation line while the last one ends in a backslash, appended to l
 // if its item is a valid box.
 //
-// As in skillListScan, consume is an uninitialized local in C, undefined
-// on a line with fewer than three numbers; here it starts at 0 and keeps
-// its value from one entry to the next. Upstream defect:
-// https://github.com/playbymail/olympia-g3/issues/311
+// A consume that a short line leaves out is 0 for that entry. (Fixed
+// upstream in https://github.com/playbymail/olympia-g3/issues/311; before,
+// C read it from an uninitialized local.)
 func (w *world) reqListScan(s string, l *reqEntsList, boxNum int) {
-	var consume int
-
 	for {
 		p := &reqEnt{}
+		var consume int // a short line leaves it unset
 		sscanD(s, &p.item, &p.qty, &consume)
 		p.consume = int8(consume)
 
@@ -1896,7 +1890,7 @@ func (w *world) loadBox(n int) {
 	if !w.validBox(n) {
 		fmt.Fprintf(w.stderr, "Unforseen box %d found in load phase.\n", n)
 		fmt.Fprintf(w.stderr, "Remove %s/master and retry.\n", w.libdir)
-		assert(false, "olympia/io.c", 1942, "FALSE")
+		assert(false, "olympia/io.c", 1944, "FALSE")
 	}
 
 	w.extBoxnum = int32(n)
@@ -1972,7 +1966,7 @@ func (w *world) loadBox(n int) {
 	}
 
 	if w.line != nil {
-		assert(*w.line == "", "olympia/io.c", 2020, "*line == '\\0'")
+		assert(*w.line == "", "olympia/io.c", 2022, "*line == '\\0'")
 		w.advance() // advance over blank separating line
 	}
 }
@@ -1985,7 +1979,7 @@ func (w *world) saveBox(fp io.Writer, n int) {
 		return
 	}
 
-	assert(w.validBox(n), "olympia/io.c", 2036, "valid_box(n)")
+	assert(w.validBox(n), "olympia/io.c", 2038, "valid_box(n)")
 
 	p := w.bx[n]
 
@@ -2106,7 +2100,7 @@ func (w *world) writePlayer(pl int) {
 
 	for who := range w.loopUnits(pl) {
 		assert(w.kind(who) == tChar || w.kind(who) == tDeleted,
-			"olympia/io.c", 2135, "kind(who) == T_char || kind(who) == T_deleted")
+			"olympia/io.c", 2137, "kind(who) == T_char || kind(who) == T_deleted")
 
 		w.saveBox(fp, who)
 	}
@@ -2150,11 +2144,11 @@ func (w *world) closeBox(fnam string) {
 // libdir/fnam. A file that cannot be opened gets readfile()'s diagnostic
 // and is skipped.
 //
-// A comment line, or a line that is not a box number (atoi() of it is not
-// positive, such as a second blank line between boxes), is never moved
-// past: C's loop goes round again on the same line forever, printing
-// "unexpected line" each time for the second kind. The port does the same.
-// Upstream defect: https://github.com/playbymail/olympia-g3/issues/316
+// A comment line is skipped. Any other line that is not a box number
+// (atoi() of it is not positive, such as a second blank line between
+// boxes) gets an "unexpected line" diagnostic and is skipped. (Fixed
+// upstream in https://github.com/playbymail/olympia-g3/issues/316; before,
+// C never moved past such a line and looped forever.)
 func (w *world) readBoxes(fnam string) {
 	path := sout("%s/%s", w.libdir, fnam)
 	if !w.readfile(path) {
@@ -2165,8 +2159,8 @@ func (w *world) readBoxes(fnam string) {
 
 	for w.line != nil {
 		if at(*w.line, 0) == '#' {
-			w.stuckInReadBoxes()
-			continue // skip comment lines
+			w.advance() // skip comment lines
+			continue
 		}
 
 		boxNum := clib.Atoi(*w.line)
@@ -2174,19 +2168,11 @@ func (w *world) readBoxes(fnam string) {
 			w.loadBox(boxNum)
 		} else {
 			fmt.Fprintf(w.stderr, "read_boxes: unexpected line %s\n", *w.line)
-			w.stuckInReadBoxes()
+			w.advance()
 		}
 	}
 
 	w.closeBox(fnam)
-}
-
-// stuckInReadBoxes calls the readBoxesStuck test hook, if it is set, each
-// time readBoxes goes round its loop without reading a line.
-func (w *world) stuckInReadBoxes() {
-	if w.readBoxesStuck != nil {
-		w.readBoxesStuck()
-	}
 }
 
 // readChars is read_chars(): readBoxes for every file in libdir/fact whose

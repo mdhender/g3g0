@@ -87,34 +87,32 @@ func parseLine(l cstringsList, s []byte) cstringsList {
 	return l
 }
 
-// removeComment is remove_comment(): it ends s at its first '#', in place.
+// removeComment is remove_comment(): it ends s at its first '#' that is
+// not inside quoted text, in place.
 //
-// C means to skip quoted text, so that a '#' in it stays, but its loops
-// stop at once on the opening quote, and step over just that byte: a '#'
-// between quotes ends the line too. When a quote is the last byte of s, C
-// steps past the terminating NUL and goes on reading, and may write a NUL,
-// past the end of the string, which is undefined. That cannot change the
-// string, so here the scan stops at the end of s. Upstream defect:
-// https://github.com/playbymail/olympia-g3/issues/315
+// As in parse_line(), a double or single quote starts quoted text only at
+// the start of a token: at the start of s, after white space, or right
+// after a closing quote. A '#' inside the quotes is kept, an unterminated
+// quote runs to the end of s, and a quote inside a word (Joe's) is
+// ordinary text. (Fixed upstream in
+// https://github.com/playbymail/olympia-g3/issues/315; before, C's quote
+// loops stopped at once on the opening quote, so a '#' between quotes
+// ended the line too.)
 func removeComment(s []byte) {
+	tok := true // s[i] is at the start of a token
 	i := 0
 	for bat(s, i) != 0 {
-		for bat(s, i) == '"' {
-			for bat(s, i) != 0 && bat(s, i) != '"' {
+		if c := s[i]; tok && (c == '"' || c == '\'') {
+			q := c
+			i++
+			for bat(s, i) != 0 && bat(s, i) != q {
 				i++
 			}
-			i++
-		}
-
-		for bat(s, i) == '\'' {
-			for bat(s, i) != 0 && bat(s, i) != '\'' {
-				i++
+			if bat(s, i) == 0 { // unterminated: runs to the end
+				break
 			}
-			i++
-		}
-
-		if i >= len(s) { // C reads past the end of s here
-			return
+			i++ // parse_line() splits after the quote
+			continue
 		}
 
 		if s[i] == '#' {
@@ -122,6 +120,7 @@ func removeComment(s []byte) {
 			break
 		}
 
+		tok = iswhite(s[i])
 		i++
 	}
 }

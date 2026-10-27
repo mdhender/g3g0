@@ -2,7 +2,7 @@
 # olympia/io.c (fast_scan, scan_boxes, scan_chars, scan_all_boxes,
 # read_boxes, read_chars, read_all_boxes, open_write_fp, write_kind,
 # write_player, write_chars, write_leftovers, write_all_boxes and
-# write_master), at G3 ab24d451ee25d61364e08cde1fbfc223e220fbd1.
+# write_master), at G3 a22bbf10804d5c05876fc3c991e3ab07c1e605d7.
 #
 # tools/boxfile-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in boxfile-c-output.txt;
@@ -12,9 +12,9 @@
 # process (a fresh world, after glob_init()) in a fresh, empty directory,
 # with umask 022, so a section may end in a crash, and the files it writes
 # are its own. libdir starts as "lib", which a section makes if it wants
-# one. run.sh adds how the section ended, "exit STATUS" or "hang" (see
-# run.sh), and then the directory's tree, every file with its mode and
-# contents. stderr goes to the same place as stdout, in order.
+# one. run.sh adds how the section ended, "exit STATUS", and then the
+# directory's tree, every file with its mode and contents. stderr goes to
+# the same place as stdout, in order.
 #
 # One operation per line; a line that starts with '#' is a comment, and
 # blank lines are skipped. N, K, SK, P and MODE are integers, read with
@@ -283,17 +283,46 @@ line
 section read_boxes of a comment line
 mkdir lib
 alloc 10101 3 14
+alloc 10102 3 14
 putl lib/loc 10101 loc city
 putl lib/loc na City
 putl lib/loc
 putl lib/loc # a comment
 putl lib/loc 10102 loc city
+putl lib/loc na Town
 read loc
+line
+writekind 3 loc
 
 section read_boxes of a comment line first
 mkdir lib
+alloc 10101 3 14
 putl lib/loc # a comment
+putl lib/loc #
+putl lib/loc 10101 loc city
+putl lib/loc na City
 read loc
+line
+writekind 3 loc
+
+section read_boxes of comment lines only
+mkdir lib
+putl lib/loc # a comment
+put lib/loc # no newline
+read loc
+line
+
+section read_boxes of a comment line last
+mkdir lib
+alloc 10101 3 14
+putl lib/loc 10101 loc city
+putl lib/loc na City
+putl lib/loc
+putl lib/loc # a comment
+putl lib/loc # another
+read loc
+line
+writekind 3 loc
 
 section read_boxes of a blank line between boxes
 mkdir lib
@@ -304,16 +333,78 @@ putl lib/loc
 putl lib/loc
 putl lib/loc 10102 loc city
 read loc
+line
+writekind 3 loc
+
+section read_boxes of three blank lines between boxes
+mkdir lib
+alloc 10101 3 14
+alloc 10102 3 14
+putl lib/loc 10101 loc city
+putl lib/loc na City
+putl lib/loc
+putl lib/loc
+putl lib/loc
+putl lib/loc
+putl lib/loc 10102 loc city
+putl lib/loc na Town
+read loc
+line
+writekind 3 loc
+
+section read_boxes of blank lines first and last
+mkdir lib
+alloc 10101 3 14
+putl lib/loc
+putl lib/loc 10101 loc city
+putl lib/loc na City
+putl lib/loc
+putl lib/loc
+put lib/loc
+read loc
+line
+writekind 3 loc
+
+section read_boxes of junk lines between boxes
+mkdir lib
+alloc 10101 3 14
+alloc 10102 3 14
+putl lib/loc 10101 loc city
+putl lib/loc na City
+putl lib/loc
+putl lib/loc junk
+putl lib/loc \x09 na Indented
+putl lib/loc  # an indented comment
+putl lib/loc 0 loc city
+putl lib/loc # a comment
+putl lib/loc \x09
+putl lib/loc  10102 loc city
+putl lib/loc na Town
+read loc
+line
+writekind 3 loc
+
+section read_boxes of a junk line last
+mkdir lib
+alloc 10101 3 14
+putl lib/loc 10101 loc city
+putl lib/loc
+put lib/loc junk at the end
+read loc
+line
+writekind 3 loc
 
 section read_boxes of a line that is not a box
 mkdir lib
 putl lib/loc loc 10101 city
 read loc
+line
 
 section read_boxes of a negative box number
 mkdir lib
 putl lib/loc -10101 loc city
 read loc
+line
 
 section read_boxes of an unforseen box
 mkdir lib

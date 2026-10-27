@@ -111,13 +111,6 @@ type world struct {
 	timeSelf   bool
 	stageOld   int64
 	stageFirst int64
-
-	// readBoxesStuck is a test hook. read_boxes() never moves past a
-	// comment line or a line that is not a box number, and loops on it
-	// forever (see readBoxes). If readBoxesStuck is set, readBoxes calls it
-	// each time round that loop, so that a test can stop it. It is nil in
-	// the engine.
-	readBoxesStuck func()
 }
 
 // newWorld returns a world as olympia-g3 has it after glob_init(): the

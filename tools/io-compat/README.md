@@ -6,13 +6,13 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `ab24d451ee25d61364e08cde1fbfc223e220fbd1`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `a22bbf10804d5c05876fc3c991e3ab07c1e605d7`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows:
 
 - `olympia/z.c`: `getlin`, `getlin_ew`, `eat_leading_trailing_whitespace`, `readfile`, `closefile`, `readlin` and `readlin_ew`, and the `iswhite` and `isdigit` macros of `olympia/z.h`.
-- `olympia/io.c`, lines 1 to 771 (up to `print_loc_info`): the `linehash`, `t_string` and `advance` macros, the `line` and `ext_boxnum` statics, `zero_check`, `if_name`, `box_scan`/`box_print`, `boxlist0_scan`/`boxlist0_print`, `boxlist_scan`/`boxlist_print`, `admit_print_sup`/`admit_print`/`admit_scan`, `ilist_print`/`ilist_scan`, `known_print`/`known_scan`, the `skill_list`, `item_list`, `trade_list` and `req_list` pairs, and `olytime_scan`/`olytime_print`.
+- `olympia/io.c`, lines 1 to 773 (up to `print_loc_info`): the `linehash`, `t_string` and `advance` macros, the `line` and `ext_boxnum` statics, `zero_check`, `if_name`, `box_scan`/`box_print`, `boxlist0_scan`/`boxlist0_print`, `boxlist_scan`/`boxlist_print`, `admit_print_sup`/`admit_print`/`admit_scan`, `ilist_print`/`ilist_scan`, `known_print`/`known_scan`, the `skill_list`, `item_list`, `trade_list` and `req_list` pairs, and `olytime_scan`/`olytime_print`.
 - `olympia/u.c`: `set_bit` and `test_bit`. `known_print` sorts with `int_comp` (`olympia/seed.c`) through `loop_known` (`olympia/loop.h`).
 
 ## Prerequisites
@@ -57,16 +57,18 @@ The script:
 | scanf number width | `sscanf`'s 512-byte limit on one `%d` |
 | continuation at end of file | a continued field on a file's last line, with and without a final newline, in every list scan (`boxlist`, `boxlist0`, `admit`, `ilist`, `known`, skill, item, trade and req lists): `readlin_ew` returns NULL and the scan keeps what it has read; the next `readlin` is NULL |
 | empty continuation line | a blank or white-space line after a trailing backslash in the skill, item, trade and req lists, and an item or trade tag with no data: the empty entry gets its `bad ... 0` diagnostic and the list ends there (G3 [#318](https://github.com/playbymail/olympia-g3/issues/318), fixed upstream); the next `readlin` is the line after it |
+| short entries | skill and req entries with too few numbers, on the first line and on continuation lines: each missing field is 0 for that entry (G3 [#311](https://github.com/playbymail/olympia-g3/issues/311), fixed upstream), not the previous entry's value |
+| bare tags | a bare `sl`, `il`, `tl` and `rq` tag, with and without a trailing tab: one all-zero entry, reported (`bad skill 0`, `bad item 0`) and dropped, and not a continuation (G3 [#312](https://github.com/playbymail/olympia-g3/issues/312)) |
 | zero_check | a `loc_info` that is all zero, has a field set, or has an empty but allocated list |
 
-Out of scope, because C is undefined there: a skill or req line with too few numbers (the C reads uninitialized locals), so also a skill or req list whose first entry is empty, and `readlin` before any `readfile` (C dereferences a NULL `point`).
+Out of scope, because C is undefined there: `readlin` before any `readfile` (C dereferences a NULL `point`).
 
 ## Results
 
-Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
+Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
-- 46 sections, 1477 lines. The C driver is deterministic, its output matches `io-c-output.txt`, and `TestIOMatchesC` passes.
+- 49 sections, 1599 lines. The C driver is deterministic, its output matches `io-c-output.txt`, and `TestIOMatchesC` passes.
 
 ## Upstream defects reproduced on purpose
 
-- `skill_list_scan()` and `req_list_scan()` (`olympia/io.c` lines 509-548 and 719-750) read `know`, `experience` and `consume` from locals that `sscanf()` may leave uninitialized, which is undefined; the Go port uses 0 for the locals (keeping their value from entry to entry). G3 [#311](https://github.com/playbymail/olympia-g3/issues/311). (The list scans' continuation test used to read `s[strlen(s)-1]` before an empty entry, G3 [#312](https://github.com/playbymail/olympia-g3/issues/312) and [#318](https://github.com/playbymail/olympia-g3/issues/318); upstream fixed both at the pinned revision, and an empty entry now ends the list in C as in the port.)
+None at the pinned revision. Upstream has fixed the ones this port used to reproduce: a short skill or req entry read uninitialized locals (G3 [#311](https://github.com/playbymail/olympia-g3/issues/311)), and the continuation test read `s[strlen(s)-1]` before an empty entry (G3 [#312](https://github.com/playbymail/olympia-g3/issues/312) and [#318](https://github.com/playbymail/olympia-g3/issues/318)).

@@ -18,7 +18,7 @@ The games are:
 - Each of those after one C turn, named `<game>+turn`.
   The turn is `olympia-g3 -r -l ./lib -S test-use-const-report-date`, as the fixtures run it.
 
-At the pinned revision that is 97 games and 194 cases.
+At the pinned revision that is 98 games and 196 cases.
 
 Each case runs, with both engines, on identical copies of the game:
 
@@ -33,7 +33,7 @@ A case passes when the exit status, stdout and stderr match byte for byte, and s
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `ab24d451ee25d61364e08cde1fbfc223e220fbd1`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `a22bbf10804d5c05876fc3c991e3ab07c1e605d7`.
 The revision is pinned in `run.sh` (`PINNED_REV`); `G3_REV` tests against another.
 Change the pin only on purpose, together with [`tools/olympia-spec`](../olympia-spec).
 
@@ -82,13 +82,13 @@ It exits 0 only when every selected case passes.
 
 ## Results
 
-Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
+Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
 
-pass 0, fail 194, error 0.
+pass 0, fail 196, error 0.
 Every case fails on the exit status (C 0, Go 2), stdout (Go stops after `sizeof(struct box)`) and stderr (Go prints `olympia-g3: load_db (-S): not yet implemented`).
 Go writes nothing, so the files that differ are those C's load and save change:
 
-- `lib/times_0` in all 97 games before a turn: their masthead carries the date the game was built, and C writes the fixed date.
-- Nothing in 89 of the `+turn` cases.
+- `lib/times_0` in all 98 games before a turn: their masthead carries the date the game was built, and C writes the fixed date.
+- Nothing in 90 of the `+turn` cases.
 - `lib/master` and `lib/misc` in 7 `+turn` cases (`exploration-refused`, `governance-rule`, `guard-pillage`, `inventory-give`, `player-quit`, `use-items`, `use-necro`): the load deletes the `deadchar` entities the turn left in `misc`.
 - A faction file in 2 `+turn` cases (`lib/fact/301` in `governance-rule`, `lib/fact/300` in `loyalty-refused`): the save drops an empty `CM` section.

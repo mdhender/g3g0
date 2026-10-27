@@ -21,7 +21,7 @@
 #
 # 1. internal/olympia/testdata/boxfile-cases.txt, one section at a time,
 #    each in a fresh process and a fresh, empty directory, since a section
-#    may crash or hang. After each section the directory's tree (every
+#    may crash. After each section the directory's tree (every
 #    file's path, mode and contents) is listed. The driver runs twice, to
 #    check determinism, and its output must equal
 #    internal/olympia/testdata/boxfile-c-output.txt, which the Go test
@@ -62,7 +62,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-ab24d451ee25d61364e08cde1fbfc223e220fbd1}"
+G3_REV="${G3_REV:-a22bbf10804d5c05876fc3c991e3ab07c1e605d7}"
 WORK="${WORK:-${ROOT}/tmp/boxfile-compat}"
 GAMES="${GAMES:-${ROOT}/tmp/olympia-roundtrip/cases}"
 CC="${CC:-cc}"
@@ -482,23 +482,17 @@ echo "building the C driver (log: ${WORK}/build.log)"
 #
 # section.py runs every section in a fresh directory with umask 022 and
 # writes, for each, the driver's output (its stderr goes to its stdout),
-# how it ended and the directory's tree. A section that hangs is stopped:
-# read_boxes() loops forever on a line it cannot move past, printing
-# "read_boxes: unexpected line" again each time for some lines and nothing
-# for others. The output is cut after the third such line in a row, or the
-# driver is stopped after 3 seconds, and "hang" takes the place of the
-# exit status. TestBoxfileMatchesC stops the Go port the same way, with
-# the readBoxesStuck hook. The tree lists each path under the directory,
-# sorted: "d MODE PATH" for a directory ("unreadable" if it cannot be
-# listed), "f MODE SIZE PATH" and the contents for a file, as "| LINE",
-# escaped as the driver escapes, and "\ no newline at end" when the last
-# line has none.
+# how it ended and the directory's tree. A section that runs for more than
+# 10 seconds is stopped, and the check fails. The tree lists each path
+# under the directory, sorted: "d MODE PATH" for a directory ("unreadable"
+# if it cannot be listed), "f MODE SIZE PATH" and the contents for a file,
+# as "| LINE", escaped as the driver escapes, and "\ no newline at end"
+# when the last line has none.
 cat >"${WORK}/section.py" <<'EOF'
-import os, selectors, signal, subprocess, sys, time
+import os, signal, subprocess, sys
 
 driver, cases, sections, outdir = sys.argv[1], sys.argv[2], int(sys.argv[3]), sys.argv[4]
-REPEAT = b"read_boxes: unexpected line"
-LIMIT = 3.0
+LIMIT = 10.0
 
 def esc(b):
     return "".join(chr(c) if 32 <= c <= 126 and c != 0x5c else "\\x%02x" % c for c in b)
@@ -542,44 +536,19 @@ def run(i):
     os.mkdir(d)
     p = subprocess.Popen([driver, cases, str(i)], cwd=d, stdout=subprocess.PIPE,
                          stderr=subprocess.DEVNULL)
-    sel = selectors.DefaultSelector()
-    sel.register(p.stdout, selectors.EVENT_READ)
-    data, lines, hang = b"", [], False
-    deadline = time.monotonic() + LIMIT
-    while True:
-        left = deadline - time.monotonic()
-        if left <= 0:
-            hang = True
-            break
-        if not sel.select(left):
-            continue
-        chunk = os.read(p.stdout.fileno(), 65536)
-        if not chunk:
-            break
-        data += chunk
-        while b"\n" in data:
-            line, data = data.split(b"\n", 1)
-            lines.append(line)
-            if (len(lines) >= 3 and lines[-1].startswith(REPEAT)
-                    and lines[-1] == lines[-2] == lines[-3]):
-                hang = True
-                break
-        if hang:
-            break
-    if hang:
+    try:
+        data, _ = p.communicate(timeout=LIMIT)
+    except subprocess.TimeoutExpired:
         p.kill()
         p.wait()
-        data = b""
-    else:
-        p.wait()
+        sys.exit(f"section {i} did not finish in {LIMIT:g} seconds")
+    lines = data.split(b"\n")
+    data = lines.pop()
     out = [l.decode("latin-1") for l in lines]
     if data:
         out.append(data.decode("latin-1") + " (no newline)")
-    if hang:
-        out.append("hang")
-    else:
-        rc = p.returncode
-        out.append(f"exit {128 - rc if rc < 0 else rc}")
+    rc = p.returncode
+    out.append(f"exit {128 - rc if rc < 0 else rc}")
     tree(d, out)
     for dp, dns, _ in os.walk(d):
         for n in dns:

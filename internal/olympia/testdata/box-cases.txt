@@ -1,6 +1,6 @@
 # Differential cases for the entity sections, load_box() and save_box() of
 # G3's olympia/io.c, and the command parser of olympia/input.c that
-# scan_command() uses, at G3 ab24d451ee25d61364e08cde1fbfc223e220fbd1.
+# scan_command() uses, at G3 a22bbf10804d5c05876fc3c991e3ab07c1e605d7.
 #
 # tools/box-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in box-c-output.txt; TestBoxMatchesC
@@ -30,7 +30,7 @@
 #   load N              load_box(N), then print line
 #   loadall             load_box(atoi(line)) while line is a box number, as
 #                       read_boxes() does; a line that is not one prints
-#                       "stop" and ends it (read_boxes() would loop forever)
+#                       "stop" and ends it (read_boxes() would skip it)
 #   save N              save_box(stdout, N), then box N's temp if it has a
 #                       box
 #   saveall             save_box(stdout, N) for every N that has a box
@@ -742,6 +742,8 @@ alloc 3703 2 0
 alloc 3704 2 0
 alloc 3705 2 0
 alloc 3706 5 0
+alloc 3707 2 0
+alloc 3708 2 0
 putl f 3701 char 0
 putl f CO
 putl f  us 3702
@@ -774,6 +776,14 @@ putl f 3706 skill 0
 putl f SK
 putl f  tl 7
 putl f 
+putl f 3707 char 0
+putl f CO
+putl f  li name "Joe #1" # a comment
+putl f 
+putl f 3708 char 0
+putl f CO
+putl f  li name Joe's keep # note
+putl f 
 readfile f
 advance
 loadall
@@ -782,6 +792,8 @@ cmd 3702
 cmd 3703
 cmd 3704
 cmd 3705
+cmd 3707
+cmd 3708
 saveall
 
 section oly_parse_cmd
@@ -820,6 +832,28 @@ parse move #
 parse #move
 parse move"x"y
 parse move a"b c"d
+parse name "Joe #1"
+parse name 'Joe #1'
+parse name Joe's keep # note
+parse name "Bob # x
+parse name 'Bob # x
+parse name Dee # "hi"
+parse name Dee # 'hi'
+parse name "a"#b
+parse name "a"'#'b
+parse name "a""#b"
+parse name a"#b"
+parse name a'#b'
+parse name x\x09"#tab" # gone
+parse name "x" y'z # gone
+parse "#quoted command" 1
+parse '#' 1
+parse # "not a quote"
+parse name "
+parse name '
+parse name "#
+parse name ""#
+parse name '' # gone
 
 section find_command
 find study

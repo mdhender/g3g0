@@ -6,13 +6,13 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `ab24d451ee25d61364e08cde1fbfc223e220fbd1`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `a22bbf10804d5c05876fc3c991e3ab07c1e605d7`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 The script exports that revision with `git archive`, so the clone's checkout does not matter.
 
 The port follows:
 
-- `olympia/io.c`, lines 2079 to 2532 at the pinned revision (`open_write_fp` to `write_master`).
+- `olympia/io.c`, lines 2081 to 2540 at the pinned revision (`open_write_fp` to `write_master`).
 - `olympia/u.c`: `lookup()` and `stage()`; `olympia/swear.c`: `lord()` and `player()`, which `write_master()` uses; `olympia/sout.c`: `sout()`'s cut to `LEN` bytes.
 
 ## Prerequisites
@@ -38,12 +38,11 @@ The script:
 
 `go test ./...` runs `TestBoxfileMatchesC` too, so the port is held to the recorded C output without a G3 clone. `TestBoxfileWorlds` is skipped unless `run.sh` runs it.
 
-### Sections that hang
+### Lines between boxes
 
-`read_boxes()` never moves past a comment line, or a line that is not a box number (such as a second blank line between boxes), so it loops forever on it: silently for a comment, printing `read_boxes: unexpected line` again each time for the other (G3 [#316](https://github.com/playbymail/olympia-g3/issues/316)).
-The port does the same.
-`run.sh` stops such a section: it cuts the output after the third `read_boxes: unexpected line` in a row, or stops the driver after 3 seconds, and writes `hang` where the exit status would be.
-`TestBoxfileMatchesC` stops the port the same way with the `readBoxesStuck` test hook, after the third time round.
+`read_boxes()` skips a comment line silently, and reports any other line that is not a box number (such as a second blank line between boxes) with `read_boxes: unexpected line` and skips it.
+Before upstream fixed G3 [#316](https://github.com/playbymail/olympia-g3/issues/316), it never moved past either and looped forever; `run.sh` and the Go test no longer need to stop such a section.
+`run.sh` stops any section that runs for more than 10 seconds, and fails.
 
 ### What the abort and crash statuses mean for the files
 
@@ -56,7 +55,7 @@ On macOS `abort()` flushes every open stdio stream, so a section that fails an a
 | fast_scan | `master` lines with extra white space, no `.`, no subkind, junk, a subkind past `schar`, no newline at the end; no `master`, an empty one; a blank line, a comment and a duplicate box (the `alloc_box()` assertions); another `libdir` |
 | scan_boxes | comments before and inside a box, a line of white space ending a box, kinds and subkinds in other cases, subkind `0` and `0x`, a subkind with a space, bad kinds and subkinds (the `read_boxes(N)` diagnostics), short and tab-separated box lines, kind `deleted`, no blank line at the end; a missing file; a blank line between boxes and a box number 0 (assertion); a duplicate box across files |
 | scan_chars, scan_all_boxes | fact files whose names do and do not start with a digit, a directory among them; no `fact`, `fact` a file, an unreadable `fact`; every box file, and none of them (the `stage()` line and every diagnostic) |
-| read_boxes, read_chars, read_all_boxes | box lines with leading white space, the end of the file, a continued field on the file's last line; a missing file; the two hangs, at the start and after a box; a negative box number; a box pass 1 did not allocate (`load_box()`'s assertion); `fact` with other names and a dot directory; no `fact`; a box in two files |
+| read_boxes, read_chars, read_all_boxes | box lines with leading white space, the end of the file, a continued field on the file's last line; a missing file; comment lines first, between boxes, last and alone, one and three extra blank lines between boxes, blank lines first and last, and junk, indented and box-number-0 lines between boxes and last, each skipped (G3 [#316](https://github.com/playbymail/olympia-g3/issues/316), fixed upstream); a line that is not a box and a negative box number; a box pass 1 did not allocate (`load_box()`'s assertion); `fact` with other names and a dot directory; no `fact`; a box in two files |
 | write_kind | chain order, deleted boxes, an empty kind, pretty names; no `libdir`; a read-only, a write-only and a directory in the file's place |
 | write_player, write_chars, write_leftovers | units in list order, a unit twice, a deleted unit, a unit with no box; no units; no `fact`; a unit that is a location or a player (assertion, with the file as `abort()` leaves it); what each leaves to `misc`, and `temp` |
 | write_all_boxes | every kind, an old `fact` file and stale box files; no `fact`, no `libdir`, a read-only `libdir` (`rm`'s message), a `libdir` with a space (which the shell splits), and `win_flag` (`del`, which `sh` cannot run) with and without `fact` |
@@ -65,11 +64,11 @@ On macOS `abort()` flushes every open stdio stream, so a section that fails an a
 
 ## Results
 
-Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
+Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
-- Check 1: 58 sections, 1465 lines. The C driver is deterministic, its output matches `boxfile-c-output.txt`, and `TestBoxfileMatchesC` passes.
-- Check 2: 195 games (`world.tgz` and the 194 cached round-trip inputs; 7,866,900 boxes in their written `master` files, 36,999 in `world.tgz`), each with `master`, with `master` and pretty, and without `master`: C and Go `lib` trees (files, modes and contents), stdout and stderr identical.
+- Check 1: 64 sections, 1610 lines. The C driver is deterministic, its output matches `boxfile-c-output.txt`, and `TestBoxfileMatchesC` passes.
+- Check 2: 197 games (`world.tgz` and the 196 cached round-trip inputs; 7,947,575 boxes in their written `master` files, 36,999 in `world.tgz`), each with `master`, with `master` and pretty, and without `master`: C and Go `lib` trees (files, modes and contents), stdout and stderr identical.
 
 ## Upstream defects reproduced on purpose
 
-- `read_boxes()` loops forever on a comment line or a line that is not a box number: G3 [#316](https://github.com/playbymail/olympia-g3/issues/316).
+None at the pinned revision. (`read_boxes()` used to loop forever on a comment line or a line that is not a box number, G3 [#316](https://github.com/playbymail/olympia-g3/issues/316); upstream fixed it at the pinned revision.)

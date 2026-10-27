@@ -1285,7 +1285,7 @@ readfile 1
 > load 4242
 Unforseen box 4242 found in load phase.
 Remove some/lib/master and retry.
-assertion failure: olympia/io.c (1942): FALSE
+assertion failure: olympia/io.c (1944): FALSE
 exit 134
 section unforseen box with default libdir
 > putl f 4243 char 0
@@ -1295,7 +1295,7 @@ readfile 1
 > load 4243
 Unforseen box 4243 found in load phase.
 Remove lib/master and retry.
-assertion failure: olympia/io.c (1942): FALSE
+assertion failure: olympia/io.c (1944): FALSE
 exit 134
 section continuation at end of file
 > alloc 3401 2 0
@@ -1635,6 +1635,8 @@ section commands in boxes
 > alloc 3704 2 0
 > alloc 3705 2 0
 > alloc 3706 5 0
+> alloc 3707 2 0
+> alloc 3708 2 0
 > putl f 3701 char 0
 > putl f CO
 > putl f  us 3702
@@ -1667,6 +1669,14 @@ section commands in boxes
 > putl f SK
 > putl f  tl 7
 > putl f 
+> putl f 3707 char 0
+> putl f CO
+> putl f  li name "Joe #1" # a comment
+> putl f 
+> putl f 3708 char 0
+> putl f CO
+> putl f  li name Joe's keep # note
+> putl f 
 > readfile f
 readfile 1
 > advance
@@ -1697,6 +1707,16 @@ cmd 81 fuzzy 0 conditional 0 who 3705 use_skill 0
 line [study 3706]
 parsed_line [study]
 parse: [study] [3706]
+> cmd 3707
+cmd 49 fuzzy 0 conditional 0 who 3707 use_skill 0
+line [name "Joe #1" ]
+parsed_line [name]
+parse: [name] [Joe #1]
+> cmd 3708
+cmd 49 fuzzy 0 conditional 0 who 3708 use_skill 0
+line [name Joe's keep ]
+parsed_line [name]
+parse: [name] [Joe's] [keep]
 > saveall
 3701 char 0
 CO
@@ -1722,6 +1742,16 @@ CO
 3706 skill 0
 SK
  tl 7
+
+3707 char 0
+CO
+ li name "Joe #1" 
+ ar 0 0 0 0 0 0 0 0
+
+3708 char 0
+CO
+ li name Joe's keep 
+ ar 0 0 0 0 0 0 0 0
 
 exit 0
 section oly_parse_cmd
@@ -1804,11 +1834,11 @@ parsed_line [move]
 parse: [move] [spaced out] [single  quoted] [x]
 > parse say "hello # world"
 oly_parse_cmd 0 fuzzy_find 0
-s [say "hello ]
+s [say "hello # world"]
 cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
-line [say "hello ]
+line [say "hello # world"]
 parsed_line [say]
-parse: [say] [hello]
+parse: [say] [hello # world]
 > parse say 'it''s'
 oly_parse_cmd 0 fuzzy_find 0
 s [say 'it''s']
@@ -1970,6 +2000,160 @@ cmd 48 fuzzy 0 conditional 0 who 0 use_skill 0
 line [move a"b c"d]
 parsed_line [move]
 parse: [move] [a"b] [c"d]
+> parse name "Joe #1"
+oly_parse_cmd 1 fuzzy_find 0
+s [name "Joe #1"]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name "Joe #1"]
+parsed_line [name]
+parse: [name] [Joe #1]
+> parse name 'Joe #1'
+oly_parse_cmd 1 fuzzy_find 0
+s [name 'Joe #1']
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name 'Joe #1']
+parsed_line [name]
+parse: [name] [Joe #1]
+> parse name Joe's keep # note
+oly_parse_cmd 1 fuzzy_find 0
+s [name Joe's keep ]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name Joe's keep ]
+parsed_line [name]
+parse: [name] [Joe's] [keep]
+> parse name "Bob # x
+oly_parse_cmd 1 fuzzy_find 0
+s [name "Bob # x]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name "Bob # x]
+parsed_line [name]
+parse: [name] [Bob # x]
+> parse name 'Bob # x
+oly_parse_cmd 1 fuzzy_find 0
+s [name 'Bob # x]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name 'Bob # x]
+parsed_line [name]
+parse: [name] [Bob # x]
+> parse name Dee # "hi"
+oly_parse_cmd 1 fuzzy_find 0
+s [name Dee ]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name Dee ]
+parsed_line [name]
+parse: [name] [Dee]
+> parse name Dee # 'hi'
+oly_parse_cmd 1 fuzzy_find 0
+s [name Dee ]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name Dee ]
+parsed_line [name]
+parse: [name] [Dee]
+> parse name "a"#b
+oly_parse_cmd 1 fuzzy_find 0
+s [name "a"]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name "a"]
+parsed_line [name]
+parse: [name] [a]
+> parse name "a"'#'b
+oly_parse_cmd 1 fuzzy_find 0
+s [name "a"'#'b]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name "a"'#'b]
+parsed_line [name]
+parse: [name] [a] [#] [b]
+> parse name "a""#b"
+oly_parse_cmd 1 fuzzy_find 0
+s [name "a""#b"]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name "a""#b"]
+parsed_line [name]
+parse: [name] [a] [#b]
+> parse name a"#b"
+oly_parse_cmd 1 fuzzy_find 0
+s [name a"]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name a"]
+parsed_line [name]
+parse: [name] [a"]
+> parse name a'#b'
+oly_parse_cmd 1 fuzzy_find 0
+s [name a']
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name a']
+parsed_line [name]
+parse: [name] [a']
+> parse name x\x09"#tab" # gone
+oly_parse_cmd 1 fuzzy_find 0
+s [name x "#tab" ]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name x "#tab" ]
+parsed_line [name]
+parse: [name] [x] [#tab]
+> parse name "x" y'z # gone
+oly_parse_cmd 1 fuzzy_find 0
+s [name "x" y'z ]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name "x" y'z ]
+parsed_line [name]
+parse: [name] [x] [y'z]
+> parse "#quoted command" 1
+oly_parse_cmd 0 fuzzy_find 0
+s ["#quoted command" 1]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line ["#quoted command" 1]
+parsed_line ["#quoted command]
+parse: [#quoted command] [1]
+> parse '#' 1
+oly_parse_cmd 0 fuzzy_find 0
+s ['#' 1]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line ['#' 1]
+parsed_line ['#]
+parse: [#] [1]
+> parse # "not a quote"
+oly_parse_cmd 1 fuzzy_find 0
+s []
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line []
+parsed_line []
+parse:
+> parse name "
+oly_parse_cmd 1 fuzzy_find 0
+s [name "]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name "]
+parsed_line [name]
+parse: [name] []
+> parse name '
+oly_parse_cmd 1 fuzzy_find 0
+s [name ']
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name ']
+parsed_line [name]
+parse: [name] []
+> parse name "#
+oly_parse_cmd 1 fuzzy_find 0
+s [name "#]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name "#]
+parsed_line [name]
+parse: [name] [#]
+> parse name ""#
+oly_parse_cmd 1 fuzzy_find 0
+s [name ""]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name ""]
+parsed_line [name]
+parse: [name] []
+> parse name '' # gone
+oly_parse_cmd 1 fuzzy_find 0
+s [name '' ]
+cmd 49 fuzzy 0 conditional 0 who 0 use_skill 0
+line [name '' ]
+parsed_line [name]
+parse: [name] []
 exit 0
 section find_command
 > find study

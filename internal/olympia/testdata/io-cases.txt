@@ -1,6 +1,6 @@
 # Differential cases for the line readers of G3's olympia/z.c and the field
 # scan and print helpers of olympia/io.c, at G3
-# ab24d451ee25d61364e08cde1fbfc223e220fbd1.
+# a22bbf10804d5c05876fc3c991e3ab07c1e605d7.
 #
 # tools/io-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in io-c-output.txt; TestIOMatchesC
@@ -963,6 +963,65 @@ put g  rq\x0977 1 0 \\\x0a  \x0a\x091 4 1\x0a
 readfile g
 next
 req_scan 3
+readlin
+
+section short entries: skill list
+alloc 600 5 0
+alloc 610 5 0
+alloc 920 5 0
+put f  sl\x09600 5 14 7 1\x0a sl\x09920\x0a sl\x09600 5\x0a sl\x09600 5 14\x0a sl\x09600 5 14 7 \\\x0a\x09610 \\\x0a\x09920 1\x0a sl\x09600 5 14 7 9 \\\x0a\x09610 2 3\x0a
+readfile f
+next
+skill_scan 2
+next
+skill_scan 2
+next
+skill_scan 2
+next
+skill_scan 2
+next
+skill_scan 2
+next
+skill_scan 2
+skill_print \x20sl\x09
+
+section short entries: req list
+alloc 1 4 0
+alloc 77 4 0
+alloc 78 4 0
+put f  rq\x0977 2 1\x0a rq\x0977\x0a rq\x0977 2\x0a rq\x0977 2 1 \\\x0a\x0978 3\x0a rq\x0977 2 -1 \\\x0a\x0978 \\\x0a\x091 4 1\x0a
+readfile f
+next
+req_scan 3
+next
+req_scan 3
+next
+req_scan 3
+next
+req_scan 3
+next
+req_scan 3
+req_print rq\x09
+
+section bare tags
+alloc 1 4 0
+alloc 600 5 0
+put f  sl\x0a sl\x09\x0a il\x0a tl\x0a rq\x0a rq\x09\x0a sl\x09600 1 2 3 0\x0a
+readfile f
+next
+skill_scan 9999
+next
+skill_scan 9999
+next
+item_scan 9999
+next
+trade_scan 9999
+next
+req_scan 9999
+next
+req_scan 9999
+next
+skill_scan 9999
 readlin
 
 section zero_check

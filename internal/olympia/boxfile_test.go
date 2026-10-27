@@ -73,30 +73,15 @@ func TestBoxfileMatchesC(t *testing.T) {
 	}
 }
 
-// boxfileHang is the panic the readBoxesStuck hook stops readBoxes with.
-type boxfileHang struct{}
-
-// boxfileHangAfter is how many times readBoxes may go round its loop
-// without reading a line before the test stops it. run.sh cuts the C
-// driver's output after the third "read_boxes: unexpected line" in a row.
-const boxfileHangAfter = 3
-
 // runBoxfileSection runs one section in a fresh world, as one run of the C
 // driver, and returns what the driver prints and how the section ended, as
 // run.sh writes them. A nil pointer dereference is C's NULL dereference,
-// which crashes with SIGSEGV (status 139). A section in which readBoxes
-// loops forever, as C's read_boxes() does, ends in "hang".
+// which crashes with SIGSEGV (status 139).
 func runBoxfileSection(t *testing.T, lines []string) (output string) {
 	var out strings.Builder
 	w := newWorld()
 	w.stderr = &out // the driver sends stderr to stdout
 	w.stdout = &out
-	stuck := 0
-	w.readBoxesStuck = func() {
-		if stuck++; stuck >= boxfileHangAfter {
-			panic(boxfileHang{})
-		}
-	}
 
 	out.WriteString(lines[0] + "\n")
 	defer func() {
@@ -107,8 +92,6 @@ func runBoxfileSection(t *testing.T, lines []string) (output string) {
 			switch r := r.(type) {
 			case nil:
 				out.WriteString("exit 0\n")
-			case boxfileHang:
-				out.WriteString("hang\n")
 			case assertion:
 				out.WriteString(r.Error())
 				clib.FlushAll() // abort() flushes the open files

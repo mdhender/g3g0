@@ -227,7 +227,8 @@ func runBoxSection(t *testing.T, lines []string) (output string) {
 
 // loadAll is the driver's load_all(): load_box() for each box line from
 // line on, as read_boxes() does, but a line that is not a box number ends
-// the file.
+// the file, where read_boxes() would skip it (tools/boxfile-compat tests
+// readBoxes itself).
 func loadAll(w *world, out io.Writer) {
 	for w.line != nil {
 		n := int(int32(clib.Atoi(*w.line)))

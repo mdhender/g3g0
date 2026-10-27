@@ -45,7 +45,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-ab24d451ee25d61364e08cde1fbfc223e220fbd1}"
+G3_REV="${G3_REV:-a22bbf10804d5c05876fc3c991e3ab07c1e605d7}"
 WORK="${WORK:-${ROOT}/tmp/entity-compat}"
 CC="${CC:-cc}"
 EXPECT="${ROOT}/internal/olympia/testdata/entity-c-output.txt"

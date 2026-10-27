@@ -6,12 +6,12 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `ab24d451ee25d61364e08cde1fbfc223e220fbd1`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `a22bbf10804d5c05876fc3c991e3ab07c1e605d7`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows:
 
-- `olympia/io.c`, lines 771 to 2079: every `print_*`/`scan_*` pair (`loc_info`, `magic`, `char`, `loc`, `subloc`, `item`, `item_magic`, `player`, `skill`, `command`, `gate`, `misc`), `load_box` and `save_box`.
+- `olympia/io.c`, lines 773 to 2081: every `print_*`/`scan_*` pair (`loc_info`, `magic`, `char`, `loc`, `subloc`, `item`, `item_magic`, `player`, `skill`, `command`, `gate`, `misc`), `load_box` and `save_box`.
 - `olympia/input.c`: `parse_line`, `remove_comment`, `remove_ctrl_chars`, `find_command` (and `fuzzy_find`) and `oly_parse_cmd`, which `scan_command` calls.
 - `olympia/z.c`: `i_strcmp` and the `fuzzy_*` matchers.
 
@@ -38,7 +38,7 @@ The script:
 
 `go test ./...` runs `TestBoxMatchesC` too, so the port is held to the recorded C output without a G3 clone. `TestBoxWorlds` is skipped unless `run.sh` runs it.
 
-The driver's load loop is `read_boxes()`'s, except that a line that is not a box number ends the file: `read_boxes()` loops forever on such a line, and on a comment line (it `continue`s without reading the next line). Pass 1 (`scan_boxes`) and pass 2 (`read_boxes`) themselves are tested by [`tools/boxfile-compat`](../boxfile-compat/README.md).
+The driver's load loop is `read_boxes()`'s, except that a line that is not a box number ends the file (printing `stop`), where `read_boxes()` skips a comment line silently and reports and skips any other. Pass 1 (`scan_boxes`) and pass 2 (`read_boxes`) themselves are tested by [`tools/boxfile-compat`](../boxfile-compat/README.md).
 
 ## What the cases cover
 
@@ -53,17 +53,16 @@ The driver's load loop is `read_boxes()`'s, except that a line that is not a box
 | continuation at end of file | a continued field on the file's last line, at top level and in a section: the list ends there (G3 [#313](https://github.com/playbymail/olympia-g3/issues/313), fixed upstream), and `save_box` writes what was read |
 | empty continuation line | a continued `il`, `sl`, `tl` and `rq` followed by a blank or white-space line, at top level and in a section: the list ends there (G3 [#318](https://github.com/playbymail/olympia-g3/issues/318), fixed upstream), after a `bad item 0`/`bad skill 0` diagnostic for the empty entry; the blank line was the box separator, so `load_box` reads on into the next box's lines as bad lines and its later fields |
 | narrowing | every `(schar)`, `(short)`, `(uchar)` and `int` field past its range, `sscanf` of a short `ar` line, `%c` of a high byte |
-| commands | `oly_parse_cmd` and `find_command`: conditions, comments, quotes, control and high bytes, exact and fuzzy matches, unknown commands; `li` and `us` in a box, and the `bad cmd` diagnostic |
+| commands | `oly_parse_cmd` and `find_command`: conditions, comments, quotes, control and high bytes, exact and fuzzy matches, unknown commands; `li` and `us` in a box, and the `bad cmd` diagnostic; `remove_comment`'s quotes (G3 [#315](https://github.com/playbymail/olympia-g3/issues/315), fixed upstream): a `#` inside a double- or single-quoted token is kept, an unterminated quote runs to the end of the line, a quote inside a word (`Joe's`, `a"#b"`) is ordinary text, a quote right after a closing quote starts another, and a quote after a `#` is ignored; in an `li` line too |
 | real boxes from world.tgz | 25 boxes chosen so that every section and list tag appears, with every box they reference allocated |
 
 ## Results
 
-Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
+Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
-- Check 1: 19 sections, 3370 lines. The C driver is deterministic, its output matches `box-c-output.txt`, and `TestBoxMatchesC` passes.
-- Check 2: 195 games (`world.tgz` and the 194 cached round-trip inputs), 7,866,900 saved boxes (36,999 in `world.tgz`), plain and pretty: C and Go output identical.
+- Check 1: 19 sections, 3554 lines. The C driver is deterministic, its output matches `box-c-output.txt`, and `TestBoxMatchesC` passes.
+- Check 2: 197 games (`world.tgz` and the 196 cached round-trip inputs), 7,947,575 saved boxes (36,999 in `world.tgz`), plain and pretty: C and Go output identical.
 
 ## Upstream defects reproduced on purpose
 
 - `print_item()` prints `fc` (`fly_cap`) only when `ride_cap` is set. Not yet filed in G3.
-- `remove_comment()` does not skip quoted text (its loops stop on the opening quote), and steps past the end of the string when a quote is its last byte. Not yet filed in G3.

@@ -497,28 +497,74 @@ d 755 lib
 section read_boxes of a comment line
 > mkdir lib
 > alloc 10101 3 14
+> alloc 10102 3 14
 > putl lib/loc 10101 loc city
 > putl lib/loc na City
 > putl lib/loc
 > putl lib/loc # a comment
 > putl lib/loc 10102 loc city
+> putl lib/loc na Town
 > read loc
-hang
+> line
+line NULL
+> writekind 3 loc
+exit 0
 d 755 lib
-f 644 51 lib/loc
+f 644 48 lib/loc
 | 10101 loc city
 | na City
 | 
-| # a comment
 | 10102 loc city
+| na Town
+| 
 section read_boxes of a comment line first
 > mkdir lib
+> alloc 10101 3 14
 > putl lib/loc # a comment
+> putl lib/loc #
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
 > read loc
-hang
+> line
+line NULL
+> writekind 3 loc
+exit 0
 d 755 lib
-f 644 12 lib/loc
+f 644 24 lib/loc
+| 10101 loc city
+| na City
+| 
+section read_boxes of comment lines only
+> mkdir lib
+> putl lib/loc # a comment
+> put lib/loc # no newline
+> read loc
+> line
+line NULL
+exit 0
+d 755 lib
+f 644 24 lib/loc
 | # a comment
+| # no newline
+\ no newline at end
+section read_boxes of a comment line last
+> mkdir lib
+> alloc 10101 3 14
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
+> putl lib/loc
+> putl lib/loc # a comment
+> putl lib/loc # another
+> read loc
+> line
+line NULL
+> writekind 3 loc
+exit 0
+d 755 lib
+f 644 24 lib/loc
+| 10101 loc city
+| na City
+| 
 section read_boxes of a blank line between boxes
 > mkdir lib
 > alloc 10101 3 14
@@ -529,23 +575,122 @@ section read_boxes of a blank line between boxes
 > putl lib/loc 10102 loc city
 > read loc
 read_boxes: unexpected line 
-read_boxes: unexpected line 
-read_boxes: unexpected line 
-hang
+> line
+line NULL
+> writekind 3 loc
+exit 0
 d 755 lib
 f 644 32 lib/loc
 | 10101 loc city
 | 
+| 10102 loc city
+| 
+section read_boxes of three blank lines between boxes
+> mkdir lib
+> alloc 10101 3 14
+> alloc 10102 3 14
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
+> putl lib/loc
+> putl lib/loc
+> putl lib/loc
+> putl lib/loc
+> putl lib/loc 10102 loc city
+> putl lib/loc na Town
+> read loc
+read_boxes: unexpected line 
+read_boxes: unexpected line 
+read_boxes: unexpected line 
+> line
+line NULL
+> writekind 3 loc
+exit 0
+d 755 lib
+f 644 48 lib/loc
+| 10101 loc city
+| na City
 | 
 | 10102 loc city
+| na Town
+| 
+section read_boxes of blank lines first and last
+> mkdir lib
+> alloc 10101 3 14
+> putl lib/loc
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
+> putl lib/loc
+> putl lib/loc
+> put lib/loc
+> read loc
+read_boxes: unexpected line 
+read_boxes: unexpected line 
+> line
+line NULL
+> writekind 3 loc
+exit 0
+d 755 lib
+f 644 24 lib/loc
+| 10101 loc city
+| na City
+| 
+section read_boxes of junk lines between boxes
+> mkdir lib
+> alloc 10101 3 14
+> alloc 10102 3 14
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
+> putl lib/loc
+> putl lib/loc junk
+> putl lib/loc \x09 na Indented
+> putl lib/loc  # an indented comment
+> putl lib/loc 0 loc city
+> putl lib/loc # a comment
+> putl lib/loc \x09
+> putl lib/loc  10102 loc city
+> putl lib/loc na Town
+> read loc
+read_boxes: unexpected line junk
+read_boxes: unexpected line 	 na Indented
+read_boxes: unexpected line  # an indented comment
+read_boxes: unexpected line 0 loc city
+read_boxes: unexpected line 	
+> line
+line NULL
+> writekind 3 loc
+exit 0
+d 755 lib
+f 644 48 lib/loc
+| 10101 loc city
+| na City
+| 
+| 10102 loc city
+| na Town
+| 
+section read_boxes of a junk line last
+> mkdir lib
+> alloc 10101 3 14
+> putl lib/loc 10101 loc city
+> putl lib/loc
+> put lib/loc junk at the end
+> read loc
+read_boxes: unexpected line junk at the end
+> line
+line NULL
+> writekind 3 loc
+exit 0
+d 755 lib
+f 644 16 lib/loc
+| 10101 loc city
+| 
 section read_boxes of a line that is not a box
 > mkdir lib
 > putl lib/loc loc 10101 city
 > read loc
 read_boxes: unexpected line loc 10101 city
-read_boxes: unexpected line loc 10101 city
-read_boxes: unexpected line loc 10101 city
-hang
+> line
+line NULL
+exit 0
 d 755 lib
 f 644 15 lib/loc
 | loc 10101 city
@@ -554,9 +699,9 @@ section read_boxes of a negative box number
 > putl lib/loc -10101 loc city
 > read loc
 read_boxes: unexpected line -10101 loc city
-read_boxes: unexpected line -10101 loc city
-read_boxes: unexpected line -10101 loc city
-hang
+> line
+line NULL
+exit 0
 d 755 lib
 f 644 16 lib/loc
 | -10101 loc city
@@ -569,7 +714,7 @@ section read_boxes of an unforseen box
 > read loc
 Unforseen box 10102 found in load phase.
 Remove lib/master and retry.
-assertion failure: olympia/io.c (1942): FALSE
+assertion failure: olympia/io.c (1944): FALSE
 exit 134
 d 755 lib
 f 644 31 lib/loc
@@ -853,7 +998,7 @@ section write_player of a unit that is not a character
 > unit 1001 1002
 > unit 1001 10101
 > writeplayer 1001
-assertion failure: olympia/io.c (2135): kind(who) == T_char || kind(who) == T_deleted
+assertion failure: olympia/io.c (2137): kind(who) == T_char || kind(who) == T_deleted
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -871,7 +1016,7 @@ section write_player of a unit that is a player
 > alloc 1002 1 49
 > unit 1001 1002
 > writeplayer 1001
-assertion failure: olympia/io.c (2135): kind(who) == T_char || kind(who) == T_deleted
+assertion failure: olympia/io.c (2137): kind(who) == T_char || kind(who) == T_deleted
 exit 134
 d 755 lib
 d 755 lib/fact

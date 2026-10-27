@@ -55,7 +55,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-ab24d451ee25d61364e08cde1fbfc223e220fbd1}"
+G3_REV="${G3_REV:-a22bbf10804d5c05876fc3c991e3ab07c1e605d7}"
 WORK="${WORK:-${ROOT}/tmp/box-compat}"
 GAMES="${GAMES:-${ROOT}/tmp/olympia-roundtrip/cases}"
 CC="${CC:-cc}"
@@ -292,7 +292,7 @@ show_cmd(struct command *c)
 
 /* load_box() for each box line from line on, as read_boxes() does, but a
    line that is not a box number ends the file, where read_boxes() would
-   loop forever on it */
+   skip it (tools/boxfile-compat tests read_boxes() itself) */
 static void
 load_all(void)
 {

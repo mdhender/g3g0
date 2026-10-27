@@ -1465,6 +1465,128 @@ reqs: [1 2 1] [77 1 0]
 > readlin
 readlin [\x091 4 1] len 6
 exit 0
+section short entries: skill list
+> alloc 600 5 0
+> alloc 610 5 0
+> alloc 920 5 0
+> put f  sl\x09600 5 14 7 1\x0a sl\x09920\x0a sl\x09600 5\x0a sl\x09600 5 14\x0a sl\x09600 5 14 7 \\\x0a\x09610 \\\x0a\x09920 1\x0a sl\x09600 5 14 7 9 \\\x0a\x09610 2 3\x0a
+> readfile f
+readfile 1
+> next
+line [sl\x09600 5 14 7 1] hash 29548 t [600 5 14 7 1]
+> skill_scan 2
+skills: [600 5 14 7]
+> next
+line [sl\x09920] hash 29548 t [920]
+> skill_scan 2
+skills: [600 5 14 7] [920 0 0 0]
+> next
+line [sl\x09600 5] hash 29548 t [600 5]
+> skill_scan 2
+skills: [600 5 14 7] [920 0 0 0] [600 5 0 0]
+> next
+line [sl\x09600 5 14] hash 29548 t [600 5 14]
+> skill_scan 2
+skills: [600 5 14 7] [920 0 0 0] [600 5 0 0] [600 5 14 0]
+> next
+line [sl\x09600 5 14 7 \x5c] hash 29548 t [600 5 14 7 \x5c]
+> skill_scan 2
+skills: [600 5 14 7] [920 0 0 0] [600 5 0 0] [600 5 14 0] [600 5 14 7] [610 0 0 0] [920 1 0 0]
+> next
+line [sl\x09600 5 14 7 9 \x5c] hash 29548 t [600 5 14 7 9 \x5c]
+> skill_scan 2
+skills: [600 5 14 7] [920 0 0 0] [600 5 0 0] [600 5 14 0] [600 5 14 7] [610 0 0 0] [920 1 0 0] [600 5 14 7] [610 2 3 0]
+> skill_print \x20sl\x09
+ sl	600 5 14 7 0 \
+	920 0 0 0 0 \
+	600 5 0 0 0 \
+	600 5 14 0 0 \
+	600 5 14 7 0 \
+	610 0 0 0 0 \
+	920 1 0 0 0 \
+	600 5 14 7 0 \
+	610 2 3 0 0
+exit 0
+section short entries: req list
+> alloc 1 4 0
+> alloc 77 4 0
+> alloc 78 4 0
+> put f  rq\x0977 2 1\x0a rq\x0977\x0a rq\x0977 2\x0a rq\x0977 2 1 \\\x0a\x0978 3\x0a rq\x0977 2 -1 \\\x0a\x0978 \\\x0a\x091 4 1\x0a
+> readfile f
+readfile 1
+> next
+line [rq\x0977 2 1] hash 29297 t [77 2 1]
+> req_scan 3
+reqs: [77 2 1]
+> next
+line [rq\x0977] hash 29297 t [77]
+> req_scan 3
+reqs: [77 2 1] [77 0 0]
+> next
+line [rq\x0977 2] hash 29297 t [77 2]
+> req_scan 3
+reqs: [77 2 1] [77 0 0] [77 2 0]
+> next
+line [rq\x0977 2 1 \x5c] hash 29297 t [77 2 1 \x5c]
+> req_scan 3
+reqs: [77 2 1] [77 0 0] [77 2 0] [77 2 1] [78 3 0]
+> next
+line [rq\x0977 2 -1 \x5c] hash 29297 t [77 2 -1 \x5c]
+> req_scan 3
+reqs: [77 2 1] [77 0 0] [77 2 0] [77 2 1] [78 3 0] [77 2 -1] [78 0 0] [1 4 1]
+> req_print rq\x09
+rq	77 2 1 \
+	77 0 0 \
+	77 2 0 \
+	77 2 1 \
+	78 3 0 \
+	77 2 -1 \
+	78 0 0 \
+	1 4 1
+exit 0
+section bare tags
+> alloc 1 4 0
+> alloc 600 5 0
+> put f  sl\x0a sl\x09\x0a il\x0a tl\x0a rq\x0a rq\x09\x0a sl\x09600 1 2 3 0\x0a
+> readfile f
+readfile 1
+> next
+line [sl] hash 29548 t []
+> skill_scan 9999
+skill_list_scan(9999): bad skill 0
+skills:
+> next
+line [sl\x09] hash 29548 t []
+> skill_scan 9999
+skill_list_scan(9999): bad skill 0
+skills:
+> next
+line [il] hash 26988 t []
+> item_scan 9999
+item_list_scan(9999): bad item 0
+items:
+> next
+line [tl] hash 29804 t []
+> trade_scan 9999
+trade_list_scan(9999): bad item 0
+trades:
+> next
+line [rq] hash 29297 t []
+> req_scan 9999
+req_list_scan(9999): bad item 0
+reqs:
+> next
+line [rq\x09] hash 29297 t []
+> req_scan 9999
+req_list_scan(9999): bad item 0
+reqs:
+> next
+line [sl\x09600 1 2 3 0] hash 29548 t [600 1 2 3 0]
+> skill_scan 9999
+skills: [600 1 2 3]
+> readlin
+readlin NULL
+exit 0
 section zero_check
 > zero 0 0
 zero_check 1
