@@ -46,6 +46,10 @@ type world struct {
 	garrisonMagic  int32
 	mountOlympus   int32
 
+	// libdir is libdir, the data directory (-l), which load_box()'s
+	// diagnostic names. C starts it "lib".
+	libdir string
+
 	// Saved in libdir/system, but defined outside glob.c: seed_has_been_run
 	// in io.c, faery_region and faery_player in faery.c, tunnel_region and
 	// under_region in tunnel.c, hades_region, hades_pit and hades_player in
@@ -85,6 +89,10 @@ type world struct {
 	line      *string
 	extBoxnum int32
 
+	// fuzzyFind is fuzzy_find in input.c: whether the last find_command()
+	// matched a command name only fuzzily.
+	fuzzyFind bool
+
 	// stderr is C's stderr, which print_box_usage() and alloc_box() write
 	// to. newWorld sets it to os.Stderr; the engine sets it to its own.
 	stderr io.Writer
@@ -122,6 +130,8 @@ func newWorld() *world {
 		combatPl:      0,
 		garrisonMagic: 999,
 		mountOlympus:  0,
+
+		libdir: "lib",
 
 		subCacheKind: -1,
 

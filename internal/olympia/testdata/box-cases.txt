@@ -1,0 +1,1218 @@
+# Differential cases for the entity sections, load_box() and save_box() of
+# G3's olympia/io.c, and the command parser of olympia/input.c that
+# scan_command() uses, at G3 6bbcd63055d051ade6f745f368281628441a2c27.
+#
+# tools/box-compat/run.sh feeds this file to a C driver built from the
+# pinned sources and records its output in box-c-output.txt; TestBoxMatchesC
+# feeds it to the Go port and requires the same output.
+#
+# Each "section NAME" line starts a section. Every section runs in a fresh
+# process (a fresh world, after glob_init()) in a fresh, empty directory, so
+# a section may end in a crash, and the files it writes are its own. run.sh
+# adds "exit STATUS" after each section. stderr goes to the same place as
+# stdout, in order.
+#
+# One operation per line; a line that starts with '#' is a comment, and
+# blank lines are skipped. N, K, SK, P and V are integers, read with
+# strtol(s, NULL, 0) and stored in a C int. TEXT is the rest of the line
+# after one space, with \xHH and \\ escapes; with no space it is empty.
+# NAME and WHAT are one word. Strings print with bytes outside ' '..'~',
+# and '\', as \xHH, and NULL prints as NULL.
+#
+#   alloc N K SK        alloc_box(N, K, SK)
+#   pretty P            pretty_data_files = P
+#   libdir TEXT         libdir = TEXT
+#   put NAME TEXT       append TEXT to file NAME
+#   putl NAME TEXT      append TEXT and a newline to file NAME
+#   readfile NAME       readfile(NAME), and its result
+#   advance             line = readlin()
+#   line                print line
+#   load N              load_box(N), then print line
+#   loadall             load_box(atoi(line)) while line is a box number, as
+#                       read_boxes() does; a line that is not one prints
+#                       "stop" and ends it (read_boxes() would loop forever)
+#   save N              save_box(stdout, N), then box N's temp if it has a
+#                       box
+#   saveall             save_box(stdout, N) for every N that has a box
+#   cmd N               print p_command(N): cmd, fuzzy, conditional, who,
+#                       use_skill, line, parsed_line and parse
+#   parse TEXT          oly_parse_cmd() of TEXT into the driver's one
+#                       struct command, which keeps its state from one parse
+#                       to the next; prints the result, fuzzy_find, TEXT as
+#                       oly_parse_cmd() left it, and the command
+#   find TEXT           find_command(TEXT) and fuzzy_find
+#   p WHAT N            p_WHAT(N): char, magic, loc, subloc, item,
+#                       item_magic, player, skill, gate, misc, disp or
+#                       command
+#   poke WHAT N V       set a field of box N that io.c does not read, to
+#                       test zero_check(): loc_next (entity_loc.next),
+#                       prov_dest_empty (allocate an empty prov_dest),
+#                       mage_worked, one_turn_use, opium_double, cmd
+#                       (command.cmd) or where (loc_info.where)
+#
+# Kinds: 1 player, 2 char, 3 loc, 4 item, 5 skill, 6 gate, 7 road,
+# 9 ship, 11 storm. Subkinds: 3 plain, 14 city, 30 galley, 49 pl_regular.
+
+section every field and section
+alloc 1001 1 49
+alloc 1002 2 0
+alloc 1003 3 3
+alloc 1004 3 14
+alloc 1005 4 0
+alloc 1006 4 0
+alloc 1007 5 0
+alloc 1008 6 0
+alloc 1009 9 30
+alloc 1010 11 0
+alloc 1011 2 0
+alloc 1012 5 0
+putl f 1002 char 0
+putl f CO
+putl f  li study 1007 # with a comment
+putl f  ar 1007 0 0 0 0 0 0 0
+putl f  cs 2
+putl f  wa 5
+putl f  st 1
+putl f  us 1007
+putl f  ue 3
+putl f  de 4
+putl f  po 1
+putl f  pr 2
+putl f  if 1
+putl f CM
+putl f  im 1
+putl f  ma 30
+putl f  ca 25
+putl f  as 5
+putl f  hm 2
+putl f  qc 3
+putl f  rb 4
+putl f  hs 1
+putl f  cm 1
+putl f  pr 1
+putl f  kw 1
+putl f  dg 1
+putl f  sr 1
+putl f  bf 7
+putl f  vp 2
+putl f  pl 1011
+putl f  pc 1003
+putl f  ar 1006
+putl f  ot 1006
+putl f  vi 1004 1003 1012
+putl f CH
+putl f  ni 1005
+putl f  lo 1001
+putl f  pl 1001
+putl f  he 100
+putl f  si 1
+putl f  lk 2
+putl f  lr 50
+putl f  sl\x091007 2 30 5 0 \\
+putl f \x091012 1 7 0 0
+putl f  pr 1
+putl f  mo 12
+putl f  bh 3
+putl f  gu 1
+putl f  tf 2
+putl f  bp 50
+putl f  ra 10
+putl f  at 60
+putl f  df 70
+putl f  mi 80
+putl f  po 4
+putl f  ct 1001 1011
+putl f  dt 3 15 200
+putl f LI
+putl f  wh 1003
+putl f  hl 1011
+putl f ah 1001
+putl f ad 1011
+putl f an 1001 1011
+putl f tl\x091 1005 5 100 0 5 0 0 \\
+putl f \x092 1006 1 900 1 1 0 3
+putl f il\x091005 10 \\
+putl f \x091006 2
+putl f na Osswid the Bold
+putl f 
+putl f 1003 loc plain
+putl f na Plain
+putl f SL
+putl f  te 1007 1012
+putl f  da 50
+putl f  de 10
+putl f  ca 1000
+putl f  bm 2
+putl f  er 500
+putl f  eg 100
+putl f  mo 9
+putl f  gr 1
+putl f  sd 4
+putl f  cl 3
+putl f  sh 1
+putl f  mc 1
+putl f  op 20
+putl f  lo 2
+putl f  cp 3
+putl f  uf 1
+putl f  sf 1
+putl f  ql 2
+putl f  td 5
+putl f  nc 1004
+putl f  lt 1004
+putl f  lf 1003
+putl f  bs 1010
+putl f  lw 3
+putl f  lp 1
+putl f LO
+putl f  pd 1004 0 1003 0
+putl f  hi 1
+putl f  sh 3
+putl f  ba 2
+putl f  dg 4
+putl f  sl 1
+putl f  lc 3
+putl f LI
+putl f  wh 1004
+putl f  hl 1002 1009 1011
+putl f 
+putl f 1005 item 0
+putl f na peasant
+putl f IM
+putl f  au 5
+putl f  cl 1
+putl f  cr 2
+putl f  cc 1
+putl f  uk 3
+putl f  qc 4
+putl f  ab 5
+putl f  db 6
+putl f  mb 7
+putl f  ba 8
+putl f  rd 9
+putl f  tn 10
+putl f  oc 11
+putl f  ti 1002
+putl f  rc 1003
+putl f  pc 1004
+putl f  ct 1002
+putl f  lo 1012
+putl f  mu 1007
+putl f  ms 1012
+putl f IT
+putl f  pl peasants
+putl f  wt 100
+putl f  lc 150
+putl f  fc 20
+putl f  mu 1
+putl f  pr 1
+putl f  an 1
+putl f  at 5
+putl f  df 6
+putl f  mi 7
+putl f  bp 10
+putl f  ca 1
+putl f  un 1002
+putl f 
+putl f 1006 item 0
+putl f IT
+putl f  rc 15
+putl f  fc 0
+putl f 
+putl f 1001 player pl_regular
+putl f PL
+putl f  fn Full Name
+putl f  em a@b.c
+putl f  ve vis@b.c
+putl f  le last@b.c
+putl f  pw secret
+putl f  np 12
+putl f  fs 30
+putl f  ft 5
+putl f  fo 1
+putl f  nt 1
+putl f  tf 1
+putl f  sl 100
+putl f  sb 2000
+putl f  so 1
+putl f  dr 1
+putl f  ci 1
+putl f  bm 1
+putl f  lt 7
+putl f  kn 1005 1003 1004
+putl f  un 1002 1011
+putl f  uf 1011
+putl f  am 1011 1 1002 1005
+putl f  am 1003 0
+putl f 
+putl f 1007 skill 0
+putl f SK
+putl f  tl 14
+putl f  rs 1012
+putl f  of 1012
+putl f  re 1012
+putl f  rq\x091005 1 2 \\
+putl f \x091006 3 0
+putl f  pr 1005
+putl f  np 2
+putl f  ne 1
+putl f 
+putl f 1008 gate 0
+putl f GA
+putl f  tl 1003
+putl f  nj 1002
+putl f  nu 1001
+putl f  sk 1234
+putl f  rh 1
+putl f 
+putl f 1010 storm 0
+putl f MI
+putl f  sb 1002
+putl f  di 3
+putl f  mc 4
+putl f  md 5
+putl f  ss 6
+putl f  ca r
+putl f  gc 1004
+putl f  mh 1003
+putl f  co 1005
+putl f  ov 1006
+putl f  ol 1001
+putl f  bs 1009
+putl f  sn Saved Name
+putl f  ds Display banner
+putl f  nm 1003 1002
+putl f 
+readfile f
+advance
+line
+loadall
+line
+cmd 1002
+saveall
+save 1002
+save 1004
+pretty 1
+saveall
+
+section names and pretty
+alloc 1001 1 49
+alloc 1002 2 0
+alloc 1003 3 3
+alloc 1004 3 14
+alloc 1005 4 0
+alloc 1006 4 0
+alloc 1007 5 0
+alloc 1008 6 0
+alloc 1009 9 30
+alloc 1010 11 0
+alloc 1011 2 0
+alloc 1012 5 0
+putl f 1001 player pl_regular
+putl f na Faction One
+putl f 
+putl f 1002 char 0
+putl f na Osswid
+putl f 
+putl f 1003 loc plain
+putl f na Plain [x]
+putl f 
+putl f 1004 loc city
+putl f na Drassa
+putl f 
+putl f 1005 item 0
+putl f na peasant
+putl f 
+putl f 1006 item 0
+putl f na Amulet
+putl f 
+putl f 1007 skill 0
+putl f na Combat
+putl f 
+putl f 1008 gate 0
+putl f 
+putl f 1009 ship galley
+putl f na Swift
+putl f 
+putl f 1010 storm 0
+putl f na Gale
+putl f 
+putl f 1011 char 0
+putl f na Second
+putl f 
+putl f 1012 skill 0
+putl f na Shipcraft
+readfile f
+advance
+loadall
+saveall
+pretty 1
+saveall
+
+section zero_check and sections that always print
+alloc 2001 3 3
+alloc 2002 2 0
+alloc 2003 4 0
+alloc 2004 11 0
+alloc 2005 1 49
+alloc 2006 5 0
+alloc 2007 6 0
+alloc 2008 3 14
+alloc 2009 2 0
+alloc 2010 0 0
+save 2001
+p loc 2001
+save 2001
+poke loc_next 2001 7
+save 2001
+p loc 2008
+poke prov_dest_empty 2008 1
+save 2008
+p char 2002
+save 2002
+p magic 2002
+save 2002
+poke mage_worked 2002 1
+save 2002
+p item 2003
+save 2003
+p item_magic 2003
+save 2003
+poke one_turn_use 2003 1
+save 2003
+p misc 2004
+save 2004
+poke opium_double 2004 1
+save 2004
+p player 2005
+save 2005
+p skill 2006
+save 2006
+p gate 2007
+save 2007
+p subloc 2008
+save 2008
+p disp 2009
+p command 2009
+save 2009
+poke cmd 2009 3
+save 2009
+poke where 2009 2001
+save 2009
+poke where 2009 99999
+save 2009
+save 2010
+save 2011
+save 0
+save -1
+
+section diagnostics
+alloc 3001 2 0
+alloc 3002 2 0
+alloc 3003 4 0
+putl f 3001 char 0
+putl f # a comment line
+putl f na
+putl f CHAR
+putl f  xx 5
+putl f \x09ni 3002
+putl f \x20
+putl f  h
+putl f  \x80\x81 high bytes
+putl f  he
+putl f   he 3
+putl f  ni 99999
+putl f  lo abc
+putl f CM
+putl f  zz 1
+putl f  vi 3002 99999 3003
+putl f LI
+putl f  qq 1
+putl f  wh 99999
+putl f  hl 3003 77 3002
+putl f LO
+putl f  qq 1
+putl f  pd 3003 0 77 \\
+putl f    3002 0
+putl f SL
+putl f  qq 1
+putl f  te 3002 77
+putl f IT
+putl f  qq 1
+putl f  pl
+putl f IM
+putl f  qq 1
+putl f  ti 99999
+putl f  mu 77
+putl f PL
+putl f  qq 1
+putl f  am 77 1 3002
+putl f  am 3003 0 77 3002
+putl f  kn 3003 77
+putl f SK
+putl f  qq 1
+putl f  rq\x0977 1 0
+putl f GA
+putl f  qq 1
+putl f  tl 77
+putl f MI
+putl f  qq 1
+putl f  ca
+putl f CO
+putl f  qq 1
+putl f  us 77
+putl f XY unknown section
+putl f  ab skipped
+putl f  cd skipped too
+putl f \x09and this
+putl f il\x0977 3 \\
+putl f \x093003 2
+putl f an 3003 77
+putl f ad 77
+putl f ah 77 3003
+putl f tl\x091 77 1 1 0 1 0 0
+putl f na Late Name
+putl f 
+readfile f
+advance
+load 3001
+saveall
+
+section top-level line endings and order
+alloc 3101 2 0
+alloc 3102 2 0
+alloc 3103 2 0
+alloc 3104 2 0
+putl f 3101 char 0
+putl f na First
+putl f 3102 char 0
+putl f na Second
+putl f 
+putl f 3103 char 0
+putl f CH
+putl f  he 5
+putl f #comment
+putl f  he 6
+putl f na Third
+putl f 
+putl f 
+putl f 3104 char 0
+putl f na Fourth
+readfile f
+advance
+loadall
+line
+advance
+line
+loadall
+line
+saveall
+
+section load_box at end of file
+alloc 3201 2 0
+alloc 3202 2 0
+put f 3201 char 0
+readfile f
+advance
+load 3201
+save 3201
+put g 3202 char 0\x0aCH\x0a he 7
+readfile g
+advance
+load 3202
+save 3202
+
+section load_box line after a section
+alloc 3301 2 0
+putl f 3301 char 0
+putl f CH
+putl f  he 9
+putl f CM
+putl f  im 1
+putl f na After
+putl f 
+putl f next line
+readfile f
+advance
+load 3301
+save 3301
+
+section unforseen box
+libdir some/lib
+putl f 4242 char 0
+putl f na Ghost
+readfile f
+advance
+load 4242
+
+section unforseen box with default libdir
+putl f 4243 char 0
+readfile f
+advance
+load 4243
+
+section continuation at end of file
+alloc 3401 2 0
+put f 3401 char 0\x0ail\x091 2 \\
+readfile f
+advance
+load 3401
+
+section continuation in a section at end of file
+alloc 3402 2 0
+alloc 3403 3 3
+put f 3402 char 0\x0aCH\x0a ct 3402 \\
+readfile f
+advance
+load 3402
+
+section narrowing
+alloc 3501 2 0
+alloc 3502 3 3
+alloc 3503 4 0
+alloc 3504 11 0
+alloc 3505 1 49
+alloc 3506 5 0
+alloc 3507 6 0
+putl f 3501 char 0
+putl f CH
+putl f  he 300
+putl f  si -129
+putl f  lr 99999999999
+putl f  at 70000
+putl f  df -40000
+putl f  mi 32768
+putl f  mo -5
+putl f  lk 255
+putl f  dt 70000 -1 99999999999
+putl f CM
+putl f  im 200
+putl f  ma -7
+putl f  as 40000
+putl f  qc 99999
+putl f  bf 4294967297
+putl f CO
+putl f  li stack 1
+putl f  ar 1 -2 3 x 5
+putl f  cs 300
+putl f  wa -3
+putl f  st 129
+putl f  ue 2147483648
+putl f  po -1
+putl f  pr 256
+putl f 
+putl f 3502 loc plain
+putl f LO
+putl f  hi 128
+putl f  sh 65536
+putl f  ba -1
+putl f  dg 1000
+putl f  lc -300
+putl f  sl 255
+putl f SL
+putl f  da 300
+putl f  de -1
+putl f  sd 99999
+putl f  bm -2
+putl f  op 3000000000
+putl f  lw -1
+putl f  lp 2
+putl f 
+putl f 3503 item 0
+putl f IT
+putl f  wt 65535
+putl f  lc 40000
+putl f  rc -1
+putl f  fc 99999
+putl f  bp -9
+putl f IM
+putl f  au 70000
+putl f  rd -70000
+putl f  tn 200
+putl f  ti -5
+putl f  cl 128
+putl f 
+putl f 3504 storm 0
+putl f MI
+putl f  ca \xff
+putl f  di -1
+putl f  ss 40000
+putl f  mc +12
+putl f  md 1x
+putl f 
+putl f 3505 player pl_regular
+putl f PL
+putl f  np 40000
+putl f  fs -40000
+putl f  fo 128
+putl f  sl -1
+putl f  sb +7
+putl f  lt   42
+putl f 
+putl f 3506 skill 0
+putl f SK
+putl f  tl -1
+putl f  np 99999999999
+putl f  ne 0
+putl f 
+putl f 3507 gate 0
+putl f GA
+putl f  sk 99999
+putl f  rh 300
+putl f  nj 0
+putl f  nu 0
+putl f 
+readfile f
+advance
+loadall
+saveall
+cmd 3501
+
+section misc ca with a negative byte and an empty plural name
+alloc 3601 11 0
+alloc 3602 4 0
+alloc 3603 11 0
+putl f 3601 storm 0
+putl f MI
+putl f  ca -x
+putl f 
+putl f 3602 item 0
+putl f IT
+putl f  pl
+putl f 
+putl f 3603 storm 0
+putl f MI
+putl f  sn
+putl f  ds
+putl f 
+readfile f
+advance
+loadall
+saveall
+
+section commands in boxes
+alloc 3701 2 0
+alloc 3702 2 0
+alloc 3703 2 0
+alloc 3704 2 0
+alloc 3705 2 0
+alloc 3706 5 0
+putl f 3701 char 0
+putl f CO
+putl f  us 3702
+putl f  li  move 3702   # comment
+putl f  ar 3702
+putl f 
+putl f 3702 char 0
+putl f CO
+putl f  li bogus thing # a comment
+putl f  ar 1 2 3
+putl f 
+putl f 3703 char 0
+putl f CO
+putl f  li
+putl f  ar 9
+putl f 
+putl f 3704 char 0
+putl f CO
+putl f  li &stduy 3706
+putl f  us 3706
+putl f  ue 2
+putl f 
+putl f 3705 char 0
+putl f CO
+putl f  ar 1 2 3 4 5 6 7 8 9
+putl f  li ?attack 3701
+putl f  li study 3706
+putl f 
+putl f 3706 skill 0
+putl f SK
+putl f  tl 7
+putl f 
+readfile f
+advance
+loadall
+cmd 3701
+cmd 3702
+cmd 3703
+cmd 3704
+cmd 3705
+saveall
+
+section oly_parse_cmd
+parse study 600
+parse   STUDY 600
+parse & move north
+parse ?attack 1002
+parse &
+parse ?
+parse
+parse # only a comment
+parse    
+parse move\x09north\x09 
+parse move "  spaced out  " 'single  quoted' x
+parse say "hello # world"
+parse say 'it''s'
+parse say "ends in a quote"
+parse say 'ends in a quote'
+parse say "unterminated
+parse say 'unterminated
+parse "" move
+parse '' move
+parse "move" north
+parse 'move' north
+parse move\x01\x1fnorth\x7f
+parse move \xe1\x80\x9f\xa0 n
+parse stduy 1
+parse studdy 1
+parse sudy 1
+parse stucy 1
+parse stu 1
+parse xyzzy 1
+parse "a""b"
+parse \x09\x09move\x09
+parse move #
+parse #move
+parse move"x"y
+parse move a"b c"d
+
+section find_command
+find study
+find STUDY
+find Study
+find
+find stduy
+find stdy
+find studyy
+find sutdy
+find fakecmd
+find begin
+find bgein
+find admit
+find admti
+find a
+find attack
+find attakc
+find unit
+find untis
+find stack
+find stakc
+find xxxxxxxxxx
+
+section real boxes from world.tgz
+alloc 1 4 0
+alloc 10 4 0
+alloc 11 4 0
+alloc 14 4 0
+alloc 15 4 0
+alloc 16 4 0
+alloc 17 4 0
+alloc 21 4 0
+alloc 25 4 0
+alloc 54 4 0
+alloc 55 4 0
+alloc 59 4 0
+alloc 60 4 0
+alloc 61 4 0
+alloc 65 4 0
+alloc 68 4 0
+alloc 69 4 0
+alloc 77 4 0
+alloc 78 4 0
+alloc 80 4 0
+alloc 82 4 0
+alloc 83 4 0
+alloc 87 4 0
+alloc 94 4 0
+alloc 95 4 0
+alloc 96 4 0
+alloc 100 1 52
+alloc 101 4 0
+alloc 200 1 48
+alloc 207 1 62
+alloc 261 4 0
+alloc 274 4 0
+alloc 275 4 0
+alloc 276 4 0
+alloc 277 4 0
+alloc 294 4 0
+alloc 600 5 0
+alloc 601 5 0
+alloc 602 5 0
+alloc 603 5 0
+alloc 610 5 0
+alloc 613 5 0
+alloc 630 5 0
+alloc 670 5 0
+alloc 680 5 0
+alloc 700 5 0
+alloc 730 5 0
+alloc 800 5 43
+alloc 840 5 43
+alloc 860 5 43
+alloc 937 13 0
+alloc 1009 2 64
+alloc 1023 2 64
+alloc 2150 2 64
+alloc 7628 2 64
+alloc 10000 3 1
+alloc 10001 3 1
+alloc 10002 3 1
+alloc 10003 3 1
+alloc 10004 3 1
+alloc 10005 3 1
+alloc 10006 3 1
+alloc 10007 3 1
+alloc 10099 3 1
+alloc 10100 3 1
+alloc 10101 3 1
+alloc 10102 3 1
+alloc 10103 3 1
+alloc 10104 3 1
+alloc 10106 3 1
+alloc 10109 3 1
+alloc 10114 3 4
+alloc 10208 3 6
+alloc 10209 3 4
+alloc 10210 3 3
+alloc 10309 3 4
+alloc 12530 3 5
+alloc 12782 3 4
+alloc 15644 3 5
+alloc 17679 3 2
+alloc 22830 3 2
+alloc 22955 3 2
+alloc 56761 3 14
+alloc 56762 3 14
+alloc 56763 3 14
+alloc 57153 3 14
+alloc 57380 3 14
+alloc 57602 3 14
+alloc 57892 3 14
+alloc 57978 3 14
+alloc 58260 3 14
+alloc 58449 3 14
+alloc 58706 3 14
+alloc 58751 3 14
+alloc 58761 3 50
+alloc 58763 3 50
+alloc 59019 3 8
+alloc 59054 6 0
+alloc 59097 7 0
+alloc 59452 3 9
+alloc 59793 3 71
+alloc 63326 3 9
+alloc 66395 3 9
+alloc 68475 3 16
+alloc 70026 3 8
+alloc 74583 3 71
+alloc 77727 3 12
+putl f 10000 loc ocean
+putl f il\x0987 50 \\
+putl f \x0959 30 \\
+putl f \x09274 1 \\
+putl f \x09275 1 \\
+putl f \x09276 1
+putl f LI
+putl f  wh 58761
+putl f LO
+putl f  pd 0 10001 10100 10099\x20
+putl f  dg 4
+putl f 
+putl f 1 item 0
+putl f na gold
+putl f CH
+putl f CM
+putl f  sr 1
+putl f IT
+putl f  pl gold
+putl f 
+putl f 1009 char garrison
+putl f il\x0916 118
+putl f LI
+putl f  wh 58706
+putl f CH
+putl f  lo 207
+putl f  he -1
+putl f  lk 4
+putl f  gu 1
+putl f  at 60
+putl f  df 60
+putl f CM
+putl f  dg 1
+putl f MI
+putl f  ca g
+putl f 
+putl f 10001 loc ocean
+putl f il\x0987 50 \\
+putl f \x0959 30 \\
+putl f \x09274 1 \\
+putl f \x09275 1 \\
+putl f \x09276 1
+putl f LI
+putl f  wh 58761
+putl f LO
+putl f  pd 0 10002 10101 10000\x20
+putl f  dg 5
+putl f 
+putl f 10209 loc mountain
+putl f il\x0978 50 \\
+putl f \x0910 10 \\
+putl f \x0959 30 \\
+putl f \x0996 50 \\
+putl f \x09101 1 \\
+putl f \x09275 1
+putl f LI
+putl f  wh 58763
+putl f LO
+putl f  pd 10109 10210 10309 10208\x20
+putl f  dg 3
+putl f SL
+putl f  lf 70026\x20
+putl f 
+putl f 10 item 0
+putl f na peasant
+putl f IT
+putl f  pl peasants
+putl f  wt 100
+putl f  lc 100
+putl f  mu 1
+putl f  pr 1
+putl f  at 1
+putl f  df 1
+putl f 
+putl f 69 item 0
+putl f na elfstone
+putl f IT
+putl f  pl elfstones
+putl f  wt 1
+putl f IM
+putl f  uk 8
+putl f  lo 937
+putl f 
+putl f 100 player pl_npc
+putl f na Independent player
+putl f PL
+putl f  pw crusty7
+putl f 
+putl f 600 skill 0
+putl f na Shipcraft
+putl f SK
+putl f  tl 21
+putl f  of 601 602 603\x20
+putl f 
+putl f 59054 gate 0
+putl f LI
+putl f  wh 12782
+putl f GA
+putl f  tl 10114
+putl f 
+putl f 1023 char garrison
+putl f il\x0916 124
+putl f LI
+putl f  wh 58260
+putl f CH
+putl f  lo 207
+putl f  he -1
+putl f  lk 4
+putl f  gu 1
+putl f  at 60
+putl f  df 60
+putl f CM
+putl f  dg 1
+putl f MI
+putl f  ca g
+putl f 
+putl f 200 player pl_system
+putl f na Gamemaster
+putl f PL
+putl f  pw crusty7
+putl f CO
+putl f  li save
+putl f  ar 0 0 0 0 0 0 0 0
+putl f  cs 2
+putl f  pr 1
+putl f 
+putl f 10002 loc ocean
+putl f il\x0987 50 \\
+putl f \x0959 30 \\
+putl f \x09274 1 \\
+putl f \x09275 1 \\
+putl f \x09276 1
+putl f LI
+putl f  wh 58761
+putl f  hl 66395\x20
+putl f LO
+putl f  pd 0 10003 10102 10001\x20
+putl f  dg 5
+putl f 
+putl f 56761 loc city
+putl f na Penbarn
+putl f il\x0910 10 \\
+putl f \x09294 1 \\
+putl f \x09277 5 \\
+putl f \x0996 100 \\
+putl f \x09101 1
+putl f tl\x094 95 17 7 0 0 0 0 \\
+putl f \x094 87 100 2 0 0 0 0 \\
+putl f \x093 261 10 50 0 0 0 0 \\
+putl f \x093 77 25 15 0 0 0 0 \\
+putl f \x094 77 25 7 0 0 0 0 \\
+putl f \x091 95 17 7 0 0 0 0 \\
+putl f \x091 87 100 2 0 0 0 0 \\
+putl f \x092 261 10 50 0 0 0 0 \\
+putl f \x092 77 25 15 0 0 0 0 \\
+putl f \x091 77 25 7 0 0 0 0
+putl f LI
+putl f  wh 17679
+putl f  hl 7628 74583\x20
+putl f SL
+putl f  te 600 610 680 700 730 800\x20
+putl f  cp 1
+putl f  nc 57153 57602 57978\x20
+putl f 
+putl f 613 skill 0
+putl f na Construct catapult
+putl f SK
+putl f  tl 14
+putl f  rs 610
+putl f  rq\x0977 3 1 \\
+putl f \x0911 3 0
+putl f  pr 61
+putl f 
+putl f 10003 loc ocean
+putl f il\x0987 50 \\
+putl f \x0959 30 \\
+putl f \x09274 1 \\
+putl f \x09275 1 \\
+putl f \x09276 1
+putl f LI
+putl f  wh 58761
+putl f  hl 63326\x20
+putl f LO
+putl f  pd 0 10004 10103 10002\x20
+putl f  dg 4
+putl f 
+putl f 56762 loc city
+putl f na Flat City
+putl f il\x0910 10 \\
+putl f \x09294 1 \\
+putl f \x09277 5 \\
+putl f \x0996 100 \\
+putl f \x09101 1
+putl f tl\x094 94 30 4 0 0 0 0 \\
+putl f \x091 94 30 4 0 0 0 0
+putl f LI
+putl f  wh 12530
+putl f  hl 2150 59793\x20
+putl f SL
+putl f  te 610 670 680 800 860\x20
+putl f  cp 1
+putl f  nc 57380 58751\x20
+putl f 
+putl f 10006 loc ocean
+putl f il\x0987 50 \\
+putl f \x0959 30 \\
+putl f \x09274 1 \\
+putl f \x09275 1 \\
+putl f \x09276 1
+putl f LI
+putl f  wh 58761
+putl f  hl 59452\x20
+putl f LO
+putl f  pd 0 10007 10106 10005\x20
+putl f  dg 1
+putl f 
+putl f 59019 loc faery hill
+putl f LI
+putl f  wh 22955
+putl f SL
+putl f  lt 15644\x20
+putl f  lw 3
+putl f 
+putl f 11 item 0
+putl f na worker
+putl f IT
+putl f  pl workers
+putl f  wt 100
+putl f  lc 100
+putl f  mu 1
+putl f  pr 1
+putl f  at 1
+putl f  df 1
+putl f 
+putl f 14 item 0
+putl f na knight
+putl f IT
+putl f  pl knights
+putl f  wt 1100
+putl f  lc 100
+putl f  rc 100
+putl f  fc 0
+putl f  mu 1
+putl f  pr 1
+putl f  at 45
+putl f  df 45
+putl f 
+putl f 55 item 0
+putl f na nazgul
+putl f IT
+putl f  pl nazgul
+putl f  wt 1500
+putl f  lc 150
+putl f  rc 150
+putl f  fc 150
+putl f  pr 1
+putl f  an 1
+putl f  at 80
+putl f  df 80
+putl f  ca 1
+putl f 
+putl f 59097 road 0
+putl f na Secret pass
+putl f LI
+putl f  wh 77727
+putl f GA
+putl f  tl 68475
+putl f  rh 1
+putl f 
+putl f 10004 loc ocean
+putl f il\x0987 50 \\
+putl f \x0959 30 \\
+putl f \x09274 1 \\
+putl f \x09275 1 \\
+putl f \x09276 1
+putl f LI
+putl f  wh 58761
+putl f LO
+putl f  pd 0 10005 10104 10003\x20
+putl f  dg 3
+putl f 
+putl f 56763 loc city
+putl f na Faery city
+putl f il\x09101 1
+putl f tl\x094 94 30 4 0 0 0 0 \\
+putl f \x093 65 10 35 0 0 0 0 \\
+putl f \x093 68 5 100 0 0 0 0 \\
+putl f \x094 82 10 500 0 0 0 0 \\
+putl f \x094 83 2 1000 0 0 0 0 \\
+putl f \x093 54 1 1000 0 0 0 0 \\
+putl f \x091 94 30 4 0 0 0 0 \\
+putl f \x092 65 10 35 0 0 0 0 \\
+putl f \x092 68 5 100 0 0 0 0 \\
+putl f \x091 82 10 500 0 0 0 0 \\
+putl f \x091 83 2 1000 0 0 0 0 \\
+putl f \x092 54 1 1000 0 0 0 0
+putl f LI
+putl f  wh 22830
+putl f SL
+putl f  te 610 630 680 700 800 840\x20
+putl f  cp 2
+putl f  nc 57892 58449\x20
+putl f
+readfile f
+advance
+loadall
+saveall
+pretty 1
+saveall

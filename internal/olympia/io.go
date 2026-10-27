@@ -676,3 +676,1351 @@ func olytimePrint(fp io.Writer, header string, p *olytime) {
 			p.turn, p.day, p.daysSinceEpoch)
 	}
 }
+
+// hShift is the shift of linehash(): the case labels of the scanners
+// write C's 'wh' as 'w'<<hShift | 'h'.
+const hShift = 8
+
+// scanSection is the loop that every scan_xxx() section scanner runs: for
+// each line after the section's tag line that starts with white space, it
+// moves line past that byte and calls field with the line's tag
+// (linehash) and data (t_string). field returns false for a tag it does
+// not know, and the line gets a diagnostic that names the scanner. The
+// first line that does not start with white space, or nil at end of file,
+// ends the section and is left in line for load_box().
+//
+// C tests *line == '#' first, to skip a comment, but *line is white space
+// there, so it never is.
+func (w *world) scanSection(scanner string, boxNum int, field func(c int, t string) bool) {
+	w.advance()
+	for w.line != nil && iswhite(at(*w.line, 0)) {
+		s := (*w.line)[1:]
+		w.line = &s
+
+		c := linehash(s)
+		t := tString(s)
+
+		if !field(c, t) {
+			fmt.Fprintf(w.stderr, "%s(%d):  bad line: %s\n", scanner, boxNum, s)
+		}
+		w.advance()
+	}
+}
+
+// strSave is str_save(): a new copy of s.
+func strSave(s string) *string { return &s }
+
+// printLocInfo is print_loc_info(): the "LI" section, unless p is all
+// zero.
+func (w *world) printLocInfo(fp io.Writer, p *locInfo) {
+	if zeroCheck(p) {
+		return
+	}
+
+	fmt.Fprintf(fp, "LI\n")
+	w.boxPrint(fp, " wh ", int(p.where))
+	w.boxlistPrint(fp, " hl ", p.hereList)
+}
+
+// scanLocInfo is scan_loc_info().
+func (w *world) scanLocInfo(p *locInfo, boxNum int) {
+	w.scanSection("scan_loc_info", boxNum, func(c int, t string) bool {
+		switch c {
+		case 'w'<<hShift | 'h':
+			p.where = int32(w.boxScan(t))
+		case 'h'<<hShift | 'l':
+			w.boxlistScan(t, boxNum, &p.hereList)
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printMagic is print_magic(): the "CM" section, unless p is all zero.
+func (w *world) printMagic(fp io.Writer, p *charMagic) {
+	if zeroCheck(p) {
+		return
+	}
+
+	fmt.Fprintf(fp, "CM\n")
+
+	if p.magician != 0 {
+		fmt.Fprintf(fp, " im %d\n", p.magician)
+	}
+
+	if p.maxAura != 0 {
+		fmt.Fprintf(fp, " ma %d\n", p.maxAura)
+	}
+
+	if p.curAura != 0 {
+		fmt.Fprintf(fp, " ca %d\n", p.curAura)
+	}
+
+	if p.abilityShroud != 0 {
+		fmt.Fprintf(fp, " as %d\n", p.abilityShroud)
+	}
+
+	if p.hinderMeditation != 0 {
+		fmt.Fprintf(fp, " hm %d\n", p.hinderMeditation)
+	}
+
+	if p.quickCast != 0 {
+		fmt.Fprintf(fp, " qc %d\n", p.quickCast)
+	}
+
+	if p.auraReflect != 0 {
+		fmt.Fprintf(fp, " rb %d\n", p.auraReflect)
+	}
+
+	if p.hideSelf != 0 {
+		fmt.Fprintf(fp, " hs %d\n", p.hideSelf)
+	}
+
+	if p.hideMage != 0 {
+		fmt.Fprintf(fp, " cm %d\n", p.hideMage)
+	}
+
+	if p.pray != 0 {
+		fmt.Fprintf(fp, " pr %d\n", p.pray)
+	}
+
+	if p.knowsWeather != 0 {
+		fmt.Fprintf(fp, " kw %d\n", p.knowsWeather)
+	}
+
+	if p.defaultGarr != 0 {
+		fmt.Fprintf(fp, " dg %d\n", p.defaultGarr)
+	}
+
+	if p.swearOnRelease != 0 {
+		fmt.Fprintf(fp, " sr %d\n", p.swearOnRelease)
+	}
+
+	if p.fee != 0 {
+		fmt.Fprintf(fp, " bf %d\n", p.fee)
+	}
+
+	if p.visProtect != 0 {
+		fmt.Fprintf(fp, " vp %d\n", p.visProtect)
+	}
+
+	w.boxPrint(fp, " pl ", int(p.pledge))
+	w.boxPrint(fp, " pc ", int(p.projectCast))
+	w.boxPrint(fp, " ar ", int(p.auraculum))
+	w.boxPrint(fp, " ot ", int(p.token)) // our token artifact
+	w.knownPrint(fp, " vi ", p.visions)
+}
+
+// scanMagic is scan_magic().
+func (w *world) scanMagic(p *charMagic, boxNum int) {
+	w.scanSection("scan_magic", boxNum, func(c int, t string) bool {
+		switch c {
+		case 'i'<<hShift | 'm':
+			p.magician = int8(clib.Atoi(t))
+		case 'm'<<hShift | 'a':
+			p.maxAura = int32(clib.Atoi(t))
+		case 'c'<<hShift | 'a':
+			p.curAura = int32(clib.Atoi(t))
+		case 'a'<<hShift | 's':
+			p.abilityShroud = int16(clib.Atoi(t))
+		case 'h'<<hShift | 'm':
+			p.hinderMeditation = int8(clib.Atoi(t))
+		case 'p'<<hShift | 'c':
+			p.projectCast = int32(w.boxScan(t))
+		case 'q'<<hShift | 'c':
+			p.quickCast = int16(clib.Atoi(t))
+		case 'o'<<hShift | 't':
+			p.token = int32(w.boxScan(t))
+		case 'p'<<hShift | 'l':
+			p.pledge = int32(w.boxScan(t))
+		case 'a'<<hShift | 'r':
+			p.auraculum = int32(w.boxScan(t))
+		case 'r'<<hShift | 'b':
+			p.auraReflect = int8(clib.Atoi(t))
+		case 'h'<<hShift | 's':
+			p.hideSelf = int8(clib.Atoi(t))
+		case 'c'<<hShift | 'm':
+			p.hideMage = int8(clib.Atoi(t))
+		case 'p'<<hShift | 'r':
+			p.pray = int8(clib.Atoi(t))
+		case 's'<<hShift | 'r':
+			p.swearOnRelease = int8(clib.Atoi(t))
+		case 'k'<<hShift | 'w':
+			p.knowsWeather = int8(clib.Atoi(t))
+		case 'v'<<hShift | 'p':
+			p.visProtect = int8(clib.Atoi(t))
+		case 'd'<<hShift | 'g':
+			p.defaultGarr = int8(clib.Atoi(t))
+		case 'b'<<hShift | 'f':
+			p.fee = int32(clib.Atoi(t))
+		case 'v'<<hShift | 'i':
+			w.knownScan(t, &p.visions, boxNum)
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printChar is print_char(): the "CH" section, always.
+func (w *world) printChar(fp io.Writer, p *entityChar) {
+	fmt.Fprintf(fp, "CH\n")
+
+	w.boxPrint(fp, " ni ", int(p.unitItem))
+	w.boxPrint(fp, " lo ", int(p.unitLord))
+	w.boxPrint(fp, " pl ", int(p.prevLord))
+
+	if p.health != 0 {
+		fmt.Fprintf(fp, " he %d\n", p.health)
+	}
+
+	if p.sick != 0 {
+		fmt.Fprintf(fp, " si %d\n", p.sick)
+	}
+
+	if p.loyKind != 0 {
+		fmt.Fprintf(fp, " lk %d\n", p.loyKind)
+	}
+	if p.loyRate != 0 {
+		fmt.Fprintf(fp, " lr %d\n", p.loyRate)
+	}
+
+	w.skillListPrint(fp, " sl\t", p.skills)
+
+	if p.prisoner != 0 {
+		fmt.Fprintf(fp, " pr %d\n", p.prisoner)
+	}
+
+	if p.moving != 0 {
+		fmt.Fprintf(fp, " mo %d\n", p.moving)
+	}
+
+	if p.behind != 0 {
+		fmt.Fprintf(fp, " bh %d\n", p.behind)
+	}
+
+	if p.guard != 0 {
+		fmt.Fprintf(fp, " gu %d\n", p.guard)
+	}
+
+	if p.timeFlying != 0 {
+		fmt.Fprintf(fp, " tf %d\n", p.timeFlying)
+	}
+
+	if p.breakPoint != 0 {
+		fmt.Fprintf(fp, " bp %d\n", p.breakPoint)
+	}
+
+	if p.rank != 0 {
+		fmt.Fprintf(fp, " ra %d\n", p.rank)
+	}
+
+	if p.attack != 0 {
+		fmt.Fprintf(fp, " at %d\n", p.attack)
+	}
+
+	if p.defense != 0 {
+		fmt.Fprintf(fp, " df %d\n", p.defense)
+	}
+
+	if p.missile != 0 {
+		fmt.Fprintf(fp, " mi %d\n", p.missile)
+	}
+
+	if p.npcProg != 0 {
+		fmt.Fprintf(fp, " po %d\n", p.npcProg)
+	}
+
+	w.boxlistPrint(fp, " ct ", p.contact)
+
+	olytimePrint(fp, " dt ", &p.deathTime)
+}
+
+// scanChar is scan_char().
+func (w *world) scanChar(p *entityChar, boxNum int) {
+	w.scanSection("scan_char", boxNum, func(c int, t string) bool {
+		switch c {
+		case 'n'<<hShift | 'i':
+			p.unitItem = int32(w.boxScan(t))
+		case 'l'<<hShift | 'o':
+			p.unitLord = int32(w.boxScan(t))
+		case 'p'<<hShift | 'l':
+			p.prevLord = int32(w.boxScan(t))
+		case 'h'<<hShift | 'e':
+			p.health = int8(clib.Atoi(t))
+		case 's'<<hShift | 'i':
+			p.sick = int8(clib.Atoi(t))
+		case 'p'<<hShift | 'r':
+			p.prisoner = int8(clib.Atoi(t))
+		case 'm'<<hShift | 'o':
+			p.moving = int32(clib.Atoi(t))
+		case 'b'<<hShift | 'h':
+			p.behind = int8(clib.Atoi(t))
+		case 'l'<<hShift | 'k':
+			p.loyKind = int8(clib.Atoi(t))
+		case 'l'<<hShift | 'r':
+			p.loyRate = int32(clib.Atoi(t))
+		case 'g'<<hShift | 'u':
+			p.guard = int8(clib.Atoi(t))
+		case 't'<<hShift | 'f':
+			p.timeFlying = int8(clib.Atoi(t))
+		case 'b'<<hShift | 'p':
+			p.breakPoint = int8(clib.Atoi(t))
+		case 'r'<<hShift | 'a':
+			p.rank = int8(clib.Atoi(t))
+		case 'a'<<hShift | 't':
+			p.attack = int16(clib.Atoi(t))
+		case 'd'<<hShift | 'f':
+			p.defense = int16(clib.Atoi(t))
+		case 'm'<<hShift | 'i':
+			p.missile = int16(clib.Atoi(t))
+		case 'p'<<hShift | 'o':
+			p.npcProg = int8(clib.Atoi(t))
+		case 'c'<<hShift | 't':
+			w.boxlistScan(t, boxNum, &p.contact)
+		case 's'<<hShift | 'l':
+			w.skillListScan(t, &p.skills, boxNum)
+		case 'd'<<hShift | 't':
+			olytimeScan(t, &p.deathTime)
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printLoc is print_loc(): the "LO" section, unless p is all zero.
+func (w *world) printLoc(fp io.Writer, p *entityLoc) {
+	if zeroCheck(p) {
+		return
+	}
+
+	fmt.Fprintf(fp, "LO\n")
+
+	w.boxlist0Print(fp, " pd ", p.provDest)
+
+	if p.hidden != 0 {
+		fmt.Fprintf(fp, " hi %d\n", p.hidden)
+	}
+
+	if p.shroud != 0 {
+		fmt.Fprintf(fp, " sh %d\n", p.shroud)
+	}
+
+	if p.barrier != 0 {
+		fmt.Fprintf(fp, " ba %d\n", p.barrier)
+	}
+
+	if p.distFromGate != 0 {
+		fmt.Fprintf(fp, " dg %d\n", p.distFromGate)
+	}
+
+	if p.seaLane != 0 {
+		fmt.Fprintf(fp, " sl %d\n", p.seaLane)
+	}
+
+	if p.civ != 0 {
+		fmt.Fprintf(fp, " lc %d\n", p.civ)
+	}
+}
+
+// scanLoc is scan_loc().
+func (w *world) scanLoc(p *entityLoc, boxNum int) {
+	w.scanSection("scan_loc", boxNum, func(c int, t string) bool {
+		switch c {
+		case 'h'<<hShift | 'i':
+			p.hidden = int8(clib.Atoi(t))
+		case 's'<<hShift | 'h':
+			p.shroud = int16(clib.Atoi(t))
+		case 'b'<<hShift | 'a':
+			p.barrier = int16(clib.Atoi(t))
+		case 'd'<<hShift | 'g':
+			p.distFromGate = int8(clib.Atoi(t))
+		case 'l'<<hShift | 'c':
+			p.civ = int8(clib.Atoi(t))
+		case 's'<<hShift | 'l':
+			p.seaLane = int8(clib.Atoi(t))
+		case 'p'<<hShift | 'd':
+			w.boxlist0Scan(t, boxNum, &p.provDest)
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printSubloc is print_subloc(): the "SL" section, always.
+func (w *world) printSubloc(fp io.Writer, p *entitySubloc) {
+	fmt.Fprintf(fp, "SL\n")
+
+	w.boxlistPrint(fp, " te ", p.teaches)
+
+	if p.damage != 0 {
+		fmt.Fprintf(fp, " da %d\n", p.damage)
+	}
+
+	if p.defense != 0 {
+		fmt.Fprintf(fp, " de %d\n", p.defense)
+	}
+
+	if p.capacity != 0 {
+		fmt.Fprintf(fp, " ca %d\n", p.capacity)
+	}
+
+	if p.buildMaterials != 0 {
+		fmt.Fprintf(fp, " bm %d\n", p.buildMaterials)
+	}
+
+	if p.effortRequired != 0 {
+		fmt.Fprintf(fp, " er %d\n", p.effortRequired)
+	}
+
+	if p.effortGiven != 0 {
+		fmt.Fprintf(fp, " eg %d\n", p.effortGiven)
+	}
+
+	if p.moving != 0 {
+		fmt.Fprintf(fp, " mo %d\n", p.moving)
+	}
+
+	if p.galleyRam != 0 {
+		fmt.Fprintf(fp, " gr %d\n", p.galleyRam)
+	}
+
+	if p.shaftDepth != 0 {
+		fmt.Fprintf(fp, " sd %d\n", p.shaftDepth)
+	}
+
+	if p.castleLev != 0 {
+		fmt.Fprintf(fp, " cl %d\n", p.castleLev)
+	}
+
+	if p.safe != 0 {
+		fmt.Fprintf(fp, " sh %d\n", p.safe)
+	}
+
+	if p.major != 0 {
+		fmt.Fprintf(fp, " mc %d\n", p.major)
+	}
+
+	if p.opiumEcon != 0 {
+		fmt.Fprintf(fp, " op %d\n", p.opiumEcon)
+	}
+
+	if p.loot != 0 {
+		fmt.Fprintf(fp, " lo %d\n", p.loot)
+	}
+
+	if p.prominence != 0 {
+		fmt.Fprintf(fp, " cp %d\n", p.prominence)
+	}
+
+	if p.uldimFlag != 0 {
+		fmt.Fprintf(fp, " uf %d\n", p.uldimFlag)
+	}
+
+	if p.summerFlag != 0 {
+		fmt.Fprintf(fp, " sf %d\n", p.summerFlag)
+	}
+
+	if p.questLate != 0 {
+		fmt.Fprintf(fp, " ql %d\n", p.questLate)
+	}
+
+	if p.tunnelLevel != 0 {
+		fmt.Fprintf(fp, " td %d\n", p.tunnelLevel)
+	}
+
+	w.boxlistPrint(fp, " nc ", p.nearCities)
+
+	w.boxlistPrint(fp, " lt ", p.linkTo)
+	w.boxlistPrint(fp, " lf ", p.linkFrom)
+	w.boxlistPrint(fp, " bs ", p.boundStorms)
+
+	if p.linkWhen != 0 {
+		fmt.Fprintf(fp, " lw %d\n", p.linkWhen)
+	}
+
+	if p.linkOpen != 0 {
+		fmt.Fprintf(fp, " lp %d\n", p.linkOpen)
+	}
+}
+
+// scanSubloc is scan_subloc().
+func (w *world) scanSubloc(p *entitySubloc, boxNum int) {
+	w.scanSection("scan_subloc", boxNum, func(c int, t string) bool {
+		switch c {
+		case 'd'<<hShift | 'a':
+			p.damage = uint8(clib.Atoi(t))
+		case 'd'<<hShift | 'e':
+			p.defense = int32(clib.Atoi(t))
+		case 'c'<<hShift | 'a':
+			p.capacity = int32(clib.Atoi(t))
+		case 'e'<<hShift | 'r':
+			p.effortRequired = int32(clib.Atoi(t))
+		case 'e'<<hShift | 'g':
+			p.effortGiven = int32(clib.Atoi(t))
+		case 'b'<<hShift | 'm':
+			p.buildMaterials = int8(clib.Atoi(t))
+		case 'm'<<hShift | 'o':
+			p.moving = int32(clib.Atoi(t))
+		case 'g'<<hShift | 'r':
+			p.galleyRam = int8(clib.Atoi(t))
+		case 's'<<hShift | 'd':
+			p.shaftDepth = int16(clib.Atoi(t))
+		case 's'<<hShift | 'h':
+			p.safe = int8(clib.Atoi(t))
+		case 'm'<<hShift | 'c':
+			p.major = int8(clib.Atoi(t))
+		case 'o'<<hShift | 'p':
+			p.opiumEcon = int32(clib.Atoi(t))
+		case 'l'<<hShift | 'o':
+			p.loot = int8(clib.Atoi(t))
+		case 'c'<<hShift | 'p':
+			p.prominence = int8(clib.Atoi(t))
+		case 'l'<<hShift | 'w':
+			p.linkWhen = int8(clib.Atoi(t))
+		case 'l'<<hShift | 'p':
+			p.linkOpen = int8(clib.Atoi(t))
+		case 'u'<<hShift | 'f':
+			p.uldimFlag = int8(clib.Atoi(t))
+		case 's'<<hShift | 'f':
+			p.summerFlag = int8(clib.Atoi(t))
+		case 'q'<<hShift | 'l':
+			p.questLate = int8(clib.Atoi(t))
+		case 't'<<hShift | 'd':
+			p.tunnelLevel = int8(clib.Atoi(t))
+		case 'c'<<hShift | 'l':
+			p.castleLev = int8(clib.Atoi(t))
+		case 'l'<<hShift | 't':
+			w.boxlistScan(t, boxNum, &p.linkTo)
+		case 'l'<<hShift | 'f':
+			w.boxlistScan(t, boxNum, &p.linkFrom)
+		case 't'<<hShift | 'e':
+			w.boxlistScan(t, boxNum, &p.teaches)
+		case 'n'<<hShift | 'c':
+			w.boxlistScan(t, boxNum, &p.nearCities)
+		case 'b'<<hShift | 's':
+			w.boxlistScan(t, boxNum, &p.boundStorms)
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printItem is print_item(): the "IT" section, unless p is all zero.
+//
+// C prints the " fc" (fly_cap) line only if ride_cap is set, so a fly_cap
+// without a ride_cap is not saved, and one with it is saved even if it is
+// 0. Upstream defect:
+// https://github.com/playbymail/olympia-g3/issues/314
+func (w *world) printItem(fp io.Writer, p *entityItem) {
+	if zeroCheck(p) {
+		return
+	}
+
+	fmt.Fprintf(fp, "IT\n")
+
+	if p.pluralName != nil && *p.pluralName != "" {
+		fmt.Fprintf(fp, " pl %s\n", *p.pluralName)
+	}
+
+	if p.weight != 0 {
+		fmt.Fprintf(fp, " wt %d\n", p.weight)
+	}
+
+	if p.landCap != 0 {
+		fmt.Fprintf(fp, " lc %d\n", p.landCap)
+	}
+
+	if p.rideCap != 0 {
+		fmt.Fprintf(fp, " rc %d\n", p.rideCap)
+	}
+
+	if p.rideCap != 0 {
+		fmt.Fprintf(fp, " fc %d\n", p.flyCap)
+	}
+
+	if p.isManItem != 0 {
+		fmt.Fprintf(fp, " mu %d\n", p.isManItem)
+	}
+
+	if p.prominent != 0 {
+		fmt.Fprintf(fp, " pr %d\n", p.prominent)
+	}
+
+	if p.animal != 0 {
+		fmt.Fprintf(fp, " an %d\n", p.animal)
+	}
+
+	if p.attack != 0 {
+		fmt.Fprintf(fp, " at %d\n", p.attack)
+	}
+
+	if p.defense != 0 {
+		fmt.Fprintf(fp, " df %d\n", p.defense)
+	}
+
+	if p.missile != 0 {
+		fmt.Fprintf(fp, " mi %d\n", p.missile)
+	}
+
+	if p.basePrice != 0 {
+		fmt.Fprintf(fp, " bp %d\n", p.basePrice)
+	}
+
+	if p.capturable != 0 {
+		fmt.Fprintf(fp, " ca %d\n", p.capturable)
+	}
+
+	w.boxPrint(fp, " un ", int(p.whoHas))
+}
+
+// scanItem is scan_item().
+func (w *world) scanItem(p *entityItem, boxNum int) {
+	w.scanSection("scan_item", boxNum, func(c int, t string) bool {
+		switch c {
+		case 'p'<<hShift | 'l':
+			p.pluralName = strSave(t)
+		case 'w'<<hShift | 't':
+			p.weight = int16(clib.Atoi(t))
+		case 'l'<<hShift | 'c':
+			p.landCap = int16(clib.Atoi(t))
+		case 'r'<<hShift | 'c':
+			p.rideCap = int16(clib.Atoi(t))
+		case 'f'<<hShift | 'c':
+			p.flyCap = int16(clib.Atoi(t))
+		case 'm'<<hShift | 'u':
+			p.isManItem = int8(clib.Atoi(t))
+		case 'p'<<hShift | 'r':
+			p.prominent = int8(clib.Atoi(t))
+		case 'a'<<hShift | 'n':
+			p.animal = int8(clib.Atoi(t))
+		case 'u'<<hShift | 'n':
+			p.whoHas = int32(w.boxScan(t))
+		case 'a'<<hShift | 't':
+			p.attack = int16(clib.Atoi(t))
+		case 'd'<<hShift | 'f':
+			p.defense = int16(clib.Atoi(t))
+		case 'm'<<hShift | 'i':
+			p.missile = int16(clib.Atoi(t))
+		case 'b'<<hShift | 'p':
+			p.basePrice = int32(clib.Atoi(t))
+		case 'c'<<hShift | 'a':
+			p.capturable = int8(clib.Atoi(t))
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printItemMagic is print_item_magic(): the "IM" section, unless p is all
+// zero.
+func (w *world) printItemMagic(fp io.Writer, p *itemMagic) {
+	if zeroCheck(p) {
+		return
+	}
+
+	fmt.Fprintf(fp, "IM\n")
+
+	if p.aura != 0 {
+		fmt.Fprintf(fp, " au %d\n", p.aura)
+	}
+
+	if p.curseLoyalty != 0 {
+		fmt.Fprintf(fp, " cl %d\n", p.curseLoyalty)
+	}
+
+	if p.cloakRegion != 0 {
+		fmt.Fprintf(fp, " cr %d\n", p.cloakRegion)
+	}
+
+	if p.cloakCreator != 0 {
+		fmt.Fprintf(fp, " cc %d\n", p.cloakCreator)
+	}
+
+	if p.useKey != 0 {
+		fmt.Fprintf(fp, " uk %d\n", p.useKey)
+	}
+
+	if p.quickCast != 0 {
+		fmt.Fprintf(fp, " qc %d\n", p.quickCast)
+	}
+
+	if p.attackBonus != 0 {
+		fmt.Fprintf(fp, " ab %d\n", p.attackBonus)
+	}
+
+	if p.defenseBonus != 0 {
+		fmt.Fprintf(fp, " db %d\n", p.defenseBonus)
+	}
+
+	if p.missileBonus != 0 {
+		fmt.Fprintf(fp, " mb %d\n", p.missileBonus)
+	}
+
+	if p.auraBonus != 0 {
+		fmt.Fprintf(fp, " ba %d\n", p.auraBonus)
+	}
+
+	if p.relicDecay != 0 {
+		fmt.Fprintf(fp, " rd %d\n", p.relicDecay)
+	}
+
+	if p.tokenNum != 0 {
+		fmt.Fprintf(fp, " tn %d\n", p.tokenNum)
+	}
+
+	if p.orbUseCount != 0 {
+		fmt.Fprintf(fp, " oc %d\n", p.orbUseCount)
+	}
+
+	w.boxPrint(fp, " ti ", int(p.tokenNi))
+
+	w.boxPrint(fp, " rc ", int(p.regionCreated))
+	w.boxPrint(fp, " pc ", int(p.projectCast))
+	w.boxPrint(fp, " ct ", int(p.creator))
+	w.boxPrint(fp, " lo ", int(p.lore))
+
+	w.boxlistPrint(fp, " mu ", p.mayUse)
+	w.boxlistPrint(fp, " ms ", p.mayStudy)
+}
+
+// scanItemMagic is scan_item_magic(). Unlike the other box fields, "ti"
+// (token_ni) is read with atoi(), not box_scan(), so it is not checked.
+func (w *world) scanItemMagic(p *itemMagic, boxNum int) {
+	w.scanSection("scan_item_magic", boxNum, func(c int, t string) bool {
+		switch c {
+		case 'a'<<hShift | 'u':
+			p.aura = int16(clib.Atoi(t))
+		case 'c'<<hShift | 'l':
+			p.curseLoyalty = int8(clib.Atoi(t))
+		case 'c'<<hShift | 'r':
+			p.cloakRegion = int8(clib.Atoi(t))
+		case 'c'<<hShift | 'c':
+			p.cloakCreator = int8(clib.Atoi(t))
+		case 'u'<<hShift | 'k':
+			p.useKey = int8(clib.Atoi(t))
+		case 'r'<<hShift | 'c':
+			p.regionCreated = int32(w.boxScan(t))
+		case 'p'<<hShift | 'c':
+			p.projectCast = int32(w.boxScan(t))
+		case 'c'<<hShift | 't':
+			p.creator = int32(w.boxScan(t))
+		case 'l'<<hShift | 'o':
+			p.lore = int32(w.boxScan(t))
+		case 'q'<<hShift | 'c':
+			p.quickCast = int16(clib.Atoi(t))
+		case 'a'<<hShift | 'b':
+			p.attackBonus = int8(clib.Atoi(t))
+		case 'd'<<hShift | 'b':
+			p.defenseBonus = int8(clib.Atoi(t))
+		case 'm'<<hShift | 'b':
+			p.missileBonus = int8(clib.Atoi(t))
+		case 'b'<<hShift | 'a':
+			p.auraBonus = int16(clib.Atoi(t))
+		case 'r'<<hShift | 'd':
+			p.relicDecay = int16(clib.Atoi(t))
+		case 't'<<hShift | 'n':
+			p.tokenNum = int8(clib.Atoi(t))
+		case 't'<<hShift | 'i':
+			p.tokenNi = int32(clib.Atoi(t))
+		case 'o'<<hShift | 'c':
+			p.orbUseCount = int8(clib.Atoi(t))
+		case 'm'<<hShift | 'u':
+			w.boxlistScan(t, boxNum, &p.mayUse)
+		case 'm'<<hShift | 's':
+			w.boxlistScan(t, boxNum, &p.mayStudy)
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printPlayer is print_player(): the "PL" section, always.
+func (w *world) printPlayer(fp io.Writer, p *entityPlayer) {
+	fmt.Fprintf(fp, "PL\n")
+
+	if p.fullName != nil && *p.fullName != "" {
+		fmt.Fprintf(fp, " fn %s\n", *p.fullName)
+	}
+
+	if p.email != nil && *p.email != "" {
+		fmt.Fprintf(fp, " em %s\n", *p.email)
+	}
+
+	if p.visEmail != nil && *p.visEmail != "" {
+		fmt.Fprintf(fp, " ve %s\n", *p.visEmail)
+	}
+
+	if p.lastEmail != nil && *p.lastEmail != "" {
+		fmt.Fprintf(fp, " le %s\n", *p.lastEmail)
+	}
+
+	if p.password != nil && *p.password != "" {
+		fmt.Fprintf(fp, " pw %s\n", *p.password)
+	}
+
+	if p.noblePoints != 0 {
+		fmt.Fprintf(fp, " np %d\n", p.noblePoints)
+	}
+
+	if p.fastStudy != 0 {
+		fmt.Fprintf(fp, " fs %d\n", p.fastStudy)
+	}
+
+	if p.firstTurn != 0 {
+		fmt.Fprintf(fp, " ft %d\n", p.firstTurn)
+	}
+
+	if p.format != 0 {
+		fmt.Fprintf(fp, " fo %d\n", p.format)
+	}
+
+	if p.notab != 0 {
+		fmt.Fprintf(fp, " nt %d\n", p.notab)
+	}
+
+	if p.firstTower != 0 {
+		fmt.Fprintf(fp, " tf %d\n", p.firstTower)
+	}
+
+	if p.splitLines != 0 {
+		fmt.Fprintf(fp, " sl %d\n", p.splitLines)
+	}
+
+	if p.splitBytes != 0 {
+		fmt.Fprintf(fp, " sb %d\n", p.splitBytes)
+	}
+
+	if p.sentOrders != 0 {
+		fmt.Fprintf(fp, " so %d\n", p.sentOrders)
+	}
+
+	if p.dontRemind != 0 {
+		fmt.Fprintf(fp, " dr %d\n", p.dontRemind)
+	}
+
+	if p.compuserve != 0 {
+		fmt.Fprintf(fp, " ci %d\n", p.compuserve)
+	}
+
+	if p.brokenMailer != 0 {
+		fmt.Fprintf(fp, " bm %d\n", p.brokenMailer)
+	}
+
+	if p.lastOrderTurn != 0 {
+		fmt.Fprintf(fp, " lt %d\n", p.lastOrderTurn)
+	}
+
+	w.knownPrint(fp, " kn ", p.known)
+	w.boxlistPrint(fp, " un ", p.units)
+	w.boxlistPrint(fp, " uf ", p.unformed)
+	w.admitPrint(fp, p)
+}
+
+// scanPlayer is scan_player().
+func (w *world) scanPlayer(p *entityPlayer, boxNum int) {
+	w.scanSection("scan_player", boxNum, func(c int, t string) bool {
+		switch c {
+		case 'f'<<hShift | 'n':
+			p.fullName = strSave(t)
+		case 'e'<<hShift | 'm':
+			p.email = strSave(t)
+		case 'v'<<hShift | 'e':
+			p.visEmail = strSave(t)
+		case 'l'<<hShift | 'e':
+			p.lastEmail = strSave(t)
+		case 'p'<<hShift | 'w':
+			p.password = strSave(t)
+		case 'n'<<hShift | 'p':
+			p.noblePoints = int16(clib.Atoi(t))
+		case 'f'<<hShift | 's':
+			p.fastStudy = int16(clib.Atoi(t))
+		case 'f'<<hShift | 't':
+			p.firstTurn = int32(clib.Atoi(t))
+		case 'f'<<hShift | 'o':
+			p.format = int8(clib.Atoi(t))
+		case 'n'<<hShift | 't':
+			p.notab = int8(clib.Atoi(t))
+		case 't'<<hShift | 'f':
+			p.firstTower = int8(clib.Atoi(t))
+		case 's'<<hShift | 'o':
+			p.sentOrders = int8(clib.Atoi(t))
+		case 'l'<<hShift | 't':
+			p.lastOrderTurn = int32(clib.Atoi(t))
+		case 's'<<hShift | 'l':
+			p.splitLines = int32(clib.Atoi(t))
+		case 's'<<hShift | 'b':
+			p.splitBytes = int32(clib.Atoi(t))
+		case 'c'<<hShift | 'i':
+			p.compuserve = int8(clib.Atoi(t))
+		case 'b'<<hShift | 'm':
+			p.brokenMailer = int8(clib.Atoi(t))
+		case 'd'<<hShift | 'r':
+			p.dontRemind = int8(clib.Atoi(t))
+		case 'k'<<hShift | 'n':
+			w.knownScan(t, &p.known, boxNum)
+		case 'u'<<hShift | 'n':
+			w.boxlistScan(t, boxNum, &p.units)
+		case 'u'<<hShift | 'f':
+			w.boxlistScan(t, boxNum, &p.unformed)
+		case 'a'<<hShift | 'm':
+			w.admitScan(t, boxNum, p)
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printSkill is print_skill(): the "SK" section, always.
+func (w *world) printSkill(fp io.Writer, p *entitySkill) {
+	fmt.Fprintf(fp, "SK\n")
+	fmt.Fprintf(fp, " tl %d\n", p.timeToLearn)
+	w.boxPrint(fp, " rs ", int(p.requiredSkill))
+
+	w.boxlistPrint(fp, " of ", p.offered)
+	w.boxlistPrint(fp, " re ", p.research)
+	w.reqListPrint(fp, " rq\t", p.req)
+	w.boxPrint(fp, " pr ", int(p.produced))
+
+	if p.npReq != 0 {
+		fmt.Fprintf(fp, " np %d\n", p.npReq)
+	}
+	if p.noExp != 0 {
+		fmt.Fprintf(fp, " ne %d\n", p.noExp)
+	}
+}
+
+// scanSkill is scan_skill().
+func (w *world) scanSkill(p *entitySkill, boxNum int) {
+	w.scanSection("scan_skill", boxNum, func(c int, t string) bool {
+		switch c {
+		case 't'<<hShift | 'l':
+			p.timeToLearn = int32(clib.Atoi(t))
+		case 'n'<<hShift | 'e':
+			p.noExp = int32(clib.Atoi(t))
+		case 'n'<<hShift | 'p':
+			p.npReq = int32(clib.Atoi(t))
+		case 'r'<<hShift | 's':
+			p.requiredSkill = int32(w.boxScan(t))
+		case 'p'<<hShift | 'r':
+			p.produced = int32(w.boxScan(t))
+		case 'o'<<hShift | 'f':
+			w.boxlistScan(t, boxNum, &p.offered)
+		case 'r'<<hShift | 'e':
+			w.boxlistScan(t, boxNum, &p.research)
+		case 'r'<<hShift | 'q':
+			w.reqListScan(t, &p.req, boxNum)
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printCommand is print_command(): the "CO" section, unless p has no
+// command.
+func (w *world) printCommand(fp io.Writer, p *command) {
+	if p.cmd == 0 {
+		return
+	}
+
+	fmt.Fprintf(fp, "CO\n")
+	fmt.Fprintf(fp, " li %s\n", clib.Str(p.line))
+
+	fmt.Fprintf(fp, " ar %d %d %d %d %d %d %d %d\n",
+		p.a, p.b, p.c, p.d, p.e, p.f, p.g, p.h)
+
+	if p.state != 0 {
+		fmt.Fprintf(fp, " cs %d\n", p.state)
+	}
+
+	if p.wait != 0 {
+		fmt.Fprintf(fp, " wa %d\n", p.wait)
+	}
+
+	if p.status != 0 {
+		fmt.Fprintf(fp, " st %d\n", p.status)
+	}
+
+	if p.useSkill != 0 {
+		w.boxPrint(fp, " us ", int(p.useSkill))
+	}
+
+	if p.useExp != 0 {
+		fmt.Fprintf(fp, " ue %d\n", p.useExp)
+	}
+
+	if p.daysExecuting != 0 {
+		fmt.Fprintf(fp, " de %d\n", p.daysExecuting)
+	}
+
+	if p.poll != 0 {
+		fmt.Fprintf(fp, " po %d\n", p.poll)
+	}
+
+	if p.pri != 0 {
+		fmt.Fprintf(fp, " pr %d\n", p.pri)
+	}
+
+	if p.inhibitFinish != 0 {
+		fmt.Fprintf(fp, " if %d\n", p.inhibitFinish)
+	}
+}
+
+// scanCommand is scan_command(). It sets p's who to boxNum first. The "li"
+// line goes through olyParseCmd, which clears use_skill, so a "us" line
+// before it is lost; its diagnostic shows the line as olyParseCmd left it,
+// without its comment.
+func (w *world) scanCommand(p *command, boxNum int) {
+	p.who = int32(boxNum)
+
+	w.scanSection("scan_command", boxNum, func(c int, t string) bool {
+		switch c {
+		case 'l'<<hShift | 'i':
+			if !w.olyParseCmd(p, &t) {
+				fmt.Fprintf(w.stderr, "scan_command(%d): "+
+					"bad cmd %s\n", boxNum, t)
+			}
+		case 'c'<<hShift | 's':
+			p.state = int8(clib.Atoi(t))
+		case 'w'<<hShift | 'a':
+			p.wait = int32(clib.Atoi(t))
+		case 's'<<hShift | 't':
+			p.status = int8(clib.Atoi(t))
+		case 'd'<<hShift | 'e':
+			p.daysExecuting = int32(clib.Atoi(t))
+		case 'p'<<hShift | 'o':
+			p.poll = int8(clib.Atoi(t))
+		case 'p'<<hShift | 'r':
+			p.pri = int8(clib.Atoi(t))
+		case 'i'<<hShift | 'f':
+			p.inhibitFinish = int8(clib.Atoi(t))
+		case 'u'<<hShift | 's':
+			p.useSkill = int32(w.boxScan(t))
+		case 'u'<<hShift | 'e':
+			p.useExp = int32(clib.Atoi(t))
+		case 'a'<<hShift | 'r':
+			sscanD(t,
+				&p.a, &p.b, &p.c, &p.d,
+				&p.e, &p.f, &p.g, &p.h)
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printGate is print_gate(): the "GA" section, always.
+func (w *world) printGate(fp io.Writer, p *entityGate) {
+	fmt.Fprintf(fp, "GA\n")
+
+	w.boxPrint(fp, " tl ", int(p.toLoc))
+
+	if p.notifyJumps != 0 {
+		w.boxPrint(fp, " nj ", int(p.notifyJumps))
+	}
+
+	if p.notifyUnseal != 0 {
+		w.boxPrint(fp, " nu ", int(p.notifyUnseal))
+	}
+
+	if p.sealKey != 0 {
+		fmt.Fprintf(fp, " sk %d\n", p.sealKey)
+	}
+
+	if p.roadHidden != 0 {
+		fmt.Fprintf(fp, " rh %d\n", p.roadHidden)
+	}
+}
+
+// scanGate is scan_gate().
+func (w *world) scanGate(p *entityGate, boxNum int) {
+	w.scanSection("scan_gate", boxNum, func(c int, t string) bool {
+		switch c {
+		case 't'<<hShift | 'l':
+			p.toLoc = int32(w.boxScan(t))
+		case 'n'<<hShift | 'j':
+			p.notifyJumps = int32(w.boxScan(t))
+		case 'n'<<hShift | 'u':
+			p.notifyUnseal = int32(w.boxScan(t))
+		case 's'<<hShift | 'k':
+			p.sealKey = int16(clib.Atoi(t))
+		case 'r'<<hShift | 'h':
+			p.roadHidden = int8(clib.Atoi(t))
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// printMisc is print_misc(): the "MI" section, unless p is all zero.
+// cmd_allow prints with %c, as the one byte it holds.
+func (w *world) printMisc(fp io.Writer, p *entityMisc) {
+	if zeroCheck(p) {
+		return
+	}
+
+	fmt.Fprintf(fp, "MI\n")
+
+	w.boxPrint(fp, " sb ", int(p.summonedBy))
+
+	if p.npcDir != 0 {
+		fmt.Fprintf(fp, " di %d\n", p.npcDir)
+	}
+
+	if p.npcCreated != 0 {
+		fmt.Fprintf(fp, " mc %d\n", p.npcCreated)
+	}
+
+	if p.mineDelay != 0 {
+		fmt.Fprintf(fp, " md %d\n", p.mineDelay)
+	}
+
+	if p.stormStr != 0 {
+		fmt.Fprintf(fp, " ss %d\n", p.stormStr)
+	}
+
+	if p.cmdAllow != 0 {
+		fmt.Fprintf(fp, " ca %s\n", []byte{byte(p.cmdAllow)})
+	}
+
+	w.boxPrint(fp, " gc ", int(p.garrCastle))
+	w.boxPrint(fp, " mh ", int(p.npcHome))
+	w.boxPrint(fp, " co ", int(p.npcCookie))
+	w.boxPrint(fp, " ov ", int(p.onlyVulnerable))
+	w.boxPrint(fp, " ol ", int(p.oldLord))
+	w.boxPrint(fp, " bs ", int(p.bindStorm))
+
+	if p.saveName != nil && *p.saveName != "" {
+		fmt.Fprintf(fp, " sn %s\n", *p.saveName)
+	}
+
+	if p.display != nil && *p.display != "" {
+		fmt.Fprintf(fp, " ds %s\n", *p.display)
+	}
+
+	w.knownPrint(fp, " nm ", p.npcMemory)
+}
+
+// scanMisc is scan_misc(). "ca" (cmd_allow) is the first byte of the
+// line's data, or 0 if it has none.
+func (w *world) scanMisc(p *entityMisc, boxNum int) {
+	w.scanSection("scan_misc", boxNum, func(c int, t string) bool {
+		switch c {
+		case 'd'<<hShift | 'i':
+			p.npcDir = int8(clib.Atoi(t))
+		case 'm'<<hShift | 'c':
+			p.npcCreated = int32(clib.Atoi(t))
+		case 'm'<<hShift | 'd':
+			p.mineDelay = int8(clib.Atoi(t))
+		case 's'<<hShift | 's':
+			p.stormStr = int16(clib.Atoi(t))
+		case 'm'<<hShift | 'h':
+			p.npcHome = int32(w.boxScan(t))
+		case 'g'<<hShift | 'c':
+			p.garrCastle = int32(w.boxScan(t))
+		case 's'<<hShift | 'b':
+			p.summonedBy = int32(w.boxScan(t))
+		case 'c'<<hShift | 'o':
+			p.npcCookie = int32(w.boxScan(t))
+		case 'o'<<hShift | 'v':
+			p.onlyVulnerable = int32(w.boxScan(t))
+		case 'b'<<hShift | 's':
+			p.bindStorm = int32(w.boxScan(t))
+		case 'o'<<hShift | 'l':
+			p.oldLord = int32(w.boxScan(t))
+		case 's'<<hShift | 'n':
+			p.saveName = strSave(t)
+		case 'd'<<hShift | 's':
+			p.display = strSave(t)
+		case 'c'<<hShift | 'a':
+			p.cmdAllow = int8(at(t, 0))
+		case 'n'<<hShift | 'm':
+			w.knownScan(t, &p.npcMemory, boxNum)
+		default:
+			return false
+		}
+		return true
+	})
+}
+
+// loadBox is load_box(): it reads box n's fields and sections from line
+// on, for read_boxes(), which has read the box's "n kind subkind" line
+// into line and left it there. Comment lines ('#') are skipped, and a line
+// with a tag load_box() does not know gets a diagnostic, and it and the
+// lines after it that start with white space are skipped. A blank line or
+// the end of the file ends the box; line moves past the blank line.
+//
+// Box n must have been allocated by the first pass; if not, C prints a
+// diagnostic and fails an assertion.
+func (w *world) loadBox(n int) {
+	// The fast scan of libdir/master should have allocated all of the
+	// boxes. If one was later added manually, it won't have been
+	// pre-allocated by the master fast scan. Remove master file and let
+	// io.c do the slow scan to allocate all the boxes. Save the database to
+	// recreate master.
+
+	if !w.validBox(n) {
+		fmt.Fprintf(w.stderr, "Unforseen box %d found in load phase.\n", n)
+		fmt.Fprintf(w.stderr, "Remove %s/master and retry.\n", w.libdir)
+		assert(false, "olympia/io.c", 1906, "FALSE")
+	}
+
+	w.extBoxnum = int32(n)
+
+	w.advance()
+	for w.line != nil && *w.line != "" {
+		if (*w.line)[0] == '#' {
+			w.advance()
+			continue
+		}
+
+		c := linehash(*w.line)
+		t := tString(*w.line)
+
+		switch c {
+		case 'n'<<hShift | 'a':
+			w.setName(n, t)
+			w.advance()
+
+		case 'i'<<hShift | 'l':
+			w.itemListScan(t, &w.bx[n].items, n)
+			w.advance()
+
+		case 't'<<hShift | 'l':
+			w.tradeListScan(t, &w.bx[n].trades, n)
+			w.advance()
+
+		case 'a'<<hShift | 'n':
+			w.boxlistScan(t, n, &w.pDisp(n).neutral)
+			w.advance()
+
+		case 'a'<<hShift | 'd':
+			w.boxlistScan(t, n, &w.pDisp(n).defend)
+			w.advance()
+
+		case 'a'<<hShift | 'h':
+			w.boxlistScan(t, n, &w.pDisp(n).hostile)
+			w.advance()
+
+		case 'C'<<hShift | 'H':
+			w.scanChar(w.pChar(n), n)
+		case 'C'<<hShift | 'M':
+			w.scanMagic(w.pMagic(n), n)
+		case 'L'<<hShift | 'I':
+			w.scanLocInfo(w.pLocInfo(n), n)
+		case 'L'<<hShift | 'O':
+			w.scanLoc(w.pLoc(n), n)
+		case 'S'<<hShift | 'L':
+			w.scanSubloc(w.pSubloc(n), n)
+		case 'I'<<hShift | 'T':
+			w.scanItem(w.pItem(n), n)
+		case 'P'<<hShift | 'L':
+			w.scanPlayer(w.pPlayer(n), n)
+		case 'S'<<hShift | 'K':
+			w.scanSkill(w.pSkill(n), n)
+		case 'G'<<hShift | 'A':
+			w.scanGate(w.pGate(n), n)
+		case 'M'<<hShift | 'I':
+			w.scanMisc(w.pMisc(n), n)
+		case 'I'<<hShift | 'M':
+			w.scanItemMagic(w.pItemMagic(n), n)
+		case 'C'<<hShift | 'O':
+			w.scanCommand(w.pCommand(n), n)
+
+		default:
+			fmt.Fprintf(w.stderr, "load_box(%d):  bad line: %s\n", n, *w.line)
+
+			w.advance()
+			for w.line != nil && iswhite(at(*w.line, 0)) {
+				w.advance()
+			}
+		}
+	}
+
+	if w.line != nil {
+		assert(*w.line == "", "olympia/io.c", 1984, "*line == '\\0'")
+		w.advance() // advance over blank separating line
+	}
+}
+
+// saveBox is save_box(): box n to fp, unless it is deleted: its
+// "n kind subkind" line, its fields and its sections, in C's order, and a
+// blank line. It marks the box saved (temp = 1) for write_leftovers().
+func (w *world) saveBox(fp io.Writer, n int) {
+	if w.kind(n) == tDeleted {
+		return
+	}
+
+	assert(w.validBox(n), "olympia/io.c", 2000, "valid_box(n)")
+
+	p := w.bx[n]
+
+	if p.skind != 0 {
+		fmt.Fprintf(fp, "%d %s %s\n",
+			n, kindS[p.kind], subkindS[p.skind])
+	} else {
+		fmt.Fprintf(fp, "%d %s 0\n",
+			n, kindS[p.kind])
+	}
+
+	if p.name != nil && *p.name != "" {
+		fmt.Fprintf(fp, "na %s\n", *p.name)
+	}
+
+	w.itemListPrint(fp, "il\t", p.items)
+	w.tradeListPrint(fp, "tl\t", p.trades)
+
+	if pd := w.rpDisp(n); pd != nil {
+		w.boxlistPrint(fp, "an ", pd.neutral)
+		w.boxlistPrint(fp, "ad ", pd.defend)
+		w.boxlistPrint(fp, "ah ", pd.hostile)
+	}
+
+	w.printLocInfo(fp, w.rpLocInfo(n))
+	if vp := w.rpChar(n); vp != nil {
+		w.printChar(fp, vp)
+	}
+	if vp := w.rpMagic(n); vp != nil {
+		w.printMagic(fp, vp)
+	}
+	if vp := w.rpLoc(n); vp != nil {
+		w.printLoc(fp, vp)
+	}
+	if vp := w.rpSubloc(n); vp != nil {
+		w.printSubloc(fp, vp)
+	}
+	if vp := w.rpItem(n); vp != nil {
+		w.printItem(fp, vp)
+	}
+	if vp := w.rpItemMagic(n); vp != nil {
+		w.printItemMagic(fp, vp)
+	}
+	if vp := w.rpPlayer(n); vp != nil {
+		w.printPlayer(fp, vp)
+	}
+	if vp := w.rpSkill(n); vp != nil {
+		w.printSkill(fp, vp)
+	}
+	if vp := w.rpGate(n); vp != nil {
+		w.printGate(fp, vp)
+	}
+	if vp := w.rpMisc(n); vp != nil {
+		w.printMisc(fp, vp)
+	}
+	if vp := w.rpCommand(n); vp != nil {
+		w.printCommand(fp, vp)
+	}
+
+	fmt.Fprintf(fp, "\n")
+
+	w.bx[n].temp = 1 // mark for write_leftovers()
+}

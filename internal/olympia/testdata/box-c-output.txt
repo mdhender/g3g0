@@ -1,0 +1,3281 @@
+section every field and section
+> alloc 1001 1 49
+> alloc 1002 2 0
+> alloc 1003 3 3
+> alloc 1004 3 14
+> alloc 1005 4 0
+> alloc 1006 4 0
+> alloc 1007 5 0
+> alloc 1008 6 0
+> alloc 1009 9 30
+> alloc 1010 11 0
+> alloc 1011 2 0
+> alloc 1012 5 0
+> putl f 1002 char 0
+> putl f CO
+> putl f  li study 1007 # with a comment
+> putl f  ar 1007 0 0 0 0 0 0 0
+> putl f  cs 2
+> putl f  wa 5
+> putl f  st 1
+> putl f  us 1007
+> putl f  ue 3
+> putl f  de 4
+> putl f  po 1
+> putl f  pr 2
+> putl f  if 1
+> putl f CM
+> putl f  im 1
+> putl f  ma 30
+> putl f  ca 25
+> putl f  as 5
+> putl f  hm 2
+> putl f  qc 3
+> putl f  rb 4
+> putl f  hs 1
+> putl f  cm 1
+> putl f  pr 1
+> putl f  kw 1
+> putl f  dg 1
+> putl f  sr 1
+> putl f  bf 7
+> putl f  vp 2
+> putl f  pl 1011
+> putl f  pc 1003
+> putl f  ar 1006
+> putl f  ot 1006
+> putl f  vi 1004 1003 1012
+> putl f CH
+> putl f  ni 1005
+> putl f  lo 1001
+> putl f  pl 1001
+> putl f  he 100
+> putl f  si 1
+> putl f  lk 2
+> putl f  lr 50
+> putl f  sl\x091007 2 30 5 0 \\
+> putl f \x091012 1 7 0 0
+> putl f  pr 1
+> putl f  mo 12
+> putl f  bh 3
+> putl f  gu 1
+> putl f  tf 2
+> putl f  bp 50
+> putl f  ra 10
+> putl f  at 60
+> putl f  df 70
+> putl f  mi 80
+> putl f  po 4
+> putl f  ct 1001 1011
+> putl f  dt 3 15 200
+> putl f LI
+> putl f  wh 1003
+> putl f  hl 1011
+> putl f ah 1001
+> putl f ad 1011
+> putl f an 1001 1011
+> putl f tl\x091 1005 5 100 0 5 0 0 \\
+> putl f \x092 1006 1 900 1 1 0 3
+> putl f il\x091005 10 \\
+> putl f \x091006 2
+> putl f na Osswid the Bold
+> putl f 
+> putl f 1003 loc plain
+> putl f na Plain
+> putl f SL
+> putl f  te 1007 1012
+> putl f  da 50
+> putl f  de 10
+> putl f  ca 1000
+> putl f  bm 2
+> putl f  er 500
+> putl f  eg 100
+> putl f  mo 9
+> putl f  gr 1
+> putl f  sd 4
+> putl f  cl 3
+> putl f  sh 1
+> putl f  mc 1
+> putl f  op 20
+> putl f  lo 2
+> putl f  cp 3
+> putl f  uf 1
+> putl f  sf 1
+> putl f  ql 2
+> putl f  td 5
+> putl f  nc 1004
+> putl f  lt 1004
+> putl f  lf 1003
+> putl f  bs 1010
+> putl f  lw 3
+> putl f  lp 1
+> putl f LO
+> putl f  pd 1004 0 1003 0
+> putl f  hi 1
+> putl f  sh 3
+> putl f  ba 2
+> putl f  dg 4
+> putl f  sl 1
+> putl f  lc 3
+> putl f LI
+> putl f  wh 1004
+> putl f  hl 1002 1009 1011
+> putl f 
+> putl f 1005 item 0
+> putl f na peasant
+> putl f IM
+> putl f  au 5
+> putl f  cl 1
+> putl f  cr 2
+> putl f  cc 1
+> putl f  uk 3
+> putl f  qc 4
+> putl f  ab 5
+> putl f  db 6
+> putl f  mb 7
+> putl f  ba 8
+> putl f  rd 9
+> putl f  tn 10
+> putl f  oc 11
+> putl f  ti 1002
+> putl f  rc 1003
+> putl f  pc 1004
+> putl f  ct 1002
+> putl f  lo 1012
+> putl f  mu 1007
+> putl f  ms 1012
+> putl f IT
+> putl f  pl peasants
+> putl f  wt 100
+> putl f  lc 150
+> putl f  fc 20
+> putl f  mu 1
+> putl f  pr 1
+> putl f  an 1
+> putl f  at 5
+> putl f  df 6
+> putl f  mi 7
+> putl f  bp 10
+> putl f  ca 1
+> putl f  un 1002
+> putl f 
+> putl f 1006 item 0
+> putl f IT
+> putl f  rc 15
+> putl f  fc 0
+> putl f 
+> putl f 1001 player pl_regular
+> putl f PL
+> putl f  fn Full Name
+> putl f  em a@b.c
+> putl f  ve vis@b.c
+> putl f  le last@b.c
+> putl f  pw secret
+> putl f  np 12
+> putl f  fs 30
+> putl f  ft 5
+> putl f  fo 1
+> putl f  nt 1
+> putl f  tf 1
+> putl f  sl 100
+> putl f  sb 2000
+> putl f  so 1
+> putl f  dr 1
+> putl f  ci 1
+> putl f  bm 1
+> putl f  lt 7
+> putl f  kn 1005 1003 1004
+> putl f  un 1002 1011
+> putl f  uf 1011
+> putl f  am 1011 1 1002 1005
+> putl f  am 1003 0
+> putl f 
+> putl f 1007 skill 0
+> putl f SK
+> putl f  tl 14
+> putl f  rs 1012
+> putl f  of 1012
+> putl f  re 1012
+> putl f  rq\x091005 1 2 \\
+> putl f \x091006 3 0
+> putl f  pr 1005
+> putl f  np 2
+> putl f  ne 1
+> putl f 
+> putl f 1008 gate 0
+> putl f GA
+> putl f  tl 1003
+> putl f  nj 1002
+> putl f  nu 1001
+> putl f  sk 1234
+> putl f  rh 1
+> putl f 
+> putl f 1010 storm 0
+> putl f MI
+> putl f  sb 1002
+> putl f  di 3
+> putl f  mc 4
+> putl f  md 5
+> putl f  ss 6
+> putl f  ca r
+> putl f  gc 1004
+> putl f  mh 1003
+> putl f  co 1005
+> putl f  ov 1006
+> putl f  ol 1001
+> putl f  bs 1009
+> putl f  sn Saved Name
+> putl f  ds Display banner
+> putl f  nm 1003 1002
+> putl f 
+> readfile f
+readfile 1
+> advance
+> line
+line [1002 char 0]
+> loadall
+> line
+line NULL
+> cmd 1002
+cmd 81 fuzzy 0 conditional 0 who 1002 use_skill 1007
+line [study 1007 ]
+parsed_line [study]
+parse: [study] [1007]
+> saveall
+1001 player pl_regular
+PL
+ fn Full Name
+ em a@b.c
+ ve vis@b.c
+ le last@b.c
+ pw secret
+ np 12
+ fs 30
+ ft 5
+ fo 1
+ nt 1
+ tf 1
+ sl 100
+ sb 2000
+ so 1
+ dr 1
+ ci 1
+ bm 1
+ lt 7
+ kn 1003 1004 1005 
+ un 1002 1011 
+ uf 1011 
+ am 1011 1 1002 1005 
+
+1002 char 0
+na Osswid the Bold
+il	1005 10 \
+	1006 2
+tl	1 1005 5 100 0 5 0 0 \
+	2 1006 1 900 1 1 0 3
+an 1001 1011 
+ad 1011 
+ah 1001 
+LI
+ wh 1003
+ hl 1011 
+CH
+ ni 1005
+ lo 1001
+ pl 1001
+ he 100
+ si 1
+ lk 2
+ lr 50
+ sl	1007 2 30 5 0 \
+	1012 1 7 0 0
+ pr 1
+ mo 12
+ bh 3
+ gu 1
+ tf 2
+ bp 50
+ ra 10
+ at 60
+ df 70
+ mi 80
+ po 4
+ ct 1001 1011 
+ dt 3 15 200
+CM
+ im 1
+ ma 30
+ ca 25
+ as 5
+ hm 2
+ qc 3
+ rb 4
+ hs 1
+ cm 1
+ pr 1
+ kw 1
+ dg 1
+ sr 1
+ bf 7
+ vp 2
+ pl 1011
+ pc 1003
+ ar 1006
+ ot 1006
+ vi 1003 1004 1012 
+CO
+ li study 1007 
+ ar 1007 0 0 0 0 0 0 0
+ cs 2
+ wa 5
+ st 1
+ us 1007
+ ue 3
+ de 4
+ po 1
+ pr 2
+ if 1
+
+1003 loc plain
+na Plain
+LI
+ wh 1004
+ hl 1002 1009 1011 
+LO
+ pd 1004 0 1003 0 
+ hi 1
+ sh 3
+ ba 2
+ dg 4
+ sl 1
+ lc 3
+SL
+ te 1007 1012 
+ da 50
+ de 10
+ ca 1000
+ bm 2
+ er 500
+ eg 100
+ mo 9
+ gr 1
+ sd 4
+ cl 3
+ sh 1
+ mc 1
+ op 20
+ lo 2
+ cp 3
+ uf 1
+ sf 1
+ ql 2
+ td 5
+ nc 1004 
+ lt 1004 
+ lf 1003 
+ bs 1010 
+ lw 3
+ lp 1
+
+1004 loc city
+
+1005 item 0
+na peasant
+IT
+ pl peasants
+ wt 100
+ lc 150
+ mu 1
+ pr 1
+ an 1
+ at 5
+ df 6
+ mi 7
+ bp 10
+ ca 1
+ un 1002
+IM
+ au 5
+ cl 1
+ cr 2
+ cc 1
+ uk 3
+ qc 4
+ ab 5
+ db 6
+ mb 7
+ ba 8
+ rd 9
+ tn 10
+ oc 11
+ ti 1002
+ rc 1003
+ pc 1004
+ ct 1002
+ lo 1012
+ mu 1007 
+ ms 1012 
+
+1006 item 0
+IT
+ rc 15
+ fc 0
+
+1007 skill 0
+SK
+ tl 14
+ rs 1012
+ of 1012 
+ re 1012 
+ rq	1005 1 2 \
+	1006 3 0
+ pr 1005
+ np 2
+ ne 1
+
+1008 gate 0
+GA
+ tl 1003
+ nj 1002
+ nu 1001
+ sk 1234
+ rh 1
+
+1009 ship galley
+
+1010 storm 0
+MI
+ sb 1002
+ di 3
+ mc 4
+ md 5
+ ss 6
+ ca r
+ gc 1004
+ mh 1003
+ co 1005
+ ov 1006
+ ol 1001
+ bs 1009
+ sn Saved Name
+ ds Display banner
+ nm 1002 1003 
+
+1011 char 0
+
+1012 skill 0
+
+> save 1002
+1002 char 0
+na Osswid the Bold
+il	1005 10 \
+	1006 2
+tl	1 1005 5 100 0 5 0 0 \
+	2 1006 1 900 1 1 0 3
+an 1001 1011 
+ad 1011 
+ah 1001 
+LI
+ wh 1003
+ hl 1011 
+CH
+ ni 1005
+ lo 1001
+ pl 1001
+ he 100
+ si 1
+ lk 2
+ lr 50
+ sl	1007 2 30 5 0 \
+	1012 1 7 0 0
+ pr 1
+ mo 12
+ bh 3
+ gu 1
+ tf 2
+ bp 50
+ ra 10
+ at 60
+ df 70
+ mi 80
+ po 4
+ ct 1001 1011 
+ dt 3 15 200
+CM
+ im 1
+ ma 30
+ ca 25
+ as 5
+ hm 2
+ qc 3
+ rb 4
+ hs 1
+ cm 1
+ pr 1
+ kw 1
+ dg 1
+ sr 1
+ bf 7
+ vp 2
+ pl 1011
+ pc 1003
+ ar 1006
+ ot 1006
+ vi 1003 1004 1012 
+CO
+ li study 1007 
+ ar 1007 0 0 0 0 0 0 0
+ cs 2
+ wa 5
+ st 1
+ us 1007
+ ue 3
+ de 4
+ po 1
+ pr 2
+ if 1
+
+temp 1
+> save 1004
+1004 loc city
+
+temp 1
+> pretty 1
+> saveall
+1001 player pl_regular
+PL
+ fn Full Name
+ em a@b.c
+ ve vis@b.c
+ le last@b.c
+ pw secret
+ np 12
+ fs 30
+ ft 5
+ fo 1
+ nt 1
+ tf 1
+ sl 100
+ sb 2000
+ so 1
+ dr 1
+ ci 1
+ bm 1
+ lt 7
+ kn 1003 1004 1005 
+ un 1002 1011 
+ uf 1011 
+ am 1011 1 1002 1005 
+
+1002 char 0
+na Osswid the Bold
+il	1005 10 \
+	1006 2
+tl	1 1005 5 100 0 5 0 0 \
+	2 1006 1 900 1 1 0 3
+an 1001 1011 
+ad 1011 
+ah 1001 
+LI
+ wh 1003 (Plain)
+ hl 1011 
+CH
+ ni 1005 (peasant)
+ lo 1001
+ pl 1001
+ he 100
+ si 1
+ lk 2
+ lr 50
+ sl	1007 2 30 5 0 \
+	1012 1 7 0 0
+ pr 1
+ mo 12
+ bh 3
+ gu 1
+ tf 2
+ bp 50
+ ra 10
+ at 60
+ df 70
+ mi 80
+ po 4
+ ct 1001 1011 
+ dt 3 15 200
+CM
+ im 1
+ ma 30
+ ca 25
+ as 5
+ hm 2
+ qc 3
+ rb 4
+ hs 1
+ cm 1
+ pr 1
+ kw 1
+ dg 1
+ sr 1
+ bf 7
+ vp 2
+ pl 1011
+ pc 1003 (Plain)
+ ar 1006
+ ot 1006
+ vi 1003 1004 1012 
+CO
+ li study 1007 
+ ar 1007 0 0 0 0 0 0 0
+ cs 2
+ wa 5
+ st 1
+ us 1007
+ ue 3
+ de 4
+ po 1
+ pr 2
+ if 1
+
+1003 loc plain
+na Plain
+LI
+ wh 1004
+ hl 1002 1009 1011 
+LO
+ pd 1004 0 1003 0 
+ hi 1
+ sh 3
+ ba 2
+ dg 4
+ sl 1
+ lc 3
+SL
+ te 1007 1012 
+ da 50
+ de 10
+ ca 1000
+ bm 2
+ er 500
+ eg 100
+ mo 9
+ gr 1
+ sd 4
+ cl 3
+ sh 1
+ mc 1
+ op 20
+ lo 2
+ cp 3
+ uf 1
+ sf 1
+ ql 2
+ td 5
+ nc 1004 
+ lt 1004 
+ lf 1003 
+ bs 1010 
+ lw 3
+ lp 1
+
+1004 loc city
+
+1005 item 0
+na peasant
+IT
+ pl peasants
+ wt 100
+ lc 150
+ mu 1
+ pr 1
+ an 1
+ at 5
+ df 6
+ mi 7
+ bp 10
+ ca 1
+ un 1002 (Osswid the Bold)
+IM
+ au 5
+ cl 1
+ cr 2
+ cc 1
+ uk 3
+ qc 4
+ ab 5
+ db 6
+ mb 7
+ ba 8
+ rd 9
+ tn 10
+ oc 11
+ ti 1002 (Osswid the Bold)
+ rc 1003 (Plain)
+ pc 1004
+ ct 1002 (Osswid the Bold)
+ lo 1012
+ mu 1007 
+ ms 1012 
+
+1006 item 0
+IT
+ rc 15
+ fc 0
+
+1007 skill 0
+SK
+ tl 14
+ rs 1012
+ of 1012 
+ re 1012 
+ rq	1005 1 2 \
+	1006 3 0
+ pr 1005 (peasant)
+ np 2
+ ne 1
+
+1008 gate 0
+GA
+ tl 1003 (Plain)
+ nj 1002 (Osswid the Bold)
+ nu 1001
+ sk 1234
+ rh 1
+
+1009 ship galley
+
+1010 storm 0
+MI
+ sb 1002 (Osswid the Bold)
+ di 3
+ mc 4
+ md 5
+ ss 6
+ ca r
+ gc 1004
+ mh 1003 (Plain)
+ co 1005 (peasant)
+ ov 1006
+ ol 1001
+ bs 1009
+ sn Saved Name
+ ds Display banner
+ nm 1002 1003 
+
+1011 char 0
+
+1012 skill 0
+
+exit 0
+section names and pretty
+> alloc 1001 1 49
+> alloc 1002 2 0
+> alloc 1003 3 3
+> alloc 1004 3 14
+> alloc 1005 4 0
+> alloc 1006 4 0
+> alloc 1007 5 0
+> alloc 1008 6 0
+> alloc 1009 9 30
+> alloc 1010 11 0
+> alloc 1011 2 0
+> alloc 1012 5 0
+> putl f 1001 player pl_regular
+> putl f na Faction One
+> putl f 
+> putl f 1002 char 0
+> putl f na Osswid
+> putl f 
+> putl f 1003 loc plain
+> putl f na Plain [x]
+> putl f 
+> putl f 1004 loc city
+> putl f na Drassa
+> putl f 
+> putl f 1005 item 0
+> putl f na peasant
+> putl f 
+> putl f 1006 item 0
+> putl f na Amulet
+> putl f 
+> putl f 1007 skill 0
+> putl f na Combat
+> putl f 
+> putl f 1008 gate 0
+> putl f 
+> putl f 1009 ship galley
+> putl f na Swift
+> putl f 
+> putl f 1010 storm 0
+> putl f na Gale
+> putl f 
+> putl f 1011 char 0
+> putl f na Second
+> putl f 
+> putl f 1012 skill 0
+> putl f na Shipcraft
+> readfile f
+readfile 1
+> advance
+> loadall
+> saveall
+1001 player pl_regular
+na Faction One
+
+1002 char 0
+na Osswid
+
+1003 loc plain
+na Plain {x}
+
+1004 loc city
+na Drassa
+
+1005 item 0
+na peasant
+
+1006 item 0
+na Amulet
+
+1007 skill 0
+na Combat
+
+1008 gate 0
+
+1009 ship galley
+na Swift
+
+1010 storm 0
+na Gale
+
+1011 char 0
+na Second
+
+1012 skill 0
+na Shipcraft
+
+> pretty 1
+> saveall
+1001 player pl_regular
+na Faction One
+
+1002 char 0
+na Osswid
+
+1003 loc plain
+na Plain {x}
+
+1004 loc city
+na Drassa
+
+1005 item 0
+na peasant
+
+1006 item 0
+na Amulet
+
+1007 skill 0
+na Combat
+
+1008 gate 0
+
+1009 ship galley
+na Swift
+
+1010 storm 0
+na Gale
+
+1011 char 0
+na Second
+
+1012 skill 0
+na Shipcraft
+
+exit 0
+section zero_check and sections that always print
+> alloc 2001 3 3
+> alloc 2002 2 0
+> alloc 2003 4 0
+> alloc 2004 11 0
+> alloc 2005 1 49
+> alloc 2006 5 0
+> alloc 2007 6 0
+> alloc 2008 3 14
+> alloc 2009 2 0
+> alloc 2010 0 0
+> save 2001
+2001 loc plain
+
+temp 1
+> p loc 2001
+> save 2001
+2001 loc plain
+
+temp 1
+> poke loc_next 2001 7
+> save 2001
+2001 loc plain
+LO
+
+temp 1
+> p loc 2008
+> poke prov_dest_empty 2008 1
+> save 2008
+2008 loc city
+LO
+
+temp 1
+> p char 2002
+> save 2002
+2002 char 0
+CH
+
+temp 1
+> p magic 2002
+> save 2002
+2002 char 0
+CH
+
+temp 1
+> poke mage_worked 2002 1
+> save 2002
+2002 char 0
+CH
+CM
+
+temp 1
+> p item 2003
+> save 2003
+2003 item 0
+
+temp 1
+> p item_magic 2003
+> save 2003
+2003 item 0
+IT
+
+temp 1
+> poke one_turn_use 2003 1
+> save 2003
+2003 item 0
+IT
+IM
+
+temp 1
+> p misc 2004
+> save 2004
+2004 storm 0
+
+temp 1
+> poke opium_double 2004 1
+> save 2004
+2004 storm 0
+MI
+
+temp 1
+> p player 2005
+> save 2005
+2005 player pl_regular
+PL
+
+temp 1
+> p skill 2006
+> save 2006
+2006 skill 0
+SK
+ tl 0
+
+temp 1
+> p gate 2007
+> save 2007
+2007 gate 0
+GA
+
+temp 1
+> p subloc 2008
+> save 2008
+2008 loc city
+LO
+SL
+
+temp 1
+> p disp 2009
+> p command 2009
+> save 2009
+2009 char 0
+
+temp 1
+> poke cmd 2009 3
+> save 2009
+2009 char 0
+CO
+ li (null)
+ ar 0 0 0 0 0 0 0 0
+
+temp 1
+> poke where 2009 2001
+> save 2009
+2009 char 0
+LI
+ wh 2001
+CO
+ li (null)
+ ar 0 0 0 0 0 0 0 0
+
+temp 1
+> poke where 2009 99999
+> save 2009
+2009 char 0
+LI
+CO
+ li (null)
+ ar 0 0 0 0 0 0 0 0
+
+temp 1
+> save 2010
+temp 0
+> save 2011
+> save 0
+> save -1
+exit 0
+section diagnostics
+> alloc 3001 2 0
+> alloc 3002 2 0
+> alloc 3003 4 0
+> putl f 3001 char 0
+> putl f # a comment line
+> putl f na
+> putl f CHAR
+> putl f  xx 5
+> putl f \x09ni 3002
+> putl f \x20
+> putl f  h
+> putl f  \x80\x81 high bytes
+> putl f  he
+> putl f   he 3
+> putl f  ni 99999
+> putl f  lo abc
+> putl f CM
+> putl f  zz 1
+> putl f  vi 3002 99999 3003
+> putl f LI
+> putl f  qq 1
+> putl f  wh 99999
+> putl f  hl 3003 77 3002
+> putl f LO
+> putl f  qq 1
+> putl f  pd 3003 0 77 \\
+> putl f    3002 0
+> putl f SL
+> putl f  qq 1
+> putl f  te 3002 77
+> putl f IT
+> putl f  qq 1
+> putl f  pl
+> putl f IM
+> putl f  qq 1
+> putl f  ti 99999
+> putl f  mu 77
+> putl f PL
+> putl f  qq 1
+> putl f  am 77 1 3002
+> putl f  am 3003 0 77 3002
+> putl f  kn 3003 77
+> putl f SK
+> putl f  qq 1
+> putl f  rq\x0977 1 0
+> putl f GA
+> putl f  qq 1
+> putl f  tl 77
+> putl f MI
+> putl f  qq 1
+> putl f  ca
+> putl f CO
+> putl f  qq 1
+> putl f  us 77
+> putl f XY unknown section
+> putl f  ab skipped
+> putl f  cd skipped too
+> putl f \x09and this
+> putl f il\x0977 3 \\
+> putl f \x093003 2
+> putl f an 3003 77
+> putl f ad 77
+> putl f ah 77 3003
+> putl f tl\x091 77 1 1 0 1 0 0
+> putl f na Late Name
+> putl f 
+> readfile f
+readfile 1
+> advance
+> load 3001
+scan_char(3001):  bad line: xx 5
+scan_char(3001):  bad line: 
+scan_char(3001):  bad line: h
+scan_char(3001):  bad line: € high bytes
+scan_char(3001):  bad line:  he 3
+box_scan(3001): bad reference: ni 99999
+box_scan(3001): bad reference: lo abc
+scan_magic(3001):  bad line: zz 1
+known_scan(3001): bad box reference: 99999
+scan_loc_info(3001):  bad line: qq 1
+box_scan(3001): bad reference: wh 99999
+boxlist_scan(3001): bad box reference: 77
+scan_loc(3001):  bad line: qq 1
+boxlist_scan(3001): bad box reference: 77
+scan_subloc(3001):  bad line: qq 1
+boxlist_scan(3001): bad box reference: 77
+scan_item(3001):  bad line: qq 1
+scan_item_magic(3001):  bad line: qq 1
+boxlist_scan(3001): bad box reference: 77
+scan_player(3001):  bad line: qq 1
+admit_scan(3001): bad targ 77
+admit_scan(3001): bad box reference: 77
+known_scan(3001): bad box reference: 77
+scan_skill(3001):  bad line: qq 1
+req_list_scan(3001): bad item 77
+scan_gate(3001):  bad line: qq 1
+box_scan(3001): bad reference: tl 77
+scan_misc(3001):  bad line: qq 1
+scan_command(3001):  bad line: qq 1
+box_scan(3001): bad reference: us 77
+load_box(3001):  bad line: XY unknown section
+item_list_scan(3001): bad item 77
+boxlist_scan(3001): bad box reference: 77
+boxlist_scan(3001): bad box reference: 77
+boxlist_scan(3001): bad box reference: 77
+trade_list_scan(3001): bad item 77
+line NULL
+> saveall
+3001 char 0
+na Late Name
+il	3003 2
+an 3003 
+ah 3003 
+LI
+ hl 3003 3002 
+CH
+CM
+ vi 3002 3003 
+LO
+ pd 3003 0 3002 0 
+SL
+ te 3002 
+IT
+IM
+PL
+ kn 3003 
+ am 3003 0 3002 
+SK
+ tl 0
+GA
+
+3002 char 0
+
+3003 item 0
+
+exit 0
+section top-level line endings and order
+> alloc 3101 2 0
+> alloc 3102 2 0
+> alloc 3103 2 0
+> alloc 3104 2 0
+> putl f 3101 char 0
+> putl f na First
+> putl f 3102 char 0
+> putl f na Second
+> putl f 
+> putl f 3103 char 0
+> putl f CH
+> putl f  he 5
+> putl f #comment
+> putl f  he 6
+> putl f na Third
+> putl f 
+> putl f 
+> putl f 3104 char 0
+> putl f na Fourth
+> readfile f
+readfile 1
+> advance
+> loadall
+load_box(3101):  bad line: 3102 char 0
+load_box(3103):  bad line:  he 6
+stop []
+> line
+line []
+> advance
+> line
+line [3104 char 0]
+> loadall
+> line
+line NULL
+> saveall
+3101 char 0
+na Second
+
+3102 char 0
+
+3103 char 0
+na Third
+CH
+ he 5
+
+3104 char 0
+na Fourth
+
+exit 0
+section load_box at end of file
+> alloc 3201 2 0
+> alloc 3202 2 0
+> put f 3201 char 0
+> readfile f
+readfile 1
+> advance
+> load 3201
+line NULL
+> save 3201
+3201 char 0
+
+temp 1
+> put g 3202 char 0\x0aCH\x0a he 7
+> readfile g
+readfile 1
+> advance
+> load 3202
+line NULL
+> save 3202
+3202 char 0
+CH
+ he 7
+
+temp 1
+exit 0
+section load_box line after a section
+> alloc 3301 2 0
+> putl f 3301 char 0
+> putl f CH
+> putl f  he 9
+> putl f CM
+> putl f  im 1
+> putl f na After
+> putl f 
+> putl f next line
+> readfile f
+readfile 1
+> advance
+> load 3301
+line [next line]
+> save 3301
+3301 char 0
+na After
+CH
+ he 9
+CM
+ im 1
+
+temp 1
+exit 0
+section unforseen box
+> libdir some/lib
+> putl f 4242 char 0
+> putl f na Ghost
+> readfile f
+readfile 1
+> advance
+> load 4242
+Unforseen box 4242 found in load phase.
+Remove some/lib/master and retry.
+assertion failure: olympia/io.c (1906): FALSE
+exit 134
+section unforseen box with default libdir
+> putl f 4243 char 0
+> readfile f
+readfile 1
+> advance
+> load 4243
+Unforseen box 4243 found in load phase.
+Remove lib/master and retry.
+assertion failure: olympia/io.c (1906): FALSE
+exit 134
+section continuation at end of file
+> alloc 3401 2 0
+> put f 3401 char 0\x0ail\x091 2 \\
+> readfile f
+readfile 1
+> advance
+> load 3401
+item_list_scan(3401): bad item 1
+exit 139
+section continuation in a section at end of file
+> alloc 3402 2 0
+> alloc 3403 3 3
+> put f 3402 char 0\x0aCH\x0a ct 3402 \\
+> readfile f
+readfile 1
+> advance
+> load 3402
+exit 139
+section narrowing
+> alloc 3501 2 0
+> alloc 3502 3 3
+> alloc 3503 4 0
+> alloc 3504 11 0
+> alloc 3505 1 49
+> alloc 3506 5 0
+> alloc 3507 6 0
+> putl f 3501 char 0
+> putl f CH
+> putl f  he 300
+> putl f  si -129
+> putl f  lr 99999999999
+> putl f  at 70000
+> putl f  df -40000
+> putl f  mi 32768
+> putl f  mo -5
+> putl f  lk 255
+> putl f  dt 70000 -1 99999999999
+> putl f CM
+> putl f  im 200
+> putl f  ma -7
+> putl f  as 40000
+> putl f  qc 99999
+> putl f  bf 4294967297
+> putl f CO
+> putl f  li stack 1
+> putl f  ar 1 -2 3 x 5
+> putl f  cs 300
+> putl f  wa -3
+> putl f  st 129
+> putl f  ue 2147483648
+> putl f  po -1
+> putl f  pr 256
+> putl f 
+> putl f 3502 loc plain
+> putl f LO
+> putl f  hi 128
+> putl f  sh 65536
+> putl f  ba -1
+> putl f  dg 1000
+> putl f  lc -300
+> putl f  sl 255
+> putl f SL
+> putl f  da 300
+> putl f  de -1
+> putl f  sd 99999
+> putl f  bm -2
+> putl f  op 3000000000
+> putl f  lw -1
+> putl f  lp 2
+> putl f 
+> putl f 3503 item 0
+> putl f IT
+> putl f  wt 65535
+> putl f  lc 40000
+> putl f  rc -1
+> putl f  fc 99999
+> putl f  bp -9
+> putl f IM
+> putl f  au 70000
+> putl f  rd -70000
+> putl f  tn 200
+> putl f  ti -5
+> putl f  cl 128
+> putl f 
+> putl f 3504 storm 0
+> putl f MI
+> putl f  ca \xff
+> putl f  di -1
+> putl f  ss 40000
+> putl f  mc +12
+> putl f  md 1x
+> putl f 
+> putl f 3505 player pl_regular
+> putl f PL
+> putl f  np 40000
+> putl f  fs -40000
+> putl f  fo 128
+> putl f  sl -1
+> putl f  sb +7
+> putl f  lt   42
+> putl f 
+> putl f 3506 skill 0
+> putl f SK
+> putl f  tl -1
+> putl f  np 99999999999
+> putl f  ne 0
+> putl f 
+> putl f 3507 gate 0
+> putl f GA
+> putl f  sk 99999
+> putl f  rh 300
+> putl f  nj 0
+> putl f  nu 0
+> putl f 
+> readfile f
+readfile 1
+> advance
+> loadall
+box_scan(3507): bad reference: nj 0
+box_scan(3507): bad reference: nu 0
+> saveall
+3501 char 0
+CH
+ he 44
+ si 127
+ lk -1
+ lr 1215752191
+ mo -5
+ at 4464
+ df 25536
+ mi -32768
+ dt 4464 -1 1215752191
+CM
+ im -56
+ ma -7
+ as -25536
+ qc -31073
+ bf 1
+CO
+ li stack 1
+ ar 1 -2 3 0 0 0 0 0
+ cs 44
+ wa -3
+ st -127
+ ue -2147483648
+ po -1
+
+3502 loc plain
+LO
+ hi -128
+ ba -1
+ dg -24
+ sl -1
+ lc -44
+SL
+ da 44
+ de -1
+ bm -2
+ sd -31073
+ op -1294967296
+ lw -1
+ lp 2
+
+3503 item 0
+IT
+ wt -1
+ lc -25536
+ rc -1
+ fc -31073
+ bp -9
+IM
+ au 4464
+ cl -128
+ rd -4464
+ tn -56
+
+3504 storm 0
+MI
+ di -1
+ mc 12
+ md 1
+ ss -25536
+ ca ÿ
+
+3505 player pl_regular
+PL
+ np -25536
+ fs 25536
+ fo -128
+ sl -1
+ sb 7
+ lt 42
+
+3506 skill 0
+SK
+ tl -1
+ np 1215752191
+
+3507 gate 0
+GA
+ sk -31073
+ rh 44
+
+> cmd 3501
+cmd 79 fuzzy 0 conditional 0 who 3501 use_skill 0
+line [stack 1]
+parsed_line [stack]
+parse: [stack] [1]
+exit 0
+section misc ca with a negative byte and an empty plural name
+> alloc 3601 11 0
+> alloc 3602 4 0
+> alloc 3603 11 0
+> putl f 3601 storm 0
+> putl f MI
+> putl f  ca -x
+> putl f 
+> putl f 3602 item 0
+> putl f IT
+> putl f  pl
+> putl f 
+> putl f 3603 storm 0
+> putl f MI
+> putl f  sn
+> putl f  ds
+> putl f 
+> readfile f
+readfile 1
+> advance
+> loadall
+> saveall
+3601 storm 0
+MI
+ ca -
+
+3602 item 0
+IT
+
+3603 storm 0
+MI
+
+exit 0
+section commands in boxes
+> alloc 3701 2 0
+> alloc 3702 2 0
+> alloc 3703 2 0
+> alloc 3704 2 0
+> alloc 3705 2 0
+> alloc 3706 5 0
+> putl f 3701 char 0
+> putl f CO
+> putl f  us 3702
+> putl f  li  move 3702   # comment
+> putl f  ar 3702
+> putl f 
+> putl f 3702 char 0
+> putl f CO
+> putl f  li bogus thing # a comment
+> putl f  ar 1 2 3
+> putl f 
+> putl f 3703 char 0
+> putl f CO
+> putl f  li
+> putl f  ar 9
+> putl f 
+> putl f 3704 char 0
+> putl f CO
+> putl f  li &stduy 3706
+> putl f  us 3706
+> putl f  ue 2
+> putl f 
+> putl f 3705 char 0
+> putl f CO
+> putl f  ar 1 2 3 4 5 6 7 8 9
+> putl f  li ?attack 3701
+> putl f  li study 3706
+> putl f 
+> putl f 3706 skill 0
+> putl f SK
+> putl f  tl 7
+> putl f 
+> readfile f
+readfile 1
+> advance
+> loadall
+scan_command(3702): bad cmd bogus thing 
+> cmd 3701
+cmd 48 fuzzy 0 conditional 0 who 3701 use_skill 0
+line [move 3702   ]
+parsed_line [move]
+parse: [move] [3702]
+> cmd 3702
+cmd 0 fuzzy 0 conditional 0 who 3702 use_skill 0
+line [bogus thing ]
+parsed_line [bogus]
+parse: [bogus] [thing]
+> cmd 3703
+cmd 0 fuzzy 0 conditional 0 who 3703 use_skill 0
+line []
+parsed_line []
+parse: NULL
+> cmd 3704
+cmd 81 fuzzy 1 conditional 1 who 3704 use_skill 3706
+line [&stduy 3706]
+parsed_line [stduy]
+parse: [stduy] [3706]
+> cmd 3705
+cmd 81 fuzzy 0 conditional 0 who 3705 use_skill 0
+line [study 3706]
+parsed_line [study]
+parse: [study] [3706]
+> saveall
+3701 char 0
+CO
+ li move 3702   
+ ar 3702 0 0 0 0 0 0 0
+
+3702 char 0
+
+3703 char 0
+
+3704 char 0
+CO
+ li &stduy 3706
+ ar 0 0 0 0 0 0 0 0
+ us 3706
+ ue 2
+
+3705 char 0
+CO
+ li study 3706
+ ar 1 2 3 4 5 6 7 8
+
+3706 skill 0
+SK
+ tl 7
+
+exit 0
+section oly_parse_cmd
+> parse study 600
+oly_parse_cmd 1 fuzzy_find 0
+s [study 600]
+cmd 81 fuzzy 0 conditional 0 who 0 use_skill 0
+line [study 600]
+parsed_line [study]
+parse: [study] [600]
+> parse   STUDY 600
+oly_parse_cmd 1 fuzzy_find 0
+s [  STUDY 600]
+cmd 81 fuzzy 0 conditional 0 who 0 use_skill 0
+line [STUDY 600]
+parsed_line [STUDY]
+parse: [STUDY] [600]
+> parse & move north
+oly_parse_cmd 1 fuzzy_find 0
+s [& move north]
+cmd 48 fuzzy 0 conditional 1 who 0 use_skill 0
+line [& move north]
+parsed_line [ move]
+parse: [move] [north]
+> parse ?attack 1002
+oly_parse_cmd 1 fuzzy_find 0
+s [?attack 1002]
+cmd 3 fuzzy 0 conditional 2 who 0 use_skill 0
+line [?attack 1002]
+parsed_line [attack]
+parse: [attack] [1002]
+> parse &
+oly_parse_cmd 1 fuzzy_find 0
+s [&]
+cmd 0 fuzzy 0 conditional 1 who 0 use_skill 0
+line [&]
+parsed_line []
+parse:
+> parse ?
+oly_parse_cmd 1 fuzzy_find 0
+s [?]
+cmd 0 fuzzy 0 conditional 2 who 0 use_skill 0
+line [?]
+parsed_line []
+parse:
+> parse
+oly_parse_cmd 1 fuzzy_find 0
+s []
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line []
+parsed_line []
+parse:
+> parse # only a comment
+oly_parse_cmd 1 fuzzy_find 0
+s []
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line []
+parsed_line []
+parse:
+> parse    
+oly_parse_cmd 1 fuzzy_find 0
+s [   ]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line []
+parsed_line []
+parse:
+> parse move\x09north\x09 
+oly_parse_cmd 1 fuzzy_find 0
+s [move north  ]
+cmd 48 fuzzy 0 conditional 0 who 0 use_skill 0
+line [move north  ]
+parsed_line [move]
+parse: [move] [north]
+> parse move "  spaced out  " 'single  quoted' x
+oly_parse_cmd 1 fuzzy_find 0
+s [move "  spaced out  " 'single  quoted' x]
+cmd 48 fuzzy 0 conditional 0 who 0 use_skill 0
+line [move "  spaced out  " 'single  quoted' x]
+parsed_line [move]
+parse: [move] [spaced out] [single  quoted] [x]
+> parse say "hello # world"
+oly_parse_cmd 0 fuzzy_find 0
+s [say "hello ]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line [say "hello ]
+parsed_line [say]
+parse: [say] [hello]
+> parse say 'it''s'
+oly_parse_cmd 0 fuzzy_find 0
+s [say 'it''s']
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line [say 'it''s']
+parsed_line [say]
+parse: [say] [it] [s]
+> parse say "ends in a quote"
+oly_parse_cmd 0 fuzzy_find 0
+s [say "ends in a quote"]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line [say "ends in a quote"]
+parsed_line [say]
+parse: [say] [ends in a quote]
+> parse say 'ends in a quote'
+oly_parse_cmd 0 fuzzy_find 0
+s [say 'ends in a quote']
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line [say 'ends in a quote']
+parsed_line [say]
+parse: [say] [ends in a quote]
+> parse say "unterminated
+oly_parse_cmd 0 fuzzy_find 0
+s [say "unterminated]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line [say "unterminated]
+parsed_line [say]
+parse: [say] [unterminated]
+> parse say 'unterminated
+oly_parse_cmd 0 fuzzy_find 0
+s [say 'unterminated]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line [say 'unterminated]
+parsed_line [say]
+parse: [say] [unterminated]
+> parse "" move
+oly_parse_cmd 0 fuzzy_find 0
+s ["" move]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line ["" move]
+parsed_line ["]
+parse: [] [move]
+> parse '' move
+oly_parse_cmd 0 fuzzy_find 0
+s ['' move]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line ['' move]
+parsed_line [']
+parse: [] [move]
+> parse "move" north
+oly_parse_cmd 1 fuzzy_find 0
+s ["move" north]
+cmd 48 fuzzy 0 conditional 0 who 0 use_skill 0
+line ["move" north]
+parsed_line ["move]
+parse: [move] [north]
+> parse 'move' north
+oly_parse_cmd 1 fuzzy_find 0
+s ['move' north]
+cmd 48 fuzzy 0 conditional 0 who 0 use_skill 0
+line ['move' north]
+parsed_line ['move]
+parse: [move] [north]
+> parse move\x01\x1fnorth\x7f
+oly_parse_cmd 1 fuzzy_find 0
+s [move  north\x7f]
+cmd 48 fuzzy 0 conditional 0 who 0 use_skill 0
+line [move  north\x7f]
+parsed_line [move]
+parse: [move] [north\x7f]
+> parse move \xe1\x80\x9f\xa0 n
+oly_parse_cmd 1 fuzzy_find 0
+s [move a    n]
+cmd 48 fuzzy 0 conditional 0 who 0 use_skill 0
+line [move a    n]
+parsed_line [move]
+parse: [move] [a] [n]
+> parse stduy 1
+oly_parse_cmd 1 fuzzy_find 1
+s [stduy 1]
+cmd 81 fuzzy 1 conditional 0 who 0 use_skill 0
+line [stduy 1]
+parsed_line [stduy]
+parse: [stduy] [1]
+> parse studdy 1
+oly_parse_cmd 1 fuzzy_find 1
+s [studdy 1]
+cmd 81 fuzzy 1 conditional 0 who 0 use_skill 0
+line [studdy 1]
+parsed_line [studdy]
+parse: [studdy] [1]
+> parse sudy 1
+oly_parse_cmd 0 fuzzy_find 0
+s [sudy 1]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line [sudy 1]
+parsed_line [sudy]
+parse: [sudy] [1]
+> parse stucy 1
+oly_parse_cmd 1 fuzzy_find 1
+s [stucy 1]
+cmd 81 fuzzy 1 conditional 0 who 0 use_skill 0
+line [stucy 1]
+parsed_line [stucy]
+parse: [stucy] [1]
+> parse stu 1
+oly_parse_cmd 0 fuzzy_find 0
+s [stu 1]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line [stu 1]
+parsed_line [stu]
+parse: [stu] [1]
+> parse xyzzy 1
+oly_parse_cmd 1 fuzzy_find 0
+s [xyzzy 1]
+cmd 96 fuzzy 0 conditional 0 who 0 use_skill 0
+line [xyzzy 1]
+parsed_line [xyzzy]
+parse: [xyzzy] [1]
+> parse "a""b"
+oly_parse_cmd 0 fuzzy_find 0
+s ["a""b"]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line ["a""b"]
+parsed_line ["a]
+parse: [a] [b]
+> parse \x09\x09move\x09
+oly_parse_cmd 1 fuzzy_find 0
+s [\x09\x09move ]
+cmd 48 fuzzy 0 conditional 0 who 0 use_skill 0
+line [move ]
+parsed_line [move]
+parse: [move]
+> parse move #
+oly_parse_cmd 1 fuzzy_find 0
+s [move ]
+cmd 48 fuzzy 0 conditional 0 who 0 use_skill 0
+line [move ]
+parsed_line [move]
+parse: [move]
+> parse #move
+oly_parse_cmd 1 fuzzy_find 0
+s []
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line []
+parsed_line []
+parse:
+> parse move"x"y
+oly_parse_cmd 0 fuzzy_find 0
+s [move"x"y]
+cmd 0 fuzzy 0 conditional 0 who 0 use_skill 0
+line [move"x"y]
+parsed_line [move"x"y]
+parse: [move"x"y]
+> parse move a"b c"d
+oly_parse_cmd 1 fuzzy_find 0
+s [move a"b c"d]
+cmd 48 fuzzy 0 conditional 0 who 0 use_skill 0
+line [move a"b c"d]
+parsed_line [move]
+parse: [move] [a"b] [c"d]
+exit 0
+section find_command
+> find study
+find_command 81 fuzzy_find 0
+> find STUDY
+find_command 81 fuzzy_find 0
+> find Study
+find_command 81 fuzzy_find 0
+> find
+find_command -1 fuzzy_find 0
+> find stduy
+find_command 81 fuzzy_find 1
+> find stdy
+find_command -1 fuzzy_find 0
+> find studyy
+find_command 81 fuzzy_find 1
+> find sutdy
+find_command 81 fuzzy_find 1
+> find fakecmd
+find_command -1 fuzzy_find 0
+> find begin
+find_command 110 fuzzy_find 0
+> find bgein
+find_command 110 fuzzy_find 1
+> find admit
+find_command 2 fuzzy_find 0
+> find admti
+find_command 2 fuzzy_find 1
+> find a
+find_command -1 fuzzy_find 0
+> find attack
+find_command 3 fuzzy_find 0
+> find attakc
+find_command 3 fuzzy_find 1
+> find unit
+find_command 111 fuzzy_find 0
+> find untis
+find_command -1 fuzzy_find 0
+> find stack
+find_command 79 fuzzy_find 0
+> find stakc
+find_command 79 fuzzy_find 1
+> find xxxxxxxxxx
+find_command -1 fuzzy_find 0
+exit 0
+section real boxes from world.tgz
+> alloc 1 4 0
+> alloc 10 4 0
+> alloc 11 4 0
+> alloc 14 4 0
+> alloc 15 4 0
+> alloc 16 4 0
+> alloc 17 4 0
+> alloc 21 4 0
+> alloc 25 4 0
+> alloc 54 4 0
+> alloc 55 4 0
+> alloc 59 4 0
+> alloc 60 4 0
+> alloc 61 4 0
+> alloc 65 4 0
+> alloc 68 4 0
+> alloc 69 4 0
+> alloc 77 4 0
+> alloc 78 4 0
+> alloc 80 4 0
+> alloc 82 4 0
+> alloc 83 4 0
+> alloc 87 4 0
+> alloc 94 4 0
+> alloc 95 4 0
+> alloc 96 4 0
+> alloc 100 1 52
+> alloc 101 4 0
+> alloc 200 1 48
+> alloc 207 1 62
+> alloc 261 4 0
+> alloc 274 4 0
+> alloc 275 4 0
+> alloc 276 4 0
+> alloc 277 4 0
+> alloc 294 4 0
+> alloc 600 5 0
+> alloc 601 5 0
+> alloc 602 5 0
+> alloc 603 5 0
+> alloc 610 5 0
+> alloc 613 5 0
+> alloc 630 5 0
+> alloc 670 5 0
+> alloc 680 5 0
+> alloc 700 5 0
+> alloc 730 5 0
+> alloc 800 5 43
+> alloc 840 5 43
+> alloc 860 5 43
+> alloc 937 13 0
+> alloc 1009 2 64
+> alloc 1023 2 64
+> alloc 2150 2 64
+> alloc 7628 2 64
+> alloc 10000 3 1
+> alloc 10001 3 1
+> alloc 10002 3 1
+> alloc 10003 3 1
+> alloc 10004 3 1
+> alloc 10005 3 1
+> alloc 10006 3 1
+> alloc 10007 3 1
+> alloc 10099 3 1
+> alloc 10100 3 1
+> alloc 10101 3 1
+> alloc 10102 3 1
+> alloc 10103 3 1
+> alloc 10104 3 1
+> alloc 10106 3 1
+> alloc 10109 3 1
+> alloc 10114 3 4
+> alloc 10208 3 6
+> alloc 10209 3 4
+> alloc 10210 3 3
+> alloc 10309 3 4
+> alloc 12530 3 5
+> alloc 12782 3 4
+> alloc 15644 3 5
+> alloc 17679 3 2
+> alloc 22830 3 2
+> alloc 22955 3 2
+> alloc 56761 3 14
+> alloc 56762 3 14
+> alloc 56763 3 14
+> alloc 57153 3 14
+> alloc 57380 3 14
+> alloc 57602 3 14
+> alloc 57892 3 14
+> alloc 57978 3 14
+> alloc 58260 3 14
+> alloc 58449 3 14
+> alloc 58706 3 14
+> alloc 58751 3 14
+> alloc 58761 3 50
+> alloc 58763 3 50
+> alloc 59019 3 8
+> alloc 59054 6 0
+> alloc 59097 7 0
+> alloc 59452 3 9
+> alloc 59793 3 71
+> alloc 63326 3 9
+> alloc 66395 3 9
+> alloc 68475 3 16
+> alloc 70026 3 8
+> alloc 74583 3 71
+> alloc 77727 3 12
+> putl f 10000 loc ocean
+> putl f il\x0987 50 \\
+> putl f \x0959 30 \\
+> putl f \x09274 1 \\
+> putl f \x09275 1 \\
+> putl f \x09276 1
+> putl f LI
+> putl f  wh 58761
+> putl f LO
+> putl f  pd 0 10001 10100 10099\x20
+> putl f  dg 4
+> putl f 
+> putl f 1 item 0
+> putl f na gold
+> putl f CH
+> putl f CM
+> putl f  sr 1
+> putl f IT
+> putl f  pl gold
+> putl f 
+> putl f 1009 char garrison
+> putl f il\x0916 118
+> putl f LI
+> putl f  wh 58706
+> putl f CH
+> putl f  lo 207
+> putl f  he -1
+> putl f  lk 4
+> putl f  gu 1
+> putl f  at 60
+> putl f  df 60
+> putl f CM
+> putl f  dg 1
+> putl f MI
+> putl f  ca g
+> putl f 
+> putl f 10001 loc ocean
+> putl f il\x0987 50 \\
+> putl f \x0959 30 \\
+> putl f \x09274 1 \\
+> putl f \x09275 1 \\
+> putl f \x09276 1
+> putl f LI
+> putl f  wh 58761
+> putl f LO
+> putl f  pd 0 10002 10101 10000\x20
+> putl f  dg 5
+> putl f 
+> putl f 10209 loc mountain
+> putl f il\x0978 50 \\
+> putl f \x0910 10 \\
+> putl f \x0959 30 \\
+> putl f \x0996 50 \\
+> putl f \x09101 1 \\
+> putl f \x09275 1
+> putl f LI
+> putl f  wh 58763
+> putl f LO
+> putl f  pd 10109 10210 10309 10208\x20
+> putl f  dg 3
+> putl f SL
+> putl f  lf 70026\x20
+> putl f 
+> putl f 10 item 0
+> putl f na peasant
+> putl f IT
+> putl f  pl peasants
+> putl f  wt 100
+> putl f  lc 100
+> putl f  mu 1
+> putl f  pr 1
+> putl f  at 1
+> putl f  df 1
+> putl f 
+> putl f 69 item 0
+> putl f na elfstone
+> putl f IT
+> putl f  pl elfstones
+> putl f  wt 1
+> putl f IM
+> putl f  uk 8
+> putl f  lo 937
+> putl f 
+> putl f 100 player pl_npc
+> putl f na Independent player
+> putl f PL
+> putl f  pw crusty7
+> putl f 
+> putl f 600 skill 0
+> putl f na Shipcraft
+> putl f SK
+> putl f  tl 21
+> putl f  of 601 602 603\x20
+> putl f 
+> putl f 59054 gate 0
+> putl f LI
+> putl f  wh 12782
+> putl f GA
+> putl f  tl 10114
+> putl f 
+> putl f 1023 char garrison
+> putl f il\x0916 124
+> putl f LI
+> putl f  wh 58260
+> putl f CH
+> putl f  lo 207
+> putl f  he -1
+> putl f  lk 4
+> putl f  gu 1
+> putl f  at 60
+> putl f  df 60
+> putl f CM
+> putl f  dg 1
+> putl f MI
+> putl f  ca g
+> putl f 
+> putl f 200 player pl_system
+> putl f na Gamemaster
+> putl f PL
+> putl f  pw crusty7
+> putl f CO
+> putl f  li save
+> putl f  ar 0 0 0 0 0 0 0 0
+> putl f  cs 2
+> putl f  pr 1
+> putl f 
+> putl f 10002 loc ocean
+> putl f il\x0987 50 \\
+> putl f \x0959 30 \\
+> putl f \x09274 1 \\
+> putl f \x09275 1 \\
+> putl f \x09276 1
+> putl f LI
+> putl f  wh 58761
+> putl f  hl 66395\x20
+> putl f LO
+> putl f  pd 0 10003 10102 10001\x20
+> putl f  dg 5
+> putl f 
+> putl f 56761 loc city
+> putl f na Penbarn
+> putl f il\x0910 10 \\
+> putl f \x09294 1 \\
+> putl f \x09277 5 \\
+> putl f \x0996 100 \\
+> putl f \x09101 1
+> putl f tl\x094 95 17 7 0 0 0 0 \\
+> putl f \x094 87 100 2 0 0 0 0 \\
+> putl f \x093 261 10 50 0 0 0 0 \\
+> putl f \x093 77 25 15 0 0 0 0 \\
+> putl f \x094 77 25 7 0 0 0 0 \\
+> putl f \x091 95 17 7 0 0 0 0 \\
+> putl f \x091 87 100 2 0 0 0 0 \\
+> putl f \x092 261 10 50 0 0 0 0 \\
+> putl f \x092 77 25 15 0 0 0 0 \\
+> putl f \x091 77 25 7 0 0 0 0
+> putl f LI
+> putl f  wh 17679
+> putl f  hl 7628 74583\x20
+> putl f SL
+> putl f  te 600 610 680 700 730 800\x20
+> putl f  cp 1
+> putl f  nc 57153 57602 57978\x20
+> putl f 
+> putl f 613 skill 0
+> putl f na Construct catapult
+> putl f SK
+> putl f  tl 14
+> putl f  rs 610
+> putl f  rq\x0977 3 1 \\
+> putl f \x0911 3 0
+> putl f  pr 61
+> putl f 
+> putl f 10003 loc ocean
+> putl f il\x0987 50 \\
+> putl f \x0959 30 \\
+> putl f \x09274 1 \\
+> putl f \x09275 1 \\
+> putl f \x09276 1
+> putl f LI
+> putl f  wh 58761
+> putl f  hl 63326\x20
+> putl f LO
+> putl f  pd 0 10004 10103 10002\x20
+> putl f  dg 4
+> putl f 
+> putl f 56762 loc city
+> putl f na Flat City
+> putl f il\x0910 10 \\
+> putl f \x09294 1 \\
+> putl f \x09277 5 \\
+> putl f \x0996 100 \\
+> putl f \x09101 1
+> putl f tl\x094 94 30 4 0 0 0 0 \\
+> putl f \x091 94 30 4 0 0 0 0
+> putl f LI
+> putl f  wh 12530
+> putl f  hl 2150 59793\x20
+> putl f SL
+> putl f  te 610 670 680 800 860\x20
+> putl f  cp 1
+> putl f  nc 57380 58751\x20
+> putl f 
+> putl f 10006 loc ocean
+> putl f il\x0987 50 \\
+> putl f \x0959 30 \\
+> putl f \x09274 1 \\
+> putl f \x09275 1 \\
+> putl f \x09276 1
+> putl f LI
+> putl f  wh 58761
+> putl f  hl 59452\x20
+> putl f LO
+> putl f  pd 0 10007 10106 10005\x20
+> putl f  dg 1
+> putl f 
+> putl f 59019 loc faery hill
+> putl f LI
+> putl f  wh 22955
+> putl f SL
+> putl f  lt 15644\x20
+> putl f  lw 3
+> putl f 
+> putl f 11 item 0
+> putl f na worker
+> putl f IT
+> putl f  pl workers
+> putl f  wt 100
+> putl f  lc 100
+> putl f  mu 1
+> putl f  pr 1
+> putl f  at 1
+> putl f  df 1
+> putl f 
+> putl f 14 item 0
+> putl f na knight
+> putl f IT
+> putl f  pl knights
+> putl f  wt 1100
+> putl f  lc 100
+> putl f  rc 100
+> putl f  fc 0
+> putl f  mu 1
+> putl f  pr 1
+> putl f  at 45
+> putl f  df 45
+> putl f 
+> putl f 55 item 0
+> putl f na nazgul
+> putl f IT
+> putl f  pl nazgul
+> putl f  wt 1500
+> putl f  lc 150
+> putl f  rc 150
+> putl f  fc 150
+> putl f  pr 1
+> putl f  an 1
+> putl f  at 80
+> putl f  df 80
+> putl f  ca 1
+> putl f 
+> putl f 59097 road 0
+> putl f na Secret pass
+> putl f LI
+> putl f  wh 77727
+> putl f GA
+> putl f  tl 68475
+> putl f  rh 1
+> putl f 
+> putl f 10004 loc ocean
+> putl f il\x0987 50 \\
+> putl f \x0959 30 \\
+> putl f \x09274 1 \\
+> putl f \x09275 1 \\
+> putl f \x09276 1
+> putl f LI
+> putl f  wh 58761
+> putl f LO
+> putl f  pd 0 10005 10104 10003\x20
+> putl f  dg 3
+> putl f 
+> putl f 56763 loc city
+> putl f na Faery city
+> putl f il\x09101 1
+> putl f tl\x094 94 30 4 0 0 0 0 \\
+> putl f \x093 65 10 35 0 0 0 0 \\
+> putl f \x093 68 5 100 0 0 0 0 \\
+> putl f \x094 82 10 500 0 0 0 0 \\
+> putl f \x094 83 2 1000 0 0 0 0 \\
+> putl f \x093 54 1 1000 0 0 0 0 \\
+> putl f \x091 94 30 4 0 0 0 0 \\
+> putl f \x092 65 10 35 0 0 0 0 \\
+> putl f \x092 68 5 100 0 0 0 0 \\
+> putl f \x091 82 10 500 0 0 0 0 \\
+> putl f \x091 83 2 1000 0 0 0 0 \\
+> putl f \x092 54 1 1000 0 0 0 0
+> putl f LI
+> putl f  wh 22830
+> putl f SL
+> putl f  te 610 630 680 700 800 840\x20
+> putl f  cp 2
+> putl f  nc 57892 58449\x20
+> putl f
+> readfile f
+readfile 1
+> advance
+> loadall
+> saveall
+1 item 0
+na gold
+CH
+CM
+ sr 1
+IT
+ pl gold
+
+10 item 0
+na peasant
+IT
+ pl peasants
+ wt 100
+ lc 100
+ mu 1
+ pr 1
+ at 1
+ df 1
+
+11 item 0
+na worker
+IT
+ pl workers
+ wt 100
+ lc 100
+ mu 1
+ pr 1
+ at 1
+ df 1
+
+14 item 0
+na knight
+IT
+ pl knights
+ wt 1100
+ lc 100
+ rc 100
+ fc 0
+ mu 1
+ pr 1
+ at 45
+ df 45
+
+15 item 0
+
+16 item 0
+
+17 item 0
+
+21 item 0
+
+25 item 0
+
+54 item 0
+
+55 item 0
+na nazgul
+IT
+ pl nazgul
+ wt 1500
+ lc 150
+ rc 150
+ fc 150
+ pr 1
+ an 1
+ at 80
+ df 80
+ ca 1
+
+59 item 0
+
+60 item 0
+
+61 item 0
+
+65 item 0
+
+68 item 0
+
+69 item 0
+na elfstone
+IT
+ pl elfstones
+ wt 1
+IM
+ uk 8
+ lo 937
+
+77 item 0
+
+78 item 0
+
+80 item 0
+
+82 item 0
+
+83 item 0
+
+87 item 0
+
+94 item 0
+
+95 item 0
+
+96 item 0
+
+100 player pl_npc
+na Independent player
+PL
+ pw crusty7
+
+101 item 0
+
+200 player pl_system
+na Gamemaster
+PL
+ pw crusty7
+CO
+ li save
+ ar 0 0 0 0 0 0 0 0
+ cs 2
+ pr 1
+
+207 player pl_silent
+
+261 item 0
+
+274 item 0
+
+275 item 0
+
+276 item 0
+
+277 item 0
+
+294 item 0
+
+600 skill 0
+na Shipcraft
+SK
+ tl 21
+ of 601 602 603 
+
+601 skill 0
+
+602 skill 0
+
+603 skill 0
+
+610 skill 0
+
+613 skill 0
+na Construct catapult
+SK
+ tl 14
+ rs 610
+ rq	77 3 1 \
+	11 3 0
+ pr 61
+
+630 skill 0
+
+670 skill 0
+
+680 skill 0
+
+700 skill 0
+
+730 skill 0
+
+800 skill magic
+
+840 skill magic
+
+860 skill magic
+
+937 lore 0
+
+1009 char garrison
+il	16 118
+LI
+ wh 58706
+CH
+ lo 207
+ he -1
+ lk 4
+ gu 1
+ at 60
+ df 60
+CM
+ dg 1
+MI
+ ca g
+
+1023 char garrison
+il	16 124
+LI
+ wh 58260
+CH
+ lo 207
+ he -1
+ lk 4
+ gu 1
+ at 60
+ df 60
+CM
+ dg 1
+MI
+ ca g
+
+2150 char garrison
+
+7628 char garrison
+
+10000 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+LO
+ pd 0 10001 10100 10099 
+ dg 4
+
+10001 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+LO
+ pd 0 10002 10101 10000 
+ dg 5
+
+10002 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+ hl 66395 
+LO
+ pd 0 10003 10102 10001 
+ dg 5
+
+10003 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+ hl 63326 
+LO
+ pd 0 10004 10103 10002 
+ dg 4
+
+10004 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+LO
+ pd 0 10005 10104 10003 
+ dg 3
+
+10005 loc ocean
+
+10006 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+ hl 59452 
+LO
+ pd 0 10007 10106 10005 
+ dg 1
+
+10007 loc ocean
+
+10099 loc ocean
+
+10100 loc ocean
+
+10101 loc ocean
+
+10102 loc ocean
+
+10103 loc ocean
+
+10104 loc ocean
+
+10106 loc ocean
+
+10109 loc ocean
+
+10114 loc mountain
+
+10208 loc swamp
+
+10209 loc mountain
+il	78 50 \
+	10 10 \
+	59 30 \
+	96 50 \
+	101 1 \
+	275 1
+LI
+ wh 58763
+LO
+ pd 10109 10210 10309 10208 
+ dg 3
+SL
+ lf 70026 
+
+10210 loc plain
+
+10309 loc mountain
+
+12530 loc desert
+
+12782 loc mountain
+
+15644 loc desert
+
+17679 loc forest
+
+22830 loc forest
+
+22955 loc forest
+
+56761 loc city
+na Penbarn
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100 \
+	101 1
+tl	4 95 17 7 0 0 0 0 \
+	4 87 100 2 0 0 0 0 \
+	3 261 10 50 0 0 0 0 \
+	3 77 25 15 0 0 0 0 \
+	4 77 25 7 0 0 0 0 \
+	1 95 17 7 0 0 0 0 \
+	1 87 100 2 0 0 0 0 \
+	2 261 10 50 0 0 0 0 \
+	2 77 25 15 0 0 0 0 \
+	1 77 25 7 0 0 0 0
+LI
+ wh 17679
+ hl 7628 74583 
+SL
+ te 600 610 680 700 730 800 
+ cp 1
+ nc 57153 57602 57978 
+
+56762 loc city
+na Flat City
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100 \
+	101 1
+tl	4 94 30 4 0 0 0 0 \
+	1 94 30 4 0 0 0 0
+LI
+ wh 12530
+ hl 2150 59793 
+SL
+ te 610 670 680 800 860 
+ cp 1
+ nc 57380 58751 
+
+56763 loc city
+na Faery city
+il	101 1
+tl	4 94 30 4 0 0 0 0 \
+	3 65 10 35 0 0 0 0 \
+	3 68 5 100 0 0 0 0 \
+	4 82 10 500 0 0 0 0 \
+	4 83 2 1000 0 0 0 0 \
+	3 54 1 1000 0 0 0 0 \
+	1 94 30 4 0 0 0 0 \
+	2 65 10 35 0 0 0 0 \
+	2 68 5 100 0 0 0 0 \
+	1 82 10 500 0 0 0 0 \
+	1 83 2 1000 0 0 0 0 \
+	2 54 1 1000 0 0 0 0
+LI
+ wh 22830
+SL
+ te 610 630 680 700 800 840 
+ cp 2
+ nc 57892 58449 
+
+57153 loc city
+
+57380 loc city
+
+57602 loc city
+
+57892 loc city
+
+57978 loc city
+
+58260 loc city
+
+58449 loc city
+
+58706 loc city
+
+58751 loc city
+
+58761 loc region
+
+58763 loc region
+
+59019 loc faery hill
+LI
+ wh 22955
+SL
+ lt 15644 
+ lw 3
+
+59054 gate 0
+LI
+ wh 12782
+GA
+ tl 10114
+
+59097 road 0
+na Secret pass
+LI
+ wh 77727
+GA
+ tl 68475
+ rh 1
+
+59452 loc island
+
+59793 loc sewer
+
+63326 loc island
+
+66395 loc island
+
+68475 loc graveyard
+
+70026 loc faery hill
+
+74583 loc sewer
+
+77727 loc bog
+
+> pretty 1
+> saveall
+1 item 0
+na gold
+CH
+CM
+ sr 1
+IT
+ pl gold
+
+10 item 0
+na peasant
+IT
+ pl peasants
+ wt 100
+ lc 100
+ mu 1
+ pr 1
+ at 1
+ df 1
+
+11 item 0
+na worker
+IT
+ pl workers
+ wt 100
+ lc 100
+ mu 1
+ pr 1
+ at 1
+ df 1
+
+14 item 0
+na knight
+IT
+ pl knights
+ wt 1100
+ lc 100
+ rc 100
+ fc 0
+ mu 1
+ pr 1
+ at 45
+ df 45
+
+15 item 0
+
+16 item 0
+
+17 item 0
+
+21 item 0
+
+25 item 0
+
+54 item 0
+
+55 item 0
+na nazgul
+IT
+ pl nazgul
+ wt 1500
+ lc 150
+ rc 150
+ fc 150
+ pr 1
+ an 1
+ at 80
+ df 80
+ ca 1
+
+59 item 0
+
+60 item 0
+
+61 item 0
+
+65 item 0
+
+68 item 0
+
+69 item 0
+na elfstone
+IT
+ pl elfstones
+ wt 1
+IM
+ uk 8
+ lo 937
+
+77 item 0
+
+78 item 0
+
+80 item 0
+
+82 item 0
+
+83 item 0
+
+87 item 0
+
+94 item 0
+
+95 item 0
+
+96 item 0
+
+100 player pl_npc
+na Independent player
+PL
+ pw crusty7
+
+101 item 0
+
+200 player pl_system
+na Gamemaster
+PL
+ pw crusty7
+CO
+ li save
+ ar 0 0 0 0 0 0 0 0
+ cs 2
+ pr 1
+
+207 player pl_silent
+
+261 item 0
+
+274 item 0
+
+275 item 0
+
+276 item 0
+
+277 item 0
+
+294 item 0
+
+600 skill 0
+na Shipcraft
+SK
+ tl 21
+ of 601 602 603 
+
+601 skill 0
+
+602 skill 0
+
+603 skill 0
+
+610 skill 0
+
+613 skill 0
+na Construct catapult
+SK
+ tl 14
+ rs 610
+ rq	77 3 1 \
+	11 3 0
+ pr 61
+
+630 skill 0
+
+670 skill 0
+
+680 skill 0
+
+700 skill 0
+
+730 skill 0
+
+800 skill magic
+
+840 skill magic
+
+860 skill magic
+
+937 lore 0
+
+1009 char garrison
+il	16 118
+LI
+ wh 58706
+CH
+ lo 207
+ he -1
+ lk 4
+ gu 1
+ at 60
+ df 60
+CM
+ dg 1
+MI
+ ca g
+
+1023 char garrison
+il	16 124
+LI
+ wh 58260
+CH
+ lo 207
+ he -1
+ lk 4
+ gu 1
+ at 60
+ df 60
+CM
+ dg 1
+MI
+ ca g
+
+2150 char garrison
+
+7628 char garrison
+
+10000 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+LO
+ pd 0 10001 10100 10099 
+ dg 4
+
+10001 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+LO
+ pd 0 10002 10101 10000 
+ dg 5
+
+10002 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+ hl 66395 
+LO
+ pd 0 10003 10102 10001 
+ dg 5
+
+10003 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+ hl 63326 
+LO
+ pd 0 10004 10103 10002 
+ dg 4
+
+10004 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+LO
+ pd 0 10005 10104 10003 
+ dg 3
+
+10005 loc ocean
+
+10006 loc ocean
+il	87 50 \
+	59 30 \
+	274 1 \
+	275 1 \
+	276 1
+LI
+ wh 58761
+ hl 59452 
+LO
+ pd 0 10007 10106 10005 
+ dg 1
+
+10007 loc ocean
+
+10099 loc ocean
+
+10100 loc ocean
+
+10101 loc ocean
+
+10102 loc ocean
+
+10103 loc ocean
+
+10104 loc ocean
+
+10106 loc ocean
+
+10109 loc ocean
+
+10114 loc mountain
+
+10208 loc swamp
+
+10209 loc mountain
+il	78 50 \
+	10 10 \
+	59 30 \
+	96 50 \
+	101 1 \
+	275 1
+LI
+ wh 58763
+LO
+ pd 10109 10210 10309 10208 
+ dg 3
+SL
+ lf 70026 
+
+10210 loc plain
+
+10309 loc mountain
+
+12530 loc desert
+
+12782 loc mountain
+
+15644 loc desert
+
+17679 loc forest
+
+22830 loc forest
+
+22955 loc forest
+
+56761 loc city
+na Penbarn
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100 \
+	101 1
+tl	4 95 17 7 0 0 0 0 \
+	4 87 100 2 0 0 0 0 \
+	3 261 10 50 0 0 0 0 \
+	3 77 25 15 0 0 0 0 \
+	4 77 25 7 0 0 0 0 \
+	1 95 17 7 0 0 0 0 \
+	1 87 100 2 0 0 0 0 \
+	2 261 10 50 0 0 0 0 \
+	2 77 25 15 0 0 0 0 \
+	1 77 25 7 0 0 0 0
+LI
+ wh 17679
+ hl 7628 74583 
+SL
+ te 600 610 680 700 730 800 
+ cp 1
+ nc 57153 57602 57978 
+
+56762 loc city
+na Flat City
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100 \
+	101 1
+tl	4 94 30 4 0 0 0 0 \
+	1 94 30 4 0 0 0 0
+LI
+ wh 12530
+ hl 2150 59793 
+SL
+ te 610 670 680 800 860 
+ cp 1
+ nc 57380 58751 
+
+56763 loc city
+na Faery city
+il	101 1
+tl	4 94 30 4 0 0 0 0 \
+	3 65 10 35 0 0 0 0 \
+	3 68 5 100 0 0 0 0 \
+	4 82 10 500 0 0 0 0 \
+	4 83 2 1000 0 0 0 0 \
+	3 54 1 1000 0 0 0 0 \
+	1 94 30 4 0 0 0 0 \
+	2 65 10 35 0 0 0 0 \
+	2 68 5 100 0 0 0 0 \
+	1 82 10 500 0 0 0 0 \
+	1 83 2 1000 0 0 0 0 \
+	2 54 1 1000 0 0 0 0
+LI
+ wh 22830
+SL
+ te 610 630 680 700 800 840 
+ cp 2
+ nc 57892 58449 
+
+57153 loc city
+
+57380 loc city
+
+57602 loc city
+
+57892 loc city
+
+57978 loc city
+
+58260 loc city
+
+58449 loc city
+
+58706 loc city
+
+58751 loc city
+
+58761 loc region
+
+58763 loc region
+
+59019 loc faery hill
+LI
+ wh 22955
+SL
+ lt 15644 
+ lw 3
+
+59054 gate 0
+LI
+ wh 12782
+GA
+ tl 10114
+
+59097 road 0
+na Secret pass
+LI
+ wh 77727
+GA
+ tl 68475
+ rh 1
+
+59452 loc island
+
+59793 loc sewer
+
+63326 loc island
+
+66395 loc island
+
+68475 loc graveyard
+
+70026 loc faery hill
+
+74583 loc sewer
+
+77727 loc bog
+
+exit 0

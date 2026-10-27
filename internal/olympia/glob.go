@@ -15,8 +15,8 @@ package olympia
 //
 // Not ported, because loading and saving do not use them: show_day,
 // short_dir_s, full_dir_s, exit_opposite, loc_depth_s and month_names.
-// libdir is options.libdir (olympia.go). The command routines of cmd_tbl
-// are not ported yet either; see cmdTbl.
+// libdir is options.libdir (olympia.go) and world.libdir. The command
+// routines of cmd_tbl are not ported yet either; see cmdTbl.
 
 // kindS is kind_s, the name of each entity kind, indexed by T_xxx.
 var kindS = []string{

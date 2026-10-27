@@ -296,3 +296,144 @@ func (w *world) readlinEw() *string {
 
 	return line
 }
+
+// tolower is the tolower() macro of olympia/z.h, lower_array[c] after
+// init_lower(): 'A' to 'Z' become 'a' to 'z', and every other byte is
+// itself. C indexes the array with a plain char, so a byte from 0x80 up
+// reads before it, which is undefined; no caller here passes one (see
+// olyParseCmd), and such a byte is left as it is.
+func tolower(c byte) byte {
+	if c >= 'A' && c <= 'Z' {
+		return c - 'A' + 'a'
+	}
+	return c
+}
+
+// iStrcmp is i_strcmp(): s and t compared without regard to case. Only
+// whether it is 0 matters to callers; otherwise it is the difference of
+// the first bytes that differ, as plain (signed) chars.
+func iStrcmp(s, t string) int {
+	for i := 0; ; i++ {
+		a := tolower(at(s, i))
+		b := tolower(at(t, i))
+		if a != b {
+			return int(int8(a)) - int(int8(b))
+		}
+		if a == 0 {
+			return 0
+		}
+	}
+}
+
+// fuzzyTranspose is fuzzy_transpose(): whether two, with two adjacent
+// bytes swapped, is one, without regard to case.
+func fuzzyTranspose(one, two string, l1, l2 int) bool {
+	if l1 != l2 {
+		return false
+	}
+
+	buf := []byte(two)
+
+	for i := 0; i < l2-1; i++ {
+		buf[i], buf[i+1] = buf[i+1], buf[i]
+
+		if iStrcmp(one, string(buf)) == 0 {
+			return true
+		}
+
+		buf[i], buf[i+1] = buf[i+1], buf[i]
+	}
+
+	return false
+}
+
+// fuzzyOneLess is fuzzy_one_less(): whether two is one with one byte left
+// out, without regard to case.
+func fuzzyOneLess(one, two string, l1, l2 int) bool {
+	count := 0
+
+	if l1 != l2+1 {
+		return false
+	}
+
+	for i, j := 0, 0; j < l2; i, j = i+1, j+1 {
+		if tolower(at(one, i)) != tolower(at(two, j)) {
+			if count != 0 {
+				return false
+			}
+			count++
+			j--
+		}
+	}
+
+	return true
+}
+
+// fuzzyOneExtra is fuzzy_one_extra(): whether two is one with one byte
+// added, without regard to case.
+func fuzzyOneExtra(one, two string, l1, l2 int) bool {
+	count := 0
+
+	if l1 != l2-1 {
+		return false
+	}
+
+	for i, j := 0, 0; i < l1; i, j = i+1, j+1 {
+		if tolower(at(one, i)) != tolower(at(two, j)) {
+			if count != 0 {
+				return false
+			}
+			count++
+			i--
+		}
+	}
+
+	return true
+}
+
+// fuzzyOneBad is fuzzy_one_bad(): whether two is one with at most one byte
+// changed, without regard to case.
+func fuzzyOneBad(one, two string, l1, l2 int) bool {
+	count := 0
+
+	if l1 != l2 {
+		return false
+	}
+
+	for i := 0; i < l2; i++ {
+		if tolower(one[i]) != tolower(two[i]) {
+			if count != 0 {
+				return false
+			}
+			count++
+		}
+	}
+
+	return true
+}
+
+// fuzzyStrcmp is fuzzy_strcmp(): whether two is a near miss for one: two
+// adjacent bytes swapped (if two has at least 4 bytes), or one byte left
+// out, added or changed (if it has at least 5).
+func fuzzyStrcmp(one, two string) bool {
+	l1 := len(one)
+	l2 := len(two)
+
+	if l2 >= 4 && fuzzyTranspose(one, two, l1, l2) {
+		return true
+	}
+
+	if l2 >= 5 && fuzzyOneLess(one, two, l1, l2) {
+		return true
+	}
+
+	if l2 >= 5 && fuzzyOneExtra(one, two, l1, l2) {
+		return true
+	}
+
+	if l2 >= 5 && fuzzyOneBad(one, two, l1, l2) {
+		return true
+	}
+
+	return false
+}
