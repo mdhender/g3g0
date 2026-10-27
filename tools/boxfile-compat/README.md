@@ -6,13 +6,13 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6bbcd63055d051ade6f745f368281628441a2c27`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `aa68d137729564cfcd2e91c808c38f3e76d65744`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 The script exports that revision with `git archive`, so the clone's checkout does not matter.
 
 The port follows:
 
-- `olympia/io.c`, lines 2043 to 2496 at the pinned revision (`open_write_fp` to `write_master`).
+- `olympia/io.c`, lines 2079 to 2532 at the pinned revision (`open_write_fp` to `write_master`).
 - `olympia/u.c`: `lookup()` and `stage()`; `olympia/swear.c`: `lord()` and `player()`, which `write_master()` uses; `olympia/sout.c`: `sout()`'s cut to `LEN` bytes.
 
 ## Prerequisites
@@ -56,7 +56,7 @@ On macOS `abort()` flushes every open stdio stream, so a section that fails an a
 | fast_scan | `master` lines with extra white space, no `.`, no subkind, junk, a subkind past `schar`, no newline at the end; no `master`, an empty one; a blank line, a comment and a duplicate box (the `alloc_box()` assertions); another `libdir` |
 | scan_boxes | comments before and inside a box, a line of white space ending a box, kinds and subkinds in other cases, subkind `0` and `0x`, a subkind with a space, bad kinds and subkinds (the `read_boxes(N)` diagnostics), short and tab-separated box lines, kind `deleted`, no blank line at the end; a missing file; a blank line between boxes and a box number 0 (assertion); a duplicate box across files |
 | scan_chars, scan_all_boxes | fact files whose names do and do not start with a digit, a directory among them; no `fact`, `fact` a file, an unreadable `fact`; every box file, and none of them (the `stage()` line and every diagnostic) |
-| read_boxes, read_chars, read_all_boxes | box lines with leading white space, the end of the file; a missing file; the two hangs, at the start and after a box; a negative box number; a box pass 1 did not allocate (`load_box()`'s assertion); `fact` with other names and a dot directory; no `fact`; a box in two files |
+| read_boxes, read_chars, read_all_boxes | box lines with leading white space, the end of the file, a continued field on the file's last line; a missing file; the two hangs, at the start and after a box; a negative box number; a box pass 1 did not allocate (`load_box()`'s assertion); `fact` with other names and a dot directory; no `fact`; a box in two files |
 | write_kind | chain order, deleted boxes, an empty kind, pretty names; no `libdir`; a read-only, a write-only and a directory in the file's place |
 | write_player, write_chars, write_leftovers | units in list order, a unit twice, a deleted unit, a unit with no box; no units; no `fact`; a unit that is a location or a player (assertion, with the file as `abort()` leaves it); what each leaves to `misc`, and `temp` |
 | write_all_boxes | every kind, an old `fact` file and stale box files; no `fact`, no `libdir`, a read-only `libdir` (`rm`'s message), a `libdir` with a space (which the shell splits), and `win_flag` (`del`, which `sh` cannot run) with and without `fact` |
@@ -67,7 +67,7 @@ On macOS `abort()` flushes every open stdio stream, so a section that fails an a
 
 Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
-- Check 1: 57 sections, 1439 lines. The C driver is deterministic, its output matches `boxfile-c-output.txt`, and `TestBoxfileMatchesC` passes.
+- Check 1: 58 sections, 1465 lines. The C driver is deterministic, its output matches `boxfile-c-output.txt`, and `TestBoxfileMatchesC` passes.
 - Check 2: 195 games (`world.tgz` and the 194 cached round-trip inputs; 7,866,900 boxes in their written `master` files, 36,999 in `world.tgz`), each with `master`, with `master` and pretty, and without `master`: C and Go `lib` trees (files, modes and contents), stdout and stderr identical.
 
 ## Upstream defects reproduced on purpose

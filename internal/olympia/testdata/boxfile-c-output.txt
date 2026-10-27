@@ -460,6 +460,32 @@ f 644 80 lib/loc
 | 
 | 10103 loc plain
 | 
+section read_boxes with a continued field on the last line
+> mkdir lib
+> alloc 10101 3 14
+> alloc 10102 3 3
+> alloc 10103 3 3
+> putl lib/loc 10101 loc city
+> putl lib/loc na City
+> putl lib/loc LI
+> putl lib/loc  hl 10102 \\
+> putl lib/loc \x0910103 \\
+> read loc
+> line
+line NULL
+> writekind 3 loc
+exit 0
+d 755 lib
+f 644 78 lib/loc
+| 10101 loc city
+| na City
+| LI
+|  hl 10102 10103 
+| 
+| 10102 loc plain
+| 
+| 10103 loc plain
+| 
 section read_boxes of a missing file
 > mkdir lib
 > read loc
@@ -543,7 +569,7 @@ section read_boxes of an unforseen box
 > read loc
 Unforseen box 10102 found in load phase.
 Remove lib/master and retry.
-assertion failure: olympia/io.c (1906): FALSE
+assertion failure: olympia/io.c (1942): FALSE
 exit 134
 d 755 lib
 f 644 31 lib/loc
@@ -827,7 +853,7 @@ section write_player of a unit that is not a character
 > unit 1001 1002
 > unit 1001 10101
 > writeplayer 1001
-assertion failure: olympia/io.c (2099): kind(who) == T_char || kind(who) == T_deleted
+assertion failure: olympia/io.c (2135): kind(who) == T_char || kind(who) == T_deleted
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -845,7 +871,7 @@ section write_player of a unit that is a player
 > alloc 1002 1 49
 > unit 1001 1002
 > writeplayer 1001
-assertion failure: olympia/io.c (2099): kind(who) == T_char || kind(who) == T_deleted
+assertion failure: olympia/io.c (2135): kind(who) == T_char || kind(who) == T_deleted
 exit 134
 d 755 lib
 d 755 lib/fact

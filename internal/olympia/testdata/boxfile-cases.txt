@@ -2,7 +2,7 @@
 # olympia/io.c (fast_scan, scan_boxes, scan_chars, scan_all_boxes,
 # read_boxes, read_chars, read_all_boxes, open_write_fp, write_kind,
 # write_player, write_chars, write_leftovers, write_all_boxes and
-# write_master), at G3 6bbcd63055d051ade6f745f368281628441a2c27.
+# write_master), at G3 aa68d137729564cfcd2e91c808c38f3e76d65744.
 #
 # tools/boxfile-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in boxfile-c-output.txt;
@@ -260,6 +260,20 @@ read loc
 line
 writekind 3 loc
 boxes
+
+section read_boxes with a continued field on the last line
+mkdir lib
+alloc 10101 3 14
+alloc 10102 3 3
+alloc 10103 3 3
+putl lib/loc 10101 loc city
+putl lib/loc na City
+putl lib/loc LI
+putl lib/loc  hl 10102 \\
+putl lib/loc \x0910103 \\
+read loc
+line
+writekind 3 loc
 
 section read_boxes of a missing file
 mkdir lib

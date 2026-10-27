@@ -25,9 +25,11 @@ import (
 // fprintf() and fputs() write; C ignores write errors there, and so do
 // they.
 //
-// Where C reads a continuation line at the end of the file, readlin_ew()
-// returns NULL and C dereferences it, which crashes the engine. The ports
-// dereference the nil *string that readlinEw returns, which panics.
+// Where a list's last line ends in a backslash at the end of the file,
+// readlin_ew() returns NULL and the scan helper stops there, keeping the
+// entries it has read, as if that line had no backslash. (Before upstream
+// fixed https://github.com/playbymail/olympia-g3/issues/313, C dereferenced
+// the NULL and crashed.)
 
 // at is s[i] as C sees it: 0 (the terminating NUL) past the end of s.
 func at(s string, i int) byte {
@@ -158,8 +160,9 @@ func (w *world) boxPrint(fp io.Writer, header string, n int) {
 // scanNumbers is the loop that boxlist0_scan, boxlist_scan, admit_scan,
 // ilist_scan and known_scan share: it calls f with each run of digits in s
 // (atoi() of it), skipping white space, and reads a continuation line with
-// readlin_ew() wherever s has a backslash. Anything else ends the list. A
-// sign is not a digit, so "-5" ends it too.
+// readlin_ew() wherever s has a backslash. Anything else ends the list, as
+// does the end of the file where a continuation line should be. A sign is
+// not a digit, so "-5" ends it too.
 func (w *world) scanNumbers(s string, f func(n int)) {
 	for {
 		i := 0
@@ -178,7 +181,11 @@ func (w *world) scanNumbers(s string, f func(n int)) {
 			}
 			s = s[i:]
 		case at(s, 0) == '\\': // continuation line follows
-			s = *w.readlinEw()
+			next := w.readlinEw()
+			if next == nil { // file ends mid-list
+				return
+			}
+			s = *next
 		default:
 			return
 		}
@@ -474,7 +481,11 @@ func (w *world) skillListScan(s string, l *skillEntsList, boxNum int) {
 		}
 
 		if lastIsBackslash(s) { // another entry follows
-			s = *w.readlinEw()
+			next := w.readlinEw()
+			if next == nil { // file ends mid-list
+				break
+			}
+			s = *next
 		} else {
 			break
 		}
@@ -524,7 +535,11 @@ func (w *world) itemListScan(s string, l *itemEntsList, boxNum int) {
 		}
 
 		if lastIsBackslash(s) { // another entry follows
-			s = *w.readlinEw()
+			next := w.readlinEw()
+			if next == nil { // file ends mid-list
+				break
+			}
+			s = *next
 		} else {
 			break
 		}
@@ -598,7 +613,11 @@ func (w *world) tradeListScan(s string, l *tradesList, boxNum int) {
 		}
 
 		if lastIsBackslash(s) { // another entry follows
-			s = *w.readlinEw()
+			next := w.readlinEw()
+			if next == nil { // file ends mid-list
+				break
+			}
+			s = *next
 		} else {
 			break
 		}
@@ -657,7 +676,11 @@ func (w *world) reqListScan(s string, l *reqEntsList, boxNum int) {
 		}
 
 		if lastIsBackslash(s) { // another entry follows
-			s = *w.readlinEw()
+			next := w.readlinEw()
+			if next == nil { // file ends mid-list
+				break
+			}
+			s = *next
 		} else {
 			break
 		}
@@ -1873,7 +1896,7 @@ func (w *world) loadBox(n int) {
 	if !w.validBox(n) {
 		fmt.Fprintf(w.stderr, "Unforseen box %d found in load phase.\n", n)
 		fmt.Fprintf(w.stderr, "Remove %s/master and retry.\n", w.libdir)
-		assert(false, "olympia/io.c", 1906, "FALSE")
+		assert(false, "olympia/io.c", 1942, "FALSE")
 	}
 
 	w.extBoxnum = int32(n)
@@ -1949,7 +1972,7 @@ func (w *world) loadBox(n int) {
 	}
 
 	if w.line != nil {
-		assert(*w.line == "", "olympia/io.c", 1984, "*line == '\\0'")
+		assert(*w.line == "", "olympia/io.c", 2020, "*line == '\\0'")
 		w.advance() // advance over blank separating line
 	}
 }
@@ -1962,7 +1985,7 @@ func (w *world) saveBox(fp io.Writer, n int) {
 		return
 	}
 
-	assert(w.validBox(n), "olympia/io.c", 2000, "valid_box(n)")
+	assert(w.validBox(n), "olympia/io.c", 2036, "valid_box(n)")
 
 	p := w.bx[n]
 
@@ -2083,7 +2106,7 @@ func (w *world) writePlayer(pl int) {
 
 	for who := range w.loopUnits(pl) {
 		assert(w.kind(who) == tChar || w.kind(who) == tDeleted,
-			"olympia/io.c", 2099, "kind(who) == T_char || kind(who) == T_deleted")
+			"olympia/io.c", 2135, "kind(who) == T_char || kind(who) == T_deleted")
 
 		w.saveBox(fp, who)
 	}

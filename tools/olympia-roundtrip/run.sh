@@ -47,7 +47,7 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
-PINNED_REV=6bbcd63055d051ade6f745f368281628441a2c27
+PINNED_REV=aa68d137729564cfcd2e91c808c38f3e76d65744
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 G3_REV="${G3_REV:-${PINNED_REV}}"
 WORK="${WORK:-${ROOT}/tmp/olympia-roundtrip}"

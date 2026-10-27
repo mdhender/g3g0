@@ -1,6 +1,6 @@
 # Differential matrix for the reallocing arrays in G3's lib/ilist.c and the
 # template list modules (lib/accept_ents.c ... lib/wait_args.c), at G3
-# 6bbcd63055d051ade6f745f368281628441a2c27.
+# aa68d137729564cfcd2e91c808c38f3e76d65744.
 #
 # tools/lists-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in c-output.txt; TestMatchesC feeds it

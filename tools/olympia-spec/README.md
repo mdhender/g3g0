@@ -14,7 +14,7 @@ The spec is the three gates that G3 documents for another engine in `doc/claude/
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6bbcd63055d051ade6f745f368281628441a2c27`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `aa68d137729564cfcd2e91c808c38f3e76d65744`.
 The revision is pinned in `run.sh` (`PINNED_REV`).
 `G3_REV` runs another revision, but then `passing.txt` is neither compared nor written.
 Change the pin only on purpose, and rerun this and [`tools/olympia-roundtrip`](../olympia-roundtrip) when you do.

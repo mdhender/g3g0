@@ -284,9 +284,10 @@ func (w *world) readlin() *string {
 
 // readlinEw is readlin_ew(): readlin() with leading and trailing white
 // space removed and control characters made spaces (see stripEw). It is
-// nil at end of file, and io.c's continuation scans dereference it
-// unchecked, so a backslash on a file's last line crashes, here as in C.
-// Upstream defect: https://github.com/playbymail/olympia-g3/issues/313
+// nil at end of file, and io.c's continuation scans then end the list, so
+// a backslash on a file's last line is ignored. (Fixed upstream in
+// https://github.com/playbymail/olympia-g3/issues/313; before, the scans
+// dereferenced the NULL and crashed.)
 func (w *world) readlinEw() *string {
 	line := w.readlin()
 

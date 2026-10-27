@@ -6,13 +6,13 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6bbcd63055d051ade6f745f368281628441a2c27`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `aa68d137729564cfcd2e91c808c38f3e76d65744`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows:
 
 - `olympia/z.c`: `getlin`, `getlin_ew`, `eat_leading_trailing_whitespace`, `readfile`, `closefile`, `readlin` and `readlin_ew`, and the `iswhite` and `isdigit` macros of `olympia/z.h`.
-- `olympia/io.c`, lines 1 to 735 (up to `print_loc_info`): the `linehash`, `t_string` and `advance` macros, the `line` and `ext_boxnum` statics, `zero_check`, `if_name`, `box_scan`/`box_print`, `boxlist0_scan`/`boxlist0_print`, `boxlist_scan`/`boxlist_print`, `admit_print_sup`/`admit_print`/`admit_scan`, `ilist_print`/`ilist_scan`, `known_print`/`known_scan`, the `skill_list`, `item_list`, `trade_list` and `req_list` pairs, and `olytime_scan`/`olytime_print`.
+- `olympia/io.c`, lines 1 to 771 (up to `print_loc_info`): the `linehash`, `t_string` and `advance` macros, the `line` and `ext_boxnum` statics, `zero_check`, `if_name`, `box_scan`/`box_print`, `boxlist0_scan`/`boxlist0_print`, `boxlist_scan`/`boxlist_print`, `admit_print_sup`/`admit_print`/`admit_scan`, `ilist_print`/`ilist_scan`, `known_print`/`known_scan`, the `skill_list`, `item_list`, `trade_list` and `req_list` pairs, and `olytime_scan`/`olytime_print`.
 - `olympia/u.c`: `set_bit` and `test_bit`. `known_print` sorts with `int_comp` (`olympia/seed.c`) through `loop_known` (`olympia/loop.h`).
 
 ## Prerequisites
@@ -55,7 +55,7 @@ The script:
 | skill, item, trade, req lists | multi-entry lines, invalid entries, narrowing to `char`/`short`/`schar`, numbers past the `long` range; the entries print leaves out |
 | olytime | partial and overflowing `%hd` input, which leaves fields as they were; printing all-zero and signed values |
 | scanf number width | `sscanf`'s 512-byte limit on one `%d` |
-| continuation at end of file | `readlin_ew` returns NULL and C crashes (status 139); the Go port's nil dereference is its counterpart |
+| continuation at end of file | a continued field on a file's last line, with and without a final newline, in every list scan (`boxlist`, `boxlist0`, `admit`, `ilist`, `known`, skill, item, trade and req lists): `readlin_ew` returns NULL and the scan keeps what it has read; the next `readlin` is NULL |
 | zero_check | a `loc_info` that is all zero, has a field set, or has an empty but allocated list |
 
 Out of scope, because C is undefined there: a skill or req line with too few numbers (the C reads uninitialized locals), an empty skill, item, trade or req entry (`s[strlen(s)-1]` reads before the string), and `readlin` before any `readfile` (C dereferences a NULL `point`).
@@ -64,9 +64,8 @@ Out of scope, because C is undefined there: a skill or req line with too few num
 
 Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
-- 35 sections, 1196 lines. The C driver is deterministic, its output matches `io-c-output.txt`, and `TestIOMatchesC` passes.
+- 42 sections, 1356 lines. The C driver is deterministic, its output matches `io-c-output.txt`, and `TestIOMatchesC` passes.
 
 ## Upstream defects reproduced on purpose
 
-- `skill_list_scan()` and `req_list_scan()` (`olympia/io.c` lines 489-524 and 687-714) read `know`, `experience` and `consume` from locals that `sscanf()` may leave uninitialized, and every list scan with a continuation test reads `s[strlen(s)-1]`, before the string when it is empty. Both are undefined; the Go port uses 0 for the locals (keeping their value from entry to entry) and treats an empty entry as the last. Not yet filed in G3.
-- A continuation backslash on the last line of a file makes `readlin_ew()` return NULL, which every list scan dereferences. Not yet filed in G3.
+- `skill_list_scan()` and `req_list_scan()` (`olympia/io.c` lines 509-548 and 719-750) read `know`, `experience` and `consume` from locals that `sscanf()` may leave uninitialized, and every list scan with a continuation test reads `s[strlen(s)-1]`, before the string when it is empty. Both are undefined; the Go port uses 0 for the locals (keeping their value from entry to entry) and treats an empty entry as the last. G3 [#311](https://github.com/playbymail/olympia-g3/issues/311) and [#312](https://github.com/playbymail/olympia-g3/issues/312).
