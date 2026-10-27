@@ -27,7 +27,8 @@
 #    internal/olympia/testdata/boxfile-c-output.txt, which the Go test
 #    (TestBoxfileMatchesC in internal/olympia) holds the port to.
 #
-# 2. Real saved games: for each game's lib directory, copied, the driver
+# 2. Real saved games, only with --full or --games: for each game's lib
+#    directory, copied, the driver
 #    runs pass 1 (fast_scan(), or scan_all_boxes() if it fails), pass 2
 #    (read_all_boxes()), write_all_boxes() and write_master(), as load_db()
 #    and save_db() do. It does so three ways: with master (fast_scan()),
@@ -37,13 +38,18 @@
 #    and stdout and stderr must be equal, byte for byte. The games are
 #    world.tgz from the export and, if tools/olympia-roundtrip has been
 #    run, every input it has cached under tmp/olympia-roundtrip/cases/*/input/lib.
+#    Each game's copies and output are deleted as soon as they match; only
+#    failing games' are kept.
 #
-# Usage: tools/boxfile-compat/run.sh [--update]
+# Usage: tools/boxfile-compat/run.sh [--update] [--full | --games N]
 #
-#   --update  write the C output of check 1 to
-#             internal/olympia/testdata/boxfile-c-output.txt instead of
-#             comparing with it. Expected output only ever comes from the C
-#             build; never edit that file by hand.
+#   --update   write the C output of check 1 to
+#              internal/olympia/testdata/boxfile-c-output.txt instead of
+#              comparing with it. Expected output only ever comes from the
+#              C build; never edit that file by hand.
+#   --full     run check 2 on every game
+#   --games N  run check 2 on N games, always the same ones: world.tgz and
+#              cached games spread evenly over the sorted list
 #
 # Environment:
 #   G3_REPO  G3 clone that contains G3_REV
@@ -54,7 +60,7 @@
 #   CC       C compiler (default cc)
 #
 # Exits 0 only if the C output matches the recorded output, the Go test
-# passes and every saved game gives the same result in C and Go.
+# passes and every saved game checked gives the same result in C and Go.
 
 set -euo pipefail
 
@@ -69,12 +75,22 @@ CC="${CC:-cc}"
 CASES="${ROOT}/internal/olympia/testdata/boxfile-cases.txt"
 EXPECT="${ROOT}/internal/olympia/testdata/boxfile-c-output.txt"
 
+usage() { echo "usage: $0 [--update] [--full | --games N]" >&2; exit 2; }
 UPDATE=0
-case "${1:-}" in
-"") ;;
---update) UPDATE=1 ;;
-*) echo "usage: $0 [--update]" >&2; exit 2 ;;
-esac
+NGAMES=0 # games for check 2: 0 none, -1 all
+while [ $# -gt 0 ]; do
+	case "$1" in
+	--update) UPDATE=1 ;;
+	--full) NGAMES=-1 ;;
+	--games)
+		[ $# -ge 2 ] && [[ "$2" =~ ^[1-9][0-9]*$ ]] || usage
+		NGAMES="$2"
+		shift
+		;;
+	*) usage ;;
+	esac
+	shift
+done
 
 die() { echo "error: $*" >&2; exit 2; }
 
@@ -87,7 +103,7 @@ git -C "${G3_REPO}" cat-file -e "${G3_REV}^{commit}" 2>/dev/null ||
 # Sections may leave unreadable directories behind.
 [ -d "${WORK}" ] && chmod -R u+rwx "${WORK}" 2>/dev/null || true
 rm -rf "${WORK}"
-mkdir -p "${WORK}/g3" "${WORK}/gen" "${WORK}/world" "${WORK}/games"
+mkdir -p "${WORK}/g3" "${WORK}/gen"
 
 echo "G3 revision: ${G3_REV}"
 echo "G3 source:   ${G3_REPO}"
@@ -601,6 +617,13 @@ echo "running the Go port against it"
 
 # Check 2: the saved games, three ways each.
 
+if [ "${NGAMES}" -eq 0 ]; then
+	echo "saved games: not checked (--full checks every game, --games N a sample)"
+	echo "PASS"
+	exit 0
+fi
+
+mkdir -p "${WORK}/world" "${WORK}/games"
 tar -xzf "${WORK}/g3/tests/olympia/fixtures/world.tgz" -C "${WORK}/world"
 libs=("${WORK}/world/lib")
 if [ -d "${GAMES}" ]; then
@@ -608,6 +631,20 @@ if [ -d "${GAMES}" ]; then
 		[ -d "${d}" ] && libs+=("${d}")
 	done
 fi
+# --games N: N of them, evenly spaced, from the first (world.tgz) to the last
+if [ "${NGAMES}" -gt 0 ] && [ "${NGAMES}" -lt ${#libs[@]} ]; then
+	sample=()
+	for ((i = 0; i < NGAMES; i++)); do
+		if [ "${NGAMES}" -eq 1 ]; then j=0; else j=$((i * (${#libs[@]} - 1) / (NGAMES - 1))); fi
+		sample+=("${libs[j]}")
+	done
+	libs=("${sample[@]}")
+fi
+
+# The Go side runs from a test binary built once, one game at a time, so that
+# each game's copies can be compared and deleted before the next are made.
+echo "building the Go test binary"
+(cd "${ROOT}" && go test -c -o "${WORK}/olympia.test" ./internal/olympia)
 
 # copy LIB DIR: DIR/lib, a copy of LIB (a clone where the file system can)
 copy() {
@@ -621,14 +658,12 @@ listing() {
 }
 
 umask 022
-fail=0
+fail=0 boxes=0 total=0
 for variant in fast fast-pretty slow; do
 	pretty=0
 	[ "${variant}" = fast-pretty ] && pretty=1
 	dir="${WORK}/games/${variant}"
-	list="${dir}/list.txt"
 	mkdir -p "${dir}"
-	: >"${list}"
 	k=0
 	for lib in "${libs[@]}"; do
 		copy "${lib}" "${dir}/c/${k}"
@@ -640,41 +675,46 @@ for variant in fast fast-pretty slow; do
 		(cd "${dir}/c/${k}" && exec "${WORK}/boxfile-driver" -g lib "${pretty}") \
 			>"${dir}/c/${k}.out" 2>"${dir}/c/${k}.err" || status=$?
 		[ "${status}" -eq 0 ] || die "C driver failed (${status}) on ${lib} (${variant})"
-		printf '%s\t%s\t%s\n' "${dir}/go/${k}" "${pretty}" "${dir}/go/${k}" >>"${list}"
-		k=$((k + 1))
-	done
+		list="${dir}/go/${k}.list"
+		printf '%s\t%s\t%s\n' "${dir}/go/${k}" "${pretty}" "${dir}/go/${k}" >"${list}"
+		(cd "${ROOT}/internal/olympia" && G3G0_FULL=1 BOXFILE_COMPAT_GAMES="${list}" \
+			"${WORK}/olympia.test" -test.count=1 -test.run '^TestBoxfileWorlds$' >"${dir}/go/${k}.log" 2>&1) ||
+			{ cat "${dir}/go/${k}.log"; die "TestBoxfileWorlds failed on ${lib} (${variant})"; }
 
-	(cd "${ROOT}" && BOXFILE_COMPAT_GAMES="${list}" go test -count=1 -run 'TestBoxfileWorlds' ./internal/olympia)
-
-	k=0
-	for lib in "${libs[@]}"; do
+		ok=1
 		for s in out err; do
 			if ! cmp -s "${dir}/c/${k}.${s}" "${dir}/go/${k}.${s}"; then
 				echo "FAIL: ${lib} (${variant}): std${s} differs"
 				diff -u "${dir}/c/${k}.${s}" "${dir}/go/${k}.${s}" | head -20
-				fail=1
+				ok=0
 			fi
 		done
-		if ! diff -r "${dir}/c/${k}/lib" "${dir}/go/${k}/lib" >"${dir}/diff.txt" 2>&1; then
+		if ! diff -r "${dir}/c/${k}/lib" "${dir}/go/${k}/lib" >"${dir}/${k}.diff.txt" 2>&1; then
 			echo "FAIL: ${lib} (${variant}): lib differs"
-			head -20 "${dir}/diff.txt"
-			fail=1
+			head -20 "${dir}/${k}.diff.txt"
+			ok=0
 		fi
-		if ! diff <(listing "${dir}/c/${k}/lib") <(listing "${dir}/go/${k}/lib") >"${dir}/diff.txt"; then
+		if ! diff <(listing "${dir}/c/${k}/lib") <(listing "${dir}/go/${k}/lib") >"${dir}/${k}.modes.txt"; then
 			echo "FAIL: ${lib} (${variant}): lib's files or modes differ"
-			head -20 "${dir}/diff.txt"
+			head -20 "${dir}/${k}.modes.txt"
+			ok=0
+		fi
+		if [ "${variant}" = fast ]; then
+			n=$(grep -c '^[0-9][0-9]*	' "${dir}/c/${k}/lib/master" || true)
+			[ "${k}" -eq 0 ] && boxes=${n}
+			total=$((total + n))
+		fi
+		if [ "${ok}" -eq 1 ]; then
+			rm -rf "${dir}/c/${k}" "${dir}/go/${k}" "${dir}/c/${k}".* "${dir}/go/${k}".* "${dir}/${k}".*.txt
+		else
+			echo "kept: ${dir}/{c,go}/${k}"
 			fail=1
 		fi
 		k=$((k + 1))
 	done
-	if [ "${variant}" = fast ]; then
-		boxes=$(grep -c '^[0-9][0-9]*	' "${dir}/c/0/lib/master" || true)
-		total=$(cat "${dir}"/c/*/lib/master | grep -c '^[0-9][0-9]*	' || true)
-	fi
 	echo "${variant}: ${#libs[@]} games compared"
-	if [ "${fail}" -eq 0 ]; then rm -rf "${dir}"; fi
 done
-echo "saved games: ${#libs[@]} (world.tgz: ${boxes:-?} boxes; all games: ${total:-?} boxes), three ways each"
+echo "saved games: ${#libs[@]} (world.tgz: ${boxes} boxes; all checked: ${total} boxes), three ways each"
 [ "${fail}" -eq 0 ] || exit 1
 echo "saved games: C and Go lib trees, stdout and stderr identical"
 echo "PASS"

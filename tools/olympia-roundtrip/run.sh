@@ -21,13 +21,21 @@
 # results are kept under $WORK and reused while G3_REV and the C binary are
 # unchanged. Only the Go engine is rebuilt and rerun each time.
 #
-# Usage: tools/olympia-roundtrip/run.sh [--fresh] [--list] [pattern...]
+# When it makes a case's C result, C runs a second time on a few fixed
+# cases (DETERMINISM_SAMPLE), and the case is an error if the two runs
+# differ. --determinism-all does this for every selected case, cached or not.
+#
+# Usage: tools/olympia-roundtrip/run.sh [--fresh] [--determinism-all] [--list] [pattern...]
 #
 #   pattern   run only the cases whose name matches one of these shell
 #             patterns, e.g. world, move-go, 'move-*' or '*+turn'. A case is
 #             named after its saved game (world, or a fixture's directory);
 #             the same game after a C turn adds +turn.
 #   --fresh   discard the cached export, C build and C results first
+#   --determinism-all
+#             check that C gives the same result twice on every selected
+#             case, not just on DETERMINISM_SAMPLE, including cases already
+#             cached without that check
 #   --list    print the case names and exit
 #
 # Environment:
@@ -58,6 +66,10 @@ RT_ARGS=(-l ./lib -S test-use-const-report-date)
 TURN_ARGS=(-r -l ./lib -S test-use-const-report-date)
 # Bump when the way inputs or C results are made changes, to drop the cache.
 CACHE_FORMAT=1
+# The cases whose C round trip runs twice when it is made, to check that C
+# is deterministic: the base world, a scenario.patch game, the scenario.tgz
+# game, and each after a turn.
+DETERMINISM_SAMPLE=(world world+turn move-go move-go+turn trade-routes trade-routes+turn)
 
 die() { echo "error: $*" >&2; exit 2; }
 sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
@@ -69,14 +81,15 @@ run_as() {
 		"${RUN_TIMEOUT}" "$@" </dev/null
 }
 
-fresh=0 list=0
+fresh=0 list=0 determinism_all=0
 patterns=()
 for a in "$@"; do
 	case "${a}" in
 	--update) die "this harness never re-baselines; expected output only comes from the C engine" ;;
 	--fresh) fresh=1 ;;
+	--determinism-all) determinism_all=1 ;;
 	--list) list=1 ;;
-	-*) die "unknown option ${a} (usage: $0 [--fresh] [--list] [pattern...])" ;;
+	-*) die "unknown option ${a} (usage: $0 [--fresh] [--determinism-all] [--list] [pattern...])" ;;
 	*) patterns+=("${a}") ;;
 	esac
 done
@@ -209,13 +222,44 @@ same_run() {
 		cmp -s "$1/stderr" "$2/stderr" && diff -r "$1/cwd" "$2/cwd" >/dev/null 2>&1
 }
 
+# check_determinism CASE says whether CASE's C round trip should run twice.
+check_determinism() {
+	local s
+	[ "${determinism_all}" -eq 1 ] && return 0
+	for s in "${DETERMINISM_SAMPLE[@]}"; do
+		[ "$1" = "${s}" ] && return 0
+	done
+	return 1
+}
+
+# same_c CASE runs C's round trip on CASES/CASE/input again and succeeds if
+# it matches CASES/CASE/c, marking the case "deterministic". If not, it
+# writes the reason to CASES/CASE/error and fails.
+same_c() {
+	local dir="${CASES}/$1"
+	run_engine "${C_BIN}" "${dir}/input" "${dir}/c-again" "${RT_ARGS[@]}"
+	if ! same_run "${dir}/c" "${dir}/c-again"; then
+		echo "the C round trip is not deterministic; compare ${dir}/c and ${dir}/c-again" >"${dir}/error"
+		rm -f "${dir}/ready"
+		return 1
+	fi
+	rm -rf "${dir}/c-again"
+	touch "${dir}/deterministic"
+}
+
 # prepare CASE makes CASES/CASE/input (the saved game) and CASES/CASE/c (the
-# C round trip) unless they are cached. On failure it writes the reason to
-# CASES/CASE/error and fails.
+# C round trip) unless they are cached, and checks C's determinism if
+# check_determinism says to and it has not been checked. On failure it
+# writes the reason to CASES/CASE/error and fails.
 prepare() {
 	local c="$1" dir="${CASES}/$1" g
-	[ -f "${dir}/ready" ] && return 0
 	[ -f "${dir}/error" ] && return 1
+	if [ -f "${dir}/ready" ]; then
+		if check_determinism "${c}" && [ ! -f "${dir}/deterministic" ]; then
+			same_c "${c}" || return 1
+		fi
+		return 0
+	fi
 	rm -rf "${dir}"
 	mkdir -p "${dir}"
 	case "${c}" in
@@ -241,15 +285,13 @@ prepare() {
 		rm -f "${dir}/unpack.log"
 		;;
 	esac
-	# C runs twice; a difference between its own runs would make every Go
-	# comparison meaningless.
 	run_engine "${C_BIN}" "${dir}/input" "${dir}/c" "${RT_ARGS[@]}"
-	run_engine "${C_BIN}" "${dir}/input" "${dir}/c-again" "${RT_ARGS[@]}"
-	if ! same_run "${dir}/c" "${dir}/c-again"; then
-		echo "the C round trip is not deterministic; compare ${dir}/c and ${dir}/c-again" >"${dir}/error"
-		return 1
+	# A difference between C's own runs would make every Go comparison
+	# meaningless. Checking a few cases is enough to catch it, unless
+	# --determinism-all asks for every case.
+	if check_determinism "${c}"; then
+		same_c "${c}" || return 1
 	fi
-	rm -rf "${dir}/c-again"
 	touch "${dir}/ready"
 }
 

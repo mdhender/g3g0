@@ -52,6 +52,7 @@ tools/olympia-roundtrip/run.sh world move-go      # just these cases
 tools/olympia-roundtrip/run.sh 'move-*' '*+turn'  # shell patterns on case names
 tools/olympia-roundtrip/run.sh --list             # print the case names
 tools/olympia-roundtrip/run.sh --fresh            # drop the cached C side first
+tools/olympia-roundtrip/run.sh --determinism-all  # check C's determinism on every case
 ```
 
 The script:
@@ -59,13 +60,15 @@ The script:
 1. Exports the revision with `git archive` into `tmp/olympia-roundtrip/g3` and builds `olympia-g3` there with the `debug` preset.
 2. Builds the Go port into `tmp/olympia-roundtrip/bin/olympia-g3`.
 3. For each selected case, makes the input and the C result unless they are cached.
-   C runs the round trip twice, and the case is an `ERROR` if its two runs differ, or if the game cannot be unpacked or the C turn fails.
+   On a fixed sample of cases (`world`, `move-go`, `trade-routes` and each `+turn`; `DETERMINISM_SAMPLE` in `run.sh`), C runs the round trip twice, and the case is an `ERROR` if its two runs differ.
+   `--determinism-all` checks every selected case, including those already cached without the check.
+   A case is also an `ERROR` if the game cannot be unpacked or the C turn fails.
 4. Runs Go on a fresh copy of the input and compares.
    It prints one line per case: `PASS`, or `FAIL` with what differs (the exit statuses, `stdout`, `stderr`, and the number of files that differ with the first five), then a `pass N fail N error N` line.
 
 The export, the C build, the inputs and the C results are kept and reused while the revision, the C binary and the way they are made stay the same.
 Only Go is rebuilt and rerun, so a later run takes about 25 seconds for every case, or under a second for a few.
-The first run, or one after `--fresh`, takes about 5 minutes.
+The first run, or one after `--fresh`, takes about 3 minutes.
 
 Each case's files are under `tmp/olympia-roundtrip/cases/<case>`:
 
@@ -76,6 +79,7 @@ Each case's files are under `tmp/olympia-roundtrip/cases/<case>`:
 | `c/`, `go/` | each engine's run directory (`cwd/`) and its `stdout`, `stderr` and `status` |
 | `diff.txt` | the statuses, then `diff -u` of stdout and stderr, then `diff -ru` of the run directories |
 | `error` | why the case could not be prepared |
+| `deterministic` | C's round trip was run twice and gave the same result |
 
 `tmp/olympia-roundtrip/results.tsv` summarizes the last run, one row per case it ran.
 It exits 0 only when every selected case passes.

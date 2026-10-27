@@ -242,16 +242,18 @@ func loadAll(w *world, out io.Writer) {
 }
 
 // TestBoxWorlds is the Go side of tools/box-compat/run.sh's check of real
-// saved games. It runs only when BOX_COMPAT_GAMES names a list of games,
-// one per line: a lib directory, pretty_data_files (0 or 1) and an output
-// prefix, separated by tabs. For each, as the C driver's -w mode does, it
+// saved games. It runs only with G3G0_FULL=1 (see requireFull), and only
+// when BOX_COMPAT_GAMES names a list of games, one per line: a lib
+// directory, pretty_data_files (0 or 1) and an output prefix, separated by
+// tabs. For each, as the C driver's -w mode does, it
 // allocates every box from the box files' "n kind subkind" lines, loads
 // every box file with loadBox and saves every box with saveBox, and writes
 // the diagnostics to PREFIX.err and the saved boxes to PREFIX.out.
 func TestBoxWorlds(t *testing.T) {
+	requireFull(t)
 	list := os.Getenv("BOX_COMPAT_GAMES")
 	if list == "" {
-		t.Skip("BOX_COMPAT_GAMES not set; run tools/box-compat/run.sh")
+		t.Skip("BOX_COMPAT_GAMES not set; run tools/box-compat/run.sh --full")
 	}
 	data, err := os.ReadFile(list)
 	if err != nil {

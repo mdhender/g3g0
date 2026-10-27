@@ -36,6 +36,19 @@ func readTestdata(t *testing.T, name string) string {
 	return string(data)
 }
 
+// requireFull skips t, a test that replays whole saved games, unless the
+// opt-in G3G0_FULL=1 is set; -short always skips it. tools/README.md says
+// when to run them.
+func requireFull(t *testing.T) {
+	t.Helper()
+	if testing.Short() {
+		t.Skip("a whole-game test; skipped under -short")
+	}
+	if os.Getenv("G3G0_FULL") != "1" {
+		t.Skip("a whole-game test; set G3G0_FULL=1 to run it (see tools/README.md)")
+	}
+}
+
 func TestSizeofBox(t *testing.T) {
 	// The LP64 reference build prints 144.
 	if unsafe.Sizeof(uintptr(0)) == 8 && sizeofBox != 144 {

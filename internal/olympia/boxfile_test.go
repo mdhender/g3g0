@@ -264,18 +264,20 @@ func boxfileTree(dir string) string {
 }
 
 // TestBoxfileWorlds is the Go side of tools/boxfile-compat/run.sh's check
-// of real saved games. It runs only when BOXFILE_COMPAT_GAMES names a list
-// of games, one per line: a directory that holds a copy of the game's lib,
-// pretty_data_files (0 or 1) and an output prefix, separated by tabs. For
+// of real saved games. It runs only with G3G0_FULL=1 (see requireFull),
+// and only when BOXFILE_COMPAT_GAMES names a list of games, one per line:
+// a directory that holds a copy of the game's lib, pretty_data_files (0 or
+// 1) and an output prefix, separated by tabs. For
 // each, from that directory with libdir "lib", as load_db() and save_db()
 // do, it runs pass 1 (fastScan, or scanAllBoxes if it fails), pass 2
 // (readAllBoxes), writeAllBoxes and writeMaster, and writes stdout to
 // PREFIX.out and stderr to PREFIX.err. run.sh compares them, and the lib
 // trees, with the C driver's.
 func TestBoxfileWorlds(t *testing.T) {
+	requireFull(t)
 	list := os.Getenv("BOXFILE_COMPAT_GAMES")
 	if list == "" {
-		t.Skip("BOXFILE_COMPAT_GAMES not set; run tools/boxfile-compat/run.sh")
+		t.Skip("BOXFILE_COMPAT_GAMES not set; run tools/boxfile-compat/run.sh --full")
 	}
 	data, err := os.ReadFile(list)
 	if err != nil {

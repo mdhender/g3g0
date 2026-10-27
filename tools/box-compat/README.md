@@ -24,9 +24,14 @@ The port follows:
 ## Running
 
 ```sh
-tools/box-compat/run.sh            # compare
-tools/box-compat/run.sh --update   # rewrite internal/olympia/testdata/box-c-output.txt from C
+tools/box-compat/run.sh             # compare the recorded cases (check 1)
+tools/box-compat/run.sh --games 10  # and 10 saved games, always the same ones (check 2)
+tools/box-compat/run.sh --full      # and every saved game (check 2)
+tools/box-compat/run.sh --update    # rewrite internal/olympia/testdata/box-c-output.txt from C
 ```
+
+Check 2 runs only with `--full` or `--games N`; `N` games are `world.tgz` and cached games spread evenly over the sorted list.
+[`tools/README.md`](../README.md) says when to run which.
 
 The script:
 
@@ -34,9 +39,9 @@ The script:
 2. Generates the stubs that `tools/io-compat` uses, and copies out of the export, verbatim: `sout()`, `set_bit()`, `test_bit()`, `int_comp()`, the command parser of `olympia/input.c`, and `olympia/io.c` from its first line to just before `open_write_fp()` (just after `save_box()`), under `#line 1 "olympia/io.c"` so that assertions name `olympia/io.c` and its lines.
 3. Builds a C driver (`tmp/box-compat/driver.c`) that `#include`s that copy of io.c, linked with the exported `code.c`, `glob.c`, `z.c` and the `lib/` modules.
 4. Check 1: runs each section of [`internal/olympia/testdata/box-cases.txt`](../../internal/olympia/testdata/box-cases.txt) in a fresh process and directory, twice, requires the same output both times and requires it to equal [`box-c-output.txt`](../../internal/olympia/testdata/box-c-output.txt). Then it runs `go test -run TestBoxMatchesC`, which runs the same cases on the Go port.
-5. Check 2: for `world.tgz` and every cached game input (`tmp/olympia-roundtrip/cases/*/input/lib`), plain and with `pretty_data_files` set, the driver (`-w`) allocates every box from the box files' `n kind subkind` lines, loads `loc`, `item`, `skill`, `gate`, `road`, `ship`, `unform`, `misc` and `fact/*` (sorted) with `load_box`, and saves every box with `save_box`. `TestBoxWorlds` (run with `BOX_COMPAT_GAMES`) does the same in Go, and stdout and stderr must be identical for every game.
+5. Check 2, with `--full` or `--games N`: for `world.tgz` and every cached game input (`tmp/olympia-roundtrip/cases/*/input/lib`), plain and with `pretty_data_files` set, the driver (`-w`) allocates every box from the box files' `n kind subkind` lines, loads `loc`, `item`, `skill`, `gate`, `road`, `ship`, `unform`, `misc` and `fact/*` (sorted) with `load_box`, and saves every box with `save_box`. `TestBoxWorlds` (run with `BOX_COMPAT_GAMES`) does the same in Go, and stdout and stderr must be identical for every game.
 
-`go test ./...` runs `TestBoxMatchesC` too, so the port is held to the recorded C output without a G3 clone. `TestBoxWorlds` is skipped unless `run.sh` runs it.
+`go test ./...` runs `TestBoxMatchesC` too, so the port is held to the recorded C output without a G3 clone. `TestBoxWorlds` is skipped unless `G3G0_FULL=1` is set and `BOX_COMPAT_GAMES` names a list of games, as `run.sh` does: it builds the package's test binary once and runs it on one game at a time, and deletes each game's output as soon as it matches C's, keeping only failing games'. `-short` always skips it.
 
 The driver's load loop is `read_boxes()`'s, except that a line that is not a box number ends the file (printing `stop`), where `read_boxes()` skips a comment line silently and reports and skips any other. Pass 1 (`scan_boxes`) and pass 2 (`read_boxes`) themselves are tested by [`tools/boxfile-compat`](../boxfile-compat/README.md).
 
@@ -62,7 +67,7 @@ The driver's load loop is `read_boxes()`'s, except that a line that is not a box
 Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
 - Check 1: 20 sections, 3625 lines. The C driver is deterministic, its output matches `box-c-output.txt`, and `TestBoxMatchesC` passes.
-- Check 2: 197 games (`world.tgz` and the 196 cached round-trip inputs), 7,947,575 saved boxes (36,999 in `world.tgz`), plain and pretty: C and Go output identical.
+- Check 2 (`--full`): 197 games (`world.tgz` and the 196 cached round-trip inputs), 7,947,575 saved boxes (36,999 in `world.tgz`), plain and pretty: C and Go output identical.
 
 ## Upstream defects reproduced on purpose
 

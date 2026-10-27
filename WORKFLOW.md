@@ -19,6 +19,7 @@ go test ./...
 ```
 
 Both must pass before committing.
+`go test ./...` skips the whole-game tests; [tools/README.md](tools/README.md) says which compat checks to run for a task, a pin move and a stage exit.
 
 ## Versioning
 

@@ -24,9 +24,14 @@ The port follows:
 ## Running
 
 ```sh
-tools/boxfile-compat/run.sh            # compare
-tools/boxfile-compat/run.sh --update   # rewrite internal/olympia/testdata/boxfile-c-output.txt from C
+tools/boxfile-compat/run.sh             # compare the recorded cases (check 1)
+tools/boxfile-compat/run.sh --games 10  # and 10 saved games, always the same ones (check 2)
+tools/boxfile-compat/run.sh --full      # and every saved game (check 2)
+tools/boxfile-compat/run.sh --update    # rewrite internal/olympia/testdata/boxfile-c-output.txt from C
 ```
+
+Check 2 runs only with `--full` or `--games N`; `N` games are `world.tgz` and cached games spread evenly over the sorted list.
+[`tools/README.md`](../README.md) says when to run which.
 
 The script:
 
@@ -34,9 +39,9 @@ The script:
 2. Generates the stubs that `tools/box-compat` uses, and copies out of the export, verbatim: `sout()`, `set_bit()`, `test_bit()`, `lookup()`, `stage()`, `int_comp()`, `lord()` and `player()` (under `#line`, so that `player()`'s assertion names `olympia/swear.c` and its line), the command parser of `olympia/input.c`, and `olympia/io.c` from its first line to just before `load_system()` (just after `write_master()`), under `#line 1 "olympia/io.c"`, followed by io.c's `remove_dir()` (which `write_all_boxes()` calls), under `#line` with its own line number.
 3. Builds a C driver (`tmp/boxfile-compat/driver.c`) that `#include`s that copy of io.c, linked with the exported `code.c`, `glob.c`, `z.c` and the `lib/` modules.
 4. Check 1: runs each section of [`internal/olympia/testdata/boxfile-cases.txt`](../../internal/olympia/testdata/boxfile-cases.txt) in a fresh process and directory, with umask 022, twice, and lists the directory's tree after each (every file's mode and contents). It requires the same output both times and requires it to equal [`boxfile-c-output.txt`](../../internal/olympia/testdata/boxfile-c-output.txt). Then it runs `go test -run TestBoxfileMatchesC`, which runs the same cases on the Go port.
-5. Check 2: for `world.tgz` and every cached game input (`tmp/olympia-roundtrip/cases/*/input/lib`), three ways (with `master`; with `master` and `pretty_data_files`; and with `master` removed, so that pass 1 is `scan_all_boxes()`), the driver (`-g`) runs, from a copy of the game with `libdir` `lib`, what `load_db()` and `save_db()` run of these: `fast_scan()` or else `scan_all_boxes()`, `read_all_boxes()`, `write_all_boxes()` and `write_master()`. `TestBoxfileWorlds` (run with `BOXFILE_COMPAT_GAMES`) does the same in Go on its own copy. The two `lib` trees must be identical (`diff -r`, and every path's mode), and so must stdout and stderr.
+5. Check 2, with `--full` or `--games N`: for `world.tgz` and every cached game input (`tmp/olympia-roundtrip/cases/*/input/lib`), three ways (with `master`; with `master` and `pretty_data_files`; and with `master` removed, so that pass 1 is `scan_all_boxes()`), the driver (`-g`) runs, from a copy of the game with `libdir` `lib`, what `load_db()` and `save_db()` run of these: `fast_scan()` or else `scan_all_boxes()`, `read_all_boxes()`, `write_all_boxes()` and `write_master()`. `TestBoxfileWorlds` (run with `BOXFILE_COMPAT_GAMES`) does the same in Go on its own copy. The two `lib` trees must be identical (`diff -r`, and every path's mode), and so must stdout and stderr.
 
-`go test ./...` runs `TestBoxfileMatchesC` too, so the port is held to the recorded C output without a G3 clone. `TestBoxfileWorlds` is skipped unless `run.sh` runs it.
+`go test ./...` runs `TestBoxfileMatchesC` too, so the port is held to the recorded C output without a G3 clone. `TestBoxfileWorlds` is skipped unless `G3G0_FULL=1` is set and `BOXFILE_COMPAT_GAMES` names a list of games, as `run.sh` does: it builds the package's test binary once and runs it on one game at a time, and deletes each game's copies and output as soon as it matches C's, keeping only failing games'. `-short` always skips it.
 
 ### Lines between boxes
 
@@ -67,7 +72,7 @@ On macOS `abort()` flushes every open stdio stream, so a section that fails an a
 Last run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
 - Check 1: 70 sections, 1783 lines. The C driver is deterministic, its output matches `boxfile-c-output.txt`, and `TestBoxfileMatchesC` passes.
-- Check 2: 197 games (`world.tgz` and the 196 cached round-trip inputs; 7,947,575 boxes in their written `master` files, 36,999 in `world.tgz`), each with `master`, with `master` and pretty, and without `master`: C and Go `lib` trees (files, modes and contents), stdout and stderr identical.
+- Check 2 (`--full`): 197 games (`world.tgz` and the 196 cached round-trip inputs; 7,947,575 boxes in their written `master` files, 36,999 in `world.tgz`), each with `master`, with `master` and pretty, and without `master`: C and Go `lib` trees (files, modes and contents), stdout and stderr identical.
 
 ## Upstream defects reproduced on purpose
 
