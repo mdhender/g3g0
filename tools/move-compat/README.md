@@ -16,12 +16,17 @@ into `tmp/move-compat/g3`; nothing builds in an upstream working tree.
 The harness extracts **complete original definitions**, under original `#line`
 locations, for dir.c's topology/distance/selection closure; loc.c's region,
 province and stack walks; u.c's depth/hidden/knowledge, weight/count and number
-helpers; swear.c's ownership walks; move.c's complete land/fly/water travel
-calculations; and storm.c's actual `weather_here`. It preserves dir.c's original
+helpers; swear.c's ownership walks and loyalty setter; move.c's complete
+land/fly/water travel calculations, parsing, land admission/outer feasibility,
+exit save/restore and stack action/guard bookkeeping; perm.c's `rp_admit` and
+`will_admit`; stack.c's actual leave/unstack closure; and storm.c's actual
+`weather_here`. It preserves dir.c's original
 includes, tag constants, stream declaration, turn guard and `begin_exitdir`,
 and u.c's original number table. It links original code.c/glob.c/z.c/**sout.c**
 and the actual lib checked allocator, ilist, **exit_views.c**, rng.c, rnd.c and
-item_ents.c. Original headers provide structs, macros and integer field widths.
+item_ents.c, admits.c and cstrings.c. Initialization calls real `glob_init` and
+`init_lower`, as main.c does. Original headers provide structs, macros and
+integer field widths.
 There are **no gameplay stubs**: the only unreachable report dependency
 (`players_who_rule_here`) aborts if reached, and the tool rejects that marker
 even in assertion cases or `--update` mode. The driver only constructs fixtures,
@@ -68,9 +73,27 @@ Coverage:
 - State dumps retain every configured travel input, inventory and here-list
   order, and player output bits. Ordinary output is checked both immediately
   and through real sout's log-file route, without normalizing bytes.
+- Parsing honors valid destination before literal direction, full/short and
+  mixed-case directions, last-passable/last-impassable duplicate destination
+  versus first direction match, hidden/known/see-all visibility, first IN and
+  port-city choices, quiet mode, and exact already-there/unknown/absent diagnostics.
+- Admission checks default garrisons before owner lookup, same owner, absent
+  permissions and player allocation, allow/deny sense with unit/player entries,
+  first matching list, sewer/OUT/no-owner exceptions, both refusal recipients,
+  and water-before-impassable-before-transit-before-owner precedence.
+- Outer feasibility uses real nested exits and real travel costs, excludes IN,
+  preserves zero-distance overload bypass and same-depth zero results, and
+  keeps army slowdown's real output/output-bit mutation even in quiet checks.
+- Asymmetric command and exit save/restore preserves untouched command fields
+  and zeroes every omitted exit field. Nested/prisoner suspend/restore checks
+  epoch extrema/zero; guard clearing handles character and container roots and
+  prunes noncharacter branches. Real leave/unstack checks output order, here-list
+  promotion, summoned loyalty, release-magic clearing and descendant resume.
 
-The original 25 sections / 814 recording lines are an unchanged prefix.
-Parsing/admission/bookkeeping belong to #106 and move callbacks/arrivals to #67.
-This harness accepts helper calculations, not whole movement execution or
+The current recording has 59 sections / 2868 lines, from two deterministic C runs.
+The original 40 sections / 1703 recording lines are an unchanged prefix
+(including the earlier 25 sections / 814 lines).
+Move callbacks, departure/arrival and prisoner-escape execution belong to #67.
+This harness accepts movement helpers, not whole movement execution or
 arrival callbacks. Report rendering and unrelated LOS-distance helpers are not
 extracted; report-path output mutations are checked, not skipped.

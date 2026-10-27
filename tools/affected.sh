@@ -76,6 +76,7 @@ reads() {
 		olympia/*.h | lib/*.h) return 0 ;;
 		olympia/dir.c | olympia/loc.c | olympia/u.c | olympia/swear.c) return 0 ;;
 		olympia/code.c | olympia/glob.c | olympia/z.c | olympia/sout.c) return 0 ;;
+		olympia/perm.c | olympia/stack.c | lib/admits.c | lib/cstrings.c) return 0 ;;
 		olympia/move.c | olympia/storm.c | lib/item_ents.c) return 0 ;;
 		lib/checked_alloc.c | lib/ilist.c | lib/exit_views.c | lib/rng.c | lib/rnd.c) return 0 ;;
 		esac ;;

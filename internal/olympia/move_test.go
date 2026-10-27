@@ -77,11 +77,16 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 				v.origHidden, v.hidden, v.inside, v.road, v.water, v.inTransit, v.magicBarrier, v.hadesCost)
 		}
 	}
+	cmd, v := &command{}, &exitView{}
 	fmt.Fprintln(&stdout, lines[0])
 	for _, line := range lines[1:] {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		c := &caseLine{rest: line}
 		op := c.word()
+		if op == "argument" {
+			cmd.parse = cstringsList{"move", strings.TrimSpace(c.rest)}
+			continue
+		}
 		var a [4]int
 		for i := range a {
 			if strings.TrimSpace(c.rest) != "" {
@@ -90,6 +95,92 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 		}
 		n, b, sk, d := a[0], a[1], a[2], a[3]
 		switch op {
+		case "command":
+			cmd.who, cmd.a, cmd.wait, cmd.cmd = int32(n), int32(b), int32(sk), int32(d)
+		case "args":
+			cmd.b, cmd.c, cmd.d, cmd.e = int32(n), int32(b), int32(sk), int32(d)
+		case "tail":
+			cmd.f, cmd.g, cmd.h, cmd.daysExecuting = int32(n), int32(b), int32(sk), int32(d)
+		case "exit1":
+			v.direction, v.destination, v.orig, v.distance = int32(n), int32(b), int32(sk), int32(d)
+		case "exit2":
+			v.impassable, v.destHidden, v.origHidden, v.hidden = int32(n), int32(b), int32(sk), int32(d)
+		case "exit3":
+			v.inside, v.road, v.water, v.inTransit = int32(n), int32(b), int32(sk), int32(d)
+		case "exit4":
+			v.magicBarrier, v.hadesCost = int32(n), int32(b)
+		case "parse":
+			var zeroArg *string
+			if b != 0 {
+				s := "move"
+				zeroArg = &s
+			}
+			ret := w.parseExitDir(cmd, n, zeroArg)
+			if ret == nil {
+				fmt.Fprintln(&stdout, "no exit")
+			} else {
+				*v = *ret
+				fmt.Fprintln(&stdout, "parsed")
+			}
+		case "check":
+			fmt.Fprintf(&stdout, "check %d\n", b2i(w.landCheck(cmd, v, n != 0)))
+		case "can":
+			fmt.Fprintf(&stdout, "can %d\n", b2i(w.canMoveHere(n, cmd)))
+		case "outer":
+			fmt.Fprintf(&stdout, "outer %d\n", w.canMoveAtOuterLevel(n, cmd))
+		case "save":
+			saveVArray(cmd, v)
+		case "restore":
+			restoreVArray(cmd, v)
+		case "dump_exit":
+			dump([]*exitView{v})
+		case "dump_command":
+			fmt.Fprintf(&stdout, "command %d %d %d %d %d %d %d %d %d %d %d %d\n", cmd.who, cmd.a, cmd.b, cmd.c, cmd.d, cmd.e, cmd.f, cmd.g, cmd.h, cmd.wait, cmd.cmd, cmd.daysExecuting)
+		case "see_all":
+			w.immedSeeAll = int32(n)
+		case "admission":
+			w.pPlayer(n).admits = append(w.pPlayer(n).admits, &admit{targ: int32(b), sense: int32(sk)})
+		case "entry":
+			w.pPlayer(n).admits[b].l.Append(sk)
+		case "admit":
+			fmt.Fprintf(&stdout, "admit %d\n", b2i(w.willAdmit(n, b, sk)))
+		case "default_garr":
+			w.pMagic(n).defaultGarr = int8(b)
+		case "guard":
+			w.pChar(n).guard = int8(b)
+		case "char_moving":
+			w.pChar(n).moving = int32(b)
+		case "swear_release":
+			w.pMagic(n).swearOnRelease = int8(b)
+		case "suspend":
+			w.suspendStackActions(n)
+		case "resume":
+			w.restoreStackActions(n)
+		case "clear_guard":
+			w.clearGuardFlag(n)
+		case "leave":
+			w.leaveStack(n)
+		case "unstack":
+			w.unstack(n)
+		case "movement_state":
+			for n := range w.loopBoxes() {
+				if p := w.rpChar(n); p != nil {
+					fmt.Fprintf(&stdout, "action %d %d %d %d %d\n", n, p.moving, p.guard, p.loyKind, p.loyRate)
+				}
+				if p := w.rpMagic(n); p != nil {
+					fmt.Fprintf(&stdout, "magic %d %d %d\n", n, p.defaultGarr, p.swearOnRelease)
+				}
+				if p := w.rpPlayer(n); p != nil {
+					fmt.Fprintf(&stdout, "player %d admits %d\n", n, len(p.admits))
+					for _, p := range p.admits {
+						fmt.Fprintf(&stdout, "permission %d %d %d", p.targ, p.sense, p.flag)
+						for _, j := range p.l {
+							fmt.Fprintf(&stdout, " %d", j)
+						}
+						fmt.Fprintln(&stdout)
+					}
+				}
+			}
 		case "output":
 			w.immediate = n != 0
 		case "output_bit":

@@ -14,9 +14,12 @@ package olympia
 // len(subkindS) == subMax.
 //
 // Not ported, because loading and saving do not use them:
-// short_dir_s, full_dir_s, exit_opposite and loc_depth_s.
+// exit_opposite and loc_depth_s.
 // libdir is options.libdir (olympia.go) and world.libdir; show_day is
 // world.showDay. See cmdTbl for the command-handler boundaries.
+
+var shortDirS = []string{"<no dir>", "n", "e", "s", "w", "u", "d", "i", "o"}
+var fullDirS = []string{"<no dir>", "north", "east", "south", "west", "up", "down", "in", "out"}
 
 // kindS is kind_s, the name of each entity kind, indexed by T_xxx.
 var kindS = []string{

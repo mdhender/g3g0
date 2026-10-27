@@ -138,7 +138,8 @@ type world struct {
 	curPri         int32
 	cmdWait        int32
 	immediate      bool
-	showDay        bool // glob.c show_day; default formatting for command output
+	immedSeeAll    int32 // oly.h see_all(n), independent of immediate output
+	showDay        bool  // glob.c show_day; default formatting for command output
 	evening        int32
 	autoAttackFlag bool
 	waitList       lists.IList // c1.c wait_list

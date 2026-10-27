@@ -10,11 +10,20 @@
 #include "rnd.h"
 
 void glob_init(void);
+void init_lower(void);
 int hades_region, month_done, evening;
 int immediate, flush_always = 1;
+int immed_see_all;
 int drv_land(struct command *, struct exit_view *, int);
 int drv_fly(struct command *, struct exit_view *, int);
 int drv_water(struct command *, struct exit_view *, int, int);
+int drv_check(struct command *, struct exit_view *, int);
+int drv_can(int, struct command *);
+int drv_outer(int, struct command *);
+void drv_save(struct command *, struct exit_view *);
+void drv_restore(struct command *, struct exit_view *);
+void drv_suspend(int);
+void drv_unstack(int);
 
 /* Unreachable report routes must abort, never decide gameplay. */
 ilist players_who_rule_here(int n)
@@ -71,6 +80,8 @@ static void dump(exit_views_list l)
 int main(int argc, char **argv)
 {
     char line[1024], op[32];
+    struct command cmd = {0};
+    struct exit_view v = {0};
     int target, section = -1;
     FILE *fp;
     if (argc != 4) return 2;
@@ -78,6 +89,7 @@ int main(int argc, char **argv)
     fp = fopen(argv[1], "r");
     if (!fp) return 2;
     glob_init();
+    init_lower();
     libdir = str_save(argv[3]);
     *strrchr(libdir, '/') = 0;
     while (fgets(line, sizeof line, fp)) {
@@ -92,7 +104,65 @@ int main(int argc, char **argv)
         if (section != target) continue;
         printf("> %s\n", line);
         sscanf(line, "%31s %d %d %d %d", op, &a, &b, &c, &d);
-        if (!strcmp(op, "box")) {
+        if (!strcmp(op, "argument")) {
+            cstrings_clear(&cmd.parse);
+            cstrings_append(&cmd.parse, str_save("move"));
+            cstrings_append(&cmd.parse, str_save(line + 9));
+        } else if (!strcmp(op, "command")) { cmd.who = a; cmd.a = b; cmd.wait = c; cmd.cmd = d; }
+        else if (!strcmp(op, "args")) { cmd.b = a; cmd.c = b; cmd.d = c; cmd.e = d; }
+        else if (!strcmp(op, "tail")) { cmd.f = a; cmd.g = b; cmd.h = c; cmd.days_executing = d; }
+        else if (!strcmp(op, "exit1")) { v.direction = a; v.destination = b; v.orig = c; v.distance = d; }
+        else if (!strcmp(op, "exit2")) { v.impassable = a; v.dest_hidden = b; v.orig_hidden = c; v.hidden = d; }
+        else if (!strcmp(op, "exit3")) { v.inside = a; v.road = b; v.water = c; v.in_transit = d; }
+        else if (!strcmp(op, "exit4")) { v.magic_barrier = a; v.hades_cost = b; }
+        else if (!strcmp(op, "parse")) {
+            struct exit_view *ret = parse_exit_dir(&cmd, a, b ? "move" : NULL);
+            if (ret) { v = *ret; printf("parsed\n"); }
+            else printf("no exit\n");
+        }
+        else if (!strcmp(op, "check")) printf("check %d\n", drv_check(&cmd, &v, a));
+        else if (!strcmp(op, "can")) printf("can %d\n", drv_can(a, &cmd));
+        else if (!strcmp(op, "outer")) printf("outer %d\n", drv_outer(a, &cmd));
+        else if (!strcmp(op, "save")) drv_save(&cmd, &v);
+        else if (!strcmp(op, "restore")) drv_restore(&cmd, &v);
+        else if (!strcmp(op, "dump_exit")) {
+            exit_views_list l = NULL;
+            exit_views_append(&l, &v); dump(l); exit_views_reclaim(&l);
+        }
+        else if (!strcmp(op, "dump_command")) printf("command %d %d %d %d %d %d %d %d %d %d %d %d\n", cmd.who, cmd.a, cmd.b, cmd.c, cmd.d, cmd.e, cmd.f, cmd.g, cmd.h, cmd.wait, cmd.cmd, cmd.days_executing);
+        else if (!strcmp(op, "see_all")) immed_see_all = a;
+        else if (!strcmp(op, "admission")) {
+            struct admit *p = my_malloc(sizeof(*p));
+            p->targ = b; p->sense = c; admits_append(&p_player(a)->admits, p);
+        }
+        else if (!strcmp(op, "entry")) ilist_append(&p_player(a)->admits[b]->l, c);
+        else if (!strcmp(op, "admit")) printf("admit %d\n", will_admit(a, b, c));
+        else if (!strcmp(op, "default_garr")) p_magic(a)->default_garr = b;
+        else if (!strcmp(op, "guard")) p_char(a)->guard = b;
+        else if (!strcmp(op, "char_moving")) p_char(a)->moving = b;
+        else if (!strcmp(op, "swear_release")) p_magic(a)->swear_on_release = b;
+        else if (!strcmp(op, "suspend")) drv_suspend(a);
+        else if (!strcmp(op, "resume")) restore_stack_actions(a);
+        else if (!strcmp(op, "clear_guard")) clear_guard_flag(a);
+        else if (!strcmp(op, "leave")) leave_stack(a);
+        else if (!strcmp(op, "unstack")) drv_unstack(a);
+        else if (!strcmp(op, "movement_state")) {
+            int n, i, j;
+            loop_boxes(n) {
+                if (rp_char(n)) printf("action %d %d %d %d %d\n", n, char_moving(n), char_guard(n), loyal_kind(n), loyal_rate(n));
+                if (rp_magic(n)) printf("magic %d %d %d\n", n, default_garrison(n), rp_magic(n)->swear_on_release);
+                if (rp_player(n)) {
+                    printf("player %d admits %d\n", n, admits_len(rp_player(n)->admits));
+                    for (i = 0; i < admits_len(rp_player(n)->admits); i++) {
+                        struct admit *p = rp_player(n)->admits[i];
+                        printf("permission %d %d %d", p->targ, p->sense, p->flag);
+                        for (j = 0; j < ilist_len(p->l); j++) printf(" %d", p->l[j]);
+                        printf("\n");
+                    }
+                }
+            } next_box;
+        }
+        else if (!strcmp(op, "box")) {
             alloc_box(a, b, c);
             rp_loc_info(a)->where = d;
             if (d) ilist_append(&rp_loc_info(d)->here_list, a);

@@ -38,13 +38,21 @@ functions = {
               'ship_exits', 'building_exits', 'exits_from_loc', 'exits_from_loc_nsew',
               'exits_from_loc_nsew_select', 'has_ocean_access'],
     'loc.c': ['region', 'province', 'subloc', 'viewloc', 'add_here', 'all_here',
-              'add_char_here', 'all_char_here', 'all_stack'],
+              'add_char_here', 'all_char_here', 'all_stack', 'first_character',
+              'building_owner', 'in_here_list', 'add_to_here_list',
+              'remove_from_here_list', 'set_where'],
     'u.c': ['loc_depth', 'loc_hidden', 'test_known', 'test_bit', 'set_bit',
             'max', 'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
             'count_stack_move_nobles', 'count_stack_figures', 'count_any',
-            'has_item', 'comma_num', 'nice_num', 'cap'],
-    'swear.c': ['lord', 'player'],
-    'move.c': ['move_exit_land', 'move_exit_fly', 'move_exit_water'],
+            'has_item', 'comma_num', 'nice_num', 'cap', 'lookup'],
+    'swear.c': ['lord', 'player', 'set_loyal'],
+    'move.c': ['move_exit_land', 'move_exit_fly', 'move_exit_water',
+               'parse_exit_dir', 'save_v_array', 'restore_v_array',
+               'suspend_stack_actions', 'restore_stack_actions', 'clear_guard_flag',
+               'land_check', 'can_move_here', 'can_move_at_outer_level'],
+    'perm.c': ['rp_admit', 'will_admit'],
+    'stack.c': ['here_pos', 'stack_parent', 'stack_leader', 'promote',
+                'unstack', 'leave_stack'],
     'storm.c': ['weather_here'],
 }
 with open(dest, 'w') as out:
@@ -67,6 +75,13 @@ with open(dest, 'w') as out:
 int drv_land(struct command *c, struct exit_view *v, int show) { return move_exit_land(c, v, show); }
 int drv_fly(struct command *c, struct exit_view *v, int show) { return move_exit_fly(c, v, show); }
 int drv_water(struct command *c, struct exit_view *v, int ship, int show) { return move_exit_water(c, v, ship, show); }
+int drv_check(struct command *c, struct exit_view *v, int show) { return land_check(c, v, show); }
+int drv_can(int where, struct command *c) { return can_move_here(where, c); }
+int drv_outer(int where, struct command *c) { return can_move_at_outer_level(where, c); }
+void drv_save(struct command *c, struct exit_view *v) { save_v_array(c, v); }
+void drv_restore(struct command *c, struct exit_view *v) { restore_v_array(c, v); }
+void drv_suspend(int who) { suspend_stack_actions(who); }
+void drv_unstack(int who) { unstack(who); }
 ''')
 PY
 case "$(uname -s)" in
@@ -75,7 +90,7 @@ case "$(uname -s)" in
 esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -ffunction-sections -fdata-sections "${ldflags[@]}" \
  -I olympia -I lib "${HERE}/driver.c" "${WORK}/helpers.c" \
- olympia/{code,glob,z,sout}.c lib/{checked_alloc,ilist,exit_views,rng,rnd,item_ents}.c \
+ olympia/{code,glob,z,sout}.c lib/{checked_alloc,ilist,exit_views,rng,rnd,item_ents,admits,cstrings}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
 sections=$(grep -c '^section ' "${CASES}")
 section_names=()
