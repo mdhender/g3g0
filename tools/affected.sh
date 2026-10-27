@@ -75,7 +75,7 @@ reads() {
 	loadsave-compat)
 		reads check-compat "$2" && return 0
 		case "$2" in
-		olympia/buy.c | olympia/dir.c | olympia/add.c) return 0 ;;
+		olympia/buy.c | olympia/dir.c | olympia/add.c | olympia/quest.c) return 0 ;;
 		esac ;;
 	io-compat | box-compat | boxfile-compat)
 		case "$2" in

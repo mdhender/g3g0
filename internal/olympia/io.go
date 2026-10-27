@@ -2652,6 +2652,20 @@ func (w *world) saveSystem() {
 	fp.Close()
 }
 
+// deleteDeadchars is delete_deadchars(), the last step of load_db() before
+// print_box_usage(): every dead character, in chain order, is taken out of
+// its location if it is still in one, and deleted.
+func (w *world) deleteDeadchars() {
+	for i := range w.loopKind(tDeadchar) {
+		// Loc should have been zeroed already in kill_char
+
+		if w.loc(i) != 0 {
+			w.setWhere(i, 0)
+		}
+		w.deleteBox(i)
+	}
+}
+
 // cleanupPosts is cleanup_posts(), which save_db() runs first: every post,
 // in chain order, is taken out of its location and deleted.
 func (w *world) cleanupPosts() {

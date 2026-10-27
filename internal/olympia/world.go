@@ -91,6 +91,14 @@ type world struct {
 	// whose Join-g3 files rename_act_join_files() renames.
 	newPlayers lists.IList
 
+	// oceanChars is the static ocean_chars of move.c: the characters at
+	// sea, which init_ocean_chars() fills on load.
+	oceanChars lists.IList
+
+	// tradesToCheck is trades_to_check in buy.c: the boxes whose pending
+	// trades investigate_possible_trade() wants matched.
+	tradesToCheck lists.IList
+
 	// The static cache of add_next_chain() and add_sub_chain() in code.c.
 
 	nextCacheLast int32

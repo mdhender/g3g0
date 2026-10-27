@@ -1,8 +1,9 @@
 # Differential cases for the routines of G3's load_db() and save_db() that
 # read or write files of their own or set up globals: load_system(),
 # save_system(), cleanup_posts(), load_orders(), save_orders(),
-# init_trade_routes(), save_trade_routes(), determine_map_edges() and
-# rename_act_join_files(), at G3 47535543d83fbc5649d54b63b49e578f2b11ab1c.
+# init_trade_routes(), save_trade_routes(), determine_map_edges(),
+# rename_act_join_files(), and create_relics(), init_ocean_chars() and
+# delete_deadchars(), at G3 47535543d83fbc5649d54b63b49e578f2b11ab1c.
 #
 # tools/loadsave-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in loadsave-c-output.txt;
@@ -36,8 +37,13 @@
 #   orders           load_orders()
 #   check            check_db()
 #   edges            determine_map_edges()
+#   relics           create_relics()
+#   ocean            init_ocean_chars()
+#   deadchars        delete_deadchars()
 #   load             what load_db() runs of these, in its order: trade,
-#                    system, boxes, orders, check, edges
+#                    system, boxes, orders, check, edges, relics, ocean,
+#                    deadchars (load_db()'s new-world branches between
+#                    edges and relics are not run)
 #   posts            cleanup_posts()
 #   savetrade        save_trade_routes()
 #   savesystem       save_system()
@@ -48,15 +54,17 @@
 #                    savetrade, savesystem, saveboxes, saveorders, rename
 #   print            the globals: sysclock, the settings in lib/system,
 #                    max_map_row, max_map_col, max_map_init, the trade-route
-#                    state (have_seed, seed, secret), and each player's
-#                    order queues, "orders PLAYER UNIT: [ORDER]..."
+#                    state (have_seed, seed, secret), ocean_chars,
+#                    trades_to_check, and each player's order queues,
+#                    "orders PLAYER UNIT: [ORDER]..."
 #
 # The special players are 100 (independent), 200 (gm), 202 (skill), 203
 # (eat), 206 (npc) and 207 (garrison).
 
 section a whole load and save
 # A small game with lib/system and orders for player 1001: load, print
-# and save, as load_db() and save_db() run these routines.
+# and save, as load_db() and save_db() run these routines. It has a
+# Nowhere region and location, and no relics, which load makes.
 mkdir lib
 mkdir lib/fact
 put lib/loc
@@ -109,6 +117,16 @@ putl lib/misc LI
 putl lib/misc  wh 10001
 putl lib/misc  hl 1002
 putl lib/misc
+putl lib/misc 10002 loc region
+putl lib/misc na Nowhere
+putl lib/misc LI
+putl lib/misc  hl 10102
+putl lib/misc
+putl lib/misc 10102 loc underground
+putl lib/misc na Nowhere
+putl lib/misc LI
+putl lib/misc  wh 10002
+putl lib/misc
 mkdir lib/orders
 putl lib/system sysclock: 12 3 45
 putl lib/system indep_player=100
@@ -134,8 +152,8 @@ putl lib/system fp=0
 putl lib/system hr=0
 putl lib/system hp=0
 putl lib/system hl=0
-putl lib/system nr=0
-putl lib/system nl=0
+putl lib/system nr=10002
+putl lib/system nl=10102
 putl lib/system np=206
 putl lib/system cr=0
 putl lib/system cp=210
@@ -1602,6 +1620,467 @@ system
 boxes
 edges
 print
+
+section create_relics: a game with none
+# The three relics are made in nowhere_loc's inventory, in order, and
+# reported on stderr.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+put lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10102 loc underground
+putl lib/misc na Nowhere
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/system nl=10102
+system
+boxes
+relics
+print
+saveboxes
+
+section create_relics: all three exist
+# A box that exists is left as it is.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+putl lib/item 401 item relic
+putl lib/item na Old throne
+putl lib/item IT
+putl lib/item  wt 7
+putl lib/item
+putl lib/item 402 item relic
+putl lib/item na Old crown
+putl lib/item
+putl lib/item 403 item relic
+putl lib/item na Old skull
+putl lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10102 loc underground
+putl lib/misc na Nowhere
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/system nl=10102
+system
+boxes
+relics
+print
+saveboxes
+
+section create_relics: one exists, one is not an item
+# 402 is an item and 403 a location: only 401 is made.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+putl lib/item 402 item relic
+putl lib/item na Old crown
+putl lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10102 loc underground
+putl lib/misc na Nowhere
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 403 loc plain
+putl lib/misc na Not a skull
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/system nl=10102
+system
+boxes
+relics
+saveboxes
+
+section create_relics: nowhere_loc 0
+# add_item() asserts valid_box(who).
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+put lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10102 loc underground
+putl lib/misc na Nowhere
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+boxes
+relics
+
+section create_relics: nowhere_loc names no box
+# add_item() asserts valid_box(who); 401 was allocated first.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+put lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10102 loc underground
+putl lib/misc na Nowhere
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/system nl=10999
+system
+boxes
+relics
+
+section create_relics: nowhere_loc is a character
+# The relics go to a character; their lore is still 0 when add_item()
+# looks, so there is nothing to queue.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+put lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10102 loc underground
+putl lib/misc na Nowhere
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 1002 char 0
+putl lib/misc na Noble
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc
+putl lib/system nl=1002
+system
+boxes
+relics
+print
+saveboxes
+
+section create_relics: nowhere_loc holds items and trades
+# The relics are appended after what nowhere_loc holds. Its trades are
+# for other items, so none needs checking.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+putl lib/item 1 item 0
+putl lib/item na gold
+putl lib/item
+putl lib/item 10 item 0
+putl lib/item na peasant
+putl lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10102 loc underground
+putl lib/misc na Nowhere
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc il	1 50 \
+putl lib/misc 	10 3
+putl lib/misc tl	2 1 5 0 0 0 0 0 \
+putl lib/misc 	1 1 5 1 0 0 0 0 \
+putl lib/misc 	2 10 9 0 0 0 0 0
+putl lib/misc
+putl lib/system nl=10102
+system
+boxes
+relics
+print
+saveboxes
+
+section create_relics: nowhere_loc is the throne
+# nowhere_loc 401: 401 is made first and holds itself and the others.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+put lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 10102 loc underground
+putl lib/misc na Nowhere
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/system nl=401
+system
+boxes
+relics
+saveboxes
+
+section init_ocean_chars
+# Characters whose subloc is an ocean, in chain order: one at sea, one
+# stacked under it, one on a ship at sea (whose subloc is the ship), one
+# on an island, one on land, one nowhere. Run twice, each is listed
+# twice.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+put lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101 10102
+putl lib/misc
+putl lib/misc 10101 loc ocean
+putl lib/misc na Ocean
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1003 2001 10201
+putl lib/misc
+putl lib/misc 10102 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1005
+putl lib/misc
+putl lib/misc 10201 loc island
+putl lib/misc na Island
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc  hl 1004
+putl lib/misc
+putl lib/misc 1001 char 0
+putl lib/misc na Stacked
+putl lib/misc LI
+putl lib/misc  wh 1003
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc na Swimmer
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc  hl 1001
+putl lib/misc
+putl lib/misc 1004 char 0
+putl lib/misc na Islander
+putl lib/misc LI
+putl lib/misc  wh 10201
+putl lib/misc
+putl lib/misc 1005 char 0
+putl lib/misc na Lander
+putl lib/misc LI
+putl lib/misc  wh 10102
+putl lib/misc
+putl lib/misc 1006 char 0
+putl lib/misc na Nowhere man
+putl lib/misc
+putl lib/misc 1007 char 0
+putl lib/misc na Sailor
+putl lib/misc LI
+putl lib/misc  wh 2001
+putl lib/misc
+putl lib/misc 2001 ship galley
+putl lib/misc na Galley
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc  hl 1007
+putl lib/misc
+boxes
+ocean
+print
+ocean
+print
+
+section delete_deadchars
+# Dead characters are taken out of their locations and deleted; one
+# with no location is just deleted, and one that leads a stack leaves
+# its stackmate where it was.
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+put lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc  hl 1001 1003 1004
+putl lib/misc
+putl lib/misc 1001 deadchar 0
+putl lib/misc na Dead one
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc
+putl lib/misc 1002 deadchar 0
+putl lib/misc na Dead nowhere
+putl lib/misc
+putl lib/misc 1003 char 0
+putl lib/misc na Alive
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc
+putl lib/misc 1004 deadchar 0
+putl lib/misc na Dead leader
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc  hl 1005
+putl lib/misc
+putl lib/misc 1005 char 0
+putl lib/misc na Follower
+putl lib/misc LI
+putl lib/misc  wh 1004
+putl lib/misc
+boxes
+deadchars
+saveboxes
+
+section delete_deadchars: not in its location's here list
+# remove_from_here_list() asserts in_here_list(loc, who).
+mkdir lib
+mkdir lib/fact
+put lib/loc
+put lib/skill
+put lib/gate
+put lib/road
+put lib/ship
+put lib/unform
+mkdir lib/orders
+put lib/item
+putl lib/misc 10001 loc region
+putl lib/misc na Region
+putl lib/misc LI
+putl lib/misc  hl 10101
+putl lib/misc
+putl lib/misc 10101 loc plain
+putl lib/misc na Plain
+putl lib/misc LI
+putl lib/misc  wh 10001
+putl lib/misc
+putl lib/misc 1001 deadchar 0
+putl lib/misc na Dead one
+putl lib/misc LI
+putl lib/misc  wh 10101
+putl lib/misc
+boxes
+deadchars
 
 section rename_act_join_files
 # act is relative to the current directory. A missing file is reported.

@@ -6,6 +6,9 @@ section a whole load and save
 can't open lib/master: No such file or directory
 fast_scan failed, scan_all_boxes()
 check_db()
+Created Imperial Throne~[401]
+Created Crown of Prosperity~[402]
+Created Skull of Bastrestric~[403]
 > print
 sysclock 12 3 45
 from_host=host@example.com (A Host)
@@ -19,9 +22,11 @@ htpasswd_loc=/x/ht
 garrison_pay=3 auto_quit=6 army_slow_factor=25
 indep=100 gm=200 skill=202 post=1 init=1
 fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
-nr=0 nl=0 np=206 cr=0 cp=210 mo=10101
+nr=10002 nl=10102 np=206 cr=0 cp=210 mo=10101
 max_map 1 1 1
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 orders 1001 1002: [move north] [study 610]
 orders 1001 1001: [# a note]
 > save
@@ -68,12 +73,42 @@ f 644 40 lib/fact/207
 | na Garrison units
 | 
 f 644 0 lib/gate
-f 644 0 lib/item
-f 644 91 lib/loc
+f 644 215 lib/item
+| 401 item relic
+| na Imperial Throne
+| IT
+|  wt 500
+|  un 10102
+| IM
+|  lo 401
+| 
+| 402 item relic
+| na Crown of Prosperity
+| IT
+|  wt 10
+|  un 10102
+| IM
+|  lo 402
+| 
+| 403 item relic
+| na Skull of Bastrestric
+| IT
+|  wt 10
+|  un 10102
+| IM
+|  uk 15
+|  lo 403
+| 
+f 644 208 lib/loc
 | 10001 loc region
 | na Region
 | LI
 |  hl 10101 
+| 
+| 10002 loc region
+| na Nowhere
+| LI
+|  hl 10102 
 | 
 | 10101 loc plain
 | na Plain
@@ -81,17 +116,30 @@ f 644 91 lib/loc
 |  wh 10001
 |  hl 1002 
 | 
-f 644 288 lib/master
+| 10102 loc underground
+| na Nowhere
+| il\x09401 1 \x5c
+| \x09402 1 \x5c
+| \x09403 1
+| LI
+|  wh 10002
+| 
+f 644 437 lib/master
 | 100\x091.52\x09fact/100\x09Independent player
 | 200\x091.48\x09fact/200\x09Gamemaster
 | 202\x091.48\x09fact/202\x09Skill list
 | 203\x091.48\x09fact/203\x09Order eater
 | 206\x091.62\x09fact/206\x09NPC control
 | 207\x091.62\x09fact/207\x09Garrison units
+| 401\x094.69\x09item\x09\x09Imperial Throne
+| 402\x094.69\x09item\x09\x09Crown of Prosperity
+| 403\x094.69\x09item\x09\x09Skull of Bastrestric
 | 1001\x091.49\x09fact/1001\x09Player one
 | 1002\x092.0\x09fact/1001\x09Noble
 | 10001\x093.50\x09loc\x09\x09Region
+| 10002\x093.50\x09loc\x09\x09Nowhere
 | 10101\x093.3\x09loc\x09\x09Plain
+| 10102\x093.7\x09loc\x09\x09Nowhere
 f 644 0 lib/misc
 d 755 lib/orders
 f 644 45 lib/orders/1001
@@ -101,7 +149,7 @@ f 644 45 lib/orders/1001
 f 644 0 lib/road
 f 644 0 lib/ship
 f 644 0 lib/skill
-f 644 387 lib/system
+f 644 395 lib/system
 | sysclock: 12 3 45
 | indep_player=100
 | gm_player=200
@@ -126,8 +174,8 @@ f 644 387 lib/system
 | hr=0
 | hp=0
 | hl=0
-| nr=0
-| nl=0
+| nr=10002
+| nl=10102
 | np=206
 | cr=0
 | cp=210
@@ -155,6 +203,8 @@ fr=10002 tr=10003 ur=10004 fp=300 hr=10005 hp=10006 hl=301
 nr=10007 nl=10008 np=302 cr=10009 cp=211 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savesystem
 exit 0
 d 755 lib
@@ -206,6 +256,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=-1
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savesystem
 exit 0
 d 755 lib
@@ -257,6 +309,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savesystem
 exit 0
 d 755 lib
@@ -308,6 +362,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savesystem
 exit 0
 d 755 lib
@@ -359,6 +415,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savesystem
 load_system: can't write lib/system: Is a directory
 exit 0
@@ -385,6 +443,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > chmod 644 lib/system
 exit 0
 d 755 lib
@@ -413,6 +473,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -435,6 +497,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 12345 2344653816
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -463,6 +527,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 12345 2344653816
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -488,6 +554,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 16 3885372635
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -515,6 +583,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 0 2570937750
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -539,6 +609,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -563,6 +635,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -589,6 +663,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -618,6 +694,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -641,6 +719,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 exit 0
 d 755 lib
 f 644 0 lib/trade_routes
@@ -663,6 +743,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 18446744073709551611 1232587211
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -687,6 +769,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 7 989457459
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -711,6 +795,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -735,6 +821,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 18446744073709551615 4290534743
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -759,6 +847,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 18446744073709551615 4290534743
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -783,6 +873,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 42 2453429427
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -807,6 +899,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 13 1013431624
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -831,6 +925,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 1 403206445
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -855,6 +951,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 0 2570937750
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -879,6 +977,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 1 403206445
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -903,6 +1003,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 0 2570937750
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -927,6 +1029,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 8 1908631430
+ocean_chars:
+trades_to_check:
 > savetrade
 exit 0
 d 755 lib
@@ -951,6 +1055,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 1 1 403206445
+ocean_chars:
+trades_to_check:
 > savetrade
 couldn't write lib/trade_routes: No such file or directory
 exit 0
@@ -980,6 +1086,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 orders 200 1002: [gm order]
 orders 1001 1002: [move north] [  study 610  ] [x] [] [\tTAB] [last line]
 orders 1001 0: [] [] [zero]
@@ -1075,6 +1183,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 orders 1001 1002: [order 0] [order 1] [order 2] [order 3] [order 4] [order 5] [order 6] [order 7] [order 8] [order 9] [order 10] [order 11] [order 12] [order 13] [order 14] [order 15] [order 16] [order 17] [order 18] [order 19] [order 20] [order 21] [order 22] [order 23] [order 24] [order 25] [order 26] [order 27] [order 28] [order 29] [order 30] [order 31] [order 32] [order 33] [order 34] [order 35] [order 36] [order 37] [order 38] [order 39] [order 40] [order 41] [order 42] [order 43] [order 44] [order 45] [order 46] [order 47] [order 48] [order 49] [order 50] [order 51] [order 52] [order 53] [order 54] [order 55] [order 56] [order 57] [order 58] [order 59] [order 60] [order 61] [order 62] [order 63] [order 64] [order 65] [order 66] [order 67] [order 68] [order 69] [order 70] [order 71] [order 72] [order 73] [order 74] [order 75] [order 76] [order 77] [order 78] [order 79] [order 80] [order 81] [order 82] [order 83] [order 84] [order 85] [order 86] [order 87] [order 88] [order 89] [order 90] [order 91] [order 92] [order 93] [order 94] [order 95] [order 96] [order 97] [order 98] [order 99] [order 100] [order 101] [order 102] [order 103] [order 104] [order 105] [order 106] [order 107] [order 108] [order 109] [order 110] [order 111] [order 112] [order 113] [order 114] [order 115] [order 116] [order 117] [order 118] [order 119] [order 120] [order 121] [order 122] [order 123] [order 124] [order 125] [order 126] [order 127] [order 128] [order 129] [order 130] [order 131] [order 132] [order 133] [order 134] [order 135] [order 136] [order 137] [order 138] [order 139] [order 140] [order 141] [order 142] [order 143] [order 144] [order 145] [order 146] [order 147] [order 148] [order 149] [order 150] [order 151] [order 152] [order 153] [order 154] [order 155] [order 156] [order 157] [order 158] [order 159] [order 160] [order 161] [order 162] [order 163] [order 164] [order 165] [order 166] [order 167] [order 168] [order 169] [order 170] [order 171] [order 172] [order 173] [order 174] [order 175] [order 176] [order 177] [order 178] [order 179] [order 180] [order 181] [order 182] [order 183] [order 184] [order 185] [order 186] [order 187] [order 188] [order 189] [order 190] [order 191] [order 192] [order 193] [order 194] [order 195] [order 196] [order 197] [order 198] [order 199] [order 200] [order 201] [order 202] [order 203] [order 204] [order 205] [order 206] [order 207] [order 208] [order 209] [order 210] [order 211] [order 212] [order 213] [order 214] [order 215] [order 216] [order 217] [order 218] [order 219] [order 220] [order 221] [order 222] [order 223] [order 224] [order 225] [order 226] [order 227] [order 228] [order 229] [order 230] [order 231] [order 232] [order 233] [order 234] [order 235] [order 236] [order 237] [order 238] [order 239] [order 240] [order 241] [order 242] [order 243] [order 244] [order 245] [order 246] [order 247] [order 248] [order 249]
 orders 1001 1001: [p 0] [p 1] [p 2]
 > saveorders
@@ -1411,6 +1521,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 orders 1001 1002: [xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
 > saveorders
 exit 0
@@ -1494,6 +1606,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > saveorders
 exit 0
 d 755 lib
@@ -1639,6 +1753,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > saveorders
 exit 0
 d 755 lib
@@ -1721,6 +1837,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 > chmod 644 lib/orders/1001
 exit 0
 d 755 lib
@@ -2002,6 +2120,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 0 0 0
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 orders 1001 1002: [kept]
 orders 1001 1003: [dropped]
 > saveorders
@@ -2246,6 +2366,8 @@ fr=10002 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 23 12 1
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 exit 0
 d 755 lib
 d 755 lib/fact
@@ -2310,6 +2432,8 @@ fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
 nr=0 nl=0 np=206 cr=0 cp=0 mo=0
 max_map 1 1 1
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 exit 0
 d 755 lib
 d 755 lib/fact
@@ -2356,6 +2480,8 @@ fr=1 tr=4 ur=0 fp=0 hr=2 hp=0 hl=0
 nr=5 nl=0 np=206 cr=3 cp=0 mo=0
 max_map 99 99 1
 trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
 exit 0
 d 755 lib
 d 755 lib/fact
@@ -2383,6 +2509,798 @@ f 644 25 lib/system
 | cr=3
 | tr=4
 | nr=5
+f 644 0 lib/unform
+section create_relics: a game with none
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> system
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> relics
+Created Imperial Throne~[401]
+Created Crown of Prosperity~[402]
+Created Skull of Bastrestric~[403]
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=10102 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
+> saveboxes
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 215 lib/item
+| 401 item relic
+| na Imperial Throne
+| IT
+|  wt 500
+|  un 10102
+| IM
+|  lo 401
+| 
+| 402 item relic
+| na Crown of Prosperity
+| IT
+|  wt 10
+|  un 10102
+| IM
+|  lo 402
+| 
+| 403 item relic
+| na Skull of Bastrestric
+| IT
+|  wt 10
+|  un 10102
+| IM
+|  uk 15
+|  lo 403
+| 
+f 644 161 lib/loc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 10102 
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+| 
+| 10102 loc underground
+| na Nowhere
+| il\x09401 1 \x5c
+| \x09402 1 \x5c
+| \x09403 1
+| LI
+|  wh 10001
+| 
+f 644 169 lib/master
+| 401\x094.69\x09item\x09\x09Imperial Throne
+| 402\x094.69\x09item\x09\x09Crown of Prosperity
+| 403\x094.69\x09item\x09\x09Skull of Bastrestric
+| 10001\x093.50\x09loc\x09\x09Region
+| 10101\x093.3\x09loc\x09\x09Plain
+| 10102\x093.7\x09loc\x09\x09Nowhere
+f 644 0 lib/misc
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 9 lib/system
+| nl=10102
+f 644 0 lib/unform
+section create_relics: all three exist
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> system
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> relics
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=10102 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
+> saveboxes
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 97 lib/item
+| 401 item relic
+| na Old throne
+| IT
+|  wt 7
+| 
+| 402 item relic
+| na Old crown
+| 
+| 403 item relic
+| na Old skull
+| 
+f 644 134 lib/loc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 10102 
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+| 
+| 10102 loc underground
+| na Nowhere
+| LI
+|  wh 10001
+| 
+f 644 143 lib/master
+| 401\x094.69\x09item\x09\x09Old throne
+| 402\x094.69\x09item\x09\x09Old crown
+| 403\x094.69\x09item\x09\x09Old skull
+| 10001\x093.50\x09loc\x09\x09Region
+| 10101\x093.3\x09loc\x09\x09Plain
+| 10102\x093.7\x09loc\x09\x09Nowhere
+f 644 0 lib/misc
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 9 lib/system
+| nl=10102
+f 644 0 lib/unform
+section create_relics: one exists, one is not an item
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> system
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> relics
+Created Imperial Throne~[401]
+> saveboxes
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 96 lib/item
+| 401 item relic
+| na Imperial Throne
+| IT
+|  wt 500
+|  un 10102
+| IM
+|  lo 401
+| 
+| 402 item relic
+| na Old crown
+| 
+f 644 186 lib/loc
+| 403 loc plain
+| na Not a skull
+| LI
+|  wh 10001
+| 
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 10102 
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+| 
+| 10102 loc underground
+| na Nowhere
+| il\x09401 1
+| LI
+|  wh 10001
+| 
+f 644 148 lib/master
+| 401\x094.69\x09item\x09\x09Imperial Throne
+| 402\x094.69\x09item\x09\x09Old crown
+| 403\x093.3\x09loc\x09\x09Not a skull
+| 10001\x093.50\x09loc\x09\x09Region
+| 10101\x093.3\x09loc\x09\x09Plain
+| 10102\x093.7\x09loc\x09\x09Nowhere
+f 644 0 lib/misc
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 9 lib/system
+| nl=10102
+f 644 0 lib/unform
+section create_relics: nowhere_loc 0
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> relics
+assertion failure: olympia/u.c (1847): valid_box(who)
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 133 lib/misc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 10102
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+| 
+| 10102 loc underground
+| na Nowhere
+| LI
+|  wh 10001
+| 
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section create_relics: nowhere_loc names no box
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> system
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> relics
+assertion failure: olympia/u.c (1847): valid_box(who)
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 133 lib/misc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 10102
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+| 
+| 10102 loc underground
+| na Nowhere
+| LI
+|  wh 10001
+| 
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 9 lib/system
+| nl=10999
+f 644 0 lib/unform
+section create_relics: nowhere_loc is a character
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> system
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> relics
+Created Imperial Throne~[401]
+Created Crown of Prosperity~[402]
+Created Skull of Bastrestric~[403]
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=1002 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
+> saveboxes
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 212 lib/item
+| 401 item relic
+| na Imperial Throne
+| IT
+|  wt 500
+|  un 1002
+| IM
+|  lo 401
+| 
+| 402 item relic
+| na Crown of Prosperity
+| IT
+|  wt 10
+|  un 1002
+| IM
+|  lo 402
+| 
+| 403 item relic
+| na Skull of Bastrestric
+| IT
+|  wt 10
+|  un 1002
+| IM
+|  uk 15
+|  lo 403
+| 
+f 644 134 lib/loc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 10102 
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+| 
+| 10102 loc underground
+| na Nowhere
+| LI
+|  wh 10001
+| 
+f 644 191 lib/master
+| 401\x094.69\x09item\x09\x09Imperial Throne
+| 402\x094.69\x09item\x09\x09Crown of Prosperity
+| 403\x094.69\x09item\x09\x09Skull of Bastrestric
+| 1002\x092.0\x09fact/0\x09Noble
+| 10001\x093.50\x09loc\x09\x09Region
+| 10101\x093.3\x09loc\x09\x09Plain
+| 10102\x093.7\x09loc\x09\x09Nowhere
+f 644 62 lib/misc
+| 1002 char 0
+| na Noble
+| il\x09401 1 \x5c
+| \x09402 1 \x5c
+| \x09403 1
+| LI
+|  wh 10101
+| 
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 8 lib/system
+| nl=1002
+f 644 0 lib/unform
+section create_relics: nowhere_loc holds items and trades
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> system
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> relics
+Created Imperial Throne~[401]
+Created Crown of Prosperity~[402]
+Created Skull of Bastrestric~[403]
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=10102 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+ocean_chars:
+trades_to_check:
+> saveboxes
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 255 lib/item
+| 1 item 0
+| na gold
+| 
+| 10 item 0
+| na peasant
+| 
+| 401 item relic
+| na Imperial Throne
+| IT
+|  wt 500
+|  un 10102
+| IM
+|  lo 401
+| 
+| 402 item relic
+| na Crown of Prosperity
+| IT
+|  wt 10
+|  un 10102
+| IM
+|  lo 402
+| 
+| 403 item relic
+| na Skull of Bastrestric
+| IT
+|  wt 10
+|  un 10102
+| IM
+|  uk 15
+|  lo 403
+| 
+f 644 235 lib/loc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 10102 
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+| 
+| 10102 loc underground
+| na Nowhere
+| il\x091 50 \x5c
+| \x0910 3 \x5c
+| \x09401 1 \x5c
+| \x09402 1 \x5c
+| \x09403 1
+| tl\x092 1 5 0 0 0 0 0 \x5c
+| \x091 1 5 1 0 0 0 0 \x5c
+| \x092 10 9 0 0 0 0 0
+| LI
+|  wh 10001
+| 
+f 644 207 lib/master
+| 1\x094.0\x09item\x09\x09gold
+| 10\x094.0\x09item\x09\x09peasant
+| 401\x094.69\x09item\x09\x09Imperial Throne
+| 402\x094.69\x09item\x09\x09Crown of Prosperity
+| 403\x094.69\x09item\x09\x09Skull of Bastrestric
+| 10001\x093.50\x09loc\x09\x09Region
+| 10101\x093.3\x09loc\x09\x09Plain
+| 10102\x093.7\x09loc\x09\x09Nowhere
+f 644 0 lib/misc
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 9 lib/system
+| nl=10102
+f 644 0 lib/unform
+section create_relics: nowhere_loc is the throne
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> system
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> relics
+Created Imperial Throne~[401]
+Created Crown of Prosperity~[402]
+Created Skull of Bastrestric~[403]
+> saveboxes
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 236 lib/item
+| 401 item relic
+| na Imperial Throne
+| il\x09401 1 \x5c
+| \x09402 1 \x5c
+| \x09403 1
+| IT
+|  wt 500
+|  un 401
+| IM
+|  lo 401
+| 
+| 402 item relic
+| na Crown of Prosperity
+| IT
+|  wt 10
+|  un 401
+| IM
+|  lo 402
+| 
+| 403 item relic
+| na Skull of Bastrestric
+| IT
+|  wt 10
+|  un 401
+| IM
+|  uk 15
+|  lo 403
+| 
+f 644 134 lib/loc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 10102 
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+| 
+| 10102 loc underground
+| na Nowhere
+| LI
+|  wh 10001
+| 
+f 644 169 lib/master
+| 401\x094.69\x09item\x09\x09Imperial Throne
+| 402\x094.69\x09item\x09\x09Crown of Prosperity
+| 403\x094.69\x09item\x09\x09Skull of Bastrestric
+| 10001\x093.50\x09loc\x09\x09Region
+| 10101\x093.3\x09loc\x09\x09Plain
+| 10102\x093.7\x09loc\x09\x09Nowhere
+f 644 0 lib/misc
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 7 lib/system
+| nl=401
+f 644 0 lib/unform
+section init_ocean_chars
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> ocean
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+ocean_chars: 1001 1003
+trades_to_check:
+> ocean
+> print
+sysclock 0 0 0
+from_host=g3@olympia.v-labs.be
+reply_host=g3@olympia.v-labs.be
+gm_address=c@dvdc.be
+game_title=Olympia G3
+game_url=http://olympia.v-labs.be/g3
+rules_url=http://oly.v-labs.be/g3/node/11
+times_url=http://oly.v-labs.be/g3/node/409
+htpasswd_loc=/u/oly/g2/lib/ht-passwords
+garrison_pay=2 auto_quit=0 army_slow_factor=20
+indep=100 gm=200 skill=202 post=0 init=0
+fr=0 tr=0 ur=0 fp=0 hr=0 hp=0 hl=0
+nr=0 nl=0 np=206 cr=0 cp=0 mo=0
+max_map 0 0 0
+trade_route 0 0 11557902
+ocean_chars: 1001 1003 1001 1003
+trades_to_check:
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 473 lib/misc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 10102
+| 
+| 10101 loc ocean
+| na Ocean
+| LI
+|  wh 10001
+|  hl 1003 2001 10201
+| 
+| 10102 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1005
+| 
+| 10201 loc island
+| na Island
+| LI
+|  wh 10101
+|  hl 1004
+| 
+| 1001 char 0
+| na Stacked
+| LI
+|  wh 1003
+| 
+| 1003 char 0
+| na Swimmer
+| LI
+|  wh 10101
+|  hl 1001
+| 
+| 1004 char 0
+| na Islander
+| LI
+|  wh 10201
+| 
+| 1005 char 0
+| na Lander
+| LI
+|  wh 10102
+| 
+| 1006 char 0
+| na Nowhere man
+| 
+| 1007 char 0
+| na Sailor
+| LI
+|  wh 2001
+| 
+| 2001 ship galley
+| na Galley
+| LI
+|  wh 10101
+|  hl 1007
+| 
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section delete_deadchars
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> deadchars
+> saveboxes
+exit 0
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 91 lib/loc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101 
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+|  hl 1003 
+| 
+f 644 91 lib/master
+| 1003\x092.0\x09fact/0\x09Alive
+| 1005\x092.0\x09fact/0\x09Follower
+| 10001\x093.50\x09loc\x09\x09Region
+| 10101\x093.3\x09loc\x09\x09Plain
+f 644 63 lib/misc
+| 1003 char 0
+| na Alive
+| LI
+|  wh 10101
+| 
+| 1005 char 0
+| na Follower
+| LI
+| 
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
+f 644 0 lib/unform
+section delete_deadchars: not in its location's here list
+> mkdir lib
+> mkdir lib/fact
+> mkdir lib/orders
+> boxes
+can't open lib/master: No such file or directory
+fast_scan failed, scan_all_boxes()
+> deadchars
+assertion failure: olympia/loc.c (241): in_here_list(loc, who)
+exit 134
+d 755 lib
+d 755 lib/fact
+f 644 0 lib/gate
+f 644 0 lib/item
+f 644 0 lib/loc
+f 644 122 lib/misc
+| 10001 loc region
+| na Region
+| LI
+|  hl 10101
+| 
+| 10101 loc plain
+| na Plain
+| LI
+|  wh 10001
+| 
+| 1001 deadchar 0
+| na Dead one
+| LI
+|  wh 10101
+| 
+d 755 lib/orders
+f 644 0 lib/road
+f 644 0 lib/ship
+f 644 0 lib/skill
 f 644 0 lib/unform
 section rename_act_join_files
 > mkdir act

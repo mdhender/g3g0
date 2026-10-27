@@ -11,8 +11,9 @@ import (
 
 // Ported from olympia/buy.c: the per-game trade-route buyer secret (G3
 // issue #46), which load_db() sets up with init_trade_routes() and
-// save_db() keeps with save_trade_routes(). The rest of buy.c is left for
-// later stages.
+// save_db() keeps with save_trade_routes(), and
+// investigate_possible_trade(), which add_item() calls. The rest of buy.c
+// is left for later stages.
 //
 // The FIND BUY buyer test picks which cities buy a tradegood with
 // md5_int(city_sold, where, item, SECRET) & 1. The secret is 0xb05c0e
@@ -104,4 +105,45 @@ func (w *world) saveTradeRoutes() {
 
 	fmt.Fprintf(fp, "%d\n", w.tradeRouteSeed)
 	fp.Close()
+}
+
+// investigatePossibleTrade is investigate_possible_trade(): who has been
+// given some item, and had oldHas of it before. If a pending trade of who's
+// was not already satisfied at the old quantity (a BUY, for gold; a SELL of
+// the item otherwise), who is queued on trades_to_check, for
+// match_all_trades() to try soon.
+//
+// The gold test divides by the trade's cost, as C does; a cost of 0 would
+// be SIGFPE in C and a runtime panic here. No caller ported so far adds
+// gold.
+func (w *world) investigatePossibleTrade(who, item, oldHas int) {
+	check := false
+
+	if item == itemGold {
+		for t := range w.loopTrade(who) {
+			if t.kind != tradeBuy {
+				continue
+			}
+
+			if (int32(oldHas)-t.haveLeft)/t.cost < t.qty {
+				check = true
+				break
+			}
+		}
+	} else {
+		for t := range w.loopTrade(who) {
+			if t.kind != tradeSell || int(t.item) != item {
+				continue
+			}
+
+			if int32(oldHas)-t.haveLeft < t.qty {
+				check = true
+				break
+			}
+		}
+	}
+
+	if check {
+		w.tradesToCheck.Append(who)
+	}
 }

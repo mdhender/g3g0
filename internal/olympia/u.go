@@ -116,3 +116,53 @@ func capitalize(s string) string {
 
 	return string(t)
 }
+
+// addItem is add_item(), static in u.c: it gives who qty more of item,
+// adding an inventory entry at the end if who has none, and lets
+// investigate_possible_trade() see whether that completes a pending SELL.
+// The lore branch (queue_lore() for a character that does not know the
+// item's lore) is not yet ported; create_unique_item_alloc(), the one
+// caller so far, calls it before the item has an item_magic, so its lore
+// is always 0 there.
+func (w *world) addItem(who, item, qty int) {
+	assert(w.validBox(who), "olympia/u.c", 1847, "valid_box(who)")
+	assert(w.validBox(item), "olympia/u.c", 1848, "valid_box(item)")
+	assert(qty >= 0, "olympia/u.c", 1849, "qty >= 0")
+
+	{
+		var lore int
+		if p := w.rpItemMagic(item); p != nil {
+			lore = int(p.lore)
+		}
+
+		if lore != 0 && w.kind(who) == tChar {
+			panic("olympia: add_item: test_known and queue_lore are not yet implemented")
+		}
+	}
+
+	for _, e := range w.bx[who].items {
+		if int(e.item) == item {
+			old := int(e.qty)
+
+			e.qty += int32(qty)
+
+			w.investigatePossibleTrade(who, item, old)
+			return
+		}
+	}
+
+	w.bx[who].items.Append(&itemEnt{item: int32(item), qty: int32(qty)})
+
+	w.investigatePossibleTrade(who, item, 0)
+}
+
+// createUniqueItemAlloc is create_unique_item_alloc(): it creates box new
+// as a unique item of subkind sk and gives it to who.
+func (w *world) createUniqueItemAlloc(new, who, sk int) int {
+	w.allocBox(new, tItem, sk)
+
+	w.pItem(new).whoHas = int32(who)
+	w.addItem(who, new, 1)
+
+	return new
+}

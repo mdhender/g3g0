@@ -169,3 +169,22 @@ func (w *world) loopInv(who int) iter.Seq[*itemEnt] {
 		}
 	}
 }
+
+// loopTrade is loop_trade: who's trades whose item is a valid box and whose
+// qty is positive, from a copy of the list taken when the loop starts. The
+// copy shares the trades, as trades_copy() does, so the body may change
+// them. loop_trade asserts valid_box(who) at the call site; the one caller
+// so far, investigatePossibleTrade, is reached only after add_item() has
+// asserted it.
+func (w *world) loopTrade(who int) iter.Seq[*trade] {
+	return func(yield func(*trade) bool) {
+		l := w.bx[who].trades.Copy()
+		for _, t := range l {
+			if w.validBox(int(t.item)) && t.qty > 0 {
+				if !yield(t) {
+					return
+				}
+			}
+		}
+	}
+}

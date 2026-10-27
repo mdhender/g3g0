@@ -8,7 +8,9 @@
 # and cleanup_posts() (olympia/io.c), load_orders() and save_orders()
 # (olympia/order.c), init_trade_routes() and save_trade_routes()
 # (olympia/buy.c), determine_map_edges() (olympia/dir.c) and
-# rename_act_join_files() (olympia/add.c), around the box-file passes and
+# rename_act_join_files() (olympia/add.c) (#50); and create_relics()
+# (olympia/quest.c), init_ocean_chars() (olympia/move.c) and
+# delete_deadchars() (olympia/io.c) (#51); around the box-file passes and
 # check_db() that tools/check-compat checks.
 #
 # Exports the pinned G3 revision, then builds a C driver as
@@ -17,8 +19,9 @@
 # calls and of the routines above and what they call (each under a #line
 # directive naming its own file and line), io.c from its first line up to
 # delete_deadchars() (so through load_system() and save_system()), its
-# cleanup_posts() and remove_dir(), and buy.c's trade-route block, which
-# the driver includes so that it can print buy.c's statics.
+# delete_deadchars(), cleanup_posts() and remove_dir(), and buy.c's
+# trade-route block, which the driver includes so that it can print
+# buy.c's statics.
 #
 # It runs two checks:
 #
@@ -34,7 +37,8 @@
 # 2. Real saved games, only with --full or --games: for each game's lib
 #    directory, copied, the driver runs what load_db() runs of these
 #    routines, in its order (init_trade_routes(), load_system(), the two
-#    box-file passes, load_orders(), check_db() and determine_map_edges()),
+#    box-file passes, load_orders(), check_db(), determine_map_edges(),
+#    create_relics(), init_ocean_chars() and delete_deadchars()),
 #    prints the globals to stdout, and runs what save_db() runs of them
 #    (cleanup_posts(), save_trade_routes(), save_system(),
 #    write_all_boxes(), write_master(), save_orders() and
@@ -122,8 +126,9 @@ git -C "${G3_REPO}" archive "${G3_REV}" lib olympia tests/olympia/fixtures/world
 #   stubs.c      a stub for every command routine cmd_tbl names (glob.c),
 #                for the two routines code.c calls only from display_kind()
 #                and just_name_qty(), and for the routines the helpers call
-#                only on paths not ported, each of which prints "stub NAME"
-#                and aborts
+#                only on paths not ported (among them test_known() and
+#                queue_lore(), which add_item() calls only for an item
+#                with lore), each of which prints "stub NAME" and aborts
 #   helpers.c    the helpers check_db() calls, as tools/helper-compat copies
 #                them, lookup() and stage() from u.c, which io.c and
 #                check_db() call, and the routines this check covers and
@@ -133,9 +138,12 @@ git -C "${G3_REPO}" archive "${G3_REV}" lib olympia tests/olympia/fixtures/world
 #                (add.c), faery_region and faery_player (faery.c),
 #                hades_region, hades_pit and hades_player (hades.c),
 #                nowhere_region and nowhere_loc (quest.c), tunnel_region
-#                and under_region (tunnel.c) and cloud_region (cloud.c)
+#                and under_region (tunnel.c), cloud_region (cloud.c),
+#                ocean_chars (move.c, where it is static) and
+#                trades_to_check (buy.c), which print() lists
 #   io_files.c   io.c up to delete_deadchars(), just past save_system(),
-#                and cleanup_posts() and remove_dir() from further down
+#                and delete_deadchars(), cleanup_posts() and remove_dir()
+#                from further down
 #   buy_trade.c  buy.c's trade-route block, from TRADE_ROUTE_DEFAULT_SECRET
 #                through save_trade_routes()
 python3 -I - "${WORK}/g3/olympia" "${WORK}/gen" <<'EOF'
@@ -182,6 +190,10 @@ int deduct_np(int pl, int num) STUB("deduct_np")
 void out(int who, const char *format, ...) STUB("out")
 void log_write(int k, const char *format, ...) STUB("log_write")
 void do_command(struct command *c) STUB("do_command")
+
+/* Called by add_item() only for an item with lore, not reached. */
+int test_known(int who, int i) STUB("test_known")
+void queue_lore(int who, int num, int anyway) STUB("queue_lore")
 int pledge_backlinks = FALSE;
 """)
 
@@ -189,7 +201,7 @@ int pledge_backlinks = FALSE;
 helpers = {
     "sout.c": ["sout"],
     "u.c": ["loc_depth", "clear_temps", "min", "cap", "test_bit", "set_bit",
-            "lookup", "stage"],
+            "lookup", "stage", "add_item", "create_unique_item_alloc"],
     "seed.c": ["int_comp"],
     "loc.c": ["add_char_here", "all_stack", "region", "subloc", "viewloc",
               "add_to_here_list", "remove_from_here_list", "in_here_list",
@@ -197,7 +209,7 @@ helpers = {
     "stack.c": ["stack_parent", "stack_leader"],
     "swear.c": ["lord", "player", "set_loyal", "set_lord", "is_unit"],
     "use.c": ["skill_school"],
-    "move.c": ["restore_stack_actions"],
+    "move.c": ["restore_stack_actions", "init_ocean_chars"],
     "day.c": ["touch_loc_pl", "touch_loc"],
     "garr.c": ["garrison_here"],
     "order.c": ["p_order_head", "rp_order_head", "top_order", "pop_order",
@@ -208,6 +220,8 @@ helpers = {
                 "set_state", "load_command", "init_load_sup"],
     "dir.c": ["region_row", "region_col", "determine_map_edges"],
     "add.c": ["rename_act_join_files"],
+    "buy.c": ["investigate_possible_trade"],
+    "quest.c": ["create_a_relic", "create_relics"],
 }
 with open(f"{out}/helpers.c", "w") as f:
     f.write('#include <ctype.h>\n#include <dirent.h>\n#include <stdarg.h>\n'
@@ -222,8 +236,11 @@ with open(f"{out}/helpers.c", "w") as f:
             "int hades_region = 0;\nint hades_pit = 0;\nint hades_player = 0;\n"
             "int nowhere_region = 0;\nint nowhere_loc = 0;\n"
             "int tunnel_region = 0;\nint under_region = 0;\nint cloud_region = 0;\n"
+            "ilist ocean_chars = NULL;\nilist trades_to_check = NULL;\n"
             "extern int time_self;\n"
-            "void reswear_all_sworn(int who);\n\n")
+            "void reswear_all_sworn(int who);\n"
+            "int test_known(int who, int i);\n"
+            "void queue_lore(int who, int num, int anyway);\n\n")
     for path, names in helpers.items():
         for _, text in sorted(func(path, n) for n in names):
             f.write(text)
@@ -239,7 +256,9 @@ with open(f"{out}/io_files.c", "w") as f:
     # so that assert() names io.c and its lines, as the engine's build does
     f.write('#line 1 "olympia/io.c"\n')
     f.write(io[:end])
-    # cleanup_posts(), which save_db() runs, from further down io.c
+    # delete_deadchars(), which load_db() runs last, and cleanup_posts(),
+    # which save_db() runs, from further down io.c
+    f.write("\n" + func("io.c", "delete_deadchars")[1])
     f.write("\n" + func("io.c", "cleanup_posts")[1])
     # remove_dir(), which write_all_boxes() and save_orders() call
     f.write(f'\n#line {io[:m.start()].count(chr(10)) + 1} "olympia/io.c"\n')
@@ -283,8 +302,11 @@ void load_orders(void);
 void save_orders(void);
 void determine_map_edges(void);
 void rename_act_join_files(void);
+void create_relics(void);
+void init_ocean_chars(void);
 
 extern int max_map_row, max_map_col, max_map_init;
+extern ilist ocean_chars, trades_to_check;
 
 int pretty_data_files = FALSE;
 int win_flag = FALSE;
@@ -365,6 +387,9 @@ load(void)
 	load_orders();
 	check_db();
 	determine_map_edges();
+	create_relics();
+	init_ocean_chars();
+	delete_deadchars();
 }
 
 /* what save_db() runs of them, in its order */
@@ -412,6 +437,14 @@ print(void)
 	printf("trade_route %d %llu %u\n", trade_route_have_seed,
 			(unsigned long long) trade_route_seed,
 			(unsigned) trade_route_secret);
+	printf("ocean_chars:");
+	for (i = 0; i < ilist_len(ocean_chars); i++)
+		printf(" %d", ocean_chars[i]);
+	printf("\n");
+	printf("trades_to_check:");
+	for (i = 0; i < ilist_len(trades_to_check); i++)
+		printf(" %d", trades_to_check[i]);
+	printf("\n");
 
 	loop_player(pl)
 	{
@@ -529,6 +562,12 @@ main(int argc, char **argv)
 			check_db();
 		else if (strcmp(op, "edges") == 0)
 			determine_map_edges();
+		else if (strcmp(op, "relics") == 0)
+			create_relics();
+		else if (strcmp(op, "ocean") == 0)
+			init_ocean_chars();
+		else if (strcmp(op, "deadchars") == 0)
+			delete_deadchars();
 		else if (strcmp(op, "load") == 0)
 			load();
 		else if (strcmp(op, "posts") == 0)

@@ -81,6 +81,9 @@ func (w *world) loadSaveLoad() {
 	w.loadOrders()
 	w.checkDb()
 	w.determineMapEdges()
+	w.createRelics()
+	w.initOceanChars()
+	w.deleteDeadchars()
 }
 
 func (w *world) loadSaveSave() {
@@ -119,6 +122,16 @@ func (w *world) loadSavePrint(out io.Writer) {
 	fmt.Fprintf(out, "max_map %d %d %d\n", w.maxMapRow, w.maxMapCol, b2i(w.maxMapInit))
 	fmt.Fprintf(out, "trade_route %d %d %d\n", b2i(w.tradeRouteHaveSeed),
 		w.tradeRouteSeed, w.tradeRouteSecret)
+	fmt.Fprintf(out, "ocean_chars:")
+	for _, i := range w.oceanChars {
+		fmt.Fprintf(out, " %d", i)
+	}
+	fmt.Fprintf(out, "\n")
+	fmt.Fprintf(out, "trades_to_check:")
+	for _, i := range w.tradesToCheck {
+		fmt.Fprintf(out, " %d", i)
+	}
+	fmt.Fprintf(out, "\n")
 
 	for pl := range w.loopKind(tPlayer) {
 		p := w.rpPlayer(pl)
@@ -197,6 +210,12 @@ func runLoadSaveSection(t *testing.T, lines []string) (output string) {
 			w.checkDb()
 		case "edges":
 			w.determineMapEdges()
+		case "relics":
+			w.createRelics()
+		case "ocean":
+			w.initOceanChars()
+		case "deadchars":
+			w.deleteDeadchars()
 		case "load":
 			w.loadSaveLoad()
 		case "posts":
