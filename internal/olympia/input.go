@@ -5,6 +5,7 @@ package olympia
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/mdhender/g3g0/internal/clib"
@@ -14,7 +15,7 @@ import (
 // command (scan_command() in io.c) uses, and the loading of a unit's next
 // order into its command (init_load_sup() and what it calls), which
 // set_lord() uses, plus individual command dispatch and completion.
-// The scheduler and wait handlers remain separate, unported tasks.
+// Wait handlers remain separate, unported tasks.
 //
 // C works on its strings in place, writing NUL bytes into them. The ports
 // work on a []byte copy where C writes into the string, and give each
@@ -531,5 +532,139 @@ func (w *world) initLoadSup(who int) {
 
 	default:
 		assert(false, "olympia/input.c", 739, "FALSE")
+	}
+}
+
+func (w *world) execPrecedence(who int) int32 {
+	if w.kind(who) != tChar {
+		return 0
+	}
+	var depth int32
+	for n := who; n != 0; n = w.stackParent(n) {
+		depth++
+	}
+	pos := w.herePos(who)
+	assert(depth < 100, "olympia/input.c", 429, "stack_depth < 100")
+	assert(pos < 10000, "olympia/input.c", 430, "pos < 10000")
+	return depth*10000 + int32(pos)
+}
+
+func (w *world) execComp(a, b int) int {
+	if w.bx[a].temp != w.bx[b].temp {
+		return int(w.bx[a].temp - w.bx[b].temp)
+	}
+	return a - b
+}
+
+func (w *world) sortLoadQueue(l []int) {
+	for _, i := range l {
+		w.bx[i].temp = w.execPrecedence(i)
+	}
+	slices.SortFunc(l, w.execComp)
+}
+
+func (w *world) sortRunQueue(l []int) {
+	for _, i := range l {
+		c := w.rpCommand(i)
+		assert(c != nil, "olympia/input.c", 476, "c")
+		w.bx[i].temp = int32(c.pri)*1000000 + w.execPrecedence(i)
+	}
+	slices.SortFunc(l, w.execComp)
+}
+
+func (w *world) initialCommandLoad() {
+	for i := range w.loopKind(tChar) {
+		w.initLoadSup(i)
+	}
+	for i := range w.loopKind(tPlayer) {
+		w.initLoadSup(i)
+	}
+}
+
+func (w *world) minPriReady() int {
+	for pri := 0; pri < maxPri; pri++ {
+		for _, i := range w.loadQ[pri] {
+			c := w.rpCommand(i)
+			assert(c != nil, "olympia/input.c", 776, "c")
+			assert(c.state == stateLoad, "olympia/input.c", 777, "c->state == STATE_LOAD")
+			assert(int(c.pri) == pri, "olympia/input.c", 778, "c->pri == pri")
+			if !w.isPrisoner(int(c.who)) && w.charMoving(int(c.who)) == 0 && c.secondWait == 0 {
+				return pri
+			}
+		}
+	}
+	return 99
+}
+
+// The empty-list path is real. Wait polling and collect completion belong
+// to #60/#61; reaching a populated wait list must not look like success.
+func (w *world) checkAllWaits() {
+	if w.waitList.Len() != 0 {
+		panic(notImplemented("check_all_waits"))
+	}
+}
+
+func (w *world) startPhase() {
+	for {
+		pri := w.minPriReady()
+		w.curPri = int32(pri)
+		if w.autoAttackFlag && pri >= 3 {
+			w.checkAllAutoAttacks()
+			w.autoAttackFlag = false
+		}
+		if pri == 99 {
+			return
+		}
+		w.sortLoadQueue(w.loadQ[pri])
+		for _, i := range w.loadQ[pri].Copy() {
+			c := w.rpCommand(i)
+			assert(c != nil, "olympia/input.c", 868, "c != NULL")
+			if c.state == stateLoad && int(c.pri) == pri && !w.isPrisoner(i) && w.charMoving(i) == 0 && c.secondWait == 0 {
+				w.doCommand(c)
+				w.checkAllWaits()
+				if int32(pri) != w.curPri {
+					break
+				}
+			}
+		}
+	}
+}
+
+func (w *world) eveningPhase() {
+	w.evening = 1
+	w.sortRunQueue(w.runQ)
+	for _, i := range w.runQ.Copy() {
+		c := w.rpCommand(i)
+		assert(c != nil, "olympia/input.c", 905, "c")
+		if c.state != stateRun || c.secondWait != 0 {
+			continue
+		}
+		assert(c.state == stateRun, "olympia/input.c", 913, "c->state == STATE_RUN")
+		c.daysExecuting++
+		w.finishCommand(c)
+		if w.tradesToCheck.Len() != 0 {
+			panic(notImplemented("check_validated_trades"))
+		}
+	}
+	w.checkAllWaits()
+	w.evening = 0
+}
+
+func (w *world) dailyCommandLoop() {
+	w.autoAttackFlag = true
+	w.startPhase()
+	w.eveningPhase()
+	w.clearSecondWaits()
+}
+
+func (w *world) processPlayerOrders() {
+	for pl := range w.loopKind(tPlayer) {
+		c := w.rpCommand(pl)
+		if c == nil {
+			continue
+		}
+		for w.kind(pl) == tPlayer && c.state == stateLoad {
+			w.doCommand(c)
+		}
 	}
 }

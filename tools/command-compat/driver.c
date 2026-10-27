@@ -16,6 +16,10 @@ void drv_state(struct command *c, int s);
 struct order_list *drv_orders(int pl, int who);
 extern int cur_pri, cmd_wait;
 extern ilist load_q[5], run_q;
+extern int evening, auto_attack_flag;
+extern ilist second_wait_list;
+void drv_evening(void), drv_daily(void), drv_players(void), drv_sort_run(void);
+void drv_sort_load(int pri);
 
 static void list(char *label, ilist l)
 {
@@ -68,6 +72,29 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "finish")) printf("finish %d\n", finish_command(c));
   else if (!strcmp(op, "done")) command_done(c);
   else if (!strcmp(op, "shift")) cmd_shift(c);
+  else if (!strcmp(op, "initial")) initial_command_load();
+  else if (!strcmp(op, "start")) start_phase();
+  else if (!strcmp(op, "evening")) drv_evening();
+  else if (!strcmp(op, "daily")) drv_daily();
+  else if (!strcmp(op, "players")) drv_players();
+  else if (!strcmp(op, "auto")) check_all_auto_attacks();
+  else if (!strcmp(op, "empty_chars"))
+  { change_box_kind(1000,T_deleted); change_box_kind(1001,T_deleted); }
+  else if (!strcmp(op, "min")) printf("min %d\n", min_pri_ready());
+  else if (!strcmp(op, "sort_load")) { sscanf(line,"%*s %d",&n); drv_sort_load(n); }
+  else if (!strcmp(op, "sort_run")) drv_sort_run();
+  else if (!strcmp(op, "phase"))
+   printf("phase evening %d auto %d second %d\n",evening,auto_attack_flag,ilist_len(second_wait_list));
+  else if (!strcmp(op, "second"))
+  { c->second_wait = TRUE; ilist_append(&second_wait_list,c->who); }
+  else if (!strcmp(op, "select")) { sscanf(line,"%*s %d",&n); c = rp_command(n); }
+  else if (!strcmp(op, "place"))
+  {
+   sscanf(line,"%*s %d",&n);
+   if (!valid_box(n)) alloc_box(n,T_loc,sub_plain);
+   p_loc_info(c->who)->where = n;
+   ilist_append(&p_loc_info(n)->here_list,c->who);
+  }
   else if (!strcmp(op, "resolve_wait")) cmd_wait = find_command("wait");
   else if (!strcmp(op, "skill"))
   {
@@ -120,6 +147,11 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "waitcmd")) cmd_wait = n;
    else if (!strcmp(text, "count")) p_player(player(c->who))->cmd_count = (short)n;
    else if (!strcmp(text, "prisoner")) p_char(c->who)->prisoner = (schar)n;
+   else if (!strcmp(text, "health")) p_char(c->who)->health = (schar)n;
+   else if (!strcmp(text, "second")) c->second_wait = (schar)n;
+   else if (!strcmp(text, "cmdpri")) c->pri = (schar)n;
+   else if (!strcmp(text, "state")) c->state = (schar)n;
+   else if (!strcmp(text, "auto")) auto_attack_flag = n;
    else return 2;
   }
   else if (!strcmp(op, "table"))

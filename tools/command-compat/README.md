@@ -1,4 +1,4 @@
-# Command dispatch and completion
+# Command dispatch, completion and scheduler
 
 Pinned reference: [Olympia G3 at
 2567e6a5dd0ba0d95516d8bed9e1bafb87a51985](https://github.com/playbymail/olympia-g3/tree/2567e6a5dd0ba0d95516d8bed9e1bafb87a51985).
@@ -22,7 +22,11 @@ via `tools/lib/timeout.sh` / `run-limited.sh`, with `RUN_TIMEOUT` seconds.
 The script extracts complete functions from **real pinned input.c**, retaining
 original `#line` locations: parser, `cmd_shift`, `check_allow`, `get_command`,
 `set_state`, `load_command`, `command_done`, `finish_command`, `do_command`,
-and `init_load_sup`. Wrappers expose its static load/state helpers to the
+and `init_load_sup`, precedence/comparison and both queue sorts,
+`initial_command_load`, `min_pri_ready`, `start_phase`, `evening_phase`,
+`process_player_orders`, and `daily_command_loop`. It also extracts the real
+`check_all_waits` (only its empty-list path is compared here), plus combat.c's
+`check_all_auto_attacks` and `clear_second_waits`. Wrappers expose static helpers to the
 driver; no compared routine is rewritten or stubbed. It links the real
 `glob.c` table (including original handler pointers), `code.c`, `z.c`,
 **sout.c**, and list/allocation libraries. The raw command output is therefore
@@ -36,17 +40,18 @@ Real complete handlers: `v_stop`, `v_xyzzy`, `v_plugh`, `v_format`, `v_notab`,
 `v_hide`, `d_hide`. Real dependencies include order-head/top/pop operations,
 player/lord and stack lookup, `all_stack`, `count_any`, `count_stack_any`,
 `rp_skill_ent`, `has_skill`, `exp_level`, `check_skill`, parser garrison lookup,
-and sparse output-bit operations. The driver only constructs state and calls
+`here_pos` and sparse output-bit operations. The driver only constructs state and calls
 these functions; it does not emulate their decisions.
 
 All other command routines named by the C table are **aborting** stubs,
 never successful substitutes. The remaining aborting dependencies are
 unreachable location/garrison report routes (`players_who_rule_here`,
 `loc_depth`, `viewloc`, `loc_hidden`, `test_known`), unused display formatting
-(`is_port_city`, `nice_num`), and validated-trade settlement. Reaching any
+(`is_port_city`, `nice_num`), validated-trade settlement, and
+`check_auto_attack_sup` (actual combat beyond the real leader/health scan). Reaching any
 stub fails the script, including `--update`. Only `coverage_count` is a
-no-op: it writes stage-3 instrumentation, not gameplay state. No scheduling,
-wait predicates or wait handlers are stubbed into successful execution.
+no-op: it writes stage-3 instrumentation, not gameplay state. No compared
+scheduler, auto-attack scan, wait predicate or wait handler is a successful stub.
 
 ## Production boundary
 
@@ -65,8 +70,17 @@ log writes and the player's output-bit mutation. Immediate output goes to
 stdout with C framing, but without command echo; it does **not** bypass all
 allow checks. Other routing/formatting fails explicitly. Report assembly and
 the broader sout interface remain stage 2. No report-side mutations on these
-paths are omitted. `-r` remains disabled; no scheduler or wait implementation
-is enabled by these individual dispatcher methods.
+paths are omitted. `-r` remains disabled; these scheduler methods are not full
+turn orchestration. A nonempty wait list explicitly stops with
+`check_all_waits` not implemented until #60/#61; actual wait/collect handlers
+and validated-trade settlement also stop explicitly. The real auto-attack
+scan excludes stacked followers and leaders whose health is neither 100 nor
+-1; every eligible leader explicitly stops at `check_auto_attack_sup` rather
+than silently pretending combat succeeded. Clearing second waits is the
+actual list-based combat.c operation, not a scan of all characters.
+That healthy-leader boundary is temporary: #101 ports target-selection
+predicates and #102 completes the non-combat scan before wait work begins.
+It is not a claim that C stops on a healthy leader without a hostile target.
 
 ## Discriminating cases
 
@@ -104,5 +118,31 @@ is enabled by these individual dispatcher methods.
   immediate completion preserving queued orders, and all dispatcher NULL /
   invalid-unit / days-executing assertion locations are observed.
 
-The recording contains 33 sections / 1112 lines on Linux x86-64.
+- Character-then-player initial loading, day-0 player-only dispatch, then
+  character start: real queued orders, report-setting mutations and log bytes.
+- Load sorting distinguishes player-before-character, reverse here-list
+  position versus ID, equal precedence across locations versus insertion
+  order, and stack depth. Run sorting distinguishes priority before stack
+  depth and ID ties; next-load insertion exposes the real completion order.
+- Ready priority changes independently for prisoners, movement and second
+  waits, returning 99 only when all candidates are excluded. Mixed blocked
+  and ready units at the same priority also test each snapshot exclusion.
+  Bad saved state, priority and missing here-list membership preserve exact
+  C assertions; malformed location zero preserves SIGSEGV status 139 and
+  unflushed stdout rather than inventing an assertion. This loader-accepted
+  upstream defect is tracked in [G3 #347](https://github.com/playbymail/olympia-g3/issues/347).
+- A failed priority-3 hide loads priority-1 format, which executes before the
+  second priority-3 command: observable output distinguishes snapshot
+  re-evaluation from draining the old queue. Timed hide spans three evenings,
+  mutates hidden state and lowers current priority when loading its successor.
+- Evening snapshots do not execute newly loaded orders; second waits skip
+  both starts and aging, then daily clearing makes them eligible next day.
+  A running prisoner still ages; a moving follower ages without finishing.
+- Auto gate consumption at priority 99, priority 0/1 then 3, literal zero-char
+  world, healthy follower/unhealthy leader exclusions, and no second scan
+  after making a leader healthy later that day. Separate production-boundary
+  tests verify health 100/-1 stops after actual low-priority state/output
+  mutations but before the priority-3 handler, without C stub recordings.
+
+The recording contains 56 sections / 1966 lines on Linux x86-64.
 Whole-game checks remain opt-in in `turn-compat`. No cases consume RNG.

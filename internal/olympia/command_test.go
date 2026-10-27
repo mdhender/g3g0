@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -68,6 +69,13 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		case assertion:
 			fmt.Fprint(&stderr, r.Error())
 			status = 134
+		case runtime.Error:
+			if !strings.Contains(r.Error(), "nil pointer dereference") {
+				panic(r)
+			}
+			// As in runEngine, C SIGSEGV does not flush buffered stdout.
+			stdout.Reset()
+			status = 139
 		default:
 			panic(r)
 		}
@@ -89,6 +97,41 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.commandDone(c)
 		case "shift":
 			w.cmdShift(c)
+		case "initial":
+			w.initialCommandLoad()
+		case "start":
+			w.startPhase()
+		case "evening":
+			w.eveningPhase()
+		case "daily":
+			w.dailyCommandLoop()
+		case "players":
+			w.processPlayerOrders()
+		case "auto":
+			w.checkAllAutoAttacks()
+		case "empty_chars":
+			w.changeBoxKind(1000, tDeleted)
+			w.changeBoxKind(1001, tDeleted)
+		case "min":
+			fmt.Fprintf(&stdout, "min %d\n", w.minPriReady())
+		case "sort_load":
+			w.sortLoadQueue(w.loadQ[args.num(t)])
+		case "sort_run":
+			w.sortRunQueue(w.runQ)
+		case "phase":
+			fmt.Fprintf(&stdout, "phase evening %d auto %d second %d\n", w.evening, b2i(w.autoAttackFlag), w.secondWaitList.Len())
+		case "second":
+			c.secondWait = 1
+			w.secondWaitList.Append(int(c.who))
+		case "select":
+			c = w.rpCommand(args.num(t))
+		case "place":
+			n := args.num(t)
+			if !w.validBox(n) {
+				w.allocBox(n, tLoc, subPlain)
+			}
+			w.pLocInfo(int(c.who)).where = int32(n)
+			w.pLocInfo(n).hereList.Append(int(c.who))
 		case "resolve_wait":
 			w.cmdWait = int32(w.findCommand("wait"))
 		case "skill":
@@ -150,6 +193,16 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pPlayer(w.player(int(c.who))).cmdCount = int16(n)
 			case "prisoner":
 				w.pChar(int(c.who)).prisoner = int8(n)
+			case "health":
+				w.pChar(int(c.who)).health = int8(n)
+			case "second":
+				c.secondWait = int8(n)
+			case "cmdpri":
+				c.pri = int8(n)
+			case "state":
+				c.state = int8(n)
+			case "auto":
+				w.autoAttackFlag = n != 0
 			default:
 				t.Fatalf("unknown field %q", field)
 			}
@@ -217,5 +270,87 @@ func TestCommandUnportedStops(t *testing.T) {
 				fn(w, &command{})
 			})
 		}
+	}
+}
+
+// These check deliberate production boundaries, not fabricated C output.
+// In particular a healthy leader must stop before priority-three commands,
+// but only AFTER real lower-priority handlers have mutated state/output.
+func TestCommandSchedulerBoundaries(t *testing.T) {
+	for _, health := range []int8{100, -1} {
+		t.Run(fmt.Sprint(health), func(t *testing.T) {
+			w := newWorld()
+			w.libdir = t.TempDir()
+			if err := os.Mkdir(filepath.Join(w.libdir, "log"), 0o755); err != nil {
+				t.Fatal(err)
+			}
+			w.allocBox(200, tPlayer, subPlRegular)
+			w.allocBox(1000, tChar, 0)
+			w.allocBox(9000, tLoc, subPlain)
+			w.pChar(1000).unitLord = 200
+			w.pChar(1000).health = health
+			w.pLocInfo(1000).where = 9000
+			w.pLocInfo(9000).hereList.Append(1000)
+			w.pOrderHead(200, 1000).l.Append("stop")
+			w.pOrderHead(200, 1000).l.Append("format 17")
+			w.pOrderHead(200, 1000).l.Append("hide 0")
+			w.initialCommandLoad()
+			defer func() {
+				if r := recover(); r != notImplemented("check_auto_attack_sup") {
+					t.Fatalf("combat boundary = %v", r)
+				}
+				c := w.rpCommand(1000)
+				if p := w.rpPlayer(200); p.format != 17 || p.cmdCount != 2 || c.cmd != int32(w.findCommand("hide")) || c.state != stateLoad || !w.autoAttackFlag || w.curPri != 3 {
+					t.Fatalf("auto-attack ran before low priorities or after priority 3: player=%+v command=%+v auto=%v cur=%d", p, c, w.autoAttackFlag, w.curPri)
+				}
+				log, err := os.ReadFile(filepath.Join(w.libdir, "log", "200"))
+				if err != nil || !strings.Contains(string(log), "> format 17\n") || strings.Contains(string(log), "> hide") {
+					t.Fatalf("wrong output before combat boundary: %q, %v", log, err)
+				}
+			}()
+			w.dailyCommandLoop()
+		})
+	}
+	for _, boundary := range []string{"wait/start", "wait/evening", "trades/evening"} {
+		t.Run(boundary, func(t *testing.T) {
+			w := newWorld()
+			w.allocBox(200, tPlayer, subPlRegular)
+			w.allocBox(1000, tChar, 0)
+			w.allocBox(9000, tLoc, subPlain)
+			w.pChar(1000).unitLord = 200
+			w.pLocInfo(1000).where = 9000
+			w.pLocInfo(9000).hereList.Append(1000)
+			c := w.pCommand(1000)
+			c.who, c.state = 1000, stateDone
+			want := notImplemented("check_all_waits")
+			if boundary == "trades/evening" {
+				w.tradesToCheck.Append(1000)
+				want = notImplemented("check_validated_trades")
+			} else {
+				w.waitList.Append(1000)
+			}
+			defer func() {
+				if r := recover(); r != want {
+					t.Fatalf("boundary = %v, want %v", r, want)
+				}
+				if c.state != stateDone || c.wait != 0 || w.runQ.Len() != 0 {
+					t.Fatalf("command not completed before boundary: %+v, queue %v", c, w.runQ)
+				}
+			}()
+			if boundary == "wait/start" {
+				w.libdir = t.TempDir()
+				if err := os.Mkdir(filepath.Join(w.libdir, "log"), 0o755); err != nil {
+					t.Fatal(err)
+				}
+				w.pOrderHead(200, 1000).l.Append("stop")
+				w.loadCommand(c)
+				w.startPhase()
+				return
+			}
+			c.cmd = int32(w.findCommand("xyzzy"))
+			c.wait, c.status = 1, 1
+			w.setState(c, stateRun, 0)
+			w.eveningPhase()
+		})
 	}
 }

@@ -1110,3 +1110,857 @@ stderr:
 assertion failure: olympia/input.c (680): c->days_executing == 0
 
 exit 134
+stdout:
+section initial character then player queues and day zero player-only dispatch
+> place 9000
+> queue format 11
+> who 201
+> queue format 21
+> who 200
+> queue notab 1
+> who 1001
+> place 9001
+> queue format 12
+> initial
+> dump
+cmd 33 who 1001 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 12 0 0 0 0 0 0 0; parse [format] [12]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000 1001 200 201
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> players
+> dump
+cmd 33 who 1001 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 12 0 0 0 0 0 0 0; parse [format] [12]
+player 200 count 1 last 0 format 0 notab 1 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> select 201
+> dump
+cmd 33 who 201 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 21 0 0 0 0 0 0 0; parse [format] [21]
+player 201 count 1 last 0 format 21 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> select 1000
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 1 last 0 format 0 notab 1 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+200:0::0::> notab 1
+200:0::0::No TAB characters will appear in turn reports.
+> start
+> dump
+cmd 33 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 3 last 0 format 12 notab 1 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+200:0::0::> notab 1
+200:0::0::No TAB characters will appear in turn reports.
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+1001:0::0::> format 12
+1001:0::0::Formatting for Player~[200] set to 12.
+stderr:
+
+exit 0
+stdout:
+section load sort here position beats ID and players precede characters
+> who 1001
+> place 9000
+> queue format 12
+> load
+load 1
+> who 1000
+> place 9000
+> queue format 11
+> load
+load 1
+> who 201
+> queue format 21
+> load
+load 1
+> who 200
+> queue format 20
+> load
+load 1
+> sort_load 1
+> dump
+cmd 33 who 200 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 20 0 0 0 0 0 0 0; parse [format] [20]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 200 201 1001 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> start
+> dump
+cmd 33 who 200 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 20 0 0 0 0 0 0 0; parse [format] [20]
+player 200 count 3 last 0 format 11 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+200:0::0::> format 20
+200:0::0::Formatting for Player~[200] set to 20.
+1001:0::0::> format 12
+1001:0::0::Formatting for Player~[200] set to 12.
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+stderr:
+
+exit 0
+stdout:
+section equal precedence in separate places uses ID tie not insertion order
+> who 1001
+> place 9001
+> queue format 12
+> load
+load 1
+> who 1000
+> place 9000
+> queue format 11
+> load
+load 1
+> sort_load 1
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> start
+> dump
+cmd 33 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 2 last 0 format 12 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+1001:0::0::> format 12
+1001:0::0::Formatting for Player~[200] set to 12.
+stderr:
+
+exit 0
+stdout:
+section stack depth beats position and insertion order
+> who 1001
+> place 1000
+> queue format 12
+> load
+load 1
+> who 1000
+> place 9000
+> queue format 11
+> load
+load 1
+> sort_load 1
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> start
+> log
+log:
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+1001:0::0::> format 12
+1001:0::0::Formatting for Player~[200] set to 12.
+stderr:
+
+exit 0
+stdout:
+section minimum excludes prisoner moving and second wait independently
+> place 9000
+> queue format 11
+> load
+load 1
+> who 1001
+> place 9001
+> queue hide 0
+> load
+load 1
+> min
+min 1
+> select 1000
+> set prisoner 1
+> min
+min 3
+> set prisoner 0
+> set moving 1
+> min
+min 3
+> set moving 0
+> set second 1
+> min
+min 3
+> select 1001
+> set second 1
+> min
+min 99
+> start
+> dump
+cmd 39 who 1001 state 1 status 0 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 0 0 0 0 0 0 0 0; parse [hide] [0]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3: 1001
+load_q 4:
+run_q:
+> select 1000
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3: 1001
+load_q 4:
+run_q:
+stderr:
+
+exit 0
+stdout:
+section current-priority lowering preempts rest of snapshot
+> place 9000
+> queue hide 1
+> queue format 11
+> load
+load 1
+> who 1001
+> place 9001
+> queue hide 1
+> queue format 12
+> load
+load 1
+> start
+> dump
+cmd 33 who 1001 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 12 0 0 0 0 0 0 0; parse [format] [12]
+player 200 count 4 last 0 format 12 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> hide 1
+1000:0::0::Requires <no subkind>~[638].
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+1001:0::0::> hide 1
+1001:0::0::Requires <no subkind>~[638].
+1001:0::0::> format 12
+1001:0::0::Formatting for Player~[200] set to 12.
+stderr:
+
+exit 0
+stdout:
+section re-evaluate timed starts and next lower priority on completion
+> place 9000
+> skill 2 0
+> queue hide 1
+> queue format 11
+> load
+load 1
+> who 1001
+> place 9001
+> queue hide 1
+> queue format 12
+> load
+load 1
+> start
+> select 1000
+> dump
+cmd 39 who 1000 state 2 status 1 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 3 last 0 format 12 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> evening
+> dump
+cmd 39 who 1000 state 2 status 1 wait 2 poll 0 pri 3 cond 0 fuzzy 0 days 1 debug 0 inhibit 0 cur 99
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 3 last 0 format 12 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> evening
+> dump
+cmd 39 who 1000 state 2 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 2 debug 0 inhibit 0 cur 99
+args 1 0 0 0 0 0 0 0; parse [hide] [1]
+player 200 count 3 last 0 format 12 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> evening
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 1
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 3 last 0 format 12 notab 0 output 1 hidden 1 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> start
+> dump
+cmd 33 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 4 last 0 format 11 notab 0 output 1 hidden 1 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> hide 1
+1001:0::0::> hide 1
+1001:0::0::Requires <no subkind>~[638].
+1001:0::0::> format 12
+1001:0::0::Formatting for Player~[200] set to 12.
+1000:0::0::finish_command called twice, wait=2
+1000:0::0::finish_command called twice, wait=1
+1000:0::0::Now hidden.
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+stderr:
+
+exit 0
+stdout:
+section evening priority beats stack precedence and completes snapshot only
+> place 9000
+> parse xyzzy
+parse 1
+> run 1 0 1 0
+> set cmdpri 4
+> queue format 11
+> who 1001
+> place 1000
+> parse plugh
+parse 1
+> run 1 0 1 0
+> set cmdpri 1
+> queue notab 1
+> sort_run
+> dump
+cmd 57 who 1001 state 2 status 1 wait 1 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [plugh]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001 1000
+> evening
+> dump
+cmd 51 who 1001 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [notab] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1001 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> phase
+phase evening 0 auto 0 second 0
+> select 1000
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1001 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+stderr:
+
+exit 0
+stdout:
+section evening ID tie gives deterministic next-load insertion
+> who 1001
+> place 9001
+> parse plugh
+parse 1
+> run 1 0 1 0
+> queue format 12
+> who 1000
+> place 9000
+> parse xyzzy
+parse 1
+> run 1 0 1 0
+> queue format 11
+> evening
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> select 1001
+> dump
+cmd 33 who 1001 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 12 0 0 0 0 0 0 0; parse [format] [12]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+stderr:
+
+exit 0
+stdout:
+section daily clears second waits after skipping evening and starts next day
+> place 9000
+> parse xyzzy
+parse 1
+> run 1 0 1 0
+> second
+> queue format 11
+> who 1001
+> place 9001
+> queue notab 1
+> load
+load 1
+> second
+> daily
+> phase
+phase evening 0 auto 0 second 0
+> dump
+cmd 51 who 1001 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 1 0 0 0 0 0 0 0; parse [notab] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> select 1000
+> dump
+cmd 96 who 1000 state 2 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1: 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> daily
+> phase
+phase evening 0 auto 0 second 0
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 1
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 1 last 0 format 0 notab 1 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> start
+> log
+log:
+1001:0::0::> notab 1
+1001:0::0::No TAB characters will appear in turn reports.
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+stderr:
+
+exit 0
+stdout:
+section daily running prisoner still ages but moving follower suspends finish
+> place 9000
+> parse xyzzy
+parse 1
+> run 3 0 1 0
+> set prisoner 1
+> who 1001
+> place 1000
+> parse plugh
+parse 1
+> run 3 0 1 0
+> set moving 1
+> daily
+> dump
+cmd 57 who 1001 state 2 status 1 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 1 debug 0 inhibit 0 cur 99
+args 0 0 0 0 0 0 0 0; parse [plugh]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000 1001
+> select 1000
+> dump
+cmd 96 who 1000 state 2 status 1 wait 2 poll 0 pri 3 cond 0 fuzzy 0 days 1 debug 0 inhibit 0 cur 99
+args 0 0 0 0 0 0 0 0; parse [xyzzy]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000 1001
+> phase
+phase evening 0 auto 0 second 0
+stderr:
+
+exit 0
+stdout:
+section auto gate with no ready commands consumes flag even with no attackers
+> set auto 1
+> phase
+phase evening 0 auto 1 second 0
+> start
+> phase
+phase evening 0 auto 0 second 0
+> set health 100
+> start
+> phase
+phase evening 0 auto 0 second 0
+> set health 99
+> daily
+> phase
+phase evening 0 auto 0 second 0
+stderr:
+
+exit 0
+stdout:
+section auto gate after priority zero and before priority three
+> place 9000
+> set health 99
+> queue stop
+> queue format 11
+> queue hide 0
+> load
+load 1
+> set auto 1
+> start
+> phase
+phase evening 0 auto 0 second 0
+> dump
+cmd 39 who 1000 state 0 status 0 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 0 0 0 0 0 0 0 0; parse [hide] [0]
+player 200 count 3 last 0 format 11 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::> stop
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+1000:0::0::> hide 0
+1000:0::0::Requires <no subkind>~[638].
+stderr:
+
+exit 0
+stdout:
+section auto scan excludes healthy follower and unhealthy leader
+> place 9000
+> set health 99
+> who 1001
+> place 1000
+> set health 100
+> auto
+> phase
+phase evening 0 auto 0 second 0
+stderr:
+
+exit 0
+stdout:
+section literal empty world auto scan and daily loop
+> empty_chars
+> auto
+> daily
+> phase
+phase evening 0 auto 0 second 0
+stderr:
+
+exit 0
+stdout:
+section min ready asserts state
+> queue stop
+> load
+load 1
+> set state 3
+> min
+stderr:
+assertion failure: olympia/input.c (777): c->state == STATE_LOAD
+
+exit 134
+stdout:
+section min ready asserts priority
+> queue stop
+> load
+load 1
+> set cmdpri 1
+> min
+stderr:
+assertion failure: olympia/input.c (778): c->pri == pri
+
+exit 134
+stdout:
+section precedence asserts missing here list membership
+> who 1001
+> place 9001
+> select 1000
+> set parent 1001
+> queue stop
+> load
+load 1
+> sort_load 0
+stderr:
+assertion failure: olympia/stack.c (20): ret >= 0
+
+exit 134
+stdout:
+stderr:
+
+exit 139
+stdout:
+section start snapshot skips prisoner alongside ready same priority
+> place 9000
+> queue format 11
+> load
+load 1
+> set prisoner 1
+> who 1001
+> place 9001
+> queue format 12
+> load
+load 1
+> start
+> dump
+cmd 33 who 1001 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 12 0 0 0 0 0 0 0; parse [format] [12]
+player 200 count 1 last 0 format 12 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> select 1000
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 1 last 0 format 12 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1001:0::0::> format 12
+1001:0::0::Formatting for Player~[200] set to 12.
+stderr:
+
+exit 0
+stdout:
+section start snapshot skips moving unit alongside ready same priority
+> place 9000
+> queue format 11
+> load
+load 1
+> set moving 1
+> who 1001
+> place 9001
+> queue format 12
+> load
+load 1
+> start
+> dump
+cmd 33 who 1001 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 12 0 0 0 0 0 0 0; parse [format] [12]
+player 200 count 1 last 0 format 12 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> select 1000
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 1 last 0 format 12 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1001:0::0::> format 12
+1001:0::0::Formatting for Player~[200] set to 12.
+stderr:
+
+exit 0
+stdout:
+section start snapshot skips second wait alongside ready same priority
+> place 9000
+> queue format 11
+> load
+load 1
+> set second 1
+> who 1001
+> place 9001
+> queue format 12
+> load
+load 1
+> start
+> dump
+cmd 33 who 1001 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 12 0 0 0 0 0 0 0; parse [format] [12]
+player 200 count 1 last 0 format 12 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> select 1000
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 1 last 0 format 12 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1001:0::0::> format 12
+1001:0::0::Formatting for Player~[200] set to 12.
+stderr:
+
+exit 0
+stdout:
+section evening equal priorities sorts stack depth before insertion order
+> who 1001
+> place 1000
+> parse plugh
+parse 1
+> run 1 0 1 0
+> queue format 12
+> who 1000
+> place 9000
+> parse xyzzy
+parse 1
+> run 1 0 1 0
+> queue format 11
+> evening
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> start
+> log
+log:
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+1001:0::0::> format 12
+1001:0::0::Formatting for Player~[200] set to 12.
+stderr:
+
+exit 0

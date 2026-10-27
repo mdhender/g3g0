@@ -311,3 +311,345 @@ queue stop
 load
 set days 1
 do
+
+section initial character then player queues and day zero player-only dispatch
+place 9000
+queue format 11
+who 201
+queue format 21
+who 200
+queue notab 1
+who 1001
+place 9001
+queue format 12
+initial
+dump
+players
+dump
+select 201
+dump
+select 1000
+dump
+log
+start
+dump
+log
+
+section load sort here position beats ID and players precede characters
+who 1001
+place 9000
+queue format 12
+load
+who 1000
+place 9000
+queue format 11
+load
+who 201
+queue format 21
+load
+who 200
+queue format 20
+load
+sort_load 1
+dump
+start
+dump
+log
+
+section equal precedence in separate places uses ID tie not insertion order
+who 1001
+place 9001
+queue format 12
+load
+who 1000
+place 9000
+queue format 11
+load
+sort_load 1
+dump
+start
+dump
+log
+
+section stack depth beats position and insertion order
+who 1001
+place 1000
+queue format 12
+load
+who 1000
+place 9000
+queue format 11
+load
+sort_load 1
+dump
+start
+log
+
+section minimum excludes prisoner moving and second wait independently
+place 9000
+queue format 11
+load
+who 1001
+place 9001
+queue hide 0
+load
+min
+select 1000
+set prisoner 1
+min
+set prisoner 0
+set moving 1
+min
+set moving 0
+set second 1
+min
+select 1001
+set second 1
+min
+start
+dump
+select 1000
+dump
+
+section current-priority lowering preempts rest of snapshot
+place 9000
+queue hide 1
+queue format 11
+load
+who 1001
+place 9001
+queue hide 1
+queue format 12
+load
+start
+dump
+log
+
+section re-evaluate timed starts and next lower priority on completion
+place 9000
+skill 2 0
+queue hide 1
+queue format 11
+load
+who 1001
+place 9001
+queue hide 1
+queue format 12
+load
+start
+select 1000
+dump
+evening
+dump
+evening
+dump
+evening
+dump
+start
+dump
+log
+
+section evening priority beats stack precedence and completes snapshot only
+place 9000
+parse xyzzy
+run 1 0 1 0
+set cmdpri 4
+queue format 11
+who 1001
+place 1000
+parse plugh
+run 1 0 1 0
+set cmdpri 1
+queue notab 1
+sort_run
+dump
+evening
+dump
+phase
+select 1000
+dump
+log
+
+section evening ID tie gives deterministic next-load insertion
+who 1001
+place 9001
+parse plugh
+run 1 0 1 0
+queue format 12
+who 1000
+place 9000
+parse xyzzy
+run 1 0 1 0
+queue format 11
+evening
+dump
+select 1001
+dump
+
+section daily clears second waits after skipping evening and starts next day
+place 9000
+parse xyzzy
+run 1 0 1 0
+second
+queue format 11
+who 1001
+place 9001
+queue notab 1
+load
+second
+daily
+phase
+dump
+select 1000
+dump
+daily
+phase
+dump
+start
+log
+
+section daily running prisoner still ages but moving follower suspends finish
+place 9000
+parse xyzzy
+run 3 0 1 0
+set prisoner 1
+who 1001
+place 1000
+parse plugh
+run 3 0 1 0
+set moving 1
+daily
+dump
+select 1000
+dump
+phase
+
+section auto gate with no ready commands consumes flag even with no attackers
+set auto 1
+phase
+start
+phase
+set health 100
+start
+phase
+set health 99
+daily
+phase
+
+section auto gate after priority zero and before priority three
+place 9000
+set health 99
+queue stop
+queue format 11
+queue hide 0
+load
+set auto 1
+start
+phase
+dump
+log
+
+section auto scan excludes healthy follower and unhealthy leader
+place 9000
+set health 99
+who 1001
+place 1000
+set health 100
+auto
+phase
+
+section literal empty world auto scan and daily loop
+empty_chars
+auto
+daily
+phase
+
+section min ready asserts state
+queue stop
+load
+set state 3
+min
+
+section min ready asserts priority
+queue stop
+load
+set cmdpri 1
+min
+
+section precedence asserts missing here list membership
+who 1001
+place 9001
+select 1000
+set parent 1001
+queue stop
+load
+sort_load 0
+
+# Malformed location zero is a NULL dereference, not a fabricated assert.
+# Real C drops buffered stdout on SIGSEGV; Go must preserve that status/bytes.
+# Upstream defect: https://github.com/playbymail/olympia-g3/issues/347
+section precedence missing location zero dies without flushing
+queue stop
+load
+sort_load 0
+
+section start snapshot skips prisoner alongside ready same priority
+place 9000
+queue format 11
+load
+set prisoner 1
+who 1001
+place 9001
+queue format 12
+load
+start
+dump
+select 1000
+dump
+log
+
+section start snapshot skips moving unit alongside ready same priority
+place 9000
+queue format 11
+load
+set moving 1
+who 1001
+place 9001
+queue format 12
+load
+start
+dump
+select 1000
+dump
+log
+
+section start snapshot skips second wait alongside ready same priority
+place 9000
+queue format 11
+load
+set second 1
+who 1001
+place 9001
+queue format 12
+load
+start
+dump
+select 1000
+dump
+log
+
+section evening equal priorities sorts stack depth before insertion order
+who 1001
+place 1000
+parse plugh
+run 1 0 1 0
+queue format 12
+who 1000
+place 9000
+parse xyzzy
+run 1 0 1 0
+queue format 11
+evening
+dump
+start
+log

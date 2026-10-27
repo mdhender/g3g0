@@ -131,11 +131,15 @@ type world struct {
 	runQ  lists.IList
 
 	// input.c statics. cmdWait stays -1 until process_orders resolves it;
-	// defining this field does not implement the wait command or scheduler.
-	curPri    int32
-	cmdWait   int32
-	immediate bool
-	showDay   bool // glob.c show_day; default formatting for command output
+	// the wait command and full turn orchestration remain unported.
+	curPri         int32
+	cmdWait        int32
+	immediate      bool
+	showDay        bool // glob.c show_day; default formatting for command output
+	evening        int32
+	autoAttackFlag bool
+	waitList       lists.IList // wait/collect population and polling: #60/#61
+	secondWaitList lists.IList // combat.c second_wait_list
 
 	// monthDone is month_done in input.c, set after the daily loop.
 	monthDone int32

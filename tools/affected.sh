@@ -74,6 +74,7 @@ reads() {
 		case "$2" in
 		olympia/*.h | lib/*.h) return 0 ;;
 		olympia/code.c | olympia/glob.c | olympia/z.c | olympia/sout.c | olympia/input.c) return 0 ;;
+		olympia/combat.c) return 0 ;;
 		olympia/order.c | olympia/swear.c | olympia/stack.c | olympia/loc.c | olympia/garr.c) return 0 ;;
 		olympia/u.c | olympia/use.c | olympia/c2.c | olympia/immed.c | olympia/stealth.c) return 0 ;;
 		lib/checked_alloc.c | lib/ilist.c | lib/rng.c | lib/rnd.c) return 0 ;;

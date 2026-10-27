@@ -20,7 +20,7 @@ For turn work, add `tools/turn-compat/run.sh`: small C recordings, comparator
 contracts and a byte-identical diagnostic run, never a whole-world turn by default.
 For clock/calendar or progress output work, also run `tools/turn-driver-compat/run.sh`.
 For command parsing, dispatch, handlers or completion, also run
-`tools/command-compat/run.sh` (small real-C recordings, no scheduler or world turn).
+`tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 
 **Pin move.**
 Run `tools/affected.sh OLD NEW` and, for each tool it lists, move the pin in its `run.sh` and README, then rerun it (with `--update` where the tool records C output, and review the diff of the recorded file).
@@ -95,6 +95,6 @@ A tool needs rerunning after a pin move if any file it reads changed; [`affected
 | [`olympia-spec`](olympia-spec) | `passing.txt` | the whole tree: it runs G3's spec |
 | [`turn-compat`](turn-compat) | `testdata/` small real C snapshots and determinism manifest | the whole tree: it builds `olympia-g3` and turns `tests/olympia/fixtures/world.tgz` |
 | [`turn-driver-compat`](turn-driver-compat) | `internal/olympia/testdata/turn-driver-c-output.txt` | `olympia/*.h`, `lib/*.h`, `olympia/u.c` |
-| [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `u.c`, `use.c`, `c2.c`, `immed.c`, `stealth.c`; `lib/` `checked_alloc.c`, `ilist.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c` |
+| [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `combat.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `u.c`, `use.c`, `c2.c`, `immed.c`, `stealth.c`; `lib/` `checked_alloc.c`, `ilist.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c` |
 
 `genesis-compat`, `island-compat` and `mapgen-compat` have pins of their own and are not covered here.
