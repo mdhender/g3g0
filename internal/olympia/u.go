@@ -232,6 +232,9 @@ func (w *world) stageSup(s *string) {
 
 // locDepth is loc_depth(): the LOC_xxx depth of location n, by its
 // subkind. Any other subkind is reported on stderr and fails an assertion.
+// Raft subkinds are intentionally absent, reproducing G3 #348 even though
+// oly.h is_ship includes completed rafts:
+// https://github.com/playbymail/olympia-g3/issues/348
 func (w *world) locDepth(n int) int {
 	switch w.subkind(n) {
 	case subRegion:

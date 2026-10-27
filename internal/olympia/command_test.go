@@ -66,6 +66,24 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		status := 0
 		switch r := recover().(type) {
 		case nil:
+			if strings.HasPrefix(lines[0], "section combat boundary ") {
+				t.Fatal("expected actual combat boundary, scan returned")
+			}
+		case notImplemented:
+			if r != notImplemented("regular_combat") || !strings.HasPrefix(lines[0], "section combat boundary ") {
+				panic(r)
+			}
+			// Observe the real production stop, never return fake combat success.
+			fmt.Fprintln(&stdout, "combat log:")
+			pl := w.player(int(c.who))
+			data, err := os.ReadFile(filepath.Join(w.libdir, "log", fmt.Sprint(pl)))
+			if err != nil && !os.IsNotExist(err) {
+				t.Fatal(err)
+			}
+			stdout.Write(data)
+			fmt.Fprintf(&stdout, "combat output %d\n", b2i(testBit(w.pPlayer(pl).output, int(c.who))))
+			fmt.Fprintln(&stderr, "combat boundary: regular_combat")
+			status = 134 // C harness abort, not a successful C combat recording.
 		case assertion:
 			fmt.Fprint(&stderr, r.Error())
 			status = 134
@@ -115,6 +133,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch field {
 			case "lord":
 				w.pChar(n).unitLord = int32(a)
+			case "health":
+				w.pChar(n).health = int8(a)
+			case "prisoner":
+				w.pChar(n).prisoner = int8(a)
 			case "npc":
 				w.pChar(n).npcProg = int8(a)
 			case "loyal":
@@ -371,8 +393,9 @@ func TestCommandUnportedStops(t *testing.T) {
 }
 
 // These check deliberate production boundaries, not fabricated C output.
-// In particular a healthy leader must stop before priority-three commands,
-// but only AFTER real lower-priority handlers have mutated state/output.
+// An actual hostile target must stop before priority-three commands, but only
+// AFTER real lower-priority handlers have mutated state/output. Healthy leaders
+// without targets complete normally in the C-recorded scheduler cases.
 func TestCommandSchedulerBoundaries(t *testing.T) {
 	for _, health := range []int8{100, -1} {
 		t.Run(fmt.Sprint(health), func(t *testing.T) {
@@ -388,12 +411,18 @@ func TestCommandSchedulerBoundaries(t *testing.T) {
 			w.pChar(1000).health = health
 			w.pLocInfo(1000).where = 9000
 			w.pLocInfo(9000).hereList.Append(1000)
+			w.allocBox(201, tPlayer, subPlRegular)
+			w.allocBox(1001, tChar, 0)
+			w.pChar(1001).unitLord = 201
+			w.pLocInfo(1001).where = 9000
+			w.pLocInfo(9000).hereList.Append(1001)
+			w.pDisp(1000).hostile.Append(1001)
 			w.pOrderHead(200, 1000).l.Append("stop")
 			w.pOrderHead(200, 1000).l.Append("format 17")
 			w.pOrderHead(200, 1000).l.Append("hide 0")
 			w.initialCommandLoad()
 			defer func() {
-				if r := recover(); r != notImplemented("check_auto_attack_sup") {
+				if r := recover(); r != notImplemented("regular_combat") {
 					t.Fatalf("combat boundary = %v", r)
 				}
 				c := w.rpCommand(1000)
@@ -401,7 +430,7 @@ func TestCommandSchedulerBoundaries(t *testing.T) {
 					t.Fatalf("auto-attack ran before low priorities or after priority 3: player=%+v command=%+v auto=%v cur=%d", p, c, w.autoAttackFlag, w.curPri)
 				}
 				log, err := os.ReadFile(filepath.Join(w.libdir, "log", "200"))
-				if err != nil || !strings.Contains(string(log), "> format 17\n") || strings.Contains(string(log), "> hide") {
+				if err != nil || !strings.Contains(string(log), "> format 17\n") || !strings.Contains(string(log), "> [auto-attack "+boxCodeLess(1001)+"]\n") || strings.Contains(string(log), "> hide") {
 					t.Fatalf("wrong output before combat boundary: %q, %v", log, err)
 				}
 			}()
@@ -450,4 +479,32 @@ func TestCommandSchedulerBoundaries(t *testing.T) {
 			w.eveningPhase()
 		})
 	}
+}
+
+// Garrison output fan-out is outside this task. Its scan must still return
+// normally without a target and stop only at an actual auto_attack invocation.
+func TestCommandGarrisonAutoAttackBoundary(t *testing.T) {
+	w := newWorld()
+	var stdout, stderr strings.Builder
+	w.stdout, w.stderr = &stdout, &stderr
+	w.allocBox(200, tPlayer, subPlRegular)
+	w.allocBox(201, tPlayer, subPlRegular)
+	w.allocBox(1000, tChar, subGarrison)
+	w.allocBox(1001, tChar, 0)
+	w.allocBox(9000, tLoc, subPlain)
+	w.pChar(1000).unitLord, w.pChar(1000).health = 200, 100
+	w.pChar(1001).unitLord = 201
+	w.setWhere(1000, 9000)
+	w.setWhere(1001, 9000)
+	w.checkAllAutoAttacks()
+	w.pMisc(1000).garrHost.Append(1001)
+	defer func() {
+		if r := recover(); r != notImplemented("auto_attack") {
+			t.Fatalf("garrison combat boundary = %v", r)
+		}
+		if stdout.Len() != 0 || stderr.Len() != 0 || w.rpPlayer(200) != nil {
+			t.Fatal("garrison boundary fabricated report output or player mutations")
+		}
+	}()
+	w.checkAllAutoAttacks()
 }

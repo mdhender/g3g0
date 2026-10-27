@@ -29,6 +29,22 @@ static void list(char *label, ilist l)
  printf("\n");
 }
 
+/* Actual auto_attack has already emitted its output. Observe it, then abort:
+ * this is deliberately NOT a successful combat replacement. */
+int regular_combat(int who, int target, int seize, int ally)
+{
+ FILE *log;
+ int ch;
+ fflush(NULL);
+ printf("combat log:\n");
+ log = fopen(sout("%s/log/%d", libdir, player(who)), "r");
+ if (log) { while ((ch = fgetc(log)) != EOF) putchar(ch); fclose(log); }
+ printf("combat output %d\n", test_bit(p_player(player(who))->output, who));
+ fprintf(stderr, "combat boundary: regular_combat\n");
+ fflush(NULL); /* abort flushes on Darwin too; no successful return */
+ abort();
+}
+
 int main(int argc, char **argv)
 {
  FILE *fp, *log;
@@ -91,6 +107,8 @@ int main(int argc, char **argv)
   {
    sscanf(line,"%*s %d %31s %d",&n,text,&a);
    if (!strcmp(text,"lord")) p_char(n)->unit_lord = a;
+   else if (!strcmp(text,"health")) p_char(n)->health = (schar)a;
+   else if (!strcmp(text,"prisoner")) p_char(n)->prisoner = (schar)a;
    else if (!strcmp(text,"npc")) p_char(n)->npc_prog = (schar)a;
    else if (!strcmp(text,"loyal")) p_char(n)->loy_kind = (schar)a;
    else if (!strcmp(text,"moving")) p_char(n)->moving = a;

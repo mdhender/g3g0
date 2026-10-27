@@ -1,4 +1,4 @@
-# Command dispatch, completion, scheduler and target predicates
+# Command dispatch, completion, scheduler and auto-attack selection
 
 Pinned reference: [Olympia G3 at
 2567e6a5dd0ba0d95516d8bed9e1bafb87a51985](https://github.com/playbymail/olympia-g3/tree/2567e6a5dd0ba0d95516d8bed9e1bafb87a51985).
@@ -26,14 +26,15 @@ and `init_load_sup`, precedence/comparison and both queue sorts,
 `initial_command_load`, `min_pri_ready`, `start_phase`, `evening_phase`,
 `process_player_orders`, and `daily_command_loop`. It also extracts the real
 `check_all_waits` (only its empty-list path is compared here), plus combat.c's
-`check_all_auto_attacks` and `clear_second_waits`. Wrappers expose static helpers to the
+complete `auto_attack`, `check_auto_attack_sup`, `check_all_auto_attacks` and
+`clear_second_waits`. Wrappers expose static helpers to the
 driver; no compared routine is rewritten or stubbed. It links the real
 `glob.c` table (including original handler pointers), `code.c`, `z.c`,
 **sout.c**, and list/allocation libraries. The raw command output is therefore
 real `out`/`wout` → `vout` → `out_sup` → `bottom_out`, not a printf stub.
-The driver observes output files only through the `log` operation, after
-flushing C stdio. stdout, stderr and status are recorded separately, without
-normalization. Two fresh C runs must be byte-identical before recording or
+The driver observes output files through the `log` operation and at the actual
+combat boundary, after flushing C stdio. stdout, stderr and status are recorded
+separately, without normalization. Two fresh C runs must be byte-identical before recording or
 comparing. Default Go tests use the recording without C or saved games.
 
 Real complete handlers: `v_stop`, `v_xyzzy`, `v_plugh`, `v_format`, `v_notab`,
@@ -50,11 +51,21 @@ functions; it does not emulate their decisions.
 All other command routines named by the C table are **aborting** stubs,
 never successful substitutes. The remaining aborting dependencies are
 unreachable location/garrison report routes (`players_who_rule_here`, `viewloc`), unused display formatting
-(`is_port_city`, `nice_num`), validated-trade settlement, and
-`check_auto_attack_sup` (actual combat beyond the real leader/health scan). Reaching any
+(`is_port_city`, `nice_num`), and validated-trade settlement. Reaching any
 stub fails the script, including `--update`. Only `coverage_count` is a
 no-op: it writes stage-3 instrumentation, not gameplay state. No compared
 scheduler, auto-attack scan, wait predicate or wait handler is a successful stub.
+
+Positive selection controls are named `section combat boundary ...`. The only
+accepted combat boundary is an **aborting** `regular_combat`: actual extracted
+`auto_attack` has already written the target's code to the real output log and
+set the player's output bit. The boundary dumps those observations, emits a
+harness diagnostic and aborts (134); it never returns fake combat success.
+Both missing expected combat and unexpected combat fail, including `--update`.
+Go exercises its production `regular_combat` not-implemented panic, then the
+test observer reads its real log/output bit in the same format. The recorded
+134 is the C harness abort, not a claim about the full C engine's combat result
+or Go's CLI exit code. No production test hooks replace combat.
 
 ## Production boundary
 
@@ -78,12 +89,16 @@ turn orchestration. A nonempty wait list explicitly stops with
 `check_all_waits` not implemented until #60/#61; actual wait/collect handlers
 and validated-trade settlement also stop explicitly. The real auto-attack
 scan excludes stacked followers and leaders whose health is neither 100 nor
--1; every eligible leader explicitly stops at `check_auto_attack_sup` rather
-than silently pretending combat succeeded. Clearing second waits is the
-actual list-based combat.c operation, not a scan of all characters.
-That healthy-leader boundary is temporary: #101 supplies real target-selection
-predicates without wiring them in; #102 completes the non-combat scan before wait work begins.
-It is not a claim that C stops on a healthy leader without a hostile target.
+-1, then completes the local and outer-ship target scans. Healthy nonhostile
+leaders return normally. Only a selected attack emits real auto-attack output
+and stops explicitly at `regular_combat`; combat resolution is not implemented.
+For a nonprisoner garrison, stage-2 report fan-out remains unported: its selected
+attack stops at the actual `auto_attack` entry, before `out`, with no fabricated
+report output or player-bit changes. A separate production-boundary test covers
+its no-target return versus actual attack stop; no C garrison-output stub is
+recorded or blessed. Prisoners retain C's output suppression.
+Clearing second waits is the actual list-based combat.c operation, not a scan
+of all characters. Attitude command families remain unported.
 
 ## Discriminating cases
 
@@ -143,9 +158,9 @@ It is not a claim that C stops on a healthy leader without a hostile target.
   A running prisoner still ages; a moving follower ages without finishing.
 - Auto gate consumption at priority 99, priority 0/1 then 3, literal zero-char
   world, healthy follower/unhealthy leader exclusions, and no second scan
-  after making a leader healthy later that day. Separate production-boundary
-  tests verify health 100/-1 stops after actual low-priority state/output
-  mutations but before the priority-3 handler, without C stub recordings.
+  after making a leader healthy later that day. Health 100/-1 nonhostile
+  leaders complete priority-3 commands. Hostile controls stop after actual
+  low-priority state/output mutations but before the priority-3 handler.
 
 - Unit and player hostile lists versus neutral/defend lists, same-faction
   short-circuit, exact target versus target-faction IDs, automatic sublocation
@@ -163,6 +178,25 @@ It is not a claim that C stops on a healthy leader without a hostile target.
 - `contacted` really allocates an absent character record. Invalid known/item
   operands and nonbuilding ownership retain exact assertion file/line/condition.
 
-The recording contains 78 sections / 2384 lines on Linux x86-64.
-The first 56 sections / 1966 lines are unchanged.
+- Complete integrated scans: safe/moving short-circuits even before an invalid
+  here-list, prisoners, hidden/fogged units and target contact, exact nonzero
+  signed vulnerability-item quantities, unsupported target kinds, same-faction
+  exclusions, direct here-list order rather than recursive/ID order, and
+  stack-leader conversion (including leader vulnerability and own-stack skip).
+  Two deliberately inconsistent saved here-list/parent constructions expose
+  conversion and own-stack exclusion without changing the C scan.
+- Hidden/known locations, empty/same-faction/enemy owners, building versus
+  nonbuilding first-character lookup, nested occupants, and ships bypassing
+  location-hidden checks. Outer scans exclude self, unfinished/ghost ships,
+  nonships, empty and neutral ships; unlike local scans they do not exclude
+  same-faction owners. Local targets precede outer targets. Multiple eligible
+  targets prove the first selection and exact precombat output, not combat
+  resolution or a second successful attack.
+- `is_ship` is the actual subkind macro, not a T_ship kind check. Hostile rafts
+  preserve the real `loc_depth` assertion, now tracked in
+  [G3 #348](https://github.com/playbymail/olympia-g3/issues/348), not repaired
+  independently. A raft initiator with no local target can reach the outer scan.
+
+The recording contains 99 sections / 2857 lines on Linux x86-64.
+The earlier 78 sections / 2384 lines are byte-for-byte unchanged.
 Whole-game checks remain opt-in in `turn-compat`. No cases consume RNG.

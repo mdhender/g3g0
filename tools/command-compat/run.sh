@@ -39,7 +39,7 @@ functions = {
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order'],
     'swear.c': ['lord', 'player'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos'],
-    'combat.c': ['check_all_auto_attacks', 'clear_second_waits'],
+    'combat.c': ['auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
               'in_safe_now', 'province', 'building_owner'],
     'garr.c': ['garrison_here'],
@@ -66,7 +66,6 @@ ilist load_q[MAX_PRI], run_q;
 int cur_pri, cmd_wait = -1, fuzzy_find;
 int evening, auto_attack_flag;
 ilist wait_list, second_wait_list;
-extern void check_auto_attack_sup(int who); /* explicit aborting combat boundary */
 ''')
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
@@ -110,7 +109,6 @@ char *nice_num(int n) STUB("nice_num")
 ilist players_who_rule_here(int n) STUB("players_who_rule_here")
 int viewloc(int n) STUB("viewloc")
 void check_validated_trades(void) STUB("check_validated_trades")
-void check_auto_attack_sup(int n) STUB("check_auto_attack_sup")
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1;
@@ -129,6 +127,8 @@ esac
  lib/{checked_alloc,ilist,rng,rnd,cstrings,item_ents,skill_ents,orders}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
 sections=$(grep -c '^section ' "${CASES}")
+section_names=() # Bash 3 (Darwin) has no mapfile.
+while IFS= read -r line; do section_names+=("$line"); done < <(grep '^section ' "${CASES}")
 for run in run1 run2; do
  for ((i=0; i<sections; i++)); do
   mkdir -p "${WORK}/${run}/${i}/log"
@@ -137,6 +137,12 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section combat boundary '* ]]; then
+   [ "$status" = 134 ] && grep -qx 'combat boundary: regular_combat' "${WORK}/${run}/stderr" \
+    || die "section $i did not reach actual combat"
+  else
+   ! grep -q 'combat boundary:' "${WORK}/${run}/stderr" || die "unexpected combat in section $i"
+  fi
   case "$status" in
    0|134|139) ;;
    *) die "unexpected C status $status in section $i; see ${WORK}/${run}" ;;
