@@ -1,0 +1,288 @@
+// Copyright (c) 2026 Michael D Henderson.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+package olympia
+
+// world holds the C engine's global state: the box table bx[], the heads of
+// the kind and subkind chains, and the globals that loading and saving read
+// or write. In C they are file-scope globals; here each world is
+// independent, so tests can build as many as they like.
+//
+// Every C int is an int32 here, as in the entity structures; box numbers
+// passed to the accessors are Go ints.
+type world struct {
+	// glob.c
+
+	bx      []*box        // all possible entities; len maxBoxes
+	boxHead [tMax]int32   // heads of x_next_kind chain
+	subHead [subMax]int32 // heads of x_next_sub chain
+
+	fromHost       string
+	replyHost      string
+	gmAddress      string
+	gameTitle      string
+	gameURL        string
+	rulesURL       string
+	timesURL       string
+	htpasswdLoc    string
+	garrisonPay    int32
+	armySlowFactor int32
+	autoQuitTurns  int32
+
+	sysclock       olytime
+	indepPlayer    int32 // independent player
+	gmPlayer       int32 // The Fates
+	skillPlayer    int32 // skill listing
+	eatPl          int32 // Order scanner
+	npcPl          int32 // Subloc monster player
+	garrPl         int32 // Garrison unit owner
+	combatPl       int32 // Combat log
+	postHasBeenRun int32 // FALSE
+	garrisonMagic  int32
+	mountOlympus   int32
+
+	// Saved in libdir/system, but defined outside glob.c: seed_has_been_run
+	// in io.c, faery_region and faery_player in faery.c, tunnel_region and
+	// under_region in tunnel.c, hades_region, hades_pit and hades_player in
+	// hades.c, nowhere_region and nowhere_loc in quest.c, and cloud_region in
+	// cloud.c. All start at zero (FALSE).
+
+	seedHasBeenRun int32 // FALSE
+	faeryRegion    int32
+	faeryPlayer    int32
+	tunnelRegion   int32
+	underRegion    int32
+	hadesRegion    int32
+	hadesPit       int32 // Pit of Hades
+	hadesPlayer    int32
+	nowhereRegion  int32
+	nowhereLoc     int32
+	cloudRegion    int32
+}
+
+// newWorld returns a world as olympia-g3 has it after glob_init(): the
+// static initializers of the globals, an empty bx[] of maxBoxes entries and
+// empty chains.
+//
+// The C flags (post_has_been_run, seed_has_been_run) stay int32, not bool:
+// load_system() sets them with atoi() and save_system() prints them with
+// %d, so any value round-trips.
+func newWorld() *world {
+	return &world{
+		bx: make([]*box, maxBoxes),
+
+		fromHost:       "g3@olympia.v-labs.be",
+		replyHost:      "g3@olympia.v-labs.be",
+		gmAddress:      "c@dvdc.be",
+		gameTitle:      "Olympia G3",
+		gameURL:        "http://olympia.v-labs.be/g3",
+		rulesURL:       "http://oly.v-labs.be/g3/node/11",
+		timesURL:       "http://oly.v-labs.be/g3/node/409",
+		htpasswdLoc:    "/u/oly/g2/lib/ht-passwords",
+		garrisonPay:    2,
+		armySlowFactor: 20,
+		autoQuitTurns:  0,
+
+		indepPlayer:   100,
+		gmPlayer:      200,
+		skillPlayer:   202,
+		eatPl:         203,
+		npcPl:         206,
+		garrPl:        207,
+		combatPl:      0,
+		garrisonMagic: 999,
+		mountOlympus:  0,
+	}
+}
+
+// kind is kind(): the kind of box n, or tDeleted if n is out of range or
+// has no box.
+func (w *world) kind(n int) int {
+	if n > 0 && n < maxBoxes && w.bx[n] != nil {
+		return int(w.bx[n].kind)
+	}
+	return tDeleted
+}
+
+// subkind is subkind(): the subkind of box n, or 0 if it has no box. Like
+// C, it does not check n against the table; C's out-of-range read is
+// undefined, and here it panics.
+func (w *world) subkind(n int) int {
+	if w.bx[n] != nil {
+		return int(w.bx[n].skind)
+	}
+	return 0
+}
+
+// validBox is valid_box().
+func (w *world) validBox(n int) bool {
+	return w.kind(n) != tDeleted
+}
+
+// The p_xxx accessors are the malloc-on-demand references of oly.h: each
+// returns box n's substructure, allocating a zeroed one first if it has
+// none (if_malloc). The rp_xxx accessors return the "raw" pointer, which may
+// be nil, and never allocate. Box n must exist, as in C, where a NULL box
+// is dereferenced; here it panics.
+
+// pLocInfo is p_loc_info(). The loc_info is part of the box, so there is
+// nothing to allocate.
+func (w *world) pLocInfo(n int) *locInfo { return &w.bx[n].xLocInfo }
+
+// pChar is p_char().
+func (w *world) pChar(n int) *entityChar {
+	b := w.bx[n]
+	if b.xChar == nil {
+		b.xChar = &entityChar{}
+	}
+	return b.xChar
+}
+
+// pLoc is p_loc().
+func (w *world) pLoc(n int) *entityLoc {
+	b := w.bx[n]
+	if b.xLoc == nil {
+		b.xLoc = &entityLoc{}
+	}
+	return b.xLoc
+}
+
+// pSubloc is p_subloc().
+func (w *world) pSubloc(n int) *entitySubloc {
+	b := w.bx[n]
+	if b.xSubloc == nil {
+		b.xSubloc = &entitySubloc{}
+	}
+	return b.xSubloc
+}
+
+// pItem is p_item().
+func (w *world) pItem(n int) *entityItem {
+	b := w.bx[n]
+	if b.xItem == nil {
+		b.xItem = &entityItem{}
+	}
+	return b.xItem
+}
+
+// pPlayer is p_player().
+func (w *world) pPlayer(n int) *entityPlayer {
+	b := w.bx[n]
+	if b.xPlayer == nil {
+		b.xPlayer = &entityPlayer{}
+	}
+	return b.xPlayer
+}
+
+// pSkill is p_skill().
+func (w *world) pSkill(n int) *entitySkill {
+	b := w.bx[n]
+	if b.xSkill == nil {
+		b.xSkill = &entitySkill{}
+	}
+	return b.xSkill
+}
+
+// pGate is p_gate().
+func (w *world) pGate(n int) *entityGate {
+	b := w.bx[n]
+	if b.xGate == nil {
+		b.xGate = &entityGate{}
+	}
+	return b.xGate
+}
+
+// pMisc is p_misc().
+func (w *world) pMisc(n int) *entityMisc {
+	b := w.bx[n]
+	if b.xMisc == nil {
+		b.xMisc = &entityMisc{}
+	}
+	return b.xMisc
+}
+
+// pDisp is p_disp().
+func (w *world) pDisp(n int) *attEnt {
+	b := w.bx[n]
+	if b.xDisp == nil {
+		b.xDisp = &attEnt{}
+	}
+	return b.xDisp
+}
+
+// pCommand is p_command().
+func (w *world) pCommand(n int) *command {
+	b := w.bx[n]
+	if b.cmd == nil {
+		b.cmd = &command{}
+	}
+	return b.cmd
+}
+
+// pMagic is p_magic(): it allocates the entity_char first, if need be.
+func (w *world) pMagic(n int) *charMagic {
+	p := w.pChar(n)
+	if p.xCharMagic == nil {
+		p.xCharMagic = &charMagic{}
+	}
+	return p.xCharMagic
+}
+
+// pItemMagic is p_item_magic(): it allocates the entity_item first, if need
+// be.
+func (w *world) pItemMagic(n int) *itemMagic {
+	p := w.pItem(n)
+	if p.xItemMagic == nil {
+		p.xItemMagic = &itemMagic{}
+	}
+	return p.xItemMagic
+}
+
+// rpLocInfo is rp_loc_info(), the same as p_loc_info().
+func (w *world) rpLocInfo(n int) *locInfo { return &w.bx[n].xLocInfo }
+
+// rpChar is rp_char().
+func (w *world) rpChar(n int) *entityChar { return w.bx[n].xChar }
+
+// rpLoc is rp_loc().
+func (w *world) rpLoc(n int) *entityLoc { return w.bx[n].xLoc }
+
+// rpSubloc is rp_subloc().
+func (w *world) rpSubloc(n int) *entitySubloc { return w.bx[n].xSubloc }
+
+// rpItem is rp_item().
+func (w *world) rpItem(n int) *entityItem { return w.bx[n].xItem }
+
+// rpPlayer is rp_player().
+func (w *world) rpPlayer(n int) *entityPlayer { return w.bx[n].xPlayer }
+
+// rpSkill is rp_skill().
+func (w *world) rpSkill(n int) *entitySkill { return w.bx[n].xSkill }
+
+// rpGate is rp_gate().
+func (w *world) rpGate(n int) *entityGate { return w.bx[n].xGate }
+
+// rpMisc is rp_misc().
+func (w *world) rpMisc(n int) *entityMisc { return w.bx[n].xMisc }
+
+// rpDisp is rp_disp().
+func (w *world) rpDisp(n int) *attEnt { return w.bx[n].xDisp }
+
+// rpCommand is rp_command().
+func (w *world) rpCommand(n int) *command { return w.bx[n].cmd }
+
+// rpMagic is rp_magic(): nil if box n has no entity_char.
+func (w *world) rpMagic(n int) *charMagic {
+	if p := w.rpChar(n); p != nil {
+		return p.xCharMagic
+	}
+	return nil
+}
+
+// rpItemMagic is rp_item_magic(): nil if box n has no entity_item.
+func (w *world) rpItemMagic(n int) *itemMagic {
+	if p := w.rpItem(n); p != nil {
+		return p.xItemMagic
+	}
+	return nil
+}

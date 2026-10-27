@@ -1,0 +1,1090 @@
+const MAX_BOXES 150000
+const MONTH_DAYS 30
+const NUM_MONTHS 8
+const T_deleted 0
+const T_player 1
+const T_char 2
+const T_loc 3
+const T_item 4
+const T_skill 5
+const T_gate 6
+const T_road 7
+const T_deadchar 8
+const T_ship 9
+const T_post 10
+const T_storm 11
+const T_unform 12
+const T_lore 13
+const T_MAX 14
+const sub_ocean 1
+const sub_forest 2
+const sub_plain 3
+const sub_mountain 4
+const sub_desert 5
+const sub_swamp 6
+const sub_under 7
+const sub_faery_hill 8
+const sub_island 9
+const sub_stone_cir 10
+const sub_mallorn_grove 11
+const sub_bog 12
+const sub_cave 13
+const sub_city 14
+const sub_lair 15
+const sub_graveyard 16
+const sub_ruins 17
+const sub_battlefield 18
+const sub_ench_forest 19
+const sub_rocky_hill 20
+const sub_tree_circle 21
+const sub_pits 22
+const sub_pasture 23
+const sub_oasis 24
+const sub_yew_grove 25
+const sub_sand_pit 26
+const sub_sacred_grove 27
+const sub_poppy_field 28
+const sub_temple 29
+const sub_galley 30
+const sub_roundship 31
+const sub_castle 32
+const sub_galley_notdone 33
+const sub_roundship_notdone 34
+const sub_ghost_ship 35
+const sub_temple_notdone 36
+const sub_inn 37
+const sub_inn_notdone 38
+const sub_castle_notdone 39
+const sub_mine 40
+const sub_mine_notdone 41
+const sub_scroll 42
+const sub_magic 43
+const sub_palantir 44
+const sub_auraculum 45
+const sub_tower 46
+const sub_tower_notdone 47
+const sub_pl_system 48
+const sub_pl_regular 49
+const sub_region 50
+const sub_pl_savage 51
+const sub_pl_npc 52
+const sub_mine_collapsed 53
+const sub_ni 54
+const sub_undead 55
+const sub_dead_body 56
+const sub_fog 57
+const sub_wind 58
+const sub_rain 59
+const sub_hades_pit 60
+const sub_artifact 61
+const sub_pl_silent 62
+const sub_npc_token 63
+const sub_garrison 64
+const sub_cloud 65
+const sub_raft 66
+const sub_raft_notdone 67
+const sub_suffuse_ring 68
+const sub_relic 69
+const sub_tunnel 70
+const sub_sewer 71
+const sub_chamber 72
+const sub_tradegood 73
+const SUB_MAX 74
+const item_gold 1
+const item_peasant 10
+const item_worker 11
+const item_soldier 12
+const item_archer 13
+const item_knight 14
+const item_elite_guard 15
+const item_pikeman 16
+const item_blessed_soldier 17
+const item_ghost_warrior 18
+const item_sailor 19
+const item_swordsman 20
+const item_crossbowman 21
+const item_elite_arch 22
+const item_angry_peasant 23
+const item_pirate 24
+const item_elf 25
+const item_spirit 26
+const item_corpse 31
+const item_savage 32
+const item_skeleton 33
+const item_barbarian 34
+const item_wild_horse 51
+const item_riding_horse 52
+const item_warmount 53
+const item_pegasus 54
+const item_nazgul 55
+const item_flotsam 59
+const item_battering_ram 60
+const item_catapult 61
+const item_siege_tower 62
+const item_ratspider_venom 63
+const item_lana_bark 64
+const item_avinia_leaf 65
+const item_spiny_root 66
+const item_farrenstone 67
+const item_yew 68
+const item_elfstone 69
+const item_mallorn_wood 70
+const item_pretus_bones 71
+const item_longbow 72
+const item_plate 73
+const item_longsword 74
+const item_pike 75
+const item_ox 76
+const item_lumber 77
+const item_stone 78
+const item_iron 79
+const item_leather 80
+const item_ratspider 81
+const item_mithril 82
+const item_gate_crystal 83
+const item_blank_scroll 84
+const item_crossbow 85
+const item_fish 87
+const item_opium 93
+const item_basket 94
+const item_pot 95
+const item_tax_cookie 96
+const item_drum 98
+const item_hide 99
+const item_mob_cookie 101
+const item_lead 102
+const item_glue 261
+const item_centaur 271
+const item_minotaur 272
+const item_undead_cookie 273
+const item_fog_cookie 274
+const item_wind_cookie 275
+const item_rain_cookie 276
+const item_mage_menial 277
+const item_spider 278
+const item_rat 279
+const item_lion 280
+const item_bird 281
+const item_lizard 282
+const item_bandit 283
+const item_chimera 284
+const item_harpie 285
+const item_dragon 286
+const item_orc 287
+const item_gorgon 288
+const item_wolf 289
+const item_orb 290
+const item_cyclops 291
+const item_giant 292
+const item_faery 293
+const item_petty_thief 294
+const item_hound 295
+const lore_skeleton_npc_token 931
+const lore_orc_npc_token 932
+const lore_undead_npc_token 933
+const lore_savage_npc_token 934
+const lore_barbarian_npc_token 935
+const lore_orb 936
+const lore_faery_stone 937
+const lore_barbarian_kill 938
+const lore_savage_kill 939
+const lore_undead_kill 940
+const lore_orc_kill 941
+const lore_skeleton_kill 942
+const sk_shipcraft 600
+const sk_pilot_ship 601
+const sk_shipbuilding 602
+const sk_fishing 603
+const sk_combat 610
+const sk_survive_fatal 611
+const sk_fight_to_death 612
+const sk_make_catapult 613
+const sk_defense 614
+const sk_archery 615
+const sk_swordplay 616
+const sk_weaponsmith 617
+const sk_stealth 630
+const sk_petty_thief 631
+const sk_spy_inv 632
+const sk_spy_skills 633
+const sk_spy_lord 634
+const sk_hide_lord 635
+const sk_find_rich 636
+const sk_torture 637
+const sk_hide_self 638
+const sk_sneak_build 639
+const sk_beast 650
+const sk_bird_spy 651
+const sk_capture_beasts 652
+const sk_use_beasts 653
+const sk_breed_beasts 654
+const sk_catch_horse 655
+const sk_train_wild 656
+const sk_train_warmount 657
+const sk_summon_savage 658
+const sk_keep_savage 659
+const sk_breed_hound 661
+const sk_persuasion 670
+const sk_bribe_noble 671
+const sk_persuade_oath 672
+const sk_raise_mob 673
+const sk_rally_mob 674
+const sk_incite_mob 675
+const sk_train_angry 676
+const sk_construction 680
+const sk_make_siege 681
+const sk_quarry_stone 682
+const sk_alchemy 690
+const sk_brew_heal 691
+const sk_record_skill 692
+const sk_extract_venom 693
+const sk_brew_slave 694
+const sk_collect_elem 695
+const sk_brew_death 696
+const sk_lead_to_gold 697
+const sk_forestry 700
+const sk_make_ram 701
+const sk_harvest_lumber 702
+const sk_harvest_yew 703
+const sk_collect_foliage 704
+const sk_harvest_mallorn 705
+const sk_harvest_opium 706
+const sk_improve_opium 707
+const sk_mining 720
+const sk_mine_iron 721
+const sk_mine_gold 722
+const sk_mine_mithril 723
+const sk_trade 730
+const sk_cloak_trade 731
+const sk_find_sell 732
+const sk_find_buy 733
+const sk_religion 750
+const sk_reveal_vision 751
+const sk_last_rites 752
+const sk_pray 753
+const sk_resurrect 754
+const sk_remove_bless 755
+const sk_vision_protect 756
+const sk_basic 800
+const sk_meditate 801
+const sk_mage_menial 802
+const sk_appear_common 803
+const sk_view_aura 804
+const sk_heal 805
+const sk_write_basic 806
+const sk_reveal_mage 807
+const sk_tap_health 808
+const sk_shroud_abil 809
+const sk_detect_abil 811
+const sk_dispel_abil 812
+const sk_adv_med 813
+const sk_hinder_med 814
+const sk_weather 820
+const sk_fierce_wind 821
+const sk_bind_storm 822
+const sk_write_weather 823
+const sk_summon_wind 824
+const sk_summon_rain 825
+const sk_summon_fog 826
+const sk_direct_storm 827
+const sk_dissipate 828
+const sk_renew_storm 829
+const sk_lightning 831
+const sk_seize_storm 832
+const sk_death_fog 833
+const sk_scry 840
+const sk_scry_region 841
+const sk_write_scry 842
+const sk_shroud_region 843
+const sk_dispel_region 844
+const sk_bar_loc 845
+const sk_unbar_loc 846
+const sk_locate_char 847
+const sk_detect_scry 848
+const sk_proj_cast 849
+const sk_save_proj 851
+const sk_banish_corpses 852
+const sk_gate 860
+const sk_detect_gates 861
+const sk_jump_gate 862
+const sk_write_gate 863
+const sk_seal_gate 864
+const sk_unseal_gate 865
+const sk_notify_unseal 866
+const sk_rem_seal 867
+const sk_reveal_key 868
+const sk_notify_jump 869
+const sk_teleport 871
+const sk_rev_jump 872
+const sk_artifact 880
+const sk_forge_aura 881
+const sk_write_art 882
+const sk_forge_weapon 883
+const sk_forge_armor 884
+const sk_forge_bow 885
+const sk_curse_noncreat 886
+const sk_show_art_creat 887
+const sk_show_art_reg 888
+const sk_destroy_art 889
+const sk_cloak_creat 891
+const sk_cloak_reg 892
+const sk_rem_art_cloak 893
+const sk_forge_palantir 894
+const sk_necromancy 900
+const sk_raise_corpses 901
+const sk_summon_ghost 902
+const sk_write_necro 903
+const sk_undead_lord 904
+const sk_renew_undead 905
+const sk_banish_undead 906
+const sk_eat_dead 907
+const sk_aura_blast 908
+const sk_absorb_blast 909
+const sk_transcend_death 911
+const sk_adv_sorcery 920
+const sk_trance 921
+const sk_teleport_item 922
+const sk_quick_cast 999
+const sk_save_quick 998
+const sk_add_ram 997
+const PROG_bandit 1
+const PROG_subloc_monster 2
+const PROG_npc_token 3
+const PROG_faery_bandit 4
+const PROG_hades_bandit 5
+const use_death_potion 1
+const use_heal_potion 2
+const use_slave_potion 3
+const use_palantir 4
+const use_proj_cast 5
+const use_quick_cast 6
+const use_drum 7
+const use_faery_stone 8
+const use_orb 9
+const use_barbarian_kill 10
+const use_savage_kill 11
+const use_corpse_kill 12
+const use_orc_kill 13
+const use_skeleton_kill 14
+const use_bta_skull 15
+const USE_KEY_MAX 15
+const DIR_N 1
+const DIR_E 2
+const DIR_S 3
+const DIR_W 4
+const DIR_UP 5
+const DIR_DOWN 6
+const DIR_IN 7
+const DIR_OUT 8
+const MAX_DIR 9
+const LOC_region 1
+const LOC_province 2
+const LOC_subloc 3
+const LOC_build 4
+const LOY_UNCHANGED -1
+const LOY_unsworn 0
+const LOY_contract 1
+const LOY_oath 2
+const LOY_fear 3
+const LOY_npc 4
+const LOY_summon 5
+const exp_novice 1
+const exp_journeyman 2
+const exp_teacher 3
+const exp_master 4
+const exp_grand 5
+const ATT_NONE 0
+const NEUTRAL 1
+const HOSTILE 2
+const DEFEND 3
+const SKILL_dont 0
+const SKILL_learning 1
+const SKILL_know 2
+const REQ_NO 0
+const REQ_YES 1
+const REQ_OR 2
+const STATE_DONE 0
+const STATE_LOAD 1
+const STATE_RUN 2
+const STATE_ERROR 3
+const BUY 1
+const SELL 2
+const PRODUCE 3
+const CONSUME 4
+const COV_REJECTED 0
+const COV_UNIMPL 1
+const COV_OK 2
+const COV_FAIL 3
+const COV_MAX 4
+const UCOV_CHECKS 0
+const UCOV_OK 1
+const UCOV_FAIL 2
+const UCOV_MAX 3
+const CHAR_FIELD 6
+const MAX_POST 60
+const STYLE_TEXT 1
+const STYLE_HTML 2
+const STYLE_PREV -1
+const RELIC_THRONE 401
+const RELIC_CROWN 402
+const RELIC_BTA_SKULL 403
+struct loc_info size 16 align 8
+	where offset 0 size 4
+	here_list offset 8 size 8
+struct box size 144 align 8
+	kind offset 0 size 1
+	skind offset 1 size 1
+	name offset 8 size 8
+	x_loc_info offset 16 size 16
+	x_player offset 32 size 8
+	x_char offset 40 size 8
+	x_loc offset 48 size 8
+	x_subloc offset 56 size 8
+	x_item offset 64 size 8
+	x_skill offset 72 size 8
+	x_gate offset 80 size 8
+	x_misc offset 88 size 8
+	x_disp offset 96 size 8
+	cmd offset 104 size 8
+	items offset 112 size 8
+	trades offset 120 size 8
+	temp offset 128 size 4
+	output_order offset 132 size 4
+	x_next_kind offset 136 size 4
+	x_next_sub offset 140 size 4
+struct entity_player size 152 align 8
+	full_name offset 0 size 8
+	email offset 8 size 8
+	vis_email offset 16 size 8
+	last_email offset 24 size 8
+	password offset 32 size 8
+	first_turn offset 40 size 4
+	last_order_turn offset 44 size 4
+	orders offset 48 size 8
+	known offset 56 size 8
+	units offset 64 size 8
+	admits offset 72 size 8
+	unformed offset 80 size 8
+	split_lines offset 88 size 4
+	split_bytes offset 92 size 4
+	fast_study offset 96 size 2
+	noble_points offset 98 size 2
+	format offset 100 size 1
+	notab offset 101 size 1
+	first_tower offset 102 size 1
+	sent_orders offset 103 size 1
+	dont_remind offset 104 size 1
+	compuserve offset 105 size 1
+	broken_mailer offset 106 size 1
+	public_turn offset 107 size 1
+	times_paid offset 108 size 1
+	swear_this_turn offset 109 size 1
+	cmd_count offset 110 size 2
+	np_gained offset 112 size 2
+	np_spent offset 114 size 2
+	deliver_lore offset 120 size 8
+	weather_seen offset 128 size 8
+	output offset 136 size 8
+	locs offset 144 size 8
+struct order_list size 16 align 8
+	unit offset 0 size 4
+	l offset 8 size 8
+struct accept_ent size 12 align 4
+	item offset 0 size 4
+	from_who offset 4 size 4
+	qty offset 8 size 4
+struct att_ent size 24 align 8
+	neutral offset 0 size 8
+	hostile offset 8 size 8
+	defend offset 16 size 8
+struct entity_char size 88 align 8
+	unit_item offset 0 size 4
+	health offset 4 size 1
+	sick offset 5 size 1
+	guard offset 6 size 1
+	loy_kind offset 7 size 1
+	loy_rate offset 8 size 4
+	death_time offset 12 size 8
+	skills offset 24 size 8
+	moving offset 32 size 4
+	unit_lord offset 36 size 4
+	prev_lord offset 40 size 4
+	contact offset 48 size 8
+	x_char_magic offset 56 size 8
+	prisoner offset 64 size 1
+	behind offset 65 size 1
+	time_flying offset 66 size 1
+	break_point offset 67 size 1
+	rank offset 68 size 1
+	npc_prog offset 69 size 1
+	attack offset 70 size 2
+	defense offset 72 size 2
+	missile offset 74 size 2
+	melt_me offset 76 size 1
+	fresh_hire offset 77 size 1
+	new_lord offset 78 size 1
+	studied offset 79 size 1
+	accept offset 80 size 8
+struct char_magic size 64 align 8
+	max_aura offset 0 size 4
+	cur_aura offset 4 size 4
+	auraculum offset 8 size 4
+	visions offset 16 size 8
+	pledge offset 24 size 4
+	token offset 28 size 4
+	fee offset 32 size 4
+	project_cast offset 36 size 4
+	quick_cast offset 40 size 2
+	ability_shroud offset 42 size 2
+	hide_mage offset 44 size 1
+	hinder_meditation offset 45 size 1
+	magician offset 46 size 1
+	pray offset 47 size 1
+	aura_reflect offset 48 size 1
+	hide_self offset 49 size 1
+	swear_on_release offset 50 size 1
+	knows_weather offset 51 size 1
+	vis_protect offset 52 size 1
+	default_garr offset 53 size 1
+	mage_worked offset 54 size 1
+	ferry_flag offset 55 size 1
+	pledged_to_us offset 56 size 8
+struct skill_ent size 12 align 4
+	skill offset 0 size 4
+	days_studied offset 4 size 4
+	experience offset 8 size 2
+	know offset 10 size 1
+	exp_this_month offset 11 size 1
+struct item_ent size 8 align 4
+	item offset 0 size 4
+	qty offset 4 size 4
+struct entity_loc size 24 align 8
+	prov_dest offset 0 size 8
+	shroud offset 8 size 2
+	barrier offset 10 size 2
+	civ offset 12 size 1
+	hidden offset 13 size 1
+	dist_from_gate offset 14 size 1
+	sea_lane offset 15 size 1
+	next offset 16 size 4
+struct entity_subloc size 88 align 8
+	teaches offset 0 size 8
+	opium_econ offset 8 size 4
+	defense offset 12 size 4
+	loot offset 16 size 1
+	recent_loot offset 17 size 1
+	damage offset 18 size 1
+	galley_ram offset 19 size 1
+	shaft_depth offset 20 size 2
+	castle_lev offset 22 size 1
+	build_materials offset 23 size 1
+	effort_required offset 24 size 4
+	effort_given offset 28 size 4
+	moving offset 32 size 4
+	capacity offset 36 size 4
+	near_cities offset 40 size 8
+	safe offset 48 size 1
+	major offset 49 size 1
+	prominence offset 50 size 1
+	uldim_flag offset 51 size 1
+	summer_flag offset 52 size 1
+	quest_late offset 53 size 1
+	tunnel_level offset 54 size 1
+	link_when offset 55 size 1
+	link_open offset 56 size 1
+	link_to offset 64 size 8
+	link_from offset 72 size 8
+	bound_storms offset 80 size 8
+struct entity_item size 48 align 8
+	weight offset 0 size 2
+	land_cap offset 2 size 2
+	ride_cap offset 4 size 2
+	fly_cap offset 6 size 2
+	attack offset 8 size 2
+	defense offset 10 size 2
+	missile offset 12 size 2
+	is_man_item offset 14 size 1
+	animal offset 15 size 1
+	prominent offset 16 size 1
+	capturable offset 17 size 1
+	plural_name offset 24 size 8
+	base_price offset 32 size 4
+	who_has offset 36 size 4
+	x_item_magic offset 40 size 8
+struct item_magic size 56 align 8
+	creator offset 0 size 4
+	region_created offset 4 size 4
+	lore offset 8 size 4
+	curse_loyalty offset 12 size 1
+	cloak_region offset 13 size 1
+	cloak_creator offset 14 size 1
+	use_key offset 15 size 1
+	may_use offset 16 size 8
+	may_study offset 24 size 8
+	project_cast offset 32 size 4
+	token_ni offset 36 size 4
+	quick_cast offset 40 size 2
+	aura_bonus offset 42 size 2
+	aura offset 44 size 2
+	relic_decay offset 46 size 2
+	attack_bonus offset 48 size 1
+	defense_bonus offset 49 size 1
+	missile_bonus offset 50 size 1
+	token_num offset 51 size 1
+	orb_use_count offset 52 size 1
+	one_turn_use offset 53 size 1
+struct entity_skill size 56 align 8
+	time_to_learn offset 0 size 4
+	required_skill offset 4 size 4
+	np_req offset 8 size 4
+	offered offset 16 size 8
+	research offset 24 size 8
+	req offset 32 size 8
+	produced offset 40 size 4
+	no_exp offset 44 size 4
+	use_count offset 48 size 4
+	last_use_who offset 52 size 4
+struct req_ent size 12 align 4
+	item offset 0 size 4
+	qty offset 4 size 4
+	consume offset 8 size 1
+struct entity_gate size 16 align 4
+	to_loc offset 0 size 4
+	notify_jumps offset 4 size 4
+	notify_unseal offset 8 size 4
+	seal_key offset 12 size 2
+	road_hidden offset 14 size 1
+struct entity_misc size 112 align 8
+	display offset 0 size 8
+	npc_created offset 8 size 4
+	npc_home offset 12 size 4
+	npc_cookie offset 16 size 4
+	summoned_by offset 20 size 4
+	save_name offset 24 size 8
+	old_lord offset 32 size 4
+	npc_memory offset 40 size 8
+	only_vulnerable offset 48 size 4
+	garr_castle offset 52 size 4
+	bind_storm offset 56 size 4
+	storm_str offset 60 size 2
+	npc_dir offset 62 size 1
+	mine_delay offset 63 size 1
+	cmd_allow offset 64 size 1
+	opium_double offset 65 size 1
+	post_txt offset 72 size 8
+	storm_move offset 80 size 4
+	garr_watch offset 88 size 8
+	garr_host offset 96 size 8
+	garr_tax offset 104 size 4
+	garr_forward offset 108 size 4
+struct wait_arg size 24 align 8
+	tag offset 0 size 4
+	a1 offset 4 size 4
+	a2 offset 8 size 4
+	flag offset 16 size 8
+struct command size 112 align 8
+	who offset 0 size 4
+	wait offset 4 size 4
+	cmd offset 8 size 4
+	use_skill offset 12 size 4
+	use_ent offset 16 size 4
+	use_exp offset 20 size 4
+	days_executing offset 24 size 4
+	a offset 28 size 4
+	b offset 32 size 4
+	c offset 36 size 4
+	d offset 40 size 4
+	e offset 44 size 4
+	f offset 48 size 4
+	g offset 52 size 4
+	h offset 56 size 4
+	line offset 64 size 8
+	parsed_line offset 72 size 8
+	parse offset 80 size 8
+	state offset 88 size 1
+	status offset 89 size 1
+	poll offset 90 size 1
+	pri offset 91 size 1
+	conditional offset 92 size 1
+	inhibit_finish offset 93 size 1
+	fuzzy offset 94 size 1
+	second_wait offset 95 size 1
+	wait_parse offset 96 size 8
+	debug offset 104 size 1
+struct cmd_tbl_ent size 56 align 8
+	allow offset 0 size 8
+	name offset 8 size 8
+	start offset 16 size 8
+	finish offset 24 size 8
+	interrupt offset 32 size 8
+	time offset 40 size 4
+	poll offset 44 size 4
+	pri offset 48 size 4
+struct trade size 40 align 4
+	kind offset 0 size 4
+	item offset 4 size 4
+	qty offset 8 size 4
+	cost offset 12 size 4
+	cloak offset 16 size 4
+	have_left offset 20 size 4
+	month_prod offset 24 size 4
+	expire offset 28 size 4
+	who offset 32 size 4
+	sort offset 36 size 4
+struct admit size 24 align 8
+	targ offset 0 size 4
+	sense offset 4 size 4
+	l offset 8 size 8
+	flag offset 16 size 4
+struct olytime size 8 align 4
+	day offset 0 size 2
+	turn offset 2 size 2
+	days_since_epoch offset 4 size 4
+kind_s[0] [deleted]
+kind_s[1] [player]
+kind_s[2] [char]
+kind_s[3] [loc]
+kind_s[4] [item]
+kind_s[5] [skill]
+kind_s[6] [gate]
+kind_s[7] [road]
+kind_s[8] [deadchar]
+kind_s[9] [ship]
+kind_s[10] [post]
+kind_s[11] [storm]
+kind_s[12] [unform]
+kind_s[13] [lore]
+kind_s[14] NULL
+subkind_s[0] [<no subkind>]
+subkind_s[1] [ocean]
+subkind_s[2] [forest]
+subkind_s[3] [plain]
+subkind_s[4] [mountain]
+subkind_s[5] [desert]
+subkind_s[6] [swamp]
+subkind_s[7] [underground]
+subkind_s[8] [faery hill]
+subkind_s[9] [island]
+subkind_s[10] [ring of stones]
+subkind_s[11] [mallorn grove]
+subkind_s[12] [bog]
+subkind_s[13] [cave]
+subkind_s[14] [city]
+subkind_s[15] [lair]
+subkind_s[16] [graveyard]
+subkind_s[17] [ruins]
+subkind_s[18] [battlefield]
+subkind_s[19] [enchanted forest]
+subkind_s[20] [rocky hill]
+subkind_s[21] [circle of trees]
+subkind_s[22] [pits]
+subkind_s[23] [pasture]
+subkind_s[24] [oasis]
+subkind_s[25] [yew grove]
+subkind_s[26] [sand pit]
+subkind_s[27] [sacred grove]
+subkind_s[28] [poppy field]
+subkind_s[29] [temple]
+subkind_s[30] [galley]
+subkind_s[31] [roundship]
+subkind_s[32] [castle]
+subkind_s[33] [galley-in-progress]
+subkind_s[34] [roundship-in-progress]
+subkind_s[35] [ghost ship]
+subkind_s[36] [temple-in-progress]
+subkind_s[37] [inn]
+subkind_s[38] [inn-in-progress]
+subkind_s[39] [castle-in-progress]
+subkind_s[40] [mine]
+subkind_s[41] [mine-in-progress]
+subkind_s[42] [scroll]
+subkind_s[43] [magic]
+subkind_s[44] [palantir]
+subkind_s[45] [auraculum]
+subkind_s[46] [tower]
+subkind_s[47] [tower-in-progress]
+subkind_s[48] [pl_system]
+subkind_s[49] [pl_regular]
+subkind_s[50] [region]
+subkind_s[51] [pl_savage]
+subkind_s[52] [pl_npc]
+subkind_s[53] [collapsed mine]
+subkind_s[54] [ni]
+subkind_s[55] [demon lord]
+subkind_s[56] [dead body]
+subkind_s[57] [fog]
+subkind_s[58] [wind]
+subkind_s[59] [rain]
+subkind_s[60] [pit]
+subkind_s[61] [artifact]
+subkind_s[62] [pl_silent]
+subkind_s[63] [npc_token]
+subkind_s[64] [garrison]
+subkind_s[65] [cloud]
+subkind_s[66] [raft]
+subkind_s[67] [raft-in-progress]
+subkind_s[68] [suffuse_ring]
+subkind_s[69] [relic]
+subkind_s[70] [tunnel]
+subkind_s[71] [sewer]
+subkind_s[72] [chamber]
+subkind_s[73] [tradegood]
+subkind_s[74] NULL
+cmd_tbl[0] [] [] time 0 poll 0 pri 3
+cmd_tbl[1] [cpr] [accept] time 0 poll 0 pri 0
+cmd_tbl[2] [cpr] [admit] time 0 poll 0 pri 0
+cmd_tbl[3] [cr] [attack] time 1 poll 0 pri 3
+cmd_tbl[4] [cr] [banner] time 0 poll 0 pri 1
+cmd_tbl[5] [cr] [behind] time 0 poll 0 pri 1
+cmd_tbl[6] [c] [bind] time 7 poll 0 pri 3
+cmd_tbl[7] [c] [board] time 0 poll 0 pri 2
+cmd_tbl[8] [c] [breed] time 7 poll 0 pri 3
+cmd_tbl[9] [c] [bribe] time 7 poll 0 pri 3
+cmd_tbl[10] [c] [build] time -1 poll 1 pri 3
+cmd_tbl[11] [c] [buy] time 0 poll 0 pri 1
+cmd_tbl[12] [c] [catch] time -1 poll 1 pri 3
+cmd_tbl[13] [c] [claim] time 0 poll 0 pri 1
+cmd_tbl[14] [c] [collect] time -1 poll 1 pri 3
+cmd_tbl[15] [cr] [contact] time 0 poll 0 pri 0
+cmd_tbl[16] [m] [credit] time 0 poll 0 pri 0
+cmd_tbl[17] [c] [decree] time 0 poll 0 pri 0
+cmd_tbl[18] [cpr] [default] time 0 poll 0 pri 0
+cmd_tbl[19] [cpr] [defend] time 0 poll 0 pri 0
+cmd_tbl[20] [c] [die] time 0 poll 0 pri 1
+cmd_tbl[21] [c] [discard] time 0 poll 0 pri 1
+cmd_tbl[22] [cr] [drop] time 0 poll 0 pri 1
+cmd_tbl[23] [m] [emote] time 0 poll 0 pri 1
+cmd_tbl[24] [cr] [execute] time 0 poll 0 pri 1
+cmd_tbl[25] [c] [explore] time 7 poll 0 pri 3
+cmd_tbl[26] [c] [fee] time 0 poll 0 pri 1
+cmd_tbl[27] [c] [ferry] time 0 poll 0 pri 1
+cmd_tbl[28] [c] [fish] time -1 poll 1 pri 3
+cmd_tbl[29] [cr] [flag] time 0 poll 0 pri 1
+cmd_tbl[30] [c] [fly] time -1 poll 0 pri 2
+cmd_tbl[31] [c] [forget] time 0 poll 0 pri 1
+cmd_tbl[32] [c] [form] time 7 poll 0 pri 3
+cmd_tbl[33] [cp] [format] time 0 poll 0 pri 1
+cmd_tbl[34] [c] [garrison] time 1 poll 0 pri 3
+cmd_tbl[35] [cr] [get] time 0 poll 0 pri 1
+cmd_tbl[36] [cr] [give] time 0 poll 0 pri 1
+cmd_tbl[37] [cr] [go] time -1 poll 0 pri 2
+cmd_tbl[38] [c] [guard] time 0 poll 0 pri 1
+cmd_tbl[39] [c] [hide] time 3 poll 0 pri 3
+cmd_tbl[40] [c] [honor] time 1 poll 0 pri 3
+cmd_tbl[41] [c] [honour] time 1 poll 0 pri 3
+cmd_tbl[42] [cpr] [hostile] time 0 poll 0 pri 0
+cmd_tbl[43] [c] [improve] time -1 poll 1 pri 3
+cmd_tbl[44] [c] [incite] time 7 poll 0 pri 3
+cmd_tbl[45] [c] [make] time -1 poll 1 pri 3
+cmd_tbl[46] [c] [mallorn] time -1 poll 1 pri 3
+cmd_tbl[47] [cp] [message] time 1 poll 0 pri 3
+cmd_tbl[48] [cr] [move] time -1 poll 0 pri 2
+cmd_tbl[49] [cpr] [name] time 0 poll 0 pri 1
+cmd_tbl[50] [cpr] [neutral] time 0 poll 0 pri 0
+cmd_tbl[51] [cp] [notab] time 0 poll 0 pri 1
+cmd_tbl[52] [c] [oath] time 1 poll 0 pri 3
+cmd_tbl[53] [c] [opium] time -1 poll 1 pri 3
+cmd_tbl[54] [cr] [pay] time 0 poll 0 pri 1
+cmd_tbl[55] [cr] [pillage] time 7 poll 0 pri 3
+cmd_tbl[56] [c] [pledge] time 0 poll 0 pri 1
+cmd_tbl[57] [cr] [plugh] time 0 poll 0 pri 3
+cmd_tbl[58] [c] [post] time 1 poll 0 pri 3
+cmd_tbl[59] [cp] [press] time 0 poll 0 pri 1
+cmd_tbl[60] [cr] [promote] time 0 poll 0 pri 1
+cmd_tbl[61] [cp] [public] time 0 poll 0 pri 1
+cmd_tbl[62] [c] [quarry] time -1 poll 1 pri 3
+cmd_tbl[63] [c] [quest] time 7 poll 0 pri 3
+cmd_tbl[64] [p] [quit] time 0 poll 0 pri 1
+cmd_tbl[65] [c] [raise] time 7 poll 0 pri 3
+cmd_tbl[66] [c] [rally] time 7 poll 0 pri 3
+cmd_tbl[67] [cr] [raze] time -1 poll 1 pri 3
+cmd_tbl[68] [cpr] [realname] time 0 poll 0 pri 1
+cmd_tbl[69] [c] [reclaim] time 0 poll 0 pri 1
+cmd_tbl[70] [c] [recruit] time -1 poll 1 pri 3
+cmd_tbl[71] [c] [repair] time -1 poll 1 pri 3
+cmd_tbl[72] [c] [research] time 7 poll 0 pri 3
+cmd_tbl[73] [cp] [rumor] time 0 poll 0 pri 1
+cmd_tbl[74] [c] [sail] time -1 poll 0 pri 4
+cmd_tbl[75] [c] [sell] time 0 poll 0 pri 1
+cmd_tbl[76] [cr] [seek] time 7 poll 1 pri 3
+cmd_tbl[77] [c] [sneak] time 3 poll 0 pri 3
+cmd_tbl[78] [cp] [split] time 0 poll 0 pri 1
+cmd_tbl[79] [cr] [stack] time 0 poll 0 pri 1
+cmd_tbl[80] [c] [stone] time -1 poll 1 pri 3
+cmd_tbl[81] [c] [study] time 7 poll 1 pri 3
+cmd_tbl[82] [c] [surrender] time 1 poll 0 pri 1
+cmd_tbl[83] [c] [swear] time 0 poll 0 pri 1
+cmd_tbl[84] [cr] [take] time 0 poll 0 pri 1
+cmd_tbl[85] [cp] [times] time 0 poll 0 pri 1
+cmd_tbl[86] [c] [train] time -1 poll 1 pri 3
+cmd_tbl[87] [c] [trance] time 28 poll 0 pri 3
+cmd_tbl[88] [cr] [terrorize] time 7 poll 0 pri 3
+cmd_tbl[89] [c] [torture] time 7 poll 0 pri 3
+cmd_tbl[90] [c] [unload] time 0 poll 0 pri 3
+cmd_tbl[91] [c] [ungarrison] time 1 poll 0 pri 3
+cmd_tbl[92] [cr] [unstack] time 0 poll 0 pri 1
+cmd_tbl[93] [c] [use] time -1 poll 1 pri 3
+cmd_tbl[94] [crm] [wait] time -1 poll 1 pri 1
+cmd_tbl[95] [c] [wood] time -1 poll 1 pri 3
+cmd_tbl[96] [cr] [xyzzy] time 0 poll 0 pri 3
+cmd_tbl[97] [c] [yew] time -1 poll 1 pri 3
+cmd_tbl[98] [cr] [north] time -1 poll 0 pri 2
+cmd_tbl[99] [cr] [n] time -1 poll 0 pri 2
+cmd_tbl[100] [cr] [s] time -1 poll 0 pri 2
+cmd_tbl[101] [cr] [south] time -1 poll 0 pri 2
+cmd_tbl[102] [cr] [east] time -1 poll 0 pri 2
+cmd_tbl[103] [cr] [e] time -1 poll 0 pri 2
+cmd_tbl[104] [cr] [west] time -1 poll 0 pri 2
+cmd_tbl[105] [cr] [w] time -1 poll 0 pri 2
+cmd_tbl[106] [cr] [enter] time -1 poll 0 pri 2
+cmd_tbl[107] [cr] [exit] time -1 poll 0 pri 2
+cmd_tbl[108] [cr] [in] time -1 poll 0 pri 2
+cmd_tbl[109] [cr] [out] time -1 poll 0 pri 2
+cmd_tbl[110] [] [begin] time 0 poll 0 pri 0
+cmd_tbl[111] [] [unit] time 0 poll 0 pri 0
+cmd_tbl[112] [] [email] time 0 poll 0 pri 0
+cmd_tbl[113] [] [vis_email] time 0 poll 0 pri 0
+cmd_tbl[114] [] [end] time 0 poll 0 pri 0
+cmd_tbl[115] [] [flush] time 0 poll 0 pri 0
+cmd_tbl[116] [] [lore] time 0 poll 0 pri 0
+cmd_tbl[117] [] [passwd] time 0 poll 0 pri 0
+cmd_tbl[118] [] [password] time 0 poll 0 pri 0
+cmd_tbl[119] [] [players] time 0 poll 0 pri 0
+cmd_tbl[120] [] [resend] time 0 poll 0 pri 0
+cmd_tbl[121] [cpr] [stop] time 0 poll 0 pri 0
+cmd_tbl[122] [i] [look] time 0 poll 0 pri 1
+cmd_tbl[123] [i] [l] time 0 poll 0 pri 1
+cmd_tbl[124] [i] [ct] time 0 poll 0 pri 1
+cmd_tbl[125] [i] [be] time 0 poll 0 pri 1
+cmd_tbl[126] [i] [additem] time 0 poll 0 pri 1
+cmd_tbl[127] [i] [subitem] time 0 poll 0 pri 1
+cmd_tbl[128] [i] [h] time 0 poll 0 pri 1
+cmd_tbl[129] [i] [dump] time 0 poll 0 pri 1
+cmd_tbl[130] [i] [i] time 0 poll 0 pri 1
+cmd_tbl[131] [i] [fix] time 0 poll 0 pri 1
+cmd_tbl[132] [i] [fix2] time 0 poll 0 pri 1
+cmd_tbl[133] [i] [kill] time 0 poll 0 pri 1
+cmd_tbl[134] [i] [los] time 0 poll 0 pri 1
+cmd_tbl[135] [m] [relore] time 0 poll 0 pri 1
+cmd_tbl[136] [i] [sk] time 0 poll 0 pri 1
+cmd_tbl[137] [i] [know] time 0 poll 0 pri 1
+cmd_tbl[138] [i] [seed] time 0 poll 0 pri 1
+cmd_tbl[139] [i] [seedmarket] time 0 poll 0 pri 1
+cmd_tbl[140] [i] [sheet] time 0 poll 0 pri 1
+cmd_tbl[141] [i] [poof] time 0 poll 0 pri 1
+cmd_tbl[142] [i] [postproc] time 0 poll 0 pri 1
+cmd_tbl[143] [i] [save] time 0 poll 0 pri 1
+cmd_tbl[144] [i] [seeall] time 0 poll 0 pri 1
+cmd_tbl[145] [i] [tp] time 0 poll 0 pri 1
+cmd_tbl[146] [i] [makeloc] time 0 poll 0 pri 1
+cmd_tbl[147] [i] [remail] time 0 poll 0 pri 1
+cmd_tbl[148] NULL
+from_host [g3@olympia.v-labs.be]
+reply_host [g3@olympia.v-labs.be]
+gm_address [c@dvdc.be]
+game_title [Olympia G3]
+game_url [http://olympia.v-labs.be/g3]
+rules_url [http://oly.v-labs.be/g3/node/11]
+times_url [http://oly.v-labs.be/g3/node/409]
+htpasswd_loc [/u/oly/g2/lib/ht-passwords]
+garrison_pay = 2
+army_slow_factor = 20
+auto_quit_turns = 0
+sysclock 0 0 0
+indep_player = 100
+gm_player = 200
+skill_player = 202
+eat_pl = 203
+npc_pl = 206
+garr_pl = 207
+combat_pl = 0
+post_has_been_run = 0
+garrison_magic = 999
+mount_olympus = 0
+bx non-NULL 0
+box_head non-zero 0
+sub_head non-zero 0
+kind(-1) = 0
+kind(0) = 0
+kind(1) = 4
+kind(2) = 0
+kind(1001) = 2
+kind(1002) = 4
+kind(1005) = 0
+kind(MAX_BOXES - 1) = 3
+kind(MAX_BOXES) = 0
+kind(MAX_BOXES + 1) = 0
+valid_box(0) = 0
+valid_box(1001) = 1
+valid_box(1005) = 0
+valid_box(MAX_BOXES) = 0
+subkind(0) = 0
+subkind(1001) = 0
+subkind(1002) = 43
+subkind(1003) = 54
+subkind(1005) = 0
+subkind(MAX_BOXES - 1) = 1
+p_loc_info(1001) = #1
+rp_loc_info(1001) = #1
+zero(p_loc_info(1001), sizeof(struct loc_info)) = 1
+rp_char(1001) = NULL
+p_char(1001) = #2 zero 1
+p_char(1001) = #2
+rp_char(1001) = #2
+rp_magic(1001) = NULL
+p_magic(1001) = #3 zero 1
+p_magic(1001) = #3
+rp_magic(1001) = #3
+p_char(1001) = #2
+rp_magic(1003) = NULL
+rp_char(1003) = NULL
+p_magic(1003) = #4 zero 1
+rp_char(1003) = #5 zero 0
+p_char(1003) = #5
+rp_item(1002) = NULL
+p_item(1002) = #6 zero 1
+p_item(1002) = #6
+rp_item(1002) = #6
+rp_item_magic(1002) = NULL
+p_item_magic(1002) = #7 zero 1
+p_item_magic(1002) = #7
+rp_item_magic(1002) = #7
+rp_item_magic(1004) = NULL
+rp_item(1004) = NULL
+p_item_magic(1004) = #8 zero 1
+rp_item(1004) = #9 zero 0
+rp_loc(1001) = NULL
+p_loc(1001) = #10 zero 1
+p_loc(1001) = #10
+rp_loc(1001) = #10
+rp_subloc(1001) = NULL
+p_subloc(1001) = #11 zero 1
+p_subloc(1001) = #11
+rp_subloc(1001) = #11
+rp_player(1001) = NULL
+p_player(1001) = #12 zero 1
+p_player(1001) = #12
+rp_player(1001) = #12
+rp_skill(1001) = NULL
+p_skill(1001) = #13 zero 1
+p_skill(1001) = #13
+rp_skill(1001) = #13
+rp_gate(1001) = NULL
+p_gate(1001) = #14 zero 1
+p_gate(1001) = #14
+rp_gate(1001) = #14
+rp_misc(1001) = NULL
+p_misc(1001) = #15 zero 1
+p_misc(1001) = #15
+rp_misc(1001) = #15
+rp_disp(1001) = NULL
+p_disp(1001) = #16 zero 1
+p_disp(1001) = #16
+rp_disp(1001) = #16
+rp_command(1001) = NULL
+p_command(1001) = #17 zero 1
+p_command(1001) = #17
+rp_command(1001) = #17
+rp_char(1002) = NULL
+rp_item(1001) = NULL
+rp_command(1003) = NULL

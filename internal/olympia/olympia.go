@@ -7,6 +7,11 @@
 // prints before it dispatches, the -R self-test and the -t ilist test. Every
 // other mode stops with a "not yet implemented" message until a later task
 // ports it.
+//
+// The entity model of olympia/oly.h and olympia/glob.c is in entity.go
+// (the structures), oly.go (the constants), glob.go (the constant tables)
+// and world.go (the global state, as a world, and the p_xxx and rp_xxx
+// accessors). Nothing in main() uses it yet.
 package olympia
 
 import (
@@ -92,8 +97,9 @@ func Run(args []string, stdout, stderr io.Writer, stdoutIsTTY bool) int {
 
 	out.Printf("\tsizeof(struct box) = %d\n", sizeofBox)
 
-	// call_init_routines() prints nothing. The tables it fills belong to the
-	// tasks that port the entity model.
+	// call_init_routines() prints nothing. Its glob_init() is newWorld(),
+	// which the task that ports load_db will call; the rest of what it
+	// initializes belongs to later tasks.
 
 	o := &options{libdir: "lib"}
 	errflag := 0
