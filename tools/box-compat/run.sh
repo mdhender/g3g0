@@ -55,7 +55,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "${HERE}/../.." && pwd)"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-aa68d137729564cfcd2e91c808c38f3e76d65744}"
+G3_REV="${G3_REV:-ab24d451ee25d61364e08cde1fbfc223e220fbd1}"
 WORK="${WORK:-${ROOT}/tmp/box-compat}"
 GAMES="${GAMES:-${ROOT}/tmp/olympia-roundtrip/cases}"
 CC="${CC:-cc}"

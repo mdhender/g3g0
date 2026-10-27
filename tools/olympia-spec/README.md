@@ -14,7 +14,7 @@ The spec is the three gates that G3 documents for another engine in `doc/claude/
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `aa68d137729564cfcd2e91c808c38f3e76d65744`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `ab24d451ee25d61364e08cde1fbfc223e220fbd1`.
 The revision is pinned in `run.sh` (`PINNED_REV`).
 `G3_REV` runs another revision, but then `passing.txt` is neither compared nor written.
 Change the pin only on purpose, and rerun this and [`tools/olympia-roundtrip`](../olympia-roundtrip) when you do.
@@ -57,6 +57,6 @@ The gates also run inside the export, so they cannot write to the clone.
 
 Last run: 2026-10-26, macOS 26.6.2 arm64, Go 1.26.4. About 45 seconds.
 
-- `run-all.sh`: pass 1, fail 98, error 0. Only `rng-selftest` passes; every other fixture needs `load_db` and the turn.
+- `run-all.sh`: pass 1, fail 100, error 0. Only `rng-selftest` passes; every other fixture needs `load_db` and the turn.
 - `run/olympia-g3.sh` exits 2 (the Go engine stops at `-i` with "not yet implemented"), so `golden_check.sh` reports that the run diverges from the manifest.
-- The same `run-all.sh` with the pinned C build passes all 99 fixtures.
+- The same `run-all.sh` with the pinned C build passes all 101 fixtures.

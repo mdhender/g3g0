@@ -2,7 +2,7 @@
 # olympia/io.c (fast_scan, scan_boxes, scan_chars, scan_all_boxes,
 # read_boxes, read_chars, read_all_boxes, open_write_fp, write_kind,
 # write_player, write_chars, write_leftovers, write_all_boxes and
-# write_master), at G3 aa68d137729564cfcd2e91c808c38f3e76d65744.
+# write_master), at G3 ab24d451ee25d61364e08cde1fbfc223e220fbd1.
 #
 # tools/boxfile-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in boxfile-c-output.txt;

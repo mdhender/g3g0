@@ -1,6 +1,6 @@
 # Differential cases for the line readers of G3's olympia/z.c and the field
 # scan and print helpers of olympia/io.c, at G3
-# aa68d137729564cfcd2e91c808c38f3e76d65744.
+# ab24d451ee25d61364e08cde1fbfc223e220fbd1.
 #
 # tools/io-compat/run.sh feeds this file to a C driver built from the
 # pinned sources and records its output in io-c-output.txt; TestIOMatchesC
@@ -90,8 +90,8 @@
 #                            here_list
 #
 # Out of scope, because C is undefined there: a skill or req line with too
-# few numbers (uninitialized locals), and a skill, item, trade or req entry
-# that is empty (s[strlen(s)-1] reads before the string). readlin() before
+# few numbers (uninitialized locals), so also a skill or req list whose
+# first entry is empty. readlin() before
 # any readfile() crashes in C (point is NULL); the engine always calls
 # readfile() first.
 
@@ -892,6 +892,74 @@ next
 req_scan 3
 readlin
 put g  rq\x0977 1 0 \\\x0a\x09999 1 1 \\\x0a\x091 4 1 \\\x0a
+readfile g
+next
+req_scan 3
+readlin
+
+section empty continuation line: skill list
+alloc 600 5 0
+alloc 610 5 0
+put f  sl\x09600 2 14 3 0 \\\x0a\x0a\x09610 1 7 0 0\x0a
+readfile f
+next
+skill_scan 2
+readlin
+put g  sl\x09610 1 7 0 0 \\\x0a   \x09 \x0a\x09600 2 14 3 0\x0a
+readfile g
+next
+skill_scan 2
+readlin
+
+section empty continuation line: item list
+alloc 1 4 0
+alloc 77 4 0
+put f  il\x091 2 \\\x0a\x0a\x0977 5\x0a
+readfile f
+next
+item_scan 1
+readlin
+put g  il\x0977 5 \\\x0a\x091 3 \\\x0a \x09 \x0a\x091 4\x0a
+readfile g
+next
+item_scan 1
+readlin
+put h  il\x0a il\x09\x0a il\x0977 \\\x0a
+readfile h
+next
+item_scan 1
+next
+item_scan 1
+readlin
+
+section empty continuation line: trade list
+alloc 1 4 0
+alloc 77 4 0
+put f  tl\x091 1 10 5 0 2 3 4 \\\x0a\x0a\x092 77 1 9 1 0 0 0\x0a
+readfile f
+next
+trade_scan 42
+readlin
+put g  tl\x092 77 1 9 1 0 0 0 \\\x0a\x09\x09\x0a\x091 1 10 5 0 2 3 4\x0a
+readfile g
+next
+trade_scan 43
+readlin
+put h  tl\x0a tl\x092 77 1 9 1 0 0 0\x0a
+readfile h
+next
+trade_scan 44
+readlin
+
+section empty continuation line: req list
+alloc 1 4 0
+alloc 77 4 0
+put f  rq\x091 2 1 \\\x0a\x0a\x0977 1 0\x0a
+readfile f
+next
+req_scan 3
+readlin
+put g  rq\x0977 1 0 \\\x0a  \x0a\x091 4 1\x0a
 readfile g
 next
 req_scan 3

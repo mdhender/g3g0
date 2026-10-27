@@ -1328,6 +1328,82 @@ CH
 
 temp 1
 exit 0
+section empty continuation line
+> alloc 3601 2 0
+> alloc 3602 2 0
+> alloc 1 4 0
+> putl f 3601 char 0
+> putl f il\x091 2 \\
+> putl f 
+> putl f 3602 char 0
+> putl f na Second
+> putl f 
+> readfile f
+readfile 1
+> advance
+> loadall
+item_list_scan(3601): bad item 0
+load_box(3601):  bad line: 3602 char 0
+> save 3601
+3601 char 0
+na Second
+il	1 2
+
+temp 1
+> save 3602
+3602 char 0
+
+temp 1
+exit 0
+section empty continuation line in a section
+> alloc 3603 2 0
+> alloc 3604 3 3
+> alloc 3605 5 0
+> alloc 77 4 0
+> putl f 3603 char 0
+> putl f CH
+> putl f  sl 3605 2 14 3 0 \\
+> putl f    
+> putl f 3604 loc plain
+> putl f tl\x091 77 10 5 0 2 3 4 \\
+> putl f 
+> putl f 3605 skill 0
+> putl f SK
+> putl f  rq 77 1 1 \\
+> putl f 
+> putl f 3603 char 0
+> putl f na Merged
+> putl f 
+> readfile f
+readfile 1
+> advance
+> loadall
+skill_list_scan(3603): bad skill 0
+load_box(3603):  bad line: 3604 loc plain
+trade_list_scan(3603): bad item 0
+load_box(3603):  bad line: 3605 skill 0
+req_list_scan(3603): bad item 0
+load_box(3603):  bad line: 3603 char 0
+> save 3603
+3603 char 0
+na Merged
+tl	1 77 10 5 0 2 3 4
+CH
+ sl	3605 2 14 3 0
+SK
+ tl 0
+ rq	77 1 1
+
+temp 1
+> save 3604
+3604 loc plain
+
+temp 1
+> save 3605
+3605 skill 0
+
+temp 1
+exit 0
 section narrowing
 > alloc 3501 2 0
 > alloc 3502 3 3

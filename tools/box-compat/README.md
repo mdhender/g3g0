@@ -6,7 +6,7 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `aa68d137729564cfcd2e91c808c38f3e76d65744`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `ab24d451ee25d61364e08cde1fbfc223e220fbd1`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows:
@@ -51,6 +51,7 @@ The driver's load loop is `read_boxes()`'s, except that a line that is not a box
 | line endings | boxes without a blank line between them, two blank lines, a comment inside a section, end of file without a blank line |
 | unforseen box | `load_box` of a box pass 1 did not allocate: the diagnostic with `libdir`, and the assertion |
 | continuation at end of file | a continued field on the file's last line, at top level and in a section: the list ends there (G3 [#313](https://github.com/playbymail/olympia-g3/issues/313), fixed upstream), and `save_box` writes what was read |
+| empty continuation line | a continued `il`, `sl`, `tl` and `rq` followed by a blank or white-space line, at top level and in a section: the list ends there (G3 [#318](https://github.com/playbymail/olympia-g3/issues/318), fixed upstream), after a `bad item 0`/`bad skill 0` diagnostic for the empty entry; the blank line was the box separator, so `load_box` reads on into the next box's lines as bad lines and its later fields |
 | narrowing | every `(schar)`, `(short)`, `(uchar)` and `int` field past its range, `sscanf` of a short `ar` line, `%c` of a high byte |
 | commands | `oly_parse_cmd` and `find_command`: conditions, comments, quotes, control and high bytes, exact and fuzzy matches, unknown commands; `li` and `us` in a box, and the `bad cmd` diagnostic |
 | real boxes from world.tgz | 25 boxes chosen so that every section and list tag appears, with every box they reference allocated |
@@ -59,7 +60,7 @@ The driver's load loop is `read_boxes()`'s, except that a line that is not a box
 
 Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
 
-- Check 1: 17 sections, 3294 lines. The C driver is deterministic, its output matches `box-c-output.txt`, and `TestBoxMatchesC` passes.
+- Check 1: 19 sections, 3370 lines. The C driver is deterministic, its output matches `box-c-output.txt`, and `TestBoxMatchesC` passes.
 - Check 2: 195 games (`world.tgz` and the 194 cached round-trip inputs), 7,866,900 saved boxes (36,999 in `world.tgz`), plain and pretty: C and Go output identical.
 
 ## Upstream defects reproduced on purpose

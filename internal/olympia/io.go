@@ -29,7 +29,8 @@ import (
 // readlin_ew() returns NULL and the scan helper stops there, keeping the
 // entries it has read, as if that line had no backslash. (Before upstream
 // fixed https://github.com/playbymail/olympia-g3/issues/313, C dereferenced
-// the NULL and crashed.)
+// the NULL and crashed.) A blank continuation line ends a list too (see
+// lastIsBackslash).
 
 // at is s[i] as C sees it: 0 (the terminating NUL) past the end of s.
 func at(s string, i int) byte {
@@ -64,13 +65,12 @@ func tString(t string) string {
 // advance is the advance macro: it reads the next line into line.
 func (w *world) advance() { w.line = w.readlin() }
 
-// lastIsBackslash is the test s[strlen(s)-1] == '\\' that the list scans
-// use to see whether another entry follows. On an empty s, C reads the byte
-// before it, which is undefined: when s is t_string()'s "" it is whatever
-// precedes that literal, and when s is an empty continuation line it is the
-// white space readlin_ew() skipped, or the byte before the line buffer.
-// Here an empty s ends the list. Upstream defect:
-// https://github.com/playbymail/olympia-g3/issues/312
+// lastIsBackslash is the test *s && s[strlen(s)-1] == '\\' that the list
+// scans use to see whether another entry follows. An empty s, t_string()'s
+// "" or a blank continuation line, ends the list. (Before upstream fixed
+// https://github.com/playbymail/olympia-g3/issues/318, which also fixed
+// https://github.com/playbymail/olympia-g3/issues/312, C read the byte
+// before an empty s, which was undefined.)
 func lastIsBackslash(s string) bool {
 	return len(s) > 0 && s[len(s)-1] == '\\'
 }

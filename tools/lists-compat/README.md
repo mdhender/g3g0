@@ -6,7 +6,7 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `aa68d137729564cfcd2e91c808c38f3e76d65744`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `ab24d451ee25d61364e08cde1fbfc223e220fbd1`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 
 The port follows:

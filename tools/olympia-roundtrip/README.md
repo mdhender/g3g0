@@ -33,7 +33,7 @@ A case passes when the exit status, stdout and stderr match byte for byte, and s
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `aa68d137729564cfcd2e91c808c38f3e76d65744`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `ab24d451ee25d61364e08cde1fbfc223e220fbd1`.
 The revision is pinned in `run.sh` (`PINNED_REV`); `G3_REV` tests against another.
 Change the pin only on purpose, together with [`tools/olympia-spec`](../olympia-spec).
 
