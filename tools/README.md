@@ -6,6 +6,47 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Skill lore queues and GM skill listing (#160)
+
+Existing lore.go completes pinned lore.c skill line/delivery **137–199**,
+show-lore **258–294**, GM listing **297–369** and the skill delivery branch;
+existing queue/comparator **230–255** and scans **372–411** remain reused.
+Existing u.go adds complete weeks **1616–1630**. Main/oracle replace the
+show/GM projections with real roots. Diagnostic-only reader/state helpers,
+optional-emitter plumbing and the temporary skill NYI test are removed.
+One real read/effect/render pass uses accepted knowledge, queues, output/cache,
+sort and scan owners; no new source/pin, later report root or second layer.
+
+At **0.100.0-alpha**, ten appended cases match complete unchanged real C twice
+and Go: **1168 sections / 78078 lines / 1522550 output bytes**. Inherited
+**1158 sections / 77449 lines / 1508521 output bytes** and **478453 input
+bytes** remain exact prefixes. Offered/research permutations, GM-only research,
+all skill states/prisoners/silent owners, missing records, retained sorted
+duplicates, **1011-byte** renamed cached output, school-first sheets and listing
+assertions before reads reach their actual branches. Silent GM rendering
+allocates its recipient, matching real C. Constants and complete definitions
+are verified. See [closure, hashes and evidence](command-compat#skill-lore-queues-and-gm-skill-listing-160).
+
+Four temporary marker controls (return **0** / abort **134**, default/update)
+reject at section **766** with harness **2** before expected status/update,
+preserving recording hashes. Probes/matching captures removed. Sequential
+command refresh/default, move/helper/RNG/code/loadsave/turn-driver/default turn,
+bounded vet and fresh bounded defaults pass (Olympia **1.981s**). Every compat
+call explicitly uses isolated `G3_REPO=$PWD/tmp/upstream.git`; engines/tests
+use shared run_limited. Logs: `tmp/issue160-*.log`.
+
+Parent audited all nine open issues including unlabeled ones: only #160–166
+and trackers #19/#132, no bug/follow-C. No new verified defect/prerequisite or
+oversized closure. No later GM reports/includes/writers/commands.
+Independent parent complete-C/diff review, all eight routine tools, bounded
+vet and fresh bounded tests pass (Olympia **2.118s**); logs
+`tmp/parent160-*.log`. Fresh strict post-#160 comparison has deterministic C
+repeats and the same eight saved-report byte differences, engines **0**,
+matching raw streams/paths/types/modes, exit **1** before 13 lifecycle controls.
+Captures: `tmp/parent-stage2-turn`; log: `tmp/parent160-strict.log`.
+No whole-stage acceptance. G3 #358/#359 unchanged/nonblocking;
+malformed **C136/Go2** is not parity.
+
 ## Lore sheet rendering (#159)
 
 Existing lore.go completes pinned lore.c functions **9–44**, sheet **47–117**

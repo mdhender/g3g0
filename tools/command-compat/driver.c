@@ -1539,6 +1539,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"may_study")) ilist_append(&p_item_magic(n)->may_study,a);
    else if (!strcmp(text,"may_use")) ilist_append(&p_item_magic(n)->may_use,a);
    else if (!strcmp(text,"required")) p_skill(n)->required_skill = a;
+   else if (!strcmp(text,"offered")) ilist_append(&p_skill(n)->offered,a);
+   else if (!strcmp(text,"research")) ilist_append(&p_skill(n)->research,a);
    else if (!strcmp(text,"noble_item")) p_char(n)->unit_item = a;
    else if (!strcmp(text,"prev")) p_char(n)->prev_lord = a;
    else if (!strcmp(text,"rate")) p_char(n)->loy_rate = a;

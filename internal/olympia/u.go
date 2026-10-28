@@ -356,6 +356,18 @@ func addS(n int) string {
 	return "s"
 }
 
+// weeks is u.c:1616–1630.
+func weeks(n int) string {
+	if n == 0 {
+		return "0~days"
+	}
+	if n%7 == 0 {
+		n /= 7
+		return sout("%s~week%s", niceNum(n), addS(n))
+	}
+	return sout("%s~day%s", niceNum(n), addS(n))
+}
+
 func (w *world) deductNP(pl, num int) bool {
 	assert(w.kind(pl) == tPlayer, "olympia/u.c", 1746, "kind(pl) == T_player")
 	p := w.pPlayer(pl)

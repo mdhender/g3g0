@@ -74,14 +74,10 @@ func (w *world) scanCharSkillLore() {
 	}
 }
 
-// loreFunction is complete lore.c:9–44. A nil emit is used only by the
-// retained stage-1 queue/GM projections, whose rendering belongs to #160.
-func (w *world) loreFunction(fn string, emit func(string, ...any)) {
+// loreFunction is complete lore.c:9–44.
+func (w *world) loreFunction(who int, fn string) {
 	switch fn {
 	case "capturable_animals", "animal_fighters":
-		if emit == nil {
-			return
-		}
 		for i := range w.loopKind(tItem) {
 			p := w.rpItem(i)
 			if p == nil || p.animal == 0 {
@@ -89,10 +85,10 @@ func (w *world) loreFunction(fn string, emit func(string, ...any)) {
 			}
 			if fn == "capturable_animals" {
 				if p.capturable != 0 {
-					emit("    %s", w.boxName(i))
+					w.commandOut(who, "    %s", w.boxName(i))
 				}
 			} else if p.attack != 0 || p.defense != 0 || p.missile != 0 || i == itemGhostWarrior {
-				emit("    %-20s %s", w.boxName(i), sout("(%d,%d,%d)", p.attack, p.defense, p.missile))
+				w.commandOut(who, "    %-20s %s", w.boxName(i), sout("(%d,%d,%d)", p.attack, p.defense, p.missile))
 			}
 		}
 	default:
@@ -106,15 +102,6 @@ func (w *world) loreFunction(fn string, emit func(string, ...any)) {
 func (w *world) deliverLoreSheet(who, num, displayNum int) {
 	w.commandOut(who, "")
 	w.matchLines(who, w.boxName(displayNum))
-	w.loreSheetInput(num, displayNum, func(format string, args ...any) {
-		w.commandOut(who, format, args...)
-	})
-}
-
-// loreSheetInput is the single reader shared with the stage-1 projections.
-// They retain real input/errors until #160 replaces them; they do not invoke
-// real delivery or manufacture output bits. No sheet is opened twice.
-func (w *world) loreSheetInput(num, displayNum int, emit func(string, ...any)) {
 	var path string
 	if w.kind(num) == tSkill {
 		path = sout("%s/lore/%d/%d", w.libdir, w.skillSchool(num), num)
@@ -123,51 +110,42 @@ func (w *world) loreSheetInput(num, displayNum int, emit func(string, ...any)) {
 	}
 	data, err := clib.ReadFile(path)
 	if err != nil {
-		if emit != nil {
-			emit("<lore sheet not available>")
-		}
+		w.commandOut(who, "<lore sheet not available>")
 		fmt.Fprintf(w.stderr, "can't open %s: ", path)
 		clib.Perror(w.stderr, "", err)
 		return
 	}
-	code := ""
-	if emit != nil {
-		code = boxCodeLess(displayNum)
-	}
+	code := boxCodeLess(displayNum)
 	fp := bytes.NewReader(data)
 	for line := getlin(fp); line != nil; line = getlin(fp) {
 		if strings.HasPrefix(*line, "#") {
 			continue
 		}
 		if strings.HasPrefix(*line, "$") {
-			w.loreFunction((*line)[1:], emit)
+			w.loreFunction(who, (*line)[1:])
 			continue
 		}
-		if emit != nil {
-			var text strings.Builder
-			for p := 0; p < len(*line); {
-				if (*line)[p] == '@' {
-					text.WriteString(code)
-					for p < len(*line) && (*line)[p] == '@' {
-						p++
-					}
-				} else {
-					text.WriteByte((*line)[p])
+		var text strings.Builder
+		for p := 0; p < len(*line); {
+			if (*line)[p] == '@' {
+				text.WriteString(code)
+				for p < len(*line) && (*line)[p] == '@' {
 					p++
 				}
+			} else {
+				text.WriteByte((*line)[p])
+				p++
 			}
-			emit("%s", text.String())
 		}
+		w.commandOut(who, "%s", text.String())
 	}
 }
 
-// deliverLore is complete lore.c:202–221, except for the explicit #160
-// dependency: real skill delivery must not silently succeed without its
-// offered/research rendering. The stage-1 readers below remain separate roots.
+// deliverLore is complete lore.c:202–221.
 func (w *world) deliverLore(who, num int) {
 	switch w.kind(num) {
 	case tSkill:
-		panic(notImplemented("deliver_skill_lore (#160)"))
+		w.deliverSkillLore(who, num, false)
 	case tItem:
 		lore := 0
 		if p := w.rpItemMagic(num); p != nil {
@@ -180,22 +158,47 @@ func (w *world) deliverLore(who, num int) {
 	w.commandOut(who, "")
 }
 
-func (w *world) deliverLoreState(num int) {
-	if w.kind(num) == tItem {
-		if p := w.rpItemMagic(num); p != nil {
-			num = int(p.lore)
-		} else {
-			num = 0
-		}
-	}
-	w.loreSheetInput(num, num, nil)
+// outSkillLine and deliverSkillLore are lore.c:137–199.
+func (w *world) outSkillLine(who, sk int) {
+	w.commandOut(who, "%-*s  %-34s %s%s", charField, boxCodeLess(sk), w.justName(sk), weeks(w.learnTime(sk)), w.npReqS(sk))
 }
 
-// showLoreSheetsState is lore.c:259–294's state and raw diagnostic effects.
-// It sorts the original persistent queue; duplicate deliveries are skipped,
-// but duplicates and the whole queue survive for later calls.
-func (w *world) showLoreSheetsState() {
+func (w *world) deliverSkillLore(who, sk int, showResearch bool) {
+	w.deliverLoreSheet(who, sk, sk)
+	p := w.rpSkill(sk)
+	if p != nil && len(p.offered) != 0 {
+		w.commandOut(who, "")
+		w.commandOut(who, "The following skills may be studied directly once %s is known:", w.justName(sk))
+		w.commandOut(who, "")
+		w.indent += 3
+		w.commandOut(who, "%-*s  %-34s %13s", charField, "num", "skill", "time to learn")
+		w.commandOut(who, "%-*s  %-34s %13s", charField, "---", "-----", "-------------")
+		for _, i := range p.offered {
+			w.outSkillLine(who, i)
+		}
+		w.indent -= 3
+		w.commandOut(who, "")
+		if len(p.research) != 0 {
+			w.commandOut(who, "Further skills may be found through research.")
+		}
+	} else if p != nil && len(p.research) != 0 {
+		w.commandOut(who, "")
+		w.commandOut(who, "Skills within this category may be found through research.")
+	}
+	if showResearch && p != nil && len(p.research) != 0 {
+		w.commandOut(who, "")
+		w.indent += 3
+		for _, i := range p.research {
+			w.outSkillLine(who, i)
+		}
+		w.indent -= 3
+	}
+}
+
+// showLoreSheets is lore.c:258–294. Sort the original queue and retain duplicates.
+func (w *world) showLoreSheets() {
 	w.stage("show_lore_sheets()")
+	w.outPath, w.outAltWho = master, 2 // OUT_LORE
 	for pl := range w.loopKind(tPlayer) {
 		p := w.rpPlayer(pl)
 		if p == nil || len(p.deliverLore) == 0 {
@@ -206,33 +209,47 @@ func (w *world) showLoreSheetsState() {
 			if i > 0 && num == p.deliverLore[i-1] {
 				continue
 			}
-			w.deliverLoreState(num)
+			w.deliverLore(pl, num)
 		}
 	}
+	w.outPath, w.outAltWho = 0, 0
 }
 
-// gmShowAllSkillsState preserves gm_show_all_skills' player allocation and
-// reads in school-then-nonschool order. It does not grant knowledge or queue
-// lore. The preceding listing and offered/research lines are stage-2 text.
-func (w *world) gmShowAllSkillsState(pl int) {
-	w.reportOutputState(pl)
-	// The listing traversals happen BEFORE any sheet reads. Keep their
-	// skill_school assertions in order, even though the text is deferred.
-	for sk := range w.loopKind(tSkill) {
-		w.skillSchool(sk)
-	}
+// gmShowAllSkills is lore.c:297–369. Complete the listing before any reads.
+func (w *world) gmShowAllSkills(pl int) {
+	w.outPath, w.outAltWho = master, 2 // OUT_LORE
+	w.commandOut(pl, "")
+	w.commandOut(pl, "Skill listing:")
+	w.commandOut(pl, "--------------")
+	w.commandOut(pl, "")
+	w.commandOut(pl, "Skill schools:")
+	w.commandOut(pl, "")
 	for sk := range w.loopKind(tSkill) {
 		if w.skillSchool(sk) == sk {
+			w.outSkillLine(pl, sk)
+		}
+	}
+	w.commandOut(pl, "")
+	for sk := range w.loopKind(tSkill) {
+		if w.skillSchool(sk) == sk {
+			w.commandOut(pl, "%s", w.boxName(sk))
+			w.indent += 3
 			for i := range w.loopKind(tSkill) {
-				w.skillSchool(i)
+				if w.skillSchool(i) == sk && i != sk {
+					w.outSkillLine(pl, i)
+				}
 			}
+			w.indent -= 3
+			w.commandOut(pl, "")
 		}
 	}
 	for _, schools := range []bool{true, false} {
 		for sk := range w.loopKind(tSkill) {
 			if (w.skillSchool(sk) == sk) == schools {
-				w.loreSheetInput(sk, sk, nil)
+				w.deliverSkillLore(pl, sk, true)
+				w.commandOut(pl, "")
 			}
 		}
 	}
+	w.outPath, w.outAltWho = 0, 0
 }

@@ -3,6 +3,103 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Skill lore queues and GM skill listing (#160)
+
+Existing lore.go completes unchanged lore.c `out_skill_line` **137–146**,
+`deliver_skill_lore` **149–199**, `deliver_lore` **202–221**,
+`show_lore_sheets` **258–294** and `gm_show_all_skills` **297–369**.
+Queue/comparator **230–255** and character skill/item scans **372–411**
+retain their existing real owners. Existing u.go adds complete `weeks`,
+u.c **1616–1630**, using the accepted nice-number/plural helpers. All thirteen
+complete C definitions (the twelve lore functions and weeks) are verified
+unchanged exactly once in the existing extraction. No new source/pin or
+successful dependency substitute is needed.
+
+Main and the existing oracle replace showLoreSheetsState/gmShowAllSkillsState
+with the real roots. The diagnostic-only deliverLoreState/loreSheetInput and
+optional-emitter plumbing are removed, as is the temporary
+TestDeliverLoreSkillBoundary. One real sheet read/render pass uses the existing
+commandOut/FILE cache; no second knowledge, allocation, scan or reader pass.
+Queues sort in place using the original C-int subtraction comparator; adjacent
+duplicates suppress delivery only and remain queued. Both roots reset routing
+to zero, not the caller's previous route. GM output allocates through the first
+real output/open before listing validation, lists all schools and their nested
+descendants before any sheet reads, then delivers schools before nonschools.
+
+Ten appended cases (**7 status 0 / 3 status 134**) compare raw bytes,
+streams/status, actual saved records and list/record observers:
+
+- Ordinary delivery reaches neither/offered-only/research-only/both lists.
+  Offered **702,701,702** retains order and duplicates; hidden school research
+  is not rendered as a skill row, while the same skill is subsequently shown
+  when offered directly by a leaf. Exact headers, blanks, **one~day**,
+  **one~week**, **two~weeks**, NP **-1/0/1/3**, and absent skill records match.
+- GM listing reaches nested school membership, offered/research combinations,
+  **0~days**, **eight~days**, **three~weeks**, and **-1~weeks**. Raw **2444**
+  bytes prove all listing text precedes sheets in school order
+  **638,700,900**, followed by nonschools **500,600,701**. GM-only research
+  rows are visible without granting knowledge or queuing anything.
+- Retained queue **700,700,701,701** and known insertion order **701,700**
+  survive repeats. Modified input is reread while a renamed cached inode
+  retains **1011** exact bytes; the original log path stays missing. MASTER
+  **-2**, OUT_LORE **2**, CHAR_FIELD **6**, style **5**, initial indent **3**
+  and secondary indent **8** are verified against actual reached bytes.
+- Skill states **0/1/2/3**, duplicate/shared faction rows, prisoners, silent
+  owners, and absent owner/character records reuse the existing scan/queue
+  effects. Silent GM delivery really renders **293** bytes and allocates its
+  recipient; silent players are not filtered by these roots. An unknown
+  function still aborts for a silent owner at **lore.c:43**.
+- Immediate GM listing reaches **use.c:1182** before a deliberately invalid
+  sheet function can be read. Blocked queue output retains **sout.c:158**
+  before any sheet validation. Empty queues reset routing without allocating
+  absent player records. Inherited diagnostics/read-error/assertion cases
+  remain unchanged and continue exercising the real C definitions.
+
+At **0.100.0-alpha**, complete unchanged real C repeats deterministically and
+Go matches **1168 sections / 78078 lines / 1522550 output bytes**. Entire
+inherited **1158 sections / 77449 lines / 1508521 output bytes** and
+**25169 input lines / 478453 input bytes** are exact byte prefixes.
+New input: **25396 lines / 483251 bytes**. Output SHA-256:
+`dbe620447bec3e071112f3e342ba0fbe70d309f4489265f24a0d36a4fcc6a52d`.
+Input SHA-256:
+`73b6858bc1bb9182873f3ed9fdb5c8a81f806eafb4ec2d5bd9e9096e1067a62b`.
+Source-only whitespace checks pass; eight intentional C-recording trailing
+spaces remain exact. Closure, constants, prefixes and reached-branch evidence:
+`tmp/issue160-evidence.log`.
+
+Four temporary linker controls wrap only gm_show_all_skills at the inherited
+expected listing-cycle abort (**section 766**). Missing-dependency markers
+with return **0** / abort **134**, in default/update modes, all reject with
+harness **2** before expected-status/update acceptance and preserve the
+recording hash above. Probe source/compiler wrapper and matching captures
+are removed. Logs: `tmp/issue160-negative-{0,134}-{default,update}.log`.
+
+Sequential command refresh/default **1168/78078**, move **135/7158**, helper
+**37/1487**, RNG **321**, code **43/969**, loadsave **61/3411**, turn-driver
+**7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**, and default
+turn (equal status/raw streams and **2** cwd entries) pass, followed by bounded
+vet and fresh bounded default tests (Olympia **1.981s**). Every compat call
+explicitly uses isolated `G3_REPO=$PWD/tmp/upstream.git`; engines use shared
+run_limited and test executables use tools/lib/run-limited.sh. Logs:
+`tmp/issue160-*.log`. Temporary evidence assertions were corrected after
+inspecting the actual C output (the leaf legitimately offers the otherwise
+hidden research, and the silent GM file has 293 bytes); no engine/expected
+output change was made to satisfy those inspection assertions.
+
+Parent audited all nine open issues including unlabeled ones: only #160–166
+and trackers #19/#132, no bug/follow-C. No new verified defect, blocking
+prerequisite or oversized closure found. No later GM reports/includes/writers
+or commands. Independent parent review verifies all twelve lore definitions
+plus weeks unchanged exactly once and both inherited prefixes byte-exact.
+All eight routine tools, bounded vet and fresh bounded tests pass (Olympia
+**2.118s**); logs `tmp/parent160-*.log`.
+Fresh strict post-#160 comparison repeats C deterministically and remains red
+with eight saved-report byte differences, engines **0**, matching raw streams/
+paths/types/modes, exit **1** before 13 lifecycle controls. Captures:
+`tmp/parent-stage2-turn`; log `tmp/parent160-strict.log`. No stage-exit
+acceptance. G3 #358/#359 remain unchanged/nonblocking; malformed **C136/Go2**
+is not parity.
+
 ## Lore sheet rendering (#159)
 
 Existing lore.go completes unchanged lore.c `lore_function` **9–44** and
