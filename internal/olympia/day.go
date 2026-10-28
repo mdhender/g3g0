@@ -418,6 +418,52 @@ func (w *world) specialLocsClose() {
 	}
 }
 
+// autoDrop is the complete day.c:1133–1167 autoquit queue/log pass.
+func (w *world) autoDrop() {
+	for pl := range w.loopSubkind(subPlRegular) {
+		p := w.pPlayer(pl)
+		if int32(w.sysclock.turn)-p.lastOrderTurn >= w.autoQuitTurns {
+			name, email := "", ""
+			if p.fullName != nil {
+				name = *p.fullName
+			}
+			if p.email != nil {
+				email = *p.email
+			}
+			w.queue(pl, "quit")
+			w.logWrite(11, "Queued drop for %s", w.boxName(pl))
+			w.logWrite(11, "    %s <%s>", name, email)
+		}
+	}
+}
+
+// linkDecay is day.c:1966–1997: positive countdown precedes month reopening;
+// negative openings remain permanent, and absent destinations do not decay.
+func (w *world) linkDecay() {
+	for i := range w.loopKind(tLoc) {
+		p := w.rpSubloc(i)
+		if p == nil || len(p.linkTo) < 1 {
+			continue
+		}
+		if p.linkOpen > 0 {
+			p.linkOpen--
+		}
+		if int(p.linkWhen) == olyMonth(w.sysclock) && p.linkOpen < 2 && p.linkOpen >= 0 {
+			p.linkOpen = 2
+		}
+	}
+}
+
+// questDecay is day.c:1737–1753. Despite its name, subloc_quest is the
+// quest_late counter itself (oly.h:1082), not a separate quest ID.
+func (w *world) questDecay() {
+	for where := range w.loopKind(tLoc) {
+		if p := w.rpSubloc(where); p != nil && p.questLate > 0 {
+			w.pSubloc(where).questLate--
+		}
+	}
+}
+
 // postMonth is day.c's settlement sequence. Even report-producing phases
 // may mutate the world; none may be skipped on the way to save_db.
 func (w *world) postMonth() {

@@ -460,6 +460,72 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.incrementStoneRingAura()
 		case "curse":
 			w.noncreatorCurseErode()
+		case "closure":
+			switch action := args.word(); action {
+			case "auto":
+				w.autoDrop()
+			case "links":
+				w.linkDecay()
+			case "quests":
+				w.questDecay()
+			case "post":
+				w.postMonth()
+			case "ranks":
+				w.determineNobleRanks()
+			case "kings":
+				w.findKings()
+			case "threshold":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "rank threshold %d %d\n", n, nprovsToRank(int32(n)))
+			case "lower":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "rank lower %d %d\n", n, lowerNobleRank(n))
+			case "sup":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "rank recursive %d %d\n", n, w.detNobleRankSup(n))
+			case "ruler":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "top ruler %d %d\n", n, w.topRuler(n))
+			case "describe":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "rank description %d [%s]\n", n, w.linerDesc(n))
+				w.showCharsBelow(200, n)
+			case "state":
+				fmt.Fprintf(&stdout, "post flag %d month %d\n", w.postHasBeenRun, olyMonth(w.sysclock))
+				for n := range w.loopKind(tChar) {
+					p, rank := w.rpChar(n), int8(0)
+					if p != nil {
+						rank = p.rank
+					}
+					fmt.Fprintf(&stdout, "rank char %d allocated %d temp %d rank %d [%s]\n", n, b2i(p != nil), w.bx[n].temp, rank, w.rankS(n))
+				}
+			default:
+				t.Fatalf("unknown closure %s", action)
+			}
+		case "rankland":
+			n, count, strength, base, reg := args.num(t), args.num(t), args.num(t), args.num(t), args.num(t)
+			w.allocBox(base, tLoc, subCastle)
+			if old := w.loc(n); old != 0 {
+				w.pLocInfo(old).hereList.RemValue(n)
+			}
+			w.pLocInfo(n).where = int32(base)
+			w.pLocInfo(base).hereList.Append(n)
+			for j := 1; j <= count; j++ {
+				prov, garr := base+j, base+100+j
+				w.allocBox(prov, tLoc, subPlain)
+				w.allocBox(garr, tChar, subGarrison)
+				w.pChar(garr).unitLord = 201
+				w.pMisc(garr).garrCastle = int32(base)
+				w.pLocInfo(prov).where = int32(reg)
+				if reg != 0 {
+					w.pLocInfo(reg).hereList.Append(prov)
+				}
+				w.pLocInfo(garr).where = int32(prov)
+				w.pLocInfo(prov).hereList.Append(garr)
+				w.genItem(garr, itemSoldier, strength)
+			}
+			w.pLocInfo(base).where = int32(base + 1)
+			w.pLocInfo(base + 1).hereList.Append(base)
 		case "decay":
 			switch action := args.word(); action {
 			case "mines":
@@ -1172,6 +1238,9 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			} else {
 				w.pItem(n).pluralName = &s
 			}
+		case "identity":
+			n, name, email := args.num(t), args.word(), args.word()
+			w.pPlayer(n).fullName, w.pPlayer(n).email = &name, &email
 		case "entity":
 			n, k, sk := args.num(t), args.num(t), args.num(t)
 			w.allocBox(n, k, sk)
@@ -1190,6 +1259,18 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch field {
 			case "lord":
 				w.pChar(n).unitLord = int32(a)
+			case "last_order":
+				w.pPlayer(n).lastOrderTurn = int32(a)
+			case "quest":
+				w.pSubloc(n).questLate = int8(a)
+			case "link_to":
+				w.pSubloc(n).linkTo.Append(a)
+			case "link_open":
+				w.pSubloc(n).linkOpen = int8(a)
+			case "link_when":
+				w.pSubloc(n).linkWhen = int8(a)
+			case "rank":
+				w.pChar(n).rank = int8(a)
 			case "mine_delay":
 				w.pMisc(n).mineDelay = int8(a)
 			case "death_turn":
@@ -1497,6 +1578,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch field {
 			case "immediate":
 				w.immediate = n != 0
+			case "auto_quit":
+				w.autoQuitTurns = int32(n)
+			case "post":
+				w.postHasBeenRun = int32(n)
 			case "indep":
 				w.indepPlayer = int32(n)
 			case "gm":

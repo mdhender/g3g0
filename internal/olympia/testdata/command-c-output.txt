@@ -53121,3 +53121,2052 @@ log 200:
 stderr:
 
 exit 0
+stdout:
+section closure autoquit asymmetric below at above missing player record appends quit
+> set gm 200
+> set turn 20
+> set auto_quit 5
+> entity 202 1 49
+> entity 203 1 49
+> entity 204 1 52
+> name 200 Below
+> name 201 At
+> name 202 Above
+> identity 201 Alice alice@example.test
+> identity 202 Bob bob@example.test
+> field 200 last_order 16
+> field 201 last_order 15
+> field 202 last_order 14
+> field 204 last_order 1
+> orders 201 201 wait 7
+> orders 202 202 format 2
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+na Below
+PL
+ lt 16
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+na At
+PL
+ fn Alice
+ em alice@example.test
+ lt 15
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+202 player pl_regular
+na Above
+PL
+ fn Bob
+ em bob@example.test
+ lt 14
+
+account 203 allocated 0
+203 player pl_regular
+
+account 204 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+204 player pl_npc
+PL
+ lt 1
+
+> closure auto
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output: 11
+200 player pl_regular
+na Below
+PL
+ lt 16
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+na At
+PL
+ fn Alice
+ em alice@example.test
+ lt 15
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+202 player pl_regular
+na Above
+PL
+ fn Bob
+ em bob@example.test
+ lt 14
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+203 player pl_regular
+PL
+
+account 204 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+204 player pl_npc
+PL
+ lt 1
+
+> orders_file 200
+orders file 200:
+> orders_file 201
+orders file 201:
+201:wait 7
+201:quit
+> orders_file 202
+orders file 202:
+202:format 2
+202:quit
+> orders_file 203
+orders file 203:
+203:quit
+> orders_file 204
+orders file 204:
+> readlog 200
+log 200:
+11:0::0::Queued drop for At~[201]
+11:0::0::    Alice <alice@example.test>
+11:0::0::Queued drop for Above~[202]
+11:0::0::    Bob <bob@example.test>
+11:0::0::Queued drop for Player~[203]
+11:0::0::     <>
+> closure auto
+> orders_file 201
+orders file 201:
+201:wait 7
+201:quit
+201:quit
+> orders_file 202
+orders file 202:
+202:format 2
+202:quit
+202:quit
+> orders_file 203
+orders file 203:
+203:quit
+203:quit
+> readlog 200
+log 200:
+11:0::0::Queued drop for At~[201]
+11:0::0::    Alice <alice@example.test>
+11:0::0::Queued drop for Above~[202]
+11:0::0::    Bob <bob@example.test>
+11:0::0::Queued drop for Player~[203]
+11:0::0::     <>
+11:0::0::Queued drop for At~[201]
+11:0::0::    Alice <alice@example.test>
+11:0::0::Queued drop for Above~[202]
+11:0::0::    Bob <bob@example.test>
+11:0::0::Queued drop for Player~[203]
+11:0::0::     <>
+stderr:
+
+exit 0
+stdout:
+section closure link quest signed lifetimes destination gate and month eight wrap
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> entity 9004 3 3
+> entity 9005 3 3
+> entity 9006 3 3
+> entity 9007 9 29
+> field 9000 link_to 9001
+> field 9000 link_when 7
+> field 9000 link_open 0
+> field 9000 quest 0
+> field 9001 link_to 9000
+> field 9001 link_when 7
+> field 9001 link_open 1
+> field 9001 quest 1
+> field 9002 link_to 9000
+> field 9002 link_when 7
+> field 9002 link_open 2
+> field 9002 quest 2
+> field 9003 link_to 9000
+> field 9003 link_when 7
+> field 9003 link_open -1
+> field 9003 quest -1
+> field 9004 link_open 2
+> field 9004 link_when 7
+> field 9004 quest -128
+> field 9005 link_to 9000
+> field 9005 link_when 0
+> field 9005 link_open 2
+> field 9005 quest 127
+> field 9007 link_to 9000
+> field 9007 link_when 7
+> field 9007 link_open 2
+> field 9007 quest 2
+> set turn 8
+> closure links
+> closure quests
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 1 recent 0
+9000 loc plain
+SL
+ lt 9001 
+ lw 7
+ lp 2
+
+monthly loc 9001 loc 0 subloc 1 recent 0
+9001 loc plain
+SL
+ lt 9000 
+ lw 7
+ lp 2
+
+monthly loc 9002 loc 0 subloc 1 recent 0
+9002 loc plain
+SL
+ ql 1
+ lt 9000 
+ lw 7
+ lp 2
+
+monthly loc 9003 loc 0 subloc 1 recent 0
+9003 loc plain
+SL
+ ql -1
+ lt 9000 
+ lw 7
+ lp -1
+
+monthly loc 9004 loc 0 subloc 1 recent 0
+9004 loc plain
+SL
+ ql -128
+ lw 7
+ lp 2
+
+monthly loc 9005 loc 0 subloc 1 recent 0
+9005 loc plain
+SL
+ ql 126
+ lt 9000 
+ lp 1
+
+monthly loc 9006 loc 0 subloc 0 recent 0
+9006 loc plain
+
+> save 9007
+9007 ship temple
+SL
+ ql 2
+ lt 9000 
+ lw 7
+ lp 2
+
+> closure links
+> closure quests
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 1 recent 0
+9000 loc plain
+SL
+ lt 9001 
+ lw 7
+ lp 2
+
+monthly loc 9001 loc 0 subloc 1 recent 0
+9001 loc plain
+SL
+ lt 9000 
+ lw 7
+ lp 2
+
+monthly loc 9002 loc 0 subloc 1 recent 0
+9002 loc plain
+SL
+ lt 9000 
+ lw 7
+ lp 2
+
+monthly loc 9003 loc 0 subloc 1 recent 0
+9003 loc plain
+SL
+ ql -1
+ lt 9000 
+ lw 7
+ lp -1
+
+monthly loc 9004 loc 0 subloc 1 recent 0
+9004 loc plain
+SL
+ ql -128
+ lw 7
+ lp 2
+
+monthly loc 9005 loc 0 subloc 1 recent 0
+9005 loc plain
+SL
+ ql 125
+ lt 9000 
+
+monthly loc 9006 loc 0 subloc 0 recent 0
+9006 loc plain
+
+> set turn 9
+> closure links
+> closure quests
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 1 recent 0
+9000 loc plain
+SL
+ lt 9001 
+ lw 7
+ lp 1
+
+monthly loc 9001 loc 0 subloc 1 recent 0
+9001 loc plain
+SL
+ lt 9000 
+ lw 7
+ lp 1
+
+monthly loc 9002 loc 0 subloc 1 recent 0
+9002 loc plain
+SL
+ lt 9000 
+ lw 7
+ lp 1
+
+monthly loc 9003 loc 0 subloc 1 recent 0
+9003 loc plain
+SL
+ ql -1
+ lt 9000 
+ lw 7
+ lp -1
+
+monthly loc 9004 loc 0 subloc 1 recent 0
+9004 loc plain
+SL
+ ql -128
+ lw 7
+ lp 2
+
+monthly loc 9005 loc 0 subloc 1 recent 0
+9005 loc plain
+SL
+ ql 124
+ lt 9000 
+ lp 2
+
+monthly loc 9006 loc 0 subloc 0 recent 0
+9006 loc plain
+
+> set turn 16
+> closure links
+> closure quests
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 1 recent 0
+9000 loc plain
+SL
+ lt 9001 
+ lw 7
+ lp 2
+
+monthly loc 9001 loc 0 subloc 1 recent 0
+9001 loc plain
+SL
+ lt 9000 
+ lw 7
+ lp 2
+
+monthly loc 9002 loc 0 subloc 1 recent 0
+9002 loc plain
+SL
+ lt 9000 
+ lw 7
+ lp 2
+
+monthly loc 9003 loc 0 subloc 1 recent 0
+9003 loc plain
+SL
+ ql -1
+ lt 9000 
+ lw 7
+ lp -1
+
+monthly loc 9004 loc 0 subloc 1 recent 0
+9004 loc plain
+SL
+ ql -128
+ lw 7
+ lp 2
+
+monthly loc 9005 loc 0 subloc 1 recent 0
+9005 loc plain
+SL
+ ql 123
+ lt 9000 
+ lp 1
+
+monthly loc 9006 loc 0 subloc 0 recent 0
+9006 loc plain
+
+stderr:
+
+exit 0
+stdout:
+section closure all rank thresholds and rank lowering source helpers
+> closure threshold -1
+rank threshold -1 0
+> closure threshold 0
+rank threshold 0 0
+> closure threshold 1
+rank threshold 1 10
+> closure threshold 5
+rank threshold 5 10
+> closure threshold 6
+rank threshold 6 20
+> closure threshold 12
+rank threshold 12 20
+> closure threshold 13
+rank threshold 13 30
+> closure threshold 24
+rank threshold 24 30
+> closure threshold 25
+rank threshold 25 40
+> closure threshold 37
+rank threshold 37 40
+> closure threshold 38
+rank threshold 38 50
+> closure threshold 50
+rank threshold 50 50
+> closure threshold 51
+rank threshold 51 60
+> closure threshold 63
+rank threshold 63 60
+> closure threshold 64
+rank threshold 64 70
+> closure threshold 2147483647
+rank threshold 2147483647 70
+> closure lower -1
+rank lower -1 0
+> closure lower 0
+rank lower 0 0
+> closure lower 10
+rank lower 10 0
+> closure lower 20
+rank lower 20 10
+> closure lower 30
+rank lower 30 20
+> closure lower 40
+rank lower 40 30
+> closure lower 50
+rank lower 50 40
+> closure lower 60
+rank lower 60 50
+> closure lower 70
+rank lower 70 60
+> closure lower 80
+rank lower 80 70
+> closure lower 81
+rank lower 81 0
+stderr:
+
+exit 0
+stdout:
+section closure ranks actual five six twelve thirteen counts strength nine ten and repeat reset
+> entity 12 4 0
+> field 12 man 1
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> field 1002 lord 201
+> field 1003 lord 201
+> field 1004 lord 200
+> field 1005 lord 201
+> rankland 1000 5 10 11000 0
+> rankland 1001 6 10 12000 0
+> rankland 1002 12 10 13000 0
+> rankland 1003 13 10 14000 0
+> rankland 1004 1 9 15000 0
+> rankland 1005 1 10 16000 0
+> field 1000 temp 999
+> field 1001 rank 80
+> field 11000 temp 71
+> closure state
+post flag 0 month -1
+rank char 1000 allocated 1 temp 999 rank 0 []
+rank char 1001 allocated 1 temp 0 rank 80 [, king]
+rank char 1002 allocated 1 temp 0 rank 0 []
+rank char 1003 allocated 1 temp 0 rank 0 []
+rank char 1004 allocated 1 temp 0 rank 0 []
+rank char 1005 allocated 1 temp 0 rank 0 []
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+rank char 11103 allocated 1 temp 0 rank 0 []
+rank char 11104 allocated 1 temp 0 rank 0 []
+rank char 11105 allocated 1 temp 0 rank 0 []
+rank char 12101 allocated 1 temp 0 rank 0 []
+rank char 12102 allocated 1 temp 0 rank 0 []
+rank char 12103 allocated 1 temp 0 rank 0 []
+rank char 12104 allocated 1 temp 0 rank 0 []
+rank char 12105 allocated 1 temp 0 rank 0 []
+rank char 12106 allocated 1 temp 0 rank 0 []
+rank char 13101 allocated 1 temp 0 rank 0 []
+rank char 13102 allocated 1 temp 0 rank 0 []
+rank char 13103 allocated 1 temp 0 rank 0 []
+rank char 13104 allocated 1 temp 0 rank 0 []
+rank char 13105 allocated 1 temp 0 rank 0 []
+rank char 13106 allocated 1 temp 0 rank 0 []
+rank char 13107 allocated 1 temp 0 rank 0 []
+rank char 13108 allocated 1 temp 0 rank 0 []
+rank char 13109 allocated 1 temp 0 rank 0 []
+rank char 13110 allocated 1 temp 0 rank 0 []
+rank char 13111 allocated 1 temp 0 rank 0 []
+rank char 13112 allocated 1 temp 0 rank 0 []
+rank char 14101 allocated 1 temp 0 rank 0 []
+rank char 14102 allocated 1 temp 0 rank 0 []
+rank char 14103 allocated 1 temp 0 rank 0 []
+rank char 14104 allocated 1 temp 0 rank 0 []
+rank char 14105 allocated 1 temp 0 rank 0 []
+rank char 14106 allocated 1 temp 0 rank 0 []
+rank char 14107 allocated 1 temp 0 rank 0 []
+rank char 14108 allocated 1 temp 0 rank 0 []
+rank char 14109 allocated 1 temp 0 rank 0 []
+rank char 14110 allocated 1 temp 0 rank 0 []
+rank char 14111 allocated 1 temp 0 rank 0 []
+rank char 14112 allocated 1 temp 0 rank 0 []
+rank char 14113 allocated 1 temp 0 rank 0 []
+rank char 15101 allocated 1 temp 0 rank 0 []
+rank char 16101 allocated 1 temp 0 rank 0 []
+> closure ranks
+> closure state
+post flag 0 month -1
+rank char 1000 allocated 1 temp 5 rank 10 [, lord]
+rank char 1001 allocated 1 temp 6 rank 20 [, knight]
+rank char 1002 allocated 1 temp 12 rank 20 [, knight]
+rank char 1003 allocated 1 temp 13 rank 30 [, baron]
+rank char 1004 allocated 1 temp 0 rank 0 []
+rank char 1005 allocated 1 temp 1 rank 10 [, lord]
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+rank char 11103 allocated 1 temp 0 rank 0 []
+rank char 11104 allocated 1 temp 0 rank 0 []
+rank char 11105 allocated 1 temp 0 rank 0 []
+rank char 12101 allocated 1 temp 0 rank 0 []
+rank char 12102 allocated 1 temp 0 rank 0 []
+rank char 12103 allocated 1 temp 0 rank 0 []
+rank char 12104 allocated 1 temp 0 rank 0 []
+rank char 12105 allocated 1 temp 0 rank 0 []
+rank char 12106 allocated 1 temp 0 rank 0 []
+rank char 13101 allocated 1 temp 0 rank 0 []
+rank char 13102 allocated 1 temp 0 rank 0 []
+rank char 13103 allocated 1 temp 0 rank 0 []
+rank char 13104 allocated 1 temp 0 rank 0 []
+rank char 13105 allocated 1 temp 0 rank 0 []
+rank char 13106 allocated 1 temp 0 rank 0 []
+rank char 13107 allocated 1 temp 0 rank 0 []
+rank char 13108 allocated 1 temp 0 rank 0 []
+rank char 13109 allocated 1 temp 0 rank 0 []
+rank char 13110 allocated 1 temp 0 rank 0 []
+rank char 13111 allocated 1 temp 0 rank 0 []
+rank char 13112 allocated 1 temp 0 rank 0 []
+rank char 14101 allocated 1 temp 0 rank 0 []
+rank char 14102 allocated 1 temp 0 rank 0 []
+rank char 14103 allocated 1 temp 0 rank 0 []
+rank char 14104 allocated 1 temp 0 rank 0 []
+rank char 14105 allocated 1 temp 0 rank 0 []
+rank char 14106 allocated 1 temp 0 rank 0 []
+rank char 14107 allocated 1 temp 0 rank 0 []
+rank char 14108 allocated 1 temp 0 rank 0 []
+rank char 14109 allocated 1 temp 0 rank 0 []
+rank char 14110 allocated 1 temp 0 rank 0 []
+rank char 14111 allocated 1 temp 0 rank 0 []
+rank char 14112 allocated 1 temp 0 rank 0 []
+rank char 14113 allocated 1 temp 0 rank 0 []
+rank char 15101 allocated 1 temp 0 rank 0 []
+rank char 16101 allocated 1 temp 0 rank 0 []
+> save 1000
+1000 char 0
+LI
+ wh 11000
+CH
+ lo 200
+ ra 10
+
+> save 1001
+1001 char 0
+LI
+ wh 12000
+CH
+ lo 200
+ ra 20
+
+> save 1002
+1002 char 0
+LI
+ wh 13000
+CH
+ lo 201
+ ra 20
+
+> save 1003
+1003 char 0
+LI
+ wh 14000
+CH
+ lo 201
+ ra 30
+
+> save 1004
+1004 char 0
+LI
+ wh 15000
+CH
+ lo 200
+
+> save 1005
+1005 char 0
+LI
+ wh 16000
+CH
+ lo 201
+ ra 10
+
+> save 11000
+11000 loc castle
+LI
+ wh 11001
+ hl 1000 
+
+> closure ruler 11001
+top ruler 11001 1000
+> closure ruler 11101
+top ruler 11101 1000
+> closure ranks
+> closure state
+post flag 0 month -1
+rank char 1000 allocated 1 temp 5 rank 10 [, lord]
+rank char 1001 allocated 1 temp 6 rank 20 [, knight]
+rank char 1002 allocated 1 temp 12 rank 20 [, knight]
+rank char 1003 allocated 1 temp 13 rank 30 [, baron]
+rank char 1004 allocated 1 temp 0 rank 0 []
+rank char 1005 allocated 1 temp 1 rank 10 [, lord]
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+rank char 11103 allocated 1 temp 0 rank 0 []
+rank char 11104 allocated 1 temp 0 rank 0 []
+rank char 11105 allocated 1 temp 0 rank 0 []
+rank char 12101 allocated 1 temp 0 rank 0 []
+rank char 12102 allocated 1 temp 0 rank 0 []
+rank char 12103 allocated 1 temp 0 rank 0 []
+rank char 12104 allocated 1 temp 0 rank 0 []
+rank char 12105 allocated 1 temp 0 rank 0 []
+rank char 12106 allocated 1 temp 0 rank 0 []
+rank char 13101 allocated 1 temp 0 rank 0 []
+rank char 13102 allocated 1 temp 0 rank 0 []
+rank char 13103 allocated 1 temp 0 rank 0 []
+rank char 13104 allocated 1 temp 0 rank 0 []
+rank char 13105 allocated 1 temp 0 rank 0 []
+rank char 13106 allocated 1 temp 0 rank 0 []
+rank char 13107 allocated 1 temp 0 rank 0 []
+rank char 13108 allocated 1 temp 0 rank 0 []
+rank char 13109 allocated 1 temp 0 rank 0 []
+rank char 13110 allocated 1 temp 0 rank 0 []
+rank char 13111 allocated 1 temp 0 rank 0 []
+rank char 13112 allocated 1 temp 0 rank 0 []
+rank char 14101 allocated 1 temp 0 rank 0 []
+rank char 14102 allocated 1 temp 0 rank 0 []
+rank char 14103 allocated 1 temp 0 rank 0 []
+rank char 14104 allocated 1 temp 0 rank 0 []
+rank char 14105 allocated 1 temp 0 rank 0 []
+rank char 14106 allocated 1 temp 0 rank 0 []
+rank char 14107 allocated 1 temp 0 rank 0 []
+rank char 14108 allocated 1 temp 0 rank 0 []
+rank char 14109 allocated 1 temp 0 rank 0 []
+rank char 14110 allocated 1 temp 0 rank 0 []
+rank char 14111 allocated 1 temp 0 rank 0 []
+rank char 14112 allocated 1 temp 0 rank 0 []
+rank char 14113 allocated 1 temp 0 rank 0 []
+rank char 15101 allocated 1 temp 0 rank 0 []
+rank char 16101 allocated 1 temp 0 rank 0 []
+stderr:
+determine_noble_ranks()
+determine_noble_ranks()
+
+exit 0
+stdout:
+section closure ranks recursive pledge chains ties zero lord and missing character allocation
+> entity 12 4 0
+> field 12 man 1
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> rankland 1000 6 10 11000 0
+> rankland 1001 6 10 12000 0
+> rankland 1002 1 10 13000 0
+> field 1000 pledge 1001
+> field 1001 pledge 1002
+> field 1003 rank 80
+> field 1003 pledge 1004
+> closure sup 1003
+rank recursive 1003 0
+> closure state
+post flag 0 month -1
+rank char 1000 allocated 1 temp 0 rank 0 []
+rank char 1001 allocated 1 temp 0 rank 0 []
+rank char 1002 allocated 0 temp 0 rank 0 []
+rank char 1003 allocated 1 temp 0 rank 0 []
+rank char 1004 allocated 0 temp 0 rank 0 []
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+rank char 11103 allocated 1 temp 0 rank 0 []
+rank char 11104 allocated 1 temp 0 rank 0 []
+rank char 11105 allocated 1 temp 0 rank 0 []
+rank char 11106 allocated 1 temp 0 rank 0 []
+rank char 12101 allocated 1 temp 0 rank 0 []
+rank char 12102 allocated 1 temp 0 rank 0 []
+rank char 12103 allocated 1 temp 0 rank 0 []
+rank char 12104 allocated 1 temp 0 rank 0 []
+rank char 12105 allocated 1 temp 0 rank 0 []
+rank char 12106 allocated 1 temp 0 rank 0 []
+rank char 13101 allocated 1 temp 0 rank 0 []
+> closure ruler 11001
+top ruler 11001 1002
+> closure ranks
+> closure state
+post flag 0 month -1
+rank char 1000 allocated 1 temp 6 rank 10 [, lord]
+rank char 1001 allocated 1 temp 12 rank 20 [, knight]
+rank char 1002 allocated 1 temp 13 rank 30 [, baron]
+rank char 1003 allocated 1 temp 0 rank 0 []
+rank char 1004 allocated 1 temp 0 rank 0 []
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+rank char 11103 allocated 1 temp 0 rank 0 []
+rank char 11104 allocated 1 temp 0 rank 0 []
+rank char 11105 allocated 1 temp 0 rank 0 []
+rank char 11106 allocated 1 temp 0 rank 0 []
+rank char 12101 allocated 1 temp 0 rank 0 []
+rank char 12102 allocated 1 temp 0 rank 0 []
+rank char 12103 allocated 1 temp 0 rank 0 []
+rank char 12104 allocated 1 temp 0 rank 0 []
+rank char 12105 allocated 1 temp 0 rank 0 []
+rank char 12106 allocated 1 temp 0 rank 0 []
+rank char 13101 allocated 1 temp 0 rank 0 []
+> save 1000
+1000 char 0
+LI
+ wh 11000
+CH
+ lo 200
+ ra 10
+CM
+ pl 1001
+
+> save 1001
+1001 char 0
+LI
+ wh 12000
+CH
+ lo 200
+ ra 20
+CM
+ pl 1002
+
+> save 1002
+1002 char 0
+LI
+ wh 13000
+CH
+ ra 30
+
+> save 1003
+1003 char 0
+CH
+CM
+ pl 1004
+
+> save 1004
+1004 char 0
+CH
+
+> field 1002 pledge 1004
+> closure ranks
+> closure state
+post flag 0 month -1
+rank char 1000 allocated 1 temp 6 rank 0 []
+rank char 1001 allocated 1 temp 12 rank 10 [, lord]
+rank char 1002 allocated 1 temp 13 rank 20 [, knight]
+rank char 1003 allocated 1 temp 0 rank 0 []
+rank char 1004 allocated 1 temp 13 rank 30 [, baron]
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+rank char 11103 allocated 1 temp 0 rank 0 []
+rank char 11104 allocated 1 temp 0 rank 0 []
+rank char 11105 allocated 1 temp 0 rank 0 []
+rank char 11106 allocated 1 temp 0 rank 0 []
+rank char 12101 allocated 1 temp 0 rank 0 []
+rank char 12102 allocated 1 temp 0 rank 0 []
+rank char 12103 allocated 1 temp 0 rank 0 []
+rank char 12104 allocated 1 temp 0 rank 0 []
+rank char 12105 allocated 1 temp 0 rank 0 []
+rank char 12106 allocated 1 temp 0 rank 0 []
+rank char 13101 allocated 1 temp 0 rank 0 []
+stderr:
+determine_noble_ranks()
+determine_noble_ranks()
+
+exit 0
+stdout:
+section closure kingdom fourteen fifteen weak garrisons nonlocation and mixed ruler controls
+> entity 12 4 0
+> field 12 man 1
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> entity 10000 3 50
+> entity 10001 3 50
+> entity 10002 3 50
+> entity 10003 3 50
+> entity 10004 3 50
+> rankland 1000 14 10 11000 10000
+> rankland 1001 15 10 12000 10001
+> rankland 1002 15 9 13000 10002
+> rankland 1003 14 10 14000 10003
+> rankland 1004 1 10 15000 10003
+> rankland 1005 15 10 16000 10004
+> entity 17000 4 0
+> link 10000 17000
+> entity 17001 3 3
+> link 10004 17001
+> closure ranks
+> closure state
+post flag 0 month -1
+rank char 1000 allocated 1 temp 14 rank 30 [, baron]
+rank char 1001 allocated 1 temp 15 rank 80 [, king]
+rank char 1002 allocated 1 temp 0 rank 80 [, king]
+rank char 1003 allocated 1 temp 14 rank 30 [, baron]
+rank char 1004 allocated 1 temp 1 rank 10 [, lord]
+rank char 1005 allocated 1 temp 15 rank 30 [, baron]
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+rank char 11103 allocated 1 temp 0 rank 0 []
+rank char 11104 allocated 1 temp 0 rank 0 []
+rank char 11105 allocated 1 temp 0 rank 0 []
+rank char 11106 allocated 1 temp 0 rank 0 []
+rank char 11107 allocated 1 temp 0 rank 0 []
+rank char 11108 allocated 1 temp 0 rank 0 []
+rank char 11109 allocated 1 temp 0 rank 0 []
+rank char 11110 allocated 1 temp 0 rank 0 []
+rank char 11111 allocated 1 temp 0 rank 0 []
+rank char 11112 allocated 1 temp 0 rank 0 []
+rank char 11113 allocated 1 temp 0 rank 0 []
+rank char 11114 allocated 1 temp 0 rank 0 []
+rank char 12101 allocated 1 temp 0 rank 0 []
+rank char 12102 allocated 1 temp 0 rank 0 []
+rank char 12103 allocated 1 temp 0 rank 0 []
+rank char 12104 allocated 1 temp 0 rank 0 []
+rank char 12105 allocated 1 temp 0 rank 0 []
+rank char 12106 allocated 1 temp 0 rank 0 []
+rank char 12107 allocated 1 temp 0 rank 0 []
+rank char 12108 allocated 1 temp 0 rank 0 []
+rank char 12109 allocated 1 temp 0 rank 0 []
+rank char 12110 allocated 1 temp 0 rank 0 []
+rank char 12111 allocated 1 temp 0 rank 0 []
+rank char 12112 allocated 1 temp 0 rank 0 []
+rank char 12113 allocated 1 temp 0 rank 0 []
+rank char 12114 allocated 1 temp 0 rank 0 []
+rank char 12115 allocated 1 temp 0 rank 0 []
+rank char 13101 allocated 1 temp 0 rank 0 []
+rank char 13102 allocated 1 temp 0 rank 0 []
+rank char 13103 allocated 1 temp 0 rank 0 []
+rank char 13104 allocated 1 temp 0 rank 0 []
+rank char 13105 allocated 1 temp 0 rank 0 []
+rank char 13106 allocated 1 temp 0 rank 0 []
+rank char 13107 allocated 1 temp 0 rank 0 []
+rank char 13108 allocated 1 temp 0 rank 0 []
+rank char 13109 allocated 1 temp 0 rank 0 []
+rank char 13110 allocated 1 temp 0 rank 0 []
+rank char 13111 allocated 1 temp 0 rank 0 []
+rank char 13112 allocated 1 temp 0 rank 0 []
+rank char 13113 allocated 1 temp 0 rank 0 []
+rank char 13114 allocated 1 temp 0 rank 0 []
+rank char 13115 allocated 1 temp 0 rank 0 []
+rank char 14101 allocated 1 temp 0 rank 0 []
+rank char 14102 allocated 1 temp 0 rank 0 []
+rank char 14103 allocated 1 temp 0 rank 0 []
+rank char 14104 allocated 1 temp 0 rank 0 []
+rank char 14105 allocated 1 temp 0 rank 0 []
+rank char 14106 allocated 1 temp 0 rank 0 []
+rank char 14107 allocated 1 temp 0 rank 0 []
+rank char 14108 allocated 1 temp 0 rank 0 []
+rank char 14109 allocated 1 temp 0 rank 0 []
+rank char 14110 allocated 1 temp 0 rank 0 []
+rank char 14111 allocated 1 temp 0 rank 0 []
+rank char 14112 allocated 1 temp 0 rank 0 []
+rank char 14113 allocated 1 temp 0 rank 0 []
+rank char 14114 allocated 1 temp 0 rank 0 []
+rank char 15101 allocated 1 temp 0 rank 0 []
+rank char 16101 allocated 1 temp 0 rank 0 []
+rank char 16102 allocated 1 temp 0 rank 0 []
+rank char 16103 allocated 1 temp 0 rank 0 []
+rank char 16104 allocated 1 temp 0 rank 0 []
+rank char 16105 allocated 1 temp 0 rank 0 []
+rank char 16106 allocated 1 temp 0 rank 0 []
+rank char 16107 allocated 1 temp 0 rank 0 []
+rank char 16108 allocated 1 temp 0 rank 0 []
+rank char 16109 allocated 1 temp 0 rank 0 []
+rank char 16110 allocated 1 temp 0 rank 0 []
+rank char 16111 allocated 1 temp 0 rank 0 []
+rank char 16112 allocated 1 temp 0 rank 0 []
+rank char 16113 allocated 1 temp 0 rank 0 []
+rank char 16114 allocated 1 temp 0 rank 0 []
+rank char 16115 allocated 1 temp 0 rank 0 []
+> save 1000
+1000 char 0
+LI
+ wh 11000
+CH
+ lo 200
+ ra 30
+
+> save 1001
+1001 char 0
+LI
+ wh 12000
+CH
+ lo 200
+ ra 80
+
+> save 1002
+1002 char 0
+LI
+ wh 13000
+CH
+ ra 80
+
+> save 1003
+1003 char 0
+LI
+ wh 14000
+CH
+ ra 30
+
+> save 1004
+1004 char 0
+LI
+ wh 15000
+CH
+ ra 10
+
+> save 1005
+1005 char 0
+LI
+ wh 16000
+CH
+ ra 30
+
+> field 1004 pledge 1003
+> closure ruler 15001
+top ruler 15001 1003
+> closure ranks
+> closure state
+post flag 0 month -1
+rank char 1000 allocated 1 temp 14 rank 30 [, baron]
+rank char 1001 allocated 1 temp 15 rank 80 [, king]
+rank char 1002 allocated 1 temp 0 rank 80 [, king]
+rank char 1003 allocated 1 temp 15 rank 80 [, king]
+rank char 1004 allocated 1 temp 1 rank 10 [, lord]
+rank char 1005 allocated 1 temp 15 rank 30 [, baron]
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+rank char 11103 allocated 1 temp 0 rank 0 []
+rank char 11104 allocated 1 temp 0 rank 0 []
+rank char 11105 allocated 1 temp 0 rank 0 []
+rank char 11106 allocated 1 temp 0 rank 0 []
+rank char 11107 allocated 1 temp 0 rank 0 []
+rank char 11108 allocated 1 temp 0 rank 0 []
+rank char 11109 allocated 1 temp 0 rank 0 []
+rank char 11110 allocated 1 temp 0 rank 0 []
+rank char 11111 allocated 1 temp 0 rank 0 []
+rank char 11112 allocated 1 temp 0 rank 0 []
+rank char 11113 allocated 1 temp 0 rank 0 []
+rank char 11114 allocated 1 temp 0 rank 0 []
+rank char 12101 allocated 1 temp 0 rank 0 []
+rank char 12102 allocated 1 temp 0 rank 0 []
+rank char 12103 allocated 1 temp 0 rank 0 []
+rank char 12104 allocated 1 temp 0 rank 0 []
+rank char 12105 allocated 1 temp 0 rank 0 []
+rank char 12106 allocated 1 temp 0 rank 0 []
+rank char 12107 allocated 1 temp 0 rank 0 []
+rank char 12108 allocated 1 temp 0 rank 0 []
+rank char 12109 allocated 1 temp 0 rank 0 []
+rank char 12110 allocated 1 temp 0 rank 0 []
+rank char 12111 allocated 1 temp 0 rank 0 []
+rank char 12112 allocated 1 temp 0 rank 0 []
+rank char 12113 allocated 1 temp 0 rank 0 []
+rank char 12114 allocated 1 temp 0 rank 0 []
+rank char 12115 allocated 1 temp 0 rank 0 []
+rank char 13101 allocated 1 temp 0 rank 0 []
+rank char 13102 allocated 1 temp 0 rank 0 []
+rank char 13103 allocated 1 temp 0 rank 0 []
+rank char 13104 allocated 1 temp 0 rank 0 []
+rank char 13105 allocated 1 temp 0 rank 0 []
+rank char 13106 allocated 1 temp 0 rank 0 []
+rank char 13107 allocated 1 temp 0 rank 0 []
+rank char 13108 allocated 1 temp 0 rank 0 []
+rank char 13109 allocated 1 temp 0 rank 0 []
+rank char 13110 allocated 1 temp 0 rank 0 []
+rank char 13111 allocated 1 temp 0 rank 0 []
+rank char 13112 allocated 1 temp 0 rank 0 []
+rank char 13113 allocated 1 temp 0 rank 0 []
+rank char 13114 allocated 1 temp 0 rank 0 []
+rank char 13115 allocated 1 temp 0 rank 0 []
+rank char 14101 allocated 1 temp 0 rank 0 []
+rank char 14102 allocated 1 temp 0 rank 0 []
+rank char 14103 allocated 1 temp 0 rank 0 []
+rank char 14104 allocated 1 temp 0 rank 0 []
+rank char 14105 allocated 1 temp 0 rank 0 []
+rank char 14106 allocated 1 temp 0 rank 0 []
+rank char 14107 allocated 1 temp 0 rank 0 []
+rank char 14108 allocated 1 temp 0 rank 0 []
+rank char 14109 allocated 1 temp 0 rank 0 []
+rank char 14110 allocated 1 temp 0 rank 0 []
+rank char 14111 allocated 1 temp 0 rank 0 []
+rank char 14112 allocated 1 temp 0 rank 0 []
+rank char 14113 allocated 1 temp 0 rank 0 []
+rank char 14114 allocated 1 temp 0 rank 0 []
+rank char 15101 allocated 1 temp 0 rank 0 []
+rank char 16101 allocated 1 temp 0 rank 0 []
+rank char 16102 allocated 1 temp 0 rank 0 []
+rank char 16103 allocated 1 temp 0 rank 0 []
+rank char 16104 allocated 1 temp 0 rank 0 []
+rank char 16105 allocated 1 temp 0 rank 0 []
+rank char 16106 allocated 1 temp 0 rank 0 []
+rank char 16107 allocated 1 temp 0 rank 0 []
+rank char 16108 allocated 1 temp 0 rank 0 []
+rank char 16109 allocated 1 temp 0 rank 0 []
+rank char 16110 allocated 1 temp 0 rank 0 []
+rank char 16111 allocated 1 temp 0 rank 0 []
+rank char 16112 allocated 1 temp 0 rank 0 []
+rank char 16113 allocated 1 temp 0 rank 0 []
+rank char 16114 allocated 1 temp 0 rank 0 []
+rank char 16115 allocated 1 temp 0 rank 0 []
+> save 1003
+1003 char 0
+LI
+ wh 14000
+CH
+ ra 80
+
+> save 1004
+1004 char 0
+LI
+ wh 15000
+CH
+ ra 10
+CM
+ pl 1003
+
+stderr:
+determine_noble_ranks()
+determine_noble_ranks()
+
+exit 0
+stdout:
+section closure complete post month real gameplay settlement production decay queue and rank composition
+> master 0
+> set gm 200
+> set turn 8
+> set auto_quit 5
+> field 200 last_order 4
+> field 201 last_order 3
+> field 200 first_turn 1
+> field 201 first_turn 1
+> field 200 sent 7
+> field 201 sent 3
+> field 200 np 10
+> field 201 np 20
+> entity 1 4 0
+> entity 10 4 0
+> entity 12 4 0
+> entity 18 4 0
+> entity 31 4 0
+> entity 51 4 0
+> entity 59 4 0
+> entity 96 4 0
+> entity 277 4 0
+> field 12 man 1
+> entity 10000 3 50
+> rankland 1000 2 10 11000 10000
+> link 1000 1001
+> field 1000 health 100
+> field 1001 health 100
+> field 1000 loyal 2
+> field 1001 loyal 2
+> inventory 11101 1 100
+> inventory 11102 1 100
+> inventory 11001 96 81
+> inventory 11002 96 63
+> inventory 1000 1 100
+> field 11001 quest 2
+> field 11001 link_to 11000
+> field 11001 link_when 7
+> field 11001 link_open 1
+> field 1000 magician 1
+> field 1000 max_aura 5
+> field 1000 cur_aura 1
+> field 1000 ability_shroud 2
+> orders 201 201 wait 9
+> closure state
+post flag 0 month 7
+rank char 1000 allocated 1 temp 0 rank 0 []
+rank char 1001 allocated 1 temp 0 rank 0 []
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+> closure post
+> closure state
+post flag 1 month 7
+rank char 1000 allocated 1 temp 2 rank 10 [, lord]
+rank char 1001 allocated 1 temp 0 rank 0 []
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+> closure describe 1000
+rank description 1000 [<no subkind>~[1000], lord]
+> accounts state
+tax gold 30
+account 200 allocated 1
+np gained 1 spent 0 sent 0
+unformed: 8427 8720 9294 3190 4429
+output: 6 1000 11 200
+200 player pl_regular
+il	1 25
+PL
+ np 11
+ ft 1
+ lt 4
+ uf 8427 8720 9294 3190 4429 
+
+account 201 allocated 1
+np gained 1 spent 0 sent 0
+unformed: 7317 3384 5697 4096 6995
+output:
+201 player pl_regular
+il	1 25
+PL
+ np 21
+ ft 1
+ lt 3
+ uf 7317 3384 5697 4096 6995 
+
+3190 unform 0
+
+3384 unform 0
+
+4096 unform 0
+
+4429 unform 0
+
+5697 unform 0
+
+6995 unform 0
+
+7317 unform 0
+
+8427 unform 0
+
+8720 unform 0
+
+9294 unform 0
+
+> garrison taxstate
+gold provinces 21
+tax garrison 11101 misc 1 tax 81 forward -1 strength 10
+tax garrison 11102 misc 1 tax 63 forward 21 strength 10
+tax loc 10000 temp 0
+tax loc 11000 temp 0
+tax loc 11001 temp 6
+tax loc 11002 temp 0
+> monthly state
+monthly char 1000 char 1 magic 1 fresh 0 new 0
+1000 char 0
+il	1 151
+LI
+ wh 11000
+ hl 1001 
+CH
+ lo 200
+ he 100
+ lk 2
+ ra 10
+CM
+ im 1
+ ma 5
+ ca 3
+ as 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 2
+
+monthly char 11101 char 1 magic 0 fresh 0 new 0
+11101 char garrison
+il	12 10 \
+	1 80
+LI
+ wh 11001
+CH
+ lo 201
+MI
+ gc 11000
+
+monthly char 11102 char 1 magic 0 fresh 0 new 0
+11102 char garrison
+il	12 10 \
+	1 80
+LI
+ wh 11002
+CH
+ lo 201
+MI
+ gc 11000
+
+monthly loc 10000 loc 0 subloc 0 recent 0
+10000 loc region
+LI
+ hl 11001 11002 
+
+monthly loc 11000 loc 0 subloc 0 recent 0
+11000 loc castle
+LI
+ wh 11001
+ hl 1000 
+
+monthly loc 11001 loc 1 subloc 1 recent 0
+11001 loc plain
+il	96 100 \
+	51 5 \
+	10 10 \
+	277 5
+LI
+ wh 10000
+ hl 11101 11000 
+LO
+ lc 1
+SL
+ ql 1
+ lt 11000 
+ lw 7
+ lp 2
+
+monthly loc 11002 loc 1 subloc 0 recent 0
+11002 loc plain
+il	96 50 \
+	51 5 \
+	10 10
+LI
+ wh 10000
+ hl 11102 
+
+> save 1000
+1000 char 0
+il	1 151
+LI
+ wh 11000
+ hl 1001 
+CH
+ lo 200
+ he 100
+ lk 2
+ ra 10
+CM
+ im 1
+ ma 5
+ ca 3
+ as 1
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 2
+
+> save 11101
+11101 char garrison
+il	12 10 \
+	1 80
+LI
+ wh 11001
+CH
+ lo 201
+MI
+ gc 11000
+
+> orders_file 201
+orders file 201:
+201:wait 9
+201:quit
+> readlog 200
+log 200:
+6:0:ap01:0::Paid maintenance of 20~gold.
+6:0:ap02:0::Paid maintenance of 20~gold.
+1000:0::0::Collected 21~gold from owned provinces.
+1000:0::0::Collected 30~gold in taxes.
+6:0:ap01:0::Paid maintenance of 20~gold.
+6:0:ap02:0::Paid maintenance of 20~gold.
+11:0::0::Queued drop for Player~[201]
+11:0::0::     <>
+200:0::3/3::<no subkind>~[1001]
+> set turn 9
+> set auto_quit 0
+> set post 0
+> closure post
+> closure state
+post flag 1 month 0
+rank char 1000 allocated 1 temp 2 rank 10 [, lord]
+rank char 1001 allocated 1 temp 0 rank 0 []
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+> closure describe 1000
+rank description 1000 [<no subkind>~[1000], lord]
+> accounts state
+tax gold 70
+account 200 allocated 1
+np gained 1 spent 0 sent 0
+unformed: 8427 8720 9294 3190 4429
+output: 6 1000 11 200
+200 player pl_regular
+il	1 50
+PL
+ np 11
+ ft 1
+ lt 4
+ uf 8427 8720 9294 3190 4429 
+
+account 201 allocated 1
+np gained 1 spent 0 sent 0
+unformed: 7317 3384 5697 4096 6995
+output:
+201 player pl_regular
+il	1 50
+PL
+ np 21
+ ft 1
+ lt 3
+ uf 7317 3384 5697 4096 6995 
+
+3190 unform 0
+
+3384 unform 0
+
+4096 unform 0
+
+4429 unform 0
+
+5697 unform 0
+
+6995 unform 0
+
+7317 unform 0
+
+8427 unform 0
+
+8720 unform 0
+
+9294 unform 0
+
+> monthly state
+monthly char 1000 char 1 magic 1 fresh 0 new 0
+1000 char 0
+il	1 206
+LI
+ wh 11000
+ hl 1001 
+CH
+ lo 200
+ he 100
+ lk 2
+ ra 10
+CM
+ im 1
+ ma 5
+ ca 5
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 2
+
+monthly char 11101 char 1 magic 0 fresh 0 new 0
+11101 char garrison
+il	12 10 \
+	1 60
+LI
+ wh 11001
+CH
+ lo 201
+MI
+ gc 11000
+
+monthly char 11102 char 1 magic 0 fresh 0 new 0
+11102 char garrison
+il	12 10 \
+	1 60
+LI
+ wh 11002
+CH
+ lo 201
+MI
+ gc 11000
+
+monthly loc 10000 loc 0 subloc 0 recent 0
+10000 loc region
+LI
+ hl 11001 11002 
+
+monthly loc 11000 loc 0 subloc 0 recent 0
+11000 loc castle
+LI
+ wh 11001
+ hl 1000 
+
+monthly loc 11001 loc 1 subloc 1 recent 0
+11001 loc plain
+il	96 100 \
+	51 5 \
+	10 10 \
+	277 5
+LI
+ wh 10000
+ hl 11101 11000 
+LO
+ lc 1
+SL
+ lt 11000 
+ lw 7
+ lp 1
+
+monthly loc 11002 loc 1 subloc 0 recent 0
+11002 loc plain
+il	96 50 \
+	51 5 \
+	10 10
+LI
+ wh 10000
+ hl 11102 
+
+> orders_file 201
+orders file 201:
+201:wait 9
+201:quit
+> readlog 200
+log 200:
+6:0:ap01:0::Paid maintenance of 20~gold.
+6:0:ap02:0::Paid maintenance of 20~gold.
+1000:0::0::Collected 21~gold from owned provinces.
+1000:0::0::Collected 30~gold in taxes.
+6:0:ap01:0::Paid maintenance of 20~gold.
+6:0:ap02:0::Paid maintenance of 20~gold.
+11:0::0::Queued drop for Player~[201]
+11:0::0::     <>
+200:0::3/3::<no subkind>~[1001]
+6:0:ap01:0::Paid maintenance of 20~gold.
+6:0:ap02:0::Paid maintenance of 20~gold.
+1000:0::0::Collected 15~gold from owned provinces.
+1000:0::0::Collected 40~gold in taxes.
+6:0:ap01:0::Paid maintenance of 20~gold.
+6:0:ap02:0::Paid maintenance of 20~gold.
+200:0::3/3::<no subkind>~[1001]
+stderr:
+post_month()
+animal_deaths()
+compute_civ_levels()
+location_trades()
+determine_noble_ranks()
+post_month()
+animal_deaths()
+compute_civ_levels()
+location_trades()
+determine_noble_ranks()
+
+exit 0
+stdout:
+section closure complete ranks upper thresholds through real owner counting
+> entity 12 4 0
+> field 12 man 1
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> entity 1006 2 0
+> entity 1007 2 0
+> rankland 1000 24 10 11000 0
+> rankland 1001 25 10 12000 0
+> rankland 1002 37 10 13000 0
+> rankland 1003 38 10 14000 0
+> rankland 1004 50 10 15000 0
+> rankland 1005 51 10 16000 0
+> rankland 1006 63 10 17000 0
+> rankland 1007 64 10 18000 0
+> closure ranks
+> closure state
+post flag 0 month -1
+rank char 1000 allocated 1 temp 24 rank 30 [, baron]
+rank char 1001 allocated 1 temp 25 rank 40 [, count]
+rank char 1002 allocated 1 temp 37 rank 40 [, count]
+rank char 1003 allocated 1 temp 38 rank 50 [, earl]
+rank char 1004 allocated 1 temp 50 rank 50 [, earl]
+rank char 1005 allocated 1 temp 51 rank 60 [, marquess]
+rank char 1006 allocated 1 temp 63 rank 60 [, marquess]
+rank char 1007 allocated 1 temp 64 rank 70 [, duke]
+rank char 11101 allocated 1 temp 0 rank 0 []
+rank char 11102 allocated 1 temp 0 rank 0 []
+rank char 11103 allocated 1 temp 0 rank 0 []
+rank char 11104 allocated 1 temp 0 rank 0 []
+rank char 11105 allocated 1 temp 0 rank 0 []
+rank char 11106 allocated 1 temp 0 rank 0 []
+rank char 11107 allocated 1 temp 0 rank 0 []
+rank char 11108 allocated 1 temp 0 rank 0 []
+rank char 11109 allocated 1 temp 0 rank 0 []
+rank char 11110 allocated 1 temp 0 rank 0 []
+rank char 11111 allocated 1 temp 0 rank 0 []
+rank char 11112 allocated 1 temp 0 rank 0 []
+rank char 11113 allocated 1 temp 0 rank 0 []
+rank char 11114 allocated 1 temp 0 rank 0 []
+rank char 11115 allocated 1 temp 0 rank 0 []
+rank char 11116 allocated 1 temp 0 rank 0 []
+rank char 11117 allocated 1 temp 0 rank 0 []
+rank char 11118 allocated 1 temp 0 rank 0 []
+rank char 11119 allocated 1 temp 0 rank 0 []
+rank char 11120 allocated 1 temp 0 rank 0 []
+rank char 11121 allocated 1 temp 0 rank 0 []
+rank char 11122 allocated 1 temp 0 rank 0 []
+rank char 11123 allocated 1 temp 0 rank 0 []
+rank char 11124 allocated 1 temp 0 rank 0 []
+rank char 12101 allocated 1 temp 0 rank 0 []
+rank char 12102 allocated 1 temp 0 rank 0 []
+rank char 12103 allocated 1 temp 0 rank 0 []
+rank char 12104 allocated 1 temp 0 rank 0 []
+rank char 12105 allocated 1 temp 0 rank 0 []
+rank char 12106 allocated 1 temp 0 rank 0 []
+rank char 12107 allocated 1 temp 0 rank 0 []
+rank char 12108 allocated 1 temp 0 rank 0 []
+rank char 12109 allocated 1 temp 0 rank 0 []
+rank char 12110 allocated 1 temp 0 rank 0 []
+rank char 12111 allocated 1 temp 0 rank 0 []
+rank char 12112 allocated 1 temp 0 rank 0 []
+rank char 12113 allocated 1 temp 0 rank 0 []
+rank char 12114 allocated 1 temp 0 rank 0 []
+rank char 12115 allocated 1 temp 0 rank 0 []
+rank char 12116 allocated 1 temp 0 rank 0 []
+rank char 12117 allocated 1 temp 0 rank 0 []
+rank char 12118 allocated 1 temp 0 rank 0 []
+rank char 12119 allocated 1 temp 0 rank 0 []
+rank char 12120 allocated 1 temp 0 rank 0 []
+rank char 12121 allocated 1 temp 0 rank 0 []
+rank char 12122 allocated 1 temp 0 rank 0 []
+rank char 12123 allocated 1 temp 0 rank 0 []
+rank char 12124 allocated 1 temp 0 rank 0 []
+rank char 12125 allocated 1 temp 0 rank 0 []
+rank char 13101 allocated 1 temp 0 rank 0 []
+rank char 13102 allocated 1 temp 0 rank 0 []
+rank char 13103 allocated 1 temp 0 rank 0 []
+rank char 13104 allocated 1 temp 0 rank 0 []
+rank char 13105 allocated 1 temp 0 rank 0 []
+rank char 13106 allocated 1 temp 0 rank 0 []
+rank char 13107 allocated 1 temp 0 rank 0 []
+rank char 13108 allocated 1 temp 0 rank 0 []
+rank char 13109 allocated 1 temp 0 rank 0 []
+rank char 13110 allocated 1 temp 0 rank 0 []
+rank char 13111 allocated 1 temp 0 rank 0 []
+rank char 13112 allocated 1 temp 0 rank 0 []
+rank char 13113 allocated 1 temp 0 rank 0 []
+rank char 13114 allocated 1 temp 0 rank 0 []
+rank char 13115 allocated 1 temp 0 rank 0 []
+rank char 13116 allocated 1 temp 0 rank 0 []
+rank char 13117 allocated 1 temp 0 rank 0 []
+rank char 13118 allocated 1 temp 0 rank 0 []
+rank char 13119 allocated 1 temp 0 rank 0 []
+rank char 13120 allocated 1 temp 0 rank 0 []
+rank char 13121 allocated 1 temp 0 rank 0 []
+rank char 13122 allocated 1 temp 0 rank 0 []
+rank char 13123 allocated 1 temp 0 rank 0 []
+rank char 13124 allocated 1 temp 0 rank 0 []
+rank char 13125 allocated 1 temp 0 rank 0 []
+rank char 13126 allocated 1 temp 0 rank 0 []
+rank char 13127 allocated 1 temp 0 rank 0 []
+rank char 13128 allocated 1 temp 0 rank 0 []
+rank char 13129 allocated 1 temp 0 rank 0 []
+rank char 13130 allocated 1 temp 0 rank 0 []
+rank char 13131 allocated 1 temp 0 rank 0 []
+rank char 13132 allocated 1 temp 0 rank 0 []
+rank char 13133 allocated 1 temp 0 rank 0 []
+rank char 13134 allocated 1 temp 0 rank 0 []
+rank char 13135 allocated 1 temp 0 rank 0 []
+rank char 13136 allocated 1 temp 0 rank 0 []
+rank char 13137 allocated 1 temp 0 rank 0 []
+rank char 14101 allocated 1 temp 0 rank 0 []
+rank char 14102 allocated 1 temp 0 rank 0 []
+rank char 14103 allocated 1 temp 0 rank 0 []
+rank char 14104 allocated 1 temp 0 rank 0 []
+rank char 14105 allocated 1 temp 0 rank 0 []
+rank char 14106 allocated 1 temp 0 rank 0 []
+rank char 14107 allocated 1 temp 0 rank 0 []
+rank char 14108 allocated 1 temp 0 rank 0 []
+rank char 14109 allocated 1 temp 0 rank 0 []
+rank char 14110 allocated 1 temp 0 rank 0 []
+rank char 14111 allocated 1 temp 0 rank 0 []
+rank char 14112 allocated 1 temp 0 rank 0 []
+rank char 14113 allocated 1 temp 0 rank 0 []
+rank char 14114 allocated 1 temp 0 rank 0 []
+rank char 14115 allocated 1 temp 0 rank 0 []
+rank char 14116 allocated 1 temp 0 rank 0 []
+rank char 14117 allocated 1 temp 0 rank 0 []
+rank char 14118 allocated 1 temp 0 rank 0 []
+rank char 14119 allocated 1 temp 0 rank 0 []
+rank char 14120 allocated 1 temp 0 rank 0 []
+rank char 14121 allocated 1 temp 0 rank 0 []
+rank char 14122 allocated 1 temp 0 rank 0 []
+rank char 14123 allocated 1 temp 0 rank 0 []
+rank char 14124 allocated 1 temp 0 rank 0 []
+rank char 14125 allocated 1 temp 0 rank 0 []
+rank char 14126 allocated 1 temp 0 rank 0 []
+rank char 14127 allocated 1 temp 0 rank 0 []
+rank char 14128 allocated 1 temp 0 rank 0 []
+rank char 14129 allocated 1 temp 0 rank 0 []
+rank char 14130 allocated 1 temp 0 rank 0 []
+rank char 14131 allocated 1 temp 0 rank 0 []
+rank char 14132 allocated 1 temp 0 rank 0 []
+rank char 14133 allocated 1 temp 0 rank 0 []
+rank char 14134 allocated 1 temp 0 rank 0 []
+rank char 14135 allocated 1 temp 0 rank 0 []
+rank char 14136 allocated 1 temp 0 rank 0 []
+rank char 14137 allocated 1 temp 0 rank 0 []
+rank char 14138 allocated 1 temp 0 rank 0 []
+rank char 15101 allocated 1 temp 0 rank 0 []
+rank char 15102 allocated 1 temp 0 rank 0 []
+rank char 15103 allocated 1 temp 0 rank 0 []
+rank char 15104 allocated 1 temp 0 rank 0 []
+rank char 15105 allocated 1 temp 0 rank 0 []
+rank char 15106 allocated 1 temp 0 rank 0 []
+rank char 15107 allocated 1 temp 0 rank 0 []
+rank char 15108 allocated 1 temp 0 rank 0 []
+rank char 15109 allocated 1 temp 0 rank 0 []
+rank char 15110 allocated 1 temp 0 rank 0 []
+rank char 15111 allocated 1 temp 0 rank 0 []
+rank char 15112 allocated 1 temp 0 rank 0 []
+rank char 15113 allocated 1 temp 0 rank 0 []
+rank char 15114 allocated 1 temp 0 rank 0 []
+rank char 15115 allocated 1 temp 0 rank 0 []
+rank char 15116 allocated 1 temp 0 rank 0 []
+rank char 15117 allocated 1 temp 0 rank 0 []
+rank char 15118 allocated 1 temp 0 rank 0 []
+rank char 15119 allocated 1 temp 0 rank 0 []
+rank char 15120 allocated 1 temp 0 rank 0 []
+rank char 15121 allocated 1 temp 0 rank 0 []
+rank char 15122 allocated 1 temp 0 rank 0 []
+rank char 15123 allocated 1 temp 0 rank 0 []
+rank char 15124 allocated 1 temp 0 rank 0 []
+rank char 15125 allocated 1 temp 0 rank 0 []
+rank char 15126 allocated 1 temp 0 rank 0 []
+rank char 15127 allocated 1 temp 0 rank 0 []
+rank char 15128 allocated 1 temp 0 rank 0 []
+rank char 15129 allocated 1 temp 0 rank 0 []
+rank char 15130 allocated 1 temp 0 rank 0 []
+rank char 15131 allocated 1 temp 0 rank 0 []
+rank char 15132 allocated 1 temp 0 rank 0 []
+rank char 15133 allocated 1 temp 0 rank 0 []
+rank char 15134 allocated 1 temp 0 rank 0 []
+rank char 15135 allocated 1 temp 0 rank 0 []
+rank char 15136 allocated 1 temp 0 rank 0 []
+rank char 15137 allocated 1 temp 0 rank 0 []
+rank char 15138 allocated 1 temp 0 rank 0 []
+rank char 15139 allocated 1 temp 0 rank 0 []
+rank char 15140 allocated 1 temp 0 rank 0 []
+rank char 15141 allocated 1 temp 0 rank 0 []
+rank char 15142 allocated 1 temp 0 rank 0 []
+rank char 15143 allocated 1 temp 0 rank 0 []
+rank char 15144 allocated 1 temp 0 rank 0 []
+rank char 15145 allocated 1 temp 0 rank 0 []
+rank char 15146 allocated 1 temp 0 rank 0 []
+rank char 15147 allocated 1 temp 0 rank 0 []
+rank char 15148 allocated 1 temp 0 rank 0 []
+rank char 15149 allocated 1 temp 0 rank 0 []
+rank char 15150 allocated 1 temp 0 rank 0 []
+rank char 16101 allocated 1 temp 0 rank 0 []
+rank char 16102 allocated 1 temp 0 rank 0 []
+rank char 16103 allocated 1 temp 0 rank 0 []
+rank char 16104 allocated 1 temp 0 rank 0 []
+rank char 16105 allocated 1 temp 0 rank 0 []
+rank char 16106 allocated 1 temp 0 rank 0 []
+rank char 16107 allocated 1 temp 0 rank 0 []
+rank char 16108 allocated 1 temp 0 rank 0 []
+rank char 16109 allocated 1 temp 0 rank 0 []
+rank char 16110 allocated 1 temp 0 rank 0 []
+rank char 16111 allocated 1 temp 0 rank 0 []
+rank char 16112 allocated 1 temp 0 rank 0 []
+rank char 16113 allocated 1 temp 0 rank 0 []
+rank char 16114 allocated 1 temp 0 rank 0 []
+rank char 16115 allocated 1 temp 0 rank 0 []
+rank char 16116 allocated 1 temp 0 rank 0 []
+rank char 16117 allocated 1 temp 0 rank 0 []
+rank char 16118 allocated 1 temp 0 rank 0 []
+rank char 16119 allocated 1 temp 0 rank 0 []
+rank char 16120 allocated 1 temp 0 rank 0 []
+rank char 16121 allocated 1 temp 0 rank 0 []
+rank char 16122 allocated 1 temp 0 rank 0 []
+rank char 16123 allocated 1 temp 0 rank 0 []
+rank char 16124 allocated 1 temp 0 rank 0 []
+rank char 16125 allocated 1 temp 0 rank 0 []
+rank char 16126 allocated 1 temp 0 rank 0 []
+rank char 16127 allocated 1 temp 0 rank 0 []
+rank char 16128 allocated 1 temp 0 rank 0 []
+rank char 16129 allocated 1 temp 0 rank 0 []
+rank char 16130 allocated 1 temp 0 rank 0 []
+rank char 16131 allocated 1 temp 0 rank 0 []
+rank char 16132 allocated 1 temp 0 rank 0 []
+rank char 16133 allocated 1 temp 0 rank 0 []
+rank char 16134 allocated 1 temp 0 rank 0 []
+rank char 16135 allocated 1 temp 0 rank 0 []
+rank char 16136 allocated 1 temp 0 rank 0 []
+rank char 16137 allocated 1 temp 0 rank 0 []
+rank char 16138 allocated 1 temp 0 rank 0 []
+rank char 16139 allocated 1 temp 0 rank 0 []
+rank char 16140 allocated 1 temp 0 rank 0 []
+rank char 16141 allocated 1 temp 0 rank 0 []
+rank char 16142 allocated 1 temp 0 rank 0 []
+rank char 16143 allocated 1 temp 0 rank 0 []
+rank char 16144 allocated 1 temp 0 rank 0 []
+rank char 16145 allocated 1 temp 0 rank 0 []
+rank char 16146 allocated 1 temp 0 rank 0 []
+rank char 16147 allocated 1 temp 0 rank 0 []
+rank char 16148 allocated 1 temp 0 rank 0 []
+rank char 16149 allocated 1 temp 0 rank 0 []
+rank char 16150 allocated 1 temp 0 rank 0 []
+rank char 16151 allocated 1 temp 0 rank 0 []
+rank char 17101 allocated 1 temp 0 rank 0 []
+rank char 17102 allocated 1 temp 0 rank 0 []
+rank char 17103 allocated 1 temp 0 rank 0 []
+rank char 17104 allocated 1 temp 0 rank 0 []
+rank char 17105 allocated 1 temp 0 rank 0 []
+rank char 17106 allocated 1 temp 0 rank 0 []
+rank char 17107 allocated 1 temp 0 rank 0 []
+rank char 17108 allocated 1 temp 0 rank 0 []
+rank char 17109 allocated 1 temp 0 rank 0 []
+rank char 17110 allocated 1 temp 0 rank 0 []
+rank char 17111 allocated 1 temp 0 rank 0 []
+rank char 17112 allocated 1 temp 0 rank 0 []
+rank char 17113 allocated 1 temp 0 rank 0 []
+rank char 17114 allocated 1 temp 0 rank 0 []
+rank char 17115 allocated 1 temp 0 rank 0 []
+rank char 17116 allocated 1 temp 0 rank 0 []
+rank char 17117 allocated 1 temp 0 rank 0 []
+rank char 17118 allocated 1 temp 0 rank 0 []
+rank char 17119 allocated 1 temp 0 rank 0 []
+rank char 17120 allocated 1 temp 0 rank 0 []
+rank char 17121 allocated 1 temp 0 rank 0 []
+rank char 17122 allocated 1 temp 0 rank 0 []
+rank char 17123 allocated 1 temp 0 rank 0 []
+rank char 17124 allocated 1 temp 0 rank 0 []
+rank char 17125 allocated 1 temp 0 rank 0 []
+rank char 17126 allocated 1 temp 0 rank 0 []
+rank char 17127 allocated 1 temp 0 rank 0 []
+rank char 17128 allocated 1 temp 0 rank 0 []
+rank char 17129 allocated 1 temp 0 rank 0 []
+rank char 17130 allocated 1 temp 0 rank 0 []
+rank char 17131 allocated 1 temp 0 rank 0 []
+rank char 17132 allocated 1 temp 0 rank 0 []
+rank char 17133 allocated 1 temp 0 rank 0 []
+rank char 17134 allocated 1 temp 0 rank 0 []
+rank char 17135 allocated 1 temp 0 rank 0 []
+rank char 17136 allocated 1 temp 0 rank 0 []
+rank char 17137 allocated 1 temp 0 rank 0 []
+rank char 17138 allocated 1 temp 0 rank 0 []
+rank char 17139 allocated 1 temp 0 rank 0 []
+rank char 17140 allocated 1 temp 0 rank 0 []
+rank char 17141 allocated 1 temp 0 rank 0 []
+rank char 17142 allocated 1 temp 0 rank 0 []
+rank char 17143 allocated 1 temp 0 rank 0 []
+rank char 17144 allocated 1 temp 0 rank 0 []
+rank char 17145 allocated 1 temp 0 rank 0 []
+rank char 17146 allocated 1 temp 0 rank 0 []
+rank char 17147 allocated 1 temp 0 rank 0 []
+rank char 17148 allocated 1 temp 0 rank 0 []
+rank char 17149 allocated 1 temp 0 rank 0 []
+rank char 17150 allocated 1 temp 0 rank 0 []
+rank char 17151 allocated 1 temp 0 rank 0 []
+rank char 17152 allocated 1 temp 0 rank 0 []
+rank char 17153 allocated 1 temp 0 rank 0 []
+rank char 17154 allocated 1 temp 0 rank 0 []
+rank char 17155 allocated 1 temp 0 rank 0 []
+rank char 17156 allocated 1 temp 0 rank 0 []
+rank char 17157 allocated 1 temp 0 rank 0 []
+rank char 17158 allocated 1 temp 0 rank 0 []
+rank char 17159 allocated 1 temp 0 rank 0 []
+rank char 17160 allocated 1 temp 0 rank 0 []
+rank char 17161 allocated 1 temp 0 rank 0 []
+rank char 17162 allocated 1 temp 0 rank 0 []
+rank char 17163 allocated 1 temp 0 rank 0 []
+rank char 18101 allocated 1 temp 0 rank 0 []
+rank char 18102 allocated 1 temp 0 rank 0 []
+rank char 18103 allocated 1 temp 0 rank 0 []
+rank char 18104 allocated 1 temp 0 rank 0 []
+rank char 18105 allocated 1 temp 0 rank 0 []
+rank char 18106 allocated 1 temp 0 rank 0 []
+rank char 18107 allocated 1 temp 0 rank 0 []
+rank char 18108 allocated 1 temp 0 rank 0 []
+rank char 18109 allocated 1 temp 0 rank 0 []
+rank char 18110 allocated 1 temp 0 rank 0 []
+rank char 18111 allocated 1 temp 0 rank 0 []
+rank char 18112 allocated 1 temp 0 rank 0 []
+rank char 18113 allocated 1 temp 0 rank 0 []
+rank char 18114 allocated 1 temp 0 rank 0 []
+rank char 18115 allocated 1 temp 0 rank 0 []
+rank char 18116 allocated 1 temp 0 rank 0 []
+rank char 18117 allocated 1 temp 0 rank 0 []
+rank char 18118 allocated 1 temp 0 rank 0 []
+rank char 18119 allocated 1 temp 0 rank 0 []
+rank char 18120 allocated 1 temp 0 rank 0 []
+rank char 18121 allocated 1 temp 0 rank 0 []
+rank char 18122 allocated 1 temp 0 rank 0 []
+rank char 18123 allocated 1 temp 0 rank 0 []
+rank char 18124 allocated 1 temp 0 rank 0 []
+rank char 18125 allocated 1 temp 0 rank 0 []
+rank char 18126 allocated 1 temp 0 rank 0 []
+rank char 18127 allocated 1 temp 0 rank 0 []
+rank char 18128 allocated 1 temp 0 rank 0 []
+rank char 18129 allocated 1 temp 0 rank 0 []
+rank char 18130 allocated 1 temp 0 rank 0 []
+rank char 18131 allocated 1 temp 0 rank 0 []
+rank char 18132 allocated 1 temp 0 rank 0 []
+rank char 18133 allocated 1 temp 0 rank 0 []
+rank char 18134 allocated 1 temp 0 rank 0 []
+rank char 18135 allocated 1 temp 0 rank 0 []
+rank char 18136 allocated 1 temp 0 rank 0 []
+rank char 18137 allocated 1 temp 0 rank 0 []
+rank char 18138 allocated 1 temp 0 rank 0 []
+rank char 18139 allocated 1 temp 0 rank 0 []
+rank char 18140 allocated 1 temp 0 rank 0 []
+rank char 18141 allocated 1 temp 0 rank 0 []
+rank char 18142 allocated 1 temp 0 rank 0 []
+rank char 18143 allocated 1 temp 0 rank 0 []
+rank char 18144 allocated 1 temp 0 rank 0 []
+rank char 18145 allocated 1 temp 0 rank 0 []
+rank char 18146 allocated 1 temp 0 rank 0 []
+rank char 18147 allocated 1 temp 0 rank 0 []
+rank char 18148 allocated 1 temp 0 rank 0 []
+rank char 18149 allocated 1 temp 0 rank 0 []
+rank char 18150 allocated 1 temp 0 rank 0 []
+rank char 18151 allocated 1 temp 0 rank 0 []
+rank char 18152 allocated 1 temp 0 rank 0 []
+rank char 18153 allocated 1 temp 0 rank 0 []
+rank char 18154 allocated 1 temp 0 rank 0 []
+rank char 18155 allocated 1 temp 0 rank 0 []
+rank char 18156 allocated 1 temp 0 rank 0 []
+rank char 18157 allocated 1 temp 0 rank 0 []
+rank char 18158 allocated 1 temp 0 rank 0 []
+rank char 18159 allocated 1 temp 0 rank 0 []
+rank char 18160 allocated 1 temp 0 rank 0 []
+rank char 18161 allocated 1 temp 0 rank 0 []
+rank char 18162 allocated 1 temp 0 rank 0 []
+rank char 18163 allocated 1 temp 0 rank 0 []
+rank char 18164 allocated 1 temp 0 rank 0 []
+> save 1000
+1000 char 0
+LI
+ wh 11000
+CH
+ lo 200
+ ra 30
+
+> save 1001
+1001 char 0
+LI
+ wh 12000
+CH
+ lo 200
+ ra 40
+
+> save 1002
+1002 char 0
+LI
+ wh 13000
+CH
+ ra 40
+
+> save 1003
+1003 char 0
+LI
+ wh 14000
+CH
+ ra 50
+
+> save 1004
+1004 char 0
+LI
+ wh 15000
+CH
+ ra 50
+
+> save 1005
+1005 char 0
+LI
+ wh 16000
+CH
+ ra 60
+
+> save 1006
+1006 char 0
+LI
+ wh 17000
+CH
+ ra 60
+
+> save 1007
+1007 char 0
+LI
+ wh 18000
+CH
+ ra 70
+
+stderr:
+determine_noble_ranks()
+
+exit 0
+stdout:
+section closure subtype traversal counts nonfirst garrison but not ordinary fighters and stack owner is first character
+> entity 12 4 0
+> field 12 man 1
+> entity 1002 2 0
+> entity 1003 2 0
+> field 1002 lord 201
+> field 1003 lord 201
+> inventory 1002 12 100
+> rankland 1000 1 10 11000 0
+> link 11001 1002
+> link 11001 11101
+> link 1000 1001
+> field 1000 pledge 1003
+> closure ruler 11001
+top ruler 11001 0
+> closure ruler 11101
+top ruler 11101 1003
+> closure ranks
+> closure state
+post flag 0 month -1
+rank char 1000 allocated 1 temp 1 rank 0 []
+rank char 1001 allocated 1 temp 0 rank 0 []
+rank char 1002 allocated 1 temp 0 rank 0 []
+rank char 1003 allocated 1 temp 1 rank 10 [, lord]
+rank char 11101 allocated 1 temp 0 rank 0 []
+> save 1000
+1000 char 0
+LI
+ wh 11000
+ hl 1001 
+CH
+ lo 200
+CM
+ pl 1003
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+il	12 100
+LI
+ wh 11001
+CH
+ lo 201
+
+> save 1003
+1003 char 0
+CH
+ lo 201
+ ra 10
+
+stderr:
+determine_noble_ranks()
+
+exit 0

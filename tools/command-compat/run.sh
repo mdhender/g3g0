@@ -63,7 +63,8 @@ functions = {
               'decrement_meditation_hinder', 'decrement_loc_barrier', 'loyalty_decay',
               'pillage_decay', 'relic_decay', 'hide_mage_decay', 'inn_income', 'temple_income',
               'men_starve', 'unit_maint_cost', 'charge_maint_sup', 'charge_maint_costs', 'animal_deaths',
-              'collapsed_mine_decay', 'ghost_warrior_decay', 'corpse_decay', 'dead_body_rot'],
+              'collapsed_mine_decay', 'ghost_warrior_decay', 'corpse_decay', 'dead_body_rot',
+              'auto_drop', 'link_decay', 'quest_decay', 'post_month'],
     'scry.c': ['notify_loc_shroud'],
     'seed.c': ['int_comp', 'seed_taxes'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
@@ -84,7 +85,9 @@ functions = {
               'region', 'mark_loc_stack_known', 'add_here', 'all_here'],
     'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here',
                'rank_s', 'garrison_notices', 'garrison_spot_check',
-               'garrison_strength', 'ping_garrisons', 'garrison_gold'],
+               'garrison_strength', 'ping_garrisons', 'garrison_gold', 'top_ruler',
+               'nprovs_to_rank', 'find_kings', 'lower_noble_rank',
+               'det_noble_rank_sup', 'determine_noble_ranks'],
     'build.c': ['province_subloc'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
@@ -279,6 +282,13 @@ void drv_decay_mines(void) { collapsed_mine_decay(); }
 void drv_decay_ghosts(void) { ghost_warrior_decay(); }
 void drv_decay_corpses(void) { corpse_decay(); }
 void drv_decay_bodies(void) { dead_body_rot(); }
+void drv_auto_drop(void) { auto_drop(); }
+void drv_link_decay(void) { link_decay(); }
+void drv_quest_decay(void) { quest_decay(); }
+int drv_rank_threshold(int n) { return nprovs_to_rank(n); }
+int drv_rank_lower(int n) { return lower_noble_rank(n); }
+int drv_rank_sup(int n) { return det_noble_rank_sup(n); }
+void drv_kings(void) { find_kings(); }
 int drv_corpse_roll(int who) { return up_corpse(who, 0, 2); }
 int drv_starve_roll(int who, int item) { return up_starve(who, item, 1, 2); }
 int drv_animal_roll(int who, int item, int idx) { return up_animal(who, item, idx, 1, 1000); }
@@ -435,6 +445,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section closure '* ]]; then
+   [ "$status" = 0 ] || die "unexpected monthly closure status $status in section $i; expected 0"
+  fi
   if [[ "${section_names[$i]}" == 'section decay '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

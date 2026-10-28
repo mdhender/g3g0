@@ -299,6 +299,28 @@ before bounded vet/fresh defaults. No new tool, source dependency, pin, RNG
 adapter or postMonth call-position change. No full-world acceptance, unrelated
 command, report-body or stage-2 scope is implied.
 
+Monthly autoquit, links, quests and ranks (#89) extend command-compat with
+complete day.c auto_drop/link_decay/quest_decay and garr.c top_ruler,
+nprovs_to_rank/find_kings/lower_noble_rank/det_noble_rank_sup/
+determine_noble_ranks. Accepted ownership/pledge, strength, queue, output,
+rank display, mint and save writers are reused. Cases cover asymmetric
+autoquit 4/5/6-turn boundaries and missing records, appended faction orders,
+signed countdowns and month-8 wrap, every rank threshold through actual
+owner counting, strength 9/10, recursive pledge ties, kingdom 14/15 and mixed
+top rulers. subloc_quest is quest_late itself (oly.h:1082), not a separate
+quest ID; kingship intentionally does not require strength 10.
+The tool now extracts complete real post_month 2147–2203 and runs two
+successful small-world compositions through all actual callbacks, with
+maintenance, owned-province forwarding, taxes, production, decay, queue and
+rank state/output. Phase traces still establish scheduling only. The final
+four turn_phases.go NYIs are gone and the empty boundary file is deleted;
+postMonth order, token callback and final flag assignment are unchanged.
+See the source-backed clarification on #89 and command-compat README.
+Run command/move/helper/rng/code/loadsave/turn-driver/default-turn sequentially
+before bounded vet/fresh defaults. No new tool, source dependency, pin or RNG
+adapter; no full-world/stage-exit acceptance, unrelated command or stage-2
+report-body work is implied.
+
 Inventory transfer and token acquisition (#117) extend command-compat with
 the complete real `consume_item`, mutually recursive `move_item`/`drop_item`,
 and compiled `move_token` acquisition closure. Real lord interruption/NP,

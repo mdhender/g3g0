@@ -2834,3 +2834,86 @@ No full-world turn, new tool, successful gameplay substitute, postMonth
 call-position change, report-body/stage-2 work, commit, push, closure or tick.
 
 Version **0.67.0-alpha**, left **uncommitted** for parent acceptance.
+
+## Monthly autoquit, links, quests and ranks (#89)
+
+At the unchanged pin `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`, extract
+complete original definitions, retaining source `#line` attribution:
+
+| source | definitions and inclusive lines |
+|---|---|
+| day.c | `auto_drop` **1133–1167**, `link_decay` **1966–1997**, `quest_decay` **1737–1753**, `post_month` **2147–2203** |
+| garr.c | `top_ruler` **101–114**, `nprovs_to_rank` **588–600**, `find_kings` **627–671**, `lower_noble_rank` **680–698**, `det_noble_rank_sup` **700–715**, `determine_noble_ranks` **718–761** |
+
+The accepted ownership, pledge, strength, queue, mint, output, rank-display
+and save-box closure is reused. `rankland` only constructs dense fixtures:
+one castle with its first direct character owner, numbered provinces and
+garrisons. It neither calculates ranks nor supplies expected behavior.
+No new source dependency, pin, RNG adapter or upkeep tool is needed.
+
+Nine added sections exercise:
+
+- Asymmetric regular factions **4/5/6** turns since orders against a
+  five-turn autoquit, plus missing player record and NPC subtype. The missing
+  regular record is allocated even before its age test. Existing faction
+  orders precede appended `quit`; repeats append another one. Names/email,
+  special log **11**, output bits and actual saved order files are compared.
+- Links **0/1/2/-1**, missing destinations/records, matching/nonmatching
+  months and ship exclusion. Positive countdown happens before reopening to
+  two; negative stays permanent. Turn **8 → 9** wraps zero-based month
+  **7 → 0**, and turn 16 returns to month 7. `subloc_quest` is **quest_late
+  itself**, not a separate quest ID (`oly.h:1082`); only positive counters
+  age, covering **0/1/2/-1/-128/127** and repeated calls.
+- Every rank threshold, both helper and actual owner-count paths:
+  **0/1/5/6/12/13/24/25/37/38/50/51/63/64**, plus negative/max-int helper
+  controls. Strength **9/10**, subtype versus first-character traversal,
+  temporary resets, missing character allocation, rank reset, pledge chains,
+  ties and a zero-rank overlord distinguish recursive minimum from a cap or
+  iterative decrement. No cycle protection is added.
+- Kingdoms **14/15**, weak garrisons, nonlocation children, an ungoverned
+  province and mixed versus shared top rulers. Kingship deliberately does
+  **not** test strength: fifteen weak garrisons still crown their ruler.
+- Two complete original-C `post_month` calls on a two-province, two-garrison,
+  castle/stack world: owned-province forwarding **21 then 15 gold**, castle
+  taxes **30 then 40**, maintenance at both original positions, NP/unformed
+  minting, aura/shroud, production, autoquit append and disabled-autoquit
+  control, links/quests, real token callback, rank settlement and final flag.
+  Actual character description and stack output, logs, orders and serialized
+  state match. Every callback is real, not a phase trace; empty branches do
+  not claim coverage of every possible world. No new gameplay dependency was
+  reached. Full-world integration and reports remain outside this task.
+
+Loop audit: `loop_pl_regular`, `loop_char`, `loop_loc` and `loop_garrison`
+use the accepted next-prefetch chains (`loop.h:122,153–163,187`). Ownership
+reads the next pledge before the body (`loop.h:359–367`), with no independent
+guard. `find_kings` preserves the `loop_here` snapshot and caller assertion
+**garr.c:642 `valid_box(reg)`**, not a loop.h source location. Existing
+`garrison_strength` inventory assertion remains **garr.c:60**.
+
+Normal and `--update` linker probes temporarily replaced `drv_auto_drop`
+with a missing-dependency marker and abort. Both failed **2** at section
+**723**, before ordinary status acceptance or recording replacement; the
+recording hash was unchanged. The probe was removed and normal comparison
+rerun. No newly verified upstream bug or blocker was found.
+
+Two real C recordings and Go match **732 sections / 55172 lines / 948492
+bytes**. Prior **723 sections / 53123 lines / 896467 output bytes** and
+**16648 lines / 299004 input bytes** are exact byte prefixes. New input:
+**16979 lines / 305393 bytes**. Output SHA-256:
+`72f0d38d1b3fa9c04245003e08940318d648c3c52ec546db38948028354207b8`.
+Raw C trailing whitespace is retained; `git diff --check` flags only those
+recorded bytes, not source edits.
+
+Sequential checks passed: command **732/55172**, move **135/7150**, helper
+**37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+default turn (status, raw stdout/stderr and one state file identical), then
+bounded vet and fresh bounded default tests. All engine processes used shared
+`run_limited`; all eight tools used `G3_REPO=$PWD/tmp/upstream.git`.
+Source-backed clarification: [#89 comment](https://github.com/mdhender/g3g0/issues/89#issuecomment-6463214748).
+
+Version **0.68.0-alpha**; changes left **uncommitted**. The final four phase
+NYIs are implemented, so `turn_phases.go` is deleted. `postMonth` order,
+tokens and final flag positions are unchanged. No full-world run, stage-exit
+acceptance, unrelated command, report-body/stage-2 work, commit, push, issue
+closure or checklist tick.

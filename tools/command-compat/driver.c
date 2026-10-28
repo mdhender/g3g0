@@ -56,6 +56,8 @@ void drv_maint(void), drv_starve(int who, int have), drv_animal(void);
 int drv_starve_roll(int who, int item), drv_animal_roll(int who, int item, int idx);
 void drv_decay_mines(void), drv_decay_ghosts(void), drv_decay_corpses(void), drv_decay_bodies(void);
 int drv_corpse_roll(int who);
+void drv_auto_drop(void), drv_link_decay(void), drv_quest_decay(void), drv_kings(void);
+int drv_rank_threshold(int n), drv_rank_lower(int n), drv_rank_sup(int n);
 extern int gold_inn, gold_temple;
 void drv_city_gold(void), drv_replenish(int where, int item, int qty);
 void drv_taxes(void), drv_claim(void), drv_np(void), drv_unformed(void);
@@ -394,6 +396,47 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "bark")) { sscanf(line,"%*s %d",&n); bark_dogs(n); }
   else if (!strcmp(op, "ring")) drv_ring();
   else if (!strcmp(op, "curse")) drv_curse();
+  else if (!strcmp(op, "closure")) {
+   n=0; sscanf(line,"%*s %31s %d",text,&n);
+   if (!strcmp(text,"auto")) drv_auto_drop();
+   else if (!strcmp(text,"links")) drv_link_decay();
+   else if (!strcmp(text,"quests")) drv_quest_decay();
+   else if (!strcmp(text,"post")) post_month();
+   else if (!strcmp(text,"ranks")) determine_noble_ranks();
+   else if (!strcmp(text,"kings")) drv_kings();
+   else if (!strcmp(text,"threshold")) printf("rank threshold %d %d\n",n,drv_rank_threshold(n));
+   else if (!strcmp(text,"lower")) printf("rank lower %d %d\n",n,drv_rank_lower(n));
+   else if (!strcmp(text,"sup")) printf("rank recursive %d %d\n",n,drv_rank_sup(n));
+   else if (!strcmp(text,"ruler")) printf("top ruler %d %d\n",n,top_ruler(n));
+   else if (!strcmp(text,"describe")) {
+    printf("rank description %d [%s]\n",n,liner_desc(n)); show_chars_below(200,n);
+   }
+   else if (!strcmp(text,"state")) {
+    printf("post flag %d month %d\n",post_has_been_run,oly_month(sysclock));
+    loop_char(n) {
+     printf("rank char %d allocated %d temp %d rank %d [%s]\n",n,rp_char(n)!=NULL,bx[n]->temp,char_rank(n),rank_s(n));
+    } next_char;
+   }
+   else return 2;
+  }
+  /* Dense construction only. Every result still comes from original C.
+   * One castle/owner and count provinces with ten-or-nine strength garrisons. */
+  else if (!strcmp(op, "rankland")) {
+   int reg, j;
+   sscanf(line,"%*s %d %d %d %d %d",&n,&a,&b,&d,&reg);
+   alloc_box(d,T_loc,sub_castle);
+   if(loc(n)) ilist_rem_value(&p_loc_info(loc(n))->here_list,n);
+   p_loc_info(n)->where=d; ilist_append(&p_loc_info(d)->here_list,n);
+   for(j=1;j<=a;j++) {
+    int prov=d+j, garr=d+100+j;
+    alloc_box(prov,T_loc,sub_plain); alloc_box(garr,T_char,sub_garrison);
+    p_char(garr)->unit_lord=201; p_misc(garr)->garr_castle=d;
+    p_loc_info(prov)->where=reg; if(reg) ilist_append(&p_loc_info(reg)->here_list,prov);
+    p_loc_info(garr)->where=prov; ilist_append(&p_loc_info(prov)->here_list,garr);
+    gen_item(garr,item_soldier,b);
+   }
+   p_loc_info(d)->where=d+1; ilist_append(&p_loc_info(d+1)->here_list,d);
+  }
   else if (!strcmp(op, "decay")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if (!strcmp(text,"mines")) drv_decay_mines();
@@ -864,6 +907,10 @@ int main(int argc, char **argv)
    if (!strcmp(op, "name")) set_name(n, text);
    else p_item(n)->plural_name = str_save(text);
   }
+  else if (!strcmp(op, "identity")) {
+   sscanf(line,"%*s %d %31s %8191s",&n,label,text);
+   p_player(n)->full_name=str_save(label); p_player(n)->email=str_save(text);
+  }
   else if (!strcmp(op, "entity"))
   { sscanf(line,"%*s %d %d %d",&n,&a,&b); alloc_box(n,a,b); }
   else if (!strcmp(op, "link"))
@@ -883,6 +930,12 @@ int main(int argc, char **argv)
   {
    sscanf(line,"%*s %d %31s %d",&n,text,&a);
    if (!strcmp(text,"lord")) p_char(n)->unit_lord = a;
+   else if (!strcmp(text,"last_order")) p_player(n)->last_order_turn = a;
+   else if (!strcmp(text,"quest")) p_subloc(n)->quest_late = (schar)a;
+   else if (!strcmp(text,"link_to")) ilist_append(&p_subloc(n)->link_to,a);
+   else if (!strcmp(text,"link_open")) p_subloc(n)->link_open = (schar)a;
+   else if (!strcmp(text,"link_when")) p_subloc(n)->link_when = (schar)a;
+   else if (!strcmp(text,"rank")) p_char(n)->rank = (schar)a;
    else if (!strcmp(text,"mine_delay")) p_misc(n)->mine_delay = (schar)a;
    else if (!strcmp(text,"death_turn")) p_char(n)->death_time.turn = (short)a;
    else if (!strcmp(text,"created_death")) p_char(created)->death_time.turn = (short)a;
@@ -1063,6 +1116,8 @@ int main(int argc, char **argv)
   {
    sscanf(line, "%*s %31s %d", text, &n);
    if (!strcmp(text, "immediate")) immediate = n;
+   else if (!strcmp(text, "auto_quit")) auto_quit_turns = n;
+   else if (!strcmp(text, "post")) post_has_been_run = n;
    else if (!strcmp(text, "indep")) indep_player = n;
    else if (!strcmp(text, "gm")) gm_player = n;
    else if (!strcmp(text, "faery_region")) faery_region = n;

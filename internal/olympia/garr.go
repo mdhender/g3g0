@@ -11,6 +11,128 @@ import (
 
 // Ported from olympia/garr.c: the garrison ownership/output closure.
 
+// topRuler is garr.c:101–114. Like loop_loc_owner, fetch the next pledge
+// before the body. No strength test belongs to this ownership traversal.
+func (w *world) topRuler(n int) int {
+	ret := 0
+	for i := w.provinceAdmin(n); i > 0; {
+		next := 0
+		if p := w.rpMagic(i); p != nil {
+			next = int(p.pledge)
+		}
+		ret = i
+		i = next
+	}
+	return ret
+}
+
+// nprovsToRank is garr.c:588–600. Rank values are the original garr.h
+// constants, also used by rankS and character display.
+func nprovsToRank(n int32) int8 {
+	switch {
+	case n < 1:
+		return 0
+	case n <= 5:
+		return 10
+	case n <= 12:
+		return 20
+	case n <= 24:
+		return 30
+	case n <= 37:
+		return 40
+	case n <= 50:
+		return 50
+	case n <= 63:
+		return 60
+	default:
+		return 70
+	}
+}
+
+// findKings is garr.c:627–671. Every direct location counts, independent
+// of garrison strength; all must share a nonzero top ruler and total >=15.
+func (w *world) findKings() {
+	for reg := range w.loopKind(tLoc) {
+		if w.locDepth(reg) != locRegion {
+			continue
+		}
+		ruler, nprovs := -1, 0
+		assert(w.validBox(reg), "olympia/garr.c", 642, "valid_box(reg)")
+		for where := range w.loopHere(reg) {
+			if w.kind(where) != tLoc {
+				continue
+			}
+			nprovs++
+			if ruler == -1 {
+				ruler = w.topRuler(where)
+				if ruler == 0 {
+					break
+				}
+			} else if ruler != w.topRuler(where) {
+				ruler = 0
+				break
+			}
+		}
+		if ruler != 0 && nprovs >= 15 {
+			w.pChar(ruler).rank = 80
+		}
+	}
+}
+
+// lowerNobleRank and detNobleRankSup are garr.c:680–715. Preserve the
+// recursive minimum and writes on the way back up, including zero ranks.
+func lowerNobleRank(rank int) int {
+	switch rank {
+	case 20, 30, 40, 50, 60, 70, 80:
+		return rank - 10
+	default:
+		return 0
+	}
+}
+
+func (w *world) detNobleRankSup(who int) int8 {
+	ownRank, pledgedTo := int8(0), 0
+	if p := w.rpChar(who); p != nil {
+		ownRank = p.rank
+	}
+	if p := w.rpMagic(who); p != nil {
+		pledgedTo = int(p.pledge)
+	}
+	if pledgedTo == 0 {
+		return ownRank
+	}
+	w.pChar(who).rank = int8(min(int(ownRank), lowerNobleRank(int(w.detNobleRankSup(pledgedTo)))))
+	return w.rpChar(who).rank
+}
+
+// determineNobleRanks is the complete garr.c:718–761 settlement.
+func (w *world) determineNobleRanks() {
+	w.stage("determine_noble_ranks()")
+	w.clearTemps(tChar)
+	for garr := range w.loopSubkind(subGarrison) {
+		if w.garrisonStrength(garr) < 10 {
+			continue
+		}
+		for owner := w.provinceAdmin(garr); owner > 0; {
+			next := 0
+			if p := w.rpMagic(owner); p != nil {
+				next = int(p.pledge)
+			}
+			w.bx[owner].temp++
+			owner = next
+		}
+	}
+	for who := range w.loopKind(tChar) {
+		w.pChar(who).rank = nprovsToRank(w.bx[who].temp)
+	}
+	w.findKings()
+	for who := range w.loopKind(tChar) {
+		if w.rpChar(who).rank != 0 {
+			w.pChar(who).rank = w.detNobleRankSup(who)
+		}
+	}
+}
+
 // garrisonGold is the complete garr.c:446–549 month-end settlement. In
 // particular, spent measures this unit's gold, not its stack's deductions;
 // garrForward is written only by the two forwarding branches, not reset.
