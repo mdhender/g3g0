@@ -139,6 +139,27 @@ int main(int argc, char **argv)
    ilist_append(&p_loc(n)->prov_dest,a); ilist_append(&p_loc(n)->prov_dest,b);
    ilist_append(&p_loc(n)->prov_dest,d); ilist_append(&p_loc(n)->prov_dest,west);
   }
+  else if (!strcmp(op, "road")) {
+   sscanf(line,"%*s %d %d %d",&n,&a,&b);
+   p_gate(n)->to_loc=a; p_gate(n)->road_hidden=(schar)b;
+  }
+  else if (!strcmp(op, "delete_box")) {
+   sscanf(line,"%*s %d",&n); change_box_kind(n,T_deleted);
+  }
+  else if (!strcmp(op, "shuffle")) {
+   exit_views_list l;
+   sscanf(line,"%*s %d %d",&n,&a);
+   l=exits_from_loc_nsew_select(n,a,TRUE,TRUE);
+   for(i=0;i<exit_views_len(l);i++) printf("exitdir %d %d\n",l[i]->direction,l[i]->destination);
+  }
+  else if (!strcmp(op, "move_state")) {
+   list("vector",out_vector);
+   loop_char(n) {
+    printf("move char %d where %d moving %d guard %d\n",n,loc(n),char_moving(n),char_guard(n));
+    list("here",p_loc_info(n)->here_list);
+   } next_char;
+   printf("show_garrison %d\n",show_to_garrison);
+  }
   else if (!strcmp(op, "entity_rolls")) {
    sscanf(line,"%*s %d %d %d",&n,&a,&b); drv_entity_rolls(n,a,b);
   }
@@ -390,6 +411,10 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"lore")) p_item_magic(n)->lore = a;
    else if (!strcmp(text,"use_key")) p_item_magic(n)->use_key = a;
    else if (!strcmp(text,"man")) p_item(n)->is_man_item = (schar)a;
+   else if (!strcmp(text,"weight")) p_item(n)->weight = a;
+   else if (!strcmp(text,"land_cap")) p_item(n)->land_cap = a;
+   else if (!strcmp(text,"ride_cap")) p_item(n)->ride_cap = a;
+   else if (!strcmp(text,"guard")) p_char(n)->guard = (schar)a;
    else if (!strcmp(text,"queued_lore")) ilist_append(&p_player(n)->deliver_lore,a);
    else if (!strcmp(text,"touched")) set_bit(&p_player(n)->locs,a);
    else if (!strcmp(text,"weather_seen")) set_bit(&p_player(n)->weather_seen,a);
@@ -509,6 +534,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "backlinks")) pledge_backlinks = n;
    else if (!strcmp(text, "show_day")) show_day = n;
    else if (!strcmp(text, "day")) sysclock.day = (short)n;
+   else if (!strcmp(text, "epoch")) sysclock.days_since_epoch = n;
    else if (!strcmp(text, "turn")) sysclock.turn = (short)n;
    else if (!strcmp(text, "priority")) cur_pri = n;
    else if (!strcmp(text, "status")) c->status = (schar)n;

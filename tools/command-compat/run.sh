@@ -28,6 +28,11 @@ echo "G3 revision: ${G3_REV}"
 python3 -I - "${WORK}/g3/olympia" "${WORK}" <<'PY'
 import re, sys
 src, dst = sys.argv[1:]
+combat = open(f'{src}/combat.c').read()
+with open(f'{dst}/combat-structs.h', 'w') as out:
+    start = combat.index('struct fight {')
+    end = combat.index('\n};', combat.index('struct wield {')) + 3
+    out.write('#line 110 "olympia/combat.c"\n' + combat[start:end] + '\n')
 functions = {
     'input.c': ['parse_line', 'remove_comment', 'remove_ctrl_chars', 'find_command',
                 'oly_parse_cmd', 'parse_arg', 'oly_parse', 'cmd_shift', 'check_allow',
@@ -36,28 +41,43 @@ functions = {
                 'exec_comp', 'sort_load_queue', 'sort_run_queue', 'initial_command_load',
                 'min_pri_ready', 'init_wait_list', 'check_all_waits', 'start_phase', 'evening_phase',
                 'daily_command_loop', 'process_player_orders', 'interrupt_order', 'process_interrupted_units'],
-    'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'queue', 'save_player_orders'],
+    'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'prepend_order', 'queue', 'save_player_orders'],
     'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord'],
-    'move.c': ['restore_stack_actions', 'touch_loc_after_move', 'move_stack'],
+    'move.c': ['restore_stack_actions', 'touch_loc_after_move', 'move_stack',
+               'departure_message', 'arrival_message', 'discover_road', 'parse_exit_dir',
+               'save_v_array', 'restore_v_array', 'move_exit_land', 'land_check',
+               'can_move_here', 'can_move_at_outer_level', 'suspend_stack_actions',
+               'clear_guard_flag', 'v_move', 'd_move',
+               'v_exit', 'v_enter', 'v_north', 'v_south', 'v_east', 'v_west'],
     'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched'],
     'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
                 'check_prisoner_escape', 'prisoner_escapes', 'prisoner_movement_escape_check'],
-    'dir.c': ['location_direction'],
-    'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits'],
+    'dir.c': ['location_direction', 'exit_distance', 'is_port_city',
+              'province_has_port_city', 'summer_uldim_open_now', 'add_province_exit',
+              'extra_routes', 'province_exits', 'province_sub_exits', 'subloc_exits',
+              'ship_exits', 'building_exits', 'exits_from_loc', 'exits_from_loc_nsew',
+              'exits_from_loc_nsew_select', 'has_ocean_access'],
+    'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits', 'find_wield', 'wield_s'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
               'in_safe_now', 'province', 'building_owner', 'viewloc', 'all_char_here',
               'in_here_list', 'add_to_here_list', 'remove_from_here_list', 'set_where',
-              'region', 'mark_loc_stack_known'],
-    'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here'],
+              'region', 'mark_loc_stack_known', 'add_here', 'all_here'],
+    'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here',
+               'rank_s', 'garrison_notices', 'garrison_spot_check'],
+    'art.c': ['has_auraculum', 'max_eff_aura'],
+    'display.c': ['with_inventory_string', 'display_with', 'mage_s', 'priest_s',
+                  'emperor', 'liner_desc_char', 'liner_desc', 'show_chars_below'],
     'u.c': ['min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np',
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
-            'stack_sub_item', 'autocharge', 'find_nearest_land'],
+            'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
+            'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
+            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units'],
     'npc.c': ['create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'lore.c': ['queue_lore', 'scan_char_item_lore'],
     'buy.c': ['investigate_possible_trade', 'market_here', 'seller_comp',
@@ -65,7 +85,7 @@ functions = {
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait'],
     'produce.c': ['init_collect_list'],
-    'perm.c': ['is_hostile', 'clear_all_att'],
+    'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit'],
     'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
                 'update_weather_view_locs'],
     'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total'],
@@ -81,6 +101,7 @@ with open(f'{dst}/helpers.c', 'w') as out:
 #include <ctype.h>
 #include "z.h"
 #include "oly.h"
+#include "rng.h"
 #define MAX_PRI 5
 #define MAX_BUFFER 50
 #define BUF_LEN LEN
@@ -89,12 +110,25 @@ int cur_pri, cmd_wait = -1, fuzzy_find;
 int evening, auto_attack_flag;
 ilist wait_list, second_wait_list;
 int pledge_backlinks;
+int immed_see_all, month_done, show_combat_flag;
 #define phase_ran(x) ((void)0)
 #define phase_acted(x) ((void)0)
 ''')
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
         # Original data declarations too: no copied or modeled tag/number table.
+        if file == 'dir.c':
+            start = source.index('#define\tEXTAG_TURN')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/dir.c"\n')
+            out.write(source[start:source.index('int max_map_row')])
+        if file == 'combat.c':
+            out.write('#include "combat-structs.h"\n')
+        if file == 'display.c':
+            start = source.index('int show_display_string =')
+            end = source.index('\n\n', start)
+            out.write('#line 402 "olympia/display.c"\n' + source[start:end] + '\n')
+            for name in ['liner_desc_ship', 'liner_desc_loc', 'liner_desc_road', 'liner_desc_storm']:
+                out.write(f'static char *{name}(int n) {{ fprintf(stderr, "out-of-scope C dependency: {name}\\n"); abort(); }}\n')
         if file == 'c1.c':
             start, end = source.index('struct flag_ent {'), source.index('static int\nflag_raised(')
             out.write(source[start:end])
@@ -186,7 +220,6 @@ with open(f'{dst}/stubs.c', 'w') as out:
         out.write(f'int {name}(struct command *c) STUB("{name}")\n')
     out.write('''
 /* Only unreachable reporting routes and unrelated code.c dependencies. */
-int is_port_city(int n) STUB("is_port_city")
 void check_validated_trades(void) STUB("check_validated_trades")
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
@@ -200,10 +233,10 @@ case "$(uname -s)" in
  *) ldflags=(-Wl,--gc-sections) ;;
 esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -w -ffunction-sections -fdata-sections "${ldflags[@]}" \
- -I olympia -I lib \
+ -I olympia -I lib -I "${WORK}" \
  "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" "${WORK}/hades-rng.c" "${WORK}/faery-rng.c" \
  olympia/{code,glob,z,sout,io}.c \
- lib/{checked_alloc,ilist,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents,admits,trades,req_ents}.c \
+ lib/{checked_alloc,ilist,exit_views,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents,admits,trades,req_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
 sections=$(grep -c '^section ' "${CASES}")
 section_names=() # Bash 3 (Darwin) has no mapfile.
@@ -216,6 +249,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section move '* ]]; then
+   [ "$status" = 0 ] || die "unexpected movement status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section arrival '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

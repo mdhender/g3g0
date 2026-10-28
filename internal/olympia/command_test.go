@@ -137,6 +137,27 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			for range 4 {
 				p.provDest.Append(args.num(t))
 			}
+		case "road":
+			p := w.pGate(args.num(t))
+			p.toLoc, p.roadHidden = int32(args.num(t)), int8(args.num(t))
+		case "delete_box":
+			w.changeBoxKind(args.num(t), tDeleted)
+		case "shuffle":
+			who, where := args.num(t), args.num(t)
+			for _, v := range w.exitsFromLocNSEWSelect(who, where, 1, 1) {
+				fmt.Fprintf(&stdout, "exitdir %d %d\n", v.direction, v.destination)
+			}
+		case "move_state":
+			helperList(&stdout, "vector", w.outVector)
+			for n := range w.loopKind(tChar) {
+				guard := int8(0)
+				if p := w.rpChar(n); p != nil {
+					guard = p.guard
+				}
+				fmt.Fprintf(&stdout, "move char %d where %d moving %d guard %d\n", n, w.loc(n), w.charMoving(n), guard)
+				helperList(&stdout, "here", w.pLocInfo(n).hereList)
+			}
+			fmt.Fprintf(&stdout, "show_garrison %d\n", b2i(w.showToGarrison))
 		case "entity_rolls":
 			n, sub, where := args.num(t), args.num(t), args.num(t)
 			fmt.Fprintf(&stdout, "prison roll %d\n", w.streams.EntPrisoner(n, sub))
@@ -508,6 +529,14 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pItemMagic(n).useKey = int8(a)
 			case "man":
 				w.pItem(n).isManItem = int8(a)
+			case "weight":
+				w.pItem(n).weight = int16(a)
+			case "land_cap":
+				w.pItem(n).landCap = int16(a)
+			case "ride_cap":
+				w.pItem(n).rideCap = int16(a)
+			case "guard":
+				w.pChar(n).guard = int8(a)
 			case "queued_lore":
 				w.pPlayer(n).deliverLore.Append(a)
 			case "touched":
@@ -693,6 +722,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.showDay = n != 0
 			case "day":
 				w.sysclock.day = int16(n)
+			case "epoch":
+				w.sysclock.daysSinceEpoch = int32(n)
 			case "turn":
 				w.sysclock.turn = int16(n)
 			case "priority":
@@ -785,7 +816,7 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 // success. This is a port-boundary contract, not a fabricated C recording.
 func TestCommandUnportedStops(t *testing.T) {
 	w := newWorld()
-	for _, name := range []string{"move", "collect", "attack"} {
+	for _, name := range []string{"collect", "attack"} {
 		i := w.findCommand(name)
 		for phase, fn := range map[string]func(*world, *command) int{"start": cmdTbl[i].start, "finish": cmdTbl[i].finish, "interrupt": cmdTbl[i].interrupt} {
 			if fn == nil {

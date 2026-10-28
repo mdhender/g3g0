@@ -21,6 +21,10 @@ contracts and a byte-identical diagnostic run, never a whole-world turn by defau
 For clock/calendar or progress output work, also run `tools/turn-driver-compat/run.sh`.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
+MOVE/GO and all six movement synonyms use command-compat's actual C callbacks
+through dispatch/evenings, including queued multi-day NPC MOVE → WAIT. Also run
+move-compat for the shared travel, message and raft crew-loss contracts; full
+SAIL/FLY and the eventual whole-engine raft fixture (#90) are separate work.
 Stack-arrival knowledge, contacts, weather views, ocean bookkeeping and city
 matching also use command-compat, reusing its actual Hades/Faery hooks, keyed
 streams, entity creation, order queues and real database writer. Candidate
@@ -117,6 +121,6 @@ A tool needs rerunning after a pin move if any file it reads changed; [`affected
 | [`turn-compat`](turn-compat) | `testdata/` small real C snapshots and determinism manifest | the whole tree: it builds `olympia-g3` and turns `tests/olympia/fixtures/world.tgz` |
 | [`turn-driver-compat`](turn-driver-compat) | `internal/olympia/testdata/turn-{driver,phase}-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `u.c`, `input.c`, `day.c`, `z.c`; `lib/ilist.c` |
 | [`move-compat`](move-compat) | `internal/olympia/testdata/move-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `dir.c`, `loc.c`, `u.c`, `swear.c`, `move.c`, `input.c`, `perm.c`, `stack.c`, `storm.c`, `garr.c`, `art.c`, `combat.c`, `day.c`, `code.c`, `glob.c`, `z.c`, `sout.c`, `display.c`, `use.c`, `io.c`, `seed.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `item_ents.c`, `admits.c`, `cstrings.c`, `skill_ents.c`, `trades.c`, `req_ents.c` |
-| [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `combat.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `u.c`, `dir.c`, `perm.c`, `storm.c`, `use.c`, `c1.c`, `produce.c`, `c2.c`, `immed.c`, `stealth.c`, `move.c`, `day.c`, `seed.c`, `io.c`, `buy.c`, `lore.c`, `npc.c`, `hades.c`, `faery.c`; `lib/` `checked_alloc.c`, `ilist.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c`, `wait_args.c`, `flag_ents.c`, `admits.c`, `trades.c`, `req_ents.c` |
+| [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `combat.c`, `art.c`, `display.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `u.c`, `dir.c`, `perm.c`, `storm.c`, `use.c`, `c1.c`, `produce.c`, `c2.c`, `immed.c`, `stealth.c`, `move.c`, `day.c`, `seed.c`, `io.c`, `buy.c`, `lore.c`, `npc.c`, `hades.c`, `faery.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c`, `wait_args.c`, `flag_ents.c`, `admits.c`, `trades.c`, `req_ents.c` |
 
 `genesis-compat`, `island-compat` and `mapgen-compat` have pins of their own and are not covered here.

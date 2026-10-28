@@ -340,6 +340,21 @@ func init() {
 		case "hide":
 			cmdTbl[i].start = (*world).vHide
 			cmdTbl[i].finish = (*world).dHide
+		case "move", "go":
+			cmdTbl[i].start = (*world).vMove
+			cmdTbl[i].finish = (*world).dMove
+		case "north", "n":
+			cmdTbl[i].start = (*world).vNorth
+		case "south", "s":
+			cmdTbl[i].start = (*world).vSouth
+		case "east", "e":
+			cmdTbl[i].start = (*world).vEast
+		case "west", "w":
+			cmdTbl[i].start = (*world).vWest
+		case "enter", "in":
+			cmdTbl[i].start = (*world).vEnter
+		case "exit", "out":
+			cmdTbl[i].start = (*world).vExit
 		case "wait":
 			cmdTbl[i].start = (*world).vWait
 			cmdTbl[i].finish = (*world).dWait

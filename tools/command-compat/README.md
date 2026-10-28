@@ -39,7 +39,9 @@ separately, without normalization. Two fresh C runs must be byte-identical befor
 comparing. Default Go tests use the recording without C or saved games.
 
 Real complete handlers: `v_stop`, `v_xyzzy`, `v_plugh`, `v_format`, `v_notab`,
-`v_hide`, `d_hide`, `v_wait`, `d_wait`, `i_wait`. Real dependencies include order-head/top/pop operations,
+`v_hide`, `d_hide`, `v_wait`, `d_wait`, `i_wait`, `v_move`, `d_move`,
+`v_exit`, `v_enter`, `v_north`, `v_south`, `v_east`, `v_west`.
+Real dependencies include order-head/top/pop operations,
 player/lord and stack lookup, `all_stack`, `count_any`, `count_stack_any`,
 `rp_skill_ent`, `has_skill`, `exp_level`, `check_skill`, parser garrison lookup,
 `here_pos` and sparse output-bit operations. Target predicates are extracted
@@ -70,7 +72,9 @@ they never execute an aborting COLLECT handler or claim harvesting works.
 
 All other command routines named by the C table are **aborting** stubs,
 never successful substitutes. The remaining aborting dependencies are
-unused display formatting (`is_port_city`) and validated-trade settlement. Reaching any
+unrelated noncharacter descriptions and validated-trade settlement. `is_port_city`
+is now the real dir.c definition. Candidate trade settlement still aborts at
+`attempt_trade`. Reaching any
 stub fails the script, including `--update`. Only instrumentation
 (`coverage_count` and phase markers) is a no-op: stage 3, not gameplay state. No compared
 scheduler, auto-attack scan, wait predicate or wait handler is a successful stub.
@@ -111,7 +115,9 @@ the full ownership-transfer closure are ported. COLLECT execution and
 validated-trade settlement still stop explicitly. SAIL and COLLECT
 interrupt callbacks remain explicit unported boundaries, not successful stubs.
 MOVE's interrupt pointer is genuinely NULL in C, so generic interruption can
-complete a persisted MOVE without calling unported movement start/finish code.
+complete a MOVE without calling its start/finish callbacks. Direction and
+ENTER/EXIT table rows have only a start callback: their real reparsing switches
+the command to MOVE before completion, not an invented alias finish pointer.
 The real auto-attack
 scan excludes stacked followers and leaders whose health is neither 100 nor
 -1, then completes the local and outer-ship target scans. Healthy nonhostile
@@ -684,3 +690,90 @@ This adds no successful gameplay stubs, replacement RNG, modeled landing or
 independent C fix. MOVE integration (#67), daily/weekly prisoner events
 (#80), settlement (#81), reporting and stage/whole-turn acceptance remain
 outside this task.
+
+## Complete MOVE/GO and synonym integration (#67)
+
+New production definitions at the unchanged pin (261 C definition lines):
+
+| source | complete functions and original lines |
+|---|---|
+| move.c | `discover_road` 140–162; `v_move` 584–689; `d_move` 776–832 |
+| move.c | `v_exit` 1096–1105; `v_enter` 1108–1124; `v_north` 1127–1136; `v_south` 1139–1148; `v_east` 1151–1160; `v_west` 1163–1172 |
+| order.c | `prepend_order` 174–181 (unlike append, no 250-order limit) |
+
+The real prerequisite departure/arrival, stack, knowledge, payment, hooks,
+escape and output helpers are reused without new gameplay substitutes.
+Command-compat imports 1646 already-compared definition lines from move-compat's
+travel/topology, admission and character-description closure, plus the 261
+new lines above: 1907 additional extracted definition lines total. Original
+combat `fight`/`wield` structures (combat.c:110 onward), display storage
+(display.c:402), exitdir tags/static stream/turn guard (dir.c:22 onward),
+headers, macros and complete function `#line` locations are retained.
+New tracked source inputs are **art.c, display.c and lib/exit_views.c**, in
+tools/README.md and affected.sh. No upstream source or build flags were repaired.
+
+18 appended cases observe actual callbacks through the original command table:
+
+- An NPC queues MOVE → WAIT; real start and four evenings change wait
+  4 → 3 → 2 → 1 → loaded WAIT. WAIT starts the next day and finishes on day 6.
+  Daily loops, queues, serialized command arrays, log framing, output bits,
+  contacts, knowledge, touched locations and weather views all match. A second
+  exit shuffle and real unique-item allocation observe the shared exdr/mint
+  streams after movement, rather than resetting or modeling them.
+- Zero-distance building movement detaches the old stack, suspends/clears
+  guards then immediately restores the full moving stack, including prisoners,
+  before loading the successor. Outer-level fallback reparses and reinserts
+  the **original complete line** ahead of WAIT at each level, even after
+  argument shifting. A building exit, city exit and subsequent province trip
+  expose the distinct zero/one/four-day paths.
+- Hades computes cost before leaving the old friendly stack and charges
+  actor-first then friendly stack inventory. Captives count toward cost but
+  foreign gold is untouched. Insufficient payment keeps location, old stack,
+  guards and inventories unchanged. Special-log order is compared.
+- A deleted destination fails at actual evening completion before restoring
+  moving flags. Hidden roads reveal every reverse road for the complete
+  descendant snapshot, including foreign prisoners; roads to other locations
+  are not revealed. Without a reverse road the forward road remains unknown
+  to the foreign follower. Raw known-list insertion order is observed.
+- Every cardinal long/short synonym and ENTER/IN/EXIT/OUT reparses to MOVE;
+  explicit ENTER uses only its first operand and empty ENTER assumes IN.
+  Generic interruption demonstrates MOVE's actual NULL interrupt pointer.
+  No arguments, already-there, unknown/alternative destinations, overload,
+  water rejection and refused building entry preserve exact failure order.
+- Actual fog arrival broadcasts to the stack but suppresses public arrival.
+  Real Hades/Faery arrival hooks allocate bandits, queue their WAIT/ATTACK,
+  touch/output/log and consume the shared mint stream in C order. These
+  focused saved-state completion cases set the remaining wait to one; the
+  separate NPC journey exercises every real elapsed evening without shortening.
+  ATTACK is not executed or accepted as successful combat.
+- Actual start-time prisoner escapes run before departure output, using C's
+  **snapshot** `loop_char_here`, not live shrinking traversal. Adjacent escaped
+  prisoners are all processed; remaining leader movement and here ordering
+  are observed before serialization and departure messages.
+
+Two fresh bounded deterministic C runs generate **291 sections / 14137 lines /
+259462 bytes**, exactly matched by Go raw stdout/stderr/status and the actual
+serialized/unsaved state, queue/order files, faction logs and output bits.
+All 18 new sections must exit zero; a crashing fixture cannot be recorded as
+successful movement. The entire old command input **4545 lines / 77598 bytes**
+and old output **273 sections / 11966 lines / 215667 bytes** are exact prefixes:
+**zero old bytes changed**, with no newly-reachable-boundary exception.
+The entire movement input **3150 lines / 53589 bytes** and recording
+**135 sections / 7150 lines / 142755 bytes** are unchanged, including #108's
+actual running raft/roundship/galley crew-loss controls and base-distance cases.
+All literal trailing whitespace remains real C serialization/output.
+
+An ephemeral expected-abort probe executes actual queued MOVE → evening →
+city arrival → candidate trade settlement. Both normal and `--update` runs
+reject its unfinished C dependency marker (status 2), before expected-134
+handling or recording. The accepted recording's SHA-256 remains
+`0853cefeca98e716f700fd80260e66693ab97d33ef79a9b24e9ce247553728f2`.
+The probe is removed; no private permanent test locks an NYI name. Rejection
+still recognizes only the explicit harness marker, not ordinary game text.
+
+Defaults remain fast recorded checks, whole-world runs opt-in. No new RNG
+stream/reset, successful combat/trade substitute, full SAIL/FLY implementation
+or full-turn success is claimed. Full upstream raft-sail fixture execution
+remains an explicit #90 engine-integration obligation; full trade settlement
+is #81 and the stage exit is still unfinished. G3 #309/#352/#353 remain the
+known intentionally reproduced nonblocking upstream concerns.

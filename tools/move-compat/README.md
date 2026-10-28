@@ -281,3 +281,15 @@ This accepts only the complete message/spotting helpers, not MOVE callbacks
 (#67), other arrival effects (#111–#113), report assembly, noncharacter
 descriptions or a whole-world turn. Defaults remain fast recorded tests;
 full-world checks stay opt-in. These helpers introduce no RNG draws.
+
+## MOVE integration (#67)
+
+The helper-only boundaries described above are historical: complete MOVE/GO,
+six movement synonyms, reverse-road discovery and prepend-order integration
+are now compared in [command-compat](../command-compat#complete-movego-and-synonym-integration-67)
+through the real command table and daily/evening scheduler. This movement
+harness and its entire **135-section / 7150-line / 142755-byte** recording
+remain unchanged, including #108's actual running SAIL-state raft versus
+roundship/galley crew-loss and base-distance controls. Full SAIL/FLY callbacks
+are still unported; the full upstream raft-sail fixture remains an explicit
+#90 engine-integration obligation, not a helper-level success claim.

@@ -8,6 +8,157 @@ import (
 	"strings"
 )
 
+// discoverRoad is move.c:140–162. allCharHere is C's snapshot walk,
+// including prisoners; each reverse road marks both ends for the stack.
+func (w *world) discoverRoad(who, where int, v *exitView) {
+	for _, reverse := range w.exitsFromLoc(who, int(v.destination)) {
+		if reverse.road != 0 && int(reverse.destination) == where {
+			w.setKnown(who, int(reverse.road))
+			w.setKnown(who, int(v.road))
+			for _, j := range w.allCharHere(who) {
+				w.setKnown(j, int(reverse.road))
+				w.setKnown(j, int(v.road))
+			}
+		}
+	}
+}
+
+// vMove is the complete move.c:584–689 start callback. In particular payment
+// precedes leaving the old stack, while escapes precede departure messages.
+func (w *world) vMove(c *command) int {
+	who := int(c.who)
+	where, checkOuter := w.subloc(who), true
+	var v *exitView
+	if c.parse.Len()-1 < 1 {
+		w.commandOut(who, "Specify direction or destination to MOVE.")
+		return 0
+	}
+	for c.parse.Len()-1 > 0 {
+		move := "move"
+		v = w.parseExitDir(c, where, &move)
+		if v != nil {
+			checkOuter = false
+			if w.landCheck(c, v, true) {
+				break
+			}
+			v = nil
+		}
+		if c.parse.Len()-1 == 1 {
+			break
+		}
+		w.cmdShift(c)
+	}
+	if v == nil && checkOuter && w.canMoveAtOuterLevel(where, c) != 0 {
+		c.a = int32(w.subloc(where))
+		v = w.parseExitDir(c, where, nil)
+		assert(v != nil, "olympia/move.c", 625, "v")
+		if v != nil {
+			assert(w.moveExitLand(c, v, false) >= 0, "olympia/move.c", 629, "move_exit_land(c, v, FALSE) >= 0")
+			w.commandOut(who, "(assuming 'move out' first)")
+			w.prependOrder(w.player(who), who, *c.line)
+		}
+	}
+	if v == nil {
+		return 0
+	}
+	delay := w.moveExitLand(c, v, true)
+	if delay < 0 {
+		return 0
+	}
+	if v.hadesCost != 0 {
+		cost := v.hadesCost * w.countStackFigures(who)
+		w.logWrite(11, "%s (%s) tries to enter Hades", w.boxName(w.player(who)), w.boxName(who))
+		if !w.autocharge(who, int(cost)) {
+			w.commandOut(who, "Can't afford %s to enter Hades.", goldS(int(cost)))
+			return 0
+		}
+		w.commandOut(who, "The Gatekeeper Spirit of Hades took %s from us.", goldS(int(cost)))
+	}
+	v.distance, c.wait = delay, delay
+	saveVArray(c, v)
+	w.leaveStack(who)
+	if delay > 0 {
+		w.vectorStack(who, true)
+		w.commandOut(vect, "Travel to %s will take %s day%s.", w.boxName(int(v.destination)), niceNum(int(delay)), addS(int(delay)))
+	}
+	w.suspendStackActions(who)
+	w.clearGuardFlag(who)
+	if delay > 1 {
+		w.prisonerMovementEscapeCheck(who)
+	}
+	w.departureMessage(who, v)
+	return 1
+}
+
+// dMove is move.c:776–832. The disabled #if 0 move_skip block is not active
+// gameplay. Missing destinations fail before restoring moving flags, as C does.
+func (w *world) dMove(c *command) int {
+	var v exitView
+	restoreVArray(c, &v)
+	who, dest := int(c.who), int(v.destination)
+	if !w.validBox(dest) {
+		w.commandOut(who, "Your destination no longer exists!")
+		return 0
+	}
+	if v.road != 0 {
+		w.discoverRoad(who, w.subloc(who), &v)
+	}
+	w.vectorStack(who, true)
+	w.commandOut(vect, "Arrival at %s.", w.boxName(dest))
+	if w.locDepth(dest) == locProvince && w.viewloc(w.subloc(who)) != w.viewloc(dest) && w.weatherHere(dest, subFog) != 0 {
+		w.commandOut(vect, "The province is blanketed in fog.")
+	}
+	w.restoreStackActions(who)
+	w.moveStack(who, dest)
+	if w.viewloc(int(v.orig)) != w.viewloc(dest) {
+		w.arrivalMessage(who, &v)
+	}
+	return 1
+}
+
+// These six synonyms retain the original reparsing (move.c:1096–1172):
+// olyParse changes c.cmd to MOVE, whose finish callback then handles arrival.
+func (w *world) vExit(c *command) int {
+	s := "move out"
+	assert(w.olyParse(c, &s), "olympia/move.c", 1102, "ret")
+	return w.vMove(c)
+}
+
+func (w *world) vEnter(c *command) int {
+	if c.parse.Len()-1 < 1 {
+		s := "move in"
+		assert(w.olyParse(c, &s), "olympia/move.c", 1116, "ret")
+		return w.vMove(c)
+	}
+	s := sout("move %s", c.parse[1])
+	assert(w.olyParse(c, &s), "olympia/move.c", 1121, "ret")
+	return w.vMove(c)
+}
+
+func (w *world) vNorth(c *command) int {
+	s := "move north"
+	assert(w.olyParse(c, &s), "olympia/move.c", 1133, "ret")
+	return w.vMove(c)
+}
+
+func (w *world) vSouth(c *command) int {
+	s := "move south"
+	assert(w.olyParse(c, &s), "olympia/move.c", 1145, "ret")
+	return w.vMove(c)
+}
+
+func (w *world) vEast(c *command) int {
+	s := "move east"
+	assert(w.olyParse(c, &s), "olympia/move.c", 1157, "ret")
+	return w.vMove(c)
+}
+
+func (w *world) vWest(c *command) int {
+	s := "move west"
+	assert(w.olyParse(c, &s), "olympia/move.c", 1169, "ret")
+	return w.vMove(c)
+}
+
 // touchLocAfterMove is move.c:692–707. where is deliberately unused by C:
 // touching observes each character's actual sublocation after set_where.
 func (w *world) touchLocAfterMove(who, where int) {
@@ -291,7 +442,7 @@ func (w *world) canMoveAtOuterLevel(where int, c *command) int {
 }
 
 // moveExitLand, moveExitFly and moveExitWater are the complete calculation
-// helpers from move.c. Departure and arrivals are separate tasks (#67).
+// helpers from move.c, shared by movement callbacks and direct comparisons.
 func (w *world) moveExitLand(c *command, v *exitView, show bool) int32 {
 	who := int(c.who)
 	delay := int32(v.distance)
@@ -390,7 +541,7 @@ func (w *world) moveExitFly(c *command, v *exitView, show bool) int32 {
 }
 
 // checkCaptainLosesSailors is the complete pinned move.c helper. The caller
-// has already removed qty sailors/pirates. SAIL callbacks remain NYI (#67).
+// has already removed qty sailors/pirates. Full SAIL callbacks remain NYI.
 func (w *world) checkCaptainLosesSailors(qty int32, target, inform int) {
 	where := w.subloc(target)
 	if w.cmdSail < 0 {

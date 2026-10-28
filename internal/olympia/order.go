@@ -122,6 +122,12 @@ func (w *world) queueOrder(pl, who int, s string) {
 	p.l.Append(s)
 }
 
+// prependOrder is order.c:174–181. Unlike queue_order there is no 250-order
+// limit: implicit outer-level movement must reinsert the original order.
+func (w *world) prependOrder(pl, who int, s string) {
+	w.pOrderHead(pl, who).l.Prepend(s)
+}
+
 // queue is order.c:199–208, the formatted interface to queue_order.
 func (w *world) queue(who int, format string, args ...any) {
 	w.queueOrder(w.player(who), who, fmt.Sprintf(format, args...))

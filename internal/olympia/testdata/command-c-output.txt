@@ -11964,3 +11964,2174 @@ log 201:
 stderr:
 
 exit 0
+stdout:
+section move NPC queued four day journey then WAIT through daily evenings
+> master 0
+> resolve_wait
+> set turn 3
+> set epoch 71
+> set day 1
+> set show_day 1
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 9001 1001
+> field 1000 loyal 4
+> field 1000 guard 1
+> field 1000 contact 1001
+> field 1000 weather_mage 1
+> routes 9000 9001 9001 9001 9001
+> routes 9001 9000 9000 9000 9000
+> shuffle 1000 9000
+exitdir 3 9001
+exitdir 2 9001
+exitdir 4 9001
+exitdir 1 9001
+> queue move north
+> queue wait time 2
+> initial
+> start
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 71 guard 0
+here:
+move char 1001 where 9001 moving 0 guard 0
+here:
+show_garrison 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 4
+ mo 71
+ ct 1001 
+CM
+ kw 1
+CO
+ li move north
+ ar 0 1 9001 0 0 4 9000 0
+ cs 2
+ wa 4
+ st 1
+ pr 2
+
+> evening
+> dump
+cmd 48 who 1000 state 2 status 1 wait 3 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 99
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 2
+> set epoch 72
+> daily
+> dump
+cmd 48 who 1000 state 2 status 1 wait 2 poll 0 pri 2 cond 0 fuzzy 0 days 2 debug 2 inhibit 0 cur 99
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 3
+> set epoch 73
+> daily
+> dump
+cmd 48 who 1000 state 2 status 1 wait 1 poll 0 pri 2 cond 0 fuzzy 0 days 3 debug 3 inhibit 0 cur 99
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 4
+> set epoch 74
+> daily
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 4 inhibit 0 cur 1
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9001 moving 0 guard 0
+here:
+move char 1001 where 9001 moving 0 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather: 9001
+output: 1000 9001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+ lk 4
+CM
+ kw 1
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+LO
+ pd 9001 9001 9001 9001 
+
+> save 9001
+9001 loc plain
+LI
+ wh 8000
+ hl 1001 1000 
+LO
+ pd 9000 9000 9000 9000 
+
+> set day 5
+> daily
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 1 debug 5 inhibit 0 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 2 last 3 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> lists
+wait_list: 1000
+collectors:
+second_wait_list:
+second_wait 0
+> set day 6
+> daily
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 2 debug 6 inhibit 1 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 2 last 3 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> set day 7
+> daily
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 2 debug 6 inhibit 1 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 2 last 3 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 1
+orders 1000:
+> orders_file 200
+orders file 200:
+> shuffle 1000 9001
+exitdir 3 9000
+exitdir 2 9000
+exitdir 1 9000
+exitdir 4 9000
+> entity_rolls 1000 1 9000
+prison roll 563
+land dir99 3
+land dir98 4
+land pick 2
+> newitem 1000 0
+created 78783
+> save_new
+78783 item 0
+IT
+ un 1000
+
+> readlog 200
+log 200:
+1000:0::0:1:> move north
+1000:0::0:1:Travel to Plain~[9001] will take four days.
+1000:0::0:4:Arrival at Plain~[9001].
+9001:0::0:4:<no subkind>~[1000] arrived from the south.
+1000:0::0:5:> wait time 2
+1000:0::0:6:Wait finished: two days have passed.
+stderr:
+
+exit 0
+stdout:
+section move zero distance detaches follower clears guards restores whole stack before WAIT
+> resolve_wait
+> set day 2
+> set epoch 91
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 29
+> entity 1002 2 0
+> entity 1003 2 0
+> field 1002 lord 200
+> field 1003 lord 201
+> field 1003 prisoner 1
+> link 8000 9000
+> link 9000 9001
+> link 9000 1001
+> link 1001 1000
+> link 1000 1002
+> link 1000 1003
+> field 1000 guard 1
+> field 1002 guard 1
+> field 1003 guard 1
+> field 1000 moving 7
+> queue move 9001
+> queue wait time 1
+> load
+load 1
+> do
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 0 cur 0
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000 1002 1003
+move char 1000 where 9001 moving 0 guard 0
+here: 1002 1003
+move char 1001 where 9000 moving 0 guard 0
+here:
+move char 1002 where 1000 moving 0 guard 0
+here:
+move char 1003 where 1000 moving 0 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1003 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9000
+weather:
+output: 1000 1001 1002
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+ hl 1002 1003 
+CH
+ lo 200
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+> save 1003
+1003 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ pr 1
+
+> save 9001
+9001 loc temple
+LI
+ wh 9000
+ hl 1000 
+
+> do
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> readlog 200
+log 200:
+1000:0::0::> move 9001
+1001:0::0::<no subkind>~[1000] unstacks from us.
+1000:0::0::<no subkind>~[1000] unstacks from <no subkind>~[1001].
+1002:0::0::<no subkind>~[1000] unstacks from <no subkind>~[1001].
+1000:0::0::Arrival at Temple~[9001].
+1002:0::0::Arrival at Temple~[9001].
+1000:0::0::> wait time 1
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section move outer nested levels reinsert original before successor and preserve shifted line
+> master 0
+> resolve_wait
+> set day 1
+> set epoch 71
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 14
+> entity 9200 3 29
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9100 9200
+> link 9200 1000
+> routes 9000 9001 0 0 0
+> queue move nowhere north
+> queue wait time 1
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [move] [nowhere] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 1 0
+orders 1000: [wait time 1]
+> orders_file 200
+orders file 200:
+1000:wait time 1
+> move_state
+vector: 1000
+move char 1000 where 9100 moving 0 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9000 8 9000 0 0 1 9100 0; parse [move] [north]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 1 0
+orders 1000: [move nowhere north] [wait time 1]
+> set day 2
+> evening
+> dump
+cmd 48 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 2 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [move] [nowhere] [north]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 1 0
+orders 1000: [wait time 1]
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 71 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ mo 71
+CO
+ li move nowhere north
+ ar 0 1 9001 0 0 4 9000 0
+ cs 2
+ wa 4
+ st 1
+ pr 2
+
+> readlog 200
+log 200:
+1000:0::0::> move nowhere north
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::No visible north route from Temple~[9200].
+1000:0::0::(assuming 'move out' first)
+1000:0::0::Arrival at City~[9100].
+1000:0::0::> move nowhere north
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::No visible north route from City~[9100].
+1000:0::0::(assuming 'move out' first)
+1000:0::0::Travel to Plain~[9000] will take one day.
+9100:0::0::<no subkind>~[1000] exited City~[9100].
+1000:0::0::Arrival at Plain~[9000].
+9000:0::0::<no subkind>~[1000] arrived from City~[9100].
+1000:0::0::> move nowhere north
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::Travel to Plain~[9001] will take four days.
+9000:0::0::<no subkind>~[1000] went north.
+stderr:
+
+exit 0
+stdout:
+section move Hades charges old friendly stack before detaching foreign captives counted
+> master 0
+> set gm 201
+> set hades_region 8001
+> set turn 1
+> set day 1
+> set epoch 51
+> entity 1 4 0
+> entity 295 4 0
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 1002 2 0
+> field 1002 lord 201
+> field 1002 prisoner 1
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8001 9001
+> link 9000 1001
+> link 1001 1000
+> link 1000 1002
+> field 1000 loyal 4
+> inventory 1000 1 20
+> inventory 1001 1 300
+> inventory 1002 1 999
+> routes 9000 9001 0 0 0
+> queue move north
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1000 1002
+move char 1000 where 9000 moving 51 guard 0
+here:
+move char 1001 where 9000 moving 0 guard 0
+here:
+move char 1002 where 9000 moving 0 guard 0
+here:
+show_garrison 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 4
+ mo 51
+CO
+ li move north
+ ar 0 1 9001 0 0 4 9000 0
+ cs 2
+ wa 4
+ st 1
+ pr 2
+
+> save 1001
+1001 char 0
+il	1 120
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+il	1 999
+LI
+ wh 9000
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::> move north
+1000:0::0::The Gatekeeper Spirit of Hades took 200~gold from us.
+1001:0::0::<no subkind>~[1000] unstacks from us.
+1000:0::0::<no subkind>~[1000] unstacks from <no subkind>~[1001].
+1000:0::0::Travel to Plain~[9001] will take four days.
+1000:0::0::Prisoner <no subkind>~[1002] escaped!
+> readlog 201
+log 201:
+11:0::0::Player~[200] (<no subkind>~[1000]) tries to enter Hades
+1002:0::0::We escaped!
+9000:0::0::<no subkind>~[1000] went north.
+stderr:
+
+exit 0
+stdout:
+section move Hades insufficient payment leaves original stack guards and inventory intact
+> master 0
+> set gm 201
+> set hades_region 8001
+> entity 1 4 0
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8001 9001
+> link 9000 1001
+> link 1001 1000
+> inventory 1000 1 20
+> inventory 1001 1 79
+> field 1000 guard 1
+> routes 9000 9001 0 0 0
+> queue move north
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [move] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector:
+move char 1000 where 1001 moving 0 guard 1
+here:
+move char 1001 where 9000 moving 0 guard 0
+here: 1000
+show_garrison 0
+> save 1000
+1000 char 0
+il	1 20
+LI
+ wh 1001
+CH
+ lo 200
+ gu 1
+CO
+ li move north
+ ar 0 0 0 0 0 0 0 0
+ wa -1
+ pr 2
+
+> save 1001
+1001 char 0
+il	1 79
+LI
+ wh 9000
+ hl 1000 
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::> move north
+1000:0::0::Can't afford 100~gold to enter Hades.
+> readlog 201
+log 201:
+11:0::0::Player~[200] (<no subkind>~[1000]) tries to enter Hades
+stderr:
+
+exit 0
+stdout:
+section move destination disappears before actual evening arrival keeps moving flags
+> master 0
+> set epoch 41
+> set day 1
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 14
+> link 8000 9000
+> link 9000 9001
+> link 9000 1000
+> queue move 9001
+> queue format 7
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9001 7 9001 0 0 1 9000 0; parse [move] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> delete_box 9001
+> evening
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 7 0 0 0 0 0 0 0; parse [format] [7]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 41 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ mo 41
+CO
+ li format 7
+ ar 7 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> move 9001
+1000:0::0::Travel to City~[9001] will take one day.
+1000:0::0::Your destination no longer exists!
+stderr:
+
+exit 0
+stdout:
+section move road arrival learns all reverse roads for prisoner snapshot and factions
+> master 0
+> set day 1
+> set epoch 41
+> entity 295 4 0
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 401 7 0
+> entity 402 7 0
+> entity 403 7 0
+> entity 404 7 0
+> entity 1002 2 0
+> field 1002 lord 201
+> field 1002 prisoner 1
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 1000 1001
+> link 1000 1002
+> link 9000 401
+> link 9001 402
+> link 9001 403
+> link 9001 404
+> road 401 9001 1
+> road 402 9000 1
+> road 403 9000 1
+> road 404 9001 1
+> set_known 1000 401
+> queue go 9001
+> load
+load 1
+> do
+> dump
+cmd 37 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9001 0 9001 401 1 4 9000 1; parse [go] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 401
+touched:
+weather:
+output: 1000 1001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> set wait 1
+> evening
+> dump
+cmd 37 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 9001 0 9001 401 1 4 9000 1; parse [go] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 401 402 403 9001
+touched: 9001
+weather:
+output: 1000 1001 9001
+arrival player 201 allocated 1
+known: 402 401 403
+touched:
+weather:
+output:
+> move_state
+vector: 1000 1001 1002
+move char 1000 where 9001 moving 0 guard 0
+here: 1001 1002
+move char 1001 where 1000 moving 0 guard 0
+here:
+move char 1002 where 1000 moving 0 guard 0
+here:
+show_garrison 0
+> save 1000
+1000 char 0
+LI
+ wh 9001
+ hl 1001 1002 
+CH
+ lo 200
+CO
+ li go 9001
+ ar 9001 0 9001 401 1 4 9000 1
+ st 1
+ de 1
+ pr 2
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ pr 1
+
+> save 200
+200 player pl_regular
+PL
+ kn 401 402 403 9001 
+
+> save 201
+201 player pl_regular
+PL
+ kn 401 402 403 
+
+> readlog 200
+log 200:
+1000:0::0::> go 9001
+1000:0::0::Travel to Plain~[9001] will take four days.
+1001:0::0::Travel to Plain~[9001] will take four days.
+1000:0::0::Arrival at Plain~[9001].
+1001:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[1000] arrived, accompanied~by:
+9001:0::3/3::<no subkind>~[1001]
+9001:0::3/3::<no subkind>~[1002], prisoner
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section move no reverse road does not learn forward road for foreign follower
+> master 0
+> set day 1
+> set epoch 41
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 29
+> entity 401 7 0
+> link 8000 9000
+> link 9000 9001
+> link 9000 1000
+> link 1000 1001
+> field 1001 lord 201
+> link 9000 401
+> road 401 9001 0
+> queue go 9001
+> load
+load 1
+> do
+> dump
+cmd 37 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 9001 0 9001 401 0 0 9000 0; parse [go] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9000
+weather:
+output: 1000
+arrival player 201 allocated 1
+known: 9001
+touched: 9000
+weather:
+output: 1001
+> save 1000
+1000 char 0
+LI
+ wh 9001
+ hl 1001 
+CH
+ lo 200
+CO
+ li go 9001
+ ar 9001 0 9001 401 0 0 9000 0
+ st 1
+ pr 2
+
+> readlog 200
+log 200:
+1000:0::0::> go 9001
+1000:0::0::Arrival at Temple~[9001].
+> readlog 201
+log 201:
+1001:0::0::Arrival at Temple~[9001].
+stderr:
+
+exit 0
+stdout:
+section move no arguments already there invalid alternatives and land rejection continue queue
+> master 0
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> routes 9000 9001 0 0 0
+> queue move
+> queue move 9000
+> queue move bad north bad
+> queue wait time 1
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 1 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9000 0 0 0 0 0 0 0; parse [move] [9000]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 48 who 1000 state 1 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [move] [bad] [north] [bad]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 94 who 1000 state 1 status 0 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> move
+1000:0::0::Specify direction or destination to MOVE.
+1000:0::0::> move 9000
+1000:0::0::Already in Plain~[9000].
+1000:0::0::> move bad north bad
+1000:0::0::Unknown direction or destination 'bad'.
+1000:0::0::A sea-worthy ship is required for travel across water.
+1000:0::0::Unknown direction or destination 'bad'.
+stderr:
+
+exit 0
+stdout:
+section move alternatives shift to valid route then overload fails before detach
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 1
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> link 9000 1001
+> link 1001 1000
+> field 1000 guard 1
+> routes 9000 9001 0 0 0
+> queue move bad north west
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 7 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 7 9000 0; parse [move] [north] [west]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 0 guard 0
+here:
+move char 1001 where 9000 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> move bad north west
+1000:0::0::Unknown direction or destination 'bad'.
+1001:0::0::<no subkind>~[1000] unstacks from us.
+1000:0::0::<no subkind>~[1000] unstacks from <no subkind>~[1001].
+1000:0::0::Travel to Plain~[9001] will take seven days.
+stderr:
+
+exit 0
+stdout:
+section move aliases cardinal reparsing changes command to MOVE retains real finish
+> master 0
+> set day 1
+> set epoch 21
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> routes 9000 9001 9001 9001 9001
+> routes 9001 9000 9000 9000 9000
+> queue north ignored
+> queue n
+> queue south
+> queue s
+> queue east
+> queue e
+> queue west
+> queue w
+> queue wait time 1
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 8
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 0
+> finish
+finish 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9000 0 0 4 9001 0; parse [move] [north]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 7
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 0
+> finish
+finish 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 3 9001 0 0 4 9000 0; parse [move] [south]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 6
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 0
+> finish
+finish 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 3 9000 0 0 4 9001 0; parse [move] [south]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 5
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 0
+> finish
+finish 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 9001 0 0 4 9000 0; parse [move] [east]
+player 200 count 5 last 0 format 0 notab 0 output 1 hidden 0 orders 4
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 0
+> finish
+finish 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 9000 0 0 4 9001 0; parse [move] [east]
+player 200 count 6 last 0 format 0 notab 0 output 1 hidden 0 orders 3
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 0
+> finish
+finish 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 9001 0 0 4 9000 0; parse [move] [west]
+player 200 count 7 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 0
+> finish
+finish 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 9000 0 0 4 9001 0; parse [move] [west]
+player 200 count 8 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 0
+> finish
+finish 1
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 8 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 0 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> north ignored
+1000:0::0::Travel to Plain~[9001] will take four days.
+1000:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[1000] arrived from the south.
+1000:0::0::> n
+1000:0::0::Travel to Plain~[9000] will take four days.
+9001:0::0::<no subkind>~[1000] went north.
+1000:0::0::Arrival at Plain~[9000].
+9000:0::0::<no subkind>~[1000] arrived from the south.
+1000:0::0::> south
+1000:0::0::Travel to Plain~[9001] will take four days.
+9000:0::0::<no subkind>~[1000] went south.
+1000:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[1000] arrived from the north.
+1000:0::0::> s
+1000:0::0::Travel to Plain~[9000] will take four days.
+9001:0::0::<no subkind>~[1000] went south.
+1000:0::0::Arrival at Plain~[9000].
+9000:0::0::<no subkind>~[1000] arrived from the north.
+1000:0::0::> east
+1000:0::0::Travel to Plain~[9001] will take four days.
+9000:0::0::<no subkind>~[1000] went east.
+1000:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[1000] arrived from the west.
+1000:0::0::> e
+1000:0::0::Travel to Plain~[9000] will take four days.
+9001:0::0::<no subkind>~[1000] went east.
+1000:0::0::Arrival at Plain~[9000].
+9000:0::0::<no subkind>~[1000] arrived from the west.
+1000:0::0::> west
+1000:0::0::Travel to Plain~[9001] will take four days.
+9000:0::0::<no subkind>~[1000] went west.
+1000:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[1000] arrived from the east.
+1000:0::0::> w
+1000:0::0::Travel to Plain~[9000] will take four days.
+9001:0::0::<no subkind>~[1000] went west.
+1000:0::0::Arrival at Plain~[9000].
+9000:0::0::<no subkind>~[1000] arrived from the east.
+stderr:
+
+exit 0
+stdout:
+section move ENTER IN EXIT OUT use zero distance reparsing and first operand only
+> set epoch 21
+> set day 1
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 29
+> link 8000 9000
+> link 9000 9001
+> link 9000 1000
+> queue enter 9001 ignored
+> queue exit ignored
+> queue in
+> queue out
+> queue enter
+> queue exit
+> load
+load 1
+> do
+> dump
+cmd 107 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [exit] [ignored]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 4
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 108 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [in]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 3
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 109 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [out]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 106 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [enter]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 107 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [exit]
+player 200 count 5 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 48 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 8 9000 0 0 0 9001 0; parse [move] [out]
+player 200 count 6 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 0 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001 9000
+touched: 9000
+weather:
+output: 1000 9000
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> readlog 200
+log 200:
+1000:0::0::> enter 9001 ignored
+1000:0::0::Arrival at Temple~[9001].
+1000:0::0::> exit ignored
+9000:0::0::<no subkind>~[1000] exited Temple~[9001].
+1000:0::0::Arrival at Plain~[9000].
+1000:0::0::> in
+1000:0::0::(assuming 'move 9001')
+9000:0::0::<no subkind>~[1000] entered Temple~[9001].
+1000:0::0::Arrival at Temple~[9001].
+1000:0::0::> out
+9000:0::0::<no subkind>~[1000] exited Temple~[9001].
+1000:0::0::Arrival at Plain~[9000].
+1000:0::0::> enter
+1000:0::0::(assuming 'move 9001')
+9000:0::0::<no subkind>~[1000] entered Temple~[9001].
+1000:0::0::Arrival at Temple~[9001].
+1000:0::0::> exit
+9000:0::0::<no subkind>~[1000] exited Temple~[9001].
+1000:0::0::Arrival at Plain~[9000].
+stderr:
+
+exit 0
+stdout:
+section move actual generic interruption retains NULL interrupt then loads WAIT
+> master 0
+> resolve_wait
+> set epoch 51
+> set day 1
+> entity 10 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> routes 9000 9001 0 0 0
+> queue move north
+> queue wait time 2
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 0 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> move north
+1000:0::0::Travel to Plain~[9001] will take four days.
+stderr:
+
+exit 0
+stdout:
+section move arrival fog vector includes stack while suppressing public arrival
+> master 0
+> set epoch 21
+> set day 1
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 11 57
+> entity 1002 2 0
+> field 1002 lord 201
+> link 8000 9000
+> link 8000 9001
+> link 9001 9002
+> field 9002 strength 1
+> link 9000 1000
+> link 1000 1001
+> link 9001 1002
+> routes 9000 9001 0 0 0
+> queue move north
+> load
+load 1
+> do
+> set wait 1
+> evening
+> dump
+cmd 48 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000 1001
+move char 1000 where 9001 moving 0 guard 0
+here: 1001
+move char 1001 where 1000 moving 0 guard 0
+here:
+move char 1002 where 9001 moving 0 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather:
+output: 1000 1001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+ hl 1001 
+CH
+ lo 200
+CO
+ li move north
+ ar 0 1 9001 0 0 4 9000 0
+ st 1
+ de 1
+ pr 2
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::> move north
+1000:0::0::Travel to Plain~[9001] will take four days.
+1001:0::0::Travel to Plain~[9001] will take four days.
+1000:0::0::Arrival at Plain~[9001].
+1001:0::0::Arrival at Plain~[9001].
+1000:0::0::The province is blanketed in fog.
+1001:0::0::The province is blanketed in fog.
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section move Hades arrival executes real hook queues ambush and preserves shared mint
+> master 13
+> resolve_wait
+> set epoch 21
+> set day 7
+> set turn 1
+> set indep 100
+> set hades_region 8001
+> entity 100 1 0
+> entity 1 4 0
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 288 4 0
+> entity 32 4 0
+> entity 26 4 0
+> entity 31 4 0
+> entity 33 4 0
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8001 9001
+> link 9000 1000
+> inventory 1000 1 100
+> field 1000 contact 1001
+> routes 9000 9001 0 0 0
+> queue move north
+> queue wait time 2
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 1
+> evening
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 136063 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 136063 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 100 allocated 1
+known:
+touched: 9001
+weather:
+output: 9001
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather:
+output: 1000 11 9001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> bandits
+bandit 136063
+136063 char ni
+il	33 11
+LI
+ wh 9001
+CH
+ ni 33
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 136063 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 136063
+output 0 0 0 0 0 touched 0 1
+orders 136063: [attack 1000]
+> orders_file 100
+orders file 100:
+136063:attack 1000
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 9001
+9001 loc plain
+LI
+ wh 8001
+ hl 1000 136063 
+
+> region_rolls 1000 9001
+hads ambush 6
+hads kind 4
+hads retal 1
+faer ambush 3
+faer kind 3
+faer retal 1
+> newitem 1000 0
+created 73018
+> save_new
+73018 item 0
+IT
+ un 1000
+
+> readlog 200
+log 200:
+1000:0::0::> move north
+11:0::0::Player~[200] (<no subkind>~[1000]) tries to enter Hades
+1000:0::0::The Gatekeeper Spirit of Hades took 100~gold from us.
+1000:0::0::Travel to Plain~[9001] will take four days.
+1000:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[136063] appear.
+9001:0::0::<no subkind>~[1000] arrived from the south.
+stderr:
+
+exit 0
+stdout:
+section move Faery arrival logs entry before relocation hook and public message
+> master 0
+> resolve_wait
+> set epoch 21
+> set day 17
+> set turn 1
+> set indep 100
+> set gm 201
+> set faery_region 8001
+> entity 100 1 0
+> entity 1 4 0
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 293 4 0
+> entity 25 4 0
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8001 9001
+> link 9000 1000
+> field 1000 contact 1001
+> field 1000 weather_mage 1
+> routes 9000 9001 0 0 0
+> queue go north
+> load
+load 1
+> do
+> dump
+cmd 37 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [go] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 1
+> evening
+> dump
+cmd 37 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 17 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [go] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 110158 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 100 allocated 1
+known:
+touched: 9001
+weather:
+output: 9001
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather: 9001
+output: 1000 9001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output: 11
+> bandits
+bandit 110158
+110158 char ni
+il	293 21 \
+	1 22
+LI
+ wh 9001
+CH
+ ni 293
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 0 1
+orders 110158:
+> orders_file 100
+orders file 100:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+CM
+ kw 1
+CO
+ li go north
+ ar 0 1 9001 0 0 4 9000 0
+ st 1
+ de 1
+ pr 2
+
+> save 9001
+9001 loc plain
+LI
+ wh 8001
+ hl 1000 110158 
+
+> region_rolls 1000 9001
+hads ambush 23
+hads kind 4
+hads retal 2
+faer ambush 3
+faer kind 1
+faer retal 2
+> newitem 1000 0
+created 68643
+> save_new
+68643 item 0
+IT
+ un 1000
+
+> readlog 201
+log 201:
+11:0::0::<no subkind>~[1000] enters Faery at Plain~[9001].
+> readlog 200
+log 200:
+1000:0::0::> go north
+1000:0::0::Travel to Plain~[9001] will take four days.
+1000:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[110158] appear.
+9001:0::0::<no subkind>~[1000] arrived from the south.
+stderr:
+
+exit 0
+stdout:
+section move start escape uses snapshot before departure and leaves survivor moving
+> master 0
+> set epoch 21
+> set day 1
+> set turn 1
+> entity 10 4 0
+> entity 295 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 1047 2 0
+> entity 1052 2 0
+> entity 1002 2 0
+> field 1047 lord 201
+> field 1052 lord 201
+> field 1002 lord 201
+> field 1047 prisoner 1
+> field 1052 prisoner 1
+> field 1002 prisoner 1
+> field 1047 release 1
+> field 1052 release 1
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 1000 1047
+> link 1000 1052
+> link 1000 1002
+> routes 9000 9001 0 0 0
+> queue move north
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> escape_state
+vector: 1000 1047 1052 1002
+escape char 1000 where 9000 prisoner 0 moving 21 magic 0 release 0
+here:
+escape char 1001 where 0 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1002 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1047 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1052 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> move_state
+vector: 1000 1047 1052 1002
+move char 1000 where 9000 moving 21 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+move char 1002 where 9000 moving 0 guard 0
+here:
+move char 1047 where 9000 moving 0 guard 0
+here:
+move char 1052 where 9000 moving 0 guard 0
+here:
+show_garrison 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ mo 21
+CO
+ li move north
+ ar 0 1 9001 0 0 4 9000 0
+ cs 2
+ wa 4
+ st 1
+ pr 2
+
+> save 1047
+1047 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> save 1052
+1052 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> save 1002
+1002 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 1002 1052 1047 
+LO
+ pd 9001 0 0 0 
+
+> entity_rolls 1047 1 9000
+prison roll 9
+land dir99 4
+land dir98 3
+land pick 2
+> readlog 200
+log 200:
+1000:0::0::> move north
+1000:0::0::Travel to Plain~[9001] will take four days.
+1000:0::0::Prisoner <no subkind>~[1047] escaped!
+1000:0::0::Prisoner <no subkind>~[1052] escaped!
+1000:0::0::Prisoner <no subkind>~[1002] escaped!
+> readlog 201
+log 201:
+1047:0::0::We escaped!
+1052:0::0::We escaped!
+1002:0::0::We escaped!
+9000:0::0::<no subkind>~[1000] went north.
+stderr:
+
+exit 0
+stdout:
+section move refused building entry does not try outer fallback but OUT still permits exit
+> set epoch 21
+> set day 1
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 29
+> link 8000 9000
+> link 9000 9001
+> link 9000 1000
+> link 9001 1001
+> field 1001 lord 201
+> queue enter 9001
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9001 0 0 0 0 0 0 0; parse [move] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector:
+move char 1000 where 9000 moving 0 guard 0
+here:
+move char 1001 where 9001 moving 0 guard 0
+here:
+show_garrison 0
+> link 9001 1000
+> queue out
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 8 9000 0 0 0 9001 0; parse [move] [out]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 0 guard 0
+here:
+move char 1001 where 9001 moving 0 guard 0
+here:
+show_garrison 0
+> save 9001
+9001 loc temple
+LI
+ wh 9000
+ hl 1001 
+
+> readlog 200
+log 200:
+1000:0::0::> enter 9001
+1000:0::0::<no subkind>~[1001] refused to let us enter.
+1000:0::0::> out
+1000:0::0::Arrival at Plain~[9000].
+> readlog 201
+log 201:
+1001:0::0::Refused to let <no subkind>~[1000] enter.
+stderr:
+
+exit 0
