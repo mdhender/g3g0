@@ -1225,7 +1225,8 @@ int main(int argc, char **argv)
   { sscanf(line,"%*s %d %8191[^\n]", &n, text); drv_signal(n, text); }
   else if (!strcmp(op, "name") || !strcmp(op, "plural"))
   {
-   sscanf(line,"%*s %d %8191[^\n]", &n, text);
+   text[0]=0;
+   if (sscanf(line,"%*s %d %8191[^\n]", &n, text)<1) return 2;
    if (!strcmp(op, "name")) set_name(n, text);
    else p_item(n)->plural_name = str_save(text);
   }

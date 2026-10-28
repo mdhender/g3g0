@@ -41,6 +41,36 @@ Only archives under `tmp/` are compiled; no upstream working tree is modified
 or built. Each C driver and Go test binary runs under shared `run_limited`,
 via `tools/lib/timeout.sh` / `run-limited.sh`, with `RUN_TIMEOUT` seconds.
 
+## Empty name/plural oracle inputs (#167)
+
+The local C driver's `name N [TEXT]` and `plural N [TEXT]` operations clear
+their reused text buffer before scanning and require an integer ID conversion.
+Omitted text now reaches the complete unchanged real `set_name` or `str_save`
+as an empty string, rather than retaining the previous operation's text.
+This corrects the oracle parser only; no engine, source pin or C dependency
+changes. The separate #137 names audit is not part of this prerequisite.
+
+Three appended sections use existing operations and actual `save_box`,
+`plural_item_box` and `box_name_qty` observations. They distinguish clearing
+a nonempty name, clearing a nonempty plural, and an unrelated `field` token
+before an empty plural. Before the fix, C retained the old saved name/plural
+or installed `weight` as the plural. Afterward, cleared saved fields disappear,
+plural quantities fall back to the singular name with exactly two warning
+lines per plural-quantity observation, and singular quantities stay silent.
+
+Two actual pinned C runs are identical at **877 sections / 60622 lines**;
+the Go comparison passes. The inherited **874 sections / 60548 lines** and
+entire input prefix are byte-identical. Only C generated the 74 appended
+recording lines; dependency-marker checks precede updates. Four temporary
+negative controls (missing/nonnumeric ID for each operation) returned status
+0 before and are rejected with status 2 after the parser correction.
+Fresh default command and turn comparisons, bounded `go vet ./...` and
+fresh bounded `go test -count=1 ./...` pass. Logs:
+`tmp/issue167-command-{before,update,default}.log`,
+`tmp/issue167-parser-negative-{before,after}.log`,
+`tmp/issue167-prefix-check.log`, `tmp/issue167-turn-default.log`,
+`tmp/issue167-vet.log` and `tmp/issue167-go-test.log`.
+
 ## Bounded raw file observations (#135)
 
 `readfile PATH` observes a whitespace-free cwd-relative (or absolute) path,

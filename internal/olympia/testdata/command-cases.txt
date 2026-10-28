@@ -19196,3 +19196,30 @@ output 1001 11
 emit 201 6
 readfile log/201
 save 1001
+
+section oracle text nonempty name then empty name clears saved name
+name 1000 stale [name]
+save 1000
+name 1000
+save 1000
+name 1000 replacement
+save 1000
+
+section oracle text nonempty plural then empty plural restores warnings and singular fallback
+entity 310 4 0
+name 310 amber ox
+plural 310 amber oxen
+save 310
+plural 310
+inherit name 310 2
+inherit name 310 1
+save 310
+
+section oracle text unrelated field token must not become empty plural
+entity 310 4 0
+name 310 amber ox
+plural 310 amber oxen
+field 310 weight 17
+plural 310
+inherit name 310 0
+save 310

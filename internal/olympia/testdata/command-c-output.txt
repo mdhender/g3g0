@@ -60546,3 +60546,77 @@ PL
 stderr:
 
 exit 0
+stdout:
+section oracle text nonempty name then empty name clears saved name
+> name 1000 stale [name]
+> save 1000
+1000 char 0
+na stale {name}
+CH
+ lo 200
+
+> name 1000
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> name 1000 replacement
+> save 1000
+1000 char 0
+na replacement
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section oracle text nonempty plural then empty plural restores warnings and singular fallback
+> entity 310 4 0
+> name 310 amber ox
+> plural 310 amber oxen
+> save 310
+310 item 0
+na amber ox
+IT
+ pl amber oxen
+
+> plural 310
+> inherit name 310 2
+plural box [amber ox~[310]]
+box qty [two~amber ox~[310]]
+> inherit name 310 1
+plural box [amber ox~[310]]
+box qty [one~amber ox~[310]]
+> save 310
+310 item 0
+na amber ox
+IT
+
+stderr:
+warning: plural name not set for item [310]
+warning: plural name not set for item [310]
+
+exit 0
+stdout:
+section oracle text unrelated field token must not become empty plural
+> entity 310 4 0
+> name 310 amber ox
+> plural 310 amber oxen
+> field 310 weight 17
+> plural 310
+> inherit name 310 0
+plural box [amber ox~[310]]
+box qty [zero~amber ox~[310]]
+> save 310
+310 item 0
+na amber ox
+IT
+ wt 17
+
+stderr:
+warning: plural name not set for item [310]
+warning: plural name not set for item [310]
+
+exit 0
