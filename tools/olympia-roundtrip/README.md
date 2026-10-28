@@ -33,9 +33,16 @@ A case passes when the exit status, stdout and stderr match byte for byte, and s
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `e733acb63bacb21167a1f2589d8dcdc023364896`.
 The revision is pinned in `run.sh` (`PINNED_REV`); `G3_REV` tests against another.
 Change the pin only on purpose, together with [`tools/olympia-spec`](../olympia-spec).
+
+At #131's pin move, the inherited baseline has already been accepted by
+the parent. Ten targeted deterministic load/save cases pass again after
+the follow-C edits; no corpus construction changes here. The new pin's
+`release-swear-np+turn` intentionally aborts in real C before a successful
+saved snapshot exists, so the default full-corpus preparation ERROR is
+tracked separately in #133, not accepted as green or repaired in this task.
 
 ## Prerequisites
 

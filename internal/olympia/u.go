@@ -287,10 +287,7 @@ func (w *world) killChar(who, inherit int) {
 			num = p.tokenNum
 		}
 		if num <= 0 {
-			// Preserve C's player ID versus subtype comparison, not subkind(player()).
-			// G3 #355: ordinary regular holders miss the vanishing notification.
-			// https://github.com/playbymail/olympia-g3/issues/355
-			if w.player(whoHas) == subPlRegular {
+			if w.subkind(w.player(whoHas)) == subPlRegular {
 				w.commandOut(whoHas, "%s vanishes.", w.boxName(tokenItem))
 			}
 			w.destroyUniqueItem(whoHas, tokenItem)
@@ -441,9 +438,9 @@ func (w *world) testKnown(who, i int) bool {
 	}
 	assert(w.validBox(who), "olympia/u.c", 2334, "valid_box(who)")
 	assert(w.validBox(i), "olympia/u.c", 2335, "valid_box(i)")
-	// Preserve C's NULL bx[0] dereference for valid but unowned characters:
-	// https://github.com/playbymail/olympia-g3/issues/353 (nonblocking).
-	ep := w.rpPlayer(w.player(who))
+	pl := w.player(who)
+	assert(pl != 0, "olympia/u.c", 2338, "pl != 0")
+	ep := w.rpPlayer(pl)
 	return ep != nil && testBit(ep.known, i)
 }
 

@@ -6,8 +6,11 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `e733acb63bacb21167a1f2589d8dcdc023364896`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
+
+At #131's pin move, two identical C runs retain all 37 sections / 1487 lines;
+the only recording delta is is_unit's swear.c assertion offset 297→294.
 
 The port follows:
 

@@ -5,7 +5,7 @@ package olympia
 
 import "fmt"
 
-// Complete savage.c:13–65,219–343,351–403 at the stage pin. The drum
+// Complete savage.c:13–67,221–345,353–409 at the stage pin. The drum
 // command handlers and autonomous NPC dispatcher are separate work.
 func (w *world) createSavage(where int) int {
 	n := w.newChar(subNi, itemSavage, where, 100, int(w.indepPlayer), loyNpc, 0, "")
@@ -36,6 +36,7 @@ func (w *world) callSavage(where, toWhere, who, why int) bool {
 		w.queue(n, "attack %s", boxCodeLess(who))
 	}
 	w.initLoadSup(n)
+	w.numSavages++
 	return true
 }
 
@@ -50,7 +51,7 @@ func (w *world) savageHates(where int) bool {
 }
 
 func (w *world) savageHateHere(where int) int {
-	assert(w.validBox(where), "olympia/savage.c", 250, "valid_box(where)")
+	assert(w.validBox(where), "olympia/savage.c", 252, "valid_box(where)")
 	for i := range w.loopHere(where) {
 		if w.isLocOrShip(i) && w.locDepth(i) == locBuild && w.savageHates(i) {
 			return i
@@ -85,7 +86,7 @@ func (w *world) autoSavage(who int) {
 			return
 		}
 	}
-	assert(w.validBox(who), "olympia/savage.c", 329, "valid_box(who)")
+	assert(w.validBox(who), "olympia/savage.c", 331, "valid_box(who)")
 	for i := range w.loopHere(who) {
 		if w.kind(i) == tChar {
 			w.queue(who, "unstack %d", i)
@@ -99,9 +100,6 @@ func (w *world) autoSavage(who int) {
 }
 
 func (w *world) initSavageAttacks() {
-	// Reproduce G3 #354: the initial tally is never incremented after spawning,
-	// so multiple eligible forts can exceed the 200-unit limit within a turn.
-	// https://github.com/playbymail/olympia-g3/issues/354
 	w.numSavages = 0
 	for i := range w.loopKind(tChar) {
 		if w.nobleItem(i) == itemSavage {
@@ -113,6 +111,9 @@ func (w *world) initSavageAttacks() {
 	}
 	for fort := range w.loopKind(tLoc) {
 		if w.locDepth(fort) != locBuild {
+			continue
+		}
+		if w.numSavages >= 200 {
 			continue
 		}
 		w.streams.BeginNPC(fort)

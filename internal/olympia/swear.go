@@ -113,10 +113,8 @@ func (w *world) setLord(who, newLord, k, lev int) {
 	}
 	if flag {
 		nps := w.charNPTotal(who)
-		// Match C: a failed deduction leaves the transfer/refund intact and
-		// still reports Paid. https://github.com/playbymail/olympia-g3/issues/352
 		if !w.deductNP(newPl, nps) {
-			w.logWrite(10, "assert fail: new_pl=%s, who=%s, nps=%d, old_pl=%s", w.boxCode(newPl), w.boxCode(who), nps, w.boxCode(oldPl))
+			assert(false, "olympia/swear.c", 180, "FALSE")
 		}
 		w.commandOut(newPl, "Paid %d NP%s for %s.", nps, addS(nps), w.boxName(who))
 	}
@@ -135,12 +133,12 @@ func (w *world) reswearAllSworn(who int) {
 // isUnit is is_unit(): whether v is in the units list of player pl, which
 // must be a player.
 func (w *world) isUnit(pl, v int) bool {
-	assert(w.kind(pl) == tPlayer, "olympia/swear.c", 297, "kind(pl) == T_player")
+	assert(w.kind(pl) == tPlayer, "olympia/swear.c", 294, "kind(pl) == T_player")
 
 	return w.pPlayer(pl).units.Lookup(v) >= 0
 }
 
-// unitDeserts is swear.c:303–343. loyCheck is unused in the original too.
+// unitDeserts is swear.c:300–340. loyCheck is unused in the original too.
 func (w *world) unitDeserts(who, toWho int, loyCheck bool, k, lev int) {
 	sp := w.player(who)
 	if toWho != 0 && sp != 0 {

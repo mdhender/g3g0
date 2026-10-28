@@ -781,7 +781,7 @@ visit:
 > loop units 1001
 visit:
 > isunit 1001 1001
-assertion failure: olympia/swear.c (297): kind(pl) == T_player
+assertion failure: olympia/swear.c (294): kind(pl) == T_player
 exit 134
 section player of a loop
 > alloc 1030 2 0

@@ -1,7 +1,13 @@
 # Movement helper compatibility
 
-Pin: `6a25f2d252ce45bd5adbe3baaccb3be3eed56279` in
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3/tree/6a25f2d252ce45bd5adbe3baaccb3be3eed56279).
+Pin: `e733acb63bacb21167a1f2589d8dcdc023364896` in
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
+
+Current #131 recording: **135 sections / 7158 lines**, from two identical
+real-C runs. Only G3 #353's unowned route changes: the explicit owner
+assertion flushes the preceding output and exits 134 instead of 139.
+No case inputs change. Implementation evidence/counts below retain their
+original pin scope, rather than rewriting historical recordings or hashes.
 
 ```sh
 G3_REPO=/home/user/workspace/repo/tmp/upstream.git tools/move-compat/run.sh
@@ -37,8 +43,8 @@ even in assertion cases or `--update` mode. The driver only constructs fixtures,
 invokes helpers and dumps observed state; output comes through real sout.
 
 Each section runs in a fresh process, twice, under `run_limited`. Successful
-cases must exit 0, assertion cases 134, and the separately identified known
-G3 #353 case 139. Both runs must match raw stdout, stderr and status, then match
+cases must exit 0 and assertion cases 134, including G3 #353's now-explicit
+owner assertion. Both runs must match raw stdout, stderr and status, then match
 `internal/olympia/testdata/move-c-output.txt`. The Go recorded-case test uses
 the absolute run-limited adapter. Default checks need no whole world.
 
@@ -56,9 +62,9 @@ Coverage:
   C-int timestamp arithmetic; completed and unfinished ships and dry-dock links.
 - LAND/WATER/both/empty filters; sequential repeated shuffles, turn reseeding,
   day changes, empty/singleton no-draw controls and unrelated legacy-RNG draws.
-- Original diagnostic/assertion bytes and assertion flushing. The known
+- Original diagnostic/assertion bytes and assertion flushing. The
   [G3 #353](https://github.com/playbymail/olympia-g3/issues/353) unowned-character
-  NULL dereference retains SIGSEGV's unflushed output and status 139.
+  case now asserts `pl != 0` at u.c:2338 (status 134), following G3 #357.
 - All eight asymmetric weight totals, noble-item fallback, negative/zero/positive
   capacities, signed char/short fields, C-int products, inventory filtering,
   nested stacks/prisoners, fighter/man counts, ownership/NPC noble counting,

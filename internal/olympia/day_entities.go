@@ -43,13 +43,13 @@ func (w *world) dogsBarkAtHiddenChars() {
 	}
 }
 
-// barkDogs is u.c:2633–2665, retaining VECT recipients, stack-owner item
+// barkDogs is u.c:2634–2666, retaining VECT recipients, stack-owner item
 // sums, direct-character keys and the per-hound enty leaf draw order.
 func (w *world) barkDogs(where int) {
 	w.vectorCharHere(where)
 	w.outVector.Append(where) // vector_add appends unconditionally.
 	var sum, bark int32
-	assert(w.validBox(where), "olympia/u.c", 2644, "valid_box(where)")
+	assert(w.validBox(where), "olympia/u.c", 2645, "valid_box(where)")
 	for who := range w.loopHere(where) {
 		if w.kind(who) != tChar {
 			continue
@@ -91,9 +91,8 @@ func (w *world) incrementStoneRingAura() {
 }
 
 // noncreatorCurseErode is the active day.c:901–963 path, NOT its disabled
-// loyalty implementation. G3 #356: public USE 886 charges for this curse,
-// but erosion only logs NOTYET. Preserve that limitation intentionally.
-// https://github.com/playbymail/olympia-g3/issues/356
+// loyalty implementation. Erosion still only logs NOTYET after G3 #357;
+// the unported USE 886 validator now refuses the curse (stage 4).
 func (w *world) noncreatorCurseErode() {
 	for who := range w.loopKind(tChar) {
 		assert(w.validBox(who), "olympia/day.c", 914, "valid_box(who)")

@@ -1,8 +1,15 @@
 # Turn comparison (stage 1, #56)
 
 Pinned reference: [playbymail/olympia-g3 at
-6a25f2d252ce45bd5adbe3baaccb3be3eed56279](https://github.com/playbymail/olympia-g3/tree/6a25f2d252ce45bd5adbe3baaccb3be3eed56279).
+e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 No turn engine code is implemented here. The reference is real C, never Go.
+
+For #131, `--full --record` refreshes provenance from two actual turns at
+this pin: only the pin and C binary hash change; all recorded state/raw
+streams, fixture hash and entire-capture manifest entries remain identical.
+The hardcoded provenance test follows the new pin. The stage-1 comparator
+exclusions below deliberately remain until #134; this is not report-byte
+acceptance. Historical evidence below retains its original pin and hashes.
 
 ```sh
 tools/turn-compat/run.sh                 # fast recorded checks; no world turn or C build

@@ -14,10 +14,15 @@ The spec is the three gates that G3 documents for another engine in `doc/claude/
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `e733acb63bacb21167a1f2589d8dcdc023364896`.
 The revision is pinned in `run.sh` (`PINNED_REV`).
 `G3_REV` runs another revision, but then `passing.txt` is neither compared nor written.
 Change the pin only on purpose, and rerun this and [`tools/olympia-roundtrip`](../olympia-roundtrip) when you do.
+
+At #131, the exact recorded 19-pass set is retained: 19 pass / 104 fail /
+0 error at the new pin. The generated passing.txt changes provenance only.
+Golden initialization still stops at explicitly unsupported `-i`; this
+no-loss progress check does not claim all commands or reports are ported.
 
 ## Prerequisites
 

@@ -6,6 +6,58 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Stage-2 pin move and follow-C (#131)
+
+Current affected-tool pin: `e733acb63bacb21167a1f2589d8dcdc023364896`
+(G3 #357), moved from `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
+`G3_REPO="$PWD/tmp/upstream.git" tools/affected.sh OLD NEW` lists rng,
+helper, io, box, boxfile, check, loadsave, olympia-cli, olympia-roundtrip,
+olympia-spec, turn, turn-driver, command and move. Their script defaults and
+current README references move together; entity/code/lists and peripheral
+pins do not move. Historical task evidence, hashes and old bug descriptions
+below describe their original pins and are not rewritten as new acceptance.
+
+Go now follows the NP failure assertion after the existing transfer/refund
+mutations, the explicit knowledge-owner assertion, the savage tally and
+pre-draw cap, and the regular-player token disappearance notice. Command,
+move and helper recordings change only from two deterministic real-C runs:
+NP aborts replace the old alert/Paid continuation; unowned knowledge now
+asserts rather than segfaulting; savage cap/state/mint aftermath and token
+notice/output bits change; source assertion offsets follow the new files.
+One appended command case distinguishes skipping capped forts **before**
+reseeding the shared NPC stream. Original case/input prefixes are retained.
+RNG's complete unchanged social helpers move from swear.c:428–528 to
+425–525; the RNG recording stays identical.
+
+USE 886 was unported (the USE callbacks in glob.go remain explicit NYI).
+Stage 4 must preserve v_curse_noncreat's c->b minimum of 1 and existing
+possession/destroyable-item refusals, then print exactly
+`The noncreator possession curse has no effect yet.` and return FALSE.
+It must not reach d_curse_noncreat or charge aura on that path. This task
+does not implement the command. Existing turn erosion still logs NOTYET,
+without loyalty mutation, exactly as the unchanged day.c branch does.
+
+The turn C-only recordings are refreshed with `--full --record`; only the
+pin/binary provenance changes, not captured world/diagnostic bytes or tree
+hashes. The comparator still has stage-1 report exclusions until #134.
+The expected-abort `release-swear-np+turn` corpus prerequisite is #133;
+roundtrip case construction is deliberately unchanged here.
+
+#131 validation (Linux amd64, GCC 12.2.0, Go 1.26.4): all affected small
+tools plus unchanged-pin code pass sequentially. Command is 859 sections /
+59841 lines, move 135 / 7158, helper 37 / 1487; all C repeats deterministic.
+Ten targeted deterministic roundtrips pass (world, release-swear-np without
+turn, savage-cap/token-vanish/use-art/use-art-refused with and without turn).
+Three sampled loadsave worlds compare 118097 boxes with zero check_db
+messages and identical trees/raw streams/status. Refreshed full turn matches
+all 190 state files/raw streams/status and all 13 lifecycle controls after
+identical full C/C repeats. Spec remains exactly 19 pass / 104 fail / 0 error,
+with no lost passes; only its generated provenance line changes. Vet and
+fresh bounded default tests pass (Olympia 1.508s). Logs: `tmp/issue131-*.log`.
+Full 202-world checks are the parent's accepted inherited baseline, not
+rerun here. One changed raw C save line (`hl 110158 `) deliberately retains
+its trailing space; all non-recording diff whitespace checks pass.
+
 ## Check tiers
 
 **Routine task acceptance.**

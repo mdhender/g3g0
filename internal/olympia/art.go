@@ -5,7 +5,7 @@ package olympia
 
 import "fmt"
 
-// new_suffuse_ring, art.c:1437–1488. The caller has begun this market's
+// new_suffuse_ring, art.c:1440–1491. The caller has begun this market's
 // existing economy stream; allocation and inventory use the real mint/lore path.
 func (w *world) newSuffuseRing(who int) int {
 	n := w.createUniqueItem(who, subSuffuseRing)
@@ -22,7 +22,7 @@ func (w *world) newSuffuseRing(who int) int {
 	case 5:
 		ni, lore = useSkeletonKill, loreSkeletonKill
 	default:
-		assert(false, "olympia/art.c", 1478, "FALSE")
+		assert(false, "olympia/art.c", 1481, "FALSE")
 	}
 	w.setName(n, "Golden ring")
 	w.pItem(n).weight = 1
@@ -67,7 +67,7 @@ func (w *world) maxEffAura(who int) int32 {
 	return a
 }
 
-// tokenPlayer is art.c:1016–1029. Nonregular owners share the independent
+// tokenPlayer is art.c:1019–1032. Nonregular owners share the independent
 // token faction, including noncharacter holders and NPC players.
 func (w *world) tokenPlayer(owner int) int {
 	if w.kind(owner) != tChar {
@@ -82,7 +82,7 @@ func (w *world) tokenPlayer(owner int) int {
 
 func (w *world) swearTokenUnits(item, target int) {
 	w.logWrite(13, "%s got npc token %s", w.boxName(target), w.boxName(item))
-	assert(w.subkind(item) == subNpcToken, "olympia/art.c", 1040, "subkind(item) == sub_npc_token")
+	assert(w.subkind(item) == subNpcToken, "olympia/art.c", 1043, "subkind(item) == sub_npc_token")
 	for i := range w.loopUnits(item) {
 		if w.kind(i) == tChar {
 			w.logWrite(13, "   swearing %s", w.boxNameKind(i))
@@ -91,11 +91,11 @@ func (w *world) swearTokenUnits(item, target int) {
 	}
 }
 
-// meltTokenUnits is the complete art.c:1054–1080 definition. loopUnits
+// meltTokenUnits is the complete art.c:1057–1083 definition. loopUnits
 // copies the list: reclamation removes each dying unit from the live token.
 func (w *world) meltTokenUnits(item int) {
 	first := true
-	assert(w.subkind(item) == subNpcToken, "olympia/art.c", 1060, "subkind(item) == sub_npc_token")
+	assert(w.subkind(item) == subNpcToken, "olympia/art.c", 1063, "subkind(item) == sub_npc_token")
 	for who := range w.loopUnits(item) {
 		if w.kind(who) != tChar {
 			continue
@@ -114,7 +114,7 @@ func (w *world) meltTokenUnits(item int) {
 
 func (w *world) addTokenUnitSup(item int) {
 	owner := w.itemUnique(item)
-	assert(owner != 0, "olympia/art.c", 1092, "owner")
+	assert(owner != 0, "olympia/art.c", 1095, "owner")
 	where := w.province(owner)
 	if w.subkind(where) == subOcean {
 		where = w.subloc(owner)
@@ -140,7 +140,7 @@ func (w *world) addTokenUnitSup(item int) {
 
 func (w *world) addTokenUnits(item int) {
 	w.logWrite(13, "add_token_units(%s)", w.boxName(item))
-	assert(w.subkind(item) == subNpcToken, "olympia/art.c", 1131, "subkind(item) == sub_npc_token")
+	assert(w.subkind(item) == subNpcToken, "olympia/art.c", 1134, "subkind(item) == sub_npc_token")
 	l := w.pPlayer(item).units.Len()
 	// C advances the local count even when allocation fails; do not retry.
 	for {
@@ -176,13 +176,13 @@ func (w *world) moveToken(item, from, to int) {
 	}
 }
 
-// checkTokenUnits is art.c:1197–1259. Both processOrders and postMonth
+// checkTokenUnits is art.c:1200–1262. Both processOrders and postMonth
 // already call this at their original C positions. Phase counters alone
 // are omitted; all token and ownership effects use the shared real closure.
 func (w *world) checkTokenUnits() {
 	for item := range w.loopSubkind(subNpcToken) {
 		owner := w.itemUnique(item)
-		assert(owner != 0, "olympia/art.c", 1215, "owner")
+		assert(owner != 0, "olympia/art.c", 1218, "owner")
 		pl := w.tokenPlayer(owner)
 		if pl == int(w.indepPlayer) {
 			w.meltTokenUnits(item)

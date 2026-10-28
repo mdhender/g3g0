@@ -64,7 +64,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-6a25f2d252ce45bd5adbe3baaccb3be3eed56279}"
+G3_REV="${G3_REV:-e733acb63bacb21167a1f2589d8dcdc023364896}"
 WORK="${WORK:-${ROOT}/tmp/box-compat}"
 GAMES="${GAMES:-${ROOT}/tmp/olympia-roundtrip/cases}"
 CC="${CC:-cc}"

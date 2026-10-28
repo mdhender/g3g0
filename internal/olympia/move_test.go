@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"testing"
 )
@@ -57,15 +56,6 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 		case assertion:
 			stderr.WriteString(r.Error())
 			status = 134
-		case runtime.Error:
-			// Only the separately C-recorded, known unowned-character NULL
-			// dereference may discard buffered output (G3 #353).
-			if lines[0] != "section unowned hidden route G3 353" {
-				panic(r)
-			}
-			stdout.Reset()
-			stderr.Reset()
-			status = 139
 		default:
 			panic(r)
 		}

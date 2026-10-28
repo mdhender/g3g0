@@ -695,9 +695,17 @@ assertion failure: olympia/dir.c (333): loc_depth(where) == LOC_province
 
 exit 134
 stdout:
+section unowned hidden route G3 353
+> box 1001 2 0 0
+> box 10101 3 3 0
+> box 10102 3 2 0
+> dest 10101 10102
+> hidden 10102 1
+> exits 1001 10101
 stderr:
+assertion failure: olympia/u.c (2338): pl != 0
 
-exit 139
+exit 134
 stdout:
 section hidden water roads bypass barriers and ocean access stays passable
 > box 100 3 50 0

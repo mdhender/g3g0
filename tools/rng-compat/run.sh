@@ -39,7 +39,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-6a25f2d252ce45bd5adbe3baaccb3be3eed56279}"
+G3_REV="${G3_REV:-e733acb63bacb21167a1f2589d8dcdc023364896}"
 WORK="${WORK:-${ROOT}/tmp/rng-compat}"
 CC="${CC:-cc}"
 CASES="${ROOT}/internal/rng/testdata/cases.txt"
@@ -92,7 +92,7 @@ SNIPPETS=(
 	day.c:50:155 day.c:189:227
 	seed.c:30:91
 	storm.c:40:104
-	swear.c:428:528
+	swear.c:425:525
 	use.c:1623:1740
 	u.c:41:181
 )

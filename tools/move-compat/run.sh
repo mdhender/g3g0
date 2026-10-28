@@ -8,7 +8,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 G3_REPO="${G3_REPO:-${ROOT}/tmp/upstream.git}"
-G3_REV="${G3_REV:-6a25f2d252ce45bd5adbe3baaccb3be3eed56279}"
+G3_REV="${G3_REV:-e733acb63bacb21167a1f2589d8dcdc023364896}"
 WORK="${WORK:-${ROOT}/tmp/move-compat}"
 CC="${CC:-cc}"
 CASES="${ROOT}/internal/olympia/testdata/move-cases.txt"
@@ -148,7 +148,7 @@ for run in run1 run2; do
   expected_status=0
   case "${section_names[$i]}" in
    'section invalid '*|'section unsupported '*) expected_status=134 ;;
-   'section unowned hidden route G3 353') expected_status=139 ;;
+   'section unowned hidden route G3 353') expected_status=134 ;;
   esac
   [ "$status" = "$expected_status" ] || die "unexpected C status $status in section $i; expected $expected_status; see ${WORK}/${run}"
   {

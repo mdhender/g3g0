@@ -1,7 +1,31 @@
 # Command dispatch, scheduler, waits, interruptions and ownership transfers
 
 Pinned reference: [Olympia G3 at
-6a25f2d252ce45bd5adbe3baaccb3be3eed56279](https://github.com/playbymail/olympia-g3/tree/6a25f2d252ce45bd5adbe3baaccb3be3eed56279).
+e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
+
+## G3 #357 follow-C and pin move (#131)
+
+Current recording: **859 sections / 59841 lines**, from two identical real
+C runs. All original input sections remain byte-exact; their old descriptive
+names are retained even where the bug they named is now fixed. The appended
+savage-cap case probes the current NPC stream before an explicit source-
+location reseed, distinguishing the pre-begin_npc cap from a post-draw cap.
+Existing cases already distinguish unpaid NP aborts, unowned knowledge
+assertions, the 199→200 savage tally and regular-holder token notices.
+The only inherited recording changes are those four fixes (including their
+state/output-bit/mint aftermath) and art.c's +3 assertion offsets.
+
+USE 886 / v_curse_noncreat was never ported: glob.go's USE callbacks remain
+explicit NYI, and the C oracle does not extract this validator. Its stage-4
+implementation must retain the minimum c->b=1 and possession/destroyable-item
+checks, then print `The noncreator possession curse has no effect yet.` and
+return FALSE, never reaching completion or charging aura. The turn's existing
+noncreator_curse_erode NOTYET log path is unchanged, not successful casting.
+
+The implementation/evidence sections below are historical at their stated
+pins. Their old hashes and reproduced-bug descriptions are retained, not
+claims that G3 #352–#356 remain unfixed at the current pin. See also
+[the affected-tool pin-move notes](../README.md#stage-2-pin-move-and-follow-c-131).
 
 ```sh
 tools/command-compat/run.sh

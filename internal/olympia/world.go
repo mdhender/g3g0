@@ -76,7 +76,7 @@ type world struct {
 	nowhereLoc     int32
 	cloudRegion    int32
 
-	// savage.c's initial population tally, not incremented by new spawns.
+	// savage.c's population tally, including this turn's successful spawns.
 	numSavages int32
 
 	// gm.c's non-NPC daily garrison payroll accounting (not saved).

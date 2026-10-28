@@ -18860,3 +18860,26 @@ lore_file log blocked
 life open 0
 post file log
 emit 1000 1
+
+section savage reaching cap skips later fort before reseeding NPC stream G3 357
+master 0
+set turn 1
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+entity 9000 3 3
+entity 9001 3 4
+entity 9409 3 32
+entity 9498 3 40
+link 9000 9498
+link 9000 9409
+routes 9000 9001 0 0 0
+savage_population 199
+npc begin 777
+savage init
+npc probe 1000
+npc begin 9001
+npc probe 1000
+savage_state

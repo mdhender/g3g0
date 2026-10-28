@@ -5344,46 +5344,10 @@ section transfer insufficient NP logs real code alert but still transfers and em
 > field 1000 loyal 2
 > field 1000 rate 2
 > transfer 1000 201 2 7
-> save 1000
-1000 char 0
-LI
- wh 9000
-CH
- lo 201
- pl 200
- lk 2
- lr 7
-
-> save 201
-201 player pl_regular
-PL
- np 1
- un 1000 
-
-> pstate 200
-player 200 np 3 gained 3 spent 0 backlinks 0
-units:
-output 0 1 0 0 0 touched 0 0
-> pstate 201
-player 201 np 1 gained 0 spent 0 backlinks 0
-units: 1000
-output 0 0 1 0 0 touched 1 0
-> pstate 203
-player 203 np 0 gained 0 spent 0 backlinks 0
-units:
-output 1 0 0 0 0 touched 0 0
-> readlog 200
-log 200:
-200:0::0::Received 3 NPs for <no subkind>~[1000].
-> readlog 201
-log 201:
-201:0::0::Paid 8 NPs for <no subkind>~[1000].
-> readlog 203
-log 203:
-10:0::0::assert fail: new_pl=[201], who=[1000], nps=8, old_pl=[200]
 stderr:
+assertion failure: olympia/swear.c (180): FALSE
 
-exit 0
+exit 134
 stdout:
 section transfer insufficient NP immediate MASTER framing does not mutate output bits
 > place 9000
@@ -5395,33 +5359,10 @@ section transfer insufficient NP immediate MASTER framing does not mutate output
 > field 200 unit 1000
 > transfer 1000 201 2 3
 200:0::0:0:Received 1 NP for <no subkind>~[1000].
-10:0::0:0:assert fail: new_pl=[201], who=[1000], nps=4, old_pl=[200]
-201:0::0:0:Paid 4 NPs for <no subkind>~[1000].
-> save 1000
-1000 char 0
-LI
- wh 9000
-CH
- lo 201
- pl 200
- lk 2
- lr 3
-
-> pstate 200
-player 200 np 1 gained 1 spent 0 backlinks 0
-units:
-output 0 0 0 0 0 touched 0 0
-> pstate 201
-player 201 np 0 gained 0 spent 0 backlinks 0
-units: 1000
-output 0 0 0 0 0 touched 1 0
-> pstate 203
-player 203 np 0 gained 0 spent 0 backlinks 0
-units:
-output 0 0 0 0 0 touched 0 0
 stderr:
+assertion failure: olympia/swear.c (180): FALSE
 
-exit 0
+exit 134
 stdout:
 section detach to no lord clears old effects without init or NP exchange
 > place 9000
@@ -6827,9 +6768,16 @@ stderr:
 
 exit 0
 stdout:
+section lore scan unowned segfault
+> entity 500 4 0
+> field 500 lore 500
+> field 1000 lord 0
+> inventory 1000 500 1
+> scan_lore
 stderr:
+assertion failure: olympia/u.c (2338): pl != 0
 
-exit 139
+exit 134
 stdout:
 section touched nested city stack prisoner and storm ownership
 > entity 9000 3 3
@@ -17287,7 +17235,7 @@ savage spawn 1
 savage qty 13
 savage wait 44
 > savage init
-initial savages 0
+initial savages 1
 > savage_state
 savage unit 110158
 110158 char ni
@@ -17390,7 +17338,7 @@ section savage initial tally199 allows multiple spawns past cap then recount sto
 > link 9000 1100
 > link 1100 1101
 > savage init
-initial savages 199
+initial savages 200
 > savage_state
 savage unit 110158
 110158 char ni
@@ -17413,51 +17361,26 @@ CO
  pr 2
 
 savage output 0
-savage unit 140449
-140449 char ni
-il	98 1 \
-	32 19
-LI
- wh 9001
-CH
- ni 32
- lo 205
- he 100
- lk 4
- at 60
- df 60
-CO
- li move 9000
- ar 9000 0 0 0 0 0 0 0
- cs 1
- wa -1
- pr 2
-
-savage output 0
 load_q 0:
 load_q 1:
-load_q 2: 110158 140449
+load_q 2: 110158
 load_q 3:
 load_q 4:
 run_q:
 > pstate 205
 player 205 np 0 gained 0 spent 0 backlinks 0
-units: 110158 140449
+units: 110158
 output 0 0 0 0 0 touched 0 1
 orders 110158: [use 98 1] [wait time 37] [attack 9409]
-orders 140449: [use 98 1] [wait time 41] [attack 9498]
 > orders_file 205
 orders file 205:
 110158:use 98 1
 110158:wait time 37
 110158:attack 9409
-140449:use 98 1
-140449:wait time 41
-140449:attack 9498
 > save 9001
 9001 loc mountain
 LI
- hl 110158 140449 
+ hl 110158 
 
 > save 1100
 1100 char 0
@@ -17478,7 +17401,7 @@ CH
  pr 1
 
 > savage init
-initial savages 201
+initial savages 200
 > savage_state
 savage unit 110158
 110158 char ni
@@ -17501,37 +17424,16 @@ CO
  pr 2
 
 savage output 0
-savage unit 140449
-140449 char ni
-il	98 1 \
-	32 19
-LI
- wh 9001
-CH
- ni 32
- lo 205
- he 100
- lk 4
- at 60
- df 60
-CO
- li move 9000
- ar 9000 0 0 0 0 0 0 0
- cs 1
- wa -1
- pr 2
-
-savage output 0
 load_q 0:
 load_q 1:
-load_q 2: 110158 140449
+load_q 2: 110158
 load_q 3:
 load_q 4:
 run_q:
 > newitem 9000 0
-created 64258
+created 68643
 > save_new
-64258 item 0
+68643 item 0
 IT
  un 9000
 
@@ -17734,7 +17636,7 @@ section savage asymmetric fallback skips humans but not hidden barrier or unswor
 > field 9004 barrier 1
 > routes 9000 9001 9002 9003 9004
 > savage init
-initial savages 0
+initial savages 1
 > savage_state
 savage unit 110158
 110158 char ni
@@ -18464,7 +18366,7 @@ section savage actual spawned move executes then loads unported use without exec
 > routes 9000 9001 0 0 0
 > routes 9001 0 0 9000 0
 > savage init
-initial savages 0
+initial savages 1
 > savage_state
 savage unit 110158
 110158 char ni
@@ -27697,7 +27599,7 @@ combat gold 0 independent 0 indent 0 show_day 0
 inherit player 200
 bits: 1000 12
 inherit player 201
-bits:
+bits: 1001
 load_q 0:
 load_q 1:
 load_q 2:
@@ -27707,13 +27609,14 @@ run_q:
 > pstate 201
 player 201 np 0 gained 0 spent 0 backlinks 0
 units:
-output 0 0 0 0 0 touched 0 0
+output 0 0 0 0 1 touched 0 0
 > readlog 200
 log 200:
 1000:0::0::*** Ni has died ***
 12:0::0::Ni~[1000] died in Plain~[9000].
 > readlog 201
 log 201:
+1001:0::0::Spirit token~[b001] vanishes.
 stderr:
 
 exit 0
@@ -27801,6 +27704,7 @@ CH
 log 200:
 1000:0::0::*** <no subkind> has vanished ***
 12:0::0::<no subkind>~[1000] melted in Plain~[9000].
+1001:0::0::Npc_token~[b001] vanishes.
 stderr:
 
 exit 0
@@ -29486,7 +29390,7 @@ section reconcile invalid missing owner original assertion
 > field 60000 token_num 1
 > reconcile
 stderr:
-assertion failure: olympia/art.c (1215): owner
+assertion failure: olympia/art.c (1218): owner
 
 exit 134
 stdout:
@@ -29813,7 +29717,7 @@ section reconcile invalid day zero process reaches token owner assertion after r
 stderr:
 process_orders()
 queue_npc_orders()
-assertion failure: olympia/art.c (1215): owner
+assertion failure: olympia/art.c (1218): owner
 
 exit 134
 stdout:
@@ -59873,3 +59777,65 @@ alloc_fp: can't open ./log/200: Not a directory
 assertion failure: olympia/sout.c (158): FALSE
 
 exit 134
+stdout:
+section savage reaching cap skips later fort before reseeding NPC stream G3 357
+> master 0
+> set turn 1
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> entity 9000 3 3
+> entity 9001 3 4
+> entity 9409 3 32
+> entity 9498 3 40
+> link 9000 9498
+> link 9000 9409
+> routes 9000 9001 0 0 0
+> savage_population 199
+> npc begin 777
+> savage init
+initial savages 200
+> npc probe 1000
+behavior zero 1
+behavior one 1
+behavior wait 20
+behavior wide 98794
+> npc begin 9001
+> npc probe 1000
+behavior zero 1
+behavior one 1
+behavior wait 20
+behavior wide 98794
+> savage_state
+savage unit 110158
+110158 char ni
+il	98 1 \
+	32 6
+LI
+ wh 9001
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 110158
+load_q 3:
+load_q 4:
+run_q:
+stderr:
+
+exit 0
