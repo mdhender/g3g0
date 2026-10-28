@@ -12,6 +12,8 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/mdhender/g3g0/internal/clib"
 )
 
 // Recordings come only from tools/command-compat's real pinned C input.c,
@@ -49,6 +51,8 @@ func TestCommandMatchesC(t *testing.T) {
 func runCommandSection(t *testing.T, lines []string) (output string) {
 	var stdout, stderr strings.Builder
 	w := newWorld()
+	w.flushAlways = true // command C driver opens streams with flush_always=1.
+	t.Cleanup(func() { w.immediate = false; w.closeLogfile(); w.closeTimes() })
 	w.stdout, w.stderr = &stdout, &stderr
 	w.libdir = t.TempDir()
 	if err := os.Mkdir(filepath.Join(w.libdir, "log"), 0o755); err != nil {
@@ -69,6 +73,22 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 	c := w.pCommand(1000)
 	c.who, c.state = 1000, stateDone
 	created := 0
+	var watched []string
+	fileState := func(path string) {
+		st, err := os.Stat(path)
+		kind := "missing"
+		if err == nil {
+			switch {
+			case st.IsDir():
+				kind = "directory"
+			case st.Size() != 0:
+				kind = "nonempty"
+			default:
+				kind = "empty"
+			}
+		}
+		fmt.Fprintf(&stdout, "path %s %s\n", path, kind)
+	}
 	waitDump := func() {
 		fmt.Fprintf(&stdout, "wait args %d\n", c.waitParse.Len())
 		for _, p := range c.waitParse {
@@ -105,6 +125,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		case assertion:
 			fmt.Fprint(&stderr, r.Error())
 			status = 134
+		case exitStatus:
+			status = int(r)
 		case runtime.Error:
 			if !strings.Contains(r.Error(), "nil pointer dereference") {
 				panic(r)
@@ -114,6 +136,11 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			status = 139
 		default:
 			panic(r)
+		}
+		if status == 0 || status == 1 {
+			for _, path := range watched {
+				fileState(path) // C atexit: before stdio's exit flush.
+			}
 		}
 		output = fmt.Sprintf("stdout:\n%sstderr:\n%s\nexit %d\n", stdout.String(), stderr.String(), status)
 	}()
@@ -956,6 +983,49 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			path := args.word()
 			if err := os.WriteFile(path, []byte(strings.ReplaceAll(args.ctext(), "|", "\n")), 0o644); err != nil {
 				t.Fatal(err)
+			}
+		case "life":
+			switch action := args.word(); action {
+			case "open":
+				w.openLogfile(args.num(t) != 0)
+			case "nondestruct":
+				w.openLogfileNondestruct()
+			case "close":
+				w.closeLogfile()
+			case "flush":
+				clib.FlushAll()
+			case "save":
+				w.saveLogdir(args.num(t) != 0)
+			case "times_open":
+				w.openTimes()
+			case "times_close":
+				w.closeTimes()
+			case "fill":
+				for i := 201; i < 200+maxPlayerOutput(); i++ {
+					if !w.validBox(i) {
+						w.allocBox(i, tPlayer, subPlRegular)
+					}
+					w.commandOut(i, "cache fill")
+				}
+			case "extra":
+				w.allocBox(220, tPlayer, subPlRegular)
+				w.commandOut(220, "cache extra")
+			case "path":
+				fileState(args.word())
+			case "watch":
+				watched = append(watched, args.word())
+			case "rename":
+				if err := os.Rename(args.word(), args.word()); err != nil {
+					t.Fatal(err)
+				}
+			case "unlink":
+				if err := os.Remove(args.word()); err != nil {
+					t.Fatal(err)
+				}
+			case "remove":
+				removeDir(args.word())
+			default:
+				t.Fatalf("unknown lifecycle %s", action)
 			}
 		case "post":
 			switch action := args.word(); action {
@@ -1816,6 +1886,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch field {
 			case "immediate":
 				w.immediate = n != 0
+			case "flush":
+				w.flushAlways = n != 0
 			case "auto_quit":
 				w.autoQuitTurns = int32(n)
 			case "post":
@@ -1923,6 +1995,7 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			}
 			helperList(&stdout, "run_q", w.runQ)
 		case "log":
+			clib.FlushAll() // actual C fixture calls fflush(NULL).
 			fmt.Fprintln(&stdout, "log:")
 			data, err := os.ReadFile(filepath.Join(w.libdir, "log", fmt.Sprint(w.player(int(c.who)))))
 			if err != nil && !os.IsNotExist(err) {
@@ -1941,6 +2014,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			t.Fatalf("unknown operation %q", op)
 		}
 	}
+	w.closeLogfile()
+	w.closeTimes()
 	return ""
 }
 
@@ -2014,6 +2089,7 @@ func TestCommandSchedulerBoundaries(t *testing.T) {
 		t.Run(fmt.Sprint(health), func(t *testing.T) {
 			w := newWorld()
 			w.libdir = t.TempDir()
+			t.Cleanup(w.closeLogfile)
 			if err := os.Mkdir(filepath.Join(w.libdir, "log"), 0o755); err != nil {
 				t.Fatal(err)
 			}
@@ -2042,6 +2118,7 @@ func TestCommandSchedulerBoundaries(t *testing.T) {
 				if p := w.rpPlayer(200); p.format != 17 || p.cmdCount != 2 || c.cmd != int32(w.findCommand("hide")) || c.state != stateLoad || !w.autoAttackFlag || w.curPri != 3 {
 					t.Fatalf("auto-attack ran before low priorities or after priority 3: player=%+v command=%+v auto=%v cur=%d", p, c, w.autoAttackFlag, w.curPri)
 				}
+				clib.FlushAll() // Same pre-abort fflush(NULL) as the real C fixture.
 				log, err := os.ReadFile(filepath.Join(w.libdir, "log", "200"))
 				if err != nil || !strings.Contains(string(log), "> format 17\n") || !strings.Contains(string(log), "> [auto-attack "+boxCodeLess(1001)+"]\n") || strings.Contains(string(log), "> hide") {
 					t.Fatalf("wrong output before combat boundary: %q, %v", log, err)

@@ -43,6 +43,8 @@ func TestMoveMatchesC(t *testing.T) {
 func runMoveSection(t *testing.T, lines []string) (output string) {
 	var stdout, stderr strings.Builder
 	w := newWorld()
+	w.flushAlways = true // move C driver sets flush_always=1.
+	t.Cleanup(func() { w.immediate = false; w.closeLogfile() })
 	w.stdout, w.stderr = &stdout, &stderr
 	w.libdir = t.TempDir()
 	if err := os.Mkdir(filepath.Join(w.libdir, "log"), 0o755); err != nil {

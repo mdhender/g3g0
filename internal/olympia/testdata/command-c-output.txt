@@ -59132,3 +59132,744 @@ stderr:
 write_player_list()
 
 exit 0
+stdout:
+section lifecycle cached hit survives rename and inaccessible replacement
+> lore_root
+> emit 1000 1
+> life rename log/200 held
+> lore_dir log/200
+> emit 1000 2
+> post file held
+file held regular
+> post file log/200
+file log/200 directory
+> save 200
+200 player pl_regular
+PL
+
+> life close
+> life close
+stderr:
+
+exit 0
+stdout:
+section lifecycle invalid close resets cached hit then reopen fails
+> lore_root
+> emit 1000 1
+> life rename log/200 held
+> lore_dir log/200
+> emit 1000 2
+> life close
+> emit 1000 3
+stderr:
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section lifecycle invalid first miss rejects inaccessible path before player allocation
+> lore_root
+> post empty_player 200
+> lore_dir log/200
+> emit 1000 1
+stderr:
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section lifecycle bounded eviction flushes tail and hit moves to front
+> lore_root
+> set flush 0
+> emit 1000 1
+> life fill
+> life path log/200
+path log/200 empty
+> life path log/201
+path log/201 empty
+> emit 1000 2
+> life extra
+> life path log/201
+path log/201 nonempty
+> life path log/200
+path log/200 empty
+> life path log/202
+path log/202 empty
+> life close
+> life path log/200
+path log/200 nonempty
+> life path log/202
+path log/202 nonempty
+> save 200
+200 player pl_regular
+PL
+
+stderr:
+
+exit 0
+stdout:
+section lifecycle invalid evicted tail reopens instead of cached success
+> lore_root
+> emit 1000 1
+> life fill
+> emit 1000 2
+> life rename log/201 held
+> lore_dir log/201
+> life extra
+> emit 201 3
+stderr:
+alloc_fp: can't open ./log/201: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section lifecycle immediate close does not reset cached owner
+> lore_root
+> emit 1000 1
+> life rename log/200 held
+> lore_dir log/200
+> set immediate 1
+> life close
+> life open 0
+> emit 1000 2
+1000:0::0::routing 2  
+> set immediate 0
+> emit 1000 3
+> life close
+> post file held
+file held regular
+> post file log/200
+file log/200 directory
+> save 200
+200 player pl_regular
+PL
+
+stderr:
+
+exit 0
+stdout:
+section lifecycle buffering fixed on open not changed by cache hits
+> lore_root
+> set flush 0
+> emit 1000 1
+> life path log/200
+path log/200 empty
+> set flush 1
+> emit 1000 2
+> life path log/200
+path log/200 empty
+> life close
+> life path log/200
+path log/200 nonempty
+> life unlink log/200
+> emit 1000 3
+> life path log/200
+path log/200 nonempty
+> life close
+stderr:
+
+exit 0
+stdout:
+section lifecycle explicit fflush preserves cached owner
+> lore_root
+> set flush 0
+> emit 1000 1
+> life path log/200
+path log/200 empty
+> life flush
+> life path log/200
+path log/200 nonempty
+> life rename log/200 held
+> emit 1000 2
+> life path log/200
+path log/200 missing
+> life close
+> life path held
+path held nonempty
+stderr:
+
+exit 0
+stdout:
+section lifecycle report projections and ordinary output share cached ownership
+> lore_root
+> emit 1000 1
+> life rename log/200 held
+> lore_dir log/200
+> report account
+> emit 1000 2
+> post file held
+file held regular
+> post file log/200
+file log/200 directory
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> life close
+stderr:
+report_account()
+
+exit 0
+stdout:
+section lifecycle report opens are retained for later ordinary output
+> lore_root
+> report account
+> life rename log/200 held
+> lore_dir log/200
+> emit 1000 1
+> post file held
+file held regular
+> post file log/200
+file log/200 directory
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> life close
+stderr:
+report_account()
+
+exit 0
+stdout:
+section lifecycle close reset allows fresh full capacity and repeated eviction
+> lore_root
+> set flush 0
+> emit 1000 1
+> life fill
+> life close
+> life remove log
+> life nondestruct
+> emit 1000 2
+> life fill
+> emit 1000 3
+> life extra
+> life path log/200
+path log/200 empty
+> life path log/201
+path log/201 nonempty
+> life close
+> life path log/200
+path log/200 nonempty
+> life close
+stderr:
+
+exit 0
+stdout:
+section lifecycle nondestructive log open preserves contents
+> lore_root
+> lore_file log/old retained
+> life nondestruct
+> life path log/old
+path log/old nonempty
+> life open 0
+> life path log/old
+path log/old missing
+> life path log
+path log directory
+> emit 1000 1
+> life close
+> save 200
+200 player pl_regular
+PL
+
+stderr:
+
+exit 0
+stdout:
+section lifecycle successful save renames log and players and recreates log
+> lore_root
+> set turn 7
+> life times_open
+> emit 1000 1
+> post players
+> life close
+> life save 0
+> life times_close
+> life path log
+path log directory
+> life path log/200
+path log/200 missing
+> life path save
+path save directory
+> life path save/7
+path save/7 directory
+> post file save/7/200
+file save/7/200 regular
+> post file save/7/players
+file save/7/players regular
+> post file players
+file players missing
+> life path times_press
+path times_press nonempty
+> life path times_rumor
+path times_rumor nonempty
+> save 200
+200 player pl_regular
+PL
+
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+stderr:
+write_player_list()
+
+exit 0
+stdout:
+section lifecycle no save leaves live paths after closure
+> lore_root
+> set turn 7
+> life times_open
+> emit 1000 1
+> post players
+> life close
+> life times_close
+> post file log/200
+file log/200 regular
+> post file players
+file players regular
+> life path save
+path save missing
+> life path times_press
+path times_press nonempty
+> life path times_rumor
+path times_rumor nonempty
+> save 200
+200 player pl_regular
+PL
+
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+stderr:
+write_player_list()
+
+exit 0
+stdout:
+section lifecycle saving open cached log retains inode until explicit close
+> lore_root
+> set flush 0
+> set turn 8
+> emit 1000 1
+> post players
+> life save 0
+> emit 1000 2
+> life path log/200
+path log/200 missing
+> life path save/8/200
+path save/8/200 empty
+> life close
+> life path save/8/200
+path save/8/200 nonempty
+> emit 1000 3
+> life path log/200
+path log/200 empty
+> life close
+> life path log/200
+path log/200 nonempty
+stderr:
+write_player_list()
+
+exit 0
+stdout:
+section lifecycle repeated save removes prior turn directory
+> lore_root
+> set turn 9
+> lore_dir save
+> lore_dir save/9
+> lore_dir save/9/nested
+> lore_file save/9/nested/stale old
+> emit 1000 1
+> post players
+> life close
+> life save 0
+> post file save/9/200
+file save/9/200 regular
+> post file save/9/players
+file save/9/players regular
+> life path save/9/nested
+path save/9/nested missing
+> life path log
+path log directory
+stderr:
+write_player_list()
+
+exit 0
+stdout:
+section lifecycle failed save mkdir parent is file preserves both inputs
+> lore_root
+> set turn 10
+> lore_file save blocked
+> emit 1000 1
+> post players
+> life close
+> life save 0
+> post file log/200
+file log/200 regular
+> post file players
+file players regular
+> post file save
+file save regular
+> save 200
+200 player pl_regular
+PL
+
+stderr:
+write_player_list()
+couldn't rename ./log to ./save/10:Not a directory
+couldn't rename ./players to ./save/10/players:Not a directory
+
+exit 0
+stdout:
+section lifecycle regular log source renames but players destination is not directory
+> lore_root
+> set turn 11
+> life remove log
+> lore_file log blocked
+> lore_dir save
+> lore_dir save/11
+> post players
+> life save 0
+> post file log
+file log directory
+> post file players
+file players regular
+> post file save/11/players
+file save/11/players missing
+stderr:
+write_player_list()
+couldn't rename ./players to ./save/11/players:Not a directory
+
+exit 0
+stdout:
+section lifecycle missing log and players report both failures and recreate log
+> lore_root
+> set turn 12
+> life remove log
+> life save 0
+> life path log
+path log directory
+> life path save
+path save directory
+> life path save/12
+path save/12 missing
+stderr:
+couldn't rename ./log to ./save/12:No such file or directory
+couldn't rename ./players to ./save/12/players:No such file or directory
+
+exit 0
+stdout:
+section lifecycle second rename failure after successful log rename
+> lore_root
+> set turn 13
+> emit 1000 1
+> life close
+> life save 0
+> post file save/13/200
+file save/13/200 regular
+> post file save/13/players
+file save/13/players missing
+> life path log
+path log directory
+stderr:
+couldn't rename ./players to ./save/13/players:No such file or directory
+
+exit 0
+stdout:
+section lifecycle file target prevents log rename and players nested rename
+> lore_root
+> set turn 14
+> lore_dir save
+> lore_file save/14 blocked
+> post players
+> emit 1000 1
+> life close
+> life save 0
+> post file save/14
+file save/14 regular
+> post file log/200
+file log/200 regular
+> post file players
+file players regular
+stderr:
+write_player_list()
+couldn't rename ./log to ./save/14:Not a directory
+couldn't rename ./players to ./save/14/players:Not a directory
+
+exit 0
+stdout:
+section lifecycle failed final mkdir with missing libdir remains nonfatal
+> lore_root
+> admission lib missing
+> life save 0
+stderr:
+couldn't rename missing/log to missing/save/0:No such file or directory
+couldn't rename missing/players to missing/save/0/players:No such file or directory
+
+exit 0
+stdout:
+section lifecycle Windows branch uses backslash setup but forward slash renames
+> lore_root
+> set turn 15
+> lore_dir .\save\15
+> lore_file .\save\15/stale old
+> post players
+> emit 1000 1
+> life close
+> life save 1
+Deleting any existing save dirs (this might fail):
+> life path .\save\15
+path .\save\15 missing
+> life path .\save
+path .\save directory
+> post file log/200
+file log/200 regular
+> post file players
+file players regular
+> life path save
+path save missing
+stderr:
+write_player_list()
+couldn't rename ./log to ./save/15:No such file or directory
+couldn't rename ./players to ./save/15/players:No such file or directory
+
+exit 0
+stdout:
+section lifecycle Windows failed log rename still permits successful players rename
+> lore_root
+> set turn 16
+> lore_dir save
+> lore_dir save/16
+> lore_file save/16/stale retained
+> post players
+> emit 1000 1
+> life close
+> life save 1
+Deleting any existing save dirs (this might fail):
+> post file save/16/stale
+file save/16/stale regular
+> post file log/200
+file log/200 regular
+> post file players
+file players missing
+> life path .\save
+path .\save directory
+stderr:
+write_player_list()
+couldn't rename ./log to ./save/16:Directory not empty
+
+exit 0
+stdout:
+section lifecycle Windows log setup does not remove forward slash log
+> lore_root
+> lore_file log/old retained
+> lore_dir .\log
+> lore_file .\log/stale old
+> life open 1
+> life path .\log
+path .\log directory
+> life path .\log/stale
+path .\log/stale missing
+> life path log/old
+path log/old nonempty
+> emit 1000 1
+> post file log/200
+file log/200 regular
+> life close
+stderr:
+
+exit 0
+stdout:
+section lifecycle Times repeat open hits existing streams and close resets both
+> lore_root
+> life times_close
+> life times_open
+> life path times_press
+path times_press nonempty
+> life path times_rumor
+path times_rumor nonempty
+> life rename times_press press_held
+> life rename times_rumor rumor_held
+> lore_dir times_press
+> lore_dir times_rumor
+> life times_open
+> life path press_held
+path press_held nonempty
+> life path rumor_held
+path rumor_held nonempty
+> post file times_press
+file times_press directory
+> post file times_rumor
+file times_rumor directory
+> life times_close
+> life times_close
+> life remove times_press
+> life remove times_rumor
+> life times_open
+> life path times_press
+path times_press nonempty
+> life path times_rumor
+path times_rumor nonempty
+> life times_close
+stderr:
+
+exit 0
+stdout:
+section lifecycle fatal Times press failure precedes rumor open and has no perror newline
+> lore_root
+> lore_dir times_press
+> life watch times_press
+> life watch times_rumor
+> save 200
+200 player pl_regular
+PL
+
+> life times_open
+path times_press directory
+path times_rumor missing
+stderr:
+can't write ./times_press
+exit 1
+stdout:
+section lifecycle fatal Times rumor failure occurs after press header flush
+> lore_root
+> lore_dir times_rumor
+> life watch times_press
+> life watch times_rumor
+> save 200
+200 player pl_regular
+PL
+
+> life times_open
+path times_press nonempty
+path times_rumor directory
+stderr:
+can't write ./times_rumor
+exit 1
+stdout:
+section lifecycle fatal Times both blocked fails on press only
+> lore_root
+> lore_dir times_press
+> lore_dir times_rumor
+> life watch times_press
+> life watch times_rumor
+> life times_open
+path times_press directory
+path times_rumor directory
+stderr:
+can't write ./times_press
+exit 1
+stdout:
+section lifecycle fatal Times missing libdir fails on press only
+> lore_root
+> admission lib missing
+> life watch times_press
+> life watch times_rumor
+> life times_open
+path times_press missing
+path times_rumor missing
+stderr:
+can't write missing/times_press
+exit 1
+stdout:
+section lifecycle fatal Times ENOTDIR libdir fails on press only
+> lore_root
+> lore_file blocked file
+> admission lib blocked
+> life watch times_press
+> life watch times_rumor
+> life times_open
+path times_press missing
+path times_rumor missing
+stderr:
+can't write blocked/times_press
+exit 1
+stdout:
+section lifecycle fatal Times close resets press before reopen failure
+> lore_root
+> life times_open
+> life times_close
+> life rename times_press held
+> lore_dir times_press
+> life watch held
+> life watch times_press
+> life watch times_rumor
+> life times_open
+path held nonempty
+path times_press directory
+path times_rumor nonempty
+stderr:
+can't write ./times_press
+exit 1
+stdout:
+section lifecycle fatal Times close resets rumor before reopen failure
+> lore_root
+> life times_open
+> life times_close
+> life rename times_rumor held
+> lore_dir times_rumor
+> life watch held
+> life watch times_press
+> life watch times_rumor
+> life times_open
+path held nonempty
+path times_press nonempty
+path times_rumor directory
+stderr:
+can't write ./times_rumor
+exit 1
+stdout:
+section lifecycle Windows successful rename over empty forward slash destination
+> lore_root
+> set turn 17
+> lore_dir save
+> lore_dir save/17
+> post players
+> emit 1000 1
+> life close
+> life save 1
+Deleting any existing save dirs (this might fail):
+> post file save/17/200
+file save/17/200 regular
+> post file save/17/players
+file save/17/players regular
+> life path log
+path log directory
+> life path .\save
+path .\save directory
+stderr:
+write_player_list()
+
+exit 0
+stdout:
+section lifecycle invalid log miss reports ENOENT without allocating player
+> lore_root
+> post empty_player 200
+> life remove log
+> emit 1000 1
+stderr:
+alloc_fp: can't open ./log/200: No such file or directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section lifecycle invalid log mkdir failure is ignored until output open ENOTDIR
+> lore_root
+> life remove log
+> lore_file log blocked
+> life open 0
+> post file log
+file log regular
+> emit 1000 1
+stderr:
+alloc_fp: can't open ./log/200: Not a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134

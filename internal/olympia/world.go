@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/mdhender/g3g0/internal/clib"
 	"github.com/mdhender/g3g0/internal/lists"
 	"github.com/mdhender/g3g0/internal/rnd"
 	"github.com/mdhender/g3g0/internal/rng"
@@ -164,9 +165,11 @@ type world struct {
 	cmdWait        int32
 	cmdSail        int32 // move.c check_captain_loses_sailors static
 	immediate      bool
-	immedSeeAll    int32 // oly.h see_all(n), independent of immediate output
-	showDay        bool  // glob.c show_day; default formatting for command output
-	indent         int32 // sout.c output framing, not report assembly
+	flushAlways    bool           // sout.c open_fp's setbuf(NULL), fixed at open time
+	playerOutput   []playerOutput // sout.c head, most recently used first
+	immedSeeAll    int32          // oly.h see_all(n), independent of immediate output
+	showDay        bool           // glob.c show_day; default formatting for command output
+	indent         int32          // sout.c output framing, not report assembly
 	secondIndent   int32
 	styleHTML      int32
 	showToGarrison bool
@@ -219,8 +222,8 @@ type world struct {
 	testUseConstReportDate bool
 
 	// open_times' header streams; headers are flushed before it returns.
-	pressFP *os.File
-	rumorFP *os.File
+	pressFP *clib.File
+	rumorFP *clib.File
 
 	// timeSelf is time_self in main.c (-T), which stage() reads, and
 	// stageOld and stageFirst are stage()'s statics old and first.

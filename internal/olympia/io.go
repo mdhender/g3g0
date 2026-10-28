@@ -2432,6 +2432,33 @@ func removeDir(dir string) {
 	}
 }
 
+// saveLogdir is io.c:3031–3069. win_flag changes only the initial removal
+// and parent mkdir: the two renames and final mkdir deliberately use '/'.
+// mkdir/remove failures are ignored; each failed rename reports and continues.
+func (w *world) saveLogdir(win bool) {
+	if win {
+		fmt.Fprintln(w.stdout, "Deleting any existing save dirs (this might fail):")
+		removeDir(sout("%s\\save\\%d", w.libdir, w.sysclock.turn))
+		_ = os.Mkdir(sout("%s\\save", w.libdir), 0o755)
+	} else {
+		removeDir(sout("%s/save/%d", w.libdir, w.sysclock.turn))
+		_ = os.Mkdir(sout("%s/save", w.libdir), 0o755)
+	}
+	s, target := sout("%s/log", w.libdir), sout("%s/save/%d", w.libdir, w.sysclock.turn)
+	// os.Rename rejects even an empty destination directory with EEXIST;
+	// C rename must reach the syscall, including its ENOTEMPTY diagnostic.
+	if err := syscall.Rename(s, target); err != nil {
+		fmt.Fprintf(w.stderr, "couldn't rename %s to %s:", s, target)
+		clib.Perror(w.stderr, "", err)
+	}
+	s, target = sout("%s/players", w.libdir), sout("%s/save/%d/players", w.libdir, w.sysclock.turn)
+	if err := syscall.Rename(s, target); err != nil {
+		fmt.Fprintf(w.stderr, "couldn't rename %s to %s:", s, target)
+		clib.Perror(w.stderr, "", err)
+	}
+	_ = os.Mkdir(sout("%s/log", w.libdir), 0o755)
+}
+
 // writeAllBoxes is write_all_boxes(): it clears every box's temp mark,
 // removes libdir/fact with removeDir and makes it again (mode 0755 less the
 // umask), and writes the box files: loc, item, skill, gate, road, ship and

@@ -47,6 +47,31 @@ func TestFopen(t *testing.T) {
 	}
 }
 
+func TestFopenAppend(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "append")
+	if err := os.WriteFile(path, []byte("old\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	fp, err := FopenAppend(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, _ = fp.WriteString("buffered\n")
+	if data, _ := os.ReadFile(path); string(data) != "old\n" {
+		t.Fatalf("append truncated or flushed prematurely: %q", data)
+	}
+	FlushAll()
+	fp.SetUnbuffered()
+	_, _ = fp.Write([]byte("immediate\n"))
+	if data, _ := os.ReadFile(path); string(data) != "old\nbuffered\nimmediate\n" {
+		t.Fatalf("append/fflush/setbuf: %q", data)
+	}
+	fp.Close()
+	if _, err := FopenAppend(filepath.Dir(path)); Strerror(err) != "Is a directory" {
+		t.Fatalf("append directory: %v", err)
+	}
+}
+
 // TestReadDir checks opendir()'s errors and that "." and ".." are left out.
 func TestReadDir(t *testing.T) {
 	dir := t.TempDir()

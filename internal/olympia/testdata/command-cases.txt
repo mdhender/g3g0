@@ -18420,3 +18420,443 @@ post file totimes
 post file factions
 post file forward
 admission state
+
+section lifecycle cached hit survives rename and inaccessible replacement
+lore_root
+emit 1000 1
+life rename log/200 held
+lore_dir log/200
+emit 1000 2
+post file held
+post file log/200
+save 200
+life close
+life close
+
+section lifecycle invalid close resets cached hit then reopen fails
+lore_root
+emit 1000 1
+life rename log/200 held
+lore_dir log/200
+emit 1000 2
+life close
+emit 1000 3
+
+section lifecycle invalid first miss rejects inaccessible path before player allocation
+lore_root
+post empty_player 200
+lore_dir log/200
+emit 1000 1
+
+section lifecycle bounded eviction flushes tail and hit moves to front
+lore_root
+set flush 0
+emit 1000 1
+life fill
+life path log/200
+life path log/201
+emit 1000 2
+life extra
+life path log/201
+life path log/200
+life path log/202
+life close
+life path log/200
+life path log/202
+save 200
+
+section lifecycle invalid evicted tail reopens instead of cached success
+lore_root
+emit 1000 1
+life fill
+emit 1000 2
+life rename log/201 held
+lore_dir log/201
+life extra
+emit 201 3
+
+section lifecycle immediate close does not reset cached owner
+lore_root
+emit 1000 1
+life rename log/200 held
+lore_dir log/200
+set immediate 1
+life close
+life open 0
+emit 1000 2
+set immediate 0
+emit 1000 3
+life close
+post file held
+post file log/200
+save 200
+
+section lifecycle buffering fixed on open not changed by cache hits
+lore_root
+set flush 0
+emit 1000 1
+life path log/200
+set flush 1
+emit 1000 2
+life path log/200
+life close
+life path log/200
+life unlink log/200
+emit 1000 3
+life path log/200
+life close
+
+section lifecycle explicit fflush preserves cached owner
+lore_root
+set flush 0
+emit 1000 1
+life path log/200
+life flush
+life path log/200
+life rename log/200 held
+emit 1000 2
+life path log/200
+life close
+life path held
+
+section lifecycle report projections and ordinary output share cached ownership
+lore_root
+emit 1000 1
+life rename log/200 held
+lore_dir log/200
+report account
+emit 1000 2
+post file held
+post file log/200
+report state 200
+life close
+
+section lifecycle report opens are retained for later ordinary output
+lore_root
+report account
+life rename log/200 held
+lore_dir log/200
+emit 1000 1
+post file held
+post file log/200
+report state 200
+life close
+
+section lifecycle close reset allows fresh full capacity and repeated eviction
+lore_root
+set flush 0
+emit 1000 1
+life fill
+life close
+life remove log
+life nondestruct
+emit 1000 2
+life fill
+emit 1000 3
+life extra
+life path log/200
+life path log/201
+life close
+life path log/200
+life close
+
+section lifecycle nondestructive log open preserves contents
+lore_root
+lore_file log/old retained
+life nondestruct
+life path log/old
+life open 0
+life path log/old
+life path log
+emit 1000 1
+life close
+save 200
+
+section lifecycle successful save renames log and players and recreates log
+lore_root
+set turn 7
+life times_open
+emit 1000 1
+post players
+life close
+life save 0
+life times_close
+life path log
+life path log/200
+life path save
+life path save/7
+post file save/7/200
+post file save/7/players
+post file players
+life path times_press
+life path times_rumor
+save 200
+save 1000
+
+section lifecycle no save leaves live paths after closure
+lore_root
+set turn 7
+life times_open
+emit 1000 1
+post players
+life close
+life times_close
+post file log/200
+post file players
+life path save
+life path times_press
+life path times_rumor
+save 200
+save 1000
+
+section lifecycle saving open cached log retains inode until explicit close
+lore_root
+set flush 0
+set turn 8
+emit 1000 1
+post players
+life save 0
+emit 1000 2
+life path log/200
+life path save/8/200
+life close
+life path save/8/200
+emit 1000 3
+life path log/200
+life close
+life path log/200
+
+section lifecycle repeated save removes prior turn directory
+lore_root
+set turn 9
+lore_dir save
+lore_dir save/9
+lore_dir save/9/nested
+lore_file save/9/nested/stale old
+emit 1000 1
+post players
+life close
+life save 0
+post file save/9/200
+post file save/9/players
+life path save/9/nested
+life path log
+
+section lifecycle failed save mkdir parent is file preserves both inputs
+lore_root
+set turn 10
+lore_file save blocked
+emit 1000 1
+post players
+life close
+life save 0
+post file log/200
+post file players
+post file save
+save 200
+
+section lifecycle regular log source renames but players destination is not directory
+lore_root
+set turn 11
+life remove log
+lore_file log blocked
+lore_dir save
+lore_dir save/11
+post players
+life save 0
+post file log
+post file players
+post file save/11/players
+
+section lifecycle missing log and players report both failures and recreate log
+lore_root
+set turn 12
+life remove log
+life save 0
+life path log
+life path save
+life path save/12
+
+section lifecycle second rename failure after successful log rename
+lore_root
+set turn 13
+emit 1000 1
+life close
+life save 0
+post file save/13/200
+post file save/13/players
+life path log
+
+section lifecycle file target prevents log rename and players nested rename
+lore_root
+set turn 14
+lore_dir save
+lore_file save/14 blocked
+post players
+emit 1000 1
+life close
+life save 0
+post file save/14
+post file log/200
+post file players
+
+section lifecycle failed final mkdir with missing libdir remains nonfatal
+lore_root
+admission lib missing
+life save 0
+
+section lifecycle Windows branch uses backslash setup but forward slash renames
+lore_root
+set turn 15
+lore_dir .\save\15
+lore_file .\save\15/stale old
+post players
+emit 1000 1
+life close
+life save 1
+life path .\save\15
+life path .\save
+post file log/200
+post file players
+life path save
+
+section lifecycle Windows failed log rename still permits successful players rename
+lore_root
+set turn 16
+lore_dir save
+lore_dir save/16
+lore_file save/16/stale retained
+post players
+emit 1000 1
+life close
+life save 1
+post file save/16/stale
+post file log/200
+post file players
+life path .\save
+
+section lifecycle Windows log setup does not remove forward slash log
+lore_root
+lore_file log/old retained
+lore_dir .\log
+lore_file .\log/stale old
+life open 1
+life path .\log
+life path .\log/stale
+life path log/old
+emit 1000 1
+post file log/200
+life close
+
+section lifecycle Times repeat open hits existing streams and close resets both
+lore_root
+life times_close
+life times_open
+life path times_press
+life path times_rumor
+life rename times_press press_held
+life rename times_rumor rumor_held
+lore_dir times_press
+lore_dir times_rumor
+life times_open
+life path press_held
+life path rumor_held
+post file times_press
+post file times_rumor
+life times_close
+life times_close
+life remove times_press
+life remove times_rumor
+life times_open
+life path times_press
+life path times_rumor
+life times_close
+
+section lifecycle fatal Times press failure precedes rumor open and has no perror newline
+lore_root
+lore_dir times_press
+life watch times_press
+life watch times_rumor
+save 200
+life times_open
+
+section lifecycle fatal Times rumor failure occurs after press header flush
+lore_root
+lore_dir times_rumor
+life watch times_press
+life watch times_rumor
+save 200
+life times_open
+
+section lifecycle fatal Times both blocked fails on press only
+lore_root
+lore_dir times_press
+lore_dir times_rumor
+life watch times_press
+life watch times_rumor
+life times_open
+
+section lifecycle fatal Times missing libdir fails on press only
+lore_root
+admission lib missing
+life watch times_press
+life watch times_rumor
+life times_open
+
+section lifecycle fatal Times ENOTDIR libdir fails on press only
+lore_root
+lore_file blocked file
+admission lib blocked
+life watch times_press
+life watch times_rumor
+life times_open
+
+section lifecycle fatal Times close resets press before reopen failure
+lore_root
+life times_open
+life times_close
+life rename times_press held
+lore_dir times_press
+life watch held
+life watch times_press
+life watch times_rumor
+life times_open
+
+section lifecycle fatal Times close resets rumor before reopen failure
+lore_root
+life times_open
+life times_close
+life rename times_rumor held
+lore_dir times_rumor
+life watch held
+life watch times_press
+life watch times_rumor
+life times_open
+
+section lifecycle Windows successful rename over empty forward slash destination
+lore_root
+set turn 17
+lore_dir save
+lore_dir save/17
+post players
+emit 1000 1
+life close
+life save 1
+post file save/17/200
+post file save/17/players
+life path log
+life path .\save
+
+section lifecycle invalid log miss reports ENOENT without allocating player
+lore_root
+post empty_player 200
+life remove log
+emit 1000 1
+
+section lifecycle invalid log mkdir failure is ignored until output open ENOTDIR
+lore_root
+life remove log
+lore_file log blocked
+life open 0
+post file log
+emit 1000 1

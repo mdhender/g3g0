@@ -217,9 +217,8 @@ func (w *world) reportOutputState(pl int) {
 	if w.immediate || pl == 0 || w.isPrisoner(pl) {
 		return
 	}
-	f := w.openPlayerOutput(pl)
+	w.openPlayerOutput(pl)
 	w.pPlayer(pl)
-	_ = f.Close()
 }
 
 // listOrderTemplatesState projects order.c:369–577. Template traversal only

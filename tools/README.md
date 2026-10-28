@@ -419,6 +419,29 @@ Run command/move/helper/rng/code/loadsave/turn-driver/default-turn sequentially,
 then bounded vet/fresh defaults. No suppression option, main wiring, cached
 output/Times lifecycle (#129), valid admission or stage-exit acceptance.
 
+Cached output ownership and Times lifecycle (#129) extend that same command
+oracle, not a second cache or rendering layer. The existing openPlayerOutput
+owner now retains sout.c's bounded move-to-front FILE cache: hits reuse the
+open inode, misses append/open, full caches close the least-recently-used
+stream first, and close_logfile closes/resets unless immediate. Both ordinary
+output and report state projections borrow that owner. Existing clib stdio
+supplies append buffering, fflush and the open-time flush_always setting.
+Complete unchanged sout.c/io.c remain linked, including real save_logdir;
+complete open_times/close_times and their original c2.c declarations are now
+extracted. These source dependencies were already tracked below and in
+affected.sh; the pin and dependency set are unchanged.
+Cases distinguish cache hits from reopen failures, MRU/eviction flushes,
+close/reset, ignored mkdir failures, both rename decisions and diagnostics,
+save/no-save path controls, Windows flag path branches, Times open/close/reset
+and fatal press-before-rumor ordering. An atexit filesystem observer runs
+before exit's stdio flush, so rumor failure checks the actual press flush.
+Raw streams/status and original save_box bytes are compared; artifact bodies
+are not. Windows controls exercise the original win_flag branch on the host,
+not a native Windows build. Run command/move/helper/rng/code/loadsave/
+turn-driver/default-turn sequentially, then bounded vet/fresh defaults.
+Main's explicit postMonth stop is unchanged: main wiring, final save_db/-n
+integration, admissions/-A, stage-2 rendering and stage exit remain separate.
+
 Inventory transfer and token acquisition (#117) extend command-compat with
 the complete real `consume_item`, mutually recursive `move_item`/`drop_item`,
 and compiled `move_token` acquisition closure. Real lord interruption/NP,

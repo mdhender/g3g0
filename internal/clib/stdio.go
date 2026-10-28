@@ -191,7 +191,7 @@ func (sc *Scanner) Char() (byte, bool) {
 	return 0, false
 }
 
-// File is a FILE * that fopen(path, "w") opened: writes go through a
+// File is a writable FILE * opened by Fopen or FopenAppend: writes use a
 // buffer of the size the macOS libc gives a file (its st_blksize, or BUFSIZ
 // if that is not set), which Close flushes. Write errors are ignored, as
 // fprintf() and fclose() callers that do not check them ignore them.
@@ -203,7 +203,25 @@ func (sc *Scanner) Char() (byte, bool) {
 // buffer had already written.
 type File struct {
 	*bufio.Writer
-	f *os.File
+	f          *os.File
+	unbuffered bool
+}
+
+// SetUnbuffered is setbuf(fp, NULL), used immediately after opening a stream.
+func (fp *File) SetUnbuffered() {
+	_ = fp.Flush()
+	fp.unbuffered = true
+}
+
+func (fp *File) Write(p []byte) (int, error) {
+	if fp.unbuffered {
+		return fp.f.Write(p)
+	}
+	return fp.Writer.Write(p)
+}
+
+func (fp *File) WriteString(s string) (int, error) {
+	return fp.Write([]byte(s))
 }
 
 // files is every File that is open, in the order Fopen opened them, for
@@ -230,7 +248,17 @@ const bufsiz = 1024
 // Fopen is fopen(path, "w"): it creates path (mode 0666, less the umask)
 // or truncates it, and opens it for writing only.
 func Fopen(path string) (*File, error) {
-	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o666)
+	return fopen(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC)
+}
+
+// FopenAppend is fopen(path, "a+"): create or open for append and reading.
+// It shares Fopen's stdio buffering and FlushAll ownership.
+func FopenAppend(path string) (*File, error) {
+	return fopen(path, os.O_RDWR|os.O_CREATE|os.O_APPEND)
+}
+
+func fopen(path string, flags int) (*File, error) {
+	f, err := os.OpenFile(path, flags, 0o666)
 	if err != nil {
 		return nil, err
 	}

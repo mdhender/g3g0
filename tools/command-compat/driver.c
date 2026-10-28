@@ -17,7 +17,7 @@ int drv_load(struct command *c);
 int find_command(char *s);
 void drv_state(struct command *c, int s);
 struct order_list *drv_orders(int pl, int who);
-extern int cur_pri, cmd_wait;
+extern int cur_pri, cmd_wait, flush_always;
 extern ilist load_q[5], run_q;
 extern int evening, auto_attack_flag;
 extern ilist second_wait_list, wait_list;
@@ -84,6 +84,24 @@ char *drv_fetch(FILE *fp);
 int drv_admission(char *acct, FILE *fp);
 void drv_make_players(void);
 
+/* Observe filesystem decisions, not deferred artifact bodies. In particular
+ * atexit runs before stdio's exit flush: Times must flush press BEFORE a
+ * failing rumor open. No hook runs on abort or SIGSEGV. */
+static char watched[16][8192];
+static int num_watched;
+static void file_state(char *path)
+{
+ struct stat st;
+ if(stat(path,&st)) printf("path %s missing\n",path);
+ else if(S_ISDIR(st.st_mode)) printf("path %s directory\n",path);
+ else printf("path %s %s\n",path,st.st_size ? "nonempty" : "empty");
+}
+static void watch_state(void)
+{
+ int i;
+ for(i=0;i<num_watched;i++) file_state(watched[i]);
+}
+
 static void wait_dump(struct command *c)
 {
  int i;
@@ -127,6 +145,7 @@ int main(int argc, char **argv)
  if (argc != 4 || !(fp = fopen(argv[1], "r"))) return 2;
  want = atoi(argv[2]);
  libdir = argv[3];
+ atexit(watch_state);
  glob_init();
  init_lower();
  init_spaces(); /* main.c call_init_routines: print_att's continuation padding */
@@ -727,6 +746,48 @@ int main(int argc, char **argv)
    for(p=text;*p;p++) fputc(*p=='|' ? '\n' : *p,log);
    fclose(log);
   }
+  else if (!strcmp(op, "life")) {
+   char path[8192], target[8192];
+   sscanf(line,"%*s %8191s",text);
+   if(!strcmp(text,"open")) {
+    sscanf(line,"%*s %*s %d",&win_flag); open_logfile();
+   }
+   else if(!strcmp(text,"nondestruct")) open_logfile_nondestruct();
+   else if(!strcmp(text,"close")) close_logfile();
+   else if(!strcmp(text,"flush")) fflush(NULL);
+   else if(!strcmp(text,"save")) {
+    sscanf(line,"%*s %*s %d",&win_flag); save_logdir();
+   }
+   else if(!strcmp(text,"times_open")) open_times();
+   else if(!strcmp(text,"times_close")) close_times();
+   else if(!strcmp(text,"fill")) {
+    for(i=201;i<200+(FOPEN_MAX-10);i++) {
+     if(!valid_box(i)) alloc_box(i,T_player,sub_pl_regular);
+     out(i,"cache fill");
+    }
+   }
+   else if(!strcmp(text,"extra")) {
+    alloc_box(220,T_player,sub_pl_regular); out(220,"cache extra");
+   }
+   else if(!strcmp(text,"path")) {
+    sscanf(line,"%*s %*s %8191s",path); file_state(path);
+   }
+   else if(!strcmp(text,"watch")) {
+    if(num_watched==16) return 2;
+    sscanf(line,"%*s %*s %8191s",watched[num_watched++]);
+   }
+   else if(!strcmp(text,"rename")) {
+    sscanf(line,"%*s %*s %8191s %8191s",path,target);
+    if(rename(path,target)) return 2;
+   }
+   else if(!strcmp(text,"unlink")) {
+    sscanf(line,"%*s %*s %8191s",path); if(unlink(path)) return 2;
+   }
+   else if(!strcmp(text,"remove")) {
+    sscanf(line,"%*s %*s %8191s",path); remove_dir(path);
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "post")) {
    char path[8192]; struct stat st;
    sscanf(line,"%*s %8191s",text);
@@ -1321,6 +1382,7 @@ int main(int argc, char **argv)
   {
    sscanf(line, "%*s %31s %d", text, &n);
    if (!strcmp(text, "immediate")) immediate = n;
+   else if (!strcmp(text, "flush")) flush_always = n;
    else if (!strcmp(text, "auto_quit")) auto_quit_turns = n;
    else if (!strcmp(text, "post")) post_has_been_run = n;
    else if (!strcmp(text, "indep")) indep_player = n;
@@ -1404,6 +1466,7 @@ int main(int argc, char **argv)
   else return 2;
  }
  close_logfile();
+ close_times();
  fclose(fp);
  return 0;
 }

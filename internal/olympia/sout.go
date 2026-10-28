@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"runtime"
 
 	"github.com/mdhender/g3g0/internal/clib"
 )
@@ -14,6 +15,10 @@ import (
 // Ported from olympia/sout.c.
 
 const vect = -1 // sout.h VECT
+
+func (w *world) openLogfileNondestruct() {
+	_ = os.Mkdir(sout("%s/log", w.libdir), 0o755)
+}
 
 func (w *world) openLogfile(win bool) {
 	if w.immediate {
@@ -153,18 +158,59 @@ func (w *world) bottomOut(pl, who int, format string, a ...any) {
 	w.bottomOutUnit(pl, who, 0, format, a...)
 }
 
-// openPlayerOutput is sout.c:149–162, shared by ordinary output and the
-// report state projections. Opening precedes the p_player allocation in
-// bottom_out. It does not invent output bits for deferred report artifacts.
-func (w *world) openPlayerOutput(pl int) *os.File {
+type playerOutput struct {
+	player int
+	fp     *clib.File
+}
+
+// sout.c MAX_FP = FOPEN_MAX - 10 (stdio.h: Darwin 20, Linux 16).
+func maxPlayerOutput() int {
+	if runtime.GOOS == "darwin" {
+		return 10
+	}
+	return 6
+}
+
+// openPlayerOutput owns sout.c's bounded move-to-front cache (131–214).
+// Both ordinary output and report projections borrow, never close, its FILE.
+// A hit must not reopen a renamed/unlinked path or change buffering mode.
+func (w *world) openPlayerOutput(pl int) *clib.File {
+	for i, p := range w.playerOutput {
+		if p.player == pl {
+			copy(w.playerOutput[1:i+1], w.playerOutput[:i])
+			w.playerOutput[0] = p
+			return p.fp
+		}
+	}
+	if len(w.playerOutput) == maxPlayerOutput() {
+		w.playerOutput[len(w.playerOutput)-1].fp.Close()
+		w.playerOutput = w.playerOutput[:len(w.playerOutput)-1]
+	}
 	name := sout("%s/log/%d", w.libdir, pl)
-	f, err := os.OpenFile(name, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0o666)
+	f, err := clib.FopenAppend(name)
 	if err != nil {
 		fmt.Fprintf(w.stderr, "alloc_fp: can't open %s: ", name)
 		clib.Perror(w.stderr, "", err)
 		assert(false, "olympia/sout.c", 158, "FALSE")
 	}
+	if w.flushAlways {
+		f.SetUnbuffered()
+	}
+	w.playerOutput = append(w.playerOutput, playerOutput{})
+	copy(w.playerOutput[1:], w.playerOutput[:len(w.playerOutput)-1])
+	w.playerOutput[0] = playerOutput{pl, f}
 	return f
+}
+
+// closeLogfile is sout.c:241–264. Immediate mode leaves the cache intact.
+func (w *world) closeLogfile() {
+	if w.immediate {
+		return
+	}
+	for _, p := range w.playerOutput {
+		p.fp.Close()
+	}
+	w.playerOutput = nil
 }
 
 func (w *world) bottomOutUnit(pl, who, unit int, format string, a ...any) {
@@ -174,7 +220,6 @@ func (w *world) bottomOutUnit(pl, who, unit int, format string, a ...any) {
 			return
 		}
 		f := w.openPlayerOutput(pl)
-		defer f.Close()
 		fp = f
 		setBit(&w.pPlayer(pl).output, who)
 	}

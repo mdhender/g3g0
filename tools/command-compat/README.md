@@ -3375,3 +3375,85 @@ source-linked C defects are untouched. Main's explicit postMonth stop, cached
 output/Times lifecycle (#129), valid admissions/-A, stage-2 rendering and
 whole-world/stage-exit acceptance remain outside this task. No commit, push,
 issue closure or checklist tick.
+
+## Cached output ownership and Times lifecycle (#129)
+
+Pin remains `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`; C sources are read
+only from the bare `tmp/upstream.git` archive under `tmp/command-compat/g3`.
+The original whole sout.c provides open_fp/alloc_fp/grab_fp (131–214), both
+log openers (217–238) and close_logfile (241–264). Original whole io.c
+provides save_logdir (3031–3069) and real remove_dir. The extractor adds
+complete unchanged c2.c open_times (338–377) and close_times (457–472),
+with the original DASH_LINE and static FILE declarations (326–331).
+The issue's broader IO range reaches into save_db, and its Times ranges
+include the next function's declaration; only the complete owners above
+are newly ported, not main's final save_db integration.
+All called definitions and original save_box writers remain real; no
+successful rendering/gameplay dependency substitutes or rewritten expected
+logic. sout.c, io.c and c2.c were already tracked in tools/README.md and
+affected.sh, so no new upstream source dependency or pin change is needed.
+
+Go extends the existing openPlayerOutput owner with a most-recent-first
+bounded cache (FOPEN_MAX-10: six on Linux, ten on Darwin), not a second cache
+or output abstraction. Hits borrow the existing stream, full-cache misses
+close/flush the tail before opening, and closeLogfile resets all ownership
+unless immediate. Ordinary and report-projection callers no longer close
+borrowed streams. Append mode and buffering reuse clib.File's registry and
+FlushAll; -f selects unbuffered output at open time, not retroactively on hits.
+Existing command/move fixtures retain their C drivers' flush_always=1;
+explicit fflush observers still flush. closeTimes closes/resets press then
+rumor. openTimes uses the same buffered FILE owner with the real explicit
+header flush before the rumor open. Fatal diagnostics have no perror/newline.
+
+saveLogdir retains ignored mkdir/remove failures, both ordered renames and
+their independent nonfatal diagnostics, and final log mkdir. It uses the
+rename syscall, not os.Rename's destination-directory EEXIST precheck: the
+actual C empty-directory success and nonempty-directory ENOTEMPTY must be
+preserved. The Windows flag changes only initial backslash paths and prints
+its deletion notice; both renames and final mkdir still use forward slashes.
+The controls test this branch on Linux, not native Windows syscall semantics.
+
+Thirty-six appended sections cover renamed/blocked cached hits, first-miss
+ENOENT/ENOTDIR/EISDIR and close/eviction reopen failures, capacity/reset and
+MRU eviction, buffered versus -f opens, immediate close/open bypass, shared
+ordinary/report ownership in both directions, nondestructive/destructive
+openers, successful/failed mkdir/renames, existing turn directories, save/no-
+save path lifecycles and Windows controls. Real C save_box bytes and raw
+stdout/stderr/status remain compared. Artifact text is not compared; file
+type/presence and empty/nonempty probes establish ownership/flush decisions.
+Times repeated opens survive renamed paths, then fail only after close/reset.
+An atexit observer runs before exit's stdio cleanup and proves press headers
+have already flushed when rumor fopen fails; press failure never opens rumor.
+Main's postMonth stop and report-body/admission/-A boundaries are untouched.
+
+Validation at **0.75.0-alpha**, left **uncommitted**:
+
+- Actual pinned C repeated twice deterministically and Go match **858
+  sections / 59875 output lines / 1038904 output bytes**. All previous **822
+  sections / 59134 output lines / 1024033 output bytes** and **18422 input
+  lines / 336093 input bytes** remain exact unchanged byte prefixes.
+  New inputs total **18862 lines / 344535 bytes**. Output SHA-256:
+  `626d440d357c30bb97420c5ee294a5865ed34668aca2080c5f31f7186a33b4cc`.
+- Temporary negative linker probes wrapped open_times at fatal section
+  **848**, emitted the missing-dependency marker and exited either **0** or
+  **1**. Ordinary and --update runs all rejected with harness status **2**
+  before expected-status checks or recording replacement; the output hash
+  stayed unchanged. Probe source/compiler wrapper were removed before the
+  final real-C run. Logs: `tmp/issue129-negative-*.log`.
+- Eight tools passed **sequentially** with `G3_REPO=$PWD/tmp/upstream.git`:
+  command **858/59875**, move **135/7150**, helper **37/1487**, RNG **321**,
+  code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase **5/484**,
+  calendar **2/119**, schedule **4/1801**, then default turn (identical status,
+  raw stdout/stderr and one state file). All engines use shared run_limited.
+- Bounded vet and fresh bounded default tests passed; Olympia **1.705s**.
+  Full sequential log: `tmp/issue129-validation.log`. Source-only diff
+  whitespace check passes. The literal C recording retains one trailing-
+  space raw stdout line from immediate routing, not normalized text. New
+  buffered-flush probes inspect file state without printing artifact text.
+
+All six open local issues were inspected, including unlabeled issues; none
+is bug/follow-c work. No new verified port/C bug or upstream blocker was
+found. Existing source-linked C bug reproductions are unchanged. No native
+Windows or Darwin execution, main wiring, final save_db/-n composition,
+valid admissions/-A, stage-2 renderer, whole-world or stage-exit acceptance
+is claimed. No commit, push, issue closure or checklist tick.

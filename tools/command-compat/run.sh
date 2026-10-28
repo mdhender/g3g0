@@ -160,7 +160,7 @@ functions = {
              'gm_show_locs_visited', 'gm_loyalty_stats', 'region_occupy_comp', 'gm_land_stats',
              'wealth_list_comp', 'gm_faction_wealth', 'nobles_list_comp', 'gm_nobles_list',
              'gm_player_details', 'list_all_notices', 'list_all_items', 'gm_report'],
-    'c2.c': ['v_stop', 'v_format', 'v_notab'],
+    'c2.c': ['v_stop', 'v_format', 'v_notab', 'open_times', 'close_times'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts'],
     'main.c': ['write_totimes', 'write_email', 'list_a_player', 'write_player_list',
@@ -214,6 +214,10 @@ int immed_see_all, month_done, show_combat_flag;
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
         # Original data declarations too: no copied or modeled tag/number table.
+        if file == 'c2.c':
+            start, end = source.index('#define DASH_LINE'), source.index('char *months[]')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/c2.c"\n')
+            out.write(source[start:end])
         if file == 'add.c':
             for pattern in [r'^ilist new_players = NULL;\n', r'^static ilist new_chars = NULL;\n']:
                 out.write(re.search(pattern, source, re.M).group(0))
@@ -517,6 +521,14 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section lifecycle '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section lifecycle invalid '*) expected_status=134 ;;
+    'section lifecycle fatal '*) expected_status=1 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected lifecycle status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section post writer '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in
@@ -706,6 +718,7 @@ for run in run1 run2; do
   fi
   case "$status" in
    0|134|139) ;;
+   1) [[ "${section_names[$i]}" == 'section lifecycle fatal '* ]] || die "unexpected C exit 1 in section $i" ;;
    *) die "unexpected C status $status in section $i; see ${WORK}/${run}" ;;
   esac
   {

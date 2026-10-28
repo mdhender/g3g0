@@ -249,6 +249,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	w.stderr = stderr
 	w.libdir = o.libdir
 	w.prettyDataFiles = o.prettyDataFiles
+	w.flushAlways = o.flushAlways
 	w.timeSelf = o.timeSelf
 	w.tradeRouteSeedPending = o.tradeRouteSeedPending
 	w.tradeRouteSeedValue = o.tradeRouteSeedValue

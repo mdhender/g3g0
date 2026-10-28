@@ -86,6 +86,8 @@ reads() {
 		lib/checked_alloc.c | lib/ilist.c | lib/exit_views.c | lib/rng.c | lib/rnd.c) return 0 ;;
 		esac ;;
 	command-compat)
+		# #129 retains whole sout.c/io.c and extracts open_times/close_times
+		# from c2.c; all three source dependencies are already listed here.
 		case "$2" in
 		olympia/*.h | lib/*.h) return 0 ;;
 		olympia/code.c | olympia/glob.c | olympia/z.c | olympia/sout.c | olympia/input.c) return 0 ;;
