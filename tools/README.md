@@ -6,6 +6,27 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Noncharacter descriptions (#139)
+
+display.go extends its accepted headers/character owner with complete unchanged
+stage-pin ship, location, road and storm liner descriptions, capacity and
+completion suffixes and display_owner. Character rendering is unchanged.
+Existing names, topology, mine depth, weather and output/cache owners are
+reused; weights.go adds the previously absent real ship-capacity/weight
+helpers on top of accepted unit weights. The command oracle removes the four
+rejected noncharacter dependencies and extracts actual unchanged C, including
+first_char_here; show_loc and show_loc_posts remain rejected. No source
+dependency or pin change, movement handler or full location root is included.
+Thirteen asymmetric appended sections cover suffix/read order, signed widths,
+recursive load, road distances, ownership, markup and source assertions, with
+actual save_box state and raw MASTER/style log bytes. See
+[exact closure and byte evidence](command-compat#noncharacter-descriptions-139).
+C/C/Go is **903 sections / 62031 lines / 1160307 bytes**, preserving the entire
+**890 input sections / 61457 recording lines** prefix. Sequential command/move/
+helper/code/loadsave/turn-driver/default-turn/RNG, bounded vet and fresh bounded
+defaults pass at **0.79.0-alpha**. Full strict stage-2 report-tree parity remains
+deferred; no full corpus/full turn or stage-exit acceptance is claimed.
+
 ## Location headers (#138)
 
 The existing display.go owner ports complete unchanged stage-pin display.c

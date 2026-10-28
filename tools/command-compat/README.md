@@ -3,6 +3,65 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Noncharacter descriptions (#139)
+
+display.go now implements complete stage-pin display.c `ship_cap_s` **77–89**,
+`display_owner` / `incomplete_string` / `liner_desc_ship` **208–272**,
+`liner_desc_loc` **288–333**, road/storm descriptions **480–521**, and the
+noncharacter branches of `liner_desc` **528–544**. Character descriptions and
+accepted headers are unchanged. Existing safe-haven, hidden, mine-depth,
+road-distance, storm, names and output/cache helpers are reused. No existing
+ship-capacity/ship-weight helper existed: weights.go adds complete u.c
+`ship_cap` **2599–2607** and `ship_weight` **1525–1553**, reusing the real
+unit weights and character-only recursive traversal. Macro fields retain their
+C widths, including unsigned damage, signed ram/level/strength and 32-bit
+percentage intermediates. display_owner retains first_char_here's direct-list
+semantics and its original macro assertion at u.c:2395.
+
+The command extractor removes four rejected noncharacter dependencies and
+extracts the complete unchanged definitions, plus u.c `first_char_here`
+**2390–2406**. An independent comparison against git show at the immutable pin
+checks that all eleven definitions occur unchanged exactly once. No rewritten
+liner_desc or successful rendering stub is used; show_loc and show_loc_posts
+still abort with dependency markers, rejected before status checks/recording.
+All source files were already dependencies: no pin/dependency-set change.
+
+Thirteen small appended cases distinguish finished/unbuilt ships; absent,
+zero, empty, negative and overloaded capacity; recursive noble/inventory
+weight versus excluded building contents; completion/load arithmetic widths;
+damage-byte wrapping, defense/fee int limits and ram signed-byte limits;
+building depth/level/safe haven/completion; city and Hades-pit suffixes;
+distinct ship/location banner markup and display gating; hidden roads with
+same/unequal province, singular/plural/zero distances; and absent/owned/unowned
+storms, signed strength and all eight directions. Unsupported kind and invalid
+owner controls require original assertions/status 134; all other new cases
+require status 0. Actual save_box observations retain original records and
+lists before/after reads. MASTER/style/output-bit and independent raw readfile
+observations include **103-byte** banner-visible and **62-byte** banner-hidden
+logs, using the accepted owner rather than a second output implementation.
+
+Two actual unchanged C runs match Go at **903 sections / 62031 lines /
+1160307 bytes**. A fresh non-update command comparison also passes. The entire
+inherited **890-section / 61457-line / 1149073-byte** recording prefix and
+**19471-line / 356567-byte** input prefix are byte-exact. Current output SHA-256:
+`9d4c3cc9f920c22d921dfe865c875c13b0e2d73a5c74d8a74488aa8818ce8f40`.
+Seven added save_box here-list lines retain C's literal trailing spaces.
+Initial fixture construction incorrectly omitted the noble base item; C's
+139 was rejected before recording, then the fixture was corrected to allocate
+the actual item_peasant (10). No engine defect or blocking upstream defect
+was found; existing signed comma_num formatting is preserved, not normalized.
+
+At **0.79.0-alpha**, sequential command/move/helper/code/loadsave/turn-driver/
+default-turn/RNG comparisons, bounded vet and fresh bounded defaults pass.
+All tools use explicit `G3_REPO="$PWD/tmp/upstream.git"` and engine run_limited
+supervision. The nine usual opt-in/child-entry test skips are not full-world
+checks. Logs: `tmp/issue139-command-{update,default}.log`,
+`tmp/issue139-{move,helper,code,loadsave,turn-driver,turn,rng}-default.log`,
+`tmp/issue139-{vet,go-test,prefix-check,extract-check}.log`.
+Matching command captures are removed after comparison. No movement handler,
+location-report root/posts, full corpus/full turn or stage-exit acceptance is
+included; strict stage-2 report-tree parity remains deferred.
+
 ## G3 #357 follow-C and pin move (#131)
 
 Pin-move recording: **859 sections / 59841 lines**, from two identical real

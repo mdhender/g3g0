@@ -3,8 +3,8 @@
 
 package olympia
 
-// Location headers and character descriptions from display.c. Noncharacter
-// descriptions and complete location-report assembly remain explicit boundaries.
+// Location headers and descriptions from display.c. Complete location-report
+// assembly remains an explicit boundary.
 
 // locInsideString is display.c:8–49. Nested buildings still name the province,
 // not their immediate container; region names are raw names without box codes.
@@ -192,12 +192,132 @@ func (w *world) linerDescChar(n int) string {
 	return sout("%s", buf)
 }
 
+// displayOwner is display.c:208–217. first_char_here reads the direct here
+// list, not the recursive character snapshot used for ship weights.
+func (w *world) displayOwner(who int) string {
+	assert(w.validBox(who), "olympia/u.c", 2395, "valid_box(where)")
+	for i := range w.loopHere(who) {
+		if w.kind(i) == tChar {
+			return ", owner:"
+		}
+	}
+	return ""
+}
+
+func (w *world) incompleteString(n int) string {
+	p := w.rpSubloc(n)
+	if p == nil || p.effortRequired == 0 {
+		return ""
+	}
+	return sout(", %d%% completed", p.effortGiven*100/p.effortRequired)
+}
+
+func (w *world) shipCapS(n int) string {
+	if sc := w.shipCap(n); sc != 0 {
+		sw := w.shipWeight(n)
+		return sout(", %d%% loaded", sw*100/sc)
+	}
+	return ""
+}
+
+// linerDescShip is display.c:237–272, in the original suffix/read order.
+func (w *world) linerDescShip(n int) string {
+	buf := w.boxNameKind(n) + w.incompleteString(n)
+	buf += w.shipCapS(n)
+	if p := w.rpSubloc(n); p != nil && p.defense != 0 {
+		buf += sout(", defense~%d", p.defense)
+	}
+	if p := w.rpSubloc(n); p != nil && p.damage != 0 {
+		buf += sout(", %d%%~damaged", p.damage)
+	}
+	if w.showDisplayString {
+		if p := w.rpMisc(n); p != nil && p.display != nil && *p.display != "" {
+			buf += sout(", \"{<i>}%s{</i>}\"", *p.display)
+		}
+	}
+	if w.locHidden(n) != 0 {
+		buf += ", hidden"
+	}
+	if p := w.rpSubloc(n); p != nil && p.galleyRam != 0 {
+		buf += ", with ram"
+	}
+	if p := w.rpMagic(n); p != nil && p.fee != 0 {
+		buf += sout(", %s per 100 wt. to board", goldS(int(p.fee)))
+	}
+	return sout("%s", buf)
+}
+
+// linerDescLoc is display.c:288–333. Location banners deliberately have no
+// italic markup, unlike ship and character banners.
+func (w *world) linerDescLoc(n int) string {
+	buf := w.boxNameKind(n) + w.safeHavenS(n) + w.incompleteString(n)
+	if w.locDepth(n) == locBuild {
+		if p := w.rpSubloc(n); p != nil && p.defense != 0 {
+			buf += sout(", defense~%d", p.defense)
+		}
+		if d := w.mineDepth(n); d != 0 {
+			buf += sout(", depth~%d", d)
+		}
+		if p := w.rpSubloc(n); p != nil && p.damage != 0 {
+			buf += sout(", %d%%~damaged", p.damage)
+		}
+		if p := w.rpSubloc(n); p != nil && p.castleLev != 0 {
+			buf += sout(", level~%d", p.castleLev)
+		}
+	}
+	if w.showDisplayString {
+		if p := w.rpMisc(n); p != nil && p.display != nil && *p.display != "" {
+			buf += sout(", \"%s\"", *p.display)
+		}
+	}
+	if w.locHidden(n) != 0 {
+		buf += ", hidden"
+	}
+	if w.locDepth(n) == locSubloc {
+		if w.subkind(n) == subHadesPit {
+			buf += ", 28 days"
+		} else {
+			buf += ", 1 day"
+		}
+	}
+	return sout("%s", buf)
+}
+
+func (w *world) linerDescRoad(n int) string {
+	dest := w.roadDest(n)
+	hid := ""
+	if w.roadHidden(n) != 0 {
+		hid = ", hidden"
+	}
+	dist := w.exitDistance(w.loc(n), dest)
+	return sout("%s, to %s%s, %d~day%s", w.boxName(n), w.boxName(dest), hid, dist, addS(int(dist)))
+}
+
+func (w *world) linerDescStorm(n int) string {
+	buf := w.boxNameKind(n)
+	p := w.rpMisc(n)
+	if owner := w.npcSummoner(n); owner != 0 {
+		buf += sout(", owner~%s", boxCodeLess(owner))
+	}
+	buf += sout(", strength~%s", commaNum(int(w.stormStrength(n))))
+	if p != nil && p.npcDir != 0 {
+		buf += sout(", heading %s", fullDirS[p.npcDir])
+	}
+	return sout("%s", buf)
+}
+
 func (w *world) linerDesc(n int) string {
 	switch w.kind(n) {
 	case tChar:
 		return w.linerDescChar(n)
-	case tShip, tLoc, tRoad, tStorm:
-		panic(notImplemented("liner_desc noncharacter"))
+	case tShip:
+		return w.linerDescShip(n)
+	case tLoc:
+		return w.linerDescLoc(n)
+	case tRoad:
+		return w.linerDescRoad(n)
+	case tStorm:
+		return w.linerDescStorm(n)
 	default:
 		assert(false, "olympia/display.c", 541, "FALSE")
 	}

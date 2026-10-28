@@ -93,8 +93,10 @@ functions = {
     'build.c': ['province_subloc'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
-    'display.c': ['loc_inside_string', 'show_loc_barrier', 'safe_haven_s',
+    'display.c': ['loc_inside_string', 'show_loc_barrier', 'safe_haven_s', 'ship_cap_s',
                   'loc_civ_s', 'show_loc_header',
+                  'display_owner', 'incomplete_string', 'liner_desc_ship', 'liner_desc_loc',
+                  'liner_desc_road', 'liner_desc_storm',
                   'with_inventory_string', 'display_with', 'mage_s', 'priest_s',
                   'emperor', 'liner_desc_char', 'liner_desc', 'show_chars_below'],
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
@@ -112,6 +114,7 @@ functions = {
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
+            'ship_cap', 'ship_weight', 'first_char_here',
             'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units', 'bark_dogs', 'clear_temps', 'ordinal', 'weeks', 'knum'],
     'npc.c': ['controlled_humans_here', 'get_exit_dir', 'choose_npc_direction', 'npc_move',
               'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
@@ -258,8 +261,6 @@ int immed_see_all, month_done, show_combat_flag;
             start = source.index('int show_display_string =')
             end = source.index('\n\n', start)
             out.write('#line 402 "olympia/display.c"\n' + source[start:end] + '\n')
-            for name in ['liner_desc_ship', 'liner_desc_loc', 'liner_desc_road', 'liner_desc_storm']:
-                out.write(f'static char *{name}(int n) {{ fprintf(stderr, "out-of-scope C dependency: {name}\\n"); abort(); }}\n')
         if file == 'c1.c':
             start, end = source.index('struct flag_ent {'), source.index('static int\nflag_raised(')
             out.write(source[start:end])
@@ -523,6 +524,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section description '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section description invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected description status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section header '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

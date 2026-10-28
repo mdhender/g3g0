@@ -1426,6 +1426,19 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch action := args.word(); action {
 			case "order":
 				w.determineOutputOrder()
+			case "describe":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "description [%s]\n", w.linerDesc(n))
+			case "describe_out":
+				n, where := args.num(t), args.num(t)
+				w.commandOut(n, "%s", w.linerDesc(where))
+			case "owner":
+				fmt.Fprintf(&stdout, "owner [%s]\n", w.displayOwner(args.num(t)))
+			case "display":
+				w.showDisplayString = args.num(t) != 0
+			case "set_banner":
+				n := args.num(t)
+				w.setBanner(n, strings.TrimLeft(args.rest, " \t"))
 			case "header":
 				n, where := args.num(t), args.num(t)
 				w.commandOut(n, "%s", w.showLocHeader(where))
@@ -1829,6 +1842,18 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pSubloc(n).boundStorms.Append(a)
 			case "damage":
 				w.pSubloc(n).damage = uint8(a)
+			case "capacity":
+				w.pSubloc(n).capacity = int32(a)
+			case "structure_defense":
+				w.pSubloc(n).defense = int32(a)
+			case "effort_given":
+				w.pSubloc(n).effortGiven = int32(a)
+			case "effort_required":
+				w.pSubloc(n).effortRequired = int32(a)
+			case "ram":
+				w.pSubloc(n).galleyRam = int8(a)
+			case "board_fee":
+				w.pMagic(n).fee = int32(a)
 			case "shaft_depth":
 				w.pSubloc(n).shaftDepth = int16(a)
 			case "loyal":

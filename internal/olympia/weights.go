@@ -68,6 +68,28 @@ func (w *world) determineStackWeights(who int) weights {
 	return v
 }
 
+// shipWeight is u.c:1525–1553: recursively visit characters only. Each unit
+// includes its noble item's weight, even when its inventory is empty.
+func (w *world) shipWeight(ship int) int32 {
+	assert(w.kind(ship) == tShip, "olympia/u.c", 1531, "kind(ship) == T_ship")
+	var sum int32
+	for _, i := range w.allCharHere(ship) {
+		sum += w.determineUnitWeights(i).totalWeight
+	}
+	return sum
+}
+
+// shipCap is u.c:2599–2607. The damage byte promotes to a signed C int;
+// multiplication and subtraction retain 32-bit widths before division.
+func (w *world) shipCap(ship int) int32 {
+	var sc, dam int32
+	if p := w.rpSubloc(ship); p != nil {
+		sc, dam = p.capacity, int32(p.damage)
+	}
+	sc -= sc * dam / 100
+	return sc
+}
+
 func (w *world) countStackMoveNobles(who int) int32 {
 	sum := int32(1)
 	pl := w.player(who)

@@ -61455,3 +61455,577 @@ subkind is 0
 assertion failure: olympia/u.c (388): FALSE
 
 exit 134
+stdout:
+section description finished ships empty capacity zero and absent records
+> entity 9000 9 30
+> entity 9001 9 31
+> name 9000 Swift
+> save 9000
+9000 ship galley
+na Swift
+
+> report describe 9000
+description [Swift~[9000], galley]
+> report owner 9000
+owner []
+> save 9000
+9000 ship galley
+na Swift
+
+> field 9001 capacity 713
+> report describe 9001
+description [Roundship~[9001], roundship, 0% loaded]
+> save 9001
+9001 ship roundship
+SL
+ ca 713
+
+stderr:
+
+exit 0
+stdout:
+section description unbuilt ships completion and every suffix in original order
+> entity 9000 9 33
+> entity 9001 9 34
+> name 9000 Amber
+> field 9000 effort_given 7
+> field 9000 effort_required 19
+> field 9000 capacity 101
+> field 9000 damage 23
+> field 9000 structure_defense -17
+> field 9000 ram -128
+> field 9000 board_fee -2147483648
+> field 9000 loc_hidden -1
+> report set_banner 9000 Striped sail
+> report describe 9000
+description [Amber~[9000], galley-in-progress, 36% completed, 0% loaded, defense~-17, 23%~damaged, hidden, with ram, -2,-147,-483,-648~gold per 100 wt. to board]
+> report display 1
+> report describe 9000
+description [Amber~[9000], galley-in-progress, 36% completed, 0% loaded, defense~-17, 23%~damaged, "{<i>}Striped sail{</i>}", hidden, with ram, -2,-147,-483,-648~gold per 100 wt. to board]
+> field 9001 effort_given -8
+> field 9001 effort_required 3
+> field 9001 capacity -127
+> field 9001 damage 255
+> field 9001 structure_defense 2147483647
+> field 9001 ram 127
+> field 9001 board_fee 2147483647
+> report set_banner 9001
+> report describe 9001
+description [Roundship-in-progress~[9001], roundship-in-progress, -266% completed, 0% loaded, defense~2147483647, 255%~damaged, with ram, 2,147,483,647~gold per 100 wt. to board]
+> save 9000
+9000 ship galley-in-progress
+na Amber
+CH
+CM
+ bf -2147483648
+LO
+ hi -1
+SL
+ da 23
+ de -17
+ ca 101
+ er 19
+ eg 7
+ gr -128
+MI
+ ds Striped sail
+
+> save 9001
+9001 ship roundship-in-progress
+CH
+CM
+ bf 2147483647
+SL
+ da 255
+ de 2147483647
+ ca -127
+ er 3
+ eg -8
+ gr 127
+
+stderr:
+
+exit 0
+stdout:
+section description ship load recursive characters noble weights excludes building contents
+> entity 9000 9 31
+> entity 9100 3 37
+> entity 1100 2 0
+> entity 1101 2 0
+> entity 1102 2 0
+> entity 1103 2 0
+> entity 10 4 0
+> field 10 weight 17
+> entity 501 4 0
+> field 501 weight 23
+> link 9000 1100
+> link 1100 1101
+> link 9000 1102
+> link 9000 9100
+> link 9100 1103
+> inventory 1100 501 9
+> inventory 1101 501 3
+> inventory 1102 501 2
+> inventory 1103 501 100
+> field 9000 capacity 101
+> field 9000 damage 19
+> save 1100
+1100 char 0
+il	501 9
+LI
+ wh 9000
+ hl 1101 
+
+> save 1101
+1101 char 0
+il	501 3
+LI
+ wh 1100
+
+> report describe 9000
+description [Roundship~[9000], roundship, 454% loaded, 19%~damaged]
+> report owner 9000
+owner [, owner:]
+> save 9000
+9000 ship roundship
+LI
+ hl 1100 1102 9100 
+SL
+ da 19
+ ca 101
+
+> save 1100
+1100 char 0
+il	501 9
+LI
+ wh 9000
+ hl 1101 
+
+> save 1101
+1101 char 0
+il	501 3
+LI
+ wh 1100
+
+> save 1102
+1102 char 0
+il	501 2
+LI
+ wh 9000
+
+> save 1103
+1103 char 0
+il	501 100
+LI
+ wh 9100
+
+stderr:
+
+exit 0
+stdout:
+section description damage byte and zero capacity bypass weight reads
+> entity 9000 9 30
+> field 9000 capacity 100
+> field 9000 damage 100
+> entity 9001 9 31
+> field 9001 capacity 99
+> field 9001 damage -1
+> report describe 9000
+description [Galley~[9000], galley, 100%~damaged]
+> report describe 9001
+description [Roundship~[9001], roundship, 0% loaded, 255%~damaged]
+> field 9001 damage 256
+> report describe 9001
+description [Roundship~[9001], roundship, 0% loaded]
+> save 9000
+9000 ship galley
+SL
+ da 100
+ ca 100
+
+> save 9001
+9001 ship roundship
+SL
+ ca 99
+
+stderr:
+
+exit 0
+stdout:
+section description buildings level depth safe haven completion banner and hidden order
+> entity 9000 3 32
+> entity 9001 3 40
+> entity 9002 3 39
+> field 9000 safe 1
+> field 9000 structure_defense 2147483647
+> field 9000 damage 255
+> field 9000 castle_level 127
+> field 9000 shaft_depth 8
+> field 9000 effort_given 11
+> field 9000 effort_required 17
+> field 9000 loc_hidden 1
+> field 9001 structure_defense -2147483648
+> field 9001 damage 257
+> field 9001 castle_level 128
+> field 9001 shaft_depth -8
+> field 9002 effort_given 8
+> field 9002 effort_required -3
+> report set_banner 9000 Plain banner
+> report describe 9000
+description [Castle~[9000], castle, safe haven, 64% completed, defense~2147483647, depth~2, 255%~damaged, level~127, hidden]
+> report display 1
+> report describe 9000
+description [Castle~[9000], castle, safe haven, 64% completed, defense~2147483647, depth~2, 255%~damaged, level~127, "Plain banner", hidden]
+> report describe 9001
+description [Mine~[9001], mine, defense~-2147483648, depth~-2, 1%~damaged, level~-128]
+> report describe 9002
+description [Castle-in-progress~[9002], castle-in-progress, -266% completed]
+> save 9000
+9000 loc castle
+LO
+ hi 1
+SL
+ da 255
+ de 2147483647
+ er 17
+ eg 11
+ sd 8
+ cl 127
+ sh 1
+MI
+ ds Plain banner
+
+> save 9001
+9001 loc mine
+SL
+ da 1
+ de -2147483648
+ sd -8
+ cl -128
+
+> save 9002
+9002 loc castle-in-progress
+SL
+ er -3
+ eg 8
+
+stderr:
+
+exit 0
+stdout:
+section description city Hades pit and province suppress building suffixes
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 14
+> entity 9002 3 60
+> entity 9003 3 14
+> link 8000 9000
+> link 9000 9001
+> link 9000 9002
+> link 9000 9003
+> name 9001 Quiet City
+> field 9001 safe -1
+> field 9001 damage 77
+> field 9001 structure_defense 21
+> field 9001 castle_level 4
+> field 9001 shaft_depth 18
+> field 9001 effort_given 2
+> field 9001 effort_required 9
+> field 9002 loc_hidden 1
+> report set_banner 9001 City banner
+> report display 1
+> save 9003
+9003 loc city
+LI
+ wh 9000
+
+> report describe 9003
+description [City~[9003], city, 1 day]
+> save 9003
+9003 loc city
+LI
+ wh 9000
+
+> report describe 9001
+description [Quiet City~[9001], city, safe haven, 22% completed, "City banner", 1 day]
+> report describe 9002
+description [Pit~[9002], pit, hidden, 28 days]
+> report describe 9000
+description [Plain~[9000], plain]
+> save 9001
+9001 loc city
+na Quiet City
+LI
+ wh 9000
+SL
+ da 77
+ de 21
+ er 9
+ eg 2
+ sd 18
+ cl 4
+ sh -1
+MI
+ ds City banner
+
+> save 9002
+9002 loc pit
+LI
+ wh 9000
+LO
+ hi 1
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9001 9002 9003 
+
+stderr:
+
+exit 0
+stdout:
+section description owner direct characters only including prisoner and noncharacter skip
+> entity 9000 3 37
+> entity 9001 3 37
+> entity 1100 2 0
+> link 9000 9001
+> link 9001 1100
+> report owner 9000
+owner []
+> report owner 9001
+owner [, owner:]
+> field 1100 prisoner 1
+> report owner 9001
+owner [, owner:]
+> link 9000 1100
+> report owner 9000
+owner [, owner:]
+> save 9000
+9000 loc inn
+LI
+ hl 9001 1100 
+
+> save 9001
+9001 loc inn
+LI
+ wh 9000
+
+> save 1100
+1100 char 0
+LI
+ wh 9000
+CH
+ pr 1
+
+stderr:
+
+exit 0
+stdout:
+section description roads same and unequal province distance hidden singular plural zero
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 2
+> entity 9100 3 14
+> entity 9200 3 37
+> entity 9300 7 0
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9000 9200
+> link 9000 9300
+> name 9300 Old track
+> road 9300 9100 0
+> report describe 9300
+description [Old track~[9300], to City~[9100], 1~day]
+> road 9300 9001 1
+> report describe 9300
+description [Old track~[9300], to Forest~[9001], hidden, 8~days]
+> road 9300 9000 -1
+> report describe 9300
+description [Old track~[9300], to Plain~[9000], hidden, 7~days]
+> road 9300 9200 0
+> report describe 9300
+description [Old track~[9300], to Inn~[9200], 0~days]
+> save 9300
+9300 road 0
+na Old track
+LI
+ wh 9000
+GA
+ tl 9200
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 9200 9300 
+
+> save 9001
+9001 loc forest
+LI
+ wh 8000
+
+> save 9100
+9100 loc city
+LI
+ wh 9000
+
+stderr:
+
+exit 0
+stdout:
+section description storms absent and owned signed strength all legal directions
+> entity 9000 11 57
+> entity 9001 11 59
+> save 9000
+9000 storm fog
+
+> report describe 9000
+description [Fog~[9000], storm, strength~0]
+> save 9000
+9000 storm fog
+
+> field 9001 summoner 1001
+> field 9001 strength 32767
+> field 9001 npc_dir 1
+> report describe 9001
+description [Rain~[9001], storm, owner~1001, strength~32,767, heading north]
+> field 9001 strength 32768
+> field 9001 npc_dir 2
+> report describe 9001
+description [Rain~[9001], storm, owner~1001, strength~-32,-768, heading east]
+> field 9001 npc_dir 3
+> report describe 9001
+description [Rain~[9001], storm, owner~1001, strength~-32,-768, heading south]
+> field 9001 npc_dir 4
+> report describe 9001
+description [Rain~[9001], storm, owner~1001, strength~-32,-768, heading west]
+> field 9001 npc_dir 5
+> report describe 9001
+description [Rain~[9001], storm, owner~1001, strength~-32,-768, heading up]
+> field 9001 npc_dir 6
+> report describe 9001
+description [Rain~[9001], storm, owner~1001, strength~-32,-768, heading down]
+> field 9001 npc_dir 7
+> report describe 9001
+description [Rain~[9001], storm, owner~1001, strength~-32,-768, heading in]
+> field 9001 npc_dir 8
+> report describe 9001
+description [Rain~[9001], storm, owner~1001, strength~-32,-768, heading out]
+> field 9001 summoner 0
+> field 9001 npc_dir 0
+> report describe 9001
+description [Rain~[9001], storm, strength~-32,-768]
+> save 9001
+9001 storm rain
+MI
+ ss -32768
+
+stderr:
+
+exit 0
+stdout:
+section description invalid unsupported item kind retains original assertion
+> entity 101 4 0
+> report describe 101
+stderr:
+assertion failure: olympia/display.c (541): FALSE
+
+exit 134
+stdout:
+section description routed MASTER style bytes distinct ship and location banners
+> lore_root
+> entity 9000 9 30
+> entity 9001 3 37
+> report set_banner 9000 Blue & gold
+> report set_banner 9001 Blue & gold
+> report display 1
+> sout frame 2 5 1 23
+> sout route -2 0
+> sout style 7
+> report describe_out 200 9000
+> report describe_out 200 9001
+> output 200 0
+output 1
+> readfile log/200
+file bytes log/200 103:
+0:7::2/5:23:Galley~[9000], galley, "{<i>}Blue & gold{</i>}"
+0:7::2/5:23:Inn~[9001], inn, "Blue & gold"
+
+end file bytes
+> report display 0
+> sout style 0
+> sout route -2 1
+> report describe_out 201 9000
+> report describe_out 201 9001
+> output 201 1
+output 1
+> readfile log/201
+file bytes log/201 62:
+1:0::2/5:23:Galley~[9000], galley
+1:0::2/5:23:Inn~[9001], inn
+
+end file bytes
+> save 9000
+9000 ship galley
+MI
+ ds Blue & gold
+
+> save 9001
+9001 loc inn
+MI
+ ds Blue & gold
+
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_regular
+PL
+
+stderr:
+
+exit 0
+stdout:
+section description completion capacity and loading retain C int intermediate widths
+> entity 9000 9 33
+> entity 10 4 0
+> entity 1100 2 0
+> field 10 weight 21474837
+> link 9000 1100
+> field 9000 capacity 2147483647
+> field 9000 damage 2
+> field 9000 effort_required 7
+> field 9000 effort_given 2147483647
+> report describe 9000
+description [Galley-in-progress~[9000], galley-in-progress, -14% completed, 0% loaded, 2%~damaged]
+> field 9000 capacity 99
+> report describe 9000
+description [Galley-in-progress~[9000], galley-in-progress, -14% completed, -21398% loaded, 2%~damaged]
+> save 9000
+9000 ship galley-in-progress
+LI
+ hl 1100 
+SL
+ da 2
+ ca 99
+ er 7
+ eg 2147483647
+
+> save 1100
+1100 char 0
+LI
+ wh 9000
+
+stderr:
+
+exit 0
+stdout:
+section description invalid owner preserves first_char_here macro assertion
+> report owner 9000
+stderr:
+assertion failure: olympia/u.c (2395): valid_box(where)
+
+exit 134

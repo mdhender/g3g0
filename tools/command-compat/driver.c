@@ -1051,6 +1051,18 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "report")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
+   else if(!strcmp(text,"describe")) printf("description [%s]\n",liner_desc(n));
+   else if(!strcmp(text,"describe_out")) {
+    sscanf(line,"%*s %*s %d %d",&n,&a);
+    out(n,"%s",liner_desc(a));
+   }
+   else if(!strcmp(text,"owner")) printf("owner [%s]\n",display_owner(n));
+   else if(!strcmp(text,"display")) show_display_string=n;
+   else if(!strcmp(text,"set_banner")) {
+    text[0]=0;
+    if(sscanf(line,"%*s %*s %d %8191[^\n]",&n,text)<1) return 2;
+    set_banner(n,text);
+   }
    else if(!strcmp(text,"header")) {
     sscanf(line,"%*s %*s %d %d",&n,&a);
     out(n,"%s",show_loc_header(a));
@@ -1370,6 +1382,12 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"vulnerable")) p_misc(n)->only_vulnerable = a;
    else if (!strcmp(text,"strength")) p_misc(n)->storm_str = (short)a;
    else if (!strcmp(text,"damage")) p_subloc(n)->damage = (unsigned char)a;
+   else if (!strcmp(text,"capacity")) p_subloc(n)->capacity = a;
+   else if (!strcmp(text,"structure_defense")) p_subloc(n)->defense = a;
+   else if (!strcmp(text,"effort_given")) p_subloc(n)->effort_given = a;
+   else if (!strcmp(text,"effort_required")) p_subloc(n)->effort_required = a;
+   else if (!strcmp(text,"ram")) p_subloc(n)->galley_ram = (schar)a;
+   else if (!strcmp(text,"board_fee")) p_magic(n)->fee = a;
    else if (!strcmp(text,"shaft_depth")) p_subloc(n)->shaft_depth = (short)a;
    else if (!strcmp(text,"castle_level")) p_subloc(n)->castle_lev = (schar)a;
    else if (!strcmp(text,"major")) p_subloc(n)->major = (schar)a;
