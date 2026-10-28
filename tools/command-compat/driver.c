@@ -39,6 +39,8 @@ struct exit_view *choose_npc_direction(int who, int where, int dir);
 int drv_savage_count(void), drv_savage_hates(int where), drv_savage_here(int where);
 void drv_unsworn(int who), drv_mob(int who);
 void drv_auto_bandit(int who, int prog);
+void drv_garrison_pay(void);
+extern int gold_garrison;
 
 static void wait_dump(struct command *c)
 {
@@ -116,6 +118,23 @@ int main(int argc, char **argv)
    for (i=0;i<16;i++) seed[i]=n+i;
    s=fopen(sout("%s/randseed",libdir),"wb"); if(!s) return 2;
    fwrite(seed,1,16,s); fclose(s); load_seed(sout("%s/randseed",libdir));
+  }
+  else if (!strcmp(op, "garrison")) {
+   sscanf(line,"%*s %31s %d",text,&n);
+   if(!strcmp(text,"ping")) ping_garrisons();
+   else if(!strcmp(text,"pay")) drv_garrison_pay();
+   else if(!strcmp(text,"strength")) printf("garrison strength %d\n",garrison_strength(n));
+   else if(!strcmp(text,"maint")) printf("maintenance %d\n",maint_cost(n));
+   else if(!strcmp(text,"state")) {
+    printf("garrison pay %d gold %d show %d\n",garrison_pay,gold_garrison,show_to_garrison);
+    list("vector",out_vector);
+    loop_char(n) {
+     printf("garrison char %d leader %d default %d prisoner %d npc %d guard %d gold %d\n",
+      n,stack_leader(n),default_garrison(n),is_prisoner(n),is_npc(n),char_guard(n),has_item(n,item_gold));
+    } next_char;
+    loop_player(n) { printf("player %d\n",n); list("output",p_player(n)->output); } next_player;
+   }
+   else return 2;
   }
   else if (!strcmp(op, "npc")) {
    sscanf(line,"%*s %31s %d",text,&n);
@@ -499,6 +518,9 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"lore")) p_item_magic(n)->lore = a;
    else if (!strcmp(text,"use_key")) p_item_magic(n)->use_key = a;
    else if (!strcmp(text,"man")) p_item(n)->is_man_item = (schar)a;
+   else if (!strcmp(text,"attack")) p_item(n)->attack = (short)a;
+   else if (!strcmp(text,"defense")) p_item(n)->defense = (short)a;
+   else if (!strcmp(text,"default_garrison")) p_magic(n)->default_garr = (schar)a;
    else if (!strcmp(text,"weight")) p_item(n)->weight = a;
    else if (!strcmp(text,"land_cap")) p_item(n)->land_cap = a;
    else if (!strcmp(text,"ride_cap")) p_item(n)->ride_cap = a;
@@ -625,6 +647,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "hades_region")) hades_region = n;
    else if (!strcmp(text, "hades_player")) hades_player = n;
    else if (!strcmp(text, "backlinks")) pledge_backlinks = n;
+   else if (!strcmp(text, "garrison_pay")) garrison_pay = n;
+   else if (!strcmp(text, "gold_garrison")) gold_garrison = n;
    else if (!strcmp(text, "show_day")) show_day = n;
    else if (!strcmp(text, "day")) sysclock.day = (short)n;
    else if (!strcmp(text, "epoch")) sysclock.days_since_epoch = n;

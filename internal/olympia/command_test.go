@@ -117,6 +117,34 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "garrison":
+			switch action := args.word(); action {
+			case "ping":
+				w.pingGarrisons()
+			case "pay":
+				w.defaultGarrisonPay()
+			case "strength":
+				fmt.Fprintf(&stdout, "garrison strength %d\n", w.garrisonStrength(args.num(t)))
+			case "maint":
+				fmt.Fprintf(&stdout, "maintenance %d\n", maintCost(args.num(t)))
+			case "state":
+				fmt.Fprintf(&stdout, "garrison pay %d gold %d show %d\n", w.garrisonPay, w.goldGarrison, b2i(w.showToGarrison))
+				helperList(&stdout, "vector", w.outVector)
+				for n := range w.loopKind(tChar) {
+					guard := int8(0)
+					if p := w.rpChar(n); p != nil {
+						guard = p.guard
+					}
+					fmt.Fprintf(&stdout, "garrison char %d leader %d default %d prisoner %d npc %d guard %d gold %d\n",
+						n, w.stackLeader(n), w.defaultGarrison(n), b2i(w.isPrisoner(n)), b2i(w.isNPC(n)), guard, w.hasItem(n, itemGold))
+				}
+				for n := range w.loopKind(tPlayer) {
+					fmt.Fprintf(&stdout, "player %d\n", n)
+					helperList(&stdout, "output", w.pPlayer(n).output)
+				}
+			default:
+				t.Fatalf("unknown garrison %s", action)
+			}
 		case "npc":
 			action, n := args.word(), args.num(t)
 			switch action {
@@ -634,6 +662,12 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pItemMagic(n).useKey = int8(a)
 			case "man":
 				w.pItem(n).isManItem = int8(a)
+			case "attack":
+				w.pItem(n).attack = int16(a)
+			case "defense":
+				w.pItem(n).defense = int16(a)
+			case "default_garrison":
+				w.pMagic(n).defaultGarr = int8(a)
 			case "weight":
 				w.pItem(n).weight = int16(a)
 			case "land_cap":
@@ -833,6 +867,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.hadesPlayer = int32(n)
 			case "backlinks":
 				w.pledgeBacklinks = n != 0
+			case "garrison_pay":
+				w.garrisonPay = int32(n)
+			case "gold_garrison":
+				w.goldGarrison = int32(n)
 			case "show_day":
 				w.showDay = n != 0
 			case "day":

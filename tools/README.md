@@ -72,9 +72,18 @@ keyed victim identity in saved target order, special-program safety filters,
 all child UNSTACK orders, fallback directions and actual MOVE → WAIT;
 summon/prisoner/command/queued-order skips and every program branch; real
 savage-before-Hades creation and shared RNG/queue/serialization state. The
-existing process_orders callback now invokes this dispatcher. Later garrison,
-token, daily and monthly phases remain explicit stops. The opt-in full-world
-diagnostic reaches `ping_garrisons` and still fails; it is not stage acceptance.
+existing process_orders callback now invokes this dispatcher. Garrison guard
+setup and daily default-garrison pay are real; token, calendar and later daily
+and monthly phases remain explicit stops. The opt-in full-world diagnostic
+reaches `check_token_units` and still fails; it is not stage acceptance.
+
+Garrison guard setup and default-garrison payroll extend command-compat, using
+the real inventory/strength/maintenance tariff, subtype iteration, descriptions,
+ownership and location/garrison output routes. Cases cover the 9/10 boundary,
+every guard reset, nested stack leaders, captive/default/NPC skips, unequal
+balances/pay, zero-pay generation/output and invalid negative-pay assertions.
+Month-end garrison tax forwarding remains #116 after real maintenance #87.
+Run command/move/helper/code/loadsave/turn-driver/default-turn comparisons.
 
 **Pin move.**
 Run `tools/affected.sh OLD NEW` and, for each tool it lists, move the pin in its `run.sh` and README, then rerun it (with `--update` where the tool records C output, and review the diff of the recorded file).
@@ -96,7 +105,7 @@ tools/box-compat/run.sh --full       # after olympia-roundtrip, whose games it r
 tools/boxfile-compat/run.sh --full
 tools/check-compat/run.sh --full
 tools/loadsave-compat/run.sh --full
-tools/turn-compat/run.sh --full      # stage 1 exit; currently fails at ping_garrisons
+tools/turn-compat/run.sh --full      # stage 1 exit; currently fails at check_token_units
 ```
 
 Run these one at a time: `box-compat`, `boxfile-compat`, `check-compat` and `loadsave-compat` read the games `olympia-roundtrip` caches, so do not run them while `olympia-roundtrip --fresh` rebuilds that cache.
@@ -151,6 +160,6 @@ A tool needs rerunning after a pin move if any file it reads changed; [`affected
 | [`turn-compat`](turn-compat) | `testdata/` small real C snapshots and determinism manifest | the whole tree: it builds `olympia-g3` and turns `tests/olympia/fixtures/world.tgz` |
 | [`turn-driver-compat`](turn-driver-compat) | `internal/olympia/testdata/turn-{driver,phase}-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `u.c`, `input.c`, `day.c`, `z.c`; `lib/ilist.c` |
 | [`move-compat`](move-compat) | `internal/olympia/testdata/move-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `dir.c`, `loc.c`, `u.c`, `swear.c`, `move.c`, `input.c`, `perm.c`, `stack.c`, `storm.c`, `garr.c`, `art.c`, `combat.c`, `day.c`, `code.c`, `glob.c`, `z.c`, `sout.c`, `display.c`, `use.c`, `io.c`, `seed.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `item_ents.c`, `admits.c`, `cstrings.c`, `skill_ents.c`, `trades.c`, `req_ents.c` |
-| [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `combat.c`, `art.c`, `display.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `u.c`, `dir.c`, `perm.c`, `storm.c`, `use.c`, `c1.c`, `produce.c`, `c2.c`, `immed.c`, `stealth.c`, `move.c`, `day.c`, `seed.c`, `io.c`, `buy.c`, `lore.c`, `npc.c`, `hades.c`, `faery.c`, `savage.c`, `necro.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c`, `wait_args.c`, `flag_ents.c`, `admits.c`, `trades.c`, `req_ents.c` |
+| [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `combat.c`, `art.c`, `display.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `u.c`, `dir.c`, `perm.c`, `storm.c`, `use.c`, `c1.c`, `produce.c`, `c2.c`, `immed.c`, `stealth.c`, `move.c`, `day.c`, `gm.c`, `seed.c`, `io.c`, `buy.c`, `lore.c`, `npc.c`, `hades.c`, `faery.c`, `savage.c`, `necro.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c`, `wait_args.c`, `flag_ents.c`, `admits.c`, `trades.c`, `req_ents.c` |
 
 `genesis-compat`, `island-compat` and `mapgen-compat` have pins of their own and are not covered here.

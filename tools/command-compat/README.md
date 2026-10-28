@@ -1086,3 +1086,66 @@ output/status comparison. No early full-turn enablement, skipped garrison/
 token/daily/month work or stage-exit acceptance is claimed. Defaults remain
 small recordings. No new upstream bug was found; known nonblocking
 G3 #309/#352/#353/#354 remain unchanged.
+
+## Garrison guard setup and daily default payroll (#72)
+
+The narrowed closure adds four complete definitions: garr.c
+`garrison_strength` (54–71) and `ping_garrisons` (1064–1093), day.c
+`default_garrison_pay` (581–613) and `maint_cost` (1171–1199), approximately
+110 source lines. The existing real inventory, description, ownership, stack
+and output closure is reused. `gm.c`'s original `gold_garrison` definition is
+extracted with its source line; `affected.sh` and the dependency table track it.
+A thin wrapper exposes only the static payroll entry point. Actual `oly.h`
+macros and `loop.h` loops remain unchanged in the C reference.
+
+The 13 added sections discriminate:
+
+- Every maintenance tariff and unsupported/signed item IDs; man versus
+  non-man, zero upkeep, independently insufficient attack/defense, equality,
+  missing optional soldier attributes, negative stats and wide quantities.
+  `loop_inv` excludes absent/deleted items and zero/negative inventory entries.
+- Strength 9/10, repeated threshold crossing, initially guarded empty/weak
+  garrisons, unrelated ordinary guards, multiple garrisons behind another
+  first character, and exact original missing-character assertion.
+- Real `liner_desc` and province output; castle ownership through a nested
+  unit lord and pledged ruler; touched versus untouched viewers; missing,
+  invalid and unowned castles. Guard is cleared before description/output.
+  `show_to_garrison` stays true through routing, then becomes false even if
+  it was true on entry. A subsequent location emit exposes that reset.
+- Topmost (not immediate) stack leaders, a default middle ancestor beneath
+  a nondefault root, self-default skips, captive skips, NPC subtype and both
+  NPC/summon loyalty filters. Ownership and stack ancestry differ deliberately.
+  Initial balances 13/2/91/3/17, pay 7 and two payroll calls expose generation
+  versus transfer: the leader's 3 gold stays unchanged; non-NPC accounting
+  moves 19 → 47 → 75, including the unowned non-NPC recipient while omitting
+  three paid NPCs. Orders, raw logs, output bits and serialized boxes match.
+- Zero pay still runs generation/lore and emits `Received 0~gold`; a negative
+  configured amount retains the actual `qty >= 0` assertion, not successful
+  negative generation. This and a missing character structure are deliberately
+  malformed harness states, not claims of public-engine defects.
+
+Two fresh bounded C runs produce **370 sections / 23109 lines / 392577 bytes**,
+matched exactly by Go. The entire previous input **7325 lines / 124357 bytes**
+and output **357 sections / 22259 lines / 375381 bytes** are unchanged exact
+prefixes. Move input **3150 lines / 53589 bytes** and output **135 sections /
+7150 lines / 142755 bytes** are wholly unchanged. Raw C trailing whitespace
+is intentionally retained.
+
+An ephemeral expected-134 garrison section queued and actually dispatched
+ATTACK. Both normal and `--update` rejected `out-of-scope C dependency:
+v_attack` with status 2 before accepting the abort or recording. The recording
+hash stayed `fc9869bc2aaa8d0c1ef2bf844f30bafb801cd87016ed5ce896c6a2a60a431125`;
+the probe was removed. No permanent test binds a temporary NYI phase name.
+
+Command (normal and update), move, helper, code, loadsave, turn-driver/default
+turn comparisons, bounded vet and fresh bounded default tests pass. C tools
+were run sequentially before vet/all-tests; defaults remain small recordings.
+The optional full diagnostic using `C_CACHE=tmp/issue104-roundtrip` repeats
+actual C successfully/deterministically, then honestly fails comparison with
+Go status 2 at **check_token_units**, after real guard setup. The Go faction
+207 guard log is **424 lines / 33034 bytes**, byte-identical to C's corresponding
+guard lines and an exact prefix of its saved log. The same 15 DB paths and
+missing `orders/204`, plus raw streams/status, remain red. No full-turn or
+stage-exit success is claimed; calendar/token and later world work stay
+explicit, and month-end `garrison_gold` remains #116 after maintenance #87.
+No new upstream bug/blocker was found; G3 #309/#352/#353/#354 remain unchanged.

@@ -78,6 +78,9 @@ type world struct {
 	// savage.c's initial population tally, not incremented by new spawns.
 	numSavages int32
 
+	// gm.c's non-NPC daily garrison payroll accounting (not saved).
+	goldGarrison int32
+
 	// maxMapRow, maxMapCol and maxMapInit are max_map_row, max_map_col and
 	// max_map_init in dir.c, which determine_map_edges() sets.
 	maxMapRow  int32

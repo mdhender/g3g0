@@ -49,7 +49,8 @@ functions = {
                'can_move_here', 'can_move_at_outer_level', 'suspend_stack_actions',
                'clear_guard_flag', 'v_move', 'd_move',
                'v_exit', 'v_enter', 'v_north', 'v_south', 'v_east', 'v_west'],
-    'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched'],
+    'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched',
+              'default_garrison_pay', 'maint_cost'],
     'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
@@ -66,7 +67,8 @@ functions = {
               'in_here_list', 'add_to_here_list', 'remove_from_here_list', 'set_where',
               'region', 'mark_loc_stack_known', 'add_here', 'all_here'],
     'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here',
-               'rank_s', 'garrison_notices', 'garrison_spot_check'],
+               'rank_s', 'garrison_notices', 'garrison_spot_check',
+               'garrison_strength', 'ping_garrisons'],
     'art.c': ['has_auraculum', 'max_eff_aura'],
     'display.c': ['with_inventory_string', 'display_with', 'mage_s', 'priest_s',
                   'emperor', 'liner_desc_char', 'liner_desc', 'show_chars_below'],
@@ -120,6 +122,11 @@ int immed_see_all, month_done, show_combat_flag;
 #define phase_ran(x) ((void)0)
 #define phase_acted(x) ((void)0)
 ''')
+    gm = open(f'{src}/gm.c').read()
+    m = re.search(r'^int gold_garrison = 0;\n', gm, re.M)
+    if not m:
+        sys.exit('no gold_garrison definition in gm.c')
+    out.write(f'#line {gm.count(chr(10), 0, m.start()) + 1} "olympia/gm.c"\n{m.group(0)}')
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
         # Original data declarations too: no copied or modeled tag/number table.
@@ -175,6 +182,7 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(text)
     out.write('''
 int drv_load(struct command *c) { return load_command(c); }
+void drv_garrison_pay(void) { default_garrison_pay(); }
 void drv_state(struct command *c, int s) { set_state(c, s, c->pri); }
 struct order_list *drv_orders(int pl, int who) { return p_order_head(pl, who); }
 void drv_evening(void) { evening_phase(); }
@@ -306,6 +314,13 @@ for run in run1 run2; do
   fi
   if [[ "${section_names[$i]}" == 'section move '* ]]; then
    [ "$status" = 0 ] || die "unexpected movement status $status in section $i"
+  fi
+  if [[ "${section_names[$i]}" == 'section garrison '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section garrison invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected garrison status $status in section $i; expected $expected_status"
   fi
   if [[ "${section_names[$i]}" == 'section arrival '* ]]; then
    expected_status=0

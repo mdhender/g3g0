@@ -7323,3 +7323,355 @@ readlog 200
 shuffle 1000 9001
 newitem 1000 0
 save_new
+
+section garrison complete maintenance tariff including unsupported and signed IDs
+garrison maint 0
+garrison maint -1
+garrison maint 1
+garrison maint 10
+garrison maint 11
+garrison maint 12
+garrison maint 13
+garrison maint 14
+garrison maint 15
+garrison maint 16
+garrison maint 17
+garrison maint 18
+garrison maint 19
+garrison maint 20
+garrison maint 21
+garrison maint 22
+garrison maint 23
+garrison maint 24
+garrison maint 25
+garrison maint 2147483647
+
+section garrison asymmetric strength requires man maintenance attack AND defense
+entity 12 4 0
+field 12 man 1
+field 12 attack 20
+field 12 defense 30
+entity 13 4 0
+field 13 man 1
+field 13 attack 19
+field 13 defense 90
+entity 14 4 0
+field 14 man 1
+field 14 attack 90
+field 14 defense 29
+entity 15 4 0
+field 15 attack 90
+field 15 defense 90
+entity 16 4 0
+field 16 man -1
+field 16 attack 21
+field 16 defense 31
+entity 25 4 0
+field 25 man 1
+field 25 attack 90
+field 25 defense 90
+inventory 1000 12 4
+inventory 1000 13 100
+inventory 1000 14 200
+inventory 1000 15 300
+inventory 1000 16 5
+inventory 1000 25 400
+garrison strength 1000
+inventory 1000 12 1
+garrison strength 1000
+field 13 attack 20
+garrison strength 1000
+field 14 defense 30
+garrison strength 1000
+field 15 man 1
+garrison strength 1000
+save 1000
+
+section garrison strength inventory filters and wide positive quantities
+entity 12 4 0
+field 12 man 1
+field 12 attack -7
+field 12 defense 9
+entity 14 4 0
+field 14 man 1
+field 14 attack -6
+field 14 defense 9
+entity 15 4 0
+field 15 man 1
+field 15 attack 90
+field 15 defense 90
+delete_box 15
+inventory 1000 12 -10
+inventory 1000 12 0
+inventory 1000 12 9
+inventory 1000 14 65539
+inventory 1000 15 100
+inventory 1000 9999 200
+inventory 1000 1 300
+garrison strength 1000
+save 1000
+
+section garrison missing soldier attributes use actual zero macro defaults
+entity 12 4 0
+entity 14 4 0
+field 14 man 1
+inventory 1000 14 10
+garrison strength 1000
+field 14 attack -1
+garrison strength 1000
+field 14 attack 1
+field 14 defense -1
+garrison strength 1000
+
+section garrison ping resets every subtype not just first unit and uses nine ten boundary
+entity 1 4 0
+entity 12 4 0
+field 12 man 1
+field 12 attack 20
+field 12 defense 30
+name 12 soldier
+plural 12 soldiers
+entity 9000 3 3
+name 9000 The plain
+entity 9001 3 3
+name 9001 Far plain
+link 9000 1000
+field 1000 guard 7
+entity 1010 2 64
+field 1010 lord 200
+field 1010 guard 1
+name 1010 Nine
+link 9000 1010
+inventory 1010 12 9
+entity 1005 2 64
+field 1005 lord 201
+name 1005 Ten
+link 9000 1005
+inventory 1005 12 10
+entity 1008 2 64
+field 1008 lord 201
+field 1008 guard -1
+name 1008 Empty
+link 9001 1008
+field 200 touched 9000
+garrison state
+garrison ping
+garrison state
+save 1000
+save 1010
+save 1005
+save 1008
+save 9000
+save 9001
+readlog 200
+readlog 201
+genitem 1010 12 1
+subitem 1005 12 1
+garrison_view 1
+garrison ping
+garrison state
+save 1010
+save 1005
+readlog 200
+
+section garrison ping keeps ruler visibility during output then clears prior true flag
+entity 1 4 0
+entity 12 4 0
+field 12 man 1
+field 12 attack 20
+field 12 defense 30
+name 12 soldier
+plural 12 soldiers
+entity 9000 3 3
+name 9000 West Province
+entity 9300 3 32
+link 9000 9300
+link 9300 1000
+field 1000 lord 1001
+field 1001 lord 200
+entity 1002 2 0
+field 1002 lord 201
+field 1000 pledge 1002
+entity 1004 2 64
+field 1004 lord 201
+field 1004 castle 9300
+field 1004 guard 1
+link 9000 1004
+inventory 1004 12 10
+name 1004 Watch
+entity 202 1 51
+field 202 touched 9000
+entity 203 1 51
+garrison_view 1
+garrison ping
+garrison state
+emit 9000 72
+save 1004
+save 200
+save 201
+save 202
+save 203
+readlog 200
+readlog 201
+readlog 202
+readlog 203
+
+section garrison ping missing invalid and unowned castles retain guards without recipients
+entity 1 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+name 9000 Remote
+entity 9001 3 3
+entity 9300 3 32
+link 9001 9300
+entity 1004 2 64
+field 1004 lord 200
+field 1004 guard 1
+link 9000 1004
+inventory 1004 12 10
+garrison ping
+garrison state
+field 1004 castle 9999
+garrison ping
+garrison state
+field 1004 castle 9300
+garrison ping
+garrison state
+save 1004
+save 200
+readlog 200
+
+section garrison invalid missing character retains original guard assertion
+entity 1004 2 64
+entity 9000 3 3
+link 9000 1004
+garrison ping
+
+section garrison nested payroll all characters ownership NPC and captive controls
+entity 1 4 0
+set garrison_pay 7
+set gold_garrison 19
+set show_day 1
+set day 23
+entity 9000 3 3
+entity 1010 2 64
+name 1010 Royal Guard
+field 1010 lord 200
+field 1010 default_garrison 1
+inventory 1010 1 3
+link 9000 1010
+link 1010 1000
+field 1000 lord 1001
+field 1001 lord 201
+inventory 1000 1 13
+entity 1002 2 0
+field 1002 lord 200
+inventory 1002 1 2
+link 1000 1002
+entity 1003 2 0
+field 1003 lord 201
+field 1003 prisoner 1
+link 1002 1003
+entity 26 4 0
+entity 1004 2 54
+field 1004 noble_item 26
+field 1004 lord 201
+link 1010 1004
+entity 1005 2 0
+field 1005 lord 200
+field 1005 loyal 4
+link 1010 1005
+entity 1006 2 0
+field 1006 lord 200
+field 1006 loyal 5
+link 1010 1006
+entity 1007 2 0
+field 1007 lord 200
+field 1007 default_garrison -1
+link 1000 1007
+entity 1008 2 0
+field 1008 lord 201
+inventory 1008 1 91
+link 1007 1008
+entity 1009 2 0
+link 1010 1009
+entity 1011 2 0
+field 1011 lord 200
+inventory 1011 1 17
+link 9000 1011
+link 1011 1001
+garrison state
+garrison pay
+garrison state
+garrison pay
+garrison state
+save 1000
+save 1001
+save 1002
+save 1003
+save 1004
+save 1005
+save 1006
+save 1007
+save 1008
+save 1009
+save 1010
+save 1011
+save 200
+save 201
+orders_file 200
+orders_file 201
+readlog 200
+readlog 201
+
+section garrison default middle ancestor does not override actual nondefault stack leader
+entity 1 4 0
+entity 9000 3 3
+link 9000 1000
+link 1000 1001
+field 1001 default_garrison 1
+entity 1002 2 0
+field 1002 lord 201
+link 1001 1002
+garrison pay
+garrison state
+save 1002
+readlog 200
+readlog 201
+
+section garrison zero pay retains generation lore output accounting and guard state
+entity 1 4 0
+field 1 lore 1
+set garrison_pay 0
+set gold_garrison -8
+entity 9000 3 3
+link 9000 1000
+field 1000 default_garrison 1
+link 1000 1001
+field 1001 guard 1
+garrison_view 1
+garrison pay
+garrison state
+lore_state 200
+save 1000
+save 1001
+save 200
+readlog 200
+
+section garrison invalid negative configured pay retains generation assertion
+entity 1 4 0
+set garrison_pay -3
+entity 9000 3 3
+link 9000 1000
+field 1000 default_garrison 1
+link 1000 1001
+garrison pay
+
+section garrison empty subtype clears flag and empty characters payroll returns
+garrison strength 1000
+empty_chars
+garrison_view 1
+garrison ping
+garrison pay
+garrison state

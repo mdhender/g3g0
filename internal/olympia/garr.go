@@ -11,6 +11,45 @@ import (
 
 // Ported from olympia/garr.c: the garrison ownership/output closure.
 
+// garrisonStrength is garr.c:54–71. Inventory iteration excludes invalid
+// boxes and nonpositive quantities before applying all four fighter tests.
+func (w *world) garrisonStrength(garr int) int32 {
+	var strength int32
+	assert(w.validBox(garr), "olympia/garr.c", 60, "valid_box(garr)")
+	for e := range w.loopInv(garr) {
+		p := w.rpItem(int(e.item))
+		if p == nil || p.isManItem == 0 || maintCost(int(e.item)) <= 0 {
+			continue
+		}
+		soldierAttack, soldierDefense := int16(0), int16(0)
+		if soldier := w.rpItem(itemSoldier); soldier != nil {
+			soldierAttack, soldierDefense = soldier.attack, soldier.defense
+		}
+		if p.attack >= soldierAttack && p.defense >= soldierDefense {
+			strength += e.qty
+		}
+	}
+	return strength
+}
+
+// pingGarrisons is garr.c:1064–1093. Visit the subtype chain, including
+// garrisons that are not the first character in their province.
+func (w *world) pingGarrisons() {
+	w.showToGarrison = true
+	for garr := range w.loopSubkind(subGarrison) {
+		where := w.subloc(garr)
+		p := w.rpChar(garr)
+		assert(p != nil, "olympia/garr.c", 1077, "rp_char(garr) != NULL")
+		p.guard = 0
+		if w.garrisonStrength(garr) < 10 {
+			continue
+		}
+		w.commandOut(where, "%s guards %s.", w.linerDesc(garr), w.boxName(where))
+		p.guard = 1
+	}
+	w.showToGarrison = false
+}
+
 // garrisonNotices is garr.c:764–780. Only the target itself is checked in
 // the watch list here; spotting below separately scans its entire stack.
 func (w *world) garrisonNotices(garr, target int) bool {
