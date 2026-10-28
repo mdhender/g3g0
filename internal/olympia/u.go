@@ -12,6 +12,50 @@ import (
 
 // Ported from olympia/u.c.
 
+// findNearestLand is the complete u.c:2010–2092. In particular, retries do
+// not reset where, and a missing exit rotates from the original location.
+func (w *world) findNearestLand(where int) int {
+	origWhere := where
+	for tryTwo := 99; tryTwo >= 0; tryTwo-- {
+		dir := w.streams.EntLandDir(origWhere, tryTwo)
+		for tryOne := 999; tryOne >= 0; tryOne-- {
+			if w.subkind(where) != subOcean {
+				return where
+			}
+			assert(w.validBox(where), "olympia/u.c", 2030, "valid_box(where)")
+			for i := range w.loopHere(where) {
+				if w.subkind(i) == subIsland {
+					assert(w.kind(i) == tLoc, "olympia/u.c", 2034, "kind(i) == T_loc")
+					return i
+				}
+			}
+			where = w.locationDirection(where, dir)
+			check := 0
+			for where == 0 {
+				where = origWhere
+				dir = dir%4 + 1
+				check++
+				assert(check <= 4, "olympia/u.c", 2053, "check <= 4")
+				where = w.locationDirection(where, dir)
+			}
+		}
+		if tryTwo == 99 {
+			w.logWrite(10, "find_nearest_land: Plan B")
+		}
+	}
+	w.logWrite(10, "find_nearest_land: Plan C")
+	var l []int
+	for i := range w.loopKind(tLoc) {
+		if w.region(i) == w.region(origWhere) && w.locDepth(i) == locProvince && w.subkind(i) != subOcean {
+			l = append(l, i)
+		}
+	}
+	if len(l) < 1 {
+		return 0
+	}
+	return l[w.streams.EntLandPick(origWhere, len(l))]
+}
+
 func addS(n int) string {
 	if n == 1 {
 		return ""

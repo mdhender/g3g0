@@ -10403,3 +10403,1564 @@ log 201:
 stderr:
 
 exit 0
+stdout:
+section escape failed roll leaves prisoner release moving and contact untouched
+> master 0
+> set turn 1
+> set day 1
+> entity 295 4 0
+> entity 9000 3 3
+> link 9000 1000
+> link 1000 1001
+> field 1001 prisoner 1
+> field 1001 release 1
+> field 1001 moving 17
+> field 1001 contact 1000
+> entity_rolls 1001 1 9000
+prison roll 387
+land dir99 4
+land dir98 3
+land pick 2
+> escape move 1000
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1001
+escape char 1001 where 1000 prisoner 1 moving 17 magic 1 release 1
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 1
+contacts: 1000
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output:
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pr 1
+ mo 17
+ ct 1000 
+CM
+ sr 1
+
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section escape threshold twenty succeeds with summoned nested moving restoration
+> master 0
+> set turn 1
+> set day 5
+> entity 295 4 0
+> entity 1007 2 0
+> entity 1008 2 0
+> entity 9000 3 3
+> field 1007 lord 201
+> field 1008 lord 201
+> link 9000 1000
+> link 9000 1001
+> link 1000 1007
+> link 1007 1008
+> field 1007 prisoner 1
+> field 1007 release 1
+> field 1007 moving 6
+> field 1007 loyal 5
+> field 1007 rate 31
+> field 1008 moving 8
+> field 1007 contact 1001
+> entity_rolls 1007 1 9000
+prison roll 20
+land dir99 4
+land dir98 3
+land pick 2
+> escape move 1000
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1007 where 9000 prisoner 0 moving 0 magic 1 release 0
+here: 1008
+escape char 1008 where 1007 prisoner 0 moving 0 magic 0 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1007 allocated 1 time 0 contacts_alloc 1
+contacts: 1001
+arrival char 1008 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched: 9000
+weather:
+output: 1007
+> save 9000
+9000 loc plain
+LI
+ hl 1000 1007 1001 
+
+> save 1007
+1007 char 0
+LI
+ wh 9000
+ hl 1008 
+CH
+ lo 201
+ lk 4
+ ct 1001 
+
+> save 1008
+1008 char 0
+LI
+ wh 1007
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1007] escaped!
+> readlog 201
+log 201:
+1007:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section escape threshold twenty one fails without hounds
+> master 0
+> set turn 1
+> set day 4
+> entity 295 4 0
+> entity 1011 2 0
+> entity 9000 3 3
+> field 1011 lord 201
+> link 9000 1000
+> link 1000 1011
+> field 1011 prisoner 1
+> field 1011 moving 8
+> entity_rolls 1011 1 9000
+prison roll 21
+land dir99 4
+land dir98 3
+land pick 2
+> escape move 1000
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1011
+escape char 1001 where 0 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1011 where 1000 prisoner 1 moving 8 magic 0 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1011 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output:
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> readlog 200
+log 200:
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section escape hound halves threshold eleven fails then no hound succeeds
+> master 0
+> set turn 1
+> set day 1
+> entity 295 4 0
+> entity 1062 2 0
+> entity 9000 3 3
+> field 1062 lord 200
+> link 9000 1000
+> link 1000 1062
+> link 1000 1001
+> field 1062 prisoner 1
+> inventory 1001 295 1
+> entity_rolls 1062 1 9000
+prison roll 11
+land dir99 4
+land dir98 3
+land pick 2
+> escape move 1000
+> escape_state
+vector: 1000 1062 1001
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1062 1001
+escape char 1001 where 1000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1062 where 1000 prisoner 1 moving 0 magic 0 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1062 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000 1001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> readlog 200
+log 200:
+1000:0::0::The hound is barking.
+1001:0::0::The hound is barking.
+> subitem 1001 295 1
+subitem 1
+> escape move 1000
+> escape_state
+vector: 1000 1062 1001
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1001
+escape char 1001 where 1000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1062 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1062 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched: 9000
+weather:
+output: 1000 1001 1062
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 9000
+9000 loc plain
+LI
+ hl 1000 1062 
+
+> save 1062
+1062 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::The hound is barking.
+1001:0::0::The hound is barking.
+1000:0::0::Prisoner <no subkind>~[1062] escaped!
+1062:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section escape hound threshold ten succeeds foreign captive owns the hound
+> master 0
+> set turn 1
+> set day 8
+> entity 295 4 0
+> entity 1185 2 0
+> entity 9000 3 3
+> field 1185 lord 201
+> link 9000 1000
+> link 1000 1185
+> field 1185 prisoner 1
+> inventory 1185 295 1
+> entity_rolls 1185 1 9000
+prison roll 10
+land dir99 4
+land dir98 3
+land pick 2
+> escape move 1000
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 0 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1185 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1185 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched: 9000
+weather:
+output: 1185
+> save 1185
+1185 char 0
+il	295 1
+LI
+ wh 9000
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1185] escaped!
+> readlog 201
+log 201:
+1185:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section escape plural barking vector is immediate parent plus nested descendants
+> master 0
+> set turn 1
+> set day 1
+> entity 295 4 0
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 9000 3 3
+> link 9000 1000
+> link 1000 1001
+> link 1001 1002
+> link 1002 1003
+> link 1001 1004
+> field 1002 prisoner 1
+> field 1002 lord 201
+> field 1003 lord 201
+> field 1004 lord 201
+> inventory 1003 295 2
+> escape check 1002 0 1
+escaped 0
+> escape_state
+vector: 1001 1002 1003 1004
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1001
+escape char 1001 where 1000 prisoner 0 moving 0 magic 0 release 0
+here: 1002 1004
+escape char 1002 where 1001 prisoner 1 moving 0 magic 0 release 0
+here: 1003
+escape char 1003 where 1002 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1004 where 1001 prisoner 0 moving 0 magic 0 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1003 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1004 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output: 1003 1004
+> readlog 200
+log 200:
+1001:0::0::The hounds are barking.
+> readlog 201
+log 201:
+1003:0::0::The hounds are barking.
+1004:0::0::The hounds are barking.
+stderr:
+
+exit 0
+stdout:
+section escape foreign captor hounds do not reduce captive faction threshold
+> master 0
+> set turn 1
+> set day 1
+> entity 295 4 0
+> entity 1062 2 0
+> entity 9000 3 3
+> link 9000 1000
+> link 1000 1062
+> field 1062 prisoner 1
+> field 1062 lord 201
+> inventory 1000 295 3
+> entity_rolls 1062 1 9000
+prison roll 11
+land dir99 4
+land dir98 3
+land pick 2
+> escape move 1000
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 0 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1062 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1062 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched: 9000
+weather:
+output: 1062
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1062] escaped!
+> readlog 201
+log 201:
+1062:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section escape snapshot handles adjacent successes nested prisoners and noncharacter pruning
+> master 0
+> set turn 1
+> set day 1
+> entity 295 4 0
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1047 2 0
+> entity 1052 2 0
+> entity 1110 2 0
+> entity 7000 4 0
+> entity 9000 3 3
+> link 9000 1000
+> link 1000 1002
+> link 1002 1047
+> link 1002 1003
+> link 1000 1052
+> link 1000 7000
+> link 7000 1110
+> field 1002 lord 201
+> field 1047 lord 201
+> field 1052 lord 201
+> field 1110 lord 201
+> field 1002 prisoner 1
+> field 1047 prisoner 1
+> field 1052 prisoner 1
+> field 1110 prisoner 1
+> field 1002 moving 4
+> field 1047 moving 5
+> field 1003 moving 6
+> field 1052 moving 7
+> entity_rolls 1002 1 9000
+prison roll 7
+land dir99 4
+land dir98 3
+land pick 2
+> entity_rolls 1047 1 9000
+prison roll 9
+land dir99 4
+land dir98 3
+land pick 2
+> entity_rolls 1052 1 9000
+prison roll 14
+land dir99 4
+land dir98 3
+land pick 2
+> escape move 1000
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 7000
+escape char 1001 where 0 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1002 where 9000 prisoner 0 moving 0 magic 1 release 0
+here: 1003
+escape char 1003 where 1002 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1047 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1052 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1110 where 7000 prisoner 1 moving 0 magic 0 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1003 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1047 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1052 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1110 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched: 9000
+weather:
+output: 1002 1047 1052
+> save 9000
+9000 loc plain
+LI
+ hl 1000 1052 1002 1047 
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+ hl 7000 
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+LI
+ wh 9000
+ hl 1003 
+CH
+ lo 201
+
+> save 1047
+1047 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> save 1052
+1052 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1002] escaped!
+1000:0::0::Prisoner <no subkind>~[1052] escaped!
+> readlog 201
+log 201:
+1002:0::0::We escaped!
+1002:0::0::Prisoner <no subkind>~[1047] escaped!
+1047:0::0::We escaped!
+1052:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section escape one level from temple reaches city real arrival clears contact and weather
+> master 0
+> set turn 1
+> set day 17
+> entity 295 4 0
+> entity 1002 2 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 14
+> entity 9002 3 29
+> link 8000 9000
+> link 9000 9001
+> link 9001 9002
+> link 9002 1000
+> link 1000 1001
+> link 1001 1002
+> field 1001 prisoner 1
+> field 1001 lord 201
+> field 1002 lord 201
+> field 1001 weather_mage 1
+> field 1002 weather_mage 1
+> field 1001 contact 1000
+> field 1002 contact 1000
+> field 1001 moving 11
+> field 1002 moving 12
+> entity_rolls 1001 1 9002
+prison roll 9
+land dir99 3
+land dir98 1
+land pick 1
+> escape move 1000
+> escape_state
+vector:
+escape char 1000 where 9002 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9001 prisoner 0 moving 0 magic 1 release 0
+here: 1002
+escape char 1002 where 1001 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known: 9001
+touched: 9001 9000
+weather: 9000
+output: 1001
+> save 1001
+1001 char 0
+LI
+ wh 9001
+ hl 1002 
+CH
+ lo 201
+CM
+ kw 1
+
+> save 1002
+1002 char 0
+LI
+ wh 1001
+CH
+ lo 201
+CM
+ kw 1
+
+> save 9001
+9001 loc city
+LI
+ wh 9000
+ hl 9002 1001 
+
+> save 9002
+9002 loc temple
+LI
+ wh 9001
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1001] escaped!
+> readlog 201
+log 201:
+1001:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section escape ship in port exits to land without swimming
+> entity 295 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 9 31
+> link 8000 9000
+> link 9000 9001
+> link 9001 1000
+> link 1000 1001
+> field 1001 prisoner 1
+> field 1001 lord 201
+> escape run 1001
+> escape_state
+vector:
+escape char 1000 where 9001 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known: 9000
+touched: 9000
+weather:
+output: 1001
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9001 1001 
+
+> save 9001
+9001 ship roundship
+LI
+ wh 9000
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1001] escaped!
+> readlog 201
+log 201:
+1001:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section escape unfinished ship exits into ocean without completed ship swimming
+> entity 295 4 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 9 33
+> link 8000 9000
+> link 9000 9001
+> link 9001 1000
+> link 1000 1001
+> field 1001 prisoner 1
+> field 1001 lord 201
+> escape run 1001
+> escape_state
+vector:
+escape char 1000 where 9001 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean: 1001
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 1 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known: 9000
+touched: 9000
+weather:
+output: 1001
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ tf 1
+
+> save 9000
+9000 loc ocean
+LI
+ wh 8000
+ hl 9001 1001 
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1001] escaped!
+> readlog 201
+log 201:
+1001:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section escape swimming to first island has real ocean departure and arrival state
+> master 0
+> set turn 1
+> set day 17
+> entity 295 4 0
+> entity 1002 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 9 30
+> entity 9003 3 9
+> entity 9002 3 9
+> link 8000 9000
+> link 9000 9001
+> link 9000 9003
+> link 9000 9002
+> link 9001 1000
+> link 1000 1001
+> link 1001 1002
+> name 1001 Captive
+> name 9003 First island
+> field 1001 lord 201
+> field 1002 lord 201
+> field 1001 prisoner 1
+> field 1001 release 1
+> field 1001 moving 12
+> field 1002 moving 13
+> field 1001 time_flying 4
+> ocean_add 1001
+> field 1001 contact 1000
+> field 1002 contact 1000
+> field 1001 weather_mage 1
+> entity_rolls 1001 1 9000
+prison roll 9
+land dir99 4
+land dir98 3
+land pick 2
+> escape move 1000
+> escape_state
+vector:
+escape char 1000 where 9001 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9003 prisoner 0 moving 0 magic 1 release 0
+here: 1002
+escape char 1002 where 1001 prisoner 0 moving 0 magic 0 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000 11
+arrival player 201 allocated 1
+known: 9003
+touched: 9000
+weather: 9000
+output: 1001
+> save 1001
+1001 char 0
+na Captive
+LI
+ wh 9003
+ hl 1002 
+CH
+ lo 201
+CM
+ kw 1
+
+> save 1002
+1002 char 0
+LI
+ wh 1001
+CH
+ lo 201
+
+> save 9000
+9000 loc ocean
+LI
+ wh 8000
+ hl 9001 9003 9002 
+
+> save 9001
+9001 ship galley
+LI
+ wh 9000
+ hl 1000 
+
+> save 9003
+9003 loc island
+na First island
+LI
+ wh 9000
+ hl 1001 
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner Captive~[1001] escaped!
+1000:0::0::Captive jumped overboard and presumably drowned.
+11:0::0::!! Someone swam ashore, who=1001
+> readlog 201
+log 201:
+1001:0::0::We escaped!
+1001:0::0::After jumping over the side of the boat and enduring a long, grueling, swim, we finally washed ashore at First island~[9003].
+stderr:
+
+exit 0
+stdout:
+section escape swimming to hades land invokes real recursive ambush and mint
+> master 13
+> set turn 1
+> set day 7
+> resolve_wait
+> set indep 100
+> set hades_region 8001
+> entity 100 1 0
+> entity 295 4 0
+> entity 288 4 0
+> entity 32 4 0
+> entity 26 4 0
+> entity 31 4 0
+> entity 33 4 0
+> entity 8001 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 9002 9 66
+> link 8001 9000
+> link 8001 9001
+> link 9000 9002
+> link 9002 1001
+> link 1001 1000
+> field 1000 prisoner 1
+> field 1000 contact 1001
+> field 1000 moving 7
+> routes 9000 9001 9001 9001 9001
+> escape run 1000
+> escape_state
+vector:
+escape char 1000 where 9001 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1001 where 9002 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 136063 where 9001 prisoner 0 moving 0 magic 0 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 136063 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 100 allocated 1
+known:
+touched: 9001
+weather:
+output: 9001
+arrival player 200 allocated 1
+known: 9001
+touched: 9000 9001
+weather:
+output: 1001 1000 11 9001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> bandits
+bandit 136063
+136063 char ni
+il	33 11
+LI
+ wh 9001
+CH
+ ni 33
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 136063
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+
+> save 9000
+9000 loc ocean
+LI
+ wh 8001
+ hl 9002 
+LO
+ pd 9001 9001 9001 9001 
+
+> save 9001
+9001 loc plain
+LI
+ wh 8001
+ hl 1000 136063 
+
+> readlog 200
+log 200:
+1001:0::0::Prisoner <no subkind>~[1000] escaped!
+1000:0::0::We escaped!
+1000:0::0::After jumping over the side of the boat and enduring a long, grueling, swim, we finally washed ashore at Plain~[9001].
+1001:0::0::<no subkind> jumped overboard and presumably drowned.
+11:0::0::!! Someone swam ashore, who=1000
+9001:0::0::<no subkind>~[136063] appear.
+stderr:
+
+exit 0
+stdout:
+section escape entity turn guard survives master replacement day child and helper interleaving
+> master 0
+> set turn 1
+> set day 1
+> entity 295 4 0
+> entity 9000 3 3
+> link 9000 1000
+> link 1000 1001
+> field 1001 prisoner 1
+> escape check 1001 0 1
+escaped 0
+> master 80
+> entity_rolls 1001 1 9000
+prison roll 387
+land dir99 4
+land dir98 3
+land pick 2
+> land 9000
+land 9000
+> entity_rolls 1001 0 9000
+prison roll 933
+land dir99 4
+land dir98 3
+land pick 2
+> entity_rolls 1001 2 9000
+prison roll 340
+land dir99 4
+land dir98 3
+land pick 2
+> set day 2
+> entity_rolls 1001 1 9000
+prison roll 56
+land dir99 4
+land dir98 3
+land pick 2
+> set turn 2
+> entity_rolls 1001 1 9000
+prison roll 518
+land dir99 4
+land dir98 1
+land pick 1
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1001
+escape char 1001 where 1000 prisoner 1 moving 0 magic 0 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output:
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section escape nearest land asymmetric west north south east picks from actual keyed direction
+> master 0
+> set turn 1
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 9002 3 4
+> entity 9003 3 5
+> entity 9004 3 6
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 8000 9003
+> link 8000 9004
+> routes 9000 9001 9002 9003 9004
+> land 9000
+land 9004
+> entity_rolls 1001 1 9000
+prison roll 909
+land dir99 4
+land dir98 3
+land pick 2
+> set turn 2
+> land 9000
+land 9001
+> entity_rolls 1001 1 9000
+prison roll 431
+land dir99 1
+land dir98 1
+land pick 2
+> set turn 3
+> land 9000
+land 9003
+> set turn 5
+> land 9000
+land 9002
+> save 9000
+9000 loc ocean
+LI
+ wh 8000
+LO
+ pd 9001 9002 9003 9004 
+
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output:
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section escape nearest land missing exit rotates from origin not current ocean
+> master 0
+> set turn 1
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9002 3 3
+> entity 9003 3 4
+> routes 9000 9002 9003 0 9001
+> routes 9001 9003 9003 9003 0
+> land 9000
+land 9002
+> entity_rolls 1001 1 9000
+prison roll 909
+land dir99 4
+land dir98 3
+land pick 2
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section escape nearest land retry plan B preserves cursor and changes direction
+> master 0
+> set turn 1
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9002 3 3
+> entity 9003 3 4
+> routes 9000 9003 9003 9003 9001
+> routes 9001 9003 9003 9002 9001
+> land 9000
+land 9002
+> entity_rolls 1001 1 9000
+prison roll 909
+land dir99 4
+land dir98 3
+land pick 2
+> readlog 200
+log 200:
+10:0::0::find_nearest_land: Plan B
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 10
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+stderr:
+
+exit 0
+stdout:
+section escape nearest land plan C filters region depth ocean and keeps entity chain order
+> master 0
+> set turn 1
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 9000 3 1
+> entity 9010 3 3
+> entity 9005 3 4
+> entity 9020 3 5
+> entity 9001 3 9
+> entity 9002 3 1
+> entity 9003 3 3
+> link 8000 9000
+> link 8000 9010
+> link 8000 9005
+> link 8000 9020
+> link 9010 9001
+> link 8000 9002
+> link 8001 9003
+> routes 9000 9000 9000 9000 9000
+> land 9000
+land 9020
+> entity_rolls 1001 1 9000
+prison roll 909
+land dir99 4
+land dir98 3
+land pick 2
+> set turn 7
+> land 9000
+land 9005
+> entity_rolls 1001 1 9000
+prison roll 79
+land dir99 2
+land dir98 3
+land pick 0
+> save 9000
+9000 loc ocean
+LI
+ wh 8000
+LO
+ pd 9000 9000 9000 9000 
+
+> readlog 200
+log 200:
+10:0::0::find_nearest_land: Plan B
+10:0::0::find_nearest_land: Plan C
+10:0::0::find_nearest_land: Plan B
+10:0::0::find_nearest_land: Plan C
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 10
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+stderr:
+
+exit 0
+stdout:
+section escape nearest land empty fallback and nonocean early return zero
+> master 0
+> set turn 1
+> entity 8000 3 50
+> entity 9000 3 1
+> link 8000 9000
+> routes 9000 9000 9000 9000 9000
+> land 9000
+land 0
+> land 0
+land 0
+> entity_rolls 1001 1 9000
+prison roll 909
+land dir99 4
+land dir98 3
+land pick 2
+> readlog 200
+log 200:
+10:0::0::find_nearest_land: Plan B
+10:0::0::find_nearest_land: Plan C
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 10
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+stderr:
+
+exit 0
+stdout:
+section escape invalid ocean without exits retains exact bounded assertion
+> master 0
+> set turn 1
+> entity 9000 3 1
+> land 9000
+stderr:
+assertion failure: olympia/u.c (2053): check <= 4
+
+exit 134
+stdout:
+section escape invalid nonlocation island retains exact assertion
+> master 0
+> set turn 1
+> entity 9000 3 1
+> entity 9001 4 9
+> link 9000 9001
+> land 9000
+stderr:
+assertion failure: olympia/u.c (2034): kind(i) == T_loc
+
+exit 134
+stdout:
+section escape nonocean nearest land still seeds persistent entity stream before returning
+> master 0
+> set turn 1
+> set day 1
+> entity 9000 3 3
+> land 9000
+land 9000
+> master 80
+> entity_rolls 1001 1 9000
+prison roll 387
+land dir99 4
+land dir98 3
+land pick 2
+> land 9000
+land 9000
+> set turn 2
+> entity_rolls 1001 1 9000
+prison roll 212
+land dir99 4
+land dir98 1
+land pick 1
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section escape swimming parent arrival precedes nested snapshot escape on shore
+> master 0
+> set turn 1
+> set day 1
+> entity 295 4 0
+> entity 1002 2 0
+> entity 1047 2 0
+> entity 1052 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 9 31
+> entity 9002 3 3
+> link 8000 9000
+> link 8000 9002
+> link 9000 9001
+> link 9001 1000
+> link 1000 1002
+> link 1002 1047
+> link 1000 1052
+> field 1002 lord 201
+> field 1047 lord 201
+> field 1052 lord 201
+> field 1002 prisoner 1
+> field 1047 prisoner 1
+> field 1052 prisoner 1
+> field 1002 release 1
+> field 1047 release 1
+> field 1002 moving 4
+> field 1047 moving 5
+> field 1052 moving 6
+> field 1002 contact 1000
+> field 1047 contact 1000
+> field 1052 contact 1000
+> routes 9000 9002 9002 9002 9002
+> escape move 1000
+> escape_state
+vector:
+escape char 1000 where 9001 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 0 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1002 where 9002 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1047 where 9002 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1052 where 9002 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival char 1047 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival char 1052 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000 11
+arrival player 201 allocated 1
+known: 9002
+touched: 9000 9002
+weather:
+output: 1002 1047 1052
+> save 9000
+9000 loc ocean
+LI
+ wh 8000
+ hl 9001 
+LO
+ pd 9002 9002 9002 9002 
+
+> save 9001
+9001 ship roundship
+LI
+ wh 9000
+ hl 1000 
+
+> save 9002
+9002 loc plain
+LI
+ wh 8000
+ hl 1002 1047 1052 
+
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+LI
+ wh 9002
+CH
+ lo 201
+
+> save 1047
+1047 char 0
+LI
+ wh 9002
+CH
+ lo 201
+
+> save 1052
+1052 char 0
+LI
+ wh 9002
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1002] escaped!
+1000:0::0::<no subkind> jumped overboard and presumably drowned.
+11:0::0::!! Someone swam ashore, who=1002
+1000:0::0::Prisoner <no subkind>~[1052] escaped!
+1000:0::0::<no subkind> jumped overboard and presumably drowned.
+11:0::0::!! Someone swam ashore, who=1052
+> readlog 201
+log 201:
+1002:0::0::We escaped!
+1002:0::0::After jumping over the side of the boat and enduring a long, grueling, swim, we finally washed ashore at Plain~[9002].
+1002:0::0::Prisoner <no subkind>~[1047] escaped!
+1047:0::0::We escaped!
+1052:0::0::We escaped!
+1052:0::0::After jumping over the side of the boat and enduring a long, grueling, swim, we finally washed ashore at Plain~[9002].
+stderr:
+
+exit 0

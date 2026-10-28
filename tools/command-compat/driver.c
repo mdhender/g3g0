@@ -32,6 +32,7 @@ int drv_market(int who);
 void drv_ocean(int who);
 ilist drv_oceans(void);
 trades_list drv_offers(int seller, int where, int except);
+void drv_entity_rolls(int who, int sub, int where);
 
 static void wait_dump(struct command *c)
 {
@@ -120,6 +121,35 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"match")) match_trades(n);
    else if (!strcmp(text,"market")) printf("market %d\n",drv_market(n));
    else return 2;
+  }
+  else if (!strcmp(op, "escape")) {
+   sscanf(line,"%*s %31s %d %d %d",text,&n,&a,&b);
+   if(!strcmp(text,"check")) printf("escaped %d\n",check_prisoner_escape(n,a,b));
+   else if(!strcmp(text,"run")) prisoner_escapes(n);
+   else if(!strcmp(text,"move")) prisoner_movement_escape_check(n);
+   else return 2;
+  }
+  else if (!strcmp(op, "land")) {
+   sscanf(line,"%*s %d",&n); printf("land %d\n",find_nearest_land(n));
+  }
+  else if (!strcmp(op, "routes")) {
+   int west;
+   sscanf(line,"%*s %d %d %d %d %d",&n,&a,&b,&d,&west);
+   ilist_clear(&p_loc(n)->prov_dest);
+   ilist_append(&p_loc(n)->prov_dest,a); ilist_append(&p_loc(n)->prov_dest,b);
+   ilist_append(&p_loc(n)->prov_dest,d); ilist_append(&p_loc(n)->prov_dest,west);
+  }
+  else if (!strcmp(op, "entity_rolls")) {
+   sscanf(line,"%*s %d %d %d",&n,&a,&b); drv_entity_rolls(n,a,b);
+  }
+  else if (!strcmp(op, "escape_state")) {
+   list("vector",out_vector);
+   loop_char(n) {
+    struct entity_char *p=rp_char(n); struct char_magic *m=rp_magic(n);
+    printf("escape char %d where %d prisoner %d moving %d magic %d release %d\n",
+     n,loc(n),p ? p->prisoner : 0,p ? p->moving : 0,m!=NULL,m ? m->swear_on_release : 0);
+    list("here",p_loc_info(n)->here_list);
+   } next_char;
   }
   else if (!strcmp(op, "ocean_add")) { sscanf(line,"%*s %d",&n); drv_ocean(n); }
   else if (!strcmp(op, "arrival_state")) {

@@ -42,7 +42,9 @@ functions = {
     'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched'],
     'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
-                'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack'],
+                'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
+                'check_prisoner_escape', 'prisoner_escapes', 'prisoner_movement_escape_check'],
+    'dir.c': ['location_direction'],
     'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
               'in_safe_now', 'province', 'building_owner', 'viewloc', 'all_char_here',
@@ -55,7 +57,7 @@ functions = {
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
-            'stack_sub_item', 'autocharge'],
+            'stack_sub_item', 'autocharge', 'find_nearest_land'],
     'npc.c': ['create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'lore.c': ['queue_lore', 'scan_char_item_lore'],
     'buy.c': ['investigate_possible_trade', 'market_here', 'seller_comp',
@@ -99,6 +101,12 @@ int pledge_backlinks;
             start, end = source.index('static char *wait_tags[]'), source.index('void\nclear_wait_parse(')
             out.write(source[start:end])
         if file == 'u.c':
+            # Whole original RNG prefix: shared persistent entity stream, tags,
+            # turn guard and all keyed leaves, not replacement helper draws.
+            start = source.index('#define\tETAG_TURN')
+            out.write('#include "rng.h"\n')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/u.c"\n')
+            out.write(source[start:source.index('void\nkill_stack_ocean(int who)')])
             start, end = source.index('static char *num_s[]'), source.index('char *\nnice_num(')
             out.write(source[start:end])
         if file == 'produce.c':
@@ -140,6 +148,12 @@ int drv_bandit(int faery, int who, int where) {
 int drv_market(int who) { return market_here(who); }
 void drv_ocean(int who) { ilist_append(&ocean_chars, who); }
 ilist drv_oceans(void) { return ocean_chars; }
+void drv_entity_rolls(int who, int sub, int where) {
+ printf("prison roll %d\\n", ent_prisoner(who, sub));
+ printf("land dir99 %d\\n", ent_land_dir(where, 99));
+ printf("land dir98 %d\\n", ent_land_dir(where, 98));
+ printf("land pick %d\\n", ent_land_pick(where, 3));
+}
 trades_list drv_offers(int seller, int where, int except) {
  return seller ? seller_list(where, except) : buyer_list(where, except);
 }
@@ -211,6 +225,13 @@ for run in run1 run2; do
     'section arrival unowned weather mage retains exact assertion') expected_status=134 ;;
    esac
    [ "$status" = "$expected_status" ] || die "unexpected arrival status $status in section $i; expected $expected_status"
+  fi
+  if [[ "${section_names[$i]}" == 'section escape '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section escape invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected escape status $status in section $i; expected $expected_status"
   fi
   if [[ "${section_names[$i]}" == 'section combat boundary '* ]]; then
    [ "$status" = 134 ] && grep -qx 'combat boundary: regular_combat' "${WORK}/${run}/stderr" \

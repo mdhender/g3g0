@@ -109,6 +109,22 @@ func (w *world) outGarrison(garr int, format string, a ...any) {
 	}
 }
 
+// vectorStack is sout.c:585–602. Unlike vectorCharHere it includes the root;
+// clear=false preserves prior recipients and appends only missing entries.
+func (w *world) vectorStack(who int, clear bool) {
+	if clear {
+		w.outVector.Clear()
+	}
+	if clear || w.outVector.Lookup(who) < 0 {
+		w.outVector.Append(who)
+	}
+	for _, i := range w.allCharHere(who) {
+		if clear || w.outVector.Lookup(i) < 0 {
+			w.outVector.Append(i)
+		}
+	}
+}
+
 // vector_char_here uses all_char_here: descendants only, depth first,
 // excluding non-character branches. The vector persists until replaced.
 func (w *world) vectorCharHere(where int) {

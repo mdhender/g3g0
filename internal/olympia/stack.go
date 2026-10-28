@@ -4,8 +4,8 @@
 package olympia
 
 // Ported from olympia/stack.c: stack lookup, positioning, join/leave and
-// their small dependencies, also used by new_char(). Prisoner handling and
-// stack command handlers are left for later stages.
+// their small dependencies, also used by new_char(), and movement escapes.
+// Other prisoner handling and stack command handlers remain for later stages.
 
 func (w *world) herePos(who int) int {
 	p := w.rpLocInfo(w.loc(who))
@@ -128,4 +128,64 @@ func (w *world) joinStack(who, target int) {
 	w.vectorCharHere(who)
 	w.commandOut(vect, "%s stacks beneath %s.", w.boxName(who), w.boxName(target))
 	w.stack(who, target)
+}
+
+// checkPrisonerEscape is stack.c:255–286. The hounds belong to the
+// prisoner's faction within the whole stack, not necessarily the captor's.
+func (w *world) checkPrisonerEscape(who, chance, sub int) bool {
+	leader := w.stackParent(who)
+	hound := w.stackHasItem(who, itemHound)
+	threshold := int32(chance) * 10
+	if hound != 0 {
+		threshold /= 2
+	}
+	n := w.streams.EntPrisoner(who, sub)
+	if int32(n) > threshold {
+		if hound != 0 {
+			w.vectorStack(leader, true)
+			if hound == 1 {
+				w.commandOut(vect, "The hound is barking.")
+			} else {
+				w.commandOut(vect, "The hounds are barking.")
+			}
+		}
+		return false
+	}
+	w.prisonerEscapes(who)
+	return true
+}
+
+// prisonerEscapes is the complete stack.c:289–328, including actual swimming
+// and recursive arrival effects through moveStack, never a modeled landing.
+func (w *world) prisonerEscapes(who int) {
+	leader := w.stackParent(who)
+	w.commandOut(leader, "Prisoner %s escaped!", w.boxName(who))
+	w.pChar(who).prisoner = 0
+	w.pMagic(who).swearOnRelease = 0
+	w.unstack(who)
+	w.touchLoc(who)
+	w.commandOut(who, "We escaped!")
+	where := w.subloc(who)
+	if w.locDepth(where) <= locProvince {
+		return
+	}
+	outOne := w.loc(where)
+	if w.isShip(where) && w.subkind(outOne) == subOcean {
+		outOne = w.findNearestLand(outOne)
+		w.commandOut(who, "After jumping over the side of the boat and enduring a long, grueling, swim, we finally washed ashore at %s.", w.boxName(outOne))
+		w.commandOut(leader, "%s jumped overboard and presumably drowned.", w.justName(who))
+		w.logWrite(11, "!! Someone swam ashore, who=%s", boxCodeLess(who))
+	}
+	w.moveStack(who, outOne)
+}
+
+// prisonerMovementEscapeCheck is stack.c:331–342. loop_char_here builds a
+// depth-first snapshot before any escapes; nested prisoners still get checked
+// after their parent's escape has changed the stack and restored moving flags.
+func (w *world) prisonerMovementEscapeCheck(who int) {
+	for _, i := range w.allCharHere(who) {
+		if w.isPrisoner(i) {
+			w.checkPrisonerEscape(i, 2, 1) // stack.h ESC_MOVE
+		}
+	}
 }

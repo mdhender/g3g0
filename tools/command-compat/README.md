@@ -598,6 +598,89 @@ serialization whitespace is retained. New arrival cases require status 0
 except four explicit assertion contracts (134); a crashing fixture cannot
 be silently accepted as an ordinary arrival.
 
-Full MOVE callbacks remain #67, prisoner escapes #113, settlement #81 and
+Full MOVE callbacks remain #67, settlement #81 and
 report assembly stage 2. Report-path state is included here, not silently
 excluded. This is helper/state acceptance, not whole-turn acceptance.
+
+## Movement prisoner escapes and nearest land (#113)
+
+The five new production definitions are complete pinned stack.c
+`check_prisoner_escape` (255–286), `prisoner_escapes` (289–328),
+`prisoner_movement_escape_check` (331–342), u.c `find_nearest_land`
+(2010–2092), and sout.c `vector_stack` (585–602): **185 C definition
+lines**. The comparator extracts the first four with original `#line`
+locations; sout.c is already linked whole. Existing real release/unstack,
+moving restoration, touch, arrival, Hades/Faery, output and serialization
+dependencies are reused. dir.c `location_direction` (182–194) is now also
+extracted whole: **dir.c is a new read-source dependency**, recorded in
+tools/README.md and affected.sh. No pin change.
+
+The comparator retains the original u.c entity-RNG declarations/tags and
+all eleven complete functions (64–181; 77 definition lines) from its prefix,
+including the turn guard, per-day child, prisoner roll and direction/pick
+leaves. The new closure totals 275 definition lines including those eleven
+functions and `location_direction`; all other gameplay dependencies were
+already real. Go reuses **persistent `w.streams`**, not a fresh RNG or a
+per-call reseed. `entity_rolls` observes actual keyed leaves. Reloading a
+different master within the turn tests guard persistence; changing day
+changes only the prison leaf, changing turn reseeds. Even a non-ocean land
+lookup seeds the entity stream before returning, just as C does.
+
+Important source distinction: pinned `loop_char_here` (loop.h:60–69)
+constructs a depth-first **snapshot** via `all_char_here` before executing
+escape bodies. It is not a live shrinking outer traversal. Adjacent
+successful escapes and a successful parent followed by its nested prisoner
+all execute; replacing this with a live index walk would skip prisoners.
+The real here lists still shrink/reorder during unstack/promote, and nested
+restoration/arrival walks keep their existing C ordering. The swimming
+parent case proves that its real arrival clears the nested prisoner's
+contacts before the nested escape runs on shore; the adjacent sibling then
+swims independently. No alleged live-list bug was invented or fixed.
+
+23 appended cases discriminate:
+
+- Actual C-chosen rolls **20/21** at threshold 20 and **10/11** with hounds
+  at threshold 10; failed/no-hound, singular/plural barking, whole-stack
+  faction ownership (foreign captor hounds do not count), nested vector
+  recipients, release flags, summoned loyalty conversion, moving restoration
+  and exact promotion/here-list order. Province early return retains contact
+  state; nested temple-to-city arrival clears contacts and updates weather.
+- Real completed galley, roundship and raft paths: port exit without a swim,
+  unfinished-ship exit into ocean with real ocean bookkeeping, first-island
+  choice in here-list order, and an actual Hades shore ambush producing unit
+  136063 and its real queued WAIT. Swimming emits real faction and special
+  logs, updates output bits, and executes real `move_stack` arrival effects.
+- Independent asymmetric west/north/south/east land outcomes **9004 / 9001 /
+  9003 / 9002** from the actual keyed direction leaves, not fixed/modelled
+  landing choices. Missing-exit rotation restarts from the origin, while
+  the next outer retry preserves the current ocean cursor. Plan B logging,
+  full bounded Plan C fallback, region/depth/ocean filtering and entity-chain
+  candidate order are compared. Two real fallback picks select **9020** then
+  **9005**; an empty eligible set returns zero.
+- Deliberately malformed direct-helper fixtures (an ocean with no exits,
+  and an item masquerading as an island) retain exact assertions at u.c
+  **2053** and **2034**, status 134 and flushed output. These are not claims
+  of public-engine defects. Existing SIGSEGV139/no-flush contracts remain.
+
+Two fresh bounded deterministic C runs produce **273 sections / 11966
+lines / 215667 bytes**, exactly matched by Go's raw stdout/stderr/status,
+real serialized boxes, faction logs, output bits, vector/contact allocation,
+moving flags, ocean lists, known/touched/weather state and RNG observations.
+The complete prior **250-section input (67815 bytes)** and **10405 lines /
+186888 output bytes** are exact prefixes. Movement's entire input (53589
+bytes) and **135 sections / 7150 lines / 142755 bytes** remain unchanged.
+Literal C whitespace is retained. New cases require status 0 except the two
+explicit malformed-helper assertions; unfinished C dependency markers are
+rejected before status handling and before any `--update` recording.
+An ephemeral expected-abort case followed real escape → city arrival →
+candidate trade settlement: both normal and `--update` modes rejected its
+actual C dependency marker without changing the recording. A temporary Go
+probe confirmed the real production boundary after release, moving restore,
+contact clear and arrival knowledge/touch, without changing trade quantities.
+Both probes were removed; no permanent test depends on the temporary NYI name.
+
+Default tests remain small recorded comparisons; full worlds stay opt-in.
+This adds no successful gameplay stubs, replacement RNG, modeled landing or
+independent C fix. MOVE integration (#67), daily/weekly prisoner events
+(#80), settlement (#81), reporting and stage/whole-turn acceptance remain
+outside this task.

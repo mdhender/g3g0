@@ -117,6 +117,46 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "escape":
+			action, n := args.word(), args.num(t)
+			switch action {
+			case "check":
+				fmt.Fprintf(&stdout, "escaped %d\n", b2i(w.checkPrisonerEscape(n, args.num(t), args.num(t))))
+			case "run":
+				w.prisonerEscapes(n)
+			case "move":
+				w.prisonerMovementEscapeCheck(n)
+			default:
+				t.Fatalf("unknown escape %s", action)
+			}
+		case "land":
+			fmt.Fprintf(&stdout, "land %d\n", w.findNearestLand(args.num(t)))
+		case "routes":
+			p := w.pLoc(args.num(t))
+			p.provDest.Clear()
+			for range 4 {
+				p.provDest.Append(args.num(t))
+			}
+		case "entity_rolls":
+			n, sub, where := args.num(t), args.num(t), args.num(t)
+			fmt.Fprintf(&stdout, "prison roll %d\n", w.streams.EntPrisoner(n, sub))
+			fmt.Fprintf(&stdout, "land dir99 %d\n", w.streams.EntLandDir(where, 99))
+			fmt.Fprintf(&stdout, "land dir98 %d\n", w.streams.EntLandDir(where, 98))
+			fmt.Fprintf(&stdout, "land pick %d\n", w.streams.EntLandPick(where, 3))
+		case "escape_state":
+			helperList(&stdout, "vector", w.outVector)
+			for n := range w.loopKind(tChar) {
+				p, m := w.rpChar(n), w.rpMagic(n)
+				prisoner, moving, release := 0, 0, 0
+				if p != nil {
+					prisoner, moving = int(p.prisoner), int(p.moving)
+				}
+				if m != nil {
+					release = int(m.swearOnRelease)
+				}
+				fmt.Fprintf(&stdout, "escape char %d where %d prisoner %d moving %d magic %d release %d\n", n, w.loc(n), prisoner, moving, b2i(m != nil), release)
+				helperList(&stdout, "here", w.rpLocInfo(n).hereList)
+			}
 		case "arrival":
 			action, n, a := args.word(), args.num(t), args.num(t)
 			switch action {

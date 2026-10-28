@@ -88,7 +88,7 @@ reads() {
 		case "$2" in
 		olympia/*.h | lib/*.h) return 0 ;;
 		olympia/code.c | olympia/glob.c | olympia/z.c | olympia/sout.c | olympia/input.c) return 0 ;;
-		olympia/combat.c) return 0 ;;
+		olympia/combat.c | olympia/dir.c) return 0 ;;
 		olympia/order.c | olympia/swear.c | olympia/stack.c | olympia/loc.c | olympia/garr.c) return 0 ;;
 		olympia/perm.c | olympia/storm.c) return 0 ;;
 		olympia/c1.c | olympia/produce.c) return 0 ;;

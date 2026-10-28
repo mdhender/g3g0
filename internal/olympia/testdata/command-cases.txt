@@ -3991,3 +3991,555 @@ arrival move 1000 9001
 arrival_state
 bandits
 readlog 201
+
+section escape failed roll leaves prisoner release moving and contact untouched
+master 0
+set turn 1
+set day 1
+entity 295 4 0
+entity 9000 3 3
+link 9000 1000
+link 1000 1001
+field 1001 prisoner 1
+field 1001 release 1
+field 1001 moving 17
+field 1001 contact 1000
+entity_rolls 1001 1 9000
+escape move 1000
+escape_state
+arrival_state
+save 1001
+readlog 200
+
+section escape threshold twenty succeeds with summoned nested moving restoration
+master 0
+set turn 1
+set day 5
+entity 295 4 0
+entity 1007 2 0
+entity 1008 2 0
+entity 9000 3 3
+field 1007 lord 201
+field 1008 lord 201
+link 9000 1000
+link 9000 1001
+link 1000 1007
+link 1007 1008
+field 1007 prisoner 1
+field 1007 release 1
+field 1007 moving 6
+field 1007 loyal 5
+field 1007 rate 31
+field 1008 moving 8
+field 1007 contact 1001
+entity_rolls 1007 1 9000
+escape move 1000
+escape_state
+arrival_state
+save 9000
+save 1007
+save 1008
+readlog 200
+readlog 201
+
+section escape threshold twenty one fails without hounds
+master 0
+set turn 1
+set day 4
+entity 295 4 0
+entity 1011 2 0
+entity 9000 3 3
+field 1011 lord 201
+link 9000 1000
+link 1000 1011
+field 1011 prisoner 1
+field 1011 moving 8
+entity_rolls 1011 1 9000
+escape move 1000
+escape_state
+arrival_state
+readlog 200
+readlog 201
+
+section escape hound halves threshold eleven fails then no hound succeeds
+master 0
+set turn 1
+set day 1
+entity 295 4 0
+entity 1062 2 0
+entity 9000 3 3
+field 1062 lord 200
+link 9000 1000
+link 1000 1062
+link 1000 1001
+field 1062 prisoner 1
+inventory 1001 295 1
+entity_rolls 1062 1 9000
+escape move 1000
+escape_state
+arrival_state
+readlog 200
+subitem 1001 295 1
+escape move 1000
+escape_state
+arrival_state
+save 9000
+save 1062
+readlog 200
+
+section escape hound threshold ten succeeds foreign captive owns the hound
+master 0
+set turn 1
+set day 8
+entity 295 4 0
+entity 1185 2 0
+entity 9000 3 3
+field 1185 lord 201
+link 9000 1000
+link 1000 1185
+field 1185 prisoner 1
+inventory 1185 295 1
+entity_rolls 1185 1 9000
+escape move 1000
+escape_state
+arrival_state
+save 1185
+readlog 200
+readlog 201
+
+section escape plural barking vector is immediate parent plus nested descendants
+master 0
+set turn 1
+set day 1
+entity 295 4 0
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 9000 3 3
+link 9000 1000
+link 1000 1001
+link 1001 1002
+link 1002 1003
+link 1001 1004
+field 1002 prisoner 1
+field 1002 lord 201
+field 1003 lord 201
+field 1004 lord 201
+inventory 1003 295 2
+escape check 1002 0 1
+escape_state
+arrival_state
+readlog 200
+readlog 201
+
+section escape foreign captor hounds do not reduce captive faction threshold
+master 0
+set turn 1
+set day 1
+entity 295 4 0
+entity 1062 2 0
+entity 9000 3 3
+link 9000 1000
+link 1000 1062
+field 1062 prisoner 1
+field 1062 lord 201
+inventory 1000 295 3
+entity_rolls 1062 1 9000
+escape move 1000
+escape_state
+arrival_state
+readlog 200
+readlog 201
+
+section escape snapshot handles adjacent successes nested prisoners and noncharacter pruning
+master 0
+set turn 1
+set day 1
+entity 295 4 0
+entity 1002 2 0
+entity 1003 2 0
+entity 1047 2 0
+entity 1052 2 0
+entity 1110 2 0
+entity 7000 4 0
+entity 9000 3 3
+link 9000 1000
+link 1000 1002
+link 1002 1047
+link 1002 1003
+link 1000 1052
+link 1000 7000
+link 7000 1110
+field 1002 lord 201
+field 1047 lord 201
+field 1052 lord 201
+field 1110 lord 201
+field 1002 prisoner 1
+field 1047 prisoner 1
+field 1052 prisoner 1
+field 1110 prisoner 1
+field 1002 moving 4
+field 1047 moving 5
+field 1003 moving 6
+field 1052 moving 7
+entity_rolls 1002 1 9000
+entity_rolls 1047 1 9000
+entity_rolls 1052 1 9000
+escape move 1000
+escape_state
+arrival_state
+save 9000
+save 1000
+save 1002
+save 1047
+save 1052
+readlog 200
+readlog 201
+
+section escape one level from temple reaches city real arrival clears contact and weather
+master 0
+set turn 1
+set day 17
+entity 295 4 0
+entity 1002 2 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 3 29
+link 8000 9000
+link 9000 9001
+link 9001 9002
+link 9002 1000
+link 1000 1001
+link 1001 1002
+field 1001 prisoner 1
+field 1001 lord 201
+field 1002 lord 201
+field 1001 weather_mage 1
+field 1002 weather_mage 1
+field 1001 contact 1000
+field 1002 contact 1000
+field 1001 moving 11
+field 1002 moving 12
+entity_rolls 1001 1 9002
+escape move 1000
+escape_state
+arrival_state
+save 1001
+save 1002
+save 9001
+save 9002
+readlog 200
+readlog 201
+
+section escape ship in port exits to land without swimming
+entity 295 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 9 31
+link 8000 9000
+link 9000 9001
+link 9001 1000
+link 1000 1001
+field 1001 prisoner 1
+field 1001 lord 201
+escape run 1001
+escape_state
+arrival_state
+save 1001
+save 9000
+save 9001
+readlog 200
+readlog 201
+
+section escape unfinished ship exits into ocean without completed ship swimming
+entity 295 4 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 9 33
+link 8000 9000
+link 9000 9001
+link 9001 1000
+link 1000 1001
+field 1001 prisoner 1
+field 1001 lord 201
+escape run 1001
+escape_state
+arrival_state
+save 1001
+save 9000
+readlog 200
+readlog 201
+
+section escape swimming to first island has real ocean departure and arrival state
+master 0
+set turn 1
+set day 17
+entity 295 4 0
+entity 1002 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 9 30
+entity 9003 3 9
+entity 9002 3 9
+link 8000 9000
+link 9000 9001
+link 9000 9003
+link 9000 9002
+link 9001 1000
+link 1000 1001
+link 1001 1002
+name 1001 Captive
+name 9003 First island
+field 1001 lord 201
+field 1002 lord 201
+field 1001 prisoner 1
+field 1001 release 1
+field 1001 moving 12
+field 1002 moving 13
+field 1001 time_flying 4
+ocean_add 1001
+field 1001 contact 1000
+field 1002 contact 1000
+field 1001 weather_mage 1
+entity_rolls 1001 1 9000
+escape move 1000
+escape_state
+arrival_state
+save 1001
+save 1002
+save 9000
+save 9001
+save 9003
+readlog 200
+readlog 201
+
+section escape swimming to hades land invokes real recursive ambush and mint
+master 13
+set turn 1
+set day 7
+resolve_wait
+set indep 100
+set hades_region 8001
+entity 100 1 0
+entity 295 4 0
+entity 288 4 0
+entity 32 4 0
+entity 26 4 0
+entity 31 4 0
+entity 33 4 0
+entity 8001 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 9002 9 66
+link 8001 9000
+link 8001 9001
+link 9000 9002
+link 9002 1001
+link 1001 1000
+field 1000 prisoner 1
+field 1000 contact 1001
+field 1000 moving 7
+routes 9000 9001 9001 9001 9001
+escape run 1000
+escape_state
+arrival_state
+bandits
+save 1000
+save 9000
+save 9001
+readlog 200
+
+section escape entity turn guard survives master replacement day child and helper interleaving
+master 0
+set turn 1
+set day 1
+entity 295 4 0
+entity 9000 3 3
+link 9000 1000
+link 1000 1001
+field 1001 prisoner 1
+escape check 1001 0 1
+master 80
+entity_rolls 1001 1 9000
+land 9000
+entity_rolls 1001 0 9000
+entity_rolls 1001 2 9000
+set day 2
+entity_rolls 1001 1 9000
+set turn 2
+entity_rolls 1001 1 9000
+escape_state
+arrival_state
+readlog 200
+
+section escape nearest land asymmetric west north south east picks from actual keyed direction
+master 0
+set turn 1
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 9002 3 4
+entity 9003 3 5
+entity 9004 3 6
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 8000 9003
+link 8000 9004
+routes 9000 9001 9002 9003 9004
+land 9000
+entity_rolls 1001 1 9000
+set turn 2
+land 9000
+entity_rolls 1001 1 9000
+set turn 3
+land 9000
+set turn 5
+land 9000
+save 9000
+arrival_state
+readlog 200
+
+section escape nearest land missing exit rotates from origin not current ocean
+master 0
+set turn 1
+entity 9000 3 1
+entity 9001 3 1
+entity 9002 3 3
+entity 9003 3 4
+routes 9000 9002 9003 0 9001
+routes 9001 9003 9003 9003 0
+land 9000
+entity_rolls 1001 1 9000
+readlog 200
+
+section escape nearest land retry plan B preserves cursor and changes direction
+master 0
+set turn 1
+entity 9000 3 1
+entity 9001 3 1
+entity 9002 3 3
+entity 9003 3 4
+routes 9000 9003 9003 9003 9001
+routes 9001 9003 9003 9002 9001
+land 9000
+entity_rolls 1001 1 9000
+readlog 200
+arrival_state
+
+section escape nearest land plan C filters region depth ocean and keeps entity chain order
+master 0
+set turn 1
+entity 8000 3 50
+entity 8001 3 50
+entity 9000 3 1
+entity 9010 3 3
+entity 9005 3 4
+entity 9020 3 5
+entity 9001 3 9
+entity 9002 3 1
+entity 9003 3 3
+link 8000 9000
+link 8000 9010
+link 8000 9005
+link 8000 9020
+link 9010 9001
+link 8000 9002
+link 8001 9003
+routes 9000 9000 9000 9000 9000
+land 9000
+entity_rolls 1001 1 9000
+set turn 7
+land 9000
+entity_rolls 1001 1 9000
+save 9000
+readlog 200
+arrival_state
+
+section escape nearest land empty fallback and nonocean early return zero
+master 0
+set turn 1
+entity 8000 3 50
+entity 9000 3 1
+link 8000 9000
+routes 9000 9000 9000 9000 9000
+land 9000
+land 0
+entity_rolls 1001 1 9000
+readlog 200
+arrival_state
+
+section escape invalid ocean without exits retains exact bounded assertion
+master 0
+set turn 1
+entity 9000 3 1
+land 9000
+
+section escape invalid nonlocation island retains exact assertion
+master 0
+set turn 1
+entity 9000 3 1
+entity 9001 4 9
+link 9000 9001
+land 9000
+
+section escape nonocean nearest land still seeds persistent entity stream before returning
+master 0
+set turn 1
+set day 1
+entity 9000 3 3
+land 9000
+master 80
+entity_rolls 1001 1 9000
+land 9000
+set turn 2
+entity_rolls 1001 1 9000
+readlog 200
+
+section escape swimming parent arrival precedes nested snapshot escape on shore
+master 0
+set turn 1
+set day 1
+entity 295 4 0
+entity 1002 2 0
+entity 1047 2 0
+entity 1052 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 9 31
+entity 9002 3 3
+link 8000 9000
+link 8000 9002
+link 9000 9001
+link 9001 1000
+link 1000 1002
+link 1002 1047
+link 1000 1052
+field 1002 lord 201
+field 1047 lord 201
+field 1052 lord 201
+field 1002 prisoner 1
+field 1047 prisoner 1
+field 1052 prisoner 1
+field 1002 release 1
+field 1047 release 1
+field 1002 moving 4
+field 1047 moving 5
+field 1052 moving 6
+field 1002 contact 1000
+field 1047 contact 1000
+field 1052 contact 1000
+routes 9000 9002 9002 9002 9002
+escape move 1000
+escape_state
+arrival_state
+save 9000
+save 9001
+save 9002
+save 1000
+save 1002
+save 1047
+save 1052
+readlog 200
+readlog 201
