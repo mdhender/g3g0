@@ -5,8 +5,44 @@ package olympia
 
 import "strings"
 
-// Location headers and descriptions from display.c. Complete location-report
-// assembly remains an explicit boundary.
+// Location reports from display.c.
+
+// showLoc is complete display.c:1056–1101. The display flag is reset to
+// false, not restored to its incoming value, just as in C.
+func (w *world) showLoc(who, where int) {
+	assert(w.validBox(where), "olympia/display.c", 1061, "valid_box(where)")
+	w.showDisplayString = true
+	if !w.showLocNoHeader {
+		w.commandOut(who, "%s", w.showLocHeader(where))
+		w.commandOut(who, "")
+	}
+	if w.showLocBarrier(who, where) {
+		w.commandOut(who, "")
+	}
+	if p := w.rpSubloc(where); p != nil && p.loot != 0 {
+		recent := ""
+		if p.recentLoot != 0 {
+			recent = " recent"
+		}
+		w.commandOut(who, "Recovery from%s pillaging will take %s month%s.", recent, niceNum(int(p.loot)), addS(int(p.loot)))
+		w.commandOut(who, "")
+	}
+	w.showLocRuler(who, where)
+	w.listSailableRoutes(who, where)
+	w.listExits(who, where)
+	w.showLocStats(who, where)
+	w.showNearbyCities(who, where)
+	w.showLocSkills(who, where)
+	if w.subkind(where) == subCity {
+		w.marketReport(who, where)
+	}
+	w.showSublocsHere(who, where)
+	w.showLocPosts(who, where, false)
+	w.showWeather(who, where)
+	w.showCharsHere(who, where)
+	w.showShipsHere(who, where)
+	w.showDisplayString = false
+}
 
 // showLocStats is display.c:92–122. Keep signed C-int multiplication before
 // division and use the existing shipWeight traversal without allocating records.

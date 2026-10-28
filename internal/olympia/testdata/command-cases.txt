@@ -21236,3 +21236,302 @@ entity 9000 3 46
 field 9000 capacity 20
 field 9000 damage 10
 report ancillary 4 200 9000
+
+section location root complete city order market posts weather characters and ships
+master 17
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 3 4
+entity 9100 3 46
+entity 9200 9 30
+entity 9300 10 0
+entity 9400 11 59
+entity 9500 5 0
+entity 101 4 0
+entity 1 4 0
+name 8000 First region
+name 9000 Outer plain
+name 9001 Busy city
+name 9100 Inner tower
+name 9200 Docked galley
+name 101 Widget
+name 9500 Navigation
+link 8000 9000
+link 8000 9002
+link 9000 9001
+link 9001 9100
+link 9001 9200
+link 9001 9300
+link 9000 9400
+link 9001 1000
+link 9100 1001
+routes 9000 9002 0 0 0
+field 9001 barrier 3
+field 9001 pillage 2
+field 9001 recent 1
+field 9001 damage 7
+field 9001 near_city 9001
+field 9001 teaches 9500
+field 9400 strength 4
+field 200 weather_seen 9000
+field 200 touched 9001
+field 200 format 1
+report set_banner 1000 city-display-marker
+report set_banner 1001 tower-display-marker
+report post_line 9300 @City post first
+report post_line 9300 @City post last
+field 9300 creator 1001
+inventory 1000 1 100
+inventory 1000 101 9
+trade 1000 2 101 8 9 1000 77
+trade 9001 1 101 44 1 9001 84
+report root_state 200
+report locations
+report root_state 200
+sout state
+save 200
+save 9000
+save 9001
+save 1000
+save 1001
+save 9300
+economy raw 1000
+economy raw 9001
+readlog 200
+
+section location root direct header suppression and display reset not restore
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+name 9000 Direct plain
+report set_banner 1000 direct-display-marker
+field 9000 pillage 1
+sout frame 2 5 1 11
+report display 1
+report root 200 9000
+report root_state 200
+report describe_out 200 1000
+report no_header 1
+field 9000 recent 1
+report root 200 9000
+report root_state 200
+report no_header 0
+field 9000 pillage -2
+report root 200 9000
+report root_state 200
+sout state
+save 9000
+save 1000
+readlog 200
+
+section location root every player subtype touched ordering invalid deleted repeats and format switch
+master 29
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 4
+entity 9002 3 2
+entity 202 1 48
+entity 203 1 52
+entity 204 1 62
+entity 205 1 0
+entity 206 1 49
+entity 207 1 48
+entity 208 1 52
+entity 209 1 62
+entity 210 1 51
+entity 211 1 51
+name 9000 Lower plain
+name 9001 Upper mountain
+link 8000 9000
+link 8000 9001
+link 8000 9002
+routes 9000 9001 0 0 0
+routes 9001 0 9000 0 0
+field 200 touched 9001
+field 200 touched 9999
+field 200 touched 9002
+field 200 touched 9000
+field 201 touched 9001
+field 201 touched 9000
+field 201 format -7
+field 202 touched 9000
+field 202 format 1
+field 203 touched 9001
+field 204 touched 9000
+field 205 touched 9001
+field 210 touched 9000
+field 210 format 1
+delete_box 9002
+report root_state 200
+report root_state 206
+report root_state 207
+report root_state 208
+report root_state 209
+report root_state 211
+sout route 234 567
+report no_header 1
+report display 1
+report locations
+report root_state 200
+report root_state 201
+report root_state 202
+report root_state 203
+report root_state 204
+report root_state 205
+report root_state 206
+report root_state 207
+report root_state 208
+report root_state 209
+report root_state 210
+report root_state 211
+sout state
+save 200
+save 201
+save 202
+save 203
+save 204
+save 205
+save 206
+save 207
+save 208
+save 209
+save 210
+save 211
+report locations
+report root_state 200
+field 200 format 2
+field 201 format 0
+report locations
+report root_state 200
+report root_state 201
+report files
+readlog 200
+readlog 201
+readlog 202
+readlog 203
+readlog 205
+readlog 210
+shuffle 1000 9000
+npc_rolls 1000 9000
+entity_rolls 1000 2 9000
+
+section location root empty and only invalid touched resets without invoking show loc
+entity 202 1 62
+entity 203 1 52
+field 200 touched 9999
+report display 1
+report no_header 1
+sout route -2 765
+report locations
+report root_state 200
+report root_state 202
+report root_state 203
+sout state
+report locations
+report root_state 200
+report files
+save 200
+save 202
+save 203
+
+section location root ship ocean routes stats storms owner and display
+master 31
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9002 3 3
+entity 9100 9 31
+entity 9200 11 58
+entity 10 4 0
+field 10 weight 7
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 9000 9100
+link 9100 1000
+link 9000 9200
+field 9200 strength 3
+routes 9000 9001 9002 0 0
+field 9100 capacity 1600
+field 9100 damage 11
+field 200 touched 9100
+field 200 weather_seen 9000
+report set_banner 1000 captain-display-marker
+report locations
+report root_state 200
+save 200
+save 9100
+save 1000
+readlog 200
+
+section location root province ruler before routes hidden nested owner weather and posts
+master 37
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 4
+entity 9100 3 32
+entity 9200 2 64
+entity 9300 10 0
+entity 9400 11 57
+entity 9500 7 0
+link 8000 9000
+link 8000 9001
+link 9001 9100
+link 9100 1001
+link 9000 9200
+link 9000 1000
+link 9000 9300
+link 9000 9400
+link 9000 9500
+field 9200 lord 200
+field 9200 castle 9100
+field 1001 pledge 1000
+field 1000 rank 40
+field 9000 pillage 3
+field 9000 barrier 2
+field 9400 strength 4
+road 9500 9001 1
+field 200 touched 9000
+field 200 weather_seen 9000
+report post_line 9300 @Province notice
+report locations
+report root_state 200
+save 200
+save 9200
+save 1000
+save 1001
+readlog 200
+
+section location root cached inode repeat and reset followed by direct header
+lore_root
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+field 200 touched 9000
+report locations
+life rename log/200 log/old
+report display 1
+report locations
+report root_state 200
+report root 200 9000
+life flush
+readfile log/old
+life close
+report locations
+life flush
+readfile log/200
+report root_state 200
+
+section location root invalid direct id preserves original assert
+report root 200 9999
+
+section location root invalid post reached through complete report root
+entity 8000 3 50
+entity 9000 3 3
+entity 9100 10 0
+link 8000 9000
+link 9000 9100
+field 200 touched 9000
+report locations

@@ -1463,6 +1463,20 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch action := args.word(); action {
 			case "order":
 				w.determineOutputOrder()
+			case "root":
+				n, where := args.num(t), args.num(t)
+				w.showLoc(n, where)
+			case "no_header":
+				w.showLocNoHeader = args.num(t) != 0
+			case "root_state":
+				p := w.rpPlayer(args.num(t))
+				fmt.Fprintf(&stdout, "location globals %d %d %d %d player %d\n", w.outPath, w.outAltWho, b2i(w.showLocNoHeader), b2i(w.showDisplayString), b2i(p != nil))
+				var touched, output sparse
+				if p != nil {
+					touched, output = p.locs, p.output
+				}
+				helperList(&stdout, "touched", touched)
+				helperList(&stdout, "output", output)
 			case "ancillary":
 				mode, n, where := args.num(t), args.num(t), args.num(t)
 				switch mode {
@@ -1598,7 +1612,7 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "characters":
 				w.characterReportState()
 			case "locations":
-				w.turnEndLocReportsState()
+				w.turnEndLocReports()
 			case "location":
 				n := args.num(t)
 				w.commandOut(n, "%s", w.charRepLocation(n))
@@ -1835,6 +1849,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch field {
 			case "lord":
 				w.pChar(n).unitLord = int32(a)
+			case "format":
+				w.pPlayer(n).format = int8(a)
 			case "last_order":
 				w.pPlayer(n).lastOrderTurn = int32(a)
 			case "quest":

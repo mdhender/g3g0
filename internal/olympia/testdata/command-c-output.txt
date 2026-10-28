@@ -66013,3 +66013,926 @@ stderr:
 assertion failure: olympia/u.c (1531): kind(ship) == T_ship
 
 exit 134
+stdout:
+section location root complete city order market posts weather characters and ships
+> master 17
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 14
+> entity 9002 3 4
+> entity 9100 3 46
+> entity 9200 9 30
+> entity 9300 10 0
+> entity 9400 11 59
+> entity 9500 5 0
+> entity 101 4 0
+> entity 1 4 0
+> name 8000 First region
+> name 9000 Outer plain
+> name 9001 Busy city
+> name 9100 Inner tower
+> name 9200 Docked galley
+> name 101 Widget
+> name 9500 Navigation
+> link 8000 9000
+> link 8000 9002
+> link 9000 9001
+> link 9001 9100
+> link 9001 9200
+> link 9001 9300
+> link 9000 9400
+> link 9001 1000
+> link 9100 1001
+> routes 9000 9002 0 0 0
+> field 9001 barrier 3
+> field 9001 pillage 2
+> field 9001 recent 1
+> field 9001 damage 7
+> field 9001 near_city 9001
+> field 9001 teaches 9500
+> field 9400 strength 4
+> field 200 weather_seen 9000
+> field 200 touched 9001
+> field 200 format 1
+> report set_banner 1000 city-display-marker
+> report set_banner 1001 tower-display-marker
+> report post_line 9300 @City post first
+> report post_line 9300 @City post last
+> field 9300 creator 1001
+> inventory 1000 1 100
+> inventory 1000 101 9
+> trade 1000 2 101 8 9 1000 77
+> trade 9001 1 101 44 1 9001 84
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched: 9001
+output:
+> report locations
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched: 9001
+output: 4
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> save 200
+200 player pl_regular
+PL
+ fo 1
+
+> save 9000
+9000 loc plain
+na Outer plain
+LI
+ wh 8000
+ hl 9001 9400 
+LO
+ pd 9002 0 0 0 
+
+> save 9001
+9001 loc city
+na Busy city
+tl	1 101 44 1 0 0 0 0
+LI
+ wh 9000
+ hl 9100 9200 9300 1000 
+LO
+ ba 3
+SL
+ te 9500 
+ da 7
+ lo 2
+ nc 9001 
+
+> save 1000
+1000 char 0
+il	1 100 \
+	101 9
+tl	2 101 8 9 0 0 0 0
+LI
+ wh 9001
+CH
+ lo 200
+MI
+ ds city-display-marker
+
+> save 1001
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+MI
+ ds tower-display-marker
+
+> save 9300
+9300 post 0
+LI
+ wh 9001
+IT
+IM
+ ct 1001
+MI
+
+> economy raw 1000
+trade raw 0 1000 2 101 8 9 0 0 0 0 0
+1000 char 0
+il	1 100 \
+	101 9
+tl	2 101 8 9 0 0 0 0
+LI
+ wh 9001
+CH
+ lo 200
+MI
+ ds city-display-marker
+
+> economy raw 9001
+trade raw 0 9001 1 101 44 1 0 0 0 0 84
+9001 loc city
+na Busy city
+tl	1 101 44 1 0 0 0 0
+LI
+ wh 9000
+ hl 9100 9200 9300 1000 
+LO
+ ba 3
+SL
+ te 9500 
+ da 7
+ lo 2
+ nc 9001 
+
+> readlog 200
+log 200:
+4:2::0::
+4:2::0::<name="Busy city~[9001]"><font size=+1><b>Busy city~[9001]</b>, city, in province Outer plain~[9000]</font>
+4:2::0::<hr>
+4:1::0::Busy city~[9001], city, in province Outer plain~[9000]
+4:1::0::------------------------------------------------------------------------
+4:0::0::A magical barrier surrounds Busy city~[9001].
+4:0::0::
+4:0::0::Recovery from recent pillaging will take two months.
+4:0::0::
+4:0::0::Routes leaving Busy city: 
+4:0::3::Out, plain, to Outer plain~[9000], 1~day
+4:0::0::
+4:0::0::Damage: 7%
+4:0::0::
+4:0::0::Cities rumored to be nearby:
+4:0::3::Busy city~[9001], in Outer plain~[9000]
+4:0::0::
+4:0::0::Skills taught here:
+4:0::3::Navigation~[9500]
+4:0::0::
+4:0::0::Market report:
+4:0::3::
+4:0::3::{<b>}trade    who   price    qty     wt/ea   item{</b>}               
+4:0::3::-----    ---   -----    ---     -----   ----                     
+4:0::3::  buy   9001       1     44         0   Widget~[101]             
+4:0::3:: sell   1000       9      8         0   Widget~[101]             
+4:0::0::
+4:0::0::Inner locations:
+4:0::3::Inner tower~[9100], tower, owner:
+4:0::0/6:: *    <no subkind>~[1001], "{<i>}tower-display-marker{</i>}"
+4:0::0::
+4:0::0::Posted in Busy city:
+4:0::3::Posted by <no subkind>~[1001]:
+4:0::6::"City post first
+4:0::7::City post last"
+4:0::0::
+4:0::0::It is raining.
+4:0::0::
+4:0::0::Seen here:
+4:0::0/3:: * <no subkind>~[1000], "{<i>}city-display-marker{</i>}"
+4:0::0::
+4:0::0::Ships docked at port:
+4:0::3/3::Docked galley~[9200], galley
+4:0::0::
+stderr:
+turn_end_loc_reports()
+warning: plural name not set for item [101]
+warning: plural name not set for item [101]
+
+exit 0
+stdout:
+section location root direct header suppression and display reset not restore
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> name 9000 Direct plain
+> report set_banner 1000 direct-display-marker
+> field 9000 pillage 1
+> sout frame 2 5 1 11
+> report display 1
+> report root 200 9000
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched:
+output: 200
+> report describe_out 200 1000
+> report no_header 1
+> field 9000 recent 1
+> report root 200 9000
+> report root_state 200
+location globals 0 0 1 0 player 1
+touched:
+output: 200
+> report no_header 0
+> field 9000 pillage -2
+> report root 200 9000
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched:
+output: 200
+> sout state
+route 0 0 frame 2 0 1 11
+vector:
+saved vector:
+> save 9000
+9000 loc plain
+na Direct plain
+LI
+ wh 8000
+ hl 1000 
+SL
+ lo -2
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ ds direct-display-marker
+
+> readlog 200
+log 200:
+200:0::2/5:11:Direct plain~[9000], plain, wilderness
+200:0::2/5:11:
+200:0::2/5:11:Recovery from pillaging will take one month.
+200:0::2/5:11:
+200:0::2/5:11:No known routes leaving Direct plain~[9000]
+200:0::0/5:11:
+200:0::0/5:11:Seen here:
+200:0::0/5:11: *   <no subkind>~[1000], "{<i>}direct-display-marker{</i>}"
+200:0::2:11:<no subkind>~[1000]
+200:0::2:11:Recovery from recent pillaging will take one month.
+200:0::2:11:
+200:0::2:11:No known routes leaving Direct plain~[9000]
+200:0::0:11:
+200:0::0:11:Seen here:
+200:0::0/5:11: *   <no subkind>~[1000], "{<i>}direct-display-marker{</i>}"
+200:0::2:11:Direct plain~[9000], plain, wilderness
+200:0::2:11:
+200:0::2:11:Recovery from recent pillaging will take -2 months.
+200:0::2:11:
+200:0::2:11:No known routes leaving Direct plain~[9000]
+200:0::0:11:
+200:0::0:11:Seen here:
+200:0::0/5:11: *   <no subkind>~[1000], "{<i>}direct-display-marker{</i>}"
+stderr:
+
+exit 0
+stdout:
+section location root every player subtype touched ordering invalid deleted repeats and format switch
+> master 29
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 4
+> entity 9002 3 2
+> entity 202 1 48
+> entity 203 1 52
+> entity 204 1 62
+> entity 205 1 0
+> entity 206 1 49
+> entity 207 1 48
+> entity 208 1 52
+> entity 209 1 62
+> entity 210 1 51
+> entity 211 1 51
+> name 9000 Lower plain
+> name 9001 Upper mountain
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> routes 9000 9001 0 0 0
+> routes 9001 0 9000 0 0
+> field 200 touched 9001
+> field 200 touched 9999
+> field 200 touched 9002
+> field 200 touched 9000
+> field 201 touched 9001
+> field 201 touched 9000
+> field 201 format -7
+> field 202 touched 9000
+> field 202 format 1
+> field 203 touched 9001
+> field 204 touched 9000
+> field 205 touched 9001
+> field 210 touched 9000
+> field 210 format 1
+> delete_box 9002
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched: 9001 9999 9002 9000
+output:
+> report root_state 206
+location globals 0 0 0 0 player 0
+touched:
+output:
+> report root_state 207
+location globals 0 0 0 0 player 0
+touched:
+output:
+> report root_state 208
+location globals 0 0 0 0 player 0
+touched:
+output:
+> report root_state 209
+location globals 0 0 0 0 player 0
+touched:
+output:
+> report root_state 211
+location globals 0 0 0 0 player 0
+touched:
+output:
+> sout route 234 567
+> report no_header 1
+> report display 1
+> report locations
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched: 9000 9001 9002 9999
+output: 9000 9001
+> report root_state 201
+location globals 0 0 0 0 player 1
+touched: 9000 9001
+output: 4
+> report root_state 202
+location globals 0 0 0 0 player 1
+touched: 9000
+output: 4
+> report root_state 203
+location globals 0 0 0 0 player 1
+touched: 9001
+output: 9001
+> report root_state 204
+location globals 0 0 0 0 player 1
+touched: 9000
+output:
+> report root_state 205
+location globals 0 0 0 0 player 1
+touched: 9001
+output: 9001
+> report root_state 206
+location globals 0 0 0 0 player 1
+touched:
+output:
+> report root_state 207
+location globals 0 0 0 0 player 1
+touched:
+output:
+> report root_state 208
+location globals 0 0 0 0 player 1
+touched:
+output:
+> report root_state 209
+location globals 0 0 0 0 player 0
+touched:
+output:
+> report root_state 210
+location globals 0 0 0 0 player 1
+touched: 9000
+output: 4
+> report root_state 211
+location globals 0 0 0 0 player 1
+touched:
+output:
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_regular
+PL
+ fo -7
+
+> save 202
+202 player pl_system
+PL
+ fo 1
+
+> save 203
+203 player pl_npc
+PL
+
+> save 204
+204 player pl_silent
+PL
+
+> save 205
+205 player 0
+PL
+
+> save 206
+206 player pl_regular
+PL
+
+> save 207
+207 player pl_system
+PL
+
+> save 208
+208 player pl_npc
+PL
+
+> save 209
+209 player pl_silent
+
+> save 210
+210 player pl_savage
+PL
+ fo 1
+
+> save 211
+211 player pl_savage
+PL
+
+> report locations
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched: 9000 9001 9002 9999
+output: 9000 9001
+> field 200 format 2
+> field 201 format 0
+> report locations
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched: 9000 9001 9002 9999
+output: 9000 9001 4
+> report root_state 201
+location globals 0 0 0 0 player 1
+touched: 9000 9001
+output: 4 9000 9001
+> report files
+report file 200 1
+report file 201 1
+report file 202 1
+report file 203 1
+report file 204 0
+report file 205 1
+report file 206 0
+report file 207 0
+report file 208 0
+report file 209 0
+report file 210 1
+report file 211 0
+> readlog 200
+log 200:
+9000:0::0::
+9000:0::0::Routes leaving Lower plain: 
+9000:0::3::North, mountain, to Upper mountain~[9001], 10~days
+9001:0::0::
+9001:0::0::Routes leaving Upper mountain: 
+9001:0::3::East, plain, to Lower plain~[9000], 7~days
+9000:0::0::
+9000:0::0::Routes leaving Lower plain: 
+9000:0::3::North, mountain, to Upper mountain~[9001], 10~days
+9001:0::0::
+9001:0::0::Routes leaving Upper mountain: 
+9001:0::3::East, plain, to Lower plain~[9000], 7~days
+4:2::0::
+4:2::0::<name="Lower plain~[9000]"><font size=+1><b>Lower plain~[9000]</b>, plain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Lower plain~[9000], plain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Lower plain: 
+4:0::3::North, mountain, to Upper mountain~[9001], 10~days
+4:0::0::
+4:2::0::
+4:2::0::<name="Upper mountain~[9001]"><font size=+1><b>Upper mountain~[9001]</b>, mountain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Upper mountain~[9001], mountain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Upper mountain: 
+4:0::3::East, plain, to Lower plain~[9000], 7~days
+4:0::0::
+> readlog 201
+log 201:
+4:2::0::
+4:2::0::<name="Lower plain~[9000]"><font size=+1><b>Lower plain~[9000]</b>, plain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Lower plain~[9000], plain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Lower plain: 
+4:0::3::North, mountain, to Upper mountain~[9001], 10~days
+4:0::0::
+4:2::0::
+4:2::0::<name="Upper mountain~[9001]"><font size=+1><b>Upper mountain~[9001]</b>, mountain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Upper mountain~[9001], mountain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Upper mountain: 
+4:0::3::East, plain, to Lower plain~[9000], 7~days
+4:0::0::
+4:2::0::
+4:2::0::<name="Lower plain~[9000]"><font size=+1><b>Lower plain~[9000]</b>, plain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Lower plain~[9000], plain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Lower plain: 
+4:0::3::North, mountain, to Upper mountain~[9001], 10~days
+4:0::0::
+4:2::0::
+4:2::0::<name="Upper mountain~[9001]"><font size=+1><b>Upper mountain~[9001]</b>, mountain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Upper mountain~[9001], mountain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Upper mountain: 
+4:0::3::East, plain, to Lower plain~[9000], 7~days
+4:0::0::
+9000:0::0::
+9000:0::0::Routes leaving Lower plain: 
+9000:0::3::North, mountain, to Upper mountain~[9001], 10~days
+9001:0::0::
+9001:0::0::Routes leaving Upper mountain: 
+9001:0::3::East, plain, to Lower plain~[9000], 7~days
+> readlog 202
+log 202:
+4:2::0::
+4:2::0::<name="Lower plain~[9000]"><font size=+1><b>Lower plain~[9000]</b>, plain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Lower plain~[9000], plain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Lower plain: 
+4:0::3::North, mountain, to Upper mountain~[9001], 10~days
+4:0::0::
+4:2::0::
+4:2::0::<name="Lower plain~[9000]"><font size=+1><b>Lower plain~[9000]</b>, plain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Lower plain~[9000], plain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Lower plain: 
+4:0::3::North, mountain, to Upper mountain~[9001], 10~days
+4:0::0::
+4:2::0::
+4:2::0::<name="Lower plain~[9000]"><font size=+1><b>Lower plain~[9000]</b>, plain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Lower plain~[9000], plain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Lower plain: 
+4:0::3::North, mountain, to Upper mountain~[9001], 10~days
+4:0::0::
+> readlog 203
+log 203:
+9001:0::0::
+9001:0::0::Routes leaving Upper mountain: 
+9001:0::3::East, plain, to Lower plain~[9000], 7~days
+9001:0::0::
+9001:0::0::Routes leaving Upper mountain: 
+9001:0::3::East, plain, to Lower plain~[9000], 7~days
+9001:0::0::
+9001:0::0::Routes leaving Upper mountain: 
+9001:0::3::East, plain, to Lower plain~[9000], 7~days
+> readlog 205
+log 205:
+9001:0::0::
+9001:0::0::Routes leaving Upper mountain: 
+9001:0::3::East, plain, to Lower plain~[9000], 7~days
+9001:0::0::
+9001:0::0::Routes leaving Upper mountain: 
+9001:0::3::East, plain, to Lower plain~[9000], 7~days
+9001:0::0::
+9001:0::0::Routes leaving Upper mountain: 
+9001:0::3::East, plain, to Lower plain~[9000], 7~days
+> readlog 210
+log 210:
+4:2::0::
+4:2::0::<name="Lower plain~[9000]"><font size=+1><b>Lower plain~[9000]</b>, plain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Lower plain~[9000], plain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Lower plain: 
+4:0::3::North, mountain, to Upper mountain~[9001], 10~days
+4:0::0::
+4:2::0::
+4:2::0::<name="Lower plain~[9000]"><font size=+1><b>Lower plain~[9000]</b>, plain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Lower plain~[9000], plain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Lower plain: 
+4:0::3::North, mountain, to Upper mountain~[9001], 10~days
+4:0::0::
+4:2::0::
+4:2::0::<name="Lower plain~[9000]"><font size=+1><b>Lower plain~[9000]</b>, plain, wilderness</font>
+4:2::0::<hr>
+4:1::0::Lower plain~[9000], plain, wilderness
+4:1::0::------------------------------------------------------------------------
+4:0::0::Routes leaving Lower plain: 
+4:0::3::North, mountain, to Upper mountain~[9001], 10~days
+4:0::0::
+> shuffle 1000 9000
+exitdir 1 9001
+> npc_rolls 1000 9000
+npc direction 1 roll 2
+npc direction 2 roll 9
+npc direction 3 roll 5
+npc direction 4 roll 4
+> entity_rolls 1000 2 9000
+prison roll 54
+land dir99 1
+land dir98 3
+land pick 1
+stderr:
+turn_end_loc_reports()
+turn_end_loc_reports()
+turn_end_loc_reports()
+
+exit 0
+stdout:
+section location root empty and only invalid touched resets without invoking show loc
+> entity 202 1 62
+> entity 203 1 52
+> field 200 touched 9999
+> report display 1
+> report no_header 1
+> sout route -2 765
+> report locations
+> report root_state 200
+location globals 0 0 0 1 player 1
+touched: 9999
+output:
+> report root_state 202
+location globals 0 0 0 1 player 0
+touched:
+output:
+> report root_state 203
+location globals 0 0 0 1 player 1
+touched:
+output:
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> report locations
+> report root_state 200
+location globals 0 0 0 1 player 1
+touched: 9999
+output:
+> report files
+report file 200 0
+report file 201 0
+report file 202 0
+report file 203 0
+> save 200
+200 player pl_regular
+PL
+
+> save 202
+202 player pl_silent
+
+> save 203
+203 player pl_npc
+PL
+
+stderr:
+turn_end_loc_reports()
+turn_end_loc_reports()
+
+exit 0
+stdout:
+section location root ship ocean routes stats storms owner and display
+> master 31
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9002 3 3
+> entity 9100 9 31
+> entity 9200 11 58
+> entity 10 4 0
+> field 10 weight 7
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 9000 9100
+> link 9100 1000
+> link 9000 9200
+> field 9200 strength 3
+> routes 9000 9001 9002 0 0
+> field 9100 capacity 1600
+> field 9100 damage 11
+> field 200 touched 9100
+> field 200 weather_seen 9000
+> report set_banner 1000 captain-display-marker
+> report locations
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched: 9100
+output: 9100
+> save 200
+200 player pl_regular
+PL
+
+> save 9100
+9100 ship roundship
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 11
+ ca 1600
+
+> save 1000
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+MI
+ ds captain-display-marker
+
+> readlog 200
+log 200:
+9100:0::0::
+9100:0::0::Ocean routes:
+9100:0::3::North, to Ocean~[9001], 3~days
+9100:0::3::East, to Plain~[9002], 2~days
+9100:0::0::
+9100:0::0::Routes leaving Roundship: 
+9100:0::3::Out, to Ocean~[9000], impassable
+9100:0::0::
+9100:0::0::Damage: 11%
+9100:0::0::Ship capacity: 7/1,424 (0%)
+9100:0::0::
+9100:0::0::Seen here:
+9100:0::0/3:: * <no subkind>~[1000], "{<i>}captain-display-marker{</i>}"
+stderr:
+turn_end_loc_reports()
+
+exit 0
+stdout:
+section location root province ruler before routes hidden nested owner weather and posts
+> master 37
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 4
+> entity 9100 3 32
+> entity 9200 2 64
+> entity 9300 10 0
+> entity 9400 11 57
+> entity 9500 7 0
+> link 8000 9000
+> link 8000 9001
+> link 9001 9100
+> link 9100 1001
+> link 9000 9200
+> link 9000 1000
+> link 9000 9300
+> link 9000 9400
+> link 9000 9500
+> field 9200 lord 200
+> field 9200 castle 9100
+> field 1001 pledge 1000
+> field 1000 rank 40
+> field 9000 pillage 3
+> field 9000 barrier 2
+> field 9400 strength 4
+> road 9500 9001 1
+> field 200 touched 9000
+> field 200 weather_seen 9000
+> report post_line 9300 @Province notice
+> report locations
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched: 9000
+output: 9000
+> save 200
+200 player pl_regular
+PL
+
+> save 9200
+9200 char garrison
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ ra 40
+
+> save 1001
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CM
+ pl 1000
+
+> readlog 200
+log 200:
+9000:0::0::
+9000:0::0::A magical barrier surrounds Plain~[9000].
+9000:0::0::
+9000:0::0::Recovery from pillaging will take three months.
+9000:0::0::
+9000:0::0::Province controlled by Castle~[9100], castle, in Mountain~[9001]
+9000:0::0::Ruled by <no subkind>~[1000], count
+9000:0::0::
+9000:0::0::No known routes leaving Plain~[9000]
+9000:0::0::
+9000:0::0::Posted in Plain:
+9000:0::3::Posted:
+9000:0::6::"Province notice"
+9000:0::0::
+9000:0::0::The province is blanketed in fog.
+9000:0::3::Fog~[9400], storm, strength~4
+9000:0::0::
+9000:0::0::No one can be seen through the fog.
+stderr:
+turn_end_loc_reports()
+
+exit 0
+stdout:
+section location root cached inode repeat and reset followed by direct header
+> lore_root
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> field 200 touched 9000
+> report locations
+> life rename log/200 log/old
+> report display 1
+> report locations
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched: 9000
+output: 9000
+> report root 200 9000
+> life flush
+> readfile log/old
+file bytes log/old 220:
+9000:0::0::
+9000:0::0::No known routes leaving Plain~[9000]
+9000:0::0::
+9000:0::0::No known routes leaving Plain~[9000]
+200:0::0::Plain~[9000], plain, wilderness
+200:0::0::
+200:0::0::No known routes leaving Plain~[9000]
+
+end file bytes
+> life close
+> report locations
+> life flush
+> readfile log/200
+file bytes log/200 60:
+9000:0::0::
+9000:0::0::No known routes leaving Plain~[9000]
+
+end file bytes
+> report root_state 200
+location globals 0 0 0 0 player 1
+touched: 9000
+output: 9000 200
+stderr:
+turn_end_loc_reports()
+turn_end_loc_reports()
+turn_end_loc_reports()
+
+exit 0
+stdout:
+section location root invalid direct id preserves original assert
+> report root 200 9999
+stderr:
+assertion failure: olympia/display.c (1061): valid_box(where)
+
+exit 134
+stdout:
+section location root invalid post reached through complete report root
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 10 0
+> link 8000 9000
+> link 9000 9100
+> field 200 touched 9000
+> report locations
+stderr:
+turn_end_loc_reports()
+assertion failure: olympia/display.c (912): FALSE
+
+exit 134

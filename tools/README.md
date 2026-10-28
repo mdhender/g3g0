@@ -6,6 +6,37 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Complete location report root (#145)
+
+Existing display.go adds complete pinned display.c show_loc **1056–1101**;
+report.go replaces turnEndLocReportsState with complete report.c
+turn_end_loc_reports **1589–1642**, and main calls the renderer once. The
+existing command oracle extracts unchanged real C and the original header
+global, removing the final rejected show_loc dependency now that all accepted
+#138–#144 sections are real. It reuses output/cache ownership and preserves
+section order, display/header/routing flag semantics, allocations, touched-list
+sorting/invalid skips, all nonsilent subtypes and both player formats.
+Nine appended small-world sections compare complete-root report bytes and
+raw/saved state, repeated/global resets, empty/silent controls, cache inode
+reuse, shared RNG aftermath and source assertions. Numeric fixture constants
+and actual reached branches were verified against the immutable pin.
+
+At **0.85.0-alpha**, C/C/Go matches **982 sections / 66938 lines / 1262604
+output bytes**, preserving the full **973-section / 66015-line / 1241870-byte
+output** and **393356-byte input** prefixes. #168's separate live native-order
+check passes unchanged. Expected-abort marker injection is rejected before
+status acceptance/recording update, with the recording hash unchanged.
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded default tests pass. See
+[exact closure, hashes and evidence](command-compat#complete-location-report-root-145).
+Independent parent acceptance passes the same tier. A fresh strict full-world
+run has identical C repeats, C/Go status 0, matching raw streams and entry
+paths/types/modes, but still eight saved-report byte differences at
+lib/save/1/{100,200,202,203,204,205,210,players}. It exits 1 before strict
+lifecycle controls; this is not stage acceptance. No new dependency/pin,
+later report roots or commands. G3 #358 remains
+nonblocking; division/Go panic are unchanged, malformed C136/Go2 is not parity.
+
 ## Ancillary location sections and posts (#144)
 
 Existing display.go implements complete stage-pin display.c nearby cities

@@ -299,10 +299,10 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 		w.processOrders()
 		w.postMonth()
 		w.showDay = false
-		// main.c:981–1008, in C order. These projections defer report
+		// main.c:981–1008, in C order. Remaining projections defer report
 		// artifacts only, not persistent state, input reads or diagnostics.
 		w.determineOutputOrder()
-		w.turnEndLocReportsState()
+		w.turnEndLocReports()
 		w.listOrderTemplatesState()
 		w.playerEntInfoState()
 		w.characterReportState()

@@ -18,7 +18,7 @@ int drv_load(struct command *c);
 int find_command(char *s);
 void drv_state(struct command *c, int s);
 struct order_list *drv_orders(int pl, int who);
-extern int cur_pri, cmd_wait, flush_always, second_indent;
+extern int cur_pri, cmd_wait, flush_always, second_indent, show_loc_no_header;
 extern ilist load_q[5], run_q;
 extern int evening, auto_attack_flag, month_done;
 extern ilist second_wait_list, wait_list;
@@ -1066,6 +1066,16 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "report")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
+   else if(!strcmp(text,"root")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    show_loc(n,a);
+   }
+   else if(!strcmp(text,"no_header")) show_loc_no_header=n;
+   else if(!strcmp(text,"root_state")) {
+    struct entity_player *p=rp_player(n);
+    printf("location globals %d %d %d %d player %d\n",out_path,out_alt_who,show_loc_no_header,show_display_string,p!=NULL);
+    list("touched",p ? p->locs : NULL); list("output",p ? p->output : NULL);
+   }
    else if(!strcmp(text,"ancillary")) {
     if(sscanf(line,"%*s %*s %d %d %d",&b,&n,&a)!=3) return 2;
     drv_ancillary(b,n,a);
@@ -1368,6 +1378,7 @@ int main(int argc, char **argv)
   {
    sscanf(line,"%*s %d %31s %d",&n,text,&a);
    if (!strcmp(text,"lord")) p_char(n)->unit_lord = a;
+   else if (!strcmp(text,"format")) p_player(n)->format = (schar)a;
    else if (!strcmp(text,"last_order")) p_player(n)->last_order_turn = a;
    else if (!strcmp(text,"quest")) p_subloc(n)->quest_late = (schar)a;
    else if (!strcmp(text,"link_to")) ilist_append(&p_subloc(n)->link_to,a);

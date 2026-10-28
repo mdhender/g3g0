@@ -178,15 +178,41 @@ func (w *world) characterReportState() {
 	}
 }
 
-// turnEndLocReportsState preserves report.c:1589–1642's nonsilent p_player
-// allocations BEFORE player_ent_info. Location report artifacts stay stage 2.
-func (w *world) turnEndLocReportsState() {
+// turnEndLocReports is complete report.c:1589–1642, including the original
+// global resets and allocation before sorted touched-location iteration.
+func (w *world) turnEndLocReports() {
 	w.stage("turn_end_loc_reports()")
+	w.outPath = master
+	w.showLocNoHeader = true
 	for pl := range w.loopKind(tPlayer) {
-		if w.subkind(pl) != subPlSilent {
-			w.pPlayer(pl)
+		if w.subkind(pl) == subPlSilent {
+			continue
+		}
+		separate := false
+		if p := w.rpPlayer(pl); p != nil {
+			separate = p.format != 0
+		}
+		p := w.pPlayer(pl)
+		sortKnown(p.locs)
+		for _, i := range p.locs {
+			if !w.validBox(i) {
+				continue
+			}
+			if separate {
+				w.outAltWho = 4 // sout.h OUT_LOC
+				w.lines(pl, w.showLocHeader(i))
+				w.showLoc(pl, i)
+				w.commandOut(pl, "")
+			} else {
+				w.outAltWho = i
+				w.commandOut(pl, "")
+				w.showLoc(pl, i)
+			}
 		}
 	}
+	w.outPath = 0
+	w.outAltWho = 0
+	w.showLocNoHeader = false
 }
 
 // playerBannerState is report.c:1645–1722's allocation projection. It occurs

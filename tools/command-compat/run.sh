@@ -103,7 +103,7 @@ functions = {
                   'show_chars_below', 'show_chars_below_highlight', 'show_owner_stack',
                   'show_chars_here', 'show_inner_locs', 'show_sublocs_here', 'show_ships_here',
                   'show_nearby_cities', 'show_loc_skills', 'show_loc_posts',
-                  'show_weather', 'show_loc_ruler', 'show_loc_stats'],
+                  'show_weather', 'show_loc_ruler', 'show_loc_stats', 'show_loc'],
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
             'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
             'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
@@ -267,6 +267,7 @@ int immed_see_all, month_done, show_combat_flag;
             start = source.index('int show_display_string =')
             end = source.index('\n\n', start)
             out.write('#line 402 "olympia/display.c"\n' + source[start:end] + '\n')
+            out.write(re.search(r'^int show_loc_no_header = FALSE;\n', source, re.M).group(0))
         if file == 'c1.c':
             start, end = source.index('struct flag_ent {'), source.index('static int\nflag_raised(')
             out.write(source[start:end])
@@ -525,10 +526,7 @@ with open(f'{dst}/stubs.c', 'w') as out:
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1, pretty_data_files, time_self;
-int show_loc_no_header, win_flag;
-/* This allocation-only probe has no known locations to render. Never turn a
- * newly reached rendering dependency into a successful C oracle result. */
-void show_loc(int who, int where) STUB("show_loc")
+int win_flag;
 ilist trades_to_check;
 ''')
 PY
@@ -554,6 +552,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section location root '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section location root invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected location root status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section ancillary '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

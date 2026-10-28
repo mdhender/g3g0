@@ -3,6 +3,94 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Complete location report root (#145)
+
+Existing display.go implements complete pinned display.c `show_loc`
+**1056–1101**. Existing report.go replaces its allocation projection with
+complete report.c `turn_end_loc_reports` **1589–1642**, and the existing main
+caller now calls that renderer exactly once. The command oracle extracts the
+complete unchanged `show_loc` definition and original `show_loc_no_header`
+declaration; the complete original turn-end root was already extracted.
+The last rejected `show_loc` dependency is removed only now that its entire
+rendering closure is real. No new source dependency, pin or output owner.
+
+The original subordinate sequence is header/blank, barrier/blank, pillage/blank,
+ruler, sailable routes, exits, stats, nearby cities, taught skills, city-only
+market, inner locations, posts, weather, characters, ships. It reuses all
+accepted #138–#144 sections, names, knowledge, traversal, ship weights,
+ownership, original macros and the existing sout.go cached FILE owner.
+Turn-end uses real `lines` for separate-format headings and MASTER/OUT_LOC
+versus per-location routing, not a second report layer. It reads format before
+`p_player`, allocates every nonsilent record, sorts the original touched list,
+skips but retains invalid/deleted IDs, and resets routing/header globals to
+zero/false rather than restoring incoming values. `show_loc` sets display
+strings true and then false; an empty turn-end call never changes that flag.
+Assertion failures are not given deferred cleanup that C does not perform.
+
+Nine appended sections compare actual complete-C small-world report bytes,
+raw globals/lists/record-presence, output bits, real save_box bytes and
+market sort state. The city composition proves barrier → pillage → routes →
+damage → nearby cities → skills → market → inner owner stack → post → rain →
+characters → docked ships order. A province composition proves ruler/pledge
+before routes and posts before privileged fog descriptions/character suppression.
+A ship composition actually renders ocean routes, exits, damaged capacity and
+captain display text; buildings suppress the outer weather as in C.
+Direct calls cover headers/suppression, signed pillage, singular/plural/recent
+text, nonzero indentation/day framing, and display-flag reset (not restoration).
+The turn-end cases cover regular/system/savage/NPC and unknown-subtype players,
+both formats including negative nonzero format, silent skips, missing records
+for every named nonsilent subtype, unsorted/stale/deleted touched IDs, repeated
+calls and format switching. Actual C output confirms all intended branches.
+Shared shuffle/NPC/entity aftermath and renamed cached-inode/reopen controls
+reuse existing oracle operations. Invalid direct IDs and malformed posts
+reached through the full root retain source assertions **1061/912**.
+
+Fixture constants were checked against the pin's oly.h: player/char/loc/item/
+skill/road/ship/post/storm **1/2/3/4/5/7/9/10/11**, ocean/forest/plain/mountain/
+city **1/2/3/4/14**, galley/roundship/castle/tower **30/31/32/46**, system/
+regular/region/savage/NPC **48/49/50/51/52**, fog/wind/rain **57/58/59**,
+silent/garrison **62/64**, gold/peasant **1/10**, BUY/SELL **1/2**; sout.h
+OUT_LOC is **4**. No positive-quantity zero-price character BUY is fabricated.
+
+At **0.85.0-alpha**, refresh and a fresh default command run pass real C/C/Go:
+**982 sections / 66938 lines / 1262604 output bytes**. Both complete inherited
+prefixes are byte-exact: **973 sections / 66015 lines / 1241870 output bytes**
+and **21238 lines / 393356 input bytes**. New input: **21537 lines / 399178
+bytes**. Recording SHA-256:
+`cef1f88175fc1a5cd42973a4428ab27cd9f5bd6a136f13e49e5bc0f74072b87b`.
+Input SHA-256:
+`0e36ad84c75cfdda2a50b659510408c1c2f975822225f17368d6f5f8f3b9edd4`.
+#168's separate live raw native-order C/C/Go check still matches **28 lines /
+426 bytes**, with shared input unchanged. Expectations come only from two
+deterministic real C runs, never Go or callback traces.
+
+A temporary compiler/driver overlay injected a missing-dependency marker and
+status **134** in expected-invalid root section **980**. `--update` rejected it
+before accepting the expected failure or replacing the recording: status **2**,
+recording hash unchanged. Temporary overlay files/captures were removed.
+Logs: `tmp/issue145-{source-check,branches,prefix,marker}.log`.
+
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded default tests pass. Evidence:
+`tmp/issue145-{command-update,command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+All compatibility invocations explicitly use isolated `tmp/upstream.git`;
+engine/test processes are bounded by run_limited. code-compat deliberately
+retains its unchanged older pin. Intentional C save_box trailing spaces remain.
+Independent parent review verified both complete C definitions unchanged
+exactly once, the inherited byte prefixes and hashes above. Parent sequential
+compatibility checks, bounded vet and fresh bounded tests pass (Olympia
+**1.373s**); logs `tmp/parent145-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+
+Parent also reran strict `turn-compat --full` with the isolated exact-pin C
+cache. Two fresh C turns matched all artifacts. C/Go both exited **0**, raw
+stdout/stderr/status and all entry paths/types/modes matched, but eight saved
+report files still differ: `lib/save/1/{100,200,202,203,204,205,210,players}`.
+The strict gate exits **1** before lifecycle controls; no full-world/lifecycle
+or stage-exit acceptance is claimed. Evidence: `tmp/parent145-strict.log` and
+`tmp/parent-stage2-turn/{c-determinism.txt,diff.txt,c,go}`. Later report
+roots/commands remain deferred. G3 #358 is owner-declared nonblocking: existing division and Go panic
+are unchanged, and malformed C **136** versus Go **2** is not passing parity.
+
 ## Ancillary location sections and posts (#144)
 
 Existing display.go now implements complete stage-pin display.c
