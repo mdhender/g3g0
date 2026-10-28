@@ -79509,3 +79509,987 @@ loy_kind = 5
 assertion failure: olympia/gm.c (659): FALSE
 
 exit 134
+stdout:
+section GM faction wealth regular only ID ties scratch all owners and repeated clear
+> lore_root
+> entity 1 4 0
+> entity 205 1 49
+> name 205 Larger tie
+> entity 202 1 49
+> name 202 Smaller tie
+> entity 203 1 62
+> entity 204 1 52
+> entity 206 1 48
+> entity 1105 2 64
+> field 1105 lord 205
+> entity 1102 2 0
+> field 1102 lord 202
+> entity 1103 2 0
+> field 1103 lord 203
+> entity 1104 2 0
+> field 1104 lord 204
+> entity 1106 2 0
+> field 1106 lord 206
+> inventory 1000 1 234
+> inventory 1001 1 1000
+> inventory 1105 1 1234
+> inventory 1102 1 1234
+> inventory 1103 1 9999
+> inventory 1104 1 8888
+> inventory 1106 1 7777
+> field 201 temp 987
+> gm_stats wealth 200
+> report rank_state
+game totals 0 0 0
+ranks allocated 0 count 0
+rank temp 200 1234
+rank temp 201 0
+rank temp 202 1234
+rank temp 203 9999
+rank temp 204 8888
+rank temp 205 1234
+rank temp 206 7777
+rank char 1000 0
+rank char 1001 0
+rank char 1102 0
+rank char 1103 0
+rank char 1104 0
+rank char 1105 0
+rank char 1106 0
+> field 1102 lord 201
+> gm_stats wealth 200
+> report rank_state
+game totals 0 0 0
+ranks allocated 0 count 0
+rank temp 200 1234
+rank temp 201 1234
+rank temp 202 0
+rank temp 203 9999
+rank temp 204 8888
+rank temp 205 1234
+rank temp 206 7777
+rank char 1000 0
+rank char 1001 0
+rank char 1102 0
+rank char 1103 0
+rank char 1104 0
+rank char 1105 0
+rank char 1106 0
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+na Smaller tie
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_silent
+
+> readfile log/200
+file bytes log/200 484:
+2:0::0::rank        gold  faction
+2:0::0::----        ----  -------
+2:0::0::   1       1,234  Player~[200]
+2:0::0::   2       1,234  Smaller tie~[202]
+2:0::0::   3       1,234  Larger tie~[205]
+2:0::0::   4           0  Player~[201]
+2:0::0::
+2:0::0::rank        gold  faction
+2:0::0::----        ----  -------
+2:0::0::   1       1,234  Player~[200]
+2:0::0::   2       1,234  Player~[201]
+2:0::0::   3       1,234  Larger tie~[205]
+2:0::0::   4           0  Smaller tie~[202]
+2:0::0::
+
+end file bytes
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+
+exit 0
+stdout:
+section GM faction nobles ID ties all character subtypes prisoners and nonregular exclusion
+> lore_root
+> entity 205 1 49
+> name 205 Larger tie
+> entity 202 1 49
+> name 202 Smaller tie
+> entity 203 1 62
+> entity 204 1 52
+> entity 206 1 48
+> entity 1105 2 64
+> field 1105 lord 205
+> entity 1102 2 0
+> field 1102 lord 202
+> field 1102 prisoner 1
+> entity 1103 2 0
+> field 1103 lord 203
+> entity 1104 2 0
+> field 1104 lord 204
+> entity 1106 2 0
+> field 1106 lord 206
+> field 201 temp 987
+> gm_stats nobles 200
+> report rank_state
+game totals 0 0 0
+ranks allocated 0 count 0
+rank temp 200 2
+rank temp 201 0
+rank temp 202 1
+rank temp 203 1
+rank temp 204 1
+rank temp 205 1
+rank temp 206 1
+rank char 1000 0
+rank char 1001 0
+rank char 1102 0
+rank char 1103 0
+rank char 1104 0
+rank char 1105 0
+rank char 1106 0
+> field 1105 lord 202
+> gm_stats nobles 200
+> report rank_state
+game totals 0 0 0
+ranks allocated 0 count 0
+rank temp 200 2
+rank temp 201 0
+rank temp 202 2
+rank temp 203 1
+rank temp 204 1
+rank temp 205 0
+rank temp 206 1
+rank char 1000 0
+rank char 1001 0
+rank char 1102 0
+rank char 1103 0
+rank char 1104 0
+rank char 1105 0
+rank char 1106 0
+> readfile log/200
+file bytes log/200 484:
+2:0::0::rank      nobles  faction
+2:0::0::----      ------  -------
+2:0::0::   1           2  Player~[200]
+2:0::0::   2           1  Smaller tie~[202]
+2:0::0::   3           1  Larger tie~[205]
+2:0::0::   4           0  Player~[201]
+2:0::0::
+2:0::0::rank      nobles  faction
+2:0::0::----      ------  -------
+2:0::0::   1           2  Player~[200]
+2:0::0::   2           2  Smaller tie~[202]
+2:0::0::   3           0  Player~[201]
+2:0::0::   4           0  Larger tie~[205]
+2:0::0::
+
+end file bytes
+stderr:
+
+exit 0
+stdout:
+section GM faction empty regular rankings clear lists and temps
+> lore_root
+> entity 1 4 0
+> death subkind 200 48
+> death subkind 201 62
+> field 200 temp 999
+> gm_stats wealth 200
+> report rank_state
+game totals 0 0 0
+ranks allocated 0 count 0
+rank temp 200 0
+rank temp 201 0
+rank char 1000 0
+rank char 1001 0
+> gm_stats nobles 200
+> report rank_state
+game totals 0 0 0
+ranks allocated 0 count 0
+rank temp 200 2
+rank temp 201 0
+rank char 1000 0
+rank char 1001 0
+> readfile log/200
+file bytes log/200 154:
+2:0::0::rank        gold  faction
+2:0::0::----        ----  -------
+2:0::0::
+2:0::0::rank      nobles  faction
+2:0::0::----      ------  -------
+2:0::0::
+
+end file bytes
+stderr:
+
+exit 0
+stdout:
+section GM details absent age system excluded silent NPC included and no allocation
+> lore_root
+> set turn 17
+> entity 202 1 62
+> name 202 Silent absent
+> entity 203 1 52
+> name 203 NPC absent
+> entity 204 1 49
+> name 204 Regular absent
+> entity 205 1 48
+> name 205 System absent
+> field 200 first_turn 3
+> field 201 first_turn 19
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_silent
+na Silent absent
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_npc
+na NPC absent
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_regular
+na Regular absent
+
+> report state 205
+report entity 205 order 0 player 0 attitudes 0 char 0 magic 0
+205 player pl_system
+na System absent
+
+> gm_stats details 200
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_silent
+na Silent absent
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_npc
+na NPC absent
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_regular
+na Regular absent
+
+> report state 205
+report entity 205 order 0 player 0 attitudes 0 char 0 magic 0
+205 player pl_system
+na System absent
+
+> readfile log/200
+file bytes log/200 446:
+2:0::0:: who age  gold units  bld subloc ships skills
+2:0::0:: --- ---  ---- -----  --- ------ ----- ------
+2:0::0:: 200  14     0     0                           Player
+2:0::0:: 201  -2     0     0                           Player
+2:0::0:: 202 ???     0     0                           Silent absent
+2:0::0:: 203 ???     0     0                           NPC absent
+2:0::0:: 204 ???     0     0                           Regular absent
+2:0::0::
+
+end file bytes
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+
+exit 0
+stdout:
+section GM details owned buildings sublocations finished unfinished ships and unique known skills
+> lore_root
+> set turn 23
+> entity 1 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 3 14
+> entity 9101 3 46
+> entity 9102 9 30
+> entity 9103 9 34
+> entity 9104 3 32
+> link 8000 9000
+> link 9000 9100
+> link 9000 9101
+> link 9000 9102
+> link 9000 9103
+> link 9000 9104
+> link 9100 1000
+> link 9101 1001
+> field 200 unit 1000
+> field 200 unit 1001
+> entity 1100 2 0
+> entity 1101 2 0
+> entity 1102 2 0
+> entity 1103 2 0
+> entity 1104 2 0
+> field 1100 lord 200
+> field 1101 lord 200
+> field 1102 lord 200
+> field 1103 lord 201
+> field 1104 lord 200
+> field 1104 prisoner 1
+> field 200 unit 1100
+> field 200 unit 1101
+> field 200 unit 1102
+> field 200 unit 1104
+> field 201 unit 1103
+> link 9102 1100
+> link 9103 1101
+> link 9100 1102
+> link 9104 1103
+> link 9104 1104
+> inventory 1000 1 1234
+> inventory 1001 1 2766
+> inventory 1104 1 1
+> entity 700 5 43
+> entity 701 5 0
+> field 701 required 700
+> entity 702 5 0
+> field 702 required 700
+> report skill 1000 701 2 0
+> report skill 1000 701 2 9
+> report skill 1001 701 2 0
+> report skill 1001 700 2 0
+> report skill 1100 702 1 0
+> report skill 1101 702 0 0
+> report skill 1102 702 3 0
+> report skill 1104 702 2 0
+> field 702 temp 777
+> gm_stats details 200
+> gm_stats scratch 200
+gm temp 200 0
+gm temp 201 0
+gm temp 638 0
+gm temp 700 0
+gm temp 701 0
+gm temp 702 0
+> report skill_rows 1000
+skill record 1000 1
+skill row 701 2 0 0
+skill row 701 2 9 0
+1000 char 0
+il	1 1234
+LI
+ wh 9100
+CH
+ lo 200
+ sl	701 2 0 0 0 \
+	701 2 9 0 0
+
+> report skill_rows 1001
+skill record 1001 1
+skill row 701 2 0 0
+skill row 700 2 0 0
+1001 char 0
+il	1 2766
+LI
+ wh 9101
+CH
+ lo 200
+ sl	701 2 0 0 0 \
+	700 2 0 0 0
+
+> report skill_rows 1104
+skill record 1104 1
+skill row 702 2 0 0
+1104 char 0
+il	1 1
+LI
+ wh 9104
+CH
+ lo 200
+ sl	702 2 0 0 0
+ pr 1
+
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1000 1001 1100 1101 1102 1104
+200 player pl_regular
+PL
+ un 1000 1001 1100 1101 1102 1104 
+
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1103
+201 player pl_regular
+PL
+ un 1103 
+
+> gm_stats details 200
+> gm_stats scratch 200
+gm temp 200 1
+gm temp 201 1
+gm temp 638 0
+gm temp 700 0
+gm temp 701 0
+gm temp 702 0
+> readfile log/200
+file bytes log/200 482:
+2:0::0:: who age  gold units  bld subloc ships skills
+2:0::0:: --- ---  ---- -----  --- ------ ----- ------
+2:0::0:: 200  23  4001     6    1      1     2      3  Player
+2:0::0:: 201  23     0     1    1                      Player
+2:0::0::
+2:0::0:: who age  gold units  bld subloc ships skills
+2:0::0:: --- ---  ---- -----  --- ------ ----- ------
+2:0::0:: 200  23  4001     6    1      1     2      3  Player
+2:0::0:: 201  23     0     1    1                      Player
+2:0::0::
+
+end file bytes
+stderr:
+
+exit 0
+stdout:
+section GM notices actual location posts full names creators multiline and ship exclusion
+> lore_root
+> entity 8000 3 50
+> entity 9000 3 3
+> name 9000 Province notice
+> entity 9001 3 14
+> name 9001 City notice
+> entity 9002 9 30
+> link 8000 9000
+> link 9000 9001
+> link 9000 9002
+> entity 9100 10 0
+> entity 9101 10 0
+> entity 9102 10 0
+> entity 9103 10 0
+> link 9000 9100
+> link 9000 9101
+> link 9001 9102
+> link 9002 9103
+> report post_line 9100 @first 100% <b>raw</b>
+> report post_line 9100 @
+> report post_line 9100 @last line
+> field 9100 creator 1000
+> report post_line 9101 @anonymous
+> report post_line 9102 @city notice
+> report post_line 9103 @ship must not render
+> field 9001 temp 999
+> gm_stats notices 200
+> report stack_scratch
+stack temp 8000 0
+stack temp 9000 2
+stack temp 9001 1
+stack temp 9002 1
+stack temp 1000 0
+stack temp 1001 0
+> readfile log/200
+file bytes log/200 279:
+2:0::0::
+2:0::0::Posted in Province notice~[9000]:
+2:0::3::Posted by <no subkind>~[1000]:
+2:0::6::"first 100% <b>raw</b>
+2:0::7::
+2:0::7::last line"
+2:0::3::
+2:0::3::Posted:
+2:0::6::"anonymous"
+2:0::0::
+2:0::0::Posted in City notice~[9001]:
+2:0::3::Posted:
+2:0::6::"city notice"
+
+end file bytes
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+
+exit 0
+stdout:
+section GM notices invalid post assertion precedes separator and recipient allocation
+> lore_root
+> entity 209 1 49
+> entity 9000 3 3
+> entity 9100 10 0
+> link 9000 9100
+> gm_stats notices 209
+stderr:
+assertion failure: olympia/display.c (912): FALSE
+
+exit 134
+stdout:
+section GM root complete call order all player allocation known sort notices and independent skill recipient
+> lore_root
+> set turn 17
+> set skill_player 203
+> entity 202 1 62
+> entity 203 1 48
+> entity 204 1 52
+> entity 1 4 0
+> name 1 Gold
+> entity 8000 3 50
+> name 8000 Root region
+> entity 9000 3 3
+> name 9000 Root province
+> entity 9100 3 14
+> name 9100 Root city
+> link 8000 9000
+> link 9000 9100
+> link 9100 1000
+> link 9000 1001
+> field 200 unit 1000
+> field 200 unit 1001
+> inventory 1000 1 1234
+> entity 700 5 43
+> entity 701 5 0
+> name 701 Root known skill
+> field 701 required 700
+> field 701 use_count 7
+> field 701 last_use 1000
+> report skill 1000 701 2 0
+> entity 6000 6 0
+> field 6000 seal_key 99
+> field 200 known 9100
+> field 200 known 6000
+> field 200 known 9000
+> entity 9200 10 0
+> link 9100 9200
+> report post_line 9200 @root real notice
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_silent
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_system
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_npc
+
+> report gm 200
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_silent
+PL
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_system
+PL
+
+> report state 204
+report entity 204 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+204 player pl_npc
+PL
+
+> report known 200
+raw known: 6000 9000 9100
+> report rank_state
+game totals 0 0 0
+ranks allocated 0 count 0
+rank temp 200 2
+rank temp 201 0
+rank temp 202 1
+rank temp 203 1
+rank temp 204 1
+rank char 1000 0
+rank char 1001 0
+> report stack_scratch
+stack temp 8000 0
+stack temp 9000 0
+stack temp 9100 1
+stack temp 1000 0
+stack temp 1001 0
+stack temp 1 0
+> gm_stats scratch 200
+gm temp 200 2
+gm temp 201 0
+gm temp 202 1
+gm temp 203 1
+gm temp 204 1
+gm temp 638 0
+gm temp 700 0
+gm temp 701 0
+> report skill_rows 1000
+skill record 1000 1
+skill row 701 2 0 0
+1000 char 0
+il	1 1234
+LI
+ wh 9100
+CH
+ lo 200
+ sl	701 2 0 0 0
+
+> readfile log/200
+file bytes log/200 2804:
+2:0::0::Interesting attribute counts
+2:0::0::----------------------------
+2:0::0::
+2:0::0::char ability shroud:    0
+2:0::0::char hinder meditate:   0
+2:0::0::char project cast:      0
+2:0::0::char quick cast:        0
+2:0::0::loc shroud:             0
+2:0::0::loc barrier:            0
+2:0::0::loc opium:              0
+2:0::0::format one:             0/2
+2:0::0::
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::
+2:0::0::Captured control artifacts
+2:0::0::--------------------------
+2:0::0::
+2:0::0::
+2:0::0::
+2:0::0::Animate items list
+2:0::0::------------------
+2:0::0::
+2:0::0::                     name    swamp man-like    beast  fighter
+2:0::0::                     ----    ----- --------    -----  -------
+2:0::0::
+2:0::0::Skill use counts:
+2:0::0::-----------------
+2:0::0::
+2:0::0::count   who  skill  name
+2:0::0::-----   ---  -----  ----
+2:0::0::   7    200    701  Root known skill
+2:0::0::
+2:0::0::             finished  unfinished
+2:0::0::           +----------------------
+2:0::0::    galley |        0         0
+2:0::0:: roundship |        0         0
+2:0::0::     tower |        0         0
+2:0::0::    castle |        0         0
+2:0::0::      mine |        0         0
+2:0::0::       inn |        0         0
+2:0::0::    temple |        0         0
+2:0::0::
+2:0::0::    nobles  region
+2:0::0::    ------  ------
+2:0::0::         2  Root region
+2:0::0::    ======  
+2:0::0::         2  
+2:0::0::
+2:0::0::1/1 gates found (100%)
+2:0::0::    1 sealed (100%), 0 notify jump (0%), 0 notify unseal (0%)
+2:0::0::
+2:0::0::1/1 provinces visited (100%)
+2:0::0::1/1 sublocs visited (100%)
+2:0::0::    100% visible, 0% hidden
+2:0::0::    100% of visisted province's sublocs found
+2:0::0::    100% visible, 0% hidden
+2:0::0::
+2:0::0::2 chars: 0 oath (0%), 0 fear (0%), 0 contract (0%), 2 unsworn (100%)
+2:0::0::
+2:0::0::
+2:0::0::Skills known by players:
+2:0::0::------------------------
+2:0::0::
+2:0::0::count  skill   use  name
+2:0::0::-----  -----   ---  ----
+2:0::0::   1     701     7  Root known skill
+2:0::0::
+2:0::0::rank        gold  faction
+2:0::0::----        ----  -------
+2:0::0::   1       1,234  Player~[200]
+2:0::0::   2           0  Player~[201]
+2:0::0::
+2:0::0::rank      nobles  faction
+2:0::0::----      ------  -------
+2:0::0::   1           2  Player~[200]
+2:0::0::   2           0  Player~[201]
+2:0::0::
+2:0::0:: who age  gold units  bld subloc ships skills
+2:0::0:: --- ---  ---- -----  --- ------ ----- ------
+2:0::0:: 200  17  1234     2           1            1  Player
+2:0::0:: 201  17     0     0                           Player
+2:0::0:: 202  17     0     0                           Player
+2:0::0:: 204  17     0     0                           Player
+2:0::0::
+2:0::0::
+2:0::0::Posted in Root city~[9100]:
+2:0::3::Posted:
+2:0::6::"root real notice"
+
+end file bytes
+> readfile log/203
+file bytes log/203 189:
+2:0::0::item name                     weight land ride  fly
+2:0::0::---- ----                     ------ ---- ----  ---
+2:0::0::   1 Gold                          0    0    0    0
+2:0::0::
+
+end file bytes
+> life path log/202
+path log/202 missing
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+gm_report()
+
+exit 0
+stdout:
+section GM root zero gates cached renamed reports and same GM skill recipient repeated
+> lore_root
+> set flush 0
+> set skill_player 200
+> entity 1 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> link 9000 1001
+> report gm 200
+> life flush
+> life rename log/200 log/gm-root-original
+> report gm 200
+> life flush
+> readfile log/gm-root-original
+file bytes log/gm-root-original 5132:
+2:0::0::Interesting attribute counts
+2:0::0::----------------------------
+2:0::0::
+2:0::0::char ability shroud:    0
+2:0::0::char hinder meditate:   0
+2:0::0::char project cast:      0
+2:0::0::char quick cast:        0
+2:0::0::loc shroud:             0
+2:0::0::loc barrier:            0
+2:0::0::loc opium:              0
+2:0::0::format one:             0/2
+2:0::0::
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::
+2:0::0::Captured control artifacts
+2:0::0::--------------------------
+2:0::0::
+2:0::0::
+2:0::0::
+2:0::0::Animate items list
+2:0::0::------------------
+2:0::0::
+2:0::0::                     name    swamp man-like    beast  fighter
+2:0::0::                     ----    ----- --------    -----  -------
+2:0::0::
+2:0::0::Skill use counts:
+2:0::0::-----------------
+2:0::0::
+2:0::0::count   who  skill  name
+2:0::0::-----   ---  -----  ----
+2:0::0::
+2:0::0::             finished  unfinished
+2:0::0::           +----------------------
+2:0::0::    galley |        0         0
+2:0::0:: roundship |        0         0
+2:0::0::     tower |        0         0
+2:0::0::    castle |        0         0
+2:0::0::      mine |        0         0
+2:0::0::       inn |        0         0
+2:0::0::    temple |        0         0
+2:0::0::
+2:0::0::    nobles  region
+2:0::0::    ------  ------
+2:0::0::         2  Region
+2:0::0::    ======  
+2:0::0::         2  
+2:0::0::
+2:0::0::0/1 provinces visited (0%)
+2:0::0::0/0 sublocs visited (0%)
+2:0::0::    0% visible, 0% hidden
+2:0::0::    0% of visisted province's sublocs found
+2:0::0::    0% visible, 0% hidden
+2:0::0::
+2:0::0::2 chars: 0 oath (0%), 0 fear (0%), 0 contract (0%), 2 unsworn (100%)
+2:0::0::
+2:0::0::
+2:0::0::Skills known by players:
+2:0::0::------------------------
+2:0::0::
+2:0::0::count  skill   use  name
+2:0::0::-----  -----   ---  ----
+2:0::0::
+2:0::0::rank        gold  faction
+2:0::0::----        ----  -------
+2:0::0::   1           0  Player~[200]
+2:0::0::   2           0  Player~[201]
+2:0::0::
+2:0::0::rank      nobles  faction
+2:0::0::----      ------  -------
+2:0::0::   1           2  Player~[200]
+2:0::0::   2           0  Player~[201]
+2:0::0::
+2:0::0:: who age  gold units  bld subloc ships skills
+2:0::0:: --- ---  ---- -----  --- ------ ----- ------
+2:0::0:: 200   0     0     0                           Player
+2:0::0:: 201   0     0     0                           Player
+2:0::0::
+2:0::0::item name                     weight land ride  fly
+2:0::0::---- ----                     ------ ---- ----  ---
+2:0::0::   1 <no subkind>                  0    0    0    0
+2:0::0::
+2:0::0::Interesting attribute counts
+2:0::0::----------------------------
+2:0::0::
+2:0::0::char ability shroud:    0
+2:0::0::char hinder meditate:   0
+2:0::0::char project cast:      0
+2:0::0::char quick cast:        0
+2:0::0::loc shroud:             0
+2:0::0::loc barrier:            0
+2:0::0::loc opium:              0
+2:0::0::format one:             0/2
+2:0::0::
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::
+2:0::0::Captured control artifacts
+2:0::0::--------------------------
+2:0::0::
+2:0::0::
+2:0::0::
+2:0::0::Animate items list
+2:0::0::------------------
+2:0::0::
+2:0::0::                     name    swamp man-like    beast  fighter
+2:0::0::                     ----    ----- --------    -----  -------
+2:0::0::
+2:0::0::Skill use counts:
+2:0::0::-----------------
+2:0::0::
+2:0::0::count   who  skill  name
+2:0::0::-----   ---  -----  ----
+2:0::0::
+2:0::0::             finished  unfinished
+2:0::0::           +----------------------
+2:0::0::    galley |        0         0
+2:0::0:: roundship |        0         0
+2:0::0::     tower |        0         0
+2:0::0::    castle |        0         0
+2:0::0::      mine |        0         0
+2:0::0::       inn |        0         0
+2:0::0::    temple |        0         0
+2:0::0::
+2:0::0::    nobles  region
+2:0::0::    ------  ------
+2:0::0::         2  Region
+2:0::0::    ======  
+2:0::0::         2  
+2:0::0::
+2:0::0::0/1 provinces visited (0%)
+2:0::0::0/0 sublocs visited (0%)
+2:0::0::    0% visible, 0% hidden
+2:0::0::    0% of visisted province's sublocs found
+2:0::0::    0% visible, 0% hidden
+2:0::0::
+2:0::0::2 chars: 0 oath (0%), 0 fear (0%), 0 contract (0%), 2 unsworn (100%)
+2:0::0::
+2:0::0::
+2:0::0::Skills known by players:
+2:0::0::------------------------
+2:0::0::
+2:0::0::count  skill   use  name
+2:0::0::-----  -----   ---  ----
+2:0::0::
+2:0::0::rank        gold  faction
+2:0::0::----        ----  -------
+2:0::0::   1           0  Player~[200]
+2:0::0::   2           0  Player~[201]
+2:0::0::
+2:0::0::rank      nobles  faction
+2:0::0::----      ------  -------
+2:0::0::   1           2  Player~[200]
+2:0::0::   2           0  Player~[201]
+2:0::0::
+2:0::0:: who age  gold units  bld subloc ships skills
+2:0::0:: --- ---  ---- -----  --- ------ ----- ------
+2:0::0:: 200   0     0     0                           Player
+2:0::0:: 201   0     0     0                           Player
+2:0::0::
+2:0::0::item name                     weight land ride  fly
+2:0::0::---- ----                     ------ ---- ----  ---
+2:0::0::   1 <no subkind>                  0    0    0    0
+2:0::0::
+
+end file bytes
+> life path log/200
+path log/200 missing
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+gm_report()
+gm_report()
+
+exit 0
+stdout:
+section GM root output failure occurs before all player geography allocation
+> lore_root
+> entity 209 1 49
+> entity 202 1 62
+> entity 1 4 0
+> report block 209
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> link 9000 1001
+> report gm 209
+stderr:
+gm_report()
+alloc_fp: can't open ./log/209: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section GM root loyalty assertion before faction details notices and item recipient
+> lore_root
+> set skill_player 203
+> entity 203 1 48
+> entity 1 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> link 9000 1001
+> field 1000 loyal 5
+> report gm 200
+stderr:
+gm_report()
+loy_kind = 5
+assertion failure: olympia/gm.c (659): FALSE
+
+exit 134
+stdout:
+section GM root invalid notice reached after player allocation and before items
+> lore_root
+> set skill_player 203
+> entity 203 1 48
+> entity 1 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> link 9000 1001
+> entity 9100 10 0
+> link 9000 9100
+> report gm 200
+stderr:
+gm_report()
+assertion failure: olympia/display.c (912): FALSE
+
+exit 134

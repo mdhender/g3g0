@@ -5,6 +5,153 @@ package olympia
 
 import "fmt"
 
+// wealthListComp and noblesListComp are gm.c:739–748 and 794–803.
+func (w *world) wealthListComp(a, b int) int { return w.skillsKnownComp(a, b) }
+func (w *world) noblesListComp(a, b int) int { return w.skillsKnownComp(a, b) }
+
+// gmFactionWealth is complete gm.c:751–791. Only regular factions rank,
+// but every character contributes to its owner's scratch total.
+func (w *world) gmFactionWealth(pl int) {
+	w.gmWealthList.Clear()
+	w.clearTemps(tPlayer)
+	for i := range w.loopKind(tChar) {
+		w.bx[w.player(i)].temp += int32(w.hasItem(i, itemGold))
+	}
+	for i := range w.loopKind(tPlayer) {
+		if w.subkind(i) == subPlRegular {
+			w.gmWealthList.Append(i)
+		}
+	}
+	safeQsort(w.gmWealthList, w.wealthListComp)
+	w.outPath, w.outAltWho = master, 2
+	w.commandOut(pl, "%4s %11s  %s", "rank", "gold", "faction")
+	w.commandOut(pl, "%4s %11s  %s", "----", "----", "-------")
+	for i, n := range w.gmWealthList {
+		w.commandOut(pl, "%4d %11s  %s", i+1, commaNum(int(w.bx[n].temp)), w.boxName(n))
+	}
+	w.commandOut(pl, "")
+	w.outPath, w.outAltWho = 0, 0
+}
+
+// gmNoblesList is complete gm.c:806–846, including all character subtypes.
+func (w *world) gmNoblesList(pl int) {
+	w.gmNoblesListScratch.Clear()
+	w.clearTemps(tPlayer)
+	for i := range w.loopKind(tChar) {
+		w.bx[w.player(i)].temp++
+	}
+	for i := range w.loopKind(tPlayer) {
+		if w.subkind(i) == subPlRegular {
+			w.gmNoblesListScratch.Append(i)
+		}
+	}
+	safeQsort(w.gmNoblesListScratch, w.noblesListComp)
+	w.outPath, w.outAltWho = master, 2
+	w.commandOut(pl, "%4s %11s  %s", "rank", "nobles", "faction")
+	w.commandOut(pl, "%4s %11s  %s", "----", "------", "-------")
+	for i, n := range w.gmNoblesListScratch {
+		w.commandOut(pl, "%4d %11s  %s", i+1, commaNum(int(w.bx[n].temp)), w.boxName(n))
+	}
+	w.commandOut(pl, "")
+	w.outPath, w.outAltWho = 0, 0
+}
+
+// gmPlayerDetails is complete gm.c:849–961. Separate unit traversals retain
+// the source's ownership/read order; no player record is allocated for age.
+func (w *world) gmPlayerDetails(pl int) {
+	w.outPath, w.outAltWho = master, 2
+	w.commandOut(pl, "%4s %3s %5s %5s %4s %6s %5s %6s", "who", "age", "gold", "units", "bld", "subloc", "ships", "skills")
+	w.commandOut(pl, "%4s %3s %5s %5s %4s %6s %5s %6s", "---", "---", "----", "-----", "---", "------", "-----", "------")
+	for i := range w.loopKind(tPlayer) {
+		if w.subkind(i) == subPlSystem {
+			continue
+		}
+		var gold, units, buildings, sublocs, ships, skills int32
+		for j := range w.loopUnits(i) {
+			gold += int32(w.hasItem(j, itemGold))
+		}
+		for range w.loopUnits(i) {
+			units++
+		}
+		for j := range w.loopUnits(i) {
+			where := w.subloc(j)
+			if w.locDepth(where) == locBuild && w.buildingOwner(where) == j && !w.isShip(where) && !w.isShipNotdone(where) {
+				buildings++
+			}
+		}
+		for j := range w.loopUnits(i) {
+			where := w.subloc(j)
+			if w.locDepth(where) == locSubloc && w.firstCharacter(where) == j {
+				sublocs++
+			}
+		}
+		for j := range w.loopUnits(i) {
+			where := w.subloc(j)
+			if (w.isShip(where) || w.isShipNotdone(where)) && w.buildingOwner(where) == j {
+				ships++
+			}
+		}
+		w.clearTemps(tSkill)
+		for j := range w.loopUnits(i) {
+			if p := w.rpChar(j); p != nil {
+				for _, e := range p.skills.Copy() {
+					if e.know == skillKnow {
+						w.bx[e.skill].temp++
+					}
+				}
+			}
+		}
+		for j := range w.loopKind(tSkill) {
+			if w.bx[j].temp != 0 {
+				skills++
+			}
+		}
+		age := "???"
+		if p := w.rpPlayer(i); p != nil {
+			age = sout("%d", int32(w.sysclock.turn)-p.firstTurn)
+		}
+		w.commandOut(pl, "%4s %3s %5s %5s %4s %6s %5s %6s  %s", boxCodeLess(i), age, knum(gold, false), knum(units, false), knum(buildings, true), knum(sublocs, true), knum(ships, true), knum(skills, true), w.justName(i))
+	}
+	w.commandOut(pl, "")
+	w.outPath, w.outAltWho = 0, 0
+}
+
+// listAllNotices is complete gm.c:964–992; real posts validate before text.
+func (w *world) listAllNotices(pl int) {
+	w.clearTemps(tLoc)
+	for i := range w.loopKind(tPost) {
+		w.bx[w.subloc(i)].temp++
+	}
+	w.outPath, w.outAltWho = master, 2
+	for i := range w.loopKind(tLoc) {
+		if w.bx[i].temp != 0 {
+			w.showLocPosts(pl, i, true)
+		}
+	}
+	w.outPath, w.outAltWho = 0, 0
+}
+
+// gmReport is complete gm.c:1025–1047. Item output has its own recipient.
+func (w *world) gmReport(pl int) {
+	w.stage("gm_report()")
+	w.gmShowInterestingAttributes(pl)
+	w.gmShowGold(pl)
+	w.gmShowControlArts(pl)
+	w.gmListAnimateItems(pl)
+	w.gmShowSkillUseCounts(pl)
+	w.gmCountStuff(pl)
+	w.gmLandStats(pl)
+	w.gmShowGateStats(pl)
+	w.gmShowLocsVisited(pl)
+	w.gmLoyaltyStats(pl)
+	w.gmShowSkillsKnown(pl)
+	w.gmFactionWealth(pl)
+	w.gmNoblesList(pl)
+	w.gmPlayerDetails(pl)
+	w.listAllNotices(pl)
+	w.listAllItems(int(w.skillPlayer))
+}
+
 // skillUseComp is gm.c:40–54, including the pinned ID tie-break.
 func (w *world) skillUseComp(a, b int) int {
 	pa, pb := w.rpSkill(a), w.rpSkill(b)

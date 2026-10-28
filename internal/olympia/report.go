@@ -905,21 +905,6 @@ func (w *world) playerReport() {
 	w.outAltWho = 0
 }
 
-// gmReportState projects gm.c:1–1048, not gm_show_all_skills (lore.go).
-// Statistics, sorted scratch copies, item/notice text and render-only entity
-// traversals remain stage 2. gate_stats/locs_visited allocate ALL players and
-// loop_known sorts the stored lists; neither pass grants knowledge. No active
-// input files are read by this closure. list_all_items outputs to skill_player
-// last, independently of the GM recipient and its subtype.
-func (w *world) gmReportState(pl int) {
-	w.stage("gm_report()")
-	w.reportOutputState(pl)
-	for i := range w.loopKind(tPlayer) {
-		sortKnown(w.pPlayer(i).known)
-	}
-	w.reportOutputState(int(w.skillPlayer))
-}
-
 // genIncludeSupState preserves report.c:1423–1566's existing-output input
 // validation. It must not synthesize memberships for omitted report bodies.
 // rep_char (1371–1389) sorts a COPY, then p_misc allocates corpse records;

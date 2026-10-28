@@ -1070,6 +1070,20 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		case "gm_economy", "gm_stats":
 			action, pl := args.word(), args.num(t)
 			switch action {
+			case "scratch":
+				for _, kind := range []int{tPlayer, tSkill} {
+					for n := range w.loopKind(kind) {
+						fmt.Fprintf(&stdout, "gm temp %d %d\n", n, w.bx[n].temp)
+					}
+				}
+			case "wealth":
+				w.gmFactionWealth(pl)
+			case "nobles":
+				w.gmNoblesList(pl)
+			case "details":
+				w.gmPlayerDetails(pl)
+			case "notices":
+				w.listAllNotices(pl)
 			case "use":
 				w.gmShowSkillUseCounts(pl)
 			case "skills":
@@ -1815,7 +1829,7 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "garrisons":
 				w.garrisonSummary(args.num(t))
 			case "gm":
-				w.gmReportState(args.num(t))
+				w.gmReport(args.num(t))
 			case "include":
 				w.genIncludeSectionState()
 			case "include_sup":

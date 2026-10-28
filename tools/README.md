@@ -6,6 +6,30 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Complete GM report and faction tables (#163)
+
+Existing gm.go completes faction comparators/tables, player details and notices
+(gm.c **739–992**) and the complete root **1025–1047**. Main/oracle replace
+gmReportState, removed from report.go, with one real rendering pass in C order.
+Final item output independently targets skillPlayer. Real ownership, known-skill
+copies, scratch lists/temps, notices and cached output are reused.
+
+At **0.103.0-alpha**, twelve appended cases match unchanged C twice and Go:
+**1205 sections / 80495 lines / 1579486 output bytes**. Inherited **1193
+sections / 79511 lines / 1556344 output bytes** and **495251 input bytes**
+remain exact prefixes. All **23** extracted gm.c definitions are unchanged
+exactly once. Four marker controls reject before expected-status/update
+acceptance with unchanged hashes; probes and matching captures are removed.
+See [closure and hashes](command-compat#complete-gm-report-and-faction-tables-163).
+
+Independent parent complete-C/diff review and all eight routine tools, bounded
+vet and fresh bounded tests pass (Olympia **1.728s**); logs `tmp/parent163-*.log`.
+Fresh strict post-#163 still has eight saved-report byte differences, exit
+**1** before 13 lifecycle controls. C repeats deterministically, both engines
+exit **0**, and raw streams/paths/types/modes match. Log:
+`tmp/parent163-strict.log`; captures `tmp/parent-stage2-turn`. No stage-exit
+acceptance. G3 #358/#359 unchanged/nonblocking; malformed **C136/Go2** is not parity.
+
 ## GM skills geography and loyalty (#162)
 
 Existing gm.go completes pinned gm.c skill comparators/reports **40–179**,

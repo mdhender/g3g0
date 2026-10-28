@@ -3,6 +3,100 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Complete GM report and faction tables (#163)
+
+Existing gm.go completes seven pinned gm.c definitions:
+
+| Definition | Inclusive lines |
+|---|---|
+| `wealth_list_comp` | 739–748 |
+| `gm_faction_wealth` | 751–791 |
+| `nobles_list_comp` | 794–803 |
+| `gm_nobles_list` | 806–846 |
+| `gm_player_details` | 849–961 |
+| `list_all_notices` | 964–992 |
+| `gm_report` | 1025–1047 |
+
+The existing command oracle already extracted the complete real definitions.
+All **23** gm.c definitions, including these seven, are verified unchanged
+exactly once against the immutable git object, with original `#line` locations.
+Adapters expose faction/detail/notice leaves and observe player/skill scratch;
+they do not rewrite C reporting. No C source dependency or pin changes.
+Go removes gmReportState from report.go and replaces its main/oracle calls
+with the real gmReport root, preserving every call once in source order.
+Final listAllItems still targets **skillPlayer**, independently of the GM.
+Real showLocPosts, cached output ownership, player/unit/skill loops, ownership,
+formatters and scratch sorting are reused. Two static faction lists retain
+their allocation across calls. No later include/writer/command work or
+parallel projection/rendering pass is added; this closure reads no lore files.
+
+Twelve appended cases (**8 status 0 / 4 status 134**) actually reach:
+
+- Wealth **1,234 / 1,234 / 1,234** and noble-count ties in ascending ID order
+  despite reversed allocation, regular-only ranking rows, and scratch counting
+  all owners including silent/NPC/system (**9,999 / 8,888 / 7,777** gold).
+  Changed lords and repeated/empty reports prove scratch and list clearing.
+- Details exclude system but include silent/NPC players, preserve missing
+  player records with **???** age, and show both **14** and **-2** ages.
+  Real ownership produces **4,001 gold / 6 units / 1 building / 1 sublocation /
+  2 ships / 3 unique known skills**, including finished/unfinished ships,
+  foreign ownership, a prisoner and duplicate/partial/unexpected skill rows.
+  Repeats preserve the original rows; final player/skill scratch is observed.
+- Actual creator/anonymous, multiline/empty-line/raw-inline posts in a
+  province and city, full location names and indentation; a ship post is
+  counted in ship scratch but omitted by the original location-only loop.
+  Invalid post text asserts at **display.c:912** before a separator/output.
+- Complete root output order, all-player allocation and stored knowledge
+  sorting, with **2,804-byte** GM output and independent **189-byte** item
+  output. Repeated zero-gate roots with the same recipient retain a renamed
+  cached inode (**5,132 bytes**); the original path remains absent.
+  Root failure controls preserve output-open **sout.c:158**, loyalty
+  **gm.c:659** and post **display.c:912** assertion ordering.
+
+At **0.103.0-alpha**, unchanged C twice and Go match **1205 sections /
+80495 lines / 1579486 output bytes**. Inherited **1193 sections / 79511 lines /
+1556344 output bytes** remain exact, SHA-256
+`1ce0bf7f4c6aaf6772cc23a8e857cd8f17ab972805b79474ad5bbb7bb873d1a0`.
+Inherited **25968 lines / 495251 input bytes** also remain an exact prefix,
+SHA-256 `68727937f0b5f22793da9651202a84d5f945f9e442409ad75c6b222d37a9ec6b`.
+New input: **26294 lines / 501764 bytes**, SHA-256
+`9b6227ece07be605c4abf80cfa8b293910489f64bd4471752b8757a7dc79c2be`.
+New output SHA-256:
+`3e2694726523765da39111b0479262cca4ebe42145f03ee85b316594512b9c90`.
+Constants, complete definitions, exact prefixes and reached branches are
+checked in `tmp/issue163-{source-evidence,evidence}.log`.
+
+Four temporary linker probes wrap only the invalid-notice adapter call,
+emit the rejected missing-dependency marker, and return **0** or abort **134**.
+Default/update runs all reject **section 1199**, harness **2**, before expected
+status or update acceptance; both recording hashes remain unchanged.
+Probe source/compiler wrapper and matching probe captures are removed.
+Logs: `tmp/issue163-negative-{return,abort}-{default,update}.log`,
+`tmp/issue163-probe-evidence.log` and `tmp/issue163-probe-before.sha256`.
+
+Command refresh/default, move/helper/RNG/code/loadsave/turn-driver/default
+turn, bounded vet and fresh bounded defaults pass sequentially (Olympia
+**1.491s**); logs are `tmp/issue163-*.log`. Every compatibility invocation
+explicitly uses `G3_REPO=$PWD/tmp/upstream.git`; engines/tests use shared
+run_limited. Matching command captures are removed.
+Source-only whitespace/gofmt checks pass; full diff whitespace checking flags
+exactly eight intentional trailing-space C-recording lines (unit lists and
+region totals/separators). These bytes are not normalized.
+
+The supplied parent audit covers all six open issues, including unlabeled:
+only #163–166 and trackers #19/#132, no bug/follow-C. No new verified defect,
+missing renderer prerequisite or oversized closure was found. Independent
+parent complete-C/diff review verifies all 23 gm.c definitions unchanged
+exactly once and both inherited prefixes byte-exact. All eight routine tools,
+bounded vet and fresh bounded tests pass (Olympia **1.728s**);
+logs `tmp/parent163-*.log`.
+
+Fresh strict post-#163 remains red: deterministic C repeats, both engines
+**0**, equal raw streams/paths/types/modes, eight report-byte differences,
+exit **1** before 13 lifecycle controls. Log `tmp/parent163-strict.log`;
+captures `tmp/parent-stage2-turn`. No stage-exit acceptance is claimed.
+G3 #358/#359 remain nonblocking; malformed **C136/Go2** is not parity.
+
 ## GM skills geography and loyalty (#162)
 
 Existing gm.go completes nine pinned gm.c definitions, verified unchanged

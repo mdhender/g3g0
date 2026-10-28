@@ -316,7 +316,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 		w.playerReport()
 		w.scanCharSkillLore()
 		w.showLoreSheets()
-		w.gmReportState(int(w.gmPlayer))
+		w.gmReport(int(w.gmPlayer))
 		w.gmShowAllSkills(int(w.skillPlayer))
 		w.addNewPlayers()
 		w.genIncludeSectionState() // must be last, before closing output

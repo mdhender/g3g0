@@ -339,6 +339,16 @@ void drv_gm_economy(char *part, int pl) {
  else if (!strcmp(part,"locations")) gm_show_locs_visited(pl);
  else if (!strcmp(part,"loyalty")) gm_loyalty_stats(pl);
  else if (!strcmp(part,"regions")) gm_land_stats(pl);
+ else if (!strcmp(part,"wealth")) gm_faction_wealth(pl);
+ else if (!strcmp(part,"nobles")) gm_nobles_list(pl);
+ else if (!strcmp(part,"details")) gm_player_details(pl);
+ else if (!strcmp(part,"notices")) list_all_notices(pl);
+ else if (!strcmp(part,"scratch")) {
+  int n, k, kinds[]={T_player,T_skill};
+  for(k=0;k<2;k++) {
+   loop_kind(kinds[k],n) { printf("gm temp %d %d\\n",n,bx[n]->temp); } next_kind;
+  }
+ }
  else abort();
 }
 int drv_gm_pct(int n, int d) { return pct(n,d); }
@@ -613,12 +623,14 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" || die "section $i reached a C stub"
-  if [[ "${section_names[$i]}" == 'section GM economy '* || "${section_names[$i]}" == 'section GM stats '* ]]; then
+  if [[ "${section_names[$i]}" == 'section GM '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in
-    'section GM economy invalid '*|'section GM stats invalid '*) expected_status=134 ;;
+    'section GM economy invalid '*|'section GM stats invalid '*|\
+    'section GM notices invalid '*|'section GM root invalid '*|\
+    'section GM root output failure '*|'section GM root loyalty assertion '*) expected_status=134 ;;
    esac
-   [ "$status" = "$expected_status" ] || die "unexpected GM economy status $status in section $i; expected $expected_status"
+   [ "$status" = "$expected_status" ] || die "unexpected GM report status $status in section $i; expected $expected_status"
   fi
   if [[ "${section_names[$i]}" == 'section lore render '* ]]; then
    expected_status=0
