@@ -571,6 +571,37 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.setKnown(args.num(t), args.num(t))
 		case "additem":
 			w.addItem(args.num(t), args.num(t), args.num(t))
+		case "structure":
+			switch action := args.word(); action {
+			case "damage":
+				fmt.Fprintf(&stdout, "destroyed %d\n", b2i(w.addStructureDamage(args.num(t), args.num(t), args.num(t) != 0)))
+			case "sink":
+				w.sinkShip(args.num(t))
+			case "collapse":
+				w.buildingCollapses(args.num(t))
+			case "remove":
+				w.getRidOfCollapsedMine(args.num(t))
+			case "ocean":
+				w.killStackOcean(args.num(t))
+			case "state":
+				n := args.num(t)
+				damage, delay, castle, bind := -1, 0, 0, 0
+				if p := w.rpSubloc(n); p != nil {
+					damage = int(p.damage)
+				}
+				if m := w.rpMisc(n); m != nil {
+					delay, castle, bind = int(m.mineDelay), int(m.garrCastle), int(m.bindStorm)
+				}
+				fmt.Fprintf(&stdout, "structure %d kind %d sub %d damage %d delay %d castle %d bind %d\n", n, w.kind(n), w.subkind(n), damage, delay, castle, bind)
+				if p := w.rpSubloc(n); p != nil {
+					helperList(&stdout, "bound", p.boundStorms)
+				} else {
+					helperList(&stdout, "bound", nil)
+				}
+				helperList(&stdout, "here", w.rpLocInfo(n).hereList)
+			default:
+				t.Fatalf("unknown structure %s", action)
+			}
 		case "death":
 			switch action := args.word(); action {
 			case "kill":
@@ -929,6 +960,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pMisc(n).bindStorm = int32(a)
 			case "bound_storm":
 				w.pSubloc(n).boundStorms.Append(a)
+			case "damage":
+				w.pSubloc(n).damage = uint8(a)
 			case "loyal":
 				w.pChar(n).loyKind = int8(a)
 			case "moving":

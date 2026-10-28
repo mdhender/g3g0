@@ -65,6 +65,124 @@ func (w *world) checkAura(who, amount int) bool {
 	return true
 }
 
+// killStackOcean preserves the reverse snapshot death order of u.c:184–217.
+func (w *world) killStackOcean(who int) {
+	l := w.allStack(who)
+	for i := len(l) - 1; i >= 0; i-- {
+		who := l[i]
+		w.killChar(who, 0)
+		if w.kind(who) == tChar {
+			w.extractStackedUnit(who)
+			where := w.findNearestLand(w.province(who))
+			w.commandOut(who, "%s washed ashore at %s.", w.boxName(who), w.boxName(where))
+			w.logWrite(11, "kill_stack_ocean, swam ashore, who=%s", boxCodeLess(who))
+			w.moveStack(who, where)
+		}
+	}
+}
+
+func (w *world) sinkShip(ship int) {
+	where := w.subloc(ship)
+	w.logWrite(11, "%s has sunk in %s.", w.boxName(ship), w.boxName(w.subloc(ship)))
+	w.commandOut(ship, "%s has sunk!", w.boxName(ship))
+	w.commandOut(w.subloc(ship), "%s has sunk!", w.boxName(ship))
+	if w.subkind(where) == subOcean {
+		assert(w.validBox(ship), "olympia/u.c", 1030, "valid_box(ship)")
+		for who := range w.loopHere(ship) {
+			if w.kind(who) == tChar {
+				w.killStackOcean(who)
+			}
+		}
+	} else {
+		assert(w.validBox(ship), "olympia/u.c", 1039, "valid_box(ship)")
+		for who := range w.loopHere(ship) {
+			if w.kind(who) == tChar {
+				w.moveStack(who, where)
+			} else {
+				w.setWhere(who, where)
+			}
+		}
+	}
+	if p := w.rpSubloc(ship); p != nil {
+		for _, storm := range p.boundStorms {
+			if w.kind(storm) == tStorm {
+				w.pMisc(storm).bindStorm = 0
+			}
+		}
+		p.boundStorms.Clear()
+	}
+	w.setWhere(ship, 0)
+	w.deleteBox(ship)
+}
+
+func (w *world) getRidOfCollapsedMine(fort int) {
+	where := w.subloc(fort)
+	assert(w.subkind(fort) == subMineCollapsed, "olympia/u.c", 1077, "subkind(fort) == sub_mine_collapsed")
+	assert(w.validBox(fort), "olympia/u.c", 1083, "valid_box(fort)")
+	for who := range w.loopHere(fort) {
+		if w.kind(who) == tChar {
+			w.moveStack(who, where)
+		} else {
+			w.setWhere(who, where)
+		}
+	}
+	w.setWhere(fort, 0)
+	w.deleteBox(fort)
+}
+
+func (w *world) buildingCollapses(fort int) {
+	where := w.subloc(fort)
+	w.logWrite(11, "%s collapsed in %s.", w.boxName(fort), w.boxName(where))
+	w.vectorCharHere(fort)
+	w.outVector.Append(where)
+	w.commandOut(vect, "%s collapses!", w.boxName(fort))
+	assert(w.validBox(fort), "olympia/u.c", 1110, "valid_box(fort)")
+	for who := range w.loopHere(fort) {
+		if w.kind(who) == tChar {
+			w.moveStack(who, where)
+		} else {
+			w.setWhere(who, where)
+		}
+	}
+	if w.subkind(fort) == subMine {
+		w.changeBoxSubkind(fort, subMineCollapsed)
+		w.pMisc(fort).mineDelay = 8
+		return
+	}
+	if w.subkind(fort) == subCastle {
+		for i := range w.loopSubkind(subGarrison) {
+			if p := w.rpMisc(i); p != nil && int(p.garrCastle) == fort {
+				w.pMisc(i).garrCastle = 0
+			}
+		}
+	}
+	w.setWhere(fort, 0)
+	w.deleteBox(fort)
+}
+
+func (w *world) addStructureDamage(fort, damage int, canDestroy bool) bool {
+	assert(damage >= 0, "olympia/u.c", 1148, "damage >= 0")
+	p := w.pSubloc(fort)
+	if int(p.damage)+damage > 100 {
+		p.damage = 100
+	} else {
+		p.damage += uint8(damage)
+	}
+	if p.damage < 100 {
+		return false
+	}
+	if !canDestroy {
+		p.damage = 99
+		return false
+	}
+	if w.isShip(fort) {
+		w.sinkShip(fort)
+	} else {
+		w.buildingCollapses(fort)
+	}
+	return true
+}
+
 func (w *world) surviveFatal(who int) bool {
 	if w.hasSkill(who, skSurviveFatal) == 0 {
 		return false

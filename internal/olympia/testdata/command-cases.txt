@@ -11063,3 +11063,588 @@ entity 1002 2 54
 field 1002 lord 205
 field 205 unit 1002
 faery unit 1002
+
+section structure damage zero below exact and over cap without destruction
+entity 9000 3 3
+entity 9100 3 37
+link 9000 9100
+structure damage 9100 0 1
+save 9100
+structure damage 9100 98 1
+save 9100
+structure damage 9100 1 1
+save 9100
+structure damage 9100 1 0
+save 9100
+structure damage 9100 0 0
+save 9100
+structure damage 9100 900 0
+save 9100
+structure damage 9100 0 1
+save 9100
+save 9000
+structure damage 9100 1 1
+save 9100
+save 9000
+
+section structure damage exact hundred destroys empty tower
+set gm 200
+entity 9000 3 3
+entity 9100 3 46
+link 9000 9100
+structure damage 9100 100 1
+save 9100
+save 9000
+inherit state
+readlog 200
+
+section structure damage over hundred destroys empty ship
+set gm 200
+entity 9000 3 3
+entity 9100 9 30
+link 9000 9100
+structure damage 9100 101 1
+save 9100
+save 9000
+readlog 200
+
+section structure loaded hundred and byte damage above hundred cap before guard
+entity 9000 3 3
+entity 9100 3 37
+link 9000 9100
+field 9100 damage 100
+structure damage 9100 0 0
+save 9100
+field 9100 damage 255
+structure damage 9100 0 0
+save 9100
+field 9100 damage 100
+structure damage 9100 0 1
+save 9100
+save 9000
+
+section structure invalid negative damage asserts before optional state allocation
+entity 9100 3 37
+structure damage 9100 -1 0
+
+section structure invalid removal requires collapsed mine subtype
+entity 9100 3 40
+structure remove 9100
+
+section structure mine collapse retains subtype delay damage then final removal evacuates again
+set gm 200
+set day 9
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9100 3 40
+entity 9200 4 0
+link 9000 9100
+link 9100 1001
+link 1001 1000
+link 9100 9200
+field 1001 health 73
+field 1000 health 61
+field 1001 moving 5
+field 1000 prisoner 1
+structure damage 9100 140 1
+structure state 9100
+save 9100
+save 9000
+save 1001
+save 1000
+save 9200
+link 9100 1001
+link 9100 9200
+structure remove 9100
+structure state 9100
+save 9100
+save 9000
+save 1001
+save 1000
+save 9200
+pstate 200
+inherit state
+readlog 200
+
+section structure castle collapse clears every matching garrison only after ordered evacuation
+set gm 200
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9100 3 32
+entity 9101 3 32
+entity 1103 2 64
+entity 1101 2 64
+entity 1102 2 64
+entity 1104 2 0
+entity 9200 4 0
+link 9000 9100
+link 9000 9101
+link 9100 1001
+link 1001 1000
+link 9100 9200
+field 1103 castle 9100
+field 1101 castle 9100
+field 1102 castle 9101
+field 1104 castle 9100
+structure damage 9100 100 1
+structure state 1103
+structure state 1101
+structure state 1102
+structure state 1104
+structure state 9100
+save 1103
+save 1101
+save 1102
+save 1104
+save 9100
+save 9101
+save 1001
+save 1000
+save 9200
+save 9000
+inherit state
+readlog 200
+
+section structure collapse VECT includes foreign nested occupants then province viewers
+set gm 200
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9100 3 37
+entity 1002 2 0
+field 1002 lord 201
+link 9000 9100
+link 9100 1000
+link 1000 1002
+link 9100 1001
+field 200 touched 9000
+field 201 touched 9000
+structure collapse 9100
+save 9000
+save 1000
+save 1001
+save 1002
+inherit state
+readlog 200
+readlog 201
+
+section structure land sinking moves adjacent roots nested stack and noncharacters unbinds stale list
+set gm 200
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9100 9 31
+entity 1002 2 0
+field 1002 lord 201
+entity 9200 4 0
+entity 9300 11 59
+entity 9301 11 57
+entity 9302 0 0
+entity 9303 4 0
+link 9000 9100
+link 9000 9300
+link 9000 9301
+link 9100 1000
+link 1000 1002
+link 9100 1001
+link 9100 9200
+field 1000 moving 7
+field 1002 moving 7
+field 9300 bind_storm 9100
+field 9301 bind_storm 9100
+field 9303 bind_storm 9100
+field 9100 bound_storm 9302
+field 9100 bound_storm 9303
+field 9100 bound_storm 9300
+field 9100 bound_storm 9301
+structure damage 9100 100 1
+structure state 9100
+structure state 9300
+structure state 9301
+structure state 9303
+save 9100
+save 9000
+save 1000
+save 1001
+save 1002
+save 9200
+save 9300
+save 9301
+save 9303
+inherit state
+readlog 200
+
+section structure city sinking without optional ship record preserves real arrival
+set gm 200
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9001 3 14
+entity 9100 9 35
+link 9000 9001
+link 9001 9100
+link 9100 1000
+structure sink 9100
+save 1000
+save 9100
+save 9001
+pstate 200
+readlog 200
+
+section structure ocean sinking reverse nested death order ordinary bodies queues and shared mint
+set gm 200
+master 0
+set turn 1
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 9002 3 1
+entity 9003 3 4
+link 10000 9000
+link 10000 9001
+link 10000 9002
+link 10000 9003
+routes 9000 9002 9001 0 9003
+routes 9002 0 9003 9000 0
+entity 9100 9 30
+link 9000 9100
+link 9100 1000
+link 1000 1001
+entity 1002 2 0
+field 1002 lord 201
+link 9100 1002
+entity 10 4 0
+field 10 weight 100
+inventory 1000 10 101
+inventory 1001 10 17
+orders 200 1000 wait time 4
+load
+do
+structure damage 9100 100 1
+death state
+save 1000
+save 1001
+save 1002
+save 9000
+save 9001
+save 9003
+save 9100
+pstate 200
+pstate 201
+orders_file 200
+inherit state
+readlog 200
+readlog 201
+entity_rolls 1000 9 9000
+newitem 9001 0
+save_new
+
+section structure ocean survivor child washes before parent death and later sibling survivor
+set gm 200
+master 0
+set turn 1
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 9002 3 1
+entity 9003 3 4
+link 10000 9000
+link 10000 9001
+link 10000 9002
+link 10000 9003
+routes 9000 9002 9001 0 9003
+routes 9002 0 9003 9000 0
+entity 9100 9 31
+link 9000 9100
+link 9100 1000
+link 1000 1001
+entity 1002 2 0
+field 1002 lord 201
+link 9100 1002
+entity 611 5 43
+learn 1001 611 2 21
+learn 1002 611 2 21
+field 1001 sick 1
+field 1001 health 1
+orders 200 1001 wait time 7
+entity 10 4 0
+inventory 1001 10 17
+entity 9300 11 59
+entity 9301 11 58
+entity 9302 0 0
+link 9000 9300
+link 9000 9301
+field 9300 bind_storm 9100
+field 9301 bind_storm 9100
+field 9100 bound_storm 9302
+field 9100 bound_storm 9302
+field 9100 bound_storm 9300
+field 9100 bound_storm 9301
+structure damage 9100 101 1
+structure state 9100
+structure state 9300
+structure state 9301
+death state
+save 1000
+save 1001
+save 1002
+save 9000
+save 9001
+save 9002
+save 9003
+save 9300
+save 9301
+pstate 200
+pstate 201
+orders_file 200
+inherit state
+readlog 200
+readlog 201
+entity_rolls 1000 9 9000
+newitem 9001 0
+save_new
+
+section structure direct ocean stack parent survives after nested deaths island saved order
+set gm 200
+master 0
+set turn 1
+entity 10 4 0
+field 10 weight 100
+entity 10000 3 50
+entity 9000 3 1
+entity 9100 3 9
+entity 9101 3 9
+link 10000 9000
+link 9000 9101
+link 9000 9100
+link 9000 1000
+link 1000 1001
+entity 611 5 43
+learn 1000 611 2 21
+structure ocean 1000
+death state
+save 1000
+save 1001
+save 9000
+save 9101
+save 9100
+inherit state
+readlog 200
+entity_rolls 1000 9 9000
+newitem 9101 0
+save_new
+
+section structure ocean NPC deaths no land bounded nearest search no survivor invented
+set gm 200
+master 0
+set turn 1
+entity 10000 3 50
+entity 9000 3 1
+link 10000 9000
+routes 9000 9000 9000 9000 9000
+entity 9100 9 30
+link 9000 9100
+link 9100 1000
+link 9100 1001
+field 1000 loyal 4
+field 1001 loyal 4
+structure damage 9100 100 1
+death state
+save 1000
+save 1001
+save 9000
+inherit state
+readlog 200
+entity_rolls 1000 9 9000
+
+section structure zero damage on undamaged ship allocates optional record without RNG
+master 0
+set turn 1
+entity 9000 3 3
+entity 9100 9 30
+link 9000 9100
+structure damage 9100 0 1
+save 9100
+entity_rolls 1000 9 9000
+newitem 9000 0
+save_new
+
+section structure shared stream control without optional damage call
+master 0
+set turn 1
+entity 9000 3 3
+entity 9100 9 30
+link 9000 9100
+entity_rolls 1000 9 9000
+newitem 9000 0
+save_new
+
+section structure ocean damage guard preserves stacks skills orders bound storms until next increment
+set gm 200
+master 0
+set turn 1
+resolve_wait
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+link 10000 9000
+link 10000 9001
+routes 9000 9001 0 0 0
+entity 9100 9 30
+entity 9300 11 59
+link 9000 9100
+link 9000 9300
+link 9100 1000
+link 1000 1001
+entity 611 5 43
+learn 1000 611 2 21
+learn 1001 611 2 21
+field 9300 bind_storm 9100
+field 9100 bound_storm 9300
+queue wait time 4
+load
+do
+structure damage 9100 100 0
+structure state 9100
+save 9100
+save 1000
+save 1001
+save 9300
+dump
+structure damage 9100 0 1
+save 9100
+dump
+structure damage 9100 1 1
+structure state 9100
+structure state 9300
+save 9100
+save 1000
+save 1001
+save 9300
+save 9000
+save 9001
+dump
+pstate 200
+orders_file 200
+inherit state
+readlog 200
+entity_rolls 1000 9 9000
+newitem 9001 0
+save_new
+
+section structure ocean deep snapshot reverse sibling order and guarded entity stream
+set gm 200
+master 0
+set turn 1
+entity_rolls 1000 9 9000
+master 9
+set day 19
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 9002 3 1
+entity 9003 3 4
+link 10000 9000
+link 10000 9001
+link 10000 9002
+link 10000 9003
+routes 9000 9002 9001 0 9003
+routes 9002 0 9003 9000 0
+link 9000 1000
+link 1000 1001
+entity 1003 2 0
+entity 1002 2 0
+field 1003 lord 201
+field 1002 lord 201
+link 1001 1003
+link 1001 1002
+entity 611 5 43
+learn 1000 611 2 21
+learn 1001 611 2 21
+learn 1003 611 2 21
+learn 1002 611 2 21
+structure ocean 1000
+save 9000
+save 9001
+save 9002
+save 9003
+save 1000
+save 1001
+save 1002
+save 1003
+inherit state
+readlog 200
+readlog 201
+entity_rolls 1000 9 9000
+set turn 2
+entity_rolls 1000 9 9000
+newitem 9001 0
+save_new
+
+section structure ocean asymmetric exits select different shore after keyed control
+set gm 200
+master 0
+set turn 1
+entity_rolls 1000 9 9000
+master 9
+set day 19
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 9002 3 1
+entity 9003 3 4
+link 10000 9000
+link 10000 9001
+link 10000 9002
+link 10000 9003
+routes 9000 9002 9003 0 9001
+routes 9002 0 9003 9000 0
+link 9000 1000
+entity 611 5 43
+learn 1000 611 2 21
+structure ocean 1000
+save 9000
+save 9001
+save 9003
+save 1000
+inherit state
+readlog 200
+entity_rolls 1000 9 9000
+set turn 2
+entity_rolls 1000 9 9000
+newitem 9001 0
+save_new
+
+section structure ocean direct noncharacter cargo ignored while all character roots survive
+set gm 200
+master 0
+set turn 1
+entity 10000 3 50
+entity 9000 3 1
+link 10000 9000
+entity 9100 9 30
+entity 9200 4 0
+entity 9201 4 0
+entity 9300 3 9
+link 9000 9100
+link 9000 9300
+link 9100 9200
+link 9100 1000
+link 9100 9201
+link 9100 1001
+entity 611 5 43
+learn 1000 611 2 21
+learn 1001 611 2 21
+structure damage 9100 100 1
+structure state 9100
+save 9100
+save 9200
+save 9201
+save 9300
+save 1000
+save 1001
+save 9000
+inherit state
+readlog 200

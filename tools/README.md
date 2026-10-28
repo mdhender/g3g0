@@ -50,6 +50,15 @@ stone/stack filtering, and real spawned WAIT → eight-day MOVE → WAIT.
 Daily call position is unchanged. Run command/move/helper/rng/code/loadsave/
 turn-driver/default turn sequentially. MESSAGE/ATTACK and unrelated commands
 remain explicitly unported; no new source dependency/pin or full-world success.
+Structural destruction (#120), the bounded prerequisite split from #78,
+extends command-compat with complete u.c add_structure_damage, sink_ship,
+building_collapses, get_rid_of_collapsed_mine and kill_stack_ocean. It reuses
+real death/survival/inheritance/extraction, arrival/nearest-land routing,
+output/VECT and bound-storm state, not successful gameplay substitutes.
+Run the same eight comparisons sequentially before vet/default tests. No new
+source dependency or pin: u.c was already tracked. Daily coastal/mine/inn
+events remain #78, character damage/healing/ocean polling #79, and monthly
+mine decay #88. Full worlds remain opt-in; no stage-exit success is implied.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks

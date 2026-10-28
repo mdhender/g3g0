@@ -36106,3 +36106,1787 @@ stderr:
 assertion failure: olympia/faery.c (581): valid_box(where)
 
 exit 134
+stdout:
+section structure damage zero below exact and over cap without destruction
+> entity 9000 3 3
+> entity 9100 3 37
+> link 9000 9100
+> structure damage 9100 0 1
+destroyed 0
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+SL
+
+> structure damage 9100 98 1
+destroyed 0
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+SL
+ da 98
+
+> structure damage 9100 1 1
+destroyed 0
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+SL
+ da 99
+
+> structure damage 9100 1 0
+destroyed 0
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+SL
+ da 99
+
+> structure damage 9100 0 0
+destroyed 0
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+SL
+ da 99
+
+> structure damage 9100 900 0
+destroyed 0
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+SL
+ da 99
+
+> structure damage 9100 0 1
+destroyed 0
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+SL
+ da 99
+
+> save 9000
+9000 loc plain
+LI
+ hl 9100 
+
+> structure damage 9100 1 1
+destroyed 1
+> save 9100
+> save 9000
+9000 loc plain
+LI
+
+stderr:
+
+exit 0
+stdout:
+section structure damage exact hundred destroys empty tower
+> set gm 200
+> entity 9000 3 3
+> entity 9100 3 46
+> link 9000 9100
+> structure damage 9100 100 1
+destroyed 1
+> save 9100
+> save 9000
+9000 loc plain
+LI
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 11
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+11:0::0::Tower~[9100] collapsed in Plain~[9000].
+stderr:
+
+exit 0
+stdout:
+section structure damage over hundred destroys empty ship
+> set gm 200
+> entity 9000 3 3
+> entity 9100 9 30
+> link 9000 9100
+> structure damage 9100 101 1
+destroyed 1
+> save 9100
+> save 9000
+9000 loc plain
+LI
+
+> readlog 200
+log 200:
+11:0::0::Galley~[9100] has sunk in Plain~[9000].
+stderr:
+
+exit 0
+stdout:
+section structure loaded hundred and byte damage above hundred cap before guard
+> entity 9000 3 3
+> entity 9100 3 37
+> link 9000 9100
+> field 9100 damage 100
+> structure damage 9100 0 0
+destroyed 0
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+SL
+ da 99
+
+> field 9100 damage 255
+> structure damage 9100 0 0
+destroyed 0
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+SL
+ da 99
+
+> field 9100 damage 100
+> structure damage 9100 0 1
+destroyed 1
+> save 9100
+> save 9000
+9000 loc plain
+LI
+
+stderr:
+
+exit 0
+stdout:
+section structure invalid negative damage asserts before optional state allocation
+> entity 9100 3 37
+> structure damage 9100 -1 0
+stderr:
+assertion failure: olympia/u.c (1148): damage >= 0
+
+exit 134
+stdout:
+section structure invalid removal requires collapsed mine subtype
+> entity 9100 3 40
+> structure remove 9100
+stderr:
+assertion failure: olympia/u.c (1077): subkind(fort) == sub_mine_collapsed
+
+exit 134
+stdout:
+section structure mine collapse retains subtype delay damage then final removal evacuates again
+> set gm 200
+> set day 9
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9100 3 40
+> entity 9200 4 0
+> link 9000 9100
+> link 9100 1001
+> link 1001 1000
+> link 9100 9200
+> field 1001 health 73
+> field 1000 health 61
+> field 1001 moving 5
+> field 1000 prisoner 1
+> structure damage 9100 140 1
+destroyed 1
+> structure state 9100
+structure 9100 kind 3 sub 53 damage 100 delay 8 castle 0 bind 0
+bound:
+here:
+> save 9100
+9100 loc collapsed mine
+LI
+ wh 9000
+SL
+ da 100
+MI
+ md 8
+
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 9100 1001 9200 
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+ hl 1000 
+CH
+ lo 200
+ he 73
+ mo 5
+
+> save 1000
+1000 char 0
+LI
+ wh 1001
+CH
+ lo 200
+ he 61
+ pr 1
+
+> save 9200
+9200 item 0
+LI
+ wh 9000
+
+> link 9100 1001
+> link 9100 9200
+> structure remove 9100
+> structure state 9100
+structure 9100 kind 0 sub 53 damage 100 delay 8 castle 0 bind 0
+bound:
+here:
+> save 9100
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 1001 9200 
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+ hl 1000 
+CH
+ lo 200
+ he 73
+ mo 5
+
+> save 1000
+1000 char 0
+LI
+ wh 1001
+CH
+ lo 200
+ he 61
+ pr 1
+
+> save 9200
+9200 item 0
+LI
+ wh 9000
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 1 touched 1 0
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 11 1001
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+11:0::0::Mine~[9100] collapsed in Plain~[9000].
+1001:0::0::Mine~[9100] collapses!
+stderr:
+
+exit 0
+stdout:
+section structure castle collapse clears every matching garrison only after ordered evacuation
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9100 3 32
+> entity 9101 3 32
+> entity 1103 2 64
+> entity 1101 2 64
+> entity 1102 2 64
+> entity 1104 2 0
+> entity 9200 4 0
+> link 9000 9100
+> link 9000 9101
+> link 9100 1001
+> link 1001 1000
+> link 9100 9200
+> field 1103 castle 9100
+> field 1101 castle 9100
+> field 1102 castle 9101
+> field 1104 castle 9100
+> structure damage 9100 100 1
+destroyed 1
+> structure state 1103
+structure 1103 kind 2 sub 64 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 1101
+structure 1101 kind 2 sub 64 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 1102
+structure 1102 kind 2 sub 64 damage -1 delay 0 castle 9101 bind 0
+bound:
+here:
+> structure state 1104
+structure 1104 kind 2 sub 0 damage -1 delay 0 castle 9100 bind 0
+bound:
+here:
+> structure state 9100
+structure 9100 kind 0 sub 32 damage 100 delay 0 castle 0 bind 0
+bound:
+here:
+> save 1103
+1103 char garrison
+
+> save 1101
+1101 char garrison
+
+> save 1102
+1102 char garrison
+MI
+ gc 9101
+
+> save 1104
+1104 char 0
+MI
+
+> save 9100
+> save 9101
+9101 loc castle
+LI
+ wh 9000
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+ hl 1000 
+CH
+ lo 200
+
+> save 1000
+1000 char 0
+LI
+ wh 1001
+CH
+ lo 200
+
+> save 9200
+9200 item 0
+LI
+ wh 9000
+
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 9101 1001 9200 
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 11 1001 1000
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+11:0::0::Castle~[9100] collapsed in Plain~[9000].
+1001:0::0::Castle~[9100] collapses!
+1000:0::0::Castle~[9100] collapses!
+stderr:
+
+exit 0
+stdout:
+section structure collapse VECT includes foreign nested occupants then province viewers
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9100 3 37
+> entity 1002 2 0
+> field 1002 lord 201
+> link 9000 9100
+> link 9100 1000
+> link 1000 1002
+> link 9100 1001
+> field 200 touched 9000
+> field 201 touched 9000
+> structure collapse 9100
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 1000 1001 
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+ hl 1002 
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+LI
+ wh 1000
+CH
+ lo 201
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 11 1000 1001 9000
+inherit player 201
+bits: 1002 9000
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+11:0::0::Inn~[9100] collapsed in Plain~[9000].
+1000:0::0::Inn~[9100] collapses!
+1001:0::0::Inn~[9100] collapses!
+9000:0::0::Inn~[9100] collapses!
+> readlog 201
+log 201:
+1002:0::0::Inn~[9100] collapses!
+9000:0::0::Inn~[9100] collapses!
+stderr:
+
+exit 0
+stdout:
+section structure land sinking moves adjacent roots nested stack and noncharacters unbinds stale list
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9100 9 31
+> entity 1002 2 0
+> field 1002 lord 201
+> entity 9200 4 0
+> entity 9300 11 59
+> entity 9301 11 57
+> entity 9302 0 0
+> entity 9303 4 0
+> link 9000 9100
+> link 9000 9300
+> link 9000 9301
+> link 9100 1000
+> link 1000 1002
+> link 9100 1001
+> link 9100 9200
+> field 1000 moving 7
+> field 1002 moving 7
+> field 9300 bind_storm 9100
+> field 9301 bind_storm 9100
+> field 9303 bind_storm 9100
+> field 9100 bound_storm 9302
+> field 9100 bound_storm 9303
+> field 9100 bound_storm 9300
+> field 9100 bound_storm 9301
+> structure damage 9100 100 1
+destroyed 1
+> structure state 9100
+structure 9100 kind 0 sub 31 damage 100 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9300
+structure 9300 kind 11 sub 59 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9301
+structure 9301 kind 11 sub 57 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9303
+structure 9303 kind 4 sub 0 damage -1 delay 0 castle 0 bind 9100
+bound:
+here:
+> save 9100
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 9300 9301 1000 1001 9200 
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+ hl 1002 
+CH
+ lo 200
+ mo 7
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ mo 7
+
+> save 9200
+9200 item 0
+LI
+ wh 9000
+
+> save 9300
+9300 storm rain
+LI
+ wh 9000
+
+> save 9301
+9301 storm fog
+LI
+ wh 9000
+
+> save 9303
+9303 item 0
+MI
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 11
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+11:0::0::Roundship~[9100] has sunk in Plain~[9000].
+stderr:
+
+exit 0
+stdout:
+section structure city sinking without optional ship record preserves real arrival
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9001 3 14
+> entity 9100 9 35
+> link 9000 9001
+> link 9001 9100
+> link 9100 1000
+> structure sink 9100
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+
+> save 9100
+> save 9001
+9001 loc city
+LI
+ wh 9000
+ hl 1000 
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 1 1
+> readlog 200
+log 200:
+11:0::0::Ghost ship~[9100] has sunk in City~[9001].
+stderr:
+
+exit 0
+stdout:
+section structure ocean sinking reverse nested death order ordinary bodies queues and shared mint
+> set gm 200
+> master 0
+> set turn 1
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 9002 3 1
+> entity 9003 3 4
+> link 10000 9000
+> link 10000 9001
+> link 10000 9002
+> link 10000 9003
+> routes 9000 9002 9001 0 9003
+> routes 9002 0 9003 9000 0
+> entity 9100 9 30
+> link 9000 9100
+> link 9100 1000
+> link 1000 1001
+> entity 1002 2 0
+> field 1002 lord 201
+> link 9100 1002
+> entity 10 4 0
+> field 10 weight 100
+> inventory 1000 10 101
+> inventory 1001 10 17
+> orders 200 1000 wait time 4
+> load
+load 1
+> do
+> structure damage 9100 100 1
+destroyed 1
+> death state
+kind chain 2:
+kind chain 4: 10 1000 1001 1002
+kind chain 8:
+> save 1000
+1000 item dead body
+na dead body
+LI
+CH
+ dt 1 0 0
+IT
+ pl dead bodies
+ wt 100
+ un 9003
+MI
+ ol 200
+CO
+ li wait time 4
+ ar 0 4 0 0 0 0 0 0
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 1001
+1001 item dead body
+na dead body
+CH
+ dt 1 0 0
+IT
+ pl dead bodies
+ wt 100
+ un 9003
+MI
+ ol 200
+
+> save 1002
+1002 item dead body
+na dead body
+CH
+ dt 1 0 0
+IT
+ pl dead bodies
+ wt 100
+ un 9003
+MI
+ ol 201
+
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+LO
+ pd 9002 9001 0 9003 
+
+> save 9001
+9001 loc plain
+LI
+ wh 10000
+
+> save 9003
+9003 loc mountain
+il	1001 1 \
+	1000 1 \
+	1002 1
+LI
+ wh 10000
+
+> save 9100
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 1 touched 0 0
+orders 1000:
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> orders_file 200
+orders file 200:
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1000 11 1001 12
+inherit player 201
+bits: 1002
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> wait time 4
+11:0::0::Galley~[9100] has sunk in Ocean~[9000].
+1001:0::0::*** <no subkind> has died ***
+1000:0::0::<no subkind>~[1001] has died.
+12:0::0::<no subkind>~[1001] died in Galley~[9100], in Ocean~[9000].
+1000:0::0::<no subkind>~[1001] unstacks from us.
+1000:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1000] died in Galley~[9100], in Ocean~[9000].
+12:0::0::<no subkind>~[1002] died in Galley~[9100], in Ocean~[9000].
+> readlog 201
+log 201:
+1002:0::0::*** <no subkind> has died ***
+> entity_rolls 1000 9 9000
+prison roll 285
+land dir99 4
+land dir98 3
+land pick 2
+> newitem 9001 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 9001
+
+stderr:
+
+exit 0
+stdout:
+section structure ocean survivor child washes before parent death and later sibling survivor
+> set gm 200
+> master 0
+> set turn 1
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 9002 3 1
+> entity 9003 3 4
+> link 10000 9000
+> link 10000 9001
+> link 10000 9002
+> link 10000 9003
+> routes 9000 9002 9001 0 9003
+> routes 9002 0 9003 9000 0
+> entity 9100 9 31
+> link 9000 9100
+> link 9100 1000
+> link 1000 1001
+> entity 1002 2 0
+> field 1002 lord 201
+> link 9100 1002
+> entity 611 5 43
+> learn 1001 611 2 21
+> learn 1002 611 2 21
+> field 1001 sick 1
+> field 1001 health 1
+> orders 200 1001 wait time 7
+> entity 10 4 0
+> inventory 1001 10 17
+> entity 9300 11 59
+> entity 9301 11 58
+> entity 9302 0 0
+> link 9000 9300
+> link 9000 9301
+> field 9300 bind_storm 9100
+> field 9301 bind_storm 9100
+> field 9100 bound_storm 9302
+> field 9100 bound_storm 9302
+> field 9100 bound_storm 9300
+> field 9100 bound_storm 9301
+> structure damage 9100 101 1
+destroyed 1
+> structure state 9100
+structure 9100 kind 0 sub 31 damage 100 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9300
+structure 9300 kind 11 sub 59 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9301
+structure 9301 kind 11 sub 58 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> death state
+kind chain 2: 1001 1002
+kind chain 4: 10 1000
+kind chain 8:
+> save 1000
+1000 item dead body
+na dead body
+LI
+CH
+ dt 1 0 0
+IT
+ pl dead bodies
+ un 9003
+MI
+ ol 200
+
+> save 1001
+1001 char 0
+il	10 17
+LI
+ wh 9003
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> save 1002
+1002 char 0
+LI
+ wh 9003
+CH
+ lo 201
+ he 100
+CM
+ ma -1
+
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+ hl 9300 9301 
+LO
+ pd 9002 9001 0 9003 
+
+> save 9001
+9001 loc plain
+LI
+ wh 10000
+
+> save 9002
+9002 loc ocean
+LI
+ wh 10000
+LO
+ pd 0 9003 9000 0 
+
+> save 9003
+9003 loc mountain
+il	1000 1
+LI
+ wh 10000
+ hl 1001 1002 
+
+> save 9300
+9300 storm rain
+LI
+ wh 9000
+
+> save 9301
+9301 storm wind
+LI
+ wh 9000
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 1 touched 0 0
+orders 1001: [wait time 7]
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> orders_file 200
+orders file 200:
+1001:wait time 7
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 11 1001 1000 12
+inherit player 201
+bits: 1002
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+11:0::0::Roundship~[9100] has sunk in Ocean~[9000].
+1001:0::0::<no subkind>~[1001] would have died, but survived a fatal wound!
+1001:0::0::Forgot [611].
+1001:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1001] unstacks from us.
+1001:0::0::<no subkind>~[1001] unstacks from <no subkind>~[1000].
+1001:0::0::<no subkind>~[1001] washed ashore at Mountain~[9003].
+11:0::0::kill_stack_ocean, swam ashore, who=1001
+1000:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1000] died in Roundship~[9100], in Ocean~[9000].
+11:0::0::kill_stack_ocean, swam ashore, who=1002
+> readlog 201
+log 201:
+1002:0::0::<no subkind>~[1002] would have died, but survived a fatal wound!
+1002:0::0::Forgot [611].
+1002:0::0::Health is now 100.
+1002:0::0::<no subkind>~[1002] washed ashore at Mountain~[9003].
+> entity_rolls 1000 9 9000
+prison roll 285
+land dir99 4
+land dir98 3
+land pick 2
+> newitem 9001 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 9001
+
+stderr:
+
+exit 0
+stdout:
+section structure direct ocean stack parent survives after nested deaths island saved order
+> set gm 200
+> master 0
+> set turn 1
+> entity 10 4 0
+> field 10 weight 100
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9100 3 9
+> entity 9101 3 9
+> link 10000 9000
+> link 9000 9101
+> link 9000 9100
+> link 9000 1000
+> link 1000 1001
+> entity 611 5 43
+> learn 1000 611 2 21
+> structure ocean 1000
+> death state
+kind chain 2: 1000
+kind chain 4: 10 1001
+kind chain 8:
+> save 1000
+1000 char 0
+LI
+ wh 9101
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> save 1001
+1001 item dead body
+na dead body
+CH
+ dt 1 0 0
+IT
+ pl dead bodies
+ wt 100
+ un 9101
+MI
+ ol 200
+
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+ hl 9101 9100 
+
+> save 9101
+9101 loc island
+il	1001 1
+LI
+ wh 9000
+ hl 1000 
+
+> save 9100
+9100 loc island
+LI
+ wh 9000
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1001 1000 12 11
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1001:0::0::*** <no subkind> has died ***
+1000:0::0::<no subkind>~[1001] has died.
+12:0::0::<no subkind>~[1001] died in Ocean~[9000].
+1000:0::0::<no subkind>~[1001] unstacks from us.
+1000:0::0::<no subkind>~[1000] would have died, but survived a fatal wound!
+1000:0::0::Forgot [611].
+1000:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1000] washed ashore at Island~[9101].
+11:0::0::kill_stack_ocean, swam ashore, who=1000
+> entity_rolls 1000 9 9000
+prison roll 285
+land dir99 4
+land dir98 3
+land pick 2
+> newitem 9101 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 9101
+
+stderr:
+
+exit 0
+stdout:
+section structure ocean NPC deaths no land bounded nearest search no survivor invented
+> set gm 200
+> master 0
+> set turn 1
+> entity 10000 3 50
+> entity 9000 3 1
+> link 10000 9000
+> routes 9000 9000 9000 9000 9000
+> entity 9100 9 30
+> link 9000 9100
+> link 9100 1000
+> link 9100 1001
+> field 1000 loyal 4
+> field 1001 loyal 4
+> structure damage 9100 100 1
+destroyed 1
+> death state
+kind chain 2:
+kind chain 4:
+kind chain 8: 1000 1001
+> save 1000
+1000 deadchar 0
+CH
+ lk 4
+ dt 1 0 0
+
+> save 1001
+1001 deadchar 0
+CH
+ lk 4
+ dt 1 0 0
+
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+LO
+ pd 9000 9000 9000 9000 
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 11 1000 12 10 1001
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+11:0::0::Galley~[9100] has sunk in Ocean~[9000].
+1000:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1000] died in Galley~[9100], in Ocean~[9000].
+10:0::0::find_nearest_land: Plan B
+10:0::0::find_nearest_land: Plan C
+1001:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1001] died in Galley~[9100], in Ocean~[9000].
+10:0::0::find_nearest_land: Plan B
+10:0::0::find_nearest_land: Plan C
+> entity_rolls 1000 9 9000
+prison roll 285
+land dir99 4
+land dir98 3
+land pick 2
+stderr:
+
+exit 0
+stdout:
+section structure zero damage on undamaged ship allocates optional record without RNG
+> master 0
+> set turn 1
+> entity 9000 3 3
+> entity 9100 9 30
+> link 9000 9100
+> structure damage 9100 0 1
+destroyed 0
+> save 9100
+9100 ship galley
+LI
+ wh 9000
+SL
+
+> entity_rolls 1000 9 9000
+prison roll 285
+land dir99 4
+land dir98 3
+land pick 2
+> newitem 9000 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section structure shared stream control without optional damage call
+> master 0
+> set turn 1
+> entity 9000 3 3
+> entity 9100 9 30
+> link 9000 9100
+> entity_rolls 1000 9 9000
+prison roll 285
+land dir99 4
+land dir98 3
+land pick 2
+> newitem 9000 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section structure ocean damage guard preserves stacks skills orders bound storms until next increment
+> set gm 200
+> master 0
+> set turn 1
+> resolve_wait
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> link 10000 9000
+> link 10000 9001
+> routes 9000 9001 0 0 0
+> entity 9100 9 30
+> entity 9300 11 59
+> link 9000 9100
+> link 9000 9300
+> link 9100 1000
+> link 1000 1001
+> entity 611 5 43
+> learn 1000 611 2 21
+> learn 1001 611 2 21
+> field 9300 bind_storm 9100
+> field 9100 bound_storm 9300
+> queue wait time 4
+> load
+load 1
+> do
+> structure damage 9100 100 0
+destroyed 0
+> structure state 9100
+structure 9100 kind 9 sub 30 damage 99 delay 0 castle 0 bind 0
+bound: 9300
+here: 1000
+> save 9100
+9100 ship galley
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 99
+ bs 9300 
+
+> save 1000
+1000 char 0
+LI
+ wh 9100
+ hl 1001 
+CH
+ lo 200
+ sl	611 2 0 21 0
+CO
+ li wait time 4
+ ar 0 4 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ sl	611 2 0 21 0
+
+> save 9300
+9300 storm rain
+LI
+ wh 9000
+MI
+ bs 9100
+
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [time] [4]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> structure damage 9100 0 1
+destroyed 0
+> save 9100
+9100 ship galley
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 99
+ bs 9300 
+
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [time] [4]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> structure damage 9100 1 1
+destroyed 1
+> structure state 9100
+structure 9100 kind 0 sub 30 damage 100 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9300
+structure 9300 kind 11 sub 59 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> save 9100
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+CO
+ li wait time 4
+ ar 0 4 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9001
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> save 9300
+9300 storm rain
+LI
+ wh 9000
+
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+ hl 9300 
+LO
+ pd 9001 0 0 0 
+
+> save 9001
+9001 loc plain
+LI
+ wh 10000
+ hl 1001 1000 
+
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [time] [4]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 1 touched 0 1
+orders 1000:
+> orders_file 200
+orders file 200:
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1000 11 1001
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> readlog 200
+log 200:
+1000:0::0::> wait time 4
+11:0::0::Galley~[9100] has sunk in Ocean~[9000].
+1001:0::0::<no subkind>~[1001] would have died, but survived a fatal wound!
+1001:0::0::Forgot [611].
+1001:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1001] unstacks from us.
+1001:0::0::<no subkind>~[1001] unstacks from <no subkind>~[1000].
+1001:0::0::<no subkind>~[1001] washed ashore at Plain~[9001].
+11:0::0::kill_stack_ocean, swam ashore, who=1001
+1000:0::0::<no subkind>~[1000] would have died, but survived a fatal wound!
+1000:0::0::Forgot [611].
+1000:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1000] washed ashore at Plain~[9001].
+11:0::0::kill_stack_ocean, swam ashore, who=1000
+> entity_rolls 1000 9 9000
+prison roll 285
+land dir99 4
+land dir98 3
+land pick 2
+> newitem 9001 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 9001
+
+stderr:
+
+exit 0
+stdout:
+section structure ocean deep snapshot reverse sibling order and guarded entity stream
+> set gm 200
+> master 0
+> set turn 1
+> entity_rolls 1000 9 9000
+prison roll 285
+land dir99 4
+land dir98 3
+land pick 2
+> master 9
+> set day 19
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 9002 3 1
+> entity 9003 3 4
+> link 10000 9000
+> link 10000 9001
+> link 10000 9002
+> link 10000 9003
+> routes 9000 9002 9001 0 9003
+> routes 9002 0 9003 9000 0
+> link 9000 1000
+> link 1000 1001
+> entity 1003 2 0
+> entity 1002 2 0
+> field 1003 lord 201
+> field 1002 lord 201
+> link 1001 1003
+> link 1001 1002
+> entity 611 5 43
+> learn 1000 611 2 21
+> learn 1001 611 2 21
+> learn 1003 611 2 21
+> learn 1002 611 2 21
+> structure ocean 1000
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+LO
+ pd 9002 9001 0 9003 
+
+> save 9001
+9001 loc plain
+LI
+ wh 10000
+
+> save 9002
+9002 loc ocean
+LI
+ wh 10000
+LO
+ pd 0 9003 9000 0 
+
+> save 9003
+9003 loc mountain
+LI
+ wh 10000
+ hl 1002 1003 1001 1000 
+
+> save 1000
+1000 char 0
+LI
+ wh 9003
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> save 1001
+1001 char 0
+LI
+ wh 9003
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> save 1002
+1002 char 0
+LI
+ wh 9003
+CH
+ lo 201
+ he 100
+CM
+ ma -1
+
+> save 1003
+1003 char 0
+LI
+ wh 9003
+CH
+ lo 201
+ he 100
+CM
+ ma -1
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1001 11 1000
+inherit player 201
+bits: 1002 1003
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1001:0::0::<no subkind>~[1002] unstacks from us.
+11:0::0::kill_stack_ocean, swam ashore, who=1002
+1001:0::0::<no subkind>~[1003] unstacks from us.
+11:0::0::kill_stack_ocean, swam ashore, who=1003
+1001:0::0::<no subkind>~[1001] would have died, but survived a fatal wound!
+1001:0::0::Forgot [611].
+1001:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1001] unstacks from us.
+1001:0::0::<no subkind>~[1001] unstacks from <no subkind>~[1000].
+1001:0::0::<no subkind>~[1001] washed ashore at Mountain~[9003].
+11:0::0::kill_stack_ocean, swam ashore, who=1001
+1000:0::0::<no subkind>~[1000] would have died, but survived a fatal wound!
+1000:0::0::Forgot [611].
+1000:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1000] washed ashore at Mountain~[9003].
+11:0::0::kill_stack_ocean, swam ashore, who=1000
+> readlog 201
+log 201:
+1002:0::0::<no subkind>~[1002] would have died, but survived a fatal wound!
+1002:0::0::Forgot [611].
+1002:0::0::Health is now 100.
+1002:0::0::<no subkind>~[1002] unstacks from <no subkind>~[1001].
+1002:0::0::<no subkind>~[1002] washed ashore at Mountain~[9003].
+1003:0::0::<no subkind>~[1003] would have died, but survived a fatal wound!
+1003:0::0::Forgot [611].
+1003:0::0::Health is now 100.
+1003:0::0::<no subkind>~[1003] unstacks from <no subkind>~[1001].
+1003:0::0::<no subkind>~[1003] washed ashore at Mountain~[9003].
+> entity_rolls 1000 9 9000
+prison roll 273
+land dir99 4
+land dir98 3
+land pick 2
+> set turn 2
+> entity_rolls 1000 9 9000
+prison roll 25
+land dir99 1
+land dir98 3
+land pick 0
+> newitem 9001 0
+created 60040
+> save_new
+60040 item 0
+IT
+ un 9001
+
+stderr:
+
+exit 0
+stdout:
+section structure ocean asymmetric exits select different shore after keyed control
+> set gm 200
+> master 0
+> set turn 1
+> entity_rolls 1000 9 9000
+prison roll 285
+land dir99 4
+land dir98 3
+land pick 2
+> master 9
+> set day 19
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 9002 3 1
+> entity 9003 3 4
+> link 10000 9000
+> link 10000 9001
+> link 10000 9002
+> link 10000 9003
+> routes 9000 9002 9003 0 9001
+> routes 9002 0 9003 9000 0
+> link 9000 1000
+> entity 611 5 43
+> learn 1000 611 2 21
+> structure ocean 1000
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+LO
+ pd 9002 9003 0 9001 
+
+> save 9001
+9001 loc plain
+LI
+ wh 10000
+ hl 1000 
+
+> save 9003
+9003 loc mountain
+LI
+ wh 10000
+
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1000 11
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] would have died, but survived a fatal wound!
+1000:0::0::Forgot [611].
+1000:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1000] washed ashore at Plain~[9001].
+11:0::0::kill_stack_ocean, swam ashore, who=1000
+> entity_rolls 1000 9 9000
+prison roll 273
+land dir99 4
+land dir98 3
+land pick 2
+> set turn 2
+> entity_rolls 1000 9 9000
+prison roll 25
+land dir99 1
+land dir98 3
+land pick 0
+> newitem 9001 0
+created 60040
+> save_new
+60040 item 0
+IT
+ un 9001
+
+stderr:
+
+exit 0
+stdout:
+section structure ocean direct noncharacter cargo ignored while all character roots survive
+> set gm 200
+> master 0
+> set turn 1
+> entity 10000 3 50
+> entity 9000 3 1
+> link 10000 9000
+> entity 9100 9 30
+> entity 9200 4 0
+> entity 9201 4 0
+> entity 9300 3 9
+> link 9000 9100
+> link 9000 9300
+> link 9100 9200
+> link 9100 1000
+> link 9100 9201
+> link 9100 1001
+> entity 611 5 43
+> learn 1000 611 2 21
+> learn 1001 611 2 21
+> structure damage 9100 100 1
+destroyed 1
+> structure state 9100
+structure 9100 kind 0 sub 30 damage 100 delay 0 castle 0 bind 0
+bound:
+here: 9200 9201
+> save 9100
+> save 9200
+9200 item 0
+LI
+
+> save 9201
+9201 item 0
+LI
+
+> save 9300
+9300 loc island
+LI
+ wh 9000
+ hl 1000 1001 
+
+> save 1000
+1000 char 0
+LI
+ wh 9300
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> save 1001
+1001 char 0
+LI
+ wh 9300
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+ hl 9300 
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 11 1000 1001
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+11:0::0::Galley~[9100] has sunk in Ocean~[9000].
+1000:0::0::<no subkind>~[1000] would have died, but survived a fatal wound!
+1000:0::0::Forgot [611].
+1000:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1000] washed ashore at Island~[9300].
+11:0::0::kill_stack_ocean, swam ashore, who=1000
+1001:0::0::<no subkind>~[1001] would have died, but survived a fatal wound!
+1001:0::0::Forgot [611].
+1001:0::0::Health is now 100.
+1001:0::0::<no subkind>~[1001] washed ashore at Island~[9300].
+11:0::0::kill_stack_ocean, swam ashore, who=1001
+stderr:
+
+exit 0

@@ -1750,3 +1750,96 @@ remain opt-in; no full-world turn or stage-exit success is implied. Reports and
 unrelated command handlers remain explicit boundaries. No new verified public
 bug or blocker; known G3 #309/#352/#353/#354/#355 are unchanged. Version
 **0.54.0-alpha**, left uncommitted for parent acceptance.
+
+## Structural damage, sinking and collapse (#120)
+
+This bounded prerequisite was split from #78 before implementation. Five
+complete **u.c definitions / 191 C lines** are extracted at the unchanged pin:
+
+| definition | original definition lines, including return type and closing brace |
+|---|---|
+| kill_stack_ocean | 184–217 (34) |
+| sink_ship | 1013–1068 (56) |
+| get_rid_of_collapsed_mine | 1071–1094 (24) |
+| building_collapses | 1097–1140 (44) |
+| add_structure_damage | 1143–1175 (33) |
+
+The issue's 1069/1176 endpoints include following blank lines; its mine
+1072 endpoint is the signature, preceded by `void` at 1071. No source input
+or pin changed, so the dependency table and affected.sh remain unchanged.
+Original headers/macros and assertion locations remain intact; thin wrappers
+only expose the two static helpers. Production reuses full killChar,
+surviveFatal, inheritance/extraction, dead bodies, lord/NP/interruption,
+arrival/nearest-land routing, output/VECT and bound-storm bookkeeping. It
+adds no replacement RNG or successful unported gameplay boundary.
+
+The **21 appended sections** distinguish:
+
+- Zero, 98/99/100 and over-100 damage, exact-cap versus over-cap branches,
+  canDestroy false's reset to 99, zero damage at 99/100, loaded byte 255,
+  and negative damage's original u.c:1148 assertion. The unsupported direct
+  removal of an uncollapsed mine retains u.c:1077, status 134. These two
+  malformed helper-contract controls are not public-engine bug claims.
+- Mine collapse keeps its location, damage 100, collapsed subtype and delay
+  8; final removal again evacuates occupants added after collapse. Nested
+  captive/moving characters and direct noncharacters preserve here
+  order. Ordinary buildings are deleted. Castle collapse clears both
+  matching garrison backlinks, leaving the other castle and ordinary-unit
+  backlinks alone. Raw field observations additionally expose references that
+  save_box would omit after the referenced castle is deleted.
+- Real VECT output reaches nested foreign occupants and touched province
+  viewers in order. Land/city sinking moves whole stacks, both adjacent roots
+  and direct noncharacters; the no-optional-ship-record path also executes.
+  Bound lists with two adjacent stale/nonstorm rows followed by two real
+  storms are cleared in full; both real storm backlinks are zeroed, not the
+  nonstorm field. Raw deleted-ship observations prove the list is empty.
+- Ocean sinking kills descendants before ancestors and visits direct roots
+  in saved order. Actual bodies, discarded inventory, NP, running WAIT
+  interruption and queued-order removal are observed. Real skill survival
+  consumes the skill, restores health/sickness, extracts and washes ashore;
+  a surviving running WAIT remains running. A surviving child washes ashore
+  before its parent dies. The three-level snapshot visits **1002, 1003, 1001,
+  1000**, not sorted order or a live mutating traversal.
+- Unequal ocean routes yield **Mountain 9003**; swapping east/west produces
+  **Plain 9001** with the same guarded entity leaves. An island case chooses
+  **9101** before 9100 in saved here order. No-land deaths run bounded Plan B/C
+  without inventing a survivor. Day/master reload during a guarded turn,
+  next-turn reseeding, later real entity probes and shared unique mint
+  **65748** / **60040** remain exact. Paired zero-damage/no-call controls
+  preserve the same entity probes and unique allocation.
+
+Direct noncharacter ocean contents are intentionally ignored by sink_ship's
+ocean branch, unlike land evacuation. This raw here-list construction tests
+the helper branch, not a claim that public commands can put ordinary items
+there. Early fixture mistakes (storm/garrison kind constants, an unowned
+nested character, a missing peasant item structure and missing region wrappers)
+were corrected in the fixture, never worked around in production or filed as
+public-engine defects.
+
+Two fresh bounded deterministic C runs produce **536 sections / 37892 lines /
+644189 bytes**, exactly matched by Go raw stdout/stderr/status, real save_box
+bytes, all-player output bits, logs, inventory, orders/ready queues, ownership,
+stack/location order and additional raw retained fields. Only the two explicit
+new assertions accept 134; all other new sections require status 0. The whole
+previous input **11065 lines / 197681 bytes** and output **515 sections /
+36108 lines / 615332 bytes** are exact prefixes: **zero old bytes changed**.
+New input totals **11650 lines / 207996 bytes**. Entire move input **3150 lines /
+53589 bytes** and output **135 sections / 7150 lines / 142755 bytes** remain
+unchanged. Literal C trailing whitespace is retained.
+
+An ephemeral expected-134 section queued/loaded/dispatched actual ATTACK.
+Normal and --update both rejected `out-of-scope C dependency: v_attack` with
+status 2 before abort acceptance or recording. The expected-output SHA-256
+stayed `d05242fe101fd50f66f5e39f2bfa5b27a41e7e458bb306dfb275594e68278ac4`.
+The probe is removed; no permanent test names a temporary private NYI boundary.
+
+Command normal/update, move, helper, rng, code, loadsave, turn-driver and default
+turn comparisons pass sequentially before bounded vet and fresh default tests.
+Defaults remain small recordings; whole worlds remain opt-in. Daily coastal,
+mine and inn events remain #78; character damage/healing/ocean polling remain
+#79; monthly mine decay remains #88. Unrelated commands/combat and report
+assembly stay explicit. No full-world turn or stage-exit success is claimed;
+the known day-1 full-turn boundary remains match_all_trades (#81). No newly
+verified public-engine bug or blocker was found; known nonblocking
+G3 #309/#352/#353/#354/#355 remain unchanged. Version **0.55.0-alpha**; changes
+are left uncommitted for parent review, not accepted/closed by this task.

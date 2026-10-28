@@ -40,6 +40,7 @@ int drv_savage_count(void), drv_savage_hates(int where), drv_savage_here(int whe
 void drv_unsworn(int who), drv_mob(int who);
 void drv_auto_bandit(int who, int prog);
 void drv_garrison_pay(void);
+void drv_sink(int ship), drv_collapse(int fort);
 extern int gold_garrison;
 extern int gold_combat, gold_combat_indep;
 void drv_inherit_rolls(int from, int item, int qty);
@@ -472,6 +473,24 @@ int main(int argc, char **argv)
    p_char(created)->prev_lord=a; p_char(created)->loy_kind=b; p_char(created)->loy_rate=d;
   }
   else if (!strcmp(op, "destroy")) { sscanf(line,"%*s %d %d",&n,&a); destroy_unique_item(n,a); }
+  else if (!strcmp(op, "structure")) {
+   sscanf(line,"%*s %31s %d %d %d",text,&n,&a,&b);
+   if(!strcmp(text,"damage")) printf("destroyed %d\n",add_structure_damage(n,a,b));
+   else if(!strcmp(text,"sink")) drv_sink(n);
+   else if(!strcmp(text,"collapse")) drv_collapse(n);
+   else if(!strcmp(text,"remove")) get_rid_of_collapsed_mine(n);
+   else if(!strcmp(text,"ocean")) kill_stack_ocean(n);
+   else if(!strcmp(text,"state")) {
+    struct entity_subloc *p=rp_subloc(n);
+    struct entity_misc *m=rp_misc(n);
+    printf("structure %d kind %d sub %d damage %d delay %d castle %d bind %d\n",
+     n,kind(n),subkind(n),p ? p->damage : -1,m ? m->mine_delay : 0,
+     m ? m->garr_castle : 0,m ? m->bind_storm : 0);
+    list("bound",p ? p->bound_storms : NULL);
+    list("here",rp_loc_info(n)->here_list);
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "death")) {
    sscanf(line,"%*s %31s %d %d",text,&n,&a);
    if(!strcmp(text,"kill")) kill_char(n,a);
@@ -696,6 +715,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"subkind")) bx[n]->skind = a;
    else if (!strcmp(text,"vulnerable")) p_misc(n)->only_vulnerable = a;
    else if (!strcmp(text,"strength")) p_misc(n)->storm_str = (short)a;
+   else if (!strcmp(text,"damage")) p_subloc(n)->damage = (unsigned char)a;
    else if (!strcmp(text,"safe")) p_subloc(n)->safe = (schar)a;
    else if (!strcmp(text,"loc_hidden")) p_loc(n)->hidden = (schar)a;
    else if (!strcmp(text,"barrier")) p_loc(n)->barrier = (short)a;
