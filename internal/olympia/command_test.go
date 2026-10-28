@@ -478,6 +478,45 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.setKnown(args.num(t), args.num(t))
 		case "additem":
 			w.addItem(args.num(t), args.num(t), args.num(t))
+		case "inherit":
+			switch action := args.word(); action {
+			case "take":
+				w.takeUnitItems(args.num(t), args.num(t), args.num(t))
+			case "recipient":
+				fmt.Fprintf(&stdout, "recipient %d\n", w.stackmateInheritor(args.num(t)))
+			case "drop":
+				w.dropStack(args.num(t), args.num(t))
+			case "extract":
+				w.extractStackedUnit(args.num(t))
+			case "prisoner":
+				fmt.Fprintf(&stdout, "move prisoner %d\n", w.movePrisoner(args.num(t), args.num(t), args.num(t)))
+			case "desert":
+				w.unitDeserts(args.num(t), args.num(t), args.num(t) != 0, args.num(t), args.num(t))
+			case "cookie":
+				w.putBackCookie(args.num(t))
+			case "rolls":
+				n, a, b := args.num(t), args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "take gate %d\n", w.streams.EntTake(n, a, 0, 1, 2))
+				fmt.Fprintf(&stdout, "take amount %d\n", w.streams.EntTake(n, a, 1, 0, b))
+				fmt.Fprintf(&stdout, "drop gate %d\n", w.streams.EntDrop(n, a, 0, 1, 5))
+				fmt.Fprintf(&stdout, "drop message %d\n", w.streams.EntDrop(n, a, 1, 1, 3))
+			case "name":
+				n, a := args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "plural box [%s]\n", w.pluralItemBox(n, a))
+				fmt.Fprintf(&stdout, "box qty [%s]\n", w.boxNameQty(n, a))
+			case "state":
+				fmt.Fprintf(&stdout, "combat gold %d independent %d indent %d show_day %d\n", w.goldCombat, w.goldCombatIndep, w.indent, b2i(w.showDay))
+				for n := range w.loopKind(tPlayer) {
+					fmt.Fprintf(&stdout, "inherit player %d\n", n)
+					helperList(&stdout, "bits", w.pPlayer(n).output)
+				}
+				for i, q := range w.loadQ {
+					helperList(&stdout, fmt.Sprintf("load_q %d", i), q)
+				}
+				helperList(&stdout, "run_q", w.runQ)
+			default:
+				t.Fatalf("unknown inherit %s", action)
+			}
 		case "moveitem":
 			fmt.Fprintf(&stdout, "moveitem %d\n", b2i(w.moveItem(args.num(t), args.num(t), args.num(t), args.num(t))))
 		case "dropitem", "consume":
@@ -728,6 +767,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pMisc(n).summonedBy = int32(a)
 			case "npc_home":
 				w.pMisc(n).npcHome = int32(a)
+			case "npc_cookie":
+				w.pMisc(n).npcCookie = int32(a)
 			case "npc_created":
 				w.pMisc(n).npcCreated = int32(a)
 			case "capturable":

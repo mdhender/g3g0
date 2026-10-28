@@ -96,6 +96,19 @@ Independent melting and `check_token_units` remain #73 after #118/#119;
 the acquisition path contains no successful death/reclamation substitute.
 GIVE/DROP/USE handlers and `create_npc_token` are outside this helper task.
 
+Inheritance, prisoner release and desertion (#118) extend that same command
+comparison with complete `stackmate_inheritor`, `take_unit_items`,
+`put_back_cookie`, `drop_stack`, `extract_stacked_unit`, `move_prisoner`,
+`unit_deserts`, `plural_item_box` and `box_name_qty`. The natural disappearance
+path runs real desertion/extraction, cookie return and dead-character
+conversion, without calling unfinished death/reclamation helpers. Existing
+`code.c` is linked whole; `u.c`, `stack.c`, `swear.c` and `gm.c` are already
+tracked dependencies (including original combat gold scalars). No pin or
+dependency-table/affected.sh change is needed. Run command/move/helper/rng/
+code/loadsave/turn-driver/default-turn comparisons. Full shared death remains
+#119 and token reconciliation remains #73; no UNSTACK/DIE/RECLAIM handler or
+whole-turn/stage-exit acceptance is implied.
+
 **Pin move.**
 Run `tools/affected.sh OLD NEW` and, for each tool it lists, move the pin in its `run.sh` and README, then rerun it (with `--update` where the tool records C output, and review the diff of the recorded file).
 Then run the routine checks.

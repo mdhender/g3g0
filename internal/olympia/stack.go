@@ -5,7 +5,7 @@ package olympia
 
 // Ported from olympia/stack.c: stack lookup, positioning, join/leave and
 // their small dependencies, also used by new_char(), and movement escapes.
-// Other prisoner handling and stack command handlers remain for later stages.
+// Stack command handlers remain for later stages.
 
 func (w *world) herePos(who int) int {
 	p := w.rpLocInfo(w.loc(who))
@@ -188,4 +188,86 @@ func (w *world) prisonerMovementEscapeCheck(who int) {
 			w.checkPrisonerEscape(i, 2, 1) // stack.h ESC_MOVE
 		}
 	}
+}
+
+// dropStack is stack.c:377–442, including the natural disappearance ->
+// desertion -> extraction closure. It does not invoke death/reclamation.
+func (w *world) dropStack(who, toDrop int) {
+	releaseSwear := false
+	assert(w.stackParent(toDrop) == who, "olympia/stack.c", 382, "stack_parent(to_drop) == who")
+	if w.isPrisoner(toDrop) {
+		w.pChar(toDrop).prisoner = 0
+		w.touchLoc(toDrop)
+		w.commandOut(who, "Freed prisoner %s.", w.boxName(toDrop))
+		w.commandOut(toDrop, "%s set us free.", w.boxName(who))
+		if p := w.rpMagic(toDrop); p != nil && p.swearOnRelease != 0 {
+			releaseSwear = true
+		}
+	} else {
+		w.commandOut(who, "Dropped %s from stack.", w.boxName(toDrop))
+		w.commandOut(toDrop, "%s dropped us from the stack.", w.boxName(who))
+		w.vectorCharHere(toDrop)
+		w.commandOut(vect, "%s dropped %s from the stack.", w.boxName(who), w.boxName(toDrop))
+	}
+	w.unstack(toDrop)
+	if releaseSwear {
+		w.logWrite(11, "%s frees a swear_on_release prisoner", w.boxName(who))
+		if w.streams.EntDrop(who, toDrop, 0, 1, 5) < 5 {
+			w.commandOut(who, "%s is grateful for your gallantry.", w.boxName(toDrop))
+			w.commandOut(who, "%s pledges fealty to us.", w.boxName(toDrop))
+			w.setLord(toDrop, w.player(who), loyOath, 1)
+		} else {
+			switch w.streams.EntDrop(who, toDrop, 1, 1, 3) {
+			case 1:
+				w.commandOut(who, "%s spits on you, and vanishes in a cloud of orange smoke.", w.boxName(toDrop))
+			case 2:
+				w.commandOut(who, "%s cackles wildly and vanishes.", w.boxName(toDrop))
+			case 3:
+				w.commandOut(who, "%s smiles briefly at you, then vanishes.", w.boxName(toDrop))
+			}
+			w.unitDeserts(toDrop, 0, true, loyUnsworn, 0)
+			w.putBackCookie(toDrop)
+			w.setWhere(toDrop, 0)
+			w.changeBoxKind(toDrop, tDeadchar)
+		}
+	}
+}
+
+func (w *world) extractStackedUnit(who int) {
+	first := 0
+	for i := range w.loopHere(who) {
+		if w.kind(i) == tChar && !w.isPrisoner(i) {
+			first = i
+			break
+		}
+	}
+	if first != 0 {
+		for i := range w.loopHere(who) {
+			if i != first && w.kind(i) == tChar {
+				w.setWhere(i, first)
+			}
+		}
+		w.setWhere(first, w.loc(who))
+		w.promote(first, w.herePos(who)+1)
+	}
+	for i := range w.loopHere(who) {
+		if w.kind(i) == tChar && w.isPrisoner(i) {
+			w.prisonerEscapes(i)
+		}
+	}
+	w.leaveStack(who)
+}
+
+func (w *world) movePrisoner(who, target, pris int) int {
+	rs := false
+	if p := w.rpMagic(pris); p != nil {
+		rs = p.swearOnRelease != 0
+	}
+	w.unstack(pris)
+	w.stack(pris, target)
+	if rs {
+		w.pMagic(pris).swearOnRelease = 1
+	}
+	assert(w.rpChar(pris).prisoner != 0, "olympia/stack.c", 646, "rp_char(pris)->prisoner")
+	return 0
 }

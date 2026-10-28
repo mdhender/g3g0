@@ -41,6 +41,8 @@ void drv_unsworn(int who), drv_mob(int who);
 void drv_auto_bandit(int who, int prog);
 void drv_garrison_pay(void);
 extern int gold_garrison;
+extern int gold_combat, gold_combat_indep;
+void drv_inherit_rolls(int from, int item, int qty);
 
 static void wait_dump(struct command *c)
 {
@@ -403,6 +405,28 @@ int main(int argc, char **argv)
    p_char(created)->prev_lord=a; p_char(created)->loy_kind=b; p_char(created)->loy_rate=d;
   }
   else if (!strcmp(op, "destroy")) { sscanf(line,"%*s %d %d",&n,&a); destroy_unique_item(n,a); }
+  else if (!strcmp(op, "inherit")) {
+   sscanf(line,"%*s %31s %d %d %d %d %d",text,&n,&a,&b,&d,&i);
+   if(!strcmp(text,"take")) take_unit_items(n,a,b);
+   else if(!strcmp(text,"recipient")) printf("recipient %d\n",stackmate_inheritor(n));
+   else if(!strcmp(text,"drop")) drop_stack(n,a);
+   else if(!strcmp(text,"extract")) extract_stacked_unit(n);
+   else if(!strcmp(text,"prisoner")) printf("move prisoner %d\n",move_prisoner(n,a,b));
+   else if(!strcmp(text,"desert")) unit_deserts(n,a,b,d,i);
+   else if(!strcmp(text,"cookie")) put_back_cookie(n);
+   else if(!strcmp(text,"rolls")) drv_inherit_rolls(n,a,b);
+   else if(!strcmp(text,"name")) {
+    printf("plural box [%s]\n",plural_item_box(n,a));
+    printf("box qty [%s]\n",box_name_qty(n,a));
+   }
+   else if(!strcmp(text,"state")) {
+    printf("combat gold %d independent %d indent %d show_day %d\n",gold_combat,gold_combat_indep,indent,show_day);
+    loop_player(n) { printf("inherit player %d\n",n); list("bits",p_player(n)->output); } next_player;
+    for(i=0;i<5;i++) list(sout("load_q %d",i),load_q[i]);
+    list("run_q",run_q);
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "moveitem")) {
    sscanf(line,"%*s %d %d %d %d",&n,&a,&b,&d);
    printf("moveitem %d\n",move_item(n,a,b,d));
@@ -557,6 +581,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"weather_mage")) p_magic(n)->knows_weather = (schar)a;
    else if (!strcmp(text,"summoner")) p_misc(n)->summoned_by = a;
    else if (!strcmp(text,"npc_home")) p_misc(n)->npc_home = a;
+   else if (!strcmp(text,"npc_cookie")) p_misc(n)->npc_cookie = a;
    else if (!strcmp(text,"npc_created")) p_misc(n)->npc_created = a;
    else if (!strcmp(text,"capturable")) p_item(n)->capturable = (schar)a;
    else if (!strcmp(text,"release")) p_magic(n)->swear_on_release = (schar)a;

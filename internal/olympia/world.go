@@ -81,6 +81,10 @@ type world struct {
 	// gm.c's non-NPC daily garrison payroll accounting (not saved).
 	goldGarrison int32
 
+	// gm.c's cross-faction inheritance accounting (not saved).
+	goldCombat      int32
+	goldCombatIndep int32
+
 	// maxMapRow, maxMapCol and maxMapInit are max_map_row, max_map_col and
 	// max_map_init in dir.c, which determine_map_edges() sets.
 	maxMapRow  int32

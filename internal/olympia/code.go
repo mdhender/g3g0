@@ -384,6 +384,17 @@ func (w *world) justNameQty(item, qty int) string {
 	return sout("%s~%s", niceNum(qty), w.pluralItemName(item, qty))
 }
 
+func (w *world) pluralItemBox(item, qty int) string {
+	if qty == 1 {
+		return w.boxName(item)
+	}
+	return sout("%s~%s", w.pluralItemName(item, qty), w.boxCode(item))
+}
+
+func (w *world) boxNameQty(item, qty int) string {
+	return sout("%s~%s", niceNum(qty), w.pluralItemBox(item, qty))
+}
+
 // Allocating entities and threading like entities together (kind_first,
 // kind_next).
 //

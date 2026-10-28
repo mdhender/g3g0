@@ -1230,3 +1230,101 @@ No unrelated GIVE/DROP/USE handlers or token-artifact generation were added.
 No whole-turn or stage-exit acceptance is claimed. Known nonblocking
 G3 #309/#352/#353/#354 remain unchanged; no new public-engine defect was
 reproduced by this task's bounded cases.
+
+## Inheritance, prisoner release and desertion (#118)
+
+Nine complete definitions, **345 C lines**, at the unchanged pin:
+
+| source | complete definitions and original lines |
+|---|---|
+| u.c | `stackmate_inheritor` 399–419; `take_unit_items` 422–538; `put_back_cookie` 582–593 |
+| stack.c | `drop_stack` 377–442; `extract_stacked_unit` 466–520; `move_prisoner` 635–649 |
+| swear.c | `unit_deserts` 303–343 |
+| code.c | `plural_item_box` 431–442; `box_name_qty` 453–458 |
+
+The script extracts whole actual definitions with original headers, macros
+and `#line` locations; code.c remains linked whole. Original gm.c
+`gold_combat` and `gold_combat_indep` definitions are extracted alongside
+`gold_garrison`. All source dependencies were already tracked by
+tools/README.md and affected.sh; there is no pin or source-list change.
+The only new wrapper observes original static entity RNG leaves. Production
+uses the persistent `w.streams`, existing keyed EntTake/EntDrop, snapshot
+inventory/here loops, real token acquisition, lord/NP/interruption/dependent
+handling, movement/prisoner escape, logging and serialization. There is no
+replacement RNG, successful arrival stub or independent gameplay fix.
+
+23 appended real-C sections distinguish:
+
+- None, explicit, MATES and MATES_SILENT recipients; first eligible direct
+  child **1003** beats parent **1001**, lower-ID nested child **1002** and
+  captive **1005**. No eligible child falls back to the parent; no parent
+  means discard/release. Silent modes suppress the heading and item/prisoner
+  descriptions without suppressing actual inventory and prisoner changes.
+- TAKE_ALL, TAKE_SOME and TAKE_NI (including the added noble item). At master
+  0/turn 1/from 1000, gold **101** selects **86**, peasants **17** select **7**;
+  both original copied remainders are actually removed. Item **12**'s gate
+  is 2, so its independently probed zero amount must NOT be used; item **15**
+  really selects zero through gate 1. Unique token **60001** also selects
+  zero, then its copied remainder moves to the province and its units swear
+  to the independent faction, with no bogus recipient heading. Day replay,
+  master reload within a guarded turn, next turn and return to the old turn
+  expose exact persistent stream behavior, keys, subkeys and draw ranges.
+- Foreign regular gold **137** increments ordinary combat accounting; same
+  faction gold does not. Independent transfers/discards accumulate
+  **93 → 110 → 196**, the last increment counting the **86 selected**, not
+  all 101 discarded. Ordinary discarded gold adds **31**. Live inventories
+  end empty, not with an accidentally retained discarded remainder.
+- Inherited token **60000** moves a running WAIT noble, flushes old queued
+  work, clears pledge, reassigns its dependent to the old direct lord and
+  exchanges **8 NP** (20/30 → 28/22). Real logs retain the inheritance's
+  three-space indentation through token/lord processing. Shared mint creates
+  the subsequent unique item **65748**, with no private stream/reset.
+- Prisoner-only first-heading output, same/foreign-faction transfer, saved
+  here-list order, moving restoration and release-swear normalization. The
+  same-faction prisoner is cleared only after its captive description; the
+  foreign captive stays captive. With no recipient, release-swear is cleared
+  before drop so neither fealty nor disappearance happens.
+- Direct release's actual keyed success (prisoner **1002**, gate **4**) runs
+  real lord/NP/order handling; gate **5** prisoners **1001**, **1007**, **1015**
+  exercise all three disappearance messages. Natural drop → unit_deserts →
+  extract_stacked_unit runs nested/moving mixed children, leaves noncharacters
+  behind, returns the NPC cookie and changes the released unit to deadchar.
+  A prisoner-only descendant stack actually escapes, touches and moves using
+  the existing arrival closure. Ordinary drop's vector and summon restoration
+  are compared too, not replaced with a successful return.
+- Extraction chooses the first eligible saved-order child, reparents other
+  characters (including captives), promotes it immediately after the extracted
+  unit rather than appending after a sibling, and preserves noncharacter and
+  nested-child state. Prisoner-only building extraction executes real escape
+  and arrival. Captive desertion into the captor's faction clears the captive
+  bit without extraction; foreign desertion stays captive; noncaptives extract.
+  Exact new_lord, show_day, membership, dependent and cookie state is saved.
+- Singular/plural/zero/negative/large quantities and raw missing-plural
+  diagnostics. Two malformed helper-contract controls retain exact original
+  assertions (drop with wrong parent; move_prisoner on a nonprisoner), status
+  134, not successful operations or public command-defect claims.
+
+Two fresh bounded deterministic C runs produce **415 sections / 26512 lines /
+448122 bytes**, exactly matched by Go's raw stdout/stderr/status and observed
+DB, log, all-player output bits, accounting, orders/queues and RNG state.
+All 23 new sections require status 0 except the two explicit assertions.
+The complete previous command input **8086 lines / 138905 bytes** and output
+**392 sections / 24501 lines / 415416 bytes** are exact prefixes: zero old
+bytes changed. New input is **8731 lines / 150387 bytes**. Entire move input
+**3150 lines / 53589 bytes** and output **135 sections / 7150 lines / 142755
+bytes** are unchanged. Raw C trailing whitespace is intentionally preserved.
+
+An ephemeral expected-134 section queued and dispatched ATTACK. Normal and
+`--update` both rejected `out-of-scope C dependency: v_attack` with status 2
+before accepting the abort or writing the recording. SHA-256 stayed
+`9b4e7ded457fee992ff85b8268f7e78bd21dfeea9006995dbd8d0b13911d5c2c`.
+The probe was removed; no permanent test binds a temporary private NYI name.
+Rejection remains specific to source dependency markers, not ordinary text.
+
+Command (normal/update), move, helper, rng, code, loadsave, turn-driver/default
+turn comparisons pass; C tools run sequentially before vet/fresh bounded
+default tests. Full worlds remain opt-in. No full turn or stage exit is
+claimed; attempt_trade remains the explicit #81 boundary. Shared death and
+reclamation remain #119; reconciliation remains #73. No UNSTACK/DIE/RECLAIM
+handler was added. No new public-engine bug/blocker was reproduced; known
+nonblocking G3 #309/#352/#353/#354 remain deliberately unchanged.

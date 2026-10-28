@@ -8084,3 +8084,648 @@ inventory 1000 60000 1
 moveitem 1000 1001 60000 1
 token_state 60000
 readlog 200
+
+section inheritance explicit all foreign gold plural inventory and snapshot mutation
+set gm 200
+place 9000
+link 9000 1001
+field 1001 lord 201
+entity 1 4 0
+name 1 gold
+plural 1 gold
+entity 10 4 0
+name 10 peasant
+plural 10 peasants
+entity 11 4 0
+name 11 soldier
+inventory 1000 1 137
+inventory 1000 10 1
+inventory 1000 11 23
+inventory 1001 1 5
+inherit take 1000 1001 1
+inherit state
+save 1000
+save 1001
+readlog 200
+readlog 201
+inherit name 10 1
+inherit name 10 2
+inherit name 11 0
+inherit name 11 -2
+inherit name 11 1001
+
+section inheritance mates first eligible direct child before parent and nested child
+place 9000
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 9100 3 14
+field 1002 lord 200
+field 1003 lord 201
+field 1004 lord 200
+field 1005 lord 200
+link 9000 1001
+link 1001 1000
+link 1000 9100
+link 9100 1002
+link 1000 1005
+field 1005 prisoner 1
+link 1000 1003
+link 1000 1004
+inherit recipient 1000
+entity 1 4 0
+name 1 gold
+plural 1 gold
+inventory 1000 1 47
+inherit take 1000 -1 1
+inherit state
+escape_state
+save 1000
+save 1003
+save 1005
+save 9000
+readlog 200
+readlog 201
+
+section inheritance silent mates parent fallback only captive and noncharacter children
+place 9000
+link 1001 1000
+link 9000 1001
+entity 1002 2 0
+entity 9100 3 14
+field 1002 lord 201
+field 1002 prisoner 1
+field 1002 release 1
+link 1000 9100
+link 1000 1002
+inherit recipient 1000
+entity 1 4 0
+inventory 1000 1 33
+inherit take 1000 -2 1
+inherit state
+save 1000
+save 1001
+save 1002
+save 9000
+readlog 200
+readlog 201
+
+section inheritance no recipient discards gold but returns unique and releases without swearing
+set gm 200
+master 0
+set turn 1
+place 9000
+link 1000 1001
+field 1001 lord 201
+field 1001 prisoner 1
+field 1001 release 1
+entity 1002 2 0
+field 1002 lord 201
+field 1002 prisoner 1
+field 1002 release 1
+link 1000 1002
+entity 1 4 0
+inventory 1000 1 71
+entity 60000 4 42
+field 60000 unique 1000
+inventory 1000 60000 1
+inherit recipient 1000
+inherit take 1000 0 1
+inherit state
+save 1000
+save 1001
+save 1002
+save 60000
+save 9000
+arrival_state
+readlog 200
+readlog 201
+
+section inheritance some keyed gate amount zero and discarded copied remainder
+set gm 200
+master 0
+set turn 1
+place 9000
+link 9000 1001
+field 1001 lord 201
+entity 1 4 0
+entity 10 4 0
+entity 11 4 0
+entity 12 4 0
+entity 13 4 0
+entity 15 4 0
+name 1 gold
+plural 1 gold
+name 10 peasant
+plural 10 peasants
+inventory 1000 1 101
+inventory 1000 10 17
+inventory 1000 11 1
+inventory 1000 12 2
+inventory 1000 13 29
+inventory 1000 15 1
+inherit rolls 1000 1 101
+inherit rolls 1000 10 17
+inherit rolls 1000 11 1
+inherit rolls 1000 12 2
+inherit rolls 1000 13 29
+inherit rolls 1000 15 1
+inherit take 1000 1001 2
+inherit state
+save 1000
+save 1001
+readlog 201
+entity_rolls 1000 4 9000
+set day 9
+inherit rolls 1000 1 101
+master 90
+inherit rolls 1000 1 101
+set turn 2
+inherit rolls 1000 1 101
+set turn 1
+inherit rolls 1000 1 101
+
+section inheritance independent and ordinary discarded gold accounting versus same faction
+set indep 202
+entity 202 1 52
+place 9000
+link 9000 1001
+entity 1 4 0
+field 1000 lord 202
+inventory 1000 1 93
+inherit take 1000 1001 1
+inherit state
+genitem 1000 1 17
+inherit take 1000 0 1
+inherit state
+field 1000 lord 200
+genitem 1000 1 29
+inherit take 1000 1001 1
+inherit state
+genitem 1000 1 31
+inherit take 1000 0 1
+inherit state
+master 0
+set turn 1
+field 1000 lord 202
+genitem 1000 1 101
+inherit take 1000 0 2
+inherit state
+save 1000
+save 1001
+
+section inheritance noble item wrapper adds one then transfers complete inventory
+place 9000
+link 9000 1001
+entity 32 4 0
+name 32 savage
+plural 32 savages
+field 1000 noble_item 32
+inventory 1000 32 3
+inherit take 1000 1001 3
+inherit state
+save 1000
+save 1001
+readlog 200
+
+section inheritance unique token moves real units lord interruption NP orders and shared mint
+set gm 200
+set indep 202
+entity 202 1 52
+master 0
+set turn 1
+place 9000
+link 9000 1001
+field 1001 lord 201
+field 200 np 20
+field 201 np 30
+entity 1002 2 0
+field 1002 lord 200
+field 1002 loyal 2
+field 1002 rate 7
+field 1002 pledge 1000
+field 200 unit 1002
+link 9000 1002
+entity 1003 2 0
+field 1003 lord 1002
+field 200 unit 1003
+link 9000 1003
+who 1002
+queue wait time 9
+queue format 2
+load
+do
+entity 60000 4 63
+field 60000 unique 1000
+field 60000 unit 1002
+field 60000 token_num 1
+inventory 1000 60000 1
+inherit take 1000 1001 1
+token_state 60000
+inherit state
+save 1000
+save 1001
+save 1003
+pstate 200
+pstate 201
+orders_file 200
+orders_file 201
+readlog 200
+readlog 201
+newitem 1000 42
+save_new
+
+section inheritance prisoner only transfer same and foreign factions retains release until freed
+master 0
+set turn 1
+place 9000
+link 9000 1001
+field 1001 lord 201
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+field 1002 lord 201
+field 1003 lord 200
+field 1004 lord 200
+field 1002 prisoner 1
+field 1003 prisoner 1
+field 1002 release 7
+field 1003 release 1
+field 1002 moving 5
+link 1000 1002
+link 1000 1003
+link 1001 1004
+inherit take 1000 1001 1
+inherit state
+save 1000
+save 1001
+save 1002
+save 1003
+save 9000
+arrival_state
+readlog 200
+readlog 201
+
+section inheritance drop ordinary follower vector and moving summon restoration
+place 9000
+link 1000 1001
+field 1000 moving 8
+field 1001 moving 8
+field 1001 loyal 5
+entity 1002 2 0
+field 1002 lord 201
+link 9000 1002
+entity 1003 2 0
+field 1003 lord 200
+field 1003 moving 8
+link 1001 1003
+inherit drop 1000 1001
+inherit state
+save 1000
+save 1001
+save 1003
+save 9000
+readlog 200
+readlog 201
+
+section inheritance release keyed smile disappearance real interruption
+set gm 200
+master 0
+set turn 1
+place 9000
+link 1000 1001
+field 1001 lord 201
+field 200 np 30
+field 201 np 20
+field 201 unit 1001
+field 1001 loyal 3
+field 1001 rate 4
+who 1001
+queue wait time 7
+queue format 1
+load
+do
+field 1001 prisoner 1
+field 1001 release 1
+inherit rolls 1000 1001 9
+inherit drop 1000 1001
+inherit state
+save 1000
+save 1001
+save 9000
+pstate 200
+pstate 201
+orders_file 200
+orders_file 201
+readlog 200
+readlog 201
+
+section inheritance extraction nested mixed saved child order and moving flags
+place 9000
+link 9000 1001
+link 1001 1000
+entity 1006 2 0
+entity 1008 2 0
+field 1006 lord 200
+field 1008 lord 201
+link 1001 1006
+link 9000 1008
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 9100 3 14
+field 1002 lord 200
+field 1003 lord 201
+field 1004 lord 200
+field 1005 lord 200
+field 1003 prisoner 1
+field 1003 release 1
+link 1000 9100
+link 1000 1003
+link 1000 1004
+link 1004 1005
+link 1000 1002
+field 1001 moving 9
+field 1000 moving 9
+field 1002 moving 9
+field 1003 moving 9
+field 1004 moving 9
+field 1005 moving 9
+inherit extract 1000
+inherit state
+escape_state
+save 1000
+save 1001
+save 1003
+save 1004
+save 9100
+save 9000
+readlog 200
+readlog 201
+
+section inheritance extraction only prisoners uses real nested building escape and arrival
+place 9000
+entity 9100 3 14
+link 9000 9100
+link 9100 1000
+link 1000 1001
+field 1001 lord 201
+field 1001 prisoner 1
+field 1001 release 1
+entity 1002 2 0
+field 1002 lord 200
+field 1002 prisoner 1
+link 1000 1002
+inherit extract 1000
+inherit state
+escape_state
+save 1000
+save 1001
+save 1002
+save 9100
+save 9000
+arrival_state
+readlog 200
+readlog 201
+
+section inheritance captive deserts to captor faction keeps stack and dependents
+place 9000
+link 1000 1001
+field 1001 lord 201
+field 201 unit 1001
+field 1001 prisoner 1
+field 1001 release 1
+field 201 np 20
+field 200 np 30
+entity 1002 2 0
+field 1002 lord 1001
+field 201 unit 1002
+link 1001 1002
+set show_day 0
+inherit desert 1001 1000 0 3 5
+inherit state
+save 1000
+save 1001
+save 1002
+pstate 200
+pstate 201
+save 9000
+readlog 200
+readlog 201
+
+section inheritance captive deserts to foreign faction stays captive versus ordinary extraction
+place 9000
+link 1000 1001
+field 1001 lord 200
+field 1001 prisoner 1
+field 200 unit 1001
+field 200 np 20
+field 201 np 30
+inherit desert 1001 201 1 2 9
+inherit state
+save 1000
+save 1001
+field 1001 prisoner 0
+entity 1002 2 0
+field 1002 lord 201
+link 1001 1002
+inherit desert 1001 200 1 1 0
+inherit state
+save 1000
+save 1001
+save 1002
+save 9000
+pstate 200
+pstate 201
+readlog 200
+readlog 201
+
+section inheritance no lord extraction cookie missing misc zero home and repeated return
+place 9000
+link 1000 1001
+field 200 unit 1001
+inherit cookie 1001
+field 1001 npc_cookie 10
+inherit cookie 1001
+entity 10 4 0
+field 1001 npc_home 9000
+inherit desert 1001 0 1 1 0
+inherit cookie 1001
+inherit cookie 1001
+inherit state
+save 1000
+save 1001
+save 9000
+pstate 200
+readlog 200
+
+section inheritance invalid drop wrong parent exact assertion
+place 9000
+link 9000 1001
+inherit drop 1000 1001
+
+section inheritance invalid move nonprisoner exact assertion after real mutation
+place 9000
+link 1000 1001
+inherit prisoner 1000 1000 1001
+
+section inheritance release keyed success real set lord and old queue interruption
+set gm 200
+master 0
+set turn 1
+place 9000
+entity 1002 2 0
+link 1000 1002
+field 1002 lord 201
+field 201 unit 1002
+field 1002 loyal 3
+field 1002 rate 4
+field 1002 pledge 1001
+field 200 np 30
+field 201 np 20
+who 1002
+queue wait time 7
+queue format 1
+load
+do
+field 1002 prisoner 1
+field 1002 release 1
+inherit rolls 1000 1002 9
+inherit drop 1000 1002
+inherit state
+save 1000
+save 1002
+save 9000
+pstate 200
+pstate 201
+orders_file 200
+orders_file 201
+readlog 200
+readlog 201
+
+section inheritance disappearance cackle extracts real descendants leaves nonchars and returns cookie
+set gm 200
+master 0
+set turn 1
+place 9000
+entity 1007 2 54
+field 1007 lord 201
+field 201 unit 1007
+field 1007 prisoner 1
+field 1007 release 1
+field 1007 npc_home 9000
+field 1007 npc_cookie 10
+entity 10 4 0
+link 1000 1007
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 9100 3 14
+field 1002 lord 201
+field 1003 lord 200
+field 1004 lord 201
+field 1003 prisoner 1
+field 1003 release 1
+link 1007 9100
+link 1007 1003
+link 1007 1004
+link 1007 1002
+field 1000 moving 11
+field 1007 moving 11
+field 1003 moving 11
+field 1004 moving 11
+inherit rolls 1000 1007 1
+inherit drop 1000 1007
+inherit state
+save 1007
+save 1000
+save 1002
+save 1003
+save 1004
+save 9100
+save 9000
+pstate 201
+readlog 200
+readlog 201
+set day 9
+inherit rolls 1000 1007 1
+master 90
+inherit rolls 1000 1007 1
+set turn 2
+inherit rolls 1000 1007 1
+set turn 1
+inherit rolls 1000 1007 1
+
+section inheritance disappearance orange smoke with only prisoners triggers actual escape
+set gm 200
+master 0
+set turn 1
+place 9000
+entity 1015 2 0
+field 1015 lord 201
+field 201 unit 1015
+field 1015 prisoner 1
+field 1015 release 1
+link 1000 1015
+entity 1002 2 0
+field 1002 lord 201
+field 1002 prisoner 1
+field 1002 release 1
+link 1015 1002
+inherit rolls 1000 1015 1
+inherit drop 1000 1015
+inherit state
+save 1015
+save 1002
+save 9000
+arrival_state
+readlog 200
+readlog 201
+
+section inheritance some zero unique token drops copied remainder through real acquisition
+set gm 200
+set indep 202
+entity 202 1 52
+master 0
+set turn 1
+place 9000
+link 9000 1001
+field 1001 lord 201
+entity 1002 2 54
+field 1002 lord 200
+field 200 unit 1002
+link 9000 1002
+entity 60001 4 63
+field 60001 unique 1000
+field 60001 unit 1002
+field 60001 token_num 1
+inventory 1000 60001 1
+inherit rolls 1000 60001 1
+inherit take 1000 1001 2
+inherit state
+save 1000
+save 1001
+save 9000
+token_state 60001
+pstate 200
+pstate 202
+readlog 200
+readlog 201
+
+section inheritance mates without recipient discards and silent mates direct child
+place 9000
+entity 10 4 0
+inventory 1000 10 3
+inherit recipient 1000
+inherit take 1000 -1 1
+inherit state
+save 1000
+link 1000 1001
+genitem 1000 10 4
+inherit take 1000 -2 1
+inherit state
+save 1000
+save 1001
+readlog 200

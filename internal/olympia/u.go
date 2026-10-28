@@ -500,6 +500,100 @@ func (w *world) genItem(who, item, qty int) {
 	w.addItem(who, item, qty)
 }
 
+// Inheritance selectors and quantities are the original u.h constants.
+const (
+	mates       = -1
+	matesSilent = -2
+	takeAll     = 1
+	takeSome    = 2
+	takeNI      = 3
+)
+
+func (w *world) stackmateInheritor(who int) int {
+	for i := range w.loopHere(who) {
+		if w.kind(i) == tChar && !w.isPrisoner(i) {
+			return i
+		}
+	}
+	return w.stackParent(who)
+}
+
+// takeUnitItems is u.c:422–538. loopInv supplies copied quantities: the
+// remainder is computed from the snapshot, not the mutated live inventory.
+func (w *world) takeUnitItems(from, inherit, howMany int) {
+	to, silent := inherit, false
+	switch inherit {
+	case 0:
+		silent = true
+	case mates:
+		to = w.stackmateInheritor(from)
+	case matesSilent:
+		to, silent = w.stackmateInheritor(from), true
+	}
+	first := true
+	if howMany == takeNI {
+		w.genItem(from, w.nobleItem(from), 1)
+	}
+	for e := range w.loopInv(from) {
+		item, qty := int(e.item), int(e.qty)
+		if e.qty != 0 && howMany == takeSome && w.streams.EntTake(from, item, 0, 1, 2) == 1 {
+			qty = w.streams.EntTake(from, item, 1, 0, int(e.qty))
+		}
+		if qty > 0 && !silent && w.validBox(to) {
+			if first {
+				first = false
+				w.commandOut(to, "Taken from %s:", w.boxName(from))
+				w.indent += 3
+			}
+			w.commandOut(to, "%s", w.boxNameQty(item, qty))
+		}
+		w.moveItem(from, to, item, qty)
+		if item == itemGold && w.player(from) != w.player(to) {
+			if w.player(from) == int(w.indepPlayer) {
+				w.goldCombatIndep += int32(qty)
+			} else {
+				w.goldCombat += int32(qty)
+			}
+		}
+		if qty != int(e.qty) {
+			w.moveItem(from, 0, item, int(e.qty)-qty)
+		}
+	}
+	for i := range w.loopHere(from) {
+		if w.kind(i) != tChar || !w.isPrisoner(i) {
+			continue
+		}
+		if to > 0 {
+			if first && !silent {
+				w.commandOut(to, "Taken from %s:", w.boxName(from))
+				w.indent += 3
+				first = false
+			}
+			w.movePrisoner(from, to, i)
+			if !silent {
+				w.commandOut(to, "%s", w.linerDesc(i))
+			}
+			if w.player(i) == w.player(to) {
+				w.pChar(i).prisoner = 0
+			}
+		} else {
+			w.pMagic(i).swearOnRelease = 0
+			w.dropStack(from, i)
+		}
+	}
+	if !first && !silent {
+		w.indent -= 3
+	}
+}
+
+func (w *world) putBackCookie(who int) {
+	p := w.rpMisc(who)
+	if p == nil || p.npcHome == 0 {
+		return
+	}
+	w.genItem(int(p.npcHome), int(p.npcCookie), 1)
+}
+
 func (w *world) consumeItem(who, item, qty int) bool {
 	assert(w.itemUnique(item) == 0, "olympia/u.c", 1898, "!item_unique(item)")
 	return w.subItem(who, item, qty)

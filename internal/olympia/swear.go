@@ -139,3 +139,26 @@ func (w *world) isUnit(pl, v int) bool {
 
 	return w.pPlayer(pl).units.Lookup(v) >= 0
 }
+
+// unitDeserts is swear.c:303–343. loyCheck is unused in the original too.
+func (w *world) unitDeserts(who, toWho int, loyCheck bool, k, lev int) {
+	sp := w.player(who)
+	if toWho != 0 && sp != 0 {
+		w.commandOut(sp, "%s renounces loyalty to us.", w.boxName(who))
+		w.commandOut(who, "%s renounces loyalty.", w.boxName(who))
+		w.showDay = false
+		w.commandOut(who, "")
+		w.showDay = true
+	}
+	if toWho != 0 && w.isPrisoner(who) && w.player(toWho) == w.player(w.stackParent(who)) {
+		w.pChar(who).prisoner = 0
+	} else if !w.isPrisoner(who) {
+		w.extractStackedUnit(who)
+	}
+	w.setLord(who, toWho, k, lev)
+	if toWho != 0 {
+		w.commandOut(who, "%s pledges fealty to us.", w.boxName(who))
+		w.commandOut(toWho, "%s pledges fealty to us.", w.boxName(who))
+		w.pChar(who).newLord = 1
+	}
+}

@@ -42,7 +42,7 @@ functions = {
                 'min_pri_ready', 'init_wait_list', 'check_all_waits', 'start_phase', 'evening_phase',
                 'daily_command_loop', 'process_player_orders', 'interrupt_order', 'process_interrupted_units'],
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'prepend_order', 'queue', 'save_player_orders'],
-    'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord'],
+    'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord', 'unit_deserts'],
     'move.c': ['restore_stack_actions', 'touch_loc_after_move', 'move_stack',
                'departure_message', 'arrival_message', 'discover_road', 'parse_exit_dir',
                'save_v_array', 'restore_v_array', 'move_exit_land', 'land_check',
@@ -54,7 +54,8 @@ functions = {
     'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
-                'check_prisoner_escape', 'prisoner_escapes', 'prisoner_movement_escape_check'],
+                'check_prisoner_escape', 'prisoner_escapes', 'prisoner_movement_escape_check',
+                'drop_stack', 'extract_stacked_unit', 'move_prisoner'],
     'dir.c': ['location_direction', 'exit_distance', 'is_port_city',
               'province_has_port_city', 'summer_uldim_open_now', 'add_province_exit',
               'extra_routes', 'province_exits', 'province_sub_exits', 'subloc_exits',
@@ -79,6 +80,7 @@ functions = {
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
             'consume_item', 'move_item', 'drop_item',
+            'stackmate_inheritor', 'take_unit_items', 'put_back_cookie',
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
@@ -125,10 +127,11 @@ int immed_see_all, month_done, show_combat_flag;
 #define phase_acted(x) ((void)0)
 ''')
     gm = open(f'{src}/gm.c').read()
-    m = re.search(r'^int gold_garrison = 0;\n', gm, re.M)
-    if not m:
-        sys.exit('no gold_garrison definition in gm.c')
-    out.write(f'#line {gm.count(chr(10), 0, m.start()) + 1} "olympia/gm.c"\n{m.group(0)}')
+    for name in ['gold_garrison', 'gold_combat', 'gold_combat_indep']:
+        m = re.search(rf'^int {name} = 0;\n', gm, re.M)
+        if not m:
+            sys.exit(f'no {name} definition in gm.c')
+        out.write(f'#line {gm.count(chr(10), 0, m.start()) + 1} "olympia/gm.c"\n{m.group(0)}')
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
         # Original data declarations too: no copied or modeled tag/number table.
@@ -211,6 +214,12 @@ void drv_entity_rolls(int who, int sub, int where) {
  printf("land dir99 %d\\n", ent_land_dir(where, 99));
  printf("land dir98 %d\\n", ent_land_dir(where, 98));
  printf("land pick %d\\n", ent_land_pick(where, 3));
+}
+void drv_inherit_rolls(int from, int item, int qty) {
+ printf("take gate %d\\n", ent_take(from, item, 0, 1, 2));
+ printf("take amount %d\\n", ent_take(from, item, 1, 0, qty));
+ printf("drop gate %d\\n", ent_drop(from, item, 0, 1, 5));
+ printf("drop message %d\\n", ent_drop(from, item, 1, 1, 3));
 }
 trades_list drv_offers(int seller, int where, int except) {
  return seller ? seller_list(where, except) : buyer_list(where, except);
@@ -330,6 +339,13 @@ for run in run1 run2; do
     'section inventory asserts '*|'section inventory invalid '*|'section token invalid '*) expected_status=134 ;;
    esac
    [ "$status" = "$expected_status" ] || die "unexpected inventory/token status $status in section $i; expected $expected_status"
+  fi
+  if [[ "${section_names[$i]}" == 'section inheritance '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section inheritance invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected inheritance status $status in section $i; expected $expected_status"
   fi
   if [[ "${section_names[$i]}" == 'section arrival '* ]]; then
    expected_status=0
