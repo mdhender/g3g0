@@ -21712,3 +21712,223 @@ report state 200
 report unclaimed 1000 200
 report state 200
 readlog 200
+
+section report capacity zero and positive load without any travel capacity
+entity 10 4 0
+report capacity 1000 1000
+entity 501 4 0
+field 501 weight 71
+inventory 1000 501 3
+report capacity 1000 1000
+report state 1000
+readlog 200
+
+section report capacity distinct walk ride fly weights and overfull loads
+entity 10 4 0
+field 10 weight 7
+field 10 land_cap 100
+entity 501 4 0
+entity 502 4 0
+entity 503 4 0
+entity 504 4 0
+field 501 weight 11
+field 501 land_cap 50
+field 502 weight 13
+field 502 ride_cap 80
+field 503 weight 17
+field 503 fly_cap 60
+field 504 weight 23
+inventory 1000 504 1
+inventory 1000 503 3
+inventory 1000 502 2
+inventory 1000 501 4
+report state 1000
+report capacity 1000 1000
+inventory 1000 504 20
+report capacity 1000 1000
+report state 1000
+readlog 200
+
+section report capacity negative caps exclude weight but add no capacity and custom noble item
+entity 501 4 0
+entity 502 4 0
+field 1000 noble_item 501
+field 501 weight 101
+field 501 land_cap -2
+field 501 ride_cap 30
+field 501 fly_cap -3
+field 502 weight 41
+field 502 land_cap -5
+field 502 ride_cap -7
+field 502 fly_cap 11
+inventory 1000 502 2
+report capacity 1000 1000
+report state 1000
+readlog 200
+
+section report capacity integer product overflow ratio and comma formatting
+entity 10 4 0
+entity 501 4 0
+entity 502 4 0
+field 501 weight 32767
+field 502 land_cap 13
+field 502 ride_cap 17
+field 502 fly_cap 19
+inventory 1000 501 65539
+inventory 1000 502 1
+sout frame 4 9 1 12
+report capacity 1000 1000
+sout state
+readlog 200
+
+section report item skills empty missing and allocated empty magic preserve records
+entity 501 4 0
+entity 502 4 0
+field 502 aura_bonus 0
+inventory 1000 502 2
+inventory 1000 501 1
+report state 501
+report state 502
+sout frame 5 7 0 0
+report item_skills 1000 1000
+sout state
+report state 501
+report state 502
+report state 1000
+report files
+
+section report item skills stored order duplicates independent study use and recipient prerequisites
+entity 501 4 0
+entity 502 4 0
+entity 701 5 0
+entity 702 5 0
+entity 703 5 0
+entity 704 5 0
+name 501 scroll
+name 502 tablet
+name 701 First school
+name 702 Deep practice
+name 703 Second school
+name 704 Other practice
+field 702 required 701
+field 704 required 703
+field 501 may_study 702
+field 501 may_study 701
+field 501 may_study 702
+field 501 may_use 704
+field 501 may_use 703
+field 502 may_use 702
+field 502 may_study 703
+inventory 1000 502 1
+inventory 1000 501 2
+learn 1000 703 2 0
+learn 1000 701 1 0
+learn 1001 701 2 0
+report state 1000
+sout frame 4 9 0 0
+report item_skills 1000 1000
+sout state
+report item_skills 1001 1000
+sout state
+report state 1000
+report state 1001
+save 501
+save 502
+readlog 200
+
+section report item skills study only use only filtered rows and inventory unsorted repeats
+entity 501 4 0
+entity 502 4 0
+entity 503 4 0
+entity 701 5 0
+entity 702 5 0
+field 501 may_study 701
+field 502 may_use 702
+field 503 may_study 9999
+inventory 1000 502 3
+inventory 1000 9999 1
+inventory 1000 503 0
+inventory 1000 501 1
+inventory 1000 503 -1
+inventory 1000 502 2
+report item_skills 1000 1000
+report item_skills 1000 1000
+report state 1000
+readlog 200
+
+section report item skills nested prerequisite uses root school not immediate parent
+entity 501 4 0
+entity 701 5 0
+entity 702 5 0
+entity 703 5 0
+field 702 required 701
+field 703 required 702
+name 701 Root school
+name 702 Middle practice
+name 703 Final practice
+field 501 may_study 703
+field 501 may_use 703
+inventory 1000 501 1
+learn 1000 702 2 35
+report item_skills 1000 1000
+learn 1000 701 2 -1
+report item_skills 1000 1000
+report state 1000
+readlog 200
+
+section report capacity and item skills reuse renamed cache with MASTER routing
+lore_root
+entity 10 4 0
+entity 501 4 0
+entity 701 5 0
+field 501 may_study 701
+field 501 may_use 701
+inventory 1000 501 1
+report capacity 1000 1000
+life rename log/200 log/old
+sout route -2 1234
+sout frame 2 6 1 9
+report item_skills 200 1000
+sout state
+report capacity 200 1000
+sout state
+life flush
+readfile log/old
+report state 200
+
+section report invalid capacity noncharacter preserves weight assertion after blank output
+entity 501 4 0
+report capacity 1000 501
+
+section report invalid item study asserts before first heading
+entity 501 4 0
+field 501 may_study 9999
+inventory 1000 501 1
+report item_skills 1000 1000
+
+section report invalid item use asserts after complete study list
+entity 501 4 0
+entity 701 5 0
+field 501 may_study 701
+field 501 may_use 9999
+inventory 1000 501 1
+report item_skills 1000 1000
+
+section report invalid item second study entry keeps original assertion order
+entity 501 4 0
+entity 701 5 0
+field 501 may_study 701
+field 501 may_study 9999
+field 501 may_use 701
+inventory 1000 501 1
+report item_skills 1000 1000
+
+section report invalid item skill cycle preserves original prerequisite assertion
+entity 501 4 0
+entity 701 5 0
+entity 702 5 0
+field 701 required 702
+field 702 required 701
+field 501 may_use 701
+inventory 1000 501 1
+report item_skills 1000 1000

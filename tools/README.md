@@ -6,6 +6,37 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Capacity and item-granted skills (#147)
+
+Existing report.go adds complete pinned report.c show_carry_capacity
+**73–105**, show_item_skills_sup **108–193** and show_item_skills **196–210**.
+The existing oracle already extracts their entire real C closure, reusing
+weights/skills, names, inventory and cached output. No new dependency/pin,
+later character/player root or projection-plus-render double pass. Preserve
+separate travel weights, signed-int ratios, independent stored study/use
+lists, recipient prerequisites, original assertions and indentation order.
+
+At **0.87.0-alpha**, fourteen appended sections match real C/C/Go:
+**1006 sections / 68035 lines / 1290206 output bytes**, preserving the exact
+inherited **992-section / 67520-line / 1278600-output-byte** and
+**403193-input-byte** prefixes. Numeric constants and reached branches were
+checked against the immutable pin; #168 live native traversal still matches.
+Four temporary missing-dependency controls (exit 0/134, ordinary/update)
+reject an expected-abort section before status acceptance or recording
+replacement, leaving its hash unchanged. Probe sources are removed.
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded default tests pass, with explicit isolated
+`G3_REPO` throughout. Logs: `tmp/issue147-*.log`; see
+[exact closure, fixture branches, hashes and limits](command-compat#capacity-and-item-granted-skills-147).
+
+No full-world/full-corpus/strict-lifecycle or stage-exit acceptance. Latest
+strict evidence remains the parent's post-#145 gate: identical C repeats,
+C/Go 0, matching streams and paths/types/modes, eight saved-report byte
+differences, exit 1 before lifecycle; not refreshed by #146 or this task.
+G3 #358 remains nonblocking, original division/Go panic unchanged; malformed
+C136/Go2 is not passing parity. Independent parent acceptance passes the
+routine tier; the strict stage gate remains pending.
+
 ## Inventories and unclaimed items (#146)
 
 Existing report.go adds complete pinned report.c inv_item_comp **213–220**,

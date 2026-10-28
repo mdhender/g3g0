@@ -1469,6 +1469,12 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "unclaimed":
 				n, owner := args.num(t), args.num(t)
 				w.showUnclaimed(n, owner)
+			case "capacity":
+				n, owner := args.num(t), args.num(t)
+				w.showCarryCapacity(n, owner)
+			case "item_skills":
+				n, owner := args.num(t), args.num(t)
+				w.showItemSkills(n, owner)
 			case "root":
 				n, where := args.num(t), args.num(t)
 				w.showLoc(n, where)
@@ -1913,6 +1919,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pItemMagic(n).curseLoyalty = int8(a)
 			case "token":
 				w.pMagic(n).token = int32(a)
+			case "may_study":
+				w.pItemMagic(n).mayStudy.Append(a)
+			case "may_use":
+				w.pItemMagic(n).mayUse.Append(a)
 			case "required":
 				w.pSkill(n).requiredSkill = int32(a)
 			case "noble_item":

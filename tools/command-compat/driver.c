@@ -1066,10 +1066,13 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "report")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
-   else if(!strcmp(text,"inventory") || !strcmp(text,"unclaimed")) {
+   else if(!strcmp(text,"inventory") || !strcmp(text,"unclaimed") ||
+           !strcmp(text,"capacity") || !strcmp(text,"item_skills")) {
     if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
     if(!strcmp(text,"inventory")) show_char_inventory(n,a);
-    else show_unclaimed(n,a);
+    else if(!strcmp(text,"unclaimed")) show_unclaimed(n,a);
+    else if(!strcmp(text,"capacity")) show_carry_capacity(n,a);
+    else show_item_skills(n,a);
    }
    else if(!strcmp(text,"root")) {
     if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
@@ -1412,6 +1415,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"creator")) p_item_magic(n)->creator = a;
    else if (!strcmp(text,"curse")) p_item_magic(n)->curse_loyalty = (schar)a;
    else if (!strcmp(text,"token")) p_magic(n)->token = a;
+   else if (!strcmp(text,"may_study")) ilist_append(&p_item_magic(n)->may_study,a);
+   else if (!strcmp(text,"may_use")) ilist_append(&p_item_magic(n)->may_use,a);
    else if (!strcmp(text,"required")) p_skill(n)->required_skill = a;
    else if (!strcmp(text,"noble_item")) p_char(n)->unit_item = a;
    else if (!strcmp(text,"prev")) p_char(n)->prev_lord = a;

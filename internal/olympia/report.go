@@ -5,6 +5,86 @@ package olympia
 
 import "github.com/mdhender/g3g0/internal/lists"
 
+// showCarryCapacity is complete report.c:73–105. Ratios use the separate
+// travel weights, including C int multiplication before division.
+func (w *world) showCarryCapacity(who, num int) {
+	w.commandOut(who, "")
+	v := w.determineUnitWeights(num)
+	walkPercent := ""
+	if v.landCap > 0 {
+		walkPercent = sout(" (%d%%)", v.landWeight*100/v.landCap)
+	}
+	buf := sout("%s/%s land%s", commaNum(int(v.landWeight)), commaNum(int(v.landCap)), walkPercent)
+	if v.rideCap > 0 {
+		buf += sout(", %s/%s ride (%d%%)", commaNum(int(v.rideWeight)), commaNum(int(v.rideCap)), v.rideWeight*100/v.rideCap)
+	}
+	if v.flyCap > 0 {
+		buf += sout(", %s/%s fly (%d%%)", commaNum(int(v.flyWeight)), commaNum(int(v.flyCap)), v.flyWeight*100/v.flyCap)
+	}
+	w.wiout(who, int32(len("Capacity:  ")), "Capacity:  %s", buf)
+}
+
+// showItemSkillsSup is complete active report.c:108–193. Study and use are
+// independent stored lists; validate each entry before its first heading.
+func (w *world) showItemSkillsSup(who, item int, p *itemMagic) {
+	first := true
+	for _, sk := range p.mayStudy {
+		assert(w.validBox(sk), "olympia/report.c", 126, "valid_box(sk)")
+		parent := w.skillSchool(sk)
+		if first {
+			w.commandOut(who, "")
+			w.commandOut(who, "%s permits study of the following skills:", w.boxName(item))
+			w.indent += 3
+			first = false
+		}
+		req := ""
+		if sk != parent {
+			req = sout(" (requires %s)", w.justName(parent))
+		}
+		if sk != parent && w.hasSkill(who, parent) < 1 {
+			w.wiout(who, 3, "???%s", req)
+		} else {
+			w.wiout(who, 3, "%s%s", w.boxName(sk), req)
+		}
+	}
+	if !first {
+		w.indent -= 3
+	}
+	first = true
+	for _, sk := range p.mayUse {
+		assert(w.validBox(sk), "olympia/report.c", 162, "valid_box(sk)")
+		parent := w.skillSchool(sk)
+		if first {
+			w.commandOut(who, "")
+			w.commandOut(who, "%s permits use of the following skills:", w.boxName(item))
+			w.indent += 3
+			first = false
+		}
+		req := ""
+		if sk != parent {
+			req = sout(" (requires %s)", w.justName(parent))
+		}
+		if sk != parent && w.hasSkill(who, parent) < 1 {
+			w.wiout(who, 3, "???%s", req)
+		} else {
+			w.wiout(who, 3, "%s%s", w.boxName(sk), req)
+		}
+	}
+	if !first {
+		w.indent -= 3
+	}
+}
+
+// showItemSkills is report.c:196–210. Do not sort the inventory here or
+// allocate missing magic records. Later roots retain their projections.
+func (w *world) showItemSkills(who, num int) {
+	for e := range w.loopInv(num) {
+		if p := w.rpItemMagic(int(e.item)); p != nil {
+			w.showItemSkillsSup(who, int(e.item), p)
+		}
+	}
+}
+
 // invItemComp is report.c:213–220. Sort the original list, including entries
 // which loopInv will subsequently filter; subtraction has C int width.
 func invItemComp(a, b *itemEnt) int { return int(a.item - b.item) }

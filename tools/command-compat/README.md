@@ -3,6 +3,100 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Capacity and item-granted skills (#147)
+
+Existing report.go implements complete unchanged pinned report.c
+`show_carry_capacity` **73–105**, `show_item_skills_sup` **108–193**
+(active code, retaining its two distinct loops) and `show_item_skills`
+**196–210**. The existing oracle already extracts all three definitions;
+direct `report capacity` and `report item_skills` expose them. Fixture-only
+`may_study`/`may_use` fields append real stored lists on both sides.
+No new dependency, pin, successful C substitute or output/cache owner.
+
+The complete real closure reuses u.c `determine_unit_weights`/
+`add_item_weight`, `max`, `comma_num`; use.c `skill_school`, `has_skill`,
+`rp_skill_ent`, `exp_level`; original inventory/access macros, code.c
+`box_name`/`just_name` and naming dependencies; and complete sout.c
+`out`/`wiout`/routing/cached FILE ownership. Go reuses weights.go, use.go,
+code.go and sout.go. `wout` is the pinned `out` macro, not invented wrapping.
+Later character/player roots remain projections: neither these sections nor
+a projection-plus-render double pass are wired into those roots yet.
+
+Fourteen appended sections compare real C/C/Go, including raw/saved state:
+
+- Zero weight/capacity, loaded zero capacity, separate walking/riding/flying
+  self-weight exclusions, unequal positive capacities, overfull loads,
+  negative capacity's self-carry/no-extra-capacity semantics, custom noble
+  item, signed-int multiplication/ratio overflow and literal comma output.
+- Empty and missing magic records, study-only/use-only and separate mixed
+  lists, original inventory/list order and duplicates, nonpositive/invalid
+  inventory rows filtered before skill validation, repeated rendering,
+  schools/subskills and multi-level prerequisites. Recipient (not owner)
+  knowledge determines `???`; a learning school is insufficient while a
+  known school with negative experience still has novice level.
+- Primary indentation restoration, secondary indent reset only on `wiout`,
+  unchanged secondary indent with empty lists, day fields, MASTER routing
+  and actual renamed cached inode bytes (328 bytes under `log/old`).
+- Original assertions at report.c **126/162**, use.c **1182** (prerequisite
+  cycle) and u.c **1480** (noncharacter weight owner). Five new sections
+  exit **134**; the other nine exit **0**. Buffered output on assertion is
+  compared as emitted by actual C, not artificially flushed for inspection.
+
+Constants verified against pinned oly.h: char/item/skill **2/4/5**, default
+noble item/peasant **10**, learning/known **1/2**. Items 501–504 and skills
+701–704 are synthetic, 9999 deliberately absent. Capacity fixtures allocate
+the actual default noble item before weight lookup (the initially incomplete
+synthetic fixture lacked it and C exited 139; that fixture was corrected,
+not accepted or masked). Observed asymmetric output is **100/300 land (33%),
+125/160 ride (78%), 100/180 fly (55%)**, becoming **560/300 (186%),
+585/160 (365%), 560/180 (311%)** under load. Negative-capacity control prints
+**0/0 land, 0/30 ride (0%), 0/22 fly (0%)**. Stored inventory/skill/grant
+lists remain unchanged by these section renderers, with no new records on
+the empty-list path. No production defect or new prerequisite was found.
+
+At **0.87.0-alpha**, refresh and fresh default command checks match complete
+pinned C twice and Go: **1006 sections / 68035 lines / 1290206 output bytes**.
+The inherited **992 sections / 67520 lines / 1278600 output bytes** and
+**21714 lines / 403193 input bytes** remain exact unchanged prefixes, checked
+against HEAD. New input: **21934 lines / 408111 bytes**.
+Output SHA-256:
+`62d0443f0b7d7122c2b2a28c8b2556cb4c9995a20782f7428a63b5a1afe62e86`.
+Input SHA-256:
+`6ae3de40cb526f9b9c1d473959fa4ac5e64fcdcb8c564129fc3a0df5a54da5b3`.
+#168 live native traversal still matches **28 lines / 426 bytes**, shared
+input unchanged. Logs: `tmp/issue147-command{,-update}.log`.
+
+Temporary linker controls wrapped only `show_item_skills` at expected-abort
+section **1002**, emitting the missing-dependency marker then exiting **0**
+or aborting **134**. Ordinary and `--update` runs all rejected with harness
+status **2** at the marker check before status/recording acceptance, and
+recording SHA-256 was unchanged in all four runs. Probe source/compiler
+wrapper removed; final refresh/default checks use only unchanged actual C.
+Logs: `tmp/issue147-negative-{return,abort}-{normal,update}.log`.
+
+Sequential checks pass, each with explicit `G3_REPO="$PWD/tmp/upstream.git"`
+and bounded engine execution: command **1006/68035**, move **135/7158**,
+helper **37/1487**, RNG **321**, code **43/969** (its own unchanged older
+pin), loadsave **61/3411**, turn-driver **7/152**, phase **5/484**, calendar
+**2/119**, schedule **4/1801**, default turn (raw streams/status and both cwd
+entries match), bounded `go vet ./...`, fresh bounded
+`go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...`
+(Olympia **1.742s**). Logs: `tmp/issue147-{move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+Source/docs diff whitespace check passes; original C recording trailing
+spaces remain unmodified. Matching command captures removed after checking.
+
+No whole-world/full-corpus/strict-lifecycle or stage-exit acceptance claimed.
+Latest strict integration evidence is still the parent's post-#145 run:
+C repeats identical, C/Go statuses zero, streams and entry paths/types/modes
+match, eight saved-report byte differences, exit **1** before lifecycle.
+This task does not refresh that gate. G3 #358 remains nonblocking; original
+division and Go panic are unchanged, malformed C136/Go2 is NOT passing
+parity. Independent parent review verified all three complete unchanged C
+definitions exactly once, the inherited prefixes and hashes above. Parent
+sequential compatibility checks, bounded vet and fresh bounded default tests
+pass (Olympia **1.729s**). Logs:
+`tmp/parent147-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+
 ## Inventories and unclaimed items (#146)
 
 Existing report.go implements complete unchanged pinned report.c
