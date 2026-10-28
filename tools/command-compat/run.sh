@@ -274,6 +274,18 @@ for region in ['hades', 'faery']:
             out.write('void drv_nasty(int slot) { create_hades_nasty(slot); }\n')
             out.write('void drv_hades_unit(int who) { auto_hades_sup(who); }\n')
             out.write('int drv_nasty_roll(int slot, int sub, int low, int high) { return hads_nasty(slot, sub, low, high); }\n')
+        else:
+            out.write('#define phase_ran(x) ((void)0)\n#define phase_acted(x) ((void)0)\n')
+            for name in ['create_elven_hunt', 'warn_human', 'auto_faery_sup', 'auto_faery']:
+                m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
+                if not m:
+                    sys.exit(f'no definition of {name} in faery.c')
+                line = source.count('\n', 0, m.start()) + 1
+                out.write(f'#line {line} "olympia/faery.c"\n{m.group(0)}\n')
+            out.write('void drv_hunt(int slot) { create_elven_hunt(slot); }\n')
+            out.write('void drv_faery_unit(int who) { auto_faery_sup(who); }\n')
+            out.write('int drv_hunt_loc(int slot, int retry, int size) { return faer_hunt_loc(slot, retry, 0, size-1); }\n')
+            out.write('int drv_hunt_qty(int slot) { return faer_hunt_qty(slot); }\n')
 source = open(f'{src}/npc.c').read()
 with open(f'{dst}/npc-rng.c', 'w') as out:
     out.write('#line 1 "olympia/npc.c"\n')
@@ -336,6 +348,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section faery '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section faery unlocated hunt preserves loop here assertion') expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected faery status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section weather '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

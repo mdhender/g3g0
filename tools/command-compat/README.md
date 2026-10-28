@@ -1682,3 +1682,71 @@ Report assembly is not accepted; the real touched/known/output DB mutations
 remain in scope. No new verified bug/blocker was found; known nonblocking
 G3 #309/#352/#353/#354/#355 remain unchanged. Version **0.53.0-alpha**;
 changes remain uncommitted for parent review.
+
+## Faery hunts (#77)
+
+The same real-source harness now extracts **faery.c:529–634** in full:
+`create_elven_hunt`, `warn_human`, `auto_faery_sup`, and `auto_faery`.
+Original faer tag/key/turn-guard definitions were already included for #111;
+its accepted entry hooks and creations are reused, not duplicated. Only phase
+instrumentation is omitted. No new C source dependency or pin change is needed.
+The production daily call position is unchanged; its former NYI is replaced.
+
+Thirteen new small recorded cases exercise:
+
+- Zero population fills slots 0–14 in creation order; 14 existing faction units
+  (including a captive, an outside-region unit and an artificial noncharacter
+  with ownership state) produce exactly one hunt at slot 14. Populations 15 and
+  16 neither allocate nor remove anything. C counts the whole faction list.
+- Asymmetric region child order and mixed ocean/land maps, retry-keyed rejection,
+  actual elf quantities, repeated slot draws, day changes, master reload under
+  the same turn guard, and reseeding on a new turn. Interleaved real bandit,
+  unique-item mint and exdr shuffles preserve keyed hunt placement/quantity
+  while sharing actual allocation and saved list order.
+- First encounters queue actual MESSAGE plus body lines and log to LOG_SPECIAL;
+  later encounters queue ATTACK. Memory is on the owning faction, shared across
+  hunts, persisted in real save-box bytes. Direct saved here order changes both
+  warning and attack order; noncharacters/nonregular factions and nested humans
+  are skipped, while hidden, captive, unsworn and safe-haven targets are not.
+- Same-faction nested stone holders protect their stack leader; other-faction
+  holders do not. Removing protection warns once, then attacks. Protected-only
+  paths queue real MOVE OUT; no land exits produce no invented MOVE or WAIT.
+- An empty-current existing hunt executes real MOVE → WAIT. An actually spawned
+  hunt **110158**, with **25 elves**, first executes its initialized WAIT, then
+  an eight-day generated MOVE, arrives at 9001, and executes the next WAIT.
+  Its real output includes the 25-men extra travel day, departure/arrival,
+  known/touched mutations, empty saved orders, and completed command state.
+- A valid faction-owned but unlocated hunt reaches the original `loop_here`
+  call-site assertion, not a null-owner crash: exact stderr
+  `assertion failure: olympia/faery.c (581): valid_box(where)` and status 134.
+  Go asserts immediately after `pMisc`, before entering `loopHere`. Only this
+  named Faery section accepts 134; missing-dependency rejection still precedes
+  status acceptance and --update recording.
+
+Two fresh C executions are deterministic: **515 sections / 36108 lines /
+615332 bytes**, exactly matched by Go stdout/stderr/status, save-box state and
+order files. The previous **502 sections / 33420 lines / 576837 bytes** of
+output and **10585 lines / 189472 bytes** of input are exact unchanged prefixes.
+The original #77 **514 sections / 36094 lines / 615031 bytes** also remain an
+exact unchanged prefix after the assertion review. Input now totals **11065
+lines / 197681 bytes**; entire move recordings remain unchanged. No expectations
+came from Go.
+
+An allocated C box cannot lack `loc_info`: pinned `oly.h:477` embeds
+`x_loc_info` in `struct box`, and `rp_loc_info` at line 947 takes its address.
+Thus no valid allocated-region case can reach `create_elven_hunt`'s `p`
+assertion at faery.c:538. The source assertion remains ported; no fabricated
+pointer state or unallocated-box crash is used as its expected behavior.
+
+The expected-abort missing-dependency negative control is checked in both normal
+and --update modes before status acceptance or recording. Temporary probes are
+removed; no tests bless unported MESSAGE/ATTACK execution. Discarded artificial
+empty/unallocated-region constructions were not public-engine bug reproductions
+and prompted no engine workaround. Ocean-only maps are not routine tests.
+
+Command, move, helper, rng, code, loadsave, turn-driver and default turn checks
+run sequentially before bounded vet/fresh default tests. Whole-world checks
+remain opt-in; no full-world turn or stage-exit success is implied. Reports and
+unrelated command handlers remain explicit boundaries. No new verified public
+bug or blocker; known G3 #309/#352/#353/#354/#355 are unchanged. Version
+**0.54.0-alpha**, left uncommitted for parent acceptance.

@@ -46,6 +46,8 @@ void drv_inherit_rolls(int from, int item, int qty);
 void drv_storms(int num, int sk);
 void drv_storm_decay(void), drv_storm_move(void), drv_storm_touch(void);
 void drv_move_storm(int storm, int dest);
+void drv_hunt(int slot), drv_faery_unit(int who);
+int drv_hunt_loc(int slot, int retry, int size), drv_hunt_qty(int slot);
 
 static void wait_dump(struct command *c)
 {
@@ -249,6 +251,25 @@ int main(int argc, char **argv)
    printf("nasty spirits %d\n",drv_nasty_roll(n,2,25,75));
    printf("nasty lesser %d\n",drv_nasty_roll(n,2,50,150));
    printf("nasty greater %d\n",drv_nasty_roll(n,2,100,250));
+  }
+  else if (!strcmp(op, "faery")) {
+   n=0; sscanf(line,"%*s %31s %d",text,&n);
+   if(!strcmp(text,"auto")) auto_faery();
+   else if(!strcmp(text,"spawn")) drv_hunt(n);
+   else if(!strcmp(text,"unit")) drv_faery_unit(n);
+   else return 2;
+  }
+  else if (!strcmp(op, "hunt_rolls")) {
+   sscanf(line,"%*s %d %d",&n,&a);
+   for(i=0;i<6;i++) printf("hunt loc %d %d\n",i,drv_hunt_loc(n,i,a));
+   printf("hunt qty %d\n",drv_hunt_qty(n));
+  }
+  else if (!strcmp(op, "faery_state")) {
+   loop_units(faery_player,n) {
+    printf("faery unit %d\n",n); save_box(stdout,n);
+   } next_unit;
+   for(i=0;i<5;i++) list(sout("load_q %d",i),load_q[i]);
+   list("run_q",run_q);
   }
   else if (!strcmp(op, "npc_move")) {
    sscanf(line,"%*s %d",&n); npc_move(n);
@@ -779,6 +800,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "tunnel_region")) tunnel_region = n;
    else if (!strcmp(text, "nowhere_region")) nowhere_region = n;
    else if (!strcmp(text, "hades_player")) hades_player = n;
+   else if (!strcmp(text, "faery_player")) faery_player = n;
    else if (!strcmp(text, "backlinks")) pledge_backlinks = n;
    else if (!strcmp(text, "garrison_pay")) garrison_pay = n;
    else if (!strcmp(text, "gold_garrison")) gold_garrison = n;

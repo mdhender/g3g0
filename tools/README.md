@@ -40,6 +40,16 @@ directly; ship-bound motion emits weather and touches owners. Shared day-zero
 location initialization and month-end call positions are preserved. Run the
 same sequential comparisons above. No new source dependency/pin or SAIL
 handler, weather-magic command or full-world turn success is implied.
+Faery hunts (#77) also extend command-compat, extracting complete faery.c
+create_elven_hunt/warn_human/auto_faery_sup/auto_faery definitions alongside
+the existing original faer prefix. This reuses #111 entry hooks, actual
+creation/mint, NPC/exdr routing, queue/dispatch, logs and save-box/order writers,
+not a separate modeled NPC harness. Cases cover the 15-unit cap (all faction
+units), slot/retry ocean rejection, quantities/order, shared warning memory,
+stone/stack filtering, and real spawned WAIT → eight-day MOVE → WAIT.
+Daily call position is unchanged. Run command/move/helper/rng/code/loadsave/
+turn-driver/default turn sequentially. MESSAGE/ATTACK and unrelated commands
+remain explicitly unported; no new source dependency/pin or full-world success.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks

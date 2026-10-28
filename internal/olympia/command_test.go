@@ -300,6 +300,32 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			fmt.Fprintf(&stdout, "nasty spirits %d\n", w.streams.HadsNasty(n, 2, 25, 75))
 			fmt.Fprintf(&stdout, "nasty lesser %d\n", w.streams.HadsNasty(n, 2, 50, 150))
 			fmt.Fprintf(&stdout, "nasty greater %d\n", w.streams.HadsNasty(n, 2, 100, 250))
+		case "faery":
+			switch action := args.word(); action {
+			case "auto":
+				w.autoFaery()
+			case "spawn":
+				w.createElvenHunt(args.num(t))
+			case "unit":
+				w.autoFaerySup(args.num(t))
+			default:
+				t.Fatalf("unknown faery %s", action)
+			}
+		case "hunt_rolls":
+			n, a := args.num(t), args.num(t)
+			for i := 0; i < 6; i++ {
+				fmt.Fprintf(&stdout, "hunt loc %d %d\n", i, w.streams.FaerHuntLoc(n, i, 0, a-1))
+			}
+			fmt.Fprintf(&stdout, "hunt qty %d\n", w.streams.FaerHuntQty(n))
+		case "faery_state":
+			for n := range w.loopUnits(int(w.faeryPlayer)) {
+				fmt.Fprintf(&stdout, "faery unit %d\n", n)
+				w.saveBox(&stdout, n)
+			}
+			for i, q := range w.loadQ {
+				helperList(&stdout, fmt.Sprintf("load_q %d", i), q)
+			}
+			helperList(&stdout, "run_q", w.runQ)
 		case "npc_move":
 			w.npcMove(args.num(t))
 		case "npc_choose":
@@ -1074,6 +1100,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.nowhereRegion = int32(n)
 			case "hades_player":
 				w.hadesPlayer = int32(n)
+			case "faery_player":
+				w.faeryPlayer = int32(n)
 			case "backlinks":
 				w.pledgeBacklinks = n != 0
 			case "garrison_pay":
