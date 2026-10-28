@@ -72,6 +72,22 @@ func (w *world) touchLoc(who int) {
 	w.touchLocPl(w.player(who), where)
 }
 
+// stormDecay is day.c:1655–1678, including signed-short decrement and
+// live kind-chain traversal while dissipation deletes adjacent storms.
+func (w *world) stormDecay() {
+	for i := range w.loopKind(tStorm) {
+		p := w.pMisc(i)
+		p.stormStr--
+		if p.stormStr > 0 {
+			continue
+		}
+		p.stormStr = 0
+		w.dissipateStorm(i, 1)
+	}
+}
+
+// stormOwnerTouchLoc is day.c:1681–1702, called by the shared day-zero
+// initializer below, not merely by a weather-specific harness.
 func (w *world) stormOwnerTouchLoc() {
 	for i := range w.loopKind(tStorm) {
 		if p := w.rpMisc(i); p != nil && p.summonedBy != 0 {
@@ -80,6 +96,24 @@ func (w *world) stormOwnerTouchLoc() {
 				w.touchLocPl(pl, where)
 			}
 		}
+	}
+}
+
+// stormMove is day.c:1705–1734. npc_dir gates a previously selected
+// destination; monthly relocation deliberately bypasses moveStorm output.
+func (w *world) stormMove() {
+	for i := range w.loopKind(tStorm) {
+		p := w.pMisc(i)
+		if p.npcDir == 0 {
+			continue
+		}
+		assert(w.locDepth(int(p.stormMove)) == locProvince, "olympia/day.c", 1721, "loc_depth(p->storm_move) == LOC_province")
+		w.setWhere(i, int(p.stormMove))
+		if owner := w.npcSummoner(i); owner != 0 && w.validBox(owner) {
+			w.setKnown(owner, int(p.stormMove))
+		}
+		p.npcDir = 0
+		p.stormMove = 0
 	}
 }
 

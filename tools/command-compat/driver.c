@@ -44,6 +44,8 @@ extern int gold_garrison;
 extern int gold_combat, gold_combat_indep;
 void drv_inherit_rolls(int from, int item, int qty);
 void drv_storms(int num, int sk);
+void drv_storm_decay(void), drv_storm_move(void), drv_storm_touch(void);
+void drv_move_storm(int storm, int dest);
 
 static void wait_dump(struct command *c)
 {
@@ -139,6 +141,16 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"start")) { c->a=n; printf("bind start %d\n",v_bind_storm(c)); }
    else if(!strcmp(text,"finish")) { c->a=n; printf("bind finish %d\n",d_bind_storm(c)); }
    else if(!strcmp(text,"count")) printf("provinces %d\n",nprovinces());
+   else if(!strcmp(text,"decay")) drv_storm_decay();
+   else if(!strcmp(text,"monthly")) drv_storm_move();
+   else if(!strcmp(text,"touch")) drv_storm_touch();
+   else if(!strcmp(text,"move")) drv_move_storm(n,a);
+   else if(!strcmp(text,"bound")) move_bound_storms(n,a);
+   else if(!strcmp(text,"dissipate")) dissipate_storm(n,a);
+   else if(!strcmp(text,"pending")) {
+    struct entity_misc *p=rp_misc(n);
+    printf("pending %d %d %d\n",n,p ? p->npc_dir : 0,p ? p->storm_move : 0);
+   }
    else if(!strcmp(text,"state")) {
     loop_storm(n) { printf("storm %d\n",n); save_box(stdout,n); } next_storm;
     loop_province(n) {
@@ -652,6 +664,9 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"prisoner")) p_char(n)->prisoner = (schar)a;
    else if (!strcmp(text,"npc")) p_char(n)->npc_prog = (schar)a;
    else if (!strcmp(text,"npc_dir")) p_misc(n)->npc_dir = (schar)a;
+   else if (!strcmp(text,"storm_move")) p_misc(n)->storm_move = a;
+   else if (!strcmp(text,"bind_storm")) p_misc(n)->bind_storm = a;
+   else if (!strcmp(text,"bound_storm")) ilist_append(&p_subloc(n)->bound_storms,a);
    else if (!strcmp(text,"loyal")) p_char(n)->loy_kind = (schar)a;
    else if (!strcmp(text,"moving")) p_char(n)->moving = a;
    else if (!strcmp(text,"time_flying")) p_char(n)->time_flying = (schar)a;

@@ -41,8 +41,6 @@ func (w *world) animalDeaths()              { panic(notImplemented("animal_death
 func (w *world) ghostWarriorDecay()         { panic(notImplemented("ghost_warrior_decay")) }
 func (w *world) corpseDecay()               { panic(notImplemented("corpse_decay")) }
 func (w *world) deadBodyRot()               { panic(notImplemented("dead_body_rot")) }
-func (w *world) stormDecay()                { panic(notImplemented("storm_decay")) }
-func (w *world) stormMove()                 { panic(notImplemented("storm_move")) }
 func (w *world) collapsedMineDecay()        { panic(notImplemented("collapsed_mine_decay")) }
 func (w *world) postProduction()            { panic(notImplemented("post_production")) }
 func (w *world) autoDrop()                  { panic(notImplemented("auto_drop")) }

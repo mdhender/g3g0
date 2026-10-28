@@ -50,7 +50,7 @@ functions = {
                'clear_guard_flag', 'v_move', 'd_move',
                'v_exit', 'v_enter', 'v_north', 'v_south', 'v_east', 'v_west'],
     'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched',
-              'default_garrison_pay', 'maint_cost'],
+              'default_garrison_pay', 'maint_cost', 'storm_decay', 'storm_move'],
     'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
@@ -102,7 +102,8 @@ functions = {
     'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit'],
     'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
                 'update_weather_view_locs', 'new_storm', 'create_some_storms',
-                'natural_weather', 'v_bind_storm', 'd_bind_storm'],
+                'natural_weather', 'v_bind_storm', 'd_bind_storm',
+                'move_storm', 'move_bound_storms', 'dissipate_storm'],
     'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school'],
     'report.c': ['char_rep_location'],
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
@@ -225,6 +226,10 @@ int drv_bandit(int faery, int who, int where) {
 }
 int drv_market(int who) { return market_here(who); }
 void drv_storms(int num, int sk) { create_some_storms(num, sk); }
+void drv_storm_decay(void) { storm_decay(); }
+void drv_storm_move(void) { storm_move(); }
+void drv_move_storm(int storm, int dest) { move_storm(storm, dest); }
+void drv_storm_touch(void) { storm_owner_touch_loc(); }
 int drv_savage_count(void) { return num_savages; }
 int drv_savage_hates(int where) { return savage_hates(where); }
 int drv_savage_here(int where) { return savage_hate_here(where); }

@@ -1610,3 +1610,75 @@ or upstream blocker was found; known nonblocking upstream issues are retained.
 Bounded go vet and fresh bounded default all-tests also pass. Full-world
 tests were not run for this task.
 Version **0.52.0-alpha**; no commit or push by this task.
+
+## Storm movement, owner visibility and month-end decay (#76)
+
+This continues command-compat rather than adding a duplicate weather-compat.
+The complete pinned closure is **221 C definition lines**:
+
+| source | complete definitions and original lines |
+|---|---|
+| day.c | storm_decay 1655–1678; storm_owner_touch_loc 1681–1702; storm_move 1705–1734 |
+| storm.c | move_storm 191–250; move_bound_storms 253–276; dissipate_storm 365–425 |
+
+The owner-touch helper and its real init_locs_touched call were already
+implemented; they are retained and exercised through the shared initializer,
+not bypassed with a weather-only replacement. Existing postMonth calls now
+reach real decay and movement. Original C definitions, headers, macros and
+assertion locations are extracted; only phase instrumentation is omitted.
+All source inputs are already tracked, so there is no dependency-table,
+affected.sh or pin change. Production reuses shared placement, kind iteration,
+knowledge/touch state, inventory/cookie return, reclamation, output and saves.
+
+**20 appended real-C sections** distinguish:
+
+- Strength 0/1/2/negative and signed-short -32768/32767 decrement behavior;
+  adjacent deletion during kind-chain traversal; coexisting same-kind storms;
+  positive-strength direct dissipation checks weather *before* removal, whereas
+  decay zeros strength before calling it. No independently corrected notice.
+- Show false/true, all three weather messages, character/unowned/invalid/player
+  owners, real ruler/pledge routing and show_to_garrison reset versus preservation.
+  Dissipation does not enable that flag; monthly relocation does not alter it.
+- Unequal deferred destinations, nonzero positive/negative npc_dir gates,
+  an invalid deferred destination behind a zero gate, exact gate/destination
+  reset and repeated calls. Monthly movement uses set_where directly, emits
+  no weather notification, sets knowledge but does not touch a location.
+  Player 201 gains known 9001 with an empty touched list.
+- Real BIND followed by ship-bound movement, province selection from a city
+  destination, adjacent stale/nonstorm bound-list rows, repeated same-province
+  motion and saved storm/ship backlinks. Ship-bound motion touches player 201's
+  province 9002 without adding knowledge. Cookie/home pairs return two items;
+  incomplete pairs do not return an item. Missing optional ship state is safe.
+- Shared init_locs_touched includes the captive storm owner's locations despite
+  skipping that character directly. A nested temple/city helper-state control
+  yields touched city 9100 and province 9001, without adding knowledge; ordinary
+  player 201 touches only its character's province 9000.
+- Paired RNG controls give identical two wthr shuffles and strength probes,
+  and the same subsequent shared-mint unique item **67592**, with and without
+  real movement/decay/touch/dissipation. Natural minted storms also run decay
+  and deferred relocation through the actual helpers. Lifecycle has no draws.
+- Four malformed helper-state controls retain exact C kind/depth/subtype
+  assertions and status 134. Raw unallocated optional-structure targets were
+  corrected to allocated deleted boxes before recording; these constructions
+  are not claims about public-engine defects.
+
+Two bounded C executions are deterministic: **502 sections / 33420 lines /
+576837 bytes**, exactly matched by Go raw stdout/stderr/status and real saves.
+The previous **482 sections / 32263 lines / 558979 bytes** of output and
+**10197 lines / 181494 bytes** of input remain exact unchanged prefixes.
+New input totals **10585 lines / 189472 bytes**. Entire move input and output
+are unchanged; raw C trailing whitespace is retained.
+
+A removed ephemeral expected-134 weather section dispatched actual ATTACK.
+Both normal and --update rejected its missing-dependency marker with status 2
+before expected-abort handling or recording, leaving the recording unchanged.
+No permanent test names a temporary private NYI boundary.
+
+Command normal/update, move, helper, rng, code, loadsave, turn-driver and
+default turn comparisons run sequentially before bounded vet and fresh default
+tests. Whole worlds remain opt-in; no full-world or stage-exit success is
+claimed. SAIL and unrelated weather magic handlers remain explicit boundaries.
+Report assembly is not accepted; the real touched/known/output DB mutations
+remain in scope. No new verified bug/blocker was found; known nonblocking
+G3 #309/#352/#353/#354/#355 remain unchanged. Version **0.53.0-alpha**;
+changes remain uncommitted for parent review.

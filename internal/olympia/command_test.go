@@ -142,6 +142,25 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				fmt.Fprintf(&stdout, "bind finish %d\n", w.dBindStorm(c))
 			case "count":
 				fmt.Fprintf(&stdout, "provinces %d\n", w.nprovinces())
+			case "decay":
+				w.stormDecay()
+			case "monthly":
+				w.stormMove()
+			case "touch":
+				w.stormOwnerTouchLoc()
+			case "move":
+				w.moveStorm(args.num(t), args.num(t))
+			case "bound":
+				w.moveBoundStorms(args.num(t), args.num(t))
+			case "dissipate":
+				w.dissipateStorm(args.num(t), args.num(t))
+			case "pending":
+				n := args.num(t)
+				dir, dest := 0, 0
+				if p := w.rpMisc(n); p != nil {
+					dir, dest = int(p.npcDir), int(p.stormMove)
+				}
+				fmt.Fprintf(&stdout, "pending %d %d %d\n", n, dir, dest)
 			case "state":
 				for n := range w.loopKind(tStorm) {
 					fmt.Fprintf(&stdout, "storm %d\n", n)
@@ -878,6 +897,12 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pChar(n).npcProg = int8(a)
 			case "npc_dir":
 				w.pMisc(n).npcDir = int8(a)
+			case "storm_move":
+				w.pMisc(n).stormMove = int32(a)
+			case "bind_storm":
+				w.pMisc(n).bindStorm = int32(a)
+			case "bound_storm":
+				w.pSubloc(n).boundStorms.Append(a)
 			case "loyal":
 				w.pChar(n).loyKind = int8(a)
 			case "moving":

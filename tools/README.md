@@ -30,9 +30,16 @@ duplicating its real mint, placement, garrison output and save-box lifecycle
 in a weather-only tool. The new cases call actual storm.c definitions, not
 callback traces. Run command/move/helper/rng/code/loadsave/turn-driver/default
 turn comparisons sequentially. All four scheduled weather days together
-remain opt-in integration; #76 movement/decay and other weather magic remain
-explicitly unported. Additional source dependencies cloud.c, tunnel.c and
+remain opt-in integration; unrelated weather magic remains explicitly
+unported. Additional source dependencies cloud.c, tunnel.c and
 quest.c supply only original greater-region globals (tracked by affected.sh).
+Storm movement/decay (#76) extends the same command comparison with complete
+day.c storm_decay/storm_move/storm_owner_touch_loc and storm.c move_storm,
+move_bound_storms and dissipate_storm. Monthly relocation uses set_where
+directly; ship-bound motion emits weather and touches owners. Shared day-zero
+location initialization and month-end call positions are preserved. Run the
+same sequential comparisons above. No new source dependency/pin or SAIL
+handler, weather-magic command or full-world turn success is implied.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks

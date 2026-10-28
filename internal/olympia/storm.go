@@ -49,7 +49,7 @@ func (w *world) createSomeStorms(num, sk int) {
 }
 
 // naturalWeather is storm.c:1558–1613, sharing #74's persistent wthr stream.
-// Movement/decay (#76) and unrelated weather magic remain explicit boundaries.
+// Unrelated weather magic remains an explicit boundary.
 func (w *world) naturalWeather() {
 	n := w.nprovinces() / 4 / 2 / 4
 	switch olyMonth(w.sysclock) {
@@ -130,6 +130,98 @@ func (w *world) npcSummoner(n int) int {
 		return int(p.summonedBy)
 	}
 	return 0
+}
+
+// moveStorm is storm.c:191–250. Unlike monthly stormMove, ship-bound
+// movement touches the owner's faction and emits weather changes.
+func (w *world) moveStorm(storm, dest int) {
+	orig, sk := w.subloc(storm), w.subkind(storm)
+	before := w.weatherHere(dest, sk)
+	w.setWhere(storm, dest)
+	owner := w.npcSummoner(storm)
+	if w.validBox(owner) && w.validBox(w.player(owner)) {
+		w.touchLocPl(w.player(owner), dest)
+	}
+	w.showToGarrison = true
+	if w.weatherHere(orig, sk) == 0 {
+		switch sk {
+		case subRain:
+			w.commandOut(orig, "It has stopped raining.")
+		case subWind:
+			w.commandOut(orig, "It is no longer windy.")
+		case subFog:
+			w.commandOut(orig, "The fog has cleared.")
+		default:
+			assert(false, "olympia/storm.c", 227, "FALSE")
+		}
+	}
+	if before == 0 {
+		switch sk {
+		case subRain:
+			w.commandOut(dest, "It has begun to rain.")
+		case subWind:
+			w.commandOut(dest, "It has become quite windy.")
+		case subFog:
+			w.commandOut(dest, "It has become quite foggy.")
+		}
+	}
+	w.showToGarrison = false
+}
+
+// moveBoundStorms is the complete storm.c:253–276 helper. SAIL itself
+// remains unported. Stale adjacent entries are removed without skipping.
+func (w *world) moveBoundStorms(ship, where int) {
+	p := w.rpSubloc(ship)
+	if p == nil {
+		return
+	}
+	for i := 0; i < len(p.boundStorms); i++ {
+		storm := p.boundStorms[i]
+		if w.kind(storm) != tStorm {
+			p.boundStorms.Delete(i)
+			i--
+			continue
+		}
+		w.moveStorm(storm, w.province(where))
+	}
+}
+
+// dissipateStorm is storm.c:365–425. The weather test intentionally occurs
+// before removal: callers such as stormDecay first zero the strength.
+func (w *world) dissipateStorm(storm, show int) {
+	where := w.subloc(storm)
+	assert(w.kind(storm) == tStorm, "olympia/storm.c", 373, "kind(storm) == T_storm")
+	owner := w.npcSummoner(storm)
+	if owner != 0 && w.kind(owner) == tChar {
+		w.commandOut(owner, "%s has dissipated.", w.boxName(storm))
+	}
+	if show != 0 {
+		sk := w.subkind(storm)
+		if w.weatherHere(where, sk) == 0 {
+			switch sk {
+			case subRain:
+				w.commandOut(where, "It has stopped raining.")
+			case subWind:
+				w.commandOut(where, "It is no longer windy.")
+			case subFog:
+				w.commandOut(where, "The fog has cleared.")
+			default:
+				assert(false, "olympia/storm.c", 401, "FALSE")
+			}
+		}
+	}
+	w.setWhere(storm, 0)
+	p := w.pMisc(storm)
+	if p.npcHome != 0 && p.npcCookie != 0 {
+		w.genItem(int(p.npcHome), int(p.npcCookie), 1)
+	}
+	if ship := int(p.bindStorm); ship != 0 {
+		if p := w.rpSubloc(ship); p != nil {
+			p.boundStorms.RemValue(storm)
+		}
+		w.rpMisc(storm).bindStorm = 0
+	}
+	w.deleteBox(storm)
 }
 
 // weatherHere is weather_here(): buildings suppress weather; elsewhere

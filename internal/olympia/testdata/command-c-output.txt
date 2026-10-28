@@ -32261,3 +32261,1160 @@ log 200:
 stderr:
 
 exit 0
+stdout:
+section weather lifecycle empty world and absent bound list no draws
+> master 19
+> set turn 1
+> weather probe 9000 59
+weather shuffle: 370 328 356 363 314 349 342 300 335 307 321
+weather strength 2
+> weather decay
+> weather monthly
+> weather touch
+> weather bound 1000 0
+> weather probe 9000 59
+weather shuffle: 356 321 349 328 363 370 307 300 335 342 314
+weather strength 2
+> newitem 1000 42
+created 67592
+> save_new
+67592 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle rng control
+> master 19
+> set turn 1
+> weather_map 3
+> link 9000 1000
+> link 9000 1001
+> entity 70000 11 59
+> field 70000 strength 3
+> field 70000 summoner 1000
+> link 9000 70000
+> weather probe 9000 59
+weather shuffle: 370 328 356 363 314 349 342 300 335 307 321
+weather strength 2
+> weather probe 9000 59
+weather shuffle: 356 321 349 328 363 370 307 300 335 342 314
+weather strength 2
+> newitem 1000 42
+created 67592
+> save_new
+67592 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle rng movement decay touch dissipate no draws
+> master 19
+> set turn 1
+> weather_map 3
+> link 9000 1000
+> link 9000 1001
+> entity 70000 11 59
+> field 70000 strength 3
+> field 70000 summoner 1000
+> link 9000 70000
+> weather probe 9000 59
+weather shuffle: 370 328 356 363 314 349 342 300 335 307 321
+weather strength 2
+> weather move 70000 9001
+> weather decay
+> field 70000 npc_dir 4
+> field 70000 storm_move 9002
+> weather monthly
+> weather touch
+> weather dissipate 70000 0
+> weather probe 9000 59
+weather shuffle: 356 321 349 328 363 370 307 300 335 342 314
+weather strength 2
+> newitem 1000 42
+created 67592
+> save_new
+67592 item scroll
+IT
+ un 1000
+
+> weather state
+province 9000
+here: 1000 1001
+province 9001
+here:
+province 9002
+here:
+show_garrison 0
+output: 9000 9001 1000
+> lore_state 200
+known: 9002
+lore:
+touched: 9002 9001 9000
+weather:
+> readlog 200
+log 200:
+9000:0::0::It has stopped raining.
+9001:0::0::It has begun to rain.
+1000:0::0::Rain~[p000] has dissipated.
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle decay zero one two negative and signed short boundary
+> weather_map 3
+> link 9000 1000
+> entity 70000 11 59
+> field 70000 strength 0
+> link 9000 70000
+> entity 70001 11 58
+> field 70001 strength 1
+> link 9000 70001
+> entity 70002 11 57
+> field 70002 strength 2
+> link 9000 70002
+> entity 70003 11 59
+> field 70003 strength -1
+> link 9001 70003
+> entity 70004 11 58
+> field 70004 strength -32768
+> link 9001 70004
+> entity 70005 11 57
+> field 70005 strength 32767
+> link 9002 70005
+> weather decay
+> weather state
+storm 70002
+70002 storm fog
+LI
+ wh 9000
+MI
+ ss 1
+
+storm 70004
+70004 storm wind
+LI
+ wh 9001
+MI
+ ss 32767
+
+storm 70005
+70005 storm fog
+LI
+ wh 9002
+MI
+ ss 32766
+
+province 9000
+here: 1000 70002
+province 9001
+here: 70004
+province 9002
+here: 70005
+show_garrison 0
+output: 9000 9001
+> weather decay
+> weather state
+storm 70004
+70004 storm wind
+LI
+ wh 9001
+MI
+ ss 32766
+
+storm 70005
+70005 storm fog
+LI
+ wh 9002
+MI
+ ss 32765
+
+province 9000
+here: 1000
+province 9001
+here: 70004
+province 9002
+here: 70005
+show_garrison 0
+output: 9000 9001
+> readlog 200
+log 200:
+9000:0::0::It has stopped raining.
+9000:0::0::It is no longer windy.
+9001:0::0::It has stopped raining.
+9000:0::0::The fog has cleared.
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle adjacent deletion returns cookies unbinds and notifies owner
+> weather_map 2
+> link 9000 1000
+> entity 11 4 0
+> entity 9400 9 30
+> link 9000 9400
+> entity 70001 11 59
+> field 70001 strength 1
+> field 70001 summoner 1000
+> field 70001 npc_home 9001
+> field 70001 npc_cookie 11
+> link 9000 70001
+> entity 70000 11 59
+> field 70000 strength 1
+> field 70000 summoner 1000
+> field 70000 npc_home 9001
+> field 70000 npc_cookie 11
+> link 9000 70000
+> field 1000 cur_aura 9
+> link 9400 1000
+> weather finish 70000
+bind finish 1
+> weather finish 70001
+bind finish 1
+> weather decay
+> weather state
+province 9000
+here: 9400
+province 9001
+here:
+show_garrison 0
+output: 1000 9000
+> save 9400
+9400 ship galley
+LI
+ wh 9000
+ hl 1000 
+SL
+
+> save 9001
+9001 loc forest
+il	11 2
+LI
+ wh 8000
+
+> save 1000
+1000 char 0
+LI
+ wh 9400
+CH
+ lo 200
+CM
+ ca 3
+
+> readlog 200
+log 200:
+1000:0::0::Bound Rain~[p000] to Galley~[9400].
+1000:0::0::Bound Rain~[p001] to Galley~[9400].
+1000:0::0::Rain~[p000] has dissipated.
+1000:0::0::Rain~[p001] has dissipated.
+9000:0::0::It has stopped raining.
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle dissipate positive show before deletion and zero show suppression
+> weather_map 2
+> link 9000 1000
+> entity 70000 11 59
+> field 70000 strength 2
+> field 70000 summoner 1000
+> link 9000 70000
+> garrison_view 1
+> weather dissipate 70000 1
+> weather state
+province 9000
+here: 1000
+province 9001
+here:
+show_garrison 1
+output: 1000
+> entity 70001 11 58
+> field 70001 strength 0
+> link 9000 70001
+> weather dissipate 70001 0
+> weather state
+province 9000
+here: 1000
+province 9001
+here:
+show_garrison 1
+output: 1000
+> readlog 200
+log 200:
+1000:0::0::Rain~[p000] has dissipated.
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle dissipation show rain wind fog unowned invalid and player owners
+> weather_map 3
+> entity 70000 11 59
+> field 70000 strength 0
+> link 9000 70000
+> entity 70001 11 58
+> field 70001 strength 0
+> field 70001 summoner 99999
+> link 9001 70001
+> entity 70002 11 57
+> field 70002 strength 0
+> field 70002 summoner 200
+> link 9002 70002
+> weather dissipate 70000 1
+> weather dissipate 70001 1
+> weather dissipate 70002 1
+> weather state
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+show_garrison 0
+output: 9000 9001 9002
+> readlog 200
+log 200:
+9000:0::0::It has stopped raining.
+9001:0::0::It is no longer windy.
+9002:0::0::The fog has cleared.
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle coexisting same kind strength suppresses final message until zero
+> weather_map 1
+> entity 70000 11 57
+> field 70000 strength 0
+> link 9000 70000
+> entity 70001 11 57
+> field 70001 strength 2
+> link 9000 70001
+> weather dissipate 70000 1
+> weather decay
+> weather state
+storm 70001
+70001 storm fog
+LI
+ wh 9000
+MI
+ ss 1
+
+province 9000
+here: 70001
+show_garrison 0
+output:
+> weather decay
+> weather state
+province 9000
+here:
+show_garrison 0
+output: 9000
+> readlog 200
+log 200:
+9000:0::0::The fog has cleared.
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle monthly unequal deferred routes gate reset knowledge not touch
+> weather_map 4
+> link 9000 1000
+> link 9000 1001
+> field 1001 lord 201
+> entity 70002 11 59
+> field 70002 summoner 1000
+> field 70002 strength 3
+> field 70002 npc_dir 1
+> field 70002 storm_move 9003
+> link 9000 70002
+> entity 70000 11 58
+> field 70000 summoner 1001
+> field 70000 strength 2
+> field 70000 npc_dir -1
+> field 70000 storm_move 9001
+> link 9002 70000
+> entity 70001 11 57
+> field 70001 strength 3
+> field 70001 storm_move 99999
+> link 9002 70001
+> garrison_view 1
+> weather monthly
+> weather pending 70000
+pending 70000 0 0
+> weather pending 70001
+pending 70001 0 99999
+> weather pending 70002
+pending 70002 0 0
+> weather state
+storm 70000
+70000 storm wind
+LI
+ wh 9001
+MI
+ sb 1001
+ ss 2
+
+storm 70001
+70001 storm fog
+LI
+ wh 9002
+MI
+ ss 3
+
+storm 70002
+70002 storm rain
+LI
+ wh 9003
+MI
+ sb 1000
+ ss 3
+
+province 9000
+here: 1000 1001
+province 9001
+here: 70000
+province 9002
+here: 70001
+province 9003
+here: 70002
+show_garrison 1
+output:
+> lore_state 200
+known: 9003
+lore:
+touched: 9003 9002 9001 9000
+weather:
+> lore_state 201
+known: 9001
+lore:
+touched:
+weather:
+> weather monthly
+> weather state
+storm 70000
+70000 storm wind
+LI
+ wh 9001
+MI
+ sb 1001
+ ss 2
+
+storm 70001
+70001 storm fog
+LI
+ wh 9002
+MI
+ ss 3
+
+storm 70002
+70002 storm rain
+LI
+ wh 9003
+MI
+ sb 1000
+ ss 3
+
+province 9000
+here: 1000 1001
+province 9001
+here: 70000
+province 9002
+here: 70001
+province 9003
+here: 70002
+show_garrison 1
+output:
+> readlog 200
+log 200:
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle monthly invalid unowned and nonchar owners skipped safely
+> weather_map 3
+> entity 99999 0 0
+> entity 1002 2 0
+> entity 70000 11 59
+> field 70000 summoner 99999
+> field 70000 npc_dir 1
+> field 70000 storm_move 9001
+> link 9000 70000
+> entity 70001 11 58
+> field 70001 summoner 1002
+> field 70001 npc_dir 2
+> field 70001 storm_move 9002
+> link 9000 70001
+> entity 70002 11 57
+> field 70002 summoner 9000
+> field 70002 npc_dir 3
+> field 70002 storm_move 9001
+> link 9000 70002
+> weather monthly
+> weather touch
+> weather state
+storm 70000
+70000 storm rain
+LI
+ wh 9001
+MI
+
+storm 70001
+70001 storm wind
+LI
+ wh 9002
+MI
+ sb 1002
+
+storm 70002
+70002 storm fog
+LI
+ wh 9001
+MI
+ sb 9000
+
+province 9000
+here:
+province 9001
+here: 70000 70002
+province 9002
+here: 70001
+show_garrison 0
+output:
+> lore_state 200
+known:
+lore:
+touched: 9002 9001 9000
+weather:
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle shared init touched includes captive storm owner and viewing location
+> entity 8000 3 50
+> entity 99999 0 0
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 14
+> entity 9200 3 29
+> link 8000 9000
+> link 8000 9001
+> link 9001 9100
+> link 9100 9200
+> link 9000 1000
+> link 9000 1001
+> field 1000 prisoner 1
+> field 1001 lord 201
+> entity 70000 11 59
+> field 70000 summoner 1000
+> link 9200 70000
+> entity 70001 11 57
+> field 70001 summoner 99999
+> link 9001 70001
+> entity 70002 11 58
+> field 70002 summoner 200
+> link 9001 70002
+> init_touched
+> lore_state 200
+known:
+lore:
+touched: 9100 9001
+weather:
+> lore_state 201
+known:
+lore:
+touched: 9000
+weather:
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_regular
+PL
+
+> weather state
+storm 70000
+70000 storm rain
+LI
+ wh 9200
+MI
+ sb 1000
+
+storm 70001
+70001 storm fog
+LI
+ wh 9001
+MI
+
+storm 70002
+70002 storm wind
+LI
+ wh 9001
+MI
+ sb 200
+
+province 9000
+here: 1000 1001
+province 9001
+here: 9100 70001 70002
+show_garrison 0
+output:
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle bound ships cleanup adjacent stale entries nested destination and repeat
+> weather_map 3
+> entity 9400 9 30
+> entity 9100 3 14
+> link 9002 9100
+> link 9000 9400
+> link 9400 1000
+> field 1000 lord 201
+> field 1000 cur_aura 9
+> entity 70000 11 59
+> field 70000 summoner 1000
+> field 70000 strength 3
+> link 9000 70000
+> entity 70001 11 58
+> field 70001 summoner 1000
+> field 70001 strength 2
+> link 9000 70001
+> field 9400 bound_storm 99998
+> field 9400 bound_storm 99999
+> weather finish 70000
+bind finish 1
+> field 9400 bound_storm 1001
+> weather finish 70001
+bind finish 1
+> field 9400 bound_storm 9001
+> weather bound 9400 9100
+> weather state
+storm 70000
+70000 storm rain
+LI
+ wh 9002
+MI
+ sb 1000
+ ss 3
+ bs 9400
+
+storm 70001
+70001 storm wind
+LI
+ wh 9002
+MI
+ sb 1000
+ ss 2
+ bs 9400
+
+province 9000
+here: 9400
+province 9001
+here:
+province 9002
+here: 9100 70000 70001
+show_garrison 0
+output: 9000 9002
+> save 9400
+9400 ship galley
+LI
+ wh 9000
+ hl 1000 
+SL
+ bs 70000 70001 
+
+> lore_state 200
+known:
+lore:
+touched: 9002 9001 9000
+weather:
+> lore_state 201
+known:
+lore:
+touched: 9002
+weather:
+> weather bound 9400 9100
+> weather state
+storm 70000
+70000 storm rain
+LI
+ wh 9002
+MI
+ sb 1000
+ ss 3
+ bs 9400
+
+storm 70001
+70001 storm wind
+LI
+ wh 9002
+MI
+ sb 1000
+ ss 2
+ bs 9400
+
+province 9000
+here: 9400
+province 9001
+here:
+province 9002
+here: 9100 70000 70001
+show_garrison 0
+output: 9000 9002
+> save 9400
+9400 ship galley
+LI
+ wh 9000
+ hl 1000 
+SL
+ bs 70000 70001 
+
+> readlog 200
+log 200:
+9000:0::0::It has stopped raining.
+9002:0::0::It has begun to rain.
+9000:0::0::It is no longer windy.
+9002:0::0::It has become quite windy.
+> readlog 201
+log 201:
+1000:0::0::Bound Rain~[p000] to Galley~[9400].
+1000:0::0::Bound Wind~[p001] to Galley~[9400].
+9002:0::0::It has begun to rain.
+9002:0::0::It has become quite windy.
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle movement same kind coexistence owner validity and fog output
+> weather_map 3
+> entity 70000 11 57
+> field 70000 strength 2
+> field 70000 summoner 99999
+> link 9000 70000
+> entity 70001 11 57
+> field 70001 strength 1
+> link 9000 70001
+> entity 70002 11 57
+> field 70002 strength 3
+> field 70002 summoner 200
+> link 9001 70002
+> garrison_view 1
+> weather move 70000 9001
+> weather move 70001 9002
+> weather move 70002 9002
+> weather state
+storm 70000
+70000 storm fog
+LI
+ wh 9001
+MI
+ ss 2
+
+storm 70001
+70001 storm fog
+LI
+ wh 9002
+MI
+ ss 1
+
+storm 70002
+70002 storm fog
+LI
+ wh 9002
+MI
+ sb 200
+ ss 3
+
+province 9000
+here:
+province 9001
+here: 70000
+province 9002
+here: 70001 70002
+show_garrison 0
+output: 9000 9002
+> lore_state 200
+known:
+lore:
+touched: 9002 9001 9000
+weather:
+> readlog 200
+log 200:
+9000:0::0::The fog has cleared.
+9002:0::0::It has become quite foggy.
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle dissipation partial cookie pairs and absent ship structure
+> weather_map 2
+> entity 99999 0 0
+> entity 11 4 0
+> entity 70000 11 59
+> field 70000 npc_home 9001
+> field 70000 strength 0
+> field 70000 bind_storm 99999
+> link 9000 70000
+> entity 70001 11 58
+> field 70001 npc_cookie 11
+> field 70001 strength 0
+> link 9000 70001
+> weather decay
+> weather state
+province 9000
+here:
+province 9001
+here:
+show_garrison 0
+output: 9000
+> save 9001
+9001 loc forest
+LI
+ wh 8000
+
+> readlog 200
+log 200:
+9000:0::0::It has stopped raining.
+9000:0::0::It is no longer windy.
+stderr:
+
+exit 0
+stdout:
+section weather invalid lifecycle monthly destination depth assertion
+> weather_map 1
+> entity 70000 11 59
+> link 9000 70000
+> field 70000 npc_dir 1
+> field 70000 storm_move 8000
+> weather monthly
+stderr:
+assertion failure: olympia/day.c (1721): loc_depth(p->storm_move) == LOC_province
+
+exit 134
+stdout:
+section weather invalid lifecycle dissipate kind assertion
+> weather_map 1
+> weather dissipate 9000 0
+stderr:
+assertion failure: olympia/storm.c (373): kind(storm) == T_storm
+
+exit 134
+stdout:
+section weather invalid lifecycle move unknown subtype assertion
+> weather_map 2
+> entity 70000 11 50
+> link 9000 70000
+> weather move 70000 9001
+stderr:
+assertion failure: olympia/storm.c (227): FALSE
+
+exit 134
+stdout:
+section weather invalid lifecycle dissipate unknown subtype assertion
+> weather_map 1
+> entity 70000 11 50
+> link 9000 70000
+> weather dissipate 70000 1
+stderr:
+assertion failure: olympia/storm.c (401): FALSE
+
+exit 134
+stdout:
+section weather lifecycle real ruler routing move resets flag dissipate does not enable it
+> weather_map 2
+> entity 9300 3 32
+> link 9000 9300
+> link 9300 1000
+> field 1000 pledge 1001
+> field 1001 lord 201
+> entity 1004 2 64
+> field 1004 lord 201
+> field 1004 castle 9300
+> link 9000 1004
+> entity 70000 11 59
+> field 70000 strength 2
+> link 9000 70000
+> weather move 70000 9001
+> weather move 70000 9000
+> weather state
+storm 70000
+70000 storm rain
+LI
+ wh 9000
+MI
+ ss 2
+
+province 9000
+here: 9300 1004 70000
+province 9001
+here:
+show_garrison 0
+output: 9000 9001
+> field 70000 strength 0
+> weather dissipate 70000 1
+> weather state
+province 9000
+here: 9300 1004
+province 9001
+here:
+show_garrison 0
+output: 9000 9001
+> readlog 200
+log 200:
+9000:0::0::It has stopped raining.
+9001:0::0::It has begun to rain.
+9001:0::0::It has stopped raining.
+9000:0::0::It has begun to rain.
+9000:0::0::It has stopped raining.
+> readlog 201
+log 201:
+9000:0::0::It has stopped raining.
+9000:0::0::It has begun to rain.
+> emit 9000 76
+> readlog 201
+log 201:
+9000:0::0::It has stopped raining.
+9000:0::0::It has begun to rain.
+stderr:
+
+exit 0
+stdout:
+section weather lifecycle actual natural creation decays then monthly relocation
+> master 0
+> set turn 1
+> set day 9
+> weather_map 32
+> weather some 3 59
+> weather some 2 58
+> weather decay
+> weather state
+storm 79711
+79711 storm wind
+LI
+ wh 9009
+MI
+ ss 1
+
+storm 110158
+110158 storm rain
+LI
+ wh 9000
+MI
+ ss 2
+
+storm 121151
+121151 storm wind
+LI
+ wh 9001
+MI
+ ss 1
+
+storm 140449
+140449 storm rain
+LI
+ wh 9012
+MI
+ ss 1
+
+storm 149794
+149794 storm rain
+LI
+ wh 9028
+MI
+ ss 2
+
+province 9000
+here: 110158
+province 9001
+here: 121151
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here: 79711
+province 9010
+here:
+province 9011
+here:
+province 9012
+here: 140449
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here: 149794
+province 9029
+here:
+province 9030
+here:
+province 9031
+here:
+show_garrison 0
+output: 9000 9012 9028 9009 9001
+> field 110158 npc_dir 1
+> field 110158 storm_move 9003
+> weather monthly
+> weather pending 110158
+pending 110158 0 0
+> weather state
+storm 79711
+79711 storm wind
+LI
+ wh 9009
+MI
+ ss 1
+
+storm 110158
+110158 storm rain
+LI
+ wh 9003
+MI
+ ss 2
+
+storm 121151
+121151 storm wind
+LI
+ wh 9001
+MI
+ ss 1
+
+storm 140449
+140449 storm rain
+LI
+ wh 9012
+MI
+ ss 1
+
+storm 149794
+149794 storm rain
+LI
+ wh 9028
+MI
+ ss 2
+
+province 9000
+here:
+province 9001
+here: 121151
+province 9002
+here:
+province 9003
+here: 110158
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here: 79711
+province 9010
+here:
+province 9011
+here:
+province 9012
+here: 140449
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here: 149794
+province 9029
+here:
+province 9030
+here:
+province 9031
+here:
+show_garrison 0
+output: 9000 9012 9028 9009 9001
+> weather probe 9000 59
+weather shuffle: 300 307 328 314 363 321 370 335 349 356 342
+weather strength 3
+> readlog 200
+log 200:
+9000:0::0::It has begun to rain.
+9012:0::0::It has begun to rain.
+9028:0::0::It has begun to rain.
+9009:0::0::It has become quite windy.
+9001:0::0::It has become quite windy.
+stderr:
+
+exit 0
