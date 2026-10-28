@@ -163,6 +163,10 @@ functions = {
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts'],
+    'add.c': ['fetch_inp', 'get_city_id', 'pick_starting_city', 'add_new_player',
+              'make_new_players_sup', 'make_new_players', 'new_player_banners',
+              'show_new_char_locs', 'new_player_report', 'new_char_report',
+              'new_order_templates', 'new_player_list_sup', 'new_player_list', 'add_new_players'],
 }
 real = {n for names in functions.values() for n in names}
 with open(f'{dst}/helpers.c', 'w') as out:
@@ -171,6 +175,7 @@ with open(f'{dst}/helpers.c', 'w') as out:
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <dirent.h>
 #include "z.h"
 #include "oly.h"
 #include "rng.h"
@@ -207,6 +212,9 @@ int immed_see_all, month_done, show_combat_flag;
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
         # Original data declarations too: no copied or modeled tag/number table.
+        if file == 'add.c':
+            for pattern in [r'^ilist new_players = NULL;\n', r'^static ilist new_chars = NULL;\n']:
+                out.write(re.search(pattern, source, re.M).group(0))
         if file == 'dir.c':
             start = source.index('#define\tEXTAG_TURN')
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/dir.c"\n')
@@ -287,6 +295,8 @@ int immed_see_all, month_done, show_combat_flag;
                 pattern = r'^void queue\(.*?^\}\n'
             if name == 'rank_comp':
                 pattern = r'^static\nint rank_comp\(.*?^\}\n'
+            if name == 'get_city_id':
+                pattern = r'^static int get_city_id\(.*?^\}\n'
             m = re.search(pattern, source, re.M | re.S)
             if name == 'list_skill_sup':
                 # The first definition is disabled by #if 0; use the real #else.
@@ -298,6 +308,9 @@ int immed_see_all, month_done, show_combat_flag;
         for _, text in sorted(matches):
             out.write(text)
     out.write('''
+char *drv_fetch(FILE *fp) { return fetch_inp(fp); }
+int drv_admission(char *acct, FILE *fp) { return make_new_players_sup(acct, fp); }
+void drv_make_players(void) { make_new_players(); }
 int drv_load(struct command *c) { return load_command(c); }
 void drv_summary_provinces(void) { summary_provinces(); }
 void drv_garrison_pay(void) { default_garrison_pay(); }
@@ -500,6 +513,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section admission '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section admission invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected admission status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section skill lore '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

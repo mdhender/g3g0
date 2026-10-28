@@ -58173,3 +58173,488 @@ player_report()
 gm_report()
 
 exit 0
+stdout:
+section admission missing act is nonfatal and still lists existing players
+> lore_root
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+> admission run
+> admission state
+new players:
+vector: 200 201
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+CH
+ lo 200
+
+> admission run
+stderr:
+add_new_players()
+make_new_players: can't open act: No such file or directory
+new_player_list()
+add_new_players()
+make_new_players: can't open act: No such file or directory
+new_player_list()
+
+exit 0
+stdout:
+section admission empty act rebuilds vector without allocating silent or system records
+> lore_root
+> lore_dir act
+> entity 202 1 48
+> entity 203 1 48
+> entity 204 1 62
+> entity 205 1 49
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+admission player 202 record 0
+202 player pl_system
+
+admission player 203 record 0
+203 player pl_system
+
+admission player 204 record 0
+204 player pl_silent
+
+admission player 205 record 0
+205 player pl_regular
+
+> admission run
+> admission state
+new players:
+vector: 200 201 204 205
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+admission player 202 record 0
+202 player pl_system
+
+admission player 203 record 0
+203 player pl_system
+
+admission player 204 record 0
+204 player pl_silent
+
+admission player 205 record 0
+205 player pl_regular
+
+> admission run
+> admission state
+new players:
+vector: 200 201 204 205
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+admission player 202 record 0
+202 player pl_system
+
+admission player 203 record 0
+203 player pl_system
+
+admission player 204 record 0
+204 player pl_silent
+
+admission player 205 record 0
+205 player pl_regular
+
+stderr:
+add_new_players()
+new_player_list()
+add_new_players()
+new_player_list()
+
+exit 0
+stdout:
+section admission act file preserves opendir ENOTDIR and continues
+> lore_root
+> lore_file act not-a-directory
+> admission run
+> admission state
+new players:
+vector: 200 201
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+add_new_players()
+make_new_players: can't open act: Not a directory
+new_player_list()
+
+exit 0
+stdout:
+section admission dot prefixed accounts are skipped before complete invalid input validation
+> lore_root
+> lore_dir act
+> lore_dir act/.hidden
+> lore_file act/.hidden/Join-g3 faction|character|city|name|email
+> lore_dir act/.50000
+> lore_file act/.50000/Join-g3 faction|character|city|name|email
+> lore_dir act/missing
+> lore_file act/plain-file ignored
+> admission run
+> admission state
+new players:
+vector: 200 201
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+add_new_players()
+new_player_list()
+
+exit 0
+stdout:
+section admission zero through four nonblank fields all produce partial reads in native order
+> lore_root
+> lore_dir act
+> lore_dir act/z0
+> lore_file act/z0/Join-g3
+> lore_dir act/a1
+> lore_file act/a1/Join-g3 faction
+> lore_dir act/q2
+> lore_file act/q2/Join-g3 faction||character|
+> lore_dir act/b3
+> lore_file act/b3/Join-g3 |faction| |character||city
+> lore_dir act/p4
+> lore_file act/p4/Join-g3 faction|character|city|name| |
+> admission run
+> admission state
+new players:
+vector: 200 201
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+stderr:
+add_new_players()
+error: partial read for 'b3'
+error: partial read for 'z0'
+error: partial read for 'p4'
+error: partial read for 'a1'
+error: partial read for 'q2'
+new_player_list()
+
+exit 0
+stdout:
+section admission Join directory opens then reads as partial without an open diagnostic
+> lore_root
+> lore_dir act
+> lore_dir act/aa0
+> lore_dir act/aa0/Join-g3
+> admission run
+> admission state
+new players:
+vector: 200 201
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+add_new_players()
+error: partial read for 'aa0'
+new_player_list()
+
+exit 0
+stdout:
+section admission Join ENOENT and parent ENOTDIR are silent skipped opens
+> lore_root
+> lore_dir act
+> lore_dir act/aa0
+> lore_file act/aa1 regular-file
+> admission run
+> admission state
+new players:
+vector: 200 201
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+add_new_players()
+new_player_list()
+
+exit 0
+stdout:
+section admission reads cwd act rather than contradictory libdir act
+> lore_root
+> lore_dir db
+> lore_dir db/act
+> lore_dir db/act/!
+> lore_file db/act/!/Join-g3 faction|character|city|name|email
+> lore_dir act
+> lore_dir act/aa0
+> lore_file act/aa0/Join-g3 faction|character|city|name
+> admission lib db
+> admission run
+> admission state
+new players:
+vector: 200 201
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+add_new_players()
+error: partial read for 'aa0'
+new_player_list()
+
+exit 0
+stdout:
+section admission existing libdir act does not hide missing cwd act
+> lore_root
+> lore_dir db
+> lore_dir db/act
+> lore_dir db/act/!
+> lore_file db/act/!/Join-g3 faction|character|city|name|email
+> admission lib db
+> admission run
+> admission state
+new players:
+vector: 200 201
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+add_new_players()
+make_new_players: can't open act: No such file or directory
+new_player_list()
+
+exit 0
+stdout:
+section admission probes reread replaced inputs and do not cache partial data
+> lore_root
+> lore_dir act
+> lore_dir act/aa0
+> lore_file act/aa0/Join-g3 one
+> admission probe
+> lore_file act/aa0/Join-g3 ||two||three||four||five||
+> admission run
+> lore_file act/aa0/Join-g3
+> admission run
+> admission state
+new players:
+vector: 200 201
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+error: partial read for 'aa0'
+add_new_players()
+error: partial read for 'aa0'
+new_player_list()
+add_new_players()
+error: partial read for 'aa0'
+new_player_list()
+
+exit 0
+stdout:
+section admission parser returns all five independent cleaned fields and extra input
+> lore_root
+> lore_file fields |  A faction  | | A character | | City X || Full Name || x@example.test || trailing field
+> admission fetch fields 8
+field 0 [A faction]
+field 1 [A character]
+field 2 [City X]
+field 3 [Full Name]
+field 4 [x@example.test]
+field 5 [trailing field]
+field 6 NULL
+field 7 NULL
+stderr:
+
+exit 0
+stdout:
+section admission parser blank empty and repeated EOF return NULL
+> lore_root
+> lore_file fields ||   ||
+> admission fetch fields 3
+field 0 NULL
+field 1 NULL
+field 2 NULL
+> lore_file fields
+> admission fetch fields 2
+field 0 NULL
+field 1 NULL
+stderr:
+
+exit 0
+stdout:
+section admission parser control high byte NUL CR and final nonnewline semantics
+> lore_root
+> admission hex fields 20090a09416c70686120090d0a0a426574610069676e6f7265640a0147616d6d61800d0a44656c7461095a0a457073696c6f6e
+> admission fetch fields 7
+field 0 [Alpha]
+field 1 [Beta]
+field 2 [ Gamma]
+field 3 [Delta Z]
+field 4 [Epsilon]
+field 5 NULL
+field 6 NULL
+stderr:
+
+exit 0
+stdout:
+section admission parser directory read failure is EOF for every field
+> lore_root
+> lore_dir fields
+> admission fetch fields 6
+field 0 NULL
+field 1 NULL
+field 2 NULL
+field 3 NULL
+field 4 NULL
+field 5 NULL
+> admission parse ! fields
+admission result 0
+stderr:
+error: partial read for '!'
+
+exit 0
+stdout:
+section admission partial invalid account returns before scode and its assertion
+> lore_root
+> lore_file fields faction|character|city|name| |
+> admission parse ! fields
+admission result 0
+> admission parse 0 fields
+admission result 0
+> admission parse 150000 fields
+admission result 0
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+error: partial read for '!'
+error: partial read for '0'
+error: partial read for '150000'
+
+exit 0
+stdout:
+section admission invalid complete zero account retains source located assertion
+> lore_root
+> lore_file fields faction|character|city|name|email
+> admission parse 0 fields
+stderr:
+assertion failure: olympia/add.c (325): pl > 0 && pl < MAX_BOXES
+
+exit 134
+stdout:
+section admission invalid complete max account retains source located assertion
+> lore_root
+> lore_file fields faction|character|city|name|email
+> admission parse 150000 fields
+stderr:
+assertion failure: olympia/add.c (325): pl > 0 && pl < MAX_BOXES
+
+exit 134
+stdout:
+section admission invalid complete noncode is rejected only after five fields
+> lore_root
+> lore_file fields faction|character|city|name|email
+> admission parse ! fields
+stderr:
+assertion failure: olympia/add.c (325): pl > 0 && pl < MAX_BOXES
+
+exit 134
+stdout:
+section admission invalid complete account encountered through directory iteration asserts
+> lore_root
+> lore_dir act
+> lore_dir act/!
+> lore_file act/!/Join-g3 faction|character|city|name|email
+> admission run
+stderr:
+add_new_players()
+assertion failure: olympia/add.c (325): pl > 0 && pl < MAX_BOXES
+
+exit 134

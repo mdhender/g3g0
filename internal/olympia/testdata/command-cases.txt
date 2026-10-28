@@ -18081,3 +18081,164 @@ report state 203
 report state 204
 save 1000
 save 1001
+
+section admission missing act is nonfatal and still lists existing players
+lore_root
+admission state
+admission run
+admission state
+save 1000
+save 1001
+admission run
+
+section admission empty act rebuilds vector without allocating silent or system records
+lore_root
+lore_dir act
+entity 202 1 48
+entity 203 1 48
+entity 204 1 62
+entity 205 1 49
+admission state
+admission run
+admission state
+admission run
+admission state
+
+section admission act file preserves opendir ENOTDIR and continues
+lore_root
+lore_file act not-a-directory
+admission run
+admission state
+
+section admission dot prefixed accounts are skipped before complete invalid input validation
+lore_root
+lore_dir act
+lore_dir act/.hidden
+lore_file act/.hidden/Join-g3 faction|character|city|name|email
+lore_dir act/.50000
+lore_file act/.50000/Join-g3 faction|character|city|name|email
+lore_dir act/missing
+lore_file act/plain-file ignored
+admission run
+admission state
+
+section admission zero through four nonblank fields all produce partial reads in native order
+lore_root
+lore_dir act
+lore_dir act/z0
+lore_file act/z0/Join-g3
+lore_dir act/a1
+lore_file act/a1/Join-g3 faction
+lore_dir act/q2
+lore_file act/q2/Join-g3 faction||character|
+lore_dir act/b3
+lore_file act/b3/Join-g3 |faction| |character||city
+lore_dir act/p4
+lore_file act/p4/Join-g3 faction|character|city|name| |
+admission run
+admission state
+save 1000
+
+section admission Join directory opens then reads as partial without an open diagnostic
+lore_root
+lore_dir act
+lore_dir act/aa0
+lore_dir act/aa0/Join-g3
+admission run
+admission state
+
+section admission Join ENOENT and parent ENOTDIR are silent skipped opens
+lore_root
+lore_dir act
+lore_dir act/aa0
+lore_file act/aa1 regular-file
+admission run
+admission state
+
+section admission reads cwd act rather than contradictory libdir act
+lore_root
+lore_dir db
+lore_dir db/act
+lore_dir db/act/!
+lore_file db/act/!/Join-g3 faction|character|city|name|email
+lore_dir act
+lore_dir act/aa0
+lore_file act/aa0/Join-g3 faction|character|city|name
+admission lib db
+admission run
+admission state
+
+section admission existing libdir act does not hide missing cwd act
+lore_root
+lore_dir db
+lore_dir db/act
+lore_dir db/act/!
+lore_file db/act/!/Join-g3 faction|character|city|name|email
+admission lib db
+admission run
+admission state
+
+section admission probes reread replaced inputs and do not cache partial data
+lore_root
+lore_dir act
+lore_dir act/aa0
+lore_file act/aa0/Join-g3 one
+admission probe
+lore_file act/aa0/Join-g3 ||two||three||four||five||
+admission run
+lore_file act/aa0/Join-g3
+admission run
+admission state
+
+section admission parser returns all five independent cleaned fields and extra input
+lore_root
+lore_file fields |  A faction  | | A character | | City X || Full Name || x@example.test || trailing field
+admission fetch fields 8
+
+section admission parser blank empty and repeated EOF return NULL
+lore_root
+lore_file fields ||   ||
+admission fetch fields 3
+lore_file fields
+admission fetch fields 2
+
+section admission parser control high byte NUL CR and final nonnewline semantics
+lore_root
+admission hex fields 20090a09416c70686120090d0a0a426574610069676e6f7265640a0147616d6d61800d0a44656c7461095a0a457073696c6f6e
+admission fetch fields 7
+
+section admission parser directory read failure is EOF for every field
+lore_root
+lore_dir fields
+admission fetch fields 6
+admission parse ! fields
+
+section admission partial invalid account returns before scode and its assertion
+lore_root
+lore_file fields faction|character|city|name| |
+admission parse ! fields
+admission parse 0 fields
+admission parse 150000 fields
+admission state
+
+section admission invalid complete zero account retains source located assertion
+lore_root
+lore_file fields faction|character|city|name|email
+admission parse 0 fields
+
+section admission invalid complete max account retains source located assertion
+lore_root
+lore_file fields faction|character|city|name|email
+admission parse 150000 fields
+
+section admission invalid complete noncode is rejected only after five fields
+lore_root
+lore_file fields faction|character|city|name|email
+admission parse ! fields
+
+section admission invalid complete account encountered through directory iteration asserts
+lore_root
+lore_dir act
+lore_dir act/!
+lore_file act/!/Join-g3 faction|character|city|name|email
+admission run

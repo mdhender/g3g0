@@ -3255,3 +3255,54 @@ Validation at **0.72.0-alpha**, left **uncommitted**:
 No new stage-blocking defect or additional report input/state closure found.
 Main's explicit report-tail stop remains. No issue closure/tick, commit, push,
 whole-world check or stage-exit claim.
+
+## Cwd-relative admission probing (#127)
+
+The oracle now extracts complete original add.c `fetch_inp`,
+`make_new_players_sup`, `make_new_players`, `add_new_players`,
+`new_player_list` and their actual admission/report-loop dependencies,
+including `get_city_id`, `pick_starting_city` and `add_new_player`.
+These definitions are unchanged and keep source `#line` locations. Static
+wrappers expose the parser/prober; no successful admission or rendering stub
+is introduced. The existing rejected-marker `show_loc` dependency remains
+unexercised: complete admissions and their initial reports are stage 6.
+`add.c` is newly tracked in tools/README.md and affected.sh.
+
+Nineteen appended sections compare missing/empty/file `act`, dot-prefix
+skips, ENOENT/ENOTDIR Join opens, successful directory opens followed by
+read errors, every partial-field count, repeated changed inputs, cwd versus
+contradictory libdir input, and complete invalid account assertions at
+**add.c:325**. Independent fetch controls cover five distinct valid fields,
+extra fields, blank skipping, tabs/control/high bytes, embedded NUL, CR and
+final nonnewline input. Actual `save_box` bytes, absent player records,
+new-player/vector lists and raw stdout/stderr/status are recorded. The
+no-admission tail still calls `new_player_list`, including its real player
+vector update; it neither admits anyone nor allocates absent player records.
+
+Go stops with `notImplemented("new player admission")` after all five fields
+and scode/range validation, immediately before C's **add.c:327 alloc_box**.
+Twelve separate boundary controls cover direct and filesystem entry, numeric,
+encoded and bracketed accounts, the highest valid ID and already occupied
+IDs. They require unchanged saved entity bytes and new-player/vector lists,
+and direct calls must leave the sixth field unread. They are explicit NYI
+tests, NOT expected-success C admission comparisons.
+
+Validation at **0.73.0-alpha**, left **uncommitted**:
+
+- Real pinned C twice and Go match **808 sections / 58660 lines / 1015265
+  output bytes**. Input: **18244 lines / 332405 bytes**. Prior **789 sections,
+  18083 input lines / 328103 input bytes**, and **58175 output lines /
+  1005735 output bytes** are exact unchanged prefixes, checked by SHA-256.
+  New output SHA-256:
+  `fecb1996344d054fb4ec41df5f0df7f58889bfd5b8083ff3f6fe4e35e363e57a`.
+- Eight tools passed sequentially with `G3_REPO=$PWD/tmp/upstream.git`:
+  command **808/58660**, move **135/7150**, helper **37/1487**, RNG **321**,
+  code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase **5/484**,
+  calendar **2/119**, schedule **4/1801**, then default turn (identical status,
+  raw stdout/stderr and one state file). All engine invocations use shared
+  run_limited; the missing-dependency rejection still precedes status/update.
+- Bounded vet and fresh bounded defaults passed; Olympia defaults **1.641s**.
+
+No new bug found. Post writers (#128), cached ownership/Times (#129),
+stage-2 rendering and main integration remain untouched, including main's
+explicit postMonth stop. No whole-world/stage-exit success is claimed.

@@ -80,6 +80,9 @@ void drv_storm_decay(void), drv_storm_move(void), drv_storm_touch(void);
 void drv_move_storm(int storm, int dest);
 void drv_hunt(int slot), drv_faery_unit(int who);
 int drv_hunt_loc(int slot, int retry, int size), drv_hunt_qty(int slot);
+char *drv_fetch(FILE *fp);
+int drv_admission(char *acct, FILE *fp);
+void drv_make_players(void);
 
 static void wait_dump(struct command *c)
 {
@@ -723,6 +726,51 @@ int main(int argc, char **argv)
    log=fopen(path,"w"); if(!log) return 2;
    for(p=text;*p;p++) fputc(*p=='|' ? '\n' : *p,log);
    fclose(log);
+  }
+  else if (!strcmp(op, "admission")) {
+   char path[8192];
+   sscanf(line,"%*s %8191s",text);
+   if(!strcmp(text,"run")) add_new_players();
+   else if(!strcmp(text,"probe")) drv_make_players();
+   else if(!strcmp(text,"parse")) {
+    sscanf(line,"%*s %*s %8191s %8191s",text,path);
+    log=fopen(path,"r"); if(!log) return 2;
+    printf("admission result %d\n",drv_admission(text,log));
+    fclose(log);
+   }
+   else if(!strcmp(text,"fetch")) {
+    char *s;
+    sscanf(line,"%*s %*s %8191s %d",path,&a);
+    log=fopen(path,"r"); if(!log) return 2;
+    for(i=0;i<a;i++) {
+     s=drv_fetch(log);
+     if(s) printf("field %d [%s]\n",i,s);
+     else printf("field %d NULL\n",i);
+    }
+    fclose(log);
+   }
+   else if(!strcmp(text,"hex")) {
+    unsigned byte; char *p;
+    sscanf(line,"%*s %*s %8191s %8191s",path,text);
+    log=fopen(path,"w"); if(!log) return 2;
+    for(p=text;*p;p+=2) {
+     if(sscanf(p,"%2x",&byte)!=1) return 2;
+     fputc(byte,log);
+    }
+    fclose(log);
+   }
+   else if(!strcmp(text,"lib")) {
+    sscanf(line,"%*s %*s %8191s",path); libdir=str_save(path);
+   }
+   else if(!strcmp(text,"state")) {
+    list("new players",new_players);
+    list("vector",out_vector);
+    loop_player(n) {
+     printf("admission player %d record %d\n",n,rp_player(n)!=NULL);
+     save_box(stdout,n);
+    } next_player;
+   }
+   else return 2;
   }
   else if (!strcmp(op, "set_known")) { sscanf(line,"%*s %d %d",&n,&a); set_known(n,a); }
   else if (!strcmp(op, "additem")) {

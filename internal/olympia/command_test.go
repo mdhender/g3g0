@@ -4,6 +4,8 @@
 package olympia
 
 import (
+	"bufio"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -954,6 +956,56 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			path := args.word()
 			if err := os.WriteFile(path, []byte(strings.ReplaceAll(args.ctext(), "|", "\n")), 0o644); err != nil {
 				t.Fatal(err)
+			}
+		case "admission":
+			switch action := args.word(); action {
+			case "run":
+				w.addNewPlayers()
+			case "probe":
+				w.makeNewPlayers()
+			case "parse":
+				acct, path := args.word(), args.word()
+				fp, err := os.Open(path)
+				if err != nil {
+					t.Fatal(err)
+				}
+				defer fp.Close()
+				fmt.Fprintf(&stdout, "admission result %d\n", b2i(w.makeNewPlayersSup(acct, bufio.NewReader(fp))))
+			case "fetch":
+				path, count := args.word(), args.num(t)
+				fp, err := os.Open(path)
+				if err != nil {
+					t.Fatal(err)
+				}
+				defer fp.Close()
+				reader := bufio.NewReader(fp)
+				for i := 0; i < count; i++ {
+					if s := fetchInp(reader); s != nil {
+						fmt.Fprintf(&stdout, "field %d [%s]\n", i, *s)
+					} else {
+						fmt.Fprintf(&stdout, "field %d NULL\n", i)
+					}
+				}
+			case "hex":
+				path := args.word()
+				data, err := hex.DecodeString(args.word())
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err := os.WriteFile(path, data, 0o644); err != nil {
+					t.Fatal(err)
+				}
+			case "lib":
+				w.libdir = args.word()
+			case "state":
+				helperList(&stdout, "new players", w.newPlayers)
+				helperList(&stdout, "vector", w.outVector)
+				for n := range w.loopKind(tPlayer) {
+					fmt.Fprintf(&stdout, "admission player %d record %d\n", n, b2i(w.rpPlayer(n) != nil))
+					w.saveBox(&stdout, n)
+				}
+			default:
+				t.Fatalf("unknown admission %s", action)
 			}
 		case "set_known":
 			w.setKnown(args.num(t), args.num(t))
