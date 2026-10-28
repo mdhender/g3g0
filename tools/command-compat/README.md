@@ -1012,3 +1012,77 @@ accepted as successful execution. Default checks use small recordings; whole
 worlds remain opt-in and no full-turn/stage success is claimed. No new upstream
 defect was identified; known intentionally reproduced G3 #309/#352/#353/#354
 remain unchanged and nonblocking.
+
+## Bandit programs and day-0 NPC dispatch (#71)
+
+Sized before implementation: **132 C definition lines**, all gameplay
+dependencies already accepted. Complete pinned definitions are npc.c
+`auto_bandit` **351–403** and `queue_npc_orders` **613–691**. The comparison
+additionally extracts complete u.c `stage` **2563–2594** (32 lines), reusing
+Go's existing real stage output. Original `#line` locations, macros, headers,
+NPC stream/tags and keyed leaves remain unchanged. `auto_unsworn` and
+`auto_mob` move into the original NPC-prefix translation unit because they
+are static C functions called by the real dispatcher. Only phase instrumentation
+is omitted; there are no new upstream source inputs or pin changes.
+
+Production uses the existing `processOrders` callback, persistent `w.streams`,
+`NPCVictim(who, len(targets))`, shared mint/exdr, creation, Hades/savage/
+unsworn/undead/mob/movement, queues, output and serialization. There is no
+replacement RNG, independent behavior fix or successful unported handler.
+The sublocation-monster program's empty branch is an intentional C no-op;
+unknown programs retain **npc.c:687 FALSE**, status 134 with flushed output.
+
+13 appended real-C cases distinguish:
+
+- All direct child UNSTACK orders (including noncharacters) before ATTACK,
+  saved target order rather than ID/sorted/recursive order, and keyed victim
+  indices rather than target shuffling. Actors **1000** and **1011** select
+  different victims (**1002** and **1003**) from the same three targets.
+  Moving the first target to the end changes 1000's victim to **1003**.
+  Day replay, master reload, next turn and subsequent real mint/exdr calls
+  observe the exact shared/keyed stream contracts.
+- Noncharacters, NPC subkind/loyalty and really-hidden-alone exclusions;
+  hidden with descendants, prisoners, negative health and safe havens are
+  not independently excluded. Faery friendly-descendant stones versus foreign
+  captives, zero stones, Hades learned transcend-alone versus troop/descendant
+  controls, and ordinary-bandit controls are compared through actual queues.
+- Landless/nested-target and building fallback paths, preserved prior stream
+  when no victim and no reseeding route occurs, asymmetric land/water routes,
+  persisted directions and shared exit shuffles. Generated bandit MOVE runs
+  four real evenings, arrives and executes its following WAIT; logs, output
+  bits, knowledge, commands and order-file state are observed, not modeled.
+- Summon, prisoner, LOAD/RUN/ERROR and queued-order skips before invalid-program
+  assertions; DONE and absent-command eligibility; every ordinary/undead/NI
+  savage/peasant/angry-peasant, all bandit, monster-no-op and token branch.
+  Other NI items and unmatched subkinds intentionally do nothing. Independent
+  saved unit order differs from ID order and is preserved by the existing
+  `loopUnits` snapshot, taken after savage initialization and Hades processing.
+- An actual newly minted savage precedes the 25 real Hades allocations and
+  keeps its loaded MOVE plus USE/WAIT/ATTACK queue without a spurious autonomous
+  rerun. Serialized state, ready queues and minted identities expose the
+  initializer order. Actual dispatcher stderr is `queue_npc_orders()`.
+
+Two fresh bounded deterministic C runs produce **357 sections / 22259 lines /
+375381 bytes**, exactly matched by Go raw stdout/stderr/status and state.
+The 13 new sections require status 0 except the explicit invalid-program
+assertion (134). The complete prior input **6808 lines / 115505 bytes** and
+output **344 sections / 19994 lines / 344574 bytes** are exact byte prefixes:
+zero old bytes changed, no reached-boundary expectation exception. The full
+move input **3150 lines / 53589 bytes** and output **135 sections / 7150 lines /
+142755 bytes** remain unchanged. Literal C whitespace is retained.
+
+An ephemeral expected-134 probe executes generated bandit ATTACK through the
+actual queue/load/dispatch path. Both normal and `--update` runs reject its
+unfinished-C-dependency marker with status 2 before abort acceptance/recording.
+The recording hash stays
+`c769c52ccec35e1c42d33d50be06150343b7af9f7af8fd95050277671fed7534`.
+The probe was removed; marker rejection is specific, not a ban on game text.
+No permanent test names a temporary private NYI boundary.
+
+The opt-in real whole-world diagnostic uses the accepted issue104-roundtrip
+cache: two C turns exit 0 with identical complete captures; Go exits 2 at
+**ping_garrisons**, after the real NPC dispatcher. It still fails state/raw
+output/status comparison. No early full-turn enablement, skipped garrison/
+token/daily/month work or stage-exit acceptance is claimed. Defaults remain
+small recordings. No new upstream bug was found; known nonblocking
+G3 #309/#352/#353/#354 remain unchanged.

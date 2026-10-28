@@ -70,7 +70,7 @@ functions = {
     'art.c': ['has_auraculum', 'max_eff_aura'],
     'display.c': ['with_inventory_string', 'display_with', 'mage_s', 'priest_s',
                   'emperor', 'liner_desc_char', 'liner_desc', 'show_chars_below'],
-    'u.c': ['min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
+    'u.c': ['stage', 'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np',
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
@@ -80,7 +80,6 @@ functions = {
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
             'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units'],
     'npc.c': ['controlled_humans_here', 'get_exit_dir', 'choose_npc_direction', 'npc_move',
-              'auto_unsworn', 'auto_mob',
               'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'necro.c': ['auto_undead'],
     'savage.c': ['create_savage', 'call_savage', 'savage_hates', 'savage_hate_here',
@@ -105,6 +104,7 @@ with open(f'{dst}/helpers.c', 'w') as out:
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "z.h"
 #include "oly.h"
 #include "rng.h"
@@ -194,8 +194,6 @@ int drv_market(int who) { return market_here(who); }
 int drv_savage_count(void) { return num_savages; }
 int drv_savage_hates(int where) { return savage_hates(where); }
 int drv_savage_here(int where) { return savage_hate_here(where); }
-void drv_unsworn(int who) { auto_unsworn(who); }
-void drv_mob(int who) { auto_mob(who); }
 void drv_ocean(int who) { ilist_append(&ocean_chars, who); }
 ilist drv_oceans(void) { return ocean_chars; }
 void drv_entity_rolls(int who, int sub, int where) {
@@ -235,6 +233,16 @@ source = open(f'{src}/npc.c').read()
 with open(f'{dst}/npc-rng.c', 'w') as out:
     out.write('#line 1 "olympia/npc.c"\n')
     out.write(source[:source.index('int\ncontrolled_humans_here(')])
+    out.write('#define phase_ran(x) ((void)0)\n#define phase_acted(x) ((void)0)\n')
+    for name in ['auto_unsworn', 'auto_mob', 'auto_bandit', 'queue_npc_orders']:
+        m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
+        if not m:
+            sys.exit(f'no definition of {name} in npc.c')
+        line = source.count('\n', 0, m.start()) + 1
+        out.write(f'#line {line} "olympia/npc.c"\n{m.group(0)}\n')
+    out.write('void drv_unsworn(int who) { auto_unsworn(who); }\n')
+    out.write('void drv_mob(int who) { auto_mob(who); }\n')
+    out.write('void drv_auto_bandit(int who, int prog) { auto_bandit(who, prog); }\n')
 glob = open(f'{src}/glob.c').read()
 table = glob[glob.index('struct cmd_tbl_ent cmd_tbl[]'):glob.index('char *kind_s[]')]
 routines = set()
@@ -254,7 +262,7 @@ with open(f'{dst}/stubs.c', 'w') as out:
 void check_validated_trades(void) STUB("check_validated_trades")
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
-int immediate, flush_always = 1, pretty_data_files;
+int immediate, flush_always = 1, pretty_data_files, time_self;
 ilist trades_to_check;
 ''')
 PY
@@ -288,6 +296,13 @@ for run in run1 run2; do
   fi
   if [[ "${section_names[$i]}" == 'section autonomous '* ]]; then
    [ "$status" = 0 ] || die "unexpected autonomous NPC status $status in section $i"
+  fi
+  if [[ "${section_names[$i]}" == 'section bandit '* || "${section_names[$i]}" == 'section dispatcher '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section dispatcher invalid program '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected bandit/dispatcher status $status in section $i; expected $expected_status"
   fi
   if [[ "${section_names[$i]}" == 'section move '* ]]; then
    [ "$status" = 0 ] || die "unexpected movement status $status in section $i"

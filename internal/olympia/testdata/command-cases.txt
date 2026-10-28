@@ -6806,3 +6806,520 @@ orders_file 200
 shuffle 1001 9000
 newitem 1001 0
 save_new
+
+section bandit keyed victims preserve direct here order and all child unstack order
+master 0
+set turn 1
+entity 9000 3 3
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 1006 2 0
+entity 1010 2 0
+entity 1011 9 0
+field 1000 loyal 5
+field 1002 lord 201
+field 1003 lord 200
+field 1004 lord 200
+field 1005 lord 201
+field 1006 lord 200
+field 1006 hidden 1
+field 1004 prisoner 1
+field 1004 health -1
+field 9000 safe 1
+link 9000 1005
+link 9000 1000
+link 9000 1003
+link 9000 1002
+link 9000 1004
+link 9000 1006
+link 1000 1011
+link 1000 1010
+link 1003 1001
+orders 200 1000 wait time 8
+npc bandit 1000 1
+save 1000
+save 9000
+pstate 200
+orders_file 200
+npc bandit 1000 1
+set day 28
+npc bandit 1000 1
+master 19
+npc bandit 1000 1
+set turn 2
+npc bandit 1000 1
+pstate 200
+orders_file 200
+npc probe 1000
+newitem 1000 0
+save_new
+
+section bandit actor keyed selection and here order permutations
+master 0
+set turn 1
+entity 9000 3 3
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 1006 2 0
+entity 1010 2 0
+entity 1011 2 0
+field 1000 loyal 5
+field 1001 loyal 5
+field 1005 loyal 4
+field 1006 loyal 4
+field 1005 lord 200
+field 1006 lord 200
+field 1010 lord 200
+field 1011 lord 200
+field 1010 loyal 4
+field 1011 loyal 4
+field 1002 lord 200
+field 1003 lord 200
+field 1004 lord 201
+link 9000 1004
+link 9000 1002
+link 9000 1003
+link 9000 1000
+link 9000 1001
+link 9000 1005
+link 9000 1006
+link 9000 1010
+link 9000 1011
+npc bandit 1000 1
+npc bandit 1001 1
+npc bandit 1005 1
+npc bandit 1006 1
+npc bandit 1010 1
+npc bandit 1011 1
+link 9000 1004
+npc bandit 1000 1
+npc bandit 1001 1
+pstate 200
+orders_file 200
+save 9000
+
+section bandit hidden alone versus hidden with stack and npc subkind loyalty filters
+master 0
+set turn 1
+entity 9000 3 3
+entity 9001 3 3
+entity 1002 2 0
+entity 1003 2 55
+entity 1004 2 0
+entity 1005 2 0
+entity 1010 2 0
+field 1000 loyal 5
+field 1001 hidden 1
+field 1002 hidden 1
+field 1002 lord 201
+field 1004 loyal 5
+field 1005 loyal 4
+link 9000 1000
+link 9000 1001
+link 9000 1003
+link 9000 1004
+link 9000 1005
+link 9000 1002
+link 1002 1010
+routes 9000 9001 0 0 0
+npc bandit 1000 1
+link 9001 1002
+npc bandit 1000 1
+pstate 200
+save 1000
+shuffle 1000 9000
+
+section bandit faery friendly descendant stone blocks but foreign captive stone does not
+master 0
+set turn 1
+entity 9000 3 3
+entity 9001 3 3
+entity 69 4 0
+field 69 use_key 8
+entity 1002 2 0
+entity 1003 2 0
+field 1000 loyal 5
+field 1002 lord 200
+field 1003 lord 201
+link 9000 1000
+link 9000 1001
+link 1001 1002
+link 1001 1003
+inventory 1002 69 1
+inventory 1003 69 1
+field 1003 prisoner 1
+routes 9000 9001 0 0 0
+npc bandit 1000 4
+field 1002 lord 201
+npc bandit 1000 4
+npc bandit 1000 1
+save 1000
+pstate 200
+orders_file 200
+
+section bandit hades transcend alone versus troop and descendant controls
+master 0
+set turn 1
+entity 9000 3 3
+entity 9001 3 3
+entity 911 5 0
+entity 10 4 0
+field 10 man 1
+entity 1002 2 0
+field 1000 loyal 5
+link 9000 1000
+link 9000 1001
+learn 1001 911 2 0
+routes 9000 9001 0 0 0
+npc bandit 1000 5
+inventory 1001 10 1
+npc bandit 1000 5
+subitem 1001 10 1
+link 1001 1002
+npc bandit 1000 5
+npc bandit 1000 1
+pstate 200
+save 1000
+orders_file 200
+
+section bandit faery zero stones and hades unlearned skill remain targets
+master 19
+set turn 3
+entity 9000 3 14
+entity 69 4 0
+field 69 use_key 8
+entity 911 5 0
+link 9000 1000
+link 9000 1001
+field 1000 loyal 5
+inventory 1001 69 0
+learn 1001 911 1 100
+npc bandit 1000 4
+npc bandit 1000 5
+pstate 200
+orders_file 200
+
+section bandit no targets preserves prior stream in building then routes asymmetrically
+master 0
+set turn 1
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 4
+entity 9003 3 1
+entity 9004 3 5
+entity 9200 3 32
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 8000 9003
+link 8000 9004
+link 9000 9200
+link 9200 1000
+field 1000 loyal 5
+field 1000 npc_dir 4
+npc begin 7777
+npc bandit 1000 1
+npc probe 1000
+link 9000 1000
+routes 9000 9001 9002 9003 9004
+npc bandit 1000 1
+set day 28
+npc bandit 1000 4
+master 19
+npc bandit 1000 5
+set turn 2
+npc bandit 1000 1
+pstate 200
+orders_file 200
+save 1000
+shuffle 1000 9000
+newitem 1000 0
+save_new
+
+section bandit landless fallback leaves misc absent and direct nested targets excluded
+master 0
+set turn 1
+entity 9000 3 3
+entity 9100 3 14
+link 9000 1000
+link 9000 9100
+link 9100 1001
+field 1000 loyal 5
+npc begin 7777
+npc bandit 1000 1
+npc probe 1000
+save 1000
+pstate 200
+
+section dispatcher all program branches follow saved unit order and filters
+master 0
+set turn 10
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 206 1 52
+set hades_player 206
+entity 26 4 0
+entity 8000 3 50
+set hades_region 8000
+entity 9100 3 7
+link 8000 9100
+entity 9000 3 3
+entity 9001 3 3
+routes 9000 9001 0 0 0
+entity 32 4 0
+entity 10 4 0
+entity 23 4 0
+entity 1002 2 55
+entity 1003 2 54
+entity 1004 2 54
+entity 1005 2 54
+entity 1006 2 54
+entity 1007 2 0
+entity 1008 2 0
+entity 1009 2 0
+entity 1010 2 0
+entity 1011 2 0
+entity 1012 2 55
+entity 1013 2 16
+field 1000 lord 205
+field 1001 lord 205
+field 1002 lord 205
+field 1003 lord 205
+field 1004 lord 205
+field 1005 lord 205
+field 1006 lord 205
+field 1007 lord 205
+field 1008 lord 205
+field 1009 lord 205
+field 1010 lord 205
+field 1011 lord 205
+field 1012 lord 205
+field 1013 lord 205
+field 1003 noble_item 32
+field 1004 noble_item 10
+field 1005 noble_item 23
+field 1006 noble_item 26
+field 1007 npc 1
+field 1008 npc 4
+field 1009 npc 5
+field 1007 loyal 4
+field 1008 loyal 4
+field 1009 loyal 4
+field 1010 npc 2
+field 1011 npc 3
+field 1002 summoner 1001
+field 1004 npc_home 9001
+field 1005 npc_home 9001
+field 1005 npc_created 6
+field 205 unit 1009
+field 205 unit 1002
+field 205 unit 1004
+field 205 unit 1000
+field 205 unit 1003
+field 205 unit 1001
+field 205 unit 1005
+field 205 unit 1006
+field 205 unit 1007
+field 205 unit 1008
+field 205 unit 1010
+field 205 unit 1011
+field 205 unit 1012
+field 205 unit 1013
+link 9000 1000
+link 9000 1001
+link 9000 1002
+link 9000 1003
+link 9000 1004
+link 9000 1005
+link 9000 1006
+link 9000 1007
+link 9000 1008
+link 9000 1009
+link 9000 1010
+link 9000 1011
+link 9000 1012
+link 9000 1013
+who 1007
+npc dispatch 0
+pstate 205
+orders_file 205
+savage_state
+hades_state
+orders_file 206
+save 9000
+save 9100
+npc probe 1012
+shuffle 1000 9000
+newitem 9000 0
+save_new
+
+section dispatcher skips summon prisoner loaded running and queued before program assertion
+master 0
+set turn 1
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 206 1 52
+set hades_player 206
+entity 26 4 0
+entity 8000 3 50
+set hades_region 8000
+entity 9100 3 7
+link 8000 9100
+entity 9000 3 3
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 1006 2 0
+entity 1007 2 0
+field 1000 lord 205
+field 1001 lord 205
+field 1002 lord 205
+field 1003 lord 205
+field 1004 lord 205
+field 1005 lord 205
+field 1006 lord 205
+field 1007 lord 205
+field 205 unit 1000
+field 205 unit 1001
+field 205 unit 1002
+field 205 unit 1003
+field 205 unit 1004
+field 205 unit 1005
+field 205 unit 1006
+field 205 unit 1007
+field 1000 npc 99
+field 1000 loyal 5
+field 1001 npc 99
+field 1001 prisoner 1
+who 1002
+set state 1
+field 1002 npc 99
+who 1003
+set state 2
+field 1003 npc 99
+who 1007
+set state 3
+field 1007 npc 99
+field 1004 npc 99
+orders 205 1004 format 13
+field 1005 npc 2
+field 1006 npc 2
+link 9000 1005
+link 9000 1006
+field 1005 health -1
+npc dispatch 0
+pstate 205
+orders_file 205
+savage_state
+save 205
+
+section dispatcher invalid program retains original assertion after real stage and hades
+master 0
+set turn 1
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 206 1 52
+set hades_player 206
+entity 26 4 0
+entity 8000 3 50
+set hades_region 8000
+entity 9100 3 7
+link 8000 9100
+field 1000 lord 205
+field 205 unit 1000
+field 1000 npc 99
+npc dispatch 0
+
+section dispatcher actual savage spawn precedes hades mint and is not dispatched again
+master 0
+set turn 1
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 206 1 52
+set hades_player 206
+entity 26 4 0
+entity 32 4 0
+entity 98 4 0
+entity 8000 3 50
+set hades_region 8000
+entity 9100 3 7
+link 8000 9100
+entity 9000 3 3
+entity 9001 3 3
+entity 9409 3 32
+link 9000 9409
+routes 9000 9001 0 0 0
+npc dispatch 0
+savage_state
+hades_state
+pstate 205
+pstate 206
+orders_file 205
+orders_file 206
+save 9001
+save 9100
+readlog 205
+newitem 9000 0
+save_new
+
+section bandit generated route executes real four evenings and following wait
+master 0
+set turn 1
+set day 1
+set epoch 31
+resolve_wait
+entity 10 4 0
+field 10 weight 100
+field 10 land_cap 100
+field 10 ride_cap 100
+entity 293 4 0
+entity 9000 3 3
+entity 9001 3 3
+link 9000 1000
+field 1000 loyal 4
+routes 9000 9001 0 0 0
+npc bandit 1000 1
+queue wait time 0
+pstate 200
+load
+do
+dump
+evening
+dump
+set day 2
+set epoch 32
+evening
+dump
+set day 3
+set epoch 33
+evening
+dump
+set day 4
+set epoch 34
+evening
+dump
+set day 5
+set epoch 35
+do
+dump
+evening
+dump
+save 1000
+save 9000
+save 9001
+pstate 200
+orders_file 200
+readlog 200
+shuffle 1000 9001
+newitem 1000 0
+save_new

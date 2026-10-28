@@ -5,6 +5,86 @@ package olympia
 
 import "fmt"
 
+// Complete npc.c:351–403. All direct children get queued UNSTACK orders;
+// victim order is the saved here order, with a keyed index, not a shuffle.
+func (w *world) autoBandit(who, prog int) {
+	where := w.subloc(who)
+	for i := range w.loopHere(who) {
+		w.queue(who, "unstack %s", boxCodeLess(i))
+	}
+	var targets []int
+	for i := range w.loopHere(where) {
+		if w.kind(i) != tChar || w.isNPC(i) || w.charReallyHidden(i) {
+			continue
+		}
+		if prog == progFaeryBandit && w.stackHasUseKey(i, useFaeryStone) != 0 {
+			continue
+		}
+		if prog == progHadesBandit && w.hasSkill(i, skTranscendDeath) != 0 && w.stackParent(i) == 0 && w.countStackAny(i) == 1 {
+			continue
+		}
+		targets = append(targets, i)
+	}
+	if len(targets) > 0 {
+		w.streams.BeginNPC(where)
+		victim := targets[w.streams.NPCVictim(who, len(targets))]
+		w.queue(who, "attack %s", boxCodeLess(victim))
+	} else {
+		w.npcMove(who)
+	}
+}
+
+// Complete npc.c:613–691. Savage initialization precedes Hades, then a
+// snapshot of independent units dispatches without executing queued orders.
+func (w *world) queueNpcOrders() {
+	w.stage("queue_npc_orders()")
+	w.initSavageAttacks()
+	w.autoHades()
+	for who := range w.loopUnits(int(w.indepPlayer)) {
+		p := w.rpChar(who)
+		if p != nil && p.loyKind == loySummon {
+			continue
+		}
+		if w.isPrisoner(who) {
+			continue
+		}
+		if c := w.rpCommand(who); c != nil && c.state != stateDone {
+			continue
+		}
+		if _, ok := w.topOrder(int(w.indepPlayer), who); ok {
+			continue
+		}
+		prog := 0
+		if p != nil {
+			prog = int(p.npcProg)
+		}
+		switch prog {
+		case 0:
+			switch w.subkind(who) {
+			case 0:
+				w.autoUnsworn(who)
+			case subUndead:
+				w.autoUndead(who)
+			case subNi:
+				switch w.nobleItem(who) {
+				case itemSavage:
+					w.autoSavage(who)
+				case itemPeasant, itemAngryPeasant:
+					w.autoMob(who)
+				}
+			}
+		case progBandit, progHadesBandit, progFaeryBandit:
+			w.autoBandit(who, prog)
+		case progSublocMonster:
+			// Intentional C no-op, not an unfinished program.
+		case progNpcToken:
+			w.npcMove(who)
+		default:
+			assert(false, "olympia/npc.c", 687, "FALSE")
+		}
+	}
+}
+
 // Complete npc.c:149–165. Building occupants do not even seed the stream.
 func (w *world) autoUnsworn(who int) {
 	where := w.subloc(who)

@@ -50,7 +50,7 @@ actual seeded zero/existing/capped populations, direct-target filtering,
 asymmetric topology, direction persistence, shared exit shuffles and generated
 MOVE → WAIT execution. Run move/helper/rng/code comparisons alongside it for
 the shared topology, creation and stream closure. Autonomous NPC dispatch
-remains #71; command-compat does not substitute successful combat.
+also runs in command-compat; it does not substitute successful combat.
 
 Savage fort spawning and savage autonomous order generation likewise extend
 command-compat, including initial population caps, per-fort keyed checks,
@@ -63,9 +63,18 @@ unported handlers retain explicit stops. The command tool additionally reads
 Unsworn/mob/undead autonomous programs also extend command-compat, including
 the 4/5-turn mob boundary, summoner clearing, location-keyed RNG, saved-order
 append and generated MOVE → WAIT. Run the same command/move/helper/rng/code/
-loadsave/turn-driver/default-turn checks. ATTACK/PILLAGE/RECLAIM execution and
-NPC dispatcher wiring (#71) remain explicit unported boundaries. The command
+loadsave/turn-driver/default-turn checks. ATTACK/PILLAGE/RECLAIM execution
+remains explicitly unported. The command
 tool additionally reads `olympia/necro.c` (also tracked by `affected.sh`).
+
+Bandit programs and day-0 NPC dispatch extend the same command comparison:
+keyed victim identity in saved target order, special-program safety filters,
+all child UNSTACK orders, fallback directions and actual MOVE → WAIT;
+summon/prisoner/command/queued-order skips and every program branch; real
+savage-before-Hades creation and shared RNG/queue/serialization state. The
+existing process_orders callback now invokes this dispatcher. Later garrison,
+token, daily and monthly phases remain explicit stops. The opt-in full-world
+diagnostic reaches `ping_garrisons` and still fails; it is not stage acceptance.
 
 **Pin move.**
 Run `tools/affected.sh OLD NEW` and, for each tool it lists, move the pin in its `run.sh` and README, then rerun it (with `--update` where the tool records C output, and review the diff of the recorded file).
@@ -87,7 +96,7 @@ tools/box-compat/run.sh --full       # after olympia-roundtrip, whose games it r
 tools/boxfile-compat/run.sh --full
 tools/check-compat/run.sh --full
 tools/loadsave-compat/run.sh --full
-tools/turn-compat/run.sh --full      # stage 1 exit; currently fails at queue_npc_orders
+tools/turn-compat/run.sh --full      # stage 1 exit; currently fails at ping_garrisons
 ```
 
 Run these one at a time: `box-compat`, `boxfile-compat`, `check-compat` and `loadsave-compat` read the games `olympia-roundtrip` caches, so do not run them while `olympia-roundtrip --fresh` rebuilds that cache.

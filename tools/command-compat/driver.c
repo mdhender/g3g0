@@ -38,6 +38,7 @@ int drv_nasty_roll(int slot, int sub, int low, int high);
 struct exit_view *choose_npc_direction(int who, int where, int dir);
 int drv_savage_count(void), drv_savage_hates(int where), drv_savage_here(int where);
 void drv_unsworn(int who), drv_mob(int who);
+void drv_auto_bandit(int who, int prog);
 
 static void wait_dump(struct command *c)
 {
@@ -119,6 +120,8 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "npc")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"unsworn")) drv_unsworn(n);
+   else if(!strcmp(text,"dispatch")) queue_npc_orders();
+   else if(!strcmp(text,"bandit")) { sscanf(line,"%*s %*s %d %d",&n,&a); drv_auto_bandit(n,a); }
    else if(!strcmp(text,"mob")) drv_mob(n);
    else if(!strcmp(text,"undead")) auto_undead(n);
    else if(!strcmp(text,"begin")) begin_npc(n);
@@ -485,6 +488,7 @@ int main(int argc, char **argv)
   {
    sscanf(line,"%*s %d %31s %d",&n,text,&a);
    if (!strcmp(text,"lord")) p_char(n)->unit_lord = a;
+   else if (!strcmp(text,"noble_item")) p_char(n)->unit_item = a;
    else if (!strcmp(text,"prev")) p_char(n)->prev_lord = a;
    else if (!strcmp(text,"rate")) p_char(n)->loy_rate = a;
    else if (!strcmp(text,"pledge")) p_magic(n)->pledge = a;

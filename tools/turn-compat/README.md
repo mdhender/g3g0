@@ -106,3 +106,9 @@ entire post-turn directory; Go status 2, `olympia-g3: load_db (-r -S): not yet
 implemented`. The full check fails on status, stdout, stderr, 15 changed state
 files and missing `orders/204`. That is the required red integration gate,
 not a newly discovered bug and not a passing turn claim.
+
+After #71, the opt-in diagnostic reaches the real NPC dispatcher and stops at
+`olympia-g3: ping_garrisons: not yet implemented`. Two pinned C runs still exit
+0 and match including reports; Go exits 2. The raw/state comparison remains
+red (15 changed database files, missing `orders/204`, stdout/stderr/status).
+Garrison/token and later daily/month phases are not skipped or accepted.

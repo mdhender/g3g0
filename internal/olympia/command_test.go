@@ -122,6 +122,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch action {
 			case "unsworn":
 				w.autoUnsworn(n)
+			case "dispatch":
+				w.queueNpcOrders()
+			case "bandit":
+				w.autoBandit(n, args.num(t))
 			case "mob":
 				w.autoMob(n)
 			case "undead":
@@ -608,6 +612,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch field {
 			case "lord":
 				w.pChar(n).unitLord = int32(a)
+			case "noble_item":
+				w.pChar(n).unitItem = int32(a)
 			case "prev":
 				w.pChar(n).prevLord = int32(a)
 			case "rate":
