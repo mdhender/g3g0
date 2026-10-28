@@ -36,6 +36,7 @@ void drv_entity_rolls(int who, int sub, int where);
 void drv_nasty(int slot), drv_hades_unit(int who);
 int drv_nasty_roll(int slot, int sub, int low, int high);
 struct exit_view *choose_npc_direction(int who, int where, int dir);
+int drv_savage_count(void), drv_savage_hates(int where), drv_savage_here(int where);
 
 static void wait_dump(struct command *c)
 {
@@ -113,6 +114,33 @@ int main(int argc, char **argv)
    for (i=0;i<16;i++) seed[i]=n+i;
    s=fopen(sout("%s/randseed",libdir),"wb"); if(!s) return 2;
    fwrite(seed,1,16,s); fclose(s); load_seed(sout("%s/randseed",libdir));
+  }
+  else if (!strcmp(op, "savage")) {
+   sscanf(line,"%*s %31s %d",text,&n);
+   if(!strcmp(text,"init")) { init_savage_attacks(); printf("initial savages %d\n",drv_savage_count()); }
+   else if(!strcmp(text,"auto")) auto_savage(n);
+   else if(!strcmp(text,"hates")) printf("hates %d\n",drv_savage_hates(n));
+   else if(!strcmp(text,"here")) printf("hate here %d\n",drv_savage_here(n));
+   else if(!strcmp(text,"humans")) printf("humans %d\n",controlled_humans_here(n));
+   else return 2;
+  }
+  else if (!strcmp(op, "savage_population")) {
+   sscanf(line,"%*s %d",&n);
+   for(i=0;i<n;i++) { alloc_box(1100+i,T_char,sub_ni); p_char(1100+i)->unit_item=item_savage; }
+  }
+  else if (!strcmp(op, "savage_rolls")) {
+   sscanf(line,"%*s %d %d",&n,&a); begin_npc(n);
+   printf("savage spawn %d\n",npc_spawn(n,0,1,100));
+   printf("savage qty %d\n",npc_qty(n,a,3,25));
+   printf("savage wait %d\n",npc_behavior(a,0,35,50));
+  }
+  else if (!strcmp(op, "savage_state")) {
+   loop_units(indep_player,n) {
+    printf("savage unit %d\n",n); save_box(stdout,n);
+    printf("savage output %d\n",test_bit(p_player(player(n))->output,n));
+   } next_unit;
+   for(i=0;i<5;i++) list(sout("load_q %d",i),load_q[i]);
+   list("run_q",run_q);
   }
   else if (!strcmp(op, "hades")) {
    sscanf(line,"%*s %31s %d",text,&n);

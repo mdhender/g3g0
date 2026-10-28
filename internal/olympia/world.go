@@ -75,6 +75,9 @@ type world struct {
 	nowhereLoc     int32
 	cloudRegion    int32
 
+	// savage.c's initial population tally, not incremented by new spawns.
+	numSavages int32
+
 	// maxMapRow, maxMapCol and maxMapInit are max_map_row, max_map_col and
 	// max_map_init in dir.c, which determine_map_edges() sets.
 	maxMapRow  int32

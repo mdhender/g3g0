@@ -78,8 +78,10 @@ functions = {
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
             'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units'],
-    'npc.c': ['get_exit_dir', 'choose_npc_direction', 'npc_move',
+    'npc.c': ['controlled_humans_here', 'get_exit_dir', 'choose_npc_direction', 'npc_move',
               'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
+    'savage.c': ['create_savage', 'call_savage', 'savage_hates', 'savage_hate_here',
+                 'auto_savage', 'init_savage_attacks'],
     'lore.c': ['queue_lore', 'scan_char_item_lore'],
     'buy.c': ['investigate_possible_trade', 'market_here', 'seller_comp',
               'seller_list', 'buyer_list', 'scan_trades', 'match_trades'],
@@ -124,6 +126,11 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(source[start:source.index('int max_map_row')])
         if file == 'combat.c':
             out.write('#include "combat-structs.h"\n')
+        if file == 'savage.c':
+            start = source.index('#define\t\tMAX_SAVAGES')
+            end = source.index('static int\ncreate_savage(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/savage.c"\n')
+            out.write(source[start:end])
         if file == 'display.c':
             start = source.index('int show_display_string =')
             end = source.index('\n\n', start)
@@ -181,6 +188,9 @@ int drv_bandit(int faery, int who, int where) {
  return faery ? create_faery_bandit(who, where) : create_hades_bandit(who, where);
 }
 int drv_market(int who) { return market_here(who); }
+int drv_savage_count(void) { return num_savages; }
+int drv_savage_hates(int where) { return savage_hates(where); }
+int drv_savage_here(int where) { return savage_hate_here(where); }
 void drv_ocean(int who) { ilist_append(&ocean_chars, who); }
 ilist drv_oceans(void) { return ocean_chars; }
 void drv_entity_rolls(int who, int sub, int where) {
@@ -267,6 +277,9 @@ for run in run1 run2; do
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
   if [[ "${section_names[$i]}" == 'section hades '* || "${section_names[$i]}" == 'section npc route '* ]]; then
    [ "$status" = 0 ] || die "unexpected Hades/NPC status $status in section $i"
+  fi
+  if [[ "${section_names[$i]}" == 'section savage '* ]]; then
+   [ "$status" = 0 ] || die "unexpected savage status $status in section $i"
   fi
   if [[ "${section_names[$i]}" == 'section move '* ]]; then
    [ "$status" = 0 ] || die "unexpected movement status $status in section $i"

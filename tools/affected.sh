@@ -95,7 +95,7 @@ reads() {
 		olympia/c1.c | olympia/produce.c) return 0 ;;
 		olympia/move.c | olympia/day.c | olympia/seed.c | olympia/io.c) return 0 ;;
 		olympia/buy.c | olympia/lore.c) return 0 ;;
-		olympia/npc.c | olympia/hades.c | olympia/faery.c) return 0 ;;
+		olympia/npc.c | olympia/hades.c | olympia/faery.c | olympia/savage.c) return 0 ;;
 		olympia/u.c | olympia/use.c | olympia/c2.c | olympia/immed.c | olympia/stealth.c) return 0 ;;
 		lib/checked_alloc.c | lib/ilist.c | lib/rng.c | lib/rnd.c) return 0 ;;
 		lib/cstrings.c | lib/item_ents.c | lib/skill_ents.c | lib/orders.c) return 0 ;;

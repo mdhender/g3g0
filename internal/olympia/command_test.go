@@ -117,6 +117,43 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "savage":
+			switch action := args.word(); action {
+			case "init":
+				w.initSavageAttacks()
+				fmt.Fprintf(&stdout, "initial savages %d\n", w.numSavages)
+			case "auto":
+				w.autoSavage(args.num(t))
+			case "hates":
+				fmt.Fprintf(&stdout, "hates %d\n", b2i(w.savageHates(args.num(t))))
+			case "here":
+				fmt.Fprintf(&stdout, "hate here %d\n", w.savageHateHere(args.num(t)))
+			case "humans":
+				fmt.Fprintf(&stdout, "humans %d\n", b2i(w.controlledHumansHere(args.num(t))))
+			default:
+				t.Fatalf("unknown savage %s", action)
+			}
+		case "savage_population":
+			for i, n := 0, args.num(t); i < n; i++ {
+				w.allocBox(1100+i, tChar, subNi)
+				w.pChar(1100 + i).unitItem = itemSavage
+			}
+		case "savage_rolls":
+			n, a := args.num(t), args.num(t)
+			w.streams.BeginNPC(n)
+			fmt.Fprintf(&stdout, "savage spawn %d\n", w.streams.NPCSpawn(n, 0, 1, 100))
+			fmt.Fprintf(&stdout, "savage qty %d\n", w.streams.NPCQty(n, a, 3, 25))
+			fmt.Fprintf(&stdout, "savage wait %d\n", w.streams.NPCBehavior(a, 0, 35, 50))
+		case "savage_state":
+			for n := range w.loopUnits(int(w.indepPlayer)) {
+				fmt.Fprintf(&stdout, "savage unit %d\n", n)
+				w.saveBox(&stdout, n)
+				fmt.Fprintf(&stdout, "savage output %d\n", b2i(testBit(w.pPlayer(w.player(n)).output, n)))
+			}
+			for i, q := range w.loadQ {
+				helperList(&stdout, fmt.Sprintf("load_q %d", i), q)
+			}
+			helperList(&stdout, "run_q", w.runQ)
 		case "hades":
 			switch action := args.word(); action {
 			case "auto":

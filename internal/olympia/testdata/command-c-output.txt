@@ -17254,3 +17254,1349 @@ orders file 200:
 stderr:
 
 exit 0
+stdout:
+section savage actual keyed fort spawn nonspawn and ship exclusion
+> master 0
+> set turn 1
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> entity 9000 3 3
+> entity 9001 3 4
+> entity 9002 3 1
+> entity 9003 3 5
+> entity 9409 3 32
+> entity 9100 3 32
+> entity 9498 9 30
+> link 9000 9498
+> link 9000 9409
+> link 9000 9100
+> routes 9000 9001 9002 9003 0
+> savage_rolls 9409 1000
+savage spawn 1
+savage qty 21
+savage wait 45
+> savage_rolls 9100 1000
+savage spawn 10
+savage qty 16
+savage wait 48
+> savage_rolls 9498 1000
+savage spawn 1
+savage qty 13
+savage wait 44
+> savage init
+initial savages 0
+> savage_state
+savage unit 110158
+110158 char ni
+il	98 1 \
+	32 8
+LI
+ wh 9003
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 110158
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 0 0
+orders 110158: [use 98 1] [wait time 47] [attack 9409]
+> orders_file 205
+orders file 205:
+110158:use 98 1
+110158:wait time 47
+110158:attack 9409
+> save 205
+205 player pl_npc
+PL
+ lt 1
+ un 110158 
+
+> save 9000
+9000 loc plain
+LI
+ hl 9498 9409 9100 
+LO
+ pd 9001 9002 9003 0 
+
+> save 9001
+9001 loc mountain
+
+> save 9002
+9002 loc ocean
+
+> save 9003
+9003 loc desert
+LI
+ hl 110158 
+
+> readlog 205
+log 205:
+> shuffle 1000 9000
+exitdir 1 9001
+exitdir 3 9003
+> newitem 9000 0
+created 68643
+> save_new
+68643 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section savage initial tally199 allows multiple spawns past cap then recount stops
+> master 0
+> set turn 1
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> entity 9000 3 3
+> entity 9001 3 4
+> entity 9409 3 32
+> entity 9498 3 40
+> link 9000 9498
+> link 9000 9409
+> routes 9000 9001 0 0 0
+> savage_population 199
+> field 1100 subkind 0
+> field 1100 lord 200
+> field 1100 loyal 1
+> field 1101 prisoner 1
+> field 1102 health -1
+> link 9000 1100
+> link 1100 1101
+> savage init
+initial savages 199
+> savage_state
+savage unit 110158
+110158 char ni
+il	98 1 \
+	32 6
+LI
+ wh 9001
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+savage unit 140449
+140449 char ni
+il	98 1 \
+	32 19
+LI
+ wh 9001
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 110158 140449
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 110158 140449
+output 0 0 0 0 0 touched 0 1
+orders 110158: [use 98 1] [wait time 37] [attack 9409]
+orders 140449: [use 98 1] [wait time 41] [attack 9498]
+> orders_file 205
+orders file 205:
+110158:use 98 1
+110158:wait time 37
+110158:attack 9409
+140449:use 98 1
+140449:wait time 41
+140449:attack 9498
+> save 9001
+9001 loc mountain
+LI
+ hl 110158 140449 
+
+> save 1100
+1100 char 0
+LI
+ wh 9000
+ hl 1101 
+CH
+ ni 32
+ lo 200
+ lk 1
+
+> save 1101
+1101 char ni
+LI
+ wh 1100
+CH
+ ni 32
+ pr 1
+
+> savage init
+initial savages 201
+> savage_state
+savage unit 110158
+110158 char ni
+il	98 1 \
+	32 6
+LI
+ wh 9001
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+savage unit 140449
+140449 char ni
+il	98 1 \
+	32 19
+LI
+ wh 9001
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 110158 140449
+load_q 3:
+load_q 4:
+run_q:
+> newitem 9000 0
+created 64258
+> save_new
+64258 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section savage cap200 returns before fort and exit draws
+> master 0
+> set turn 1
+> entity 205 1 52
+> set indep 205
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 4
+> entity 9003 3 5
+> entity 9409 3 32
+> link 9000 9409
+> routes 9000 9001 9002 9003 0
+> savage_population 200
+> savage init
+initial savages 200
+> savage_state
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> shuffle 1000 9000
+exitdir 2 9002
+exitdir 1 9001
+exitdir 3 9003
+> newitem 9000 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section savage cap201 returns without deleting excess or needing creation items
+> master 0
+> set turn 1
+> entity 205 1 52
+> set indep 205
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 4
+> entity 9003 3 5
+> entity 9409 3 32
+> link 9000 9409
+> routes 9000 9001 9002 9003 0
+> savage_population 201
+> savage init
+initial savages 201
+> savage_state
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1300
+1300 char ni
+CH
+
+> shuffle 1000 9000
+exitdir 2 9002
+exitdir 1 9001
+exitdir 3 9003
+stderr:
+
+exit 0
+stdout:
+section savage successful keyed roll nested fort is rejected after draw
+> master 0
+> set turn 1
+> entity 205 1 52
+> set indep 205
+> entity 9000 3 3
+> entity 9001 3 14
+> entity 9409 3 32
+> link 9000 9001
+> link 9001 9409
+> savage_rolls 9409 1000
+savage spawn 1
+savage qty 21
+savage wait 45
+> savage init
+initial savages 0
+> savage_state
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9001
+9001 loc city
+LI
+ wh 9000
+ hl 9409 
+
+stderr:
+
+exit 0
+stdout:
+section savage successful keyed roll no land exits emits original diagnostic
+> master 0
+> set turn 1
+> entity 205 1 52
+> set indep 205
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9409 3 32
+> link 9000 9409
+> routes 9000 9001 0 0 0
+> savage init
+initial savages 0
+> savage_state
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> shuffle 1000 9000
+stderr:
+init_savage_attacks: no exits?
+
+exit 0
+stdout:
+section savage recursive controlled humans block every source after exit shuffle
+> master 0
+> set turn 1
+> entity 205 1 52
+> set indep 205
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 14
+> entity 9409 3 32
+> link 9000 9409
+> link 9001 1000
+> field 1000 loyal 4
+> field 1000 hidden 1
+> field 1000 prisoner 1
+> link 9002 9003
+> link 9003 1001
+> field 1001 loyal 1
+> routes 9000 9001 9002 0 0
+> savage humans 9001
+humans 1
+> savage humans 9002
+humans 1
+> savage init
+initial savages 0
+> savage_state
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> shuffle 1000 9000
+exitdir 1 9001
+exitdir 2 9002
+stderr:
+
+exit 0
+stdout:
+section savage asymmetric fallback skips humans but not hidden barrier or unsworn sources
+> master 0
+> set turn 1
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> entity 1002 2 0
+> field 1002 lord 200
+> field 1002 loyal 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 1
+> entity 9003 3 5
+> entity 9004 3 4
+> entity 9409 3 37
+> link 9000 9409
+> link 9003 1000
+> field 1000 loyal 4
+> link 9001 1002
+> link 9004 1001
+> field 1001 loyal 0
+> field 9004 loc_hidden 1
+> field 9004 barrier 1
+> routes 9000 9001 9002 9003 9004
+> savage init
+initial savages 0
+> savage_state
+savage unit 110158
+110158 char ni
+il	98 1 \
+	32 22
+LI
+ wh 9004
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 110158
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 0 0
+orders 110158: [use 98 1] [wait time 44] [attack 9409]
+> orders_file 205
+orders file 205:
+110158:use 98 1
+110158:wait time 44
+110158:attack 9409
+> save 9001
+9001 loc plain
+LI
+ hl 1002 
+
+> save 9003
+9003 loc desert
+LI
+ hl 1000 
+
+> save 9004
+9004 loc mountain
+LI
+ hl 1001 110158 
+LO
+ hi 1
+ ba 1
+
+> shuffle 1000 9000
+exitdir 3 9003
+exitdir 1 9001
+exitdir 4 9004
+stderr:
+
+exit 0
+stdout:
+section savage keyed draws reseed each location master and turn but ignore day
+> master 0
+> set turn 1
+> savage_rolls 9409 1000
+savage spawn 1
+savage qty 21
+savage wait 45
+> savage_rolls 9498 1000
+savage spawn 1
+savage qty 13
+savage wait 44
+> savage_rolls 9409 1001
+savage spawn 1
+savage qty 17
+savage wait 45
+> set day 29
+> savage_rolls 9409 1000
+savage spawn 1
+savage qty 21
+savage wait 45
+> master 91
+> savage_rolls 9409 1000
+savage spawn 18
+savage qty 20
+savage wait 37
+> set turn 2
+> savage_rolls 9409 1000
+savage spawn 1
+savage qty 9
+savage wait 47
+> master 0
+> savage_rolls 9409 1000
+savage spawn 90
+savage qty 22
+savage wait 39
+stderr:
+
+exit 0
+stdout:
+section savage human predicate excludes unsworn and nonzero subkind not NPC loyalty or faction
+> master 0
+> entity 205 1 52
+> entity 9000 3 3
+> entity 9001 3 14
+> entity 9002 9 30
+> entity 1002 2 54
+> field 1002 loyal 1
+> link 9000 9001
+> link 9001 9002
+> link 9002 1002
+> savage humans 9000
+humans 0
+> link 9002 1000
+> savage humans 9000
+humans 0
+> field 1000 loyal 4
+> field 1000 lord 205
+> field 1000 hidden 1
+> field 1000 prisoner 1
+> field 1000 health -1
+> savage humans 9000
+humans 1
+> savage humans 1000
+humans 0
+> field 1000 loyal 0
+> link 1002 1001
+> field 1001 loyal 3
+> savage humans 9000
+humans 1
+> save 1000
+1000 char 0
+LI
+ wh 9002
+CH
+ lo 205
+ he -1
+ pr 1
+CM
+ hs 1
+
+> save 1001
+1001 char 0
+LI
+ wh 1002
+CH
+ lo 200
+ lk 3
+
+stderr:
+
+exit 0
+stdout:
+section savage hated structure predicates include unfinished ships but not mines rafts or cities
+> entity 9000 3 3
+> savage hates 9000
+hates 0
+> field 9000 subkind 29
+> savage hates 9000
+hates 1
+> field 9000 subkind 30
+> savage hates 9000
+hates 1
+> field 9000 subkind 31
+> savage hates 9000
+hates 1
+> field 9000 subkind 32
+> savage hates 9000
+hates 1
+> field 9000 subkind 33
+> savage hates 9000
+hates 1
+> field 9000 subkind 34
+> savage hates 9000
+hates 1
+> field 9000 subkind 36
+> savage hates 9000
+hates 1
+> field 9000 subkind 37
+> savage hates 9000
+hates 1
+> field 9000 subkind 38
+> savage hates 9000
+hates 1
+> field 9000 subkind 39
+> savage hates 9000
+hates 1
+> field 9000 subkind 46
+> savage hates 9000
+hates 1
+> field 9000 subkind 47
+> savage hates 9000
+hates 1
+> field 9000 subkind 40
+> savage hates 9000
+hates 0
+> field 9000 subkind 41
+> savage hates 9000
+hates 0
+> field 9000 subkind 35
+> savage hates 9000
+hates 0
+> field 9000 subkind 58
+> savage hates 9000
+hates 0
+> field 9000 subkind 14
+> savage hates 9000
+hates 0
+stderr:
+
+exit 0
+stdout:
+section savage follower keeps saved orders while leader inside structure queues raze
+> entity 9000 3 3
+> entity 9001 9 34
+> link 9000 9001
+> link 9001 1000
+> link 1000 1001
+> orders 200 1001 wait time 8
+> savage auto 1001
+> savage auto 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1001: [wait time 8]
+orders 1000: [raze]
+> orders_file 200
+orders file 200:
+1001:wait time 8
+1000:raze
+> save 1000
+1000 char 0
+LI
+ wh 9001
+ hl 1001 
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section savage first direct hated target uses here order not ID and ignores nested structures
+> entity 9000 3 3
+> entity 9001 3 14
+> entity 9002 3 32
+> entity 9003 3 40
+> entity 9004 9 30
+> entity 9005 3 37
+> link 9000 1000
+> link 9000 9001
+> link 9001 9002
+> link 9000 9003
+> link 9000 9005
+> link 9000 9004
+> orders 200 1000 wait time 7
+> savage here 9000
+hate here 9005
+> savage auto 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 7] [enter 9005] [raze]
+> orders_file 200
+orders file 200:
+1000:wait time 7
+1000:enter 9005
+1000:raze
+> save 9000
+9000 loc plain
+LI
+ hl 1000 9001 9003 9005 9004 
+
+> link 9000 9005
+> savage here 9000
+hate here 9004
+> savage auto 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 7] [enter 9005] [raze] [enter 9004] [raze]
+> orders_file 200
+orders file 200:
+1000:wait time 7
+1000:enter 9005
+1000:raze
+1000:enter 9004
+1000:raze
+stderr:
+
+exit 0
+stdout:
+section savage human occupied fort makes one drum and appends keyed use wait attack after saved orders
+> master 0
+> set turn 1
+> entity 98 4 0
+> entity 9000 3 3
+> entity 9001 3 37
+> entity 9002 3 14
+> entity 1002 2 54
+> field 1002 lord 200
+> link 9000 1000
+> link 9000 9001
+> link 9001 1002
+> link 9001 9002
+> link 9002 1001
+> field 1001 loyal 4
+> field 1001 prisoner 1
+> field 1001 hidden 1
+> orders 200 1000 wait time 9
+> savage auto 1000
+> save 1000
+1000 char 0
+il	98 1
+LI
+ wh 9000
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 9] [use 98 1] [wait time 48] [attack 9001]
+> set day 29
+> savage auto 1000
+> save 1000
+1000 char 0
+il	98 1
+LI
+ wh 9000
+CH
+ lo 200
+
+> master 91
+> savage auto 1000
+> save 1000
+1000 char 0
+il	98 1
+LI
+ wh 9000
+CH
+ lo 200
+
+> set turn 2
+> savage auto 1000
+> save 1000
+1000 char 0
+il	98 1
+LI
+ wh 9000
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 9] [use 98 1] [wait time 48] [attack 9001] [use 98 1] [wait time 48] [attack 9001] [use 98 1] [wait time 43] [attack 9001] [use 98 1] [wait time 50] [attack 9001]
+> orders_file 200
+orders file 200:
+1000:wait time 9
+1000:use 98 1
+1000:wait time 48
+1000:attack 9001
+1000:use 98 1
+1000:wait time 48
+1000:attack 9001
+1000:use 98 1
+1000:wait time 43
+1000:attack 9001
+1000:use 98 1
+1000:wait time 50
+1000:attack 9001
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section savage existing drum quantity not topped up and wait is keyed by actor
+> master 0
+> set turn 1
+> entity 98 4 0
+> entity 9000 3 3
+> entity 9001 9 31
+> entity 1002 2 54
+> field 1002 lord 200
+> link 9000 9001
+> link 9000 1000
+> link 9000 1002
+> link 9001 1001
+> field 1001 loyal 1
+> genitem 1000 98 3
+> savage auto 1000
+> savage auto 1002
+> save 1000
+1000 char 0
+il	98 3
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1002
+1002 char ni
+il	98 1
+LI
+ wh 9000
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [use 98 1] [wait time 48] [attack 9001]
+orders 1002: [use 98 1] [wait time 38] [attack 9001]
+> orders_file 200
+orders file 200:
+1000:use 98 1
+1000:wait time 48
+1000:attack 9001
+1002:use 98 1
+1002:wait time 38
+1002:attack 9001
+stderr:
+
+exit 0
+stdout:
+section savage nonhuman first owner does not scan next hated target and unstack uses direct saved order
+> master 0
+> entity 9000 3 3
+> entity 9001 3 32
+> entity 9002 3 37
+> entity 9003 3 3
+> entity 1002 2 54
+> entity 1003 2 54
+> entity 1004 2 54
+> entity 1005 4 0
+> entity 1006 2 54
+> field 1002 lord 200
+> field 1003 lord 200
+> field 1004 lord 200
+> field 1006 lord 200
+> link 9000 1000
+> link 9000 9001
+> link 9000 9002
+> link 9001 1002
+> link 9002 1001
+> field 1001 loyal 1
+> link 1000 1004
+> link 1000 1005
+> link 1000 1003
+> link 1003 1006
+> routes 9000 9003 0 0 0
+> savage here 9000
+hate here 9001
+> savage auto 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+ hl 1004 1005 1003 
+CH
+ lo 200
+MI
+ di 1
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [unstack 1004] [unstack 1003] [move north]
+> orders_file 200
+orders file 200:
+1000:unstack 1004
+1000:unstack 1003
+1000:move north
+stderr:
+
+exit 0
+stdout:
+section savage no humans unstack all direct characters then die including non savages
+> entity 9000 3 3
+> entity 1002 2 54
+> entity 1003 2 54
+> entity 1004 4 0
+> field 1002 lord 200
+> field 1003 lord 200
+> link 9000 1000
+> link 1000 1003
+> link 1000 1004
+> link 1000 1001
+> link 1003 1002
+> orders 200 1000 wait time 4
+> savage auto 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 4] [unstack 1003] [unstack 1001] [die]
+> orders_file 200
+orders file 200:
+1000:wait time 4
+1000:unstack 1003
+1000:unstack 1001
+1000:die
+> save 1000
+1000 char 0
+LI
+ wh 9000
+ hl 1003 1004 1001 
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section savage generated move executes real dispatcher and evenings through subsequent wait
+> master 0
+> set turn 1
+> set day 1
+> set epoch 31
+> resolve_wait
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 293 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 9000 1001
+> field 1000 loyal 4
+> field 1001 loyal 1
+> routes 9000 9001 0 0 0
+> savage auto 1000
+> queue wait time 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [move north] [wait time 0]
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> evening
+> dump
+cmd 48 who 1000 state 2 status 1 wait 3 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 2
+> set epoch 32
+> evening
+> dump
+cmd 48 who 1000 state 2 status 1 wait 2 poll 0 pri 2 cond 0 fuzzy 0 days 2 debug 2 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 3
+> set epoch 33
+> evening
+> dump
+cmd 48 who 1000 state 2 status 1 wait 1 poll 0 pri 2 cond 0 fuzzy 0 days 3 debug 3 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 4
+> set epoch 34
+> evening
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 4 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> set day 5
+> set epoch 35
+> do
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 5 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 2 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> evening
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 5 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 2 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+ lk 4
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 1001 
+LO
+ pd 9001 0 0 0 
+
+> save 9001
+9001 loc plain
+LI
+ wh 8000
+ hl 1000 
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 1
+orders 1000:
+> orders_file 200
+orders file 200:
+> readlog 200
+log 200:
+1000:0::0::> move north
+1000:0::0::Travel to Plain~[9001] will take four days.
+1000:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[1000] arrived from the south.
+1000:0::0::> wait time 0
+1000:0::0::Wait finished: zero days have passed.
+> shuffle 1000 9001
+> newitem 1000 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section savage actual spawned move executes then loads unported use without executing it
+> master 0
+> set turn 1
+> set day 1
+> set epoch 31
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> field 32 weight 100
+> field 32 land_cap 100
+> entity 98 4 0
+> entity 293 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9409 3 32
+> link 8000 9000
+> link 8000 9001
+> link 9000 9409
+> routes 9000 9001 0 0 0
+> routes 9001 0 0 9000 0
+> savage init
+initial savages 0
+> savage_state
+savage unit 110158
+110158 char ni
+il	98 1 \
+	32 6
+LI
+ wh 9001
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 110158
+load_q 3:
+load_q 4:
+run_q:
+> select 110158
+> do
+> dump
+cmd 48 who 110158 state 2 status 1 wait 7 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9000 3 9000 0 0 7 9001 0; parse [move] [9000]
+player 205 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 3
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 110158
+> evening
+> set day 2
+> set epoch 32
+> evening
+> set day 3
+> set epoch 33
+> evening
+> set day 4
+> set epoch 34
+> evening
+> set day 5
+> set epoch 35
+> evening
+> set day 6
+> set epoch 36
+> evening
+> set day 7
+> set epoch 37
+> evening
+> dump
+cmd 93 who 110158 state 1 status 1 wait -1 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 0
+args 98 1 0 0 0 0 0 0; parse [use] [98] [1]
+player 205 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 110158
+load_q 4:
+run_q:
+> savage_state
+savage unit 110158
+110158 char ni
+il	98 1 \
+	32 6
+LI
+ wh 9000
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li use 98 1
+ ar 98 1 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 3
+
+savage output 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 110158
+load_q 4:
+run_q:
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9409 110158 
+LO
+ pd 9001 0 0 0 
+
+> save 9001
+9001 loc plain
+LI
+ wh 8000
+LO
+ pd 0 0 9000 0 
+
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 1 1
+orders 110158: [wait time 37] [attack 9409]
+> orders_file 205
+orders file 205:
+110158:wait time 37
+110158:attack 9409
+> readlog 205
+log 205:
+110158:0::0::> move 9000
+110158:0::0::Travel to Plain~[9000] will take seven days.
+9001:0::0::<no subkind>~[110158], <no subkind>, number:~7, went south.
+110158:0::0::Arrival at Plain~[9000].
+9000:0::0::<no subkind>~[110158], <no subkind>, number:~7, arrived from the north.
+stderr:
+warning: plural name not set for item [32]
+warning: plural name not set for item [32]
+
+exit 0

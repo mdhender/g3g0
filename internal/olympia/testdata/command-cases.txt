@@ -5737,3 +5737,536 @@ npc_choose 1000 9000 7
 save 1000
 pstate 200
 orders_file 200
+
+section savage actual keyed fort spawn nonspawn and ship exclusion
+master 0
+set turn 1
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+entity 9000 3 3
+entity 9001 3 4
+entity 9002 3 1
+entity 9003 3 5
+entity 9409 3 32
+entity 9100 3 32
+entity 9498 9 30
+link 9000 9498
+link 9000 9409
+link 9000 9100
+routes 9000 9001 9002 9003 0
+savage_rolls 9409 1000
+savage_rolls 9100 1000
+savage_rolls 9498 1000
+savage init
+savage_state
+pstate 205
+orders_file 205
+save 205
+save 9000
+save 9001
+save 9002
+save 9003
+readlog 205
+shuffle 1000 9000
+newitem 9000 0
+save_new
+
+section savage initial tally199 allows multiple spawns past cap then recount stops
+master 0
+set turn 1
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+entity 9000 3 3
+entity 9001 3 4
+entity 9409 3 32
+entity 9498 3 40
+link 9000 9498
+link 9000 9409
+routes 9000 9001 0 0 0
+savage_population 199
+field 1100 subkind 0
+field 1100 lord 200
+field 1100 loyal 1
+field 1101 prisoner 1
+field 1102 health -1
+link 9000 1100
+link 1100 1101
+savage init
+savage_state
+pstate 205
+orders_file 205
+save 9001
+save 1100
+save 1101
+savage init
+savage_state
+newitem 9000 0
+save_new
+
+section savage cap200 returns before fort and exit draws
+master 0
+set turn 1
+entity 205 1 52
+set indep 205
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 4
+entity 9003 3 5
+entity 9409 3 32
+link 9000 9409
+routes 9000 9001 9002 9003 0
+savage_population 200
+savage init
+savage_state
+shuffle 1000 9000
+newitem 9000 0
+save_new
+
+section savage cap201 returns without deleting excess or needing creation items
+master 0
+set turn 1
+entity 205 1 52
+set indep 205
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 4
+entity 9003 3 5
+entity 9409 3 32
+link 9000 9409
+routes 9000 9001 9002 9003 0
+savage_population 201
+savage init
+savage_state
+save 1300
+shuffle 1000 9000
+
+section savage successful keyed roll nested fort is rejected after draw
+master 0
+set turn 1
+entity 205 1 52
+set indep 205
+entity 9000 3 3
+entity 9001 3 14
+entity 9409 3 32
+link 9000 9001
+link 9001 9409
+savage_rolls 9409 1000
+savage init
+savage_state
+save 9001
+
+section savage successful keyed roll no land exits emits original diagnostic
+master 0
+set turn 1
+entity 205 1 52
+set indep 205
+entity 9000 3 3
+entity 9001 3 1
+entity 9409 3 32
+link 9000 9409
+routes 9000 9001 0 0 0
+savage init
+savage_state
+shuffle 1000 9000
+
+section savage recursive controlled humans block every source after exit shuffle
+master 0
+set turn 1
+entity 205 1 52
+set indep 205
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 3
+entity 9003 3 14
+entity 9409 3 32
+link 9000 9409
+link 9001 1000
+field 1000 loyal 4
+field 1000 hidden 1
+field 1000 prisoner 1
+link 9002 9003
+link 9003 1001
+field 1001 loyal 1
+routes 9000 9001 9002 0 0
+savage humans 9001
+savage humans 9002
+savage init
+savage_state
+shuffle 1000 9000
+
+section savage asymmetric fallback skips humans but not hidden barrier or unsworn sources
+master 0
+set turn 1
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+entity 1002 2 0
+field 1002 lord 200
+field 1002 loyal 1
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 1
+entity 9003 3 5
+entity 9004 3 4
+entity 9409 3 37
+link 9000 9409
+link 9003 1000
+field 1000 loyal 4
+link 9001 1002
+link 9004 1001
+field 1001 loyal 0
+field 9004 loc_hidden 1
+field 9004 barrier 1
+routes 9000 9001 9002 9003 9004
+savage init
+savage_state
+pstate 205
+orders_file 205
+save 9001
+save 9003
+save 9004
+shuffle 1000 9000
+
+section savage keyed draws reseed each location master and turn but ignore day
+master 0
+set turn 1
+savage_rolls 9409 1000
+savage_rolls 9498 1000
+savage_rolls 9409 1001
+set day 29
+savage_rolls 9409 1000
+master 91
+savage_rolls 9409 1000
+set turn 2
+savage_rolls 9409 1000
+master 0
+savage_rolls 9409 1000
+
+section savage human predicate excludes unsworn and nonzero subkind not NPC loyalty or faction
+master 0
+entity 205 1 52
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 9 30
+entity 1002 2 54
+field 1002 loyal 1
+link 9000 9001
+link 9001 9002
+link 9002 1002
+savage humans 9000
+link 9002 1000
+savage humans 9000
+field 1000 loyal 4
+field 1000 lord 205
+field 1000 hidden 1
+field 1000 prisoner 1
+field 1000 health -1
+savage humans 9000
+savage humans 1000
+field 1000 loyal 0
+link 1002 1001
+field 1001 loyal 3
+savage humans 9000
+save 1000
+save 1001
+
+section savage hated structure predicates include unfinished ships but not mines rafts or cities
+entity 9000 3 3
+savage hates 9000
+field 9000 subkind 29
+savage hates 9000
+field 9000 subkind 30
+savage hates 9000
+field 9000 subkind 31
+savage hates 9000
+field 9000 subkind 32
+savage hates 9000
+field 9000 subkind 33
+savage hates 9000
+field 9000 subkind 34
+savage hates 9000
+field 9000 subkind 36
+savage hates 9000
+field 9000 subkind 37
+savage hates 9000
+field 9000 subkind 38
+savage hates 9000
+field 9000 subkind 39
+savage hates 9000
+field 9000 subkind 46
+savage hates 9000
+field 9000 subkind 47
+savage hates 9000
+field 9000 subkind 40
+savage hates 9000
+field 9000 subkind 41
+savage hates 9000
+field 9000 subkind 35
+savage hates 9000
+field 9000 subkind 58
+savage hates 9000
+field 9000 subkind 14
+savage hates 9000
+
+section savage follower keeps saved orders while leader inside structure queues raze
+entity 9000 3 3
+entity 9001 9 34
+link 9000 9001
+link 9001 1000
+link 1000 1001
+orders 200 1001 wait time 8
+savage auto 1001
+savage auto 1000
+pstate 200
+orders_file 200
+save 1000
+save 1001
+
+section savage first direct hated target uses here order not ID and ignores nested structures
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 3 32
+entity 9003 3 40
+entity 9004 9 30
+entity 9005 3 37
+link 9000 1000
+link 9000 9001
+link 9001 9002
+link 9000 9003
+link 9000 9005
+link 9000 9004
+orders 200 1000 wait time 7
+savage here 9000
+savage auto 1000
+pstate 200
+orders_file 200
+save 9000
+link 9000 9005
+savage here 9000
+savage auto 1000
+pstate 200
+orders_file 200
+
+section savage human occupied fort makes one drum and appends keyed use wait attack after saved orders
+master 0
+set turn 1
+entity 98 4 0
+entity 9000 3 3
+entity 9001 3 37
+entity 9002 3 14
+entity 1002 2 54
+field 1002 lord 200
+link 9000 1000
+link 9000 9001
+link 9001 1002
+link 9001 9002
+link 9002 1001
+field 1001 loyal 4
+field 1001 prisoner 1
+field 1001 hidden 1
+orders 200 1000 wait time 9
+savage auto 1000
+save 1000
+pstate 200
+set day 29
+savage auto 1000
+save 1000
+master 91
+savage auto 1000
+save 1000
+set turn 2
+savage auto 1000
+save 1000
+pstate 200
+orders_file 200
+readlog 200
+
+section savage existing drum quantity not topped up and wait is keyed by actor
+master 0
+set turn 1
+entity 98 4 0
+entity 9000 3 3
+entity 9001 9 31
+entity 1002 2 54
+field 1002 lord 200
+link 9000 9001
+link 9000 1000
+link 9000 1002
+link 9001 1001
+field 1001 loyal 1
+genitem 1000 98 3
+savage auto 1000
+savage auto 1002
+save 1000
+save 1002
+pstate 200
+orders_file 200
+
+section savage nonhuman first owner does not scan next hated target and unstack uses direct saved order
+master 0
+entity 9000 3 3
+entity 9001 3 32
+entity 9002 3 37
+entity 9003 3 3
+entity 1002 2 54
+entity 1003 2 54
+entity 1004 2 54
+entity 1005 4 0
+entity 1006 2 54
+field 1002 lord 200
+field 1003 lord 200
+field 1004 lord 200
+field 1006 lord 200
+link 9000 1000
+link 9000 9001
+link 9000 9002
+link 9001 1002
+link 9002 1001
+field 1001 loyal 1
+link 1000 1004
+link 1000 1005
+link 1000 1003
+link 1003 1006
+routes 9000 9003 0 0 0
+savage here 9000
+savage auto 1000
+save 1000
+pstate 200
+orders_file 200
+
+section savage no humans unstack all direct characters then die including non savages
+entity 9000 3 3
+entity 1002 2 54
+entity 1003 2 54
+entity 1004 4 0
+field 1002 lord 200
+field 1003 lord 200
+link 9000 1000
+link 1000 1003
+link 1000 1004
+link 1000 1001
+link 1003 1002
+orders 200 1000 wait time 4
+savage auto 1000
+pstate 200
+orders_file 200
+save 1000
+
+section savage generated move executes real dispatcher and evenings through subsequent wait
+master 0
+set turn 1
+set day 1
+set epoch 31
+resolve_wait
+entity 10 4 0
+field 10 weight 100
+field 10 land_cap 100
+field 10 ride_cap 100
+entity 293 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+link 8000 9000
+link 8000 9001
+link 9000 1000
+link 9000 1001
+field 1000 loyal 4
+field 1001 loyal 1
+routes 9000 9001 0 0 0
+savage auto 1000
+queue wait time 0
+pstate 200
+load
+do
+dump
+evening
+dump
+set day 2
+set epoch 32
+evening
+dump
+set day 3
+set epoch 33
+evening
+dump
+set day 4
+set epoch 34
+evening
+dump
+set day 5
+set epoch 35
+do
+dump
+evening
+dump
+save 1000
+save 9000
+save 9001
+pstate 200
+orders_file 200
+readlog 200
+shuffle 1000 9001
+newitem 1000 0
+save_new
+
+section savage actual spawned move executes then loads unported use without executing it
+master 0
+set turn 1
+set day 1
+set epoch 31
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+field 32 weight 100
+field 32 land_cap 100
+entity 98 4 0
+entity 293 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9409 3 32
+link 8000 9000
+link 8000 9001
+link 9000 9409
+routes 9000 9001 0 0 0
+routes 9001 0 0 9000 0
+savage init
+savage_state
+select 110158
+do
+dump
+evening
+set day 2
+set epoch 32
+evening
+set day 3
+set epoch 33
+evening
+set day 4
+set epoch 34
+evening
+set day 5
+set epoch 35
+evening
+set day 6
+set epoch 36
+evening
+set day 7
+set epoch 37
+evening
+dump
+savage_state
+save 9000
+save 9001
+pstate 205
+orders_file 205
+readlog 205

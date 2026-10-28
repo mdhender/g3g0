@@ -855,3 +855,80 @@ Marker rejection remains specific, not a broad ban on ordinary game text.
 Combat, full SAIL/FLY, autonomous dispatcher integration and whole-turn/stage
 acceptance are not claimed. Default checks use recordings; full worlds remain
 opt-in. No independent bug fix, second RNG or successful missing-gameplay stub.
+
+## Savage forts and autonomous savage queues (#69)
+
+Sized before implementation: **245 C definition lines** at the unchanged pin,
+with all remaining dependencies already in the accepted command closure:
+
+| source | complete definitions and original lines |
+|---|---|
+| savage.c | `create_savage` 13–29; `call_savage` 32–65; `savage_hates` 219–241; `savage_hate_here` 244–263; `auto_savage` 266–343; `init_savage_attacks` 351–403 |
+| npc.c | `controlled_humans_here` 65–84 |
+
+**savage.c is a new source dependency**, recorded in `tools/README.md` and
+`tools/affected.sh`. The C harness extracts these complete original definitions,
+plus the original MAX_SAVAGES macro and static population storage, with original
+headers, macros and `#line` locations. Only phase instrumentation remains a
+no-op. The existing original npc.c prefix provides all NPC tags/stream/leaves;
+Go uses the same persistent `w.streams` and shared mint/exdr, real character
+creation, inventory/lore, recursive traversal, queue/loading, movement,
+serialization and output. There is no new RNG or successful gameplay stub.
+
+19 appended C-recorded cases cover:
+
+- Master 0 / turn 1 / fort **9409** really rolls **1**, fort **9100** rolls
+  **10**. Ship **9498** also rolls 1 when queried, but is not visited by
+  `loop_loc`. Spawning considers every building-depth location, including a
+  mine, not only the hated-structure predicate. Fort iteration is entity order,
+  not saved here order. The population counts all savage noble-items regardless
+  of subkind, faction, health, prisoner or stack state.
+- Initial **199** allows two real spawns (110158 and 140449), retaining tally
+  199 throughout; the next initialization recounts **201** and stops. Initial
+  200 and 201 allocate nothing, preserve excess units and leave exit/mint
+  streams untouched. No increment-on-spawn cap has been introduced.
+- Successful keyed checks still reject nested forts; zero land exits retain
+  exact stderr `init_savage_attacks: no exits?`. All-human routes spawn nothing
+  after the shuffle. Asymmetric fallback rejects controlled sources 9003 and
+  9001 before actually spawning in hidden/barrier/unsworn source **9004**;
+  ocean exits are excluded. Source-keyed quantity and minted-actor-keyed WAIT
+  are recorded independently, along with day/master/turn and sibling controls.
+- Human detection recursively visits cities, ships and stacks, excludes self,
+  unsworn loyalty and nonzero character subkind, but does not exclude hidden,
+  prisoner, negative-health, NPC-loyal or NPC-faction ordinary characters.
+- All twelve hated complete/unfinished building/ship subkinds and negative
+  mine/ghost-ship/raft/city controls; follower no-op; in-structure RAZE; empty
+  first target ENTER → RAZE; direct here order rather than ID or recursive
+  target order. A nonhuman-owned first target is not replaced by the next
+  human-owned one. Direct children queue UNSTACK in saved order (not just
+  savage children), then DIE or movement as real human detection dictates.
+- Human-owned targets add exactly one missing drum, preserve existing quantity,
+  and append USE → keyed WAIT → ATTACK after saved orders. Actual actor 1000
+  gets WAIT 48, actor 1002 gets 38; day replay preserves the draw, master and
+  turn changes reseed it. Autonomous route MOVE executes four real evenings
+  through WAIT. A genuinely spawned unit's numeric MOVE executes seven real
+  evenings, arrives, and **loads** USE (priority 3) without executing it.
+  Serialized command/DB, log, output-bit, queue and order-file state are real.
+
+Two fresh bounded C runs are deterministic: **324 sections / 18602 lines /
+320880 bytes**, exactly matched by Go raw stdout/stderr/status. All 19 new
+sections require status 0. The previous entire command input **5739 lines /
+97486 bytes** and output **305 sections / 17256 lines / 299103 bytes** remain
+exact byte prefixes; **zero old bytes or reachable boundaries changed**.
+The entire move input **3150 lines / 53589 bytes** and output **135 sections /
+7150 lines / 142755 bytes** are unchanged. Raw C trailing whitespace and the
+fixture's missing-plural-name diagnostics are retained, not normalized.
+
+An ephemeral expected-abort probe queues real savage RAZE, loads it and
+dispatches it. Both normal and `--update` reject the reached missing-dependency
+marker with status 2 before expected-abort handling or recording. The recording
+SHA-256 remains `e6d7515ec89b8b5219e441ed7c40867dadba8093109a77d2b2d1f9911b64f8a9`.
+The probe was removed; no permanent test depends on a temporary private NYI name.
+Generated RAZE/USE/ATTACK/UNSTACK/DIE are queued, **not** claimed as successful
+execution; unported handlers remain explicit stops. The unrelated drum/summon/
+keep-savage command handlers are not reached or ported. Autonomous dispatcher
+wiring remains #71; full combat and whole-turn/stage acceptance remain pending.
+Default checks are small recordings, with full worlds still opt-in. Parent
+review reported the reproduced cap overrun as [G3 #354](https://github.com/playbymail/olympia-g3/issues/354);
+the Go source links it and deliberately preserves C's behavior. It is
+nonblocking; known G3 #309/#352/#353 are unchanged.

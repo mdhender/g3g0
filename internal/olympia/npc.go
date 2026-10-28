@@ -3,6 +3,19 @@
 
 package olympia
 
+// Complete npc.c:65–84. This is recursive all_here, not direct occupants;
+// regular subkind and non-unsworn loyalty are the only human predicates.
+func (w *world) controlledHumansHere(where int) bool {
+	for _, i := range w.allHere(where) {
+		if w.kind(i) == tChar && w.subkind(i) == 0 {
+			if p := w.rpChar(i); p != nil && p.loyKind != loyUnsworn {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 // Complete npc.c:87–145. Selection always shuffles the land exits before
 // considering the previous direction, using the shared sequential exdr stream.
 func getExitDir(l []*exitView, dir int) *exitView {
