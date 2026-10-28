@@ -129,6 +129,7 @@ void drv_ships_here(int who, int where);
 void drv_ancillary(int mode, int who, int where);
 void drv_chars_below(int who, int n, int depth);
 char *drv_highlight(int who, int n, int depth);
+char *drv_fractional_skill_qualifier(struct skill_ent *p);
 void drv_route_view(int who, struct exit_view *v, int mode);
 
 /* Actual auto_attack has already emitted its output. Observe it, then abort:
@@ -1165,6 +1166,26 @@ int main(int argc, char **argv)
    }
    else if(!strcmp(text,"players")) player_ent_info();
    else if(!strcmp(text,"permissions")) print_admit(n);
+   else if(!strcmp(text,"skills") || !strcmp(text,"partial_skills")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    if(!strcmp(text,"skills")) list_skills(n,a); else list_partial_skills(n,a);
+   }
+   else if(!strcmp(text,"experience")) printf("experience [%s]\n",exp_s(n));
+   else if(!strcmp(text,"qualifier")) {
+    struct skill_ent p={0};
+    if(sscanf(line,"%*s %*s %d %d %d",&n,&a,&b)!=3) return 2;
+    p.skill=n; p.know=a; p.days_studied=b;
+    printf("qualifier [%s]\n",drv_fractional_skill_qualifier(&p));
+   }
+   else if(!strcmp(text,"skill_rows")) {
+    struct entity_char *p=rp_char(n);
+    printf("skill record %d %d\n",n,p!=NULL);
+    if(p) for(i=0;i<skill_ents_len(p->skills);i++) {
+     struct skill_ent *s=p->skills[i];
+     printf("skill row %d %d %d %d\n",s->skill,s->know,s->days_studied,s->experience);
+    }
+    save_box(stdout,n);
+   }
    else if(!strcmp(text,"attitudes")) {
     sscanf(line,"%*s %*s %d %d",&n,&a);
     print_att(n,a);
@@ -1438,6 +1459,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"summer")) p_subloc(n)->summer_flag = (schar)a;
    else if (!strcmp(text,"uldim")) p_subloc(n)->uldim_flag = (schar)a;
    else if (!strcmp(text,"skill_np")) p_skill(n)->np_req = a;
+   else if (!strcmp(text,"skill_time")) p_skill(n)->time_to_learn = a;
+   else if (!strcmp(text,"skill_no_exp")) p_skill(n)->no_exp = a;
    else if (!strcmp(text,"unique")) p_item(n)->who_has = a;
    else if (!strcmp(text,"token_num")) p_item_magic(n)->token_num = (schar)a;
    else if (!strcmp(text,"token_ni")) p_item_magic(n)->token_ni = a;

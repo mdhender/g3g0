@@ -342,6 +342,7 @@ void drv_ancillary(int mode, int who, int where) {
 }
 void drv_chars_below(int who, int n, int depth) { show_chars_below_highlight(who, n, depth); }
 char *drv_highlight(int who, int n, int depth) { return highlight_units(who, n, depth); }
+char *drv_fractional_skill_qualifier(struct skill_ent *p) { return fractional_skill_qualifier(p); }
 void drv_route_view(int who, struct exit_view *v, int mode) {
  char first[LEN] = "Direct routes:";
  extern int second_indent;

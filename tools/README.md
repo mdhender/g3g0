@@ -6,6 +6,36 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Known and partial skills (#149)
+
+Existing use.go adds complete pinned use.c exp_s **977–994**, comparators
+**1199–1238**, active list_skill_sup **1262–1271**, list_skills **1276–1335**
+and fractional qualifier/partial list **1345–1406**; lore.go adds complete
+np_req_s **120–134**. Existing skill/magic/name/output/cache owners supply
+the closure. Both sorts copy pointer lists, preserving raw/saved skill order.
+The later character root remains a projection until #151, not a second pass.
+No new dependency/pin, command or later root.
+
+At **0.89.0-alpha**, eighteen appended cases match complete actual C twice
+and Go: **1035 sections / 69581 lines / 1324865 output bytes**. The inherited
+**1017-section / 68918-line / 1310660-output-byte** and **414715-input-byte**
+prefixes remain exact. Numeric constants and reached branches include all
+know states, asymmetric school grouping, nested prerequisites, no-exp short
+circuiting, all experience bands/boundaries, NP text and malformed assertion
+order. #168 live native traversal still matches. Four temporary marker
+controls (exit 0/134, ordinary/update) reject before expected-failure acceptance
+or recording replacement, preserving the recording hash; probes removed.
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded defaults pass with explicit isolated `G3_REPO`.
+See [complete closure, hashes, branches and evidence](command-compat#known-and-partial-skills-149)
+and `tmp/issue149-*.log`.
+
+No full-world/full-corpus/strict-lifecycle or stage-exit acceptance. Latest
+strict post-#145 evidence remains identical C repeats, C/Go 0, matching
+streams and paths/types/modes, eight saved-report byte differences, exit 1
+before lifecycle. G3 #358 remains nonblocking: original division/Go panic
+untouched; malformed C136/Go2 is NOT passing parity.
+
 ## Admission permissions, attitudes and player entity reports (#148)
 
 Existing perm.go adds complete pinned perm.c admit comparator/renderers

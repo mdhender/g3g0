@@ -68916,3 +68916,666 @@ stderr:
 assertion failure: olympia/perm.c (197): kind(pl) == T_player
 
 exit 134
+stdout:
+section report skills missing and allocated empty records preserve indentation and allocation
+> entity 1100 2 0
+> entity 1101 2 0
+> field 1101 health 100
+> sout frame 4 9 1 7
+> report skill_rows 1100
+skill record 1100 0
+1100 char 0
+
+> report skill_rows 1101
+skill record 1101 1
+1101 char 0
+CH
+ he 100
+
+> report partial_skills 200 1100
+> report partial_skills 200 1101
+> report skills 200 1100
+> report skills 200 1101
+> sout state
+route 0 0 frame 4 9 1 7
+vector:
+saved vector:
+> report skill_rows 1100
+skill record 1100 0
+1100 char 0
+
+> report skill_rows 1101
+skill record 1101 1
+1101 char 0
+CH
+ he 100
+
+> readlog 200
+log 200:
+200:0::4/9:7:
+200:0::4/9:7:Skills known:
+200:0::7/9:7:none
+200:0::4/9:7:
+200:0::4/9:7:Skills known:
+200:0::7/9:7:none
+stderr:
+
+exit 0
+stdout:
+section report skills school order nested prerequisite no experience flags and copied lists
+> entity 701 5 0
+> entity 702 5 0
+> entity 703 5 0
+> entity 704 5 43
+> entity 705 5 0
+> entity 706 5 0
+> entity 707 5 0
+> entity 708 5 0
+> name 701 First school
+> name 702 Practice
+> name 703 Nested practice
+> name 704 Magic school
+> name 705 No experience
+> name 706 Negative no experience
+> name 707 Recordless school
+> name 708 Late numbered first school child
+> field 702 required 701
+> field 703 required 702
+> field 705 required 704
+> field 706 required 704
+> field 708 required 701
+> field 705 skill_no_exp 1
+> field 706 skill_no_exp -1
+> learn 1000 708 2 5
+> learn 1000 706 2 35
+> learn 1000 704 2 35
+> learn 1000 702 2 12
+> learn 1000 705 2 34
+> learn 1000 703 2 21
+> learn 1000 701 2 -1
+> learn 1000 707 2 35
+> learn 1000 702 0 11
+> learn 1000 704 1 4
+> report skill_rows 1000
+skill record 1000 1
+skill row 708 2 0 5
+skill row 706 2 0 35
+skill row 704 2 0 35
+skill row 702 2 0 12
+skill row 705 2 0 34
+skill row 703 2 0 21
+skill row 701 2 0 -1
+skill row 707 2 0 35
+skill row 702 0 0 11
+skill row 704 1 0 4
+1000 char 0
+CH
+ lo 200
+ sl	708 2 0 5 0 \
+	706 2 0 35 0 \
+	704 2 0 35 0 \
+	702 2 0 12 0 \
+	705 2 0 34 0 \
+	703 2 0 21 0 \
+	701 2 0 -1 0 \
+	707 2 0 35 0 \
+	702 0 0 11 0 \
+	704 1 0 4 0
+
+> sout frame 2 7 0 0
+> report skills 200 1000
+> report partial_skills 200 1000
+> sout state
+route 0 0 frame 2 0 0 0
+vector:
+saved vector:
+> report skill_rows 1000
+skill record 1000 1
+skill row 708 2 0 5
+skill row 706 2 0 35
+skill row 704 2 0 35
+skill row 702 2 0 12
+skill row 705 2 0 34
+skill row 703 2 0 21
+skill row 701 2 0 -1
+skill row 707 2 0 35
+skill row 702 0 0 11
+skill row 704 1 0 4
+1000 char 0
+CH
+ lo 200
+ sl	708 2 0 5 0 \
+	706 2 0 35 0 \
+	704 2 0 35 0 \
+	702 2 0 12 0 \
+	705 2 0 34 0 \
+	703 2 0 21 0 \
+	701 2 0 -1 0 \
+	707 2 0 35 0 \
+	702 0 0 11 0 \
+	704 1 0 4 0
+
+> report skills 200 1000
+> report partial_skills 200 1000
+> report skill_rows 1000
+skill record 1000 1
+skill row 708 2 0 5
+skill row 706 2 0 35
+skill row 704 2 0 35
+skill row 702 2 0 12
+skill row 705 2 0 34
+skill row 703 2 0 21
+skill row 701 2 0 -1
+skill row 707 2 0 35
+skill row 702 0 0 11
+skill row 704 1 0 4
+1000 char 0
+CH
+ lo 200
+ sl	708 2 0 5 0 \
+	706 2 0 35 0 \
+	704 2 0 35 0 \
+	702 2 0 12 0 \
+	705 2 0 34 0 \
+	703 2 0 21 0 \
+	701 2 0 -1 0 \
+	707 2 0 35 0 \
+	702 0 0 11 0 \
+	704 1 0 4 0
+
+> readlog 200
+log 200:
+200:0::2/7::
+200:0::2/7::Skills known:
+200:0::5/7::First school~[701]
+200:0::11/7::Practice~[702], adept
+200:0::11/7::Nested practice~[703], master
+200:0::11/7::Late numbered first school child~[708], journeyman
+200:0::5/7::Magic school~[704]
+200:0::11/7::No experience~[705]
+200:0::11/7::Negative no experience~[706]
+200:0::5/7::Recordless school~[707]
+200:0::2/7::
+200:0::2/7::Partially known skills:
+200:0::5/6::Practice~[702], 0/0
+200:0::5/6::Magic school~[704], 0/0
+200:0::2::
+200:0::2::Skills known:
+200:0::5::First school~[701]
+200:0::11::Practice~[702], adept
+200:0::11::Nested practice~[703], master
+200:0::11::Late numbered first school child~[708], journeyman
+200:0::5::Magic school~[704]
+200:0::11::No experience~[705]
+200:0::11::Negative no experience~[706]
+200:0::5::Recordless school~[707]
+200:0::2::
+200:0::2::Partially known skills:
+200:0::5/6::Practice~[702], 0/0
+200:0::5/6::Magic school~[704], 0/0
+stderr:
+
+exit 0
+stdout:
+section report skills every experience band exact signed short boundaries and all known partial silence
+> entity 701 5 0
+> entity 702 5 0
+> name 701 Skill school
+> name 702 Practice
+> field 702 required 701
+> learn 1000 702 2 -32768
+> learn 1000 702 2 -1
+> learn 1000 702 2 0
+> learn 1000 702 2 4
+> learn 1000 702 2 5
+> learn 1000 702 2 11
+> learn 1000 702 2 12
+> learn 1000 702 2 20
+> learn 1000 702 2 21
+> learn 1000 702 2 34
+> learn 1000 702 2 35
+> learn 1000 702 2 32767
+> report skill_rows 1000
+skill record 1000 1
+skill row 702 2 0 -32768
+skill row 702 2 0 -1
+skill row 702 2 0 0
+skill row 702 2 0 4
+skill row 702 2 0 5
+skill row 702 2 0 11
+skill row 702 2 0 12
+skill row 702 2 0 20
+skill row 702 2 0 21
+skill row 702 2 0 34
+skill row 702 2 0 35
+skill row 702 2 0 32767
+1000 char 0
+CH
+ lo 200
+ sl	702 2 0 -32768 0 \
+	702 2 0 -1 0 \
+	702 2 0 0 0 \
+	702 2 0 4 0 \
+	702 2 0 5 0 \
+	702 2 0 11 0 \
+	702 2 0 12 0 \
+	702 2 0 20 0 \
+	702 2 0 21 0 \
+	702 2 0 34 0 \
+	702 2 0 35 0 \
+	702 2 0 32767 0
+
+> report skills 200 1000
+> report partial_skills 200 1000
+> report skill_rows 1000
+skill record 1000 1
+skill row 702 2 0 -32768
+skill row 702 2 0 -1
+skill row 702 2 0 0
+skill row 702 2 0 4
+skill row 702 2 0 5
+skill row 702 2 0 11
+skill row 702 2 0 12
+skill row 702 2 0 20
+skill row 702 2 0 21
+skill row 702 2 0 34
+skill row 702 2 0 35
+skill row 702 2 0 32767
+1000 char 0
+CH
+ lo 200
+ sl	702 2 0 -32768 0 \
+	702 2 0 -1 0 \
+	702 2 0 0 0 \
+	702 2 0 4 0 \
+	702 2 0 5 0 \
+	702 2 0 11 0 \
+	702 2 0 12 0 \
+	702 2 0 20 0 \
+	702 2 0 21 0 \
+	702 2 0 34 0 \
+	702 2 0 35 0 \
+	702 2 0 32767 0
+
+> report experience 1
+experience [apprentice]
+> report experience 2
+experience [journeyman]
+> report experience 3
+experience [adept]
+> report experience 4
+experience [master]
+> report experience 5
+experience [grand master]
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Skills known:
+200:0::9::Practice~[702], apprentice
+200:0::9::Practice~[702], apprentice
+200:0::9::Practice~[702], apprentice
+200:0::9::Practice~[702], apprentice
+200:0::9::Practice~[702], journeyman
+200:0::9::Practice~[702], journeyman
+200:0::9::Practice~[702], adept
+200:0::9::Practice~[702], adept
+200:0::9::Practice~[702], master
+200:0::9::Practice~[702], master
+200:0::9::Practice~[702], grand master
+200:0::9::Practice~[702], grand master
+stderr:
+
+exit 0
+stdout:
+section report skills partial sorting dont learning NP omission and signed study days
+> entity 701 5 0
+> entity 702 5 0
+> entity 703 5 0
+> entity 704 5 0
+> entity 705 5 0
+> entity 706 5 0
+> name 701 Missing skill record
+> name 702 Zero NP
+> name 703 Negative NP
+> name 704 One NP
+> name 705 Many NP
+> name 706 Learning omits NP
+> field 702 skill_time 7
+> field 703 skill_time -7
+> field 703 skill_np -1
+> field 704 skill_time 14
+> field 704 skill_np 1
+> field 705 skill_time 2147483647
+> field 705 skill_np 2147483647
+> field 706 skill_time 28
+> field 706 skill_np 2
+> report skill 1000 706 1 -2147483648
+> report skill 1000 705 0 99
+> report skill 1000 704 0 -99
+> report skill 1000 703 0 100
+> report skill 1000 702 0 1
+> report skill 1000 701 0 0
+> report skill 1000 706 1 2147483647
+> report skill 1000 704 1 0
+> report skill 1000 706 1 28
+> report skill 1000 706 0 0
+> report skill_rows 1000
+skill record 1000 1
+skill row 706 1 -2147483648 0
+skill row 705 0 99 0
+skill row 704 0 -99 0
+skill row 703 0 100 0
+skill row 702 0 1 0
+skill row 701 0 0 0
+skill row 706 1 2147483647 0
+skill row 704 1 0 0
+skill row 706 1 28 0
+skill row 706 0 0 0
+1000 char 0
+CH
+ lo 200
+ sl	706 1 -2147483648 0 0 \
+	705 0 99 0 0 \
+	704 0 -99 0 0 \
+	703 0 100 0 0 \
+	702 0 1 0 0 \
+	701 0 0 0 0 \
+	706 1 2147483647 0 0 \
+	704 1 0 0 0 \
+	706 1 28 0 0 \
+	706 0 0 0 0
+
+> report skills 200 1000
+> report partial_skills 200 1000
+> report skill_rows 1000
+skill record 1000 1
+skill row 706 1 -2147483648 0
+skill row 705 0 99 0
+skill row 704 0 -99 0
+skill row 703 0 100 0
+skill row 702 0 1 0
+skill row 701 0 0 0
+skill row 706 1 2147483647 0
+skill row 704 1 0 0
+skill row 706 1 28 0
+skill row 706 0 0 0
+1000 char 0
+CH
+ lo 200
+ sl	706 1 -2147483648 0 0 \
+	705 0 99 0 0 \
+	704 0 -99 0 0 \
+	703 0 100 0 0 \
+	702 0 1 0 0 \
+	701 0 0 0 0 \
+	706 1 2147483647 0 0 \
+	704 1 0 0 0 \
+	706 1 28 0 0 \
+	706 0 0 0 0
+
+> report partial_skills 200 1000
+> report skill_rows 1000
+skill record 1000 1
+skill row 706 1 -2147483648 0
+skill row 705 0 99 0
+skill row 704 0 -99 0
+skill row 703 0 100 0
+skill row 702 0 1 0
+skill row 701 0 0 0
+skill row 706 1 2147483647 0
+skill row 704 1 0 0
+skill row 706 1 28 0
+skill row 706 0 0 0
+1000 char 0
+CH
+ lo 200
+ sl	706 1 -2147483648 0 0 \
+	705 0 99 0 0 \
+	704 0 -99 0 0 \
+	703 0 100 0 0 \
+	702 0 1 0 0 \
+	701 0 0 0 0 \
+	706 1 2147483647 0 0 \
+	704 1 0 0 0 \
+	706 1 28 0 0 \
+	706 0 0 0 0
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Skills known:
+200:0::3::none
+200:0::0::
+200:0::0::Partially known skills:
+200:0::3/6::Missing skill record~[701], 0/0
+200:0::3/6::Zero NP~[702], 0/7
+200:0::3/6::Negative NP~[703], 0/-7
+200:0::3/6::One NP~[704], 0/14, 1 NP req'd
+200:0::3/6::One NP~[704], 0/14
+200:0::3/6::Many NP~[705], 0/2147483647, 2147483647 NP req'd
+200:0::3/6::Learning omits NP~[706], -2147483648/28
+200:0::3/6::Learning omits NP~[706], 2147483647/28
+200:0::3/6::Learning omits NP~[706], 28/28
+200:0::3/6::Learning omits NP~[706], 0/28, 2 NP req'd
+200:0::0::
+200:0::0::Partially known skills:
+200:0::3/6::Missing skill record~[701], 0/0
+200:0::3/6::Zero NP~[702], 0/7
+200:0::3/6::Negative NP~[703], 0/-7
+200:0::3/6::One NP~[704], 0/14, 1 NP req'd
+200:0::3/6::One NP~[704], 0/14
+200:0::3/6::Many NP~[705], 0/2147483647, 2147483647 NP req'd
+200:0::3/6::Learning omits NP~[706], -2147483648/28
+200:0::3/6::Learning omits NP~[706], 2147483647/28
+200:0::3/6::Learning omits NP~[706], 28/28
+200:0::3/6::Learning omits NP~[706], 0/28, 2 NP req'd
+stderr:
+
+exit 0
+stdout:
+section report skills nonknown comparator shortcut avoids cyclic unknown school
+> entity 701 5 0
+> entity 702 5 0
+> name 701 Known school
+> name 702 Cyclic unknown
+> field 702 required 702
+> learn 1000 701 2 0
+> report skill 1000 702 0 3
+> report skills 200 1000
+> report partial_skills 200 1000
+> report skill_rows 1000
+skill record 1000 1
+skill row 701 2 0 0
+skill row 702 0 3 0
+1000 char 0
+CH
+ lo 200
+ sl	701 2 0 0 0 \
+	702 0 3 0 0
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Skills known:
+200:0::3::Known school~[701]
+200:0::0::
+200:0::0::Partially known skills:
+200:0::3/6::Cyclic unknown~[702], 0/0
+stderr:
+
+exit 0
+stdout:
+section report skills noexp short circuit avoids cyclic singleton school
+> entity 701 5 0
+> name 701 Cyclic noexp
+> field 701 required 701
+> field 701 skill_no_exp 1
+> learn 1000 701 2 35
+> report skills 200 1000
+> report skill_rows 1000
+skill record 1000 1
+skill row 701 2 0 35
+1000 char 0
+CH
+ lo 200
+ sl	701 2 0 35 0
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Skills known:
+200:0::9::Cyclic noexp~[701]
+stderr:
+
+exit 0
+stdout:
+section report skills malformed know ignored by known renderer only
+> entity 701 5 0
+> learn 1000 701 3 1
+> report skills 200 1000
+> report skill_rows 1000
+skill record 1000 1
+skill row 701 3 0 1
+1000 char 0
+CH
+ lo 200
+ sl	701 3 0 1 0
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Skills known:
+200:0::3::none
+stderr:
+
+exit 0
+stdout:
+section report skills share cached renamed inode and MASTER output frame
+> lore_root
+> entity 701 5 0
+> name 701 School
+> learn 1000 701 2 0
+> sout text 200 out 0 1 prefix
+> life rename log/200 log/original
+> sout route -2 1000
+> sout frame 3 8 1 9
+> report skills 200 1000
+> report partial_skills 200 1000
+> sout state
+route -2 1000 frame 3 8 1 9
+vector:
+saved vector:
+> report skill_rows 1000
+skill record 1000 1
+skill row 701 2 0 0
+1000 char 0
+CH
+ lo 200
+ sl	701 2 0 0 0
+
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> life flush
+> readfile log/original
+file bytes log/original 87:
+200:0::0::prefix
+1000:0::3/8:9:
+1000:0::3/8:9:Skills known:
+1000:0::6/8:9:School~[701]
+
+end file bytes
+> report files
+report file 200 0
+report file 201 0
+stderr:
+
+exit 0
+stdout:
+section report invalid skills box assertion before any output open
+> report block 200
+> report skills 200 9999
+stderr:
+assertion failure: olympia/use.c (1283): valid_box(num)
+
+exit 134
+stdout:
+section report invalid partial skills box assertion before missing character check
+> report block 200
+> report partial_skills 200 9999
+stderr:
+assertion failure: olympia/use.c (1371): valid_box(num)
+
+exit 134
+stdout:
+section report invalid skills cyclic known singleton asserts after heading
+> entity 701 5 0
+> field 701 required 701
+> learn 1000 701 2 0
+> report skills 200 1000
+stderr:
+assertion failure: olympia/use.c (1182): count++ < 1000
+
+exit 134
+stdout:
+section report invalid skills comparator visits cyclic school even with noexp
+> entity 701 5 0
+> entity 702 5 0
+> field 702 required 702
+> field 702 skill_no_exp 1
+> learn 1000 702 2 0
+> learn 1000 701 2 0
+> report skills 200 1000
+stderr:
+assertion failure: olympia/use.c (1182): count++ < 1000
+
+exit 134
+stdout:
+section report invalid partial skills malformed know assertion after first heading
+> entity 701 5 0
+> report skill 1000 701 3 9
+> report partial_skills 200 1000
+stderr:
+assertion failure: olympia/use.c (1358): p->know == SKILL_learning
+
+exit 134
+stdout:
+section report invalid partial skills negative know assertion
+> entity 701 5 0
+> report skill 1000 701 -1 9
+> report partial_skills 200 1000
+stderr:
+assertion failure: olympia/use.c (1358): p->know == SKILL_learning
+
+exit 134
+stdout:
+section report invalid qualifier known assertion precedes skill reads
+> report qualifier 9999 2 0
+stderr:
+assertion failure: olympia/use.c (1349): p->know != SKILL_know
+
+exit 134
+stdout:
+section report invalid qualifier malformed assertion precedes skill reads
+> report qualifier 9999 3 0
+stderr:
+assertion failure: olympia/use.c (1358): p->know == SKILL_learning
+
+exit 134
+stdout:
+section report invalid experience zero asserts
+> report experience 0
+stderr:
+assertion failure: olympia/use.c (990): FALSE
+
+exit 134
+stdout:
+section report invalid experience six asserts
+> report experience 6
+stderr:
+assertion failure: olympia/use.c (990): FALSE
+
+exit 134

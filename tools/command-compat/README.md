@@ -3,6 +3,90 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Known and partial skills (#149)
+
+Existing use.go implements complete pinned use.c `exp_s` **977–994**,
+`rep_skill_comp`/`flat_skill_comp` **1199–1238**, active `list_skill_sup`
+**1262–1271**, `list_skills` **1276–1335**, `fractional_skill_qualifier`
+**1345–1361** and `list_partial_skills` **1364–1406**. Existing lore.go adds
+complete `np_req_s`, lore.c **120–134**. The real closure reuses use.c
+`exp_level` **957–974** and `skill_school` **1174–1189**, original skill
+accessor macros/records, skill_ents copy/reclaim/safe_qsort, box_name and
+its existing code/display-name closure, sout/wiout and the accepted FILE
+cache. These complete unchanged C definitions were already extracted/linked;
+only direct oracle entry points/fixture setters/observers were added. No
+new upstream source dependency or pin, modeled C renderer or successful stub.
+
+Both lists sort COPIES only. Raw rows and actual save_box bytes before and
+after repeated calls retain stored order, including duplicate skills and
+mixed learning states. The original comparator puts nonknown entries FIRST
+despite its comment; it avoids school reads for mixed known/nonknown pairs.
+Known output skips those entries, groups by root school then ID, and indents
+by the immediate prerequisite's presence (not recursive depth). Skill **708**
+belongs to school **701** and prints before school **704**, distinguishing
+school grouping from a flat numeric sort. No-exp nonzero values suppress
+experience and short-circuit school lookup. A singleton cyclic no-exp skill
+succeeds, while a two-entry comparator still visits that cycle and asserts.
+The later character root remains its existing state projection until #151:
+these direct renderers do not also run a projection or wire later roots.
+
+Eighteen appended sections compare actual C twice and Go: eight status **0**
+and ten status **134**. Cases cover absent/allocated-empty/all-known lists,
+all **0/1/2** know states, unknown-only output, duplicate rows, nested
+prerequisites, root/magic/recordless schools, positive and negative no-exp,
+signed study days, exact blank lines and indentation/secondary-indent resets.
+Experience inputs **-32768/-1/0/4/5/11/12/20/21/34/35/32767** exercise every
+band/boundary and all five literal names. NP cases include absent records,
+zero/negative costs, **1/2/2147483647**, zero/negative/maximum learn times,
+and learning rows that must omit NP text. The renamed cached inode receives
+**87 raw bytes**, including actual MASTER-routed skill lines, with no reopen.
+
+Constants were checked against pinned oly.h/sout.h: character/skill **2/5**,
+magic subtype **43**, SKILL_dont/learning/know **0/1/2**, experience levels
+**1–5**, MASTER **-2**; **701–708** are synthetic valid entities and **9999**
+is deliberately absent. Malformed cases preserve source assertions at
+use.c **1283/1371** (invalid owner before output/open or missing-record
+checks), **1182** (school cycle), **1349/1358** (qualifier state before skill
+reads), and **990** (invalid experience level 0/6). The original assertion
+and buffering behavior is compared, not normalized into successful reports.
+
+At **0.89.0-alpha**, final unchanged-C refresh and default command check pass:
+**1035 sections / 69581 lines / 1324865 output bytes**. The inherited
+**1017 sections / 68918 lines / 1310660 output bytes** and **22223 lines /
+414715 input bytes** remain exact unchanged prefixes against HEAD. New input:
+**22446 lines / 420081 bytes**. Output SHA-256:
+`6a6f77b0297bda957882e962dbef9b69a083846768bb50af5787bb785a64cac8`.
+Input SHA-256:
+`2f4b2838af26d55dfaaf3b8d22b394a58de189cd9f38cbb5c98aad50ec048c11`.
+#168 live native traversal still matches C/C/Go with its shared input unchanged.
+Logs: `tmp/issue149-command{,-update}.log`.
+
+Four temporary linker controls wrapped only list_partial_skills at the new
+malformed-state section **1029**: marker plus return **0** or abort **134**,
+ordinary and update mode. All reject with harness status **2** at the missing
+dependency check, before expected-failure acceptance/recording replacement;
+the recording hash remains unchanged. Probe source/wrapper were removed and
+the final default command run rebuilt unchanged C. Logs:
+`tmp/issue149-negative-{0,134}-{default,update}.log`.
+
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded default tests pass, with explicit isolated
+`G3_REPO` throughout and engines under run_limited. Evidence:
+`tmp/issue149-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+No new production defect/prerequisite, later root/command, full-world,
+full-corpus, strict-lifecycle or stage-exit acceptance is claimed. Latest
+strict evidence remains the parent's post-#145 run: identical C repeats,
+C/Go 0, matching streams and paths/types/modes, eight saved-report byte
+differences, exit **1** before lifecycle. This task does not refresh it.
+G3 #358 remains nonblocking: original division/Go panic untouched;
+malformed C136/Go2 is NOT passing parity.
+
+Independent parent review verified all eight complete unchanged C definitions
+exactly once, inherited byte prefixes and both hashes above. Parent sequential
+compatibility checks, bounded vet and fresh bounded default tests pass
+(Olympia **1.558s**). Logs:
+`tmp/parent149-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+
 ## Admission permissions, attitudes and player entity reports (#148)
 
 Existing perm.go implements complete unchanged perm.c `admit_comp`,

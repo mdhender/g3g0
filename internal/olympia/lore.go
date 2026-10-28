@@ -10,6 +10,21 @@ import (
 	"github.com/mdhender/g3g0/internal/clib"
 )
 
+// npReqS is complete lore.c:120–134; absent skill records have no NP cost.
+func (w *world) npReqS(skill int) string {
+	np := int32(0)
+	if p := w.rpSkill(skill); p != nil {
+		np = p.npReq
+	}
+	if np < 1 {
+		return ""
+	}
+	if np == 1 {
+		return ", 1 NP req'd"
+	}
+	return sout(", %d NP req'd", np)
+}
+
 // setKnown is u.c set_known. Invalid entities are silently ignored by C.
 func (w *world) setKnown(who, i int) {
 	if !w.validBox(who) || !w.validBox(i) {

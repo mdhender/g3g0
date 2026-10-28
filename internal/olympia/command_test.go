@@ -1475,6 +1475,28 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "item_skills":
 				n, owner := args.num(t), args.num(t)
 				w.showItemSkills(n, owner)
+			case "skills":
+				n, owner := args.num(t), args.num(t)
+				w.listSkills(n, owner)
+			case "partial_skills":
+				n, owner := args.num(t), args.num(t)
+				w.listPartialSkills(n, owner)
+			case "experience":
+				fmt.Fprintf(&stdout, "experience [%s]\n", expS(args.num(t)))
+			case "qualifier":
+				n, know, days := args.num(t), args.num(t), args.num(t)
+				p := &skillEnt{skill: int32(n), know: int8(know), daysStudied: int32(days)}
+				fmt.Fprintf(&stdout, "qualifier [%s]\n", w.fractionalSkillQualifier(p))
+			case "skill_rows":
+				n := args.num(t)
+				p := w.rpChar(n)
+				fmt.Fprintf(&stdout, "skill record %d %d\n", n, b2i(p != nil))
+				if p != nil {
+					for _, s := range p.skills {
+						fmt.Fprintf(&stdout, "skill row %d %d %d %d\n", s.skill, s.know, s.daysStudied, s.experience)
+					}
+				}
+				w.saveBox(&stdout, n)
 			case "root":
 				n, where := args.num(t), args.num(t)
 				w.showLoc(n, where)
@@ -1956,6 +1978,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pSubloc(n).uldimFlag = int8(a)
 			case "skill_np":
 				w.pSkill(n).npReq = int32(a)
+			case "skill_time":
+				w.pSkill(n).timeToLearn = int32(a)
+			case "skill_no_exp":
+				w.pSkill(n).noExp = int32(a)
 			case "unique":
 				w.pItem(n).whoHas = int32(a)
 			case "token_num":

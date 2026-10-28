@@ -22221,3 +22221,226 @@ report state 200
 
 section report invalid permissions nonplayer assertion precedes player allocation
 report permissions 1000
+
+section report skills missing and allocated empty records preserve indentation and allocation
+entity 1100 2 0
+entity 1101 2 0
+field 1101 health 100
+sout frame 4 9 1 7
+report skill_rows 1100
+report skill_rows 1101
+report partial_skills 200 1100
+report partial_skills 200 1101
+report skills 200 1100
+report skills 200 1101
+sout state
+report skill_rows 1100
+report skill_rows 1101
+readlog 200
+
+section report skills school order nested prerequisite no experience flags and copied lists
+entity 701 5 0
+entity 702 5 0
+entity 703 5 0
+entity 704 5 43
+entity 705 5 0
+entity 706 5 0
+entity 707 5 0
+entity 708 5 0
+name 701 First school
+name 702 Practice
+name 703 Nested practice
+name 704 Magic school
+name 705 No experience
+name 706 Negative no experience
+name 707 Recordless school
+name 708 Late numbered first school child
+field 702 required 701
+field 703 required 702
+field 705 required 704
+field 706 required 704
+field 708 required 701
+field 705 skill_no_exp 1
+field 706 skill_no_exp -1
+learn 1000 708 2 5
+learn 1000 706 2 35
+learn 1000 704 2 35
+learn 1000 702 2 12
+learn 1000 705 2 34
+learn 1000 703 2 21
+learn 1000 701 2 -1
+learn 1000 707 2 35
+learn 1000 702 0 11
+learn 1000 704 1 4
+report skill_rows 1000
+sout frame 2 7 0 0
+report skills 200 1000
+report partial_skills 200 1000
+sout state
+report skill_rows 1000
+report skills 200 1000
+report partial_skills 200 1000
+report skill_rows 1000
+readlog 200
+
+section report skills every experience band exact signed short boundaries and all known partial silence
+entity 701 5 0
+entity 702 5 0
+name 701 Skill school
+name 702 Practice
+field 702 required 701
+learn 1000 702 2 -32768
+learn 1000 702 2 -1
+learn 1000 702 2 0
+learn 1000 702 2 4
+learn 1000 702 2 5
+learn 1000 702 2 11
+learn 1000 702 2 12
+learn 1000 702 2 20
+learn 1000 702 2 21
+learn 1000 702 2 34
+learn 1000 702 2 35
+learn 1000 702 2 32767
+report skill_rows 1000
+report skills 200 1000
+report partial_skills 200 1000
+report skill_rows 1000
+report experience 1
+report experience 2
+report experience 3
+report experience 4
+report experience 5
+readlog 200
+
+section report skills partial sorting dont learning NP omission and signed study days
+entity 701 5 0
+entity 702 5 0
+entity 703 5 0
+entity 704 5 0
+entity 705 5 0
+entity 706 5 0
+name 701 Missing skill record
+name 702 Zero NP
+name 703 Negative NP
+name 704 One NP
+name 705 Many NP
+name 706 Learning omits NP
+field 702 skill_time 7
+field 703 skill_time -7
+field 703 skill_np -1
+field 704 skill_time 14
+field 704 skill_np 1
+field 705 skill_time 2147483647
+field 705 skill_np 2147483647
+field 706 skill_time 28
+field 706 skill_np 2
+report skill 1000 706 1 -2147483648
+report skill 1000 705 0 99
+report skill 1000 704 0 -99
+report skill 1000 703 0 100
+report skill 1000 702 0 1
+report skill 1000 701 0 0
+report skill 1000 706 1 2147483647
+report skill 1000 704 1 0
+report skill 1000 706 1 28
+report skill 1000 706 0 0
+report skill_rows 1000
+report skills 200 1000
+report partial_skills 200 1000
+report skill_rows 1000
+report partial_skills 200 1000
+report skill_rows 1000
+readlog 200
+
+section report skills nonknown comparator shortcut avoids cyclic unknown school
+entity 701 5 0
+entity 702 5 0
+name 701 Known school
+name 702 Cyclic unknown
+field 702 required 702
+learn 1000 701 2 0
+report skill 1000 702 0 3
+report skills 200 1000
+report partial_skills 200 1000
+report skill_rows 1000
+readlog 200
+
+section report skills noexp short circuit avoids cyclic singleton school
+entity 701 5 0
+name 701 Cyclic noexp
+field 701 required 701
+field 701 skill_no_exp 1
+learn 1000 701 2 35
+report skills 200 1000
+report skill_rows 1000
+readlog 200
+
+section report skills malformed know ignored by known renderer only
+entity 701 5 0
+learn 1000 701 3 1
+report skills 200 1000
+report skill_rows 1000
+readlog 200
+
+section report skills share cached renamed inode and MASTER output frame
+lore_root
+entity 701 5 0
+name 701 School
+learn 1000 701 2 0
+sout text 200 out 0 1 prefix
+life rename log/200 log/original
+sout route -2 1000
+sout frame 3 8 1 9
+report skills 200 1000
+report partial_skills 200 1000
+sout state
+report skill_rows 1000
+report state 200
+life flush
+readfile log/original
+report files
+
+section report invalid skills box assertion before any output open
+report block 200
+report skills 200 9999
+
+section report invalid partial skills box assertion before missing character check
+report block 200
+report partial_skills 200 9999
+
+section report invalid skills cyclic known singleton asserts after heading
+entity 701 5 0
+field 701 required 701
+learn 1000 701 2 0
+report skills 200 1000
+
+section report invalid skills comparator visits cyclic school even with noexp
+entity 701 5 0
+entity 702 5 0
+field 702 required 702
+field 702 skill_no_exp 1
+learn 1000 702 2 0
+learn 1000 701 2 0
+report skills 200 1000
+
+section report invalid partial skills malformed know assertion after first heading
+entity 701 5 0
+report skill 1000 701 3 9
+report partial_skills 200 1000
+
+section report invalid partial skills negative know assertion
+entity 701 5 0
+report skill 1000 701 -1 9
+report partial_skills 200 1000
+
+section report invalid qualifier known assertion precedes skill reads
+report qualifier 9999 2 0
+
+section report invalid qualifier malformed assertion precedes skill reads
+report qualifier 9999 3 0
+
+section report invalid experience zero asserts
+report experience 0
+
+section report invalid experience six asserts
+report experience 6
