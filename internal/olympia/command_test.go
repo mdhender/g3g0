@@ -1078,7 +1078,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		case "life":
 			switch action := args.word(); action {
 			case "open":
-				w.openLogfile(args.num(t) != 0)
+				w.winFlag = args.num(t) != 0
+				w.openLogfile(w.winFlag)
 			case "nondestruct":
 				w.openLogfileNondestruct()
 			case "close":
@@ -1086,7 +1087,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "flush":
 				clib.FlushAll()
 			case "save":
-				w.saveLogdir(args.num(t) != 0)
+				w.winFlag = args.num(t) != 0
+				w.saveLogdir(w.winFlag)
 			case "times_open":
 				w.openTimes()
 			case "times_close":
@@ -1678,7 +1680,15 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				n := args.num(t)
 				w.commandOut(n, "%s", w.charRepLocation(n))
 			case "banner":
-				w.playerBannerState()
+				w.playerBanner()
+			case "banner_win":
+				w.winFlag = args.num(t) != 0
+			case "banner_title":
+				w.gameTitle = args.ctext()
+			case "rules_url":
+				w.rulesURL = args.ctext()
+			case "times_url":
+				w.timesURL = args.ctext()
 			case "provinces":
 				w.summaryProvincesState()
 			case "templates":
@@ -1689,7 +1699,9 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "saved":
 				w.readBoxes(args.word())
 			case "account":
-				w.reportAccountState()
+				w.reportAccount()
+			case "account_sup":
+				w.reportAccountSup(args.num(t))
 			case "summary":
 				w.summaryReportState()
 			case "factions":

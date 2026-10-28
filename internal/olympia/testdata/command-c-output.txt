@@ -72516,3 +72516,758 @@ stderr:
 assertion failure: olympia/order.c (464): kind(pl) == T_player
 
 exit 134
+stdout:
+section report banner all subtypes missing records compuserve and exact routing
+> entity 202 1 48
+> entity 203 1 62
+> entity 204 1 51
+> entity 205 1 52
+> entity 206 1 0
+> entity 207 1 49
+> name 200 Regular <&> faction
+> name 202 System faction
+> name 203 Silent faction
+> name 204 Savage faction
+> name 205 NPC faction
+> name 206 Plain faction
+> name 207 Missing regular
+> post mail 200 cis
+> post empty_player 201
+> report banner_title A <raw> game & title
+> set turn 0
+> sout route -1 77
+> sout frame 2 9 1 17
+> report style 1
+> report banner
+> sout state
+route 0 0 frame 2 9 1 17
+vector:
+saved vector:
+> report style_probe 200
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+201 player pl_regular
+PL
+
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_system
+na System faction
+PL
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_silent
+na Silent faction
+
+> report state 204
+report entity 204 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+204 player pl_savage
+na Savage faction
+PL
+
+> report state 205
+report entity 205 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+205 player pl_npc
+na NPC faction
+PL
+
+> report state 206
+report entity 206 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+206 player 0
+na Plain faction
+PL
+
+> report state 207
+report entity 207 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+207 player pl_regular
+na Missing regular
+PL
+
+> output 200 0
+output 1
+> output 202 0
+output 1
+> report files
+report file 200 1
+report file 201 1
+report file 202 1
+report file 203 0
+report file 204 1
+report file 205 1
+report file 206 1
+report file 207 1
+> readlog 200
+log 200:
+0:2::2/9:17:<pre>
+0:1::5/9:17:Note:  Olympia Times mailing is turned off for you.To begin receiving the Times via email again, issue the order TIMES 0
+0:1::2/9:17:
+0:2::2/9:17:<center>
+0:2::2/9:17:<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::2/9:17:<h1>
+0:1::2/9:17:A <raw> game & title turn 0
+0:1::2/9:17:Report for Regular <&> faction~[200].
+0:2::2/9:17:</h1>
+0:1::2/9:17:{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::2/9:17:</center>
+0:1::2/9:17:
+0:1::2/9:17:style probe
+> readlog 201
+log 201:
+0:2::2/9:17:<pre>
+0:2::2/9:17:<center>
+0:2::2/9:17:<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::2/9:17:<h1>
+0:1::2/9:17:A <raw> game & title turn 0
+0:1::2/9:17:Report for Player~[201].
+0:2::2/9:17:</h1>
+0:1::2/9:17:{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::2/9:17:</center>
+0:1::2/9:17:
+> readlog 202
+log 202:
+0:2::2/9:17:<pre>
+0:2::2/9:17:<center>
+0:2::2/9:17:<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::2/9:17:<h1>
+0:1::2/9:17:A <raw> game & title turn 0
+0:1::2/9:17:Report for System faction~[202].
+0:2::2/9:17:</h1>
+0:1::2/9:17:{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::2/9:17:</center>
+0:1::2/9:17:
+> readlog 203
+log 203:
+> readlog 204
+log 204:
+0:2::2/9:17:<pre>
+0:2::2/9:17:<center>
+0:2::2/9:17:<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::2/9:17:<h1>
+0:1::2/9:17:A <raw> game & title turn 0
+0:1::2/9:17:Report for Savage faction~[204].
+0:2::2/9:17:</h1>
+0:1::2/9:17:{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::2/9:17:</center>
+0:1::2/9:17:
+> readlog 205
+log 205:
+0:2::2/9:17:<pre>
+0:2::2/9:17:<center>
+0:2::2/9:17:<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::2/9:17:<h1>
+0:1::2/9:17:A <raw> game & title turn 0
+0:1::2/9:17:Report for NPC faction~[205].
+0:2::2/9:17:</h1>
+0:1::2/9:17:{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::2/9:17:</center>
+0:1::2/9:17:
+> readlog 206
+log 206:
+0:2::2/9:17:<pre>
+0:2::2/9:17:<center>
+0:2::2/9:17:<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::2/9:17:<h1>
+0:1::2/9:17:A <raw> game & title turn 0
+0:1::2/9:17:Report for Plain faction~[206].
+0:2::2/9:17:</h1>
+0:1::2/9:17:{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::2/9:17:</center>
+0:1::2/9:17:
+> readlog 207
+log 207:
+0:2::2/9:17:<pre>
+0:2::2/9:17:<center>
+0:2::2/9:17:<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::2/9:17:<h1>
+0:1::2/9:17:A <raw> game & title turn 0
+0:1::2/9:17:Report for Missing regular~[207].
+0:2::2/9:17:</h1>
+0:1::2/9:17:{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::2/9:17:</center>
+0:1::2/9:17:
+stderr:
+player_banner()
+
+exit 0
+stdout:
+section report banner all months year boundaries and win image path
+> report banner_win 1
+> set turn 1
+> report banner
+> set turn 2
+> report banner
+> set turn 3
+> report banner
+> set turn 4
+> report banner
+> set turn 5
+> report banner
+> set turn 6
+> report banner
+> set turn 7
+> report banner
+> set turn 8
+> report banner
+> set turn 9
+> report banner
+> set turn 16
+> report banner
+> set turn 17
+> report banner
+> set turn 32767
+> report banner
+> set turn -32768
+> report banner
+> readlog 200
+log 200:
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 1
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 2
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Snowmelt", month 2, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 3
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Blossom bloom", month 3, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 4
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Sunsear", month 4, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 5
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Thunder and rain", month 5, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 6
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Harvest", month 6, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 7
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Waning days", month 7, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 8
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Dark night", month 8, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 9
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Fierce winds", month 1, in the year 2.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 16
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Dark night", month 8, in the year 2.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 17
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Fierce winds", month 1, in the year 3.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 32767
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Waning days", month 7, in the year 4096.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn -32768
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Fierce winds", month 1, in the year -4095.{</i>}
+0:2::0::</center>
+0:0::0::
+stderr:
+player_banner()
+player_banner()
+player_banner()
+player_banner()
+player_banner()
+player_banner()
+player_banner()
+player_banner()
+player_banner()
+player_banner()
+player_banner()
+player_banner()
+player_banner()
+
+exit 0
+stdout:
+section report account regular only missing records raw URLs and style reset
+> entity 202 1 48
+> entity 203 1 62
+> entity 204 1 51
+> entity 205 1 52
+> entity 206 1 0
+> entity 207 1 49
+> post empty_player 201
+> report rules_url https://rules.test/a?x=1&y="raw value"
+> report times_url ../times/<latest>?q=&quoted="yes"
+> sout route -1 77
+> sout frame 4 11 1 19
+> report style 2
+> report account
+> sout state
+route 0 0 frame 4 11 1 19
+vector:
+saved vector:
+> report style_probe 200
+> report style -1
+> report style_probe 200
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+201 player pl_regular
+PL
+
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_system
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_silent
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_savage
+
+> report state 205
+report entity 205 order 0 player 0 attitudes 0 char 0 magic 0
+205 player pl_npc
+
+> report state 206
+report entity 206 order 0 player 0 attitudes 0 char 0 magic 0
+206 player 0
+
+> report state 207
+report entity 207 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+207 player pl_regular
+PL
+
+> report files
+report file 200 1
+report file 201 1
+report file 202 0
+report file 203 0
+report file 204 0
+report file 205 0
+report file 206 0
+report file 207 1
+> output 200 0
+output 1
+> readlog 200
+log 200:
+0:2::4/11:19:<hr><center><font size=+1>
+0:2::4/11:19:<a href="https://rules.test/a?x=1&y="raw value"">Rules</a>   <a href="../times/<latest>?q=&quoted="yes""><i>The Olympia Times</i></a>
+0:2::4/11:19:</font></center>
+0:0::4/11:19:
+0:0::4/11:19:style probe
+0:0::4/11:19:style probe
+> readlog 201
+log 201:
+0:2::4/11:19:<hr><center><font size=+1>
+0:2::4/11:19:<a href="https://rules.test/a?x=1&y="raw value"">Rules</a>   <a href="../times/<latest>?q=&quoted="yes""><i>The Olympia Times</i></a>
+0:2::4/11:19:</font></center>
+0:0::4/11:19:
+> readlog 202
+log 202:
+> readlog 203
+log 203:
+> readlog 204
+log 204:
+> readlog 205
+log 205:
+> readlog 206
+log 206:
+> readlog 207
+log 207:
+0:2::4/11:19:<hr><center><font size=+1>
+0:2::4/11:19:<a href="https://rules.test/a?x=1&y="raw value"">Rules</a>   <a href="../times/<latest>?q=&quoted="yes""><i>The Olympia Times</i></a>
+0:2::4/11:19:</font></center>
+0:0::4/11:19:
+stderr:
+report_account()
+
+exit 0
+stdout:
+section report account no regular players leaves original style but resets routing
+> field 200 subkind 48
+> field 201 subkind 62
+> report style 2
+> sout route -1 77
+> report account
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_system
+PL
+
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+201 player pl_silent
+PL
+
+> report files
+report file 200 0
+report file 201 0
+> report style_probe 200
+> readlog 200
+log 200:
+0:2::0::style probe
+stderr:
+report_account()
+
+exit 0
+stdout:
+section report banner and account immediate allocation contrast
+> post empty_player 200
+> post empty_player 201
+> entity 202 1 62
+> entity 203 1 48
+> set immediate 1
+> report style 2
+> report account
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+> report state 200
+report entity 200 order 0 player 0 attitudes 0 char 0 magic 0
+200 player pl_regular
+
+> report state 201
+report entity 201 order 0 player 0 attitudes 0 char 0 magic 0
+201 player pl_regular
+
+> report banner
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 0
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 0
+0:0::0::Report for Player~[201].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 0
+0:0::0::Report for Player~[203].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+201 player pl_regular
+PL
+
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_silent
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_system
+PL
+
+> report files
+report file 200 0
+report file 201 0
+report file 202 0
+report file 203 0
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+report_account()
+player_banner()
+
+exit 0
+stdout:
+section report banner buffered renamed inode and account shared cache then close reset
+> lore_root
+> set flush 0
+> report banner
+> life rename log/200 log/original
+> report account
+> life path log/200
+path log/200 missing
+> life path log/original
+path log/original empty
+> life flush
+> readfile log/original
+file bytes log/original 486:
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 0
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+
+end file bytes
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> life close
+> report account
+> life flush
+> readfile log/200
+file bytes log/200 203:
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+
+end file bytes
+> readfile log/201
+file bytes log/201 689:
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 0
+0:0::0::Report for Player~[201].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Fierce winds", month 1, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+
+end file bytes
+stderr:
+player_banner()
+report_account()
+report_account()
+
+exit 0
+stdout:
+section report account direct helper no subtype filter or route reset
+> entity 202 1 62
+> sout route -2 44
+> sout frame 3 7 0 0
+> report style 1
+> report account_sup 202
+> sout state
+route -2 44 frame 3 7 0 0
+vector:
+saved vector:
+> report style_probe 202
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_silent
+PL
+
+> readlog 202
+log 202:
+44:2::3/7::<hr><center><font size=+1>
+44:2::3/7::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+44:2::3/7::</font></center>
+44:0::3/7::
+0:0::3/7::style probe
+stderr:
+
+exit 0
+stdout:
+section report account empty URL values remain empty
+> report rules_url
+> report times_url
+> report account
+> readlog 200
+log 200:
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="">Rules</a>   <a href=""><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+stderr:
+report_account()
+
+exit 0
+stdout:
+section report invalid banner first HTML open fails before missing player allocation
+> lore_root
+> post empty_player 200
+> report block 200
+> report banner
+stderr:
+player_banner()
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section report invalid account first HTML open fails before missing player allocation
+> lore_root
+> post empty_player 200
+> report block 200
+> report account
+stderr:
+report_account()
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section report account direct helper MASTER nonplayer allocation uses output owner
+> lore_root
+> sout route -2 0
+> report state 1001
+report entity 1001 order 0 player 0 attitudes 0 char 1 magic 0
+1001 char 0
+CH
+ lo 200
+
+> report account_sup 1001
+> report state 1001
+report entity 1001 order 0 player 1 attitudes 0 char 1 magic 0
+raw units:
+1001 char 0
+CH
+ lo 200
+PL
+
+> life flush
+> readfile log/1001
+file bytes log/1001 203:
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+
+end file bytes
+stderr:
+
+exit 0

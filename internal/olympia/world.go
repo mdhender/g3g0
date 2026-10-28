@@ -38,6 +38,7 @@ type world struct {
 	garrisonPay    int32
 	armySlowFactor int32
 	autoQuitTurns  int32
+	winFlag        bool // main.c -w; inline banner image path
 
 	sysclock       olytime
 	indepPlayer    int32 // independent player

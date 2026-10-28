@@ -252,6 +252,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	w.libdir = o.libdir
 	w.prettyDataFiles = o.prettyDataFiles
 	w.flushAlways = o.flushAlways
+	w.winFlag = o.winFlag
 	w.timeSelf = o.timeSelf
 	w.tradeRouteSeedPending = o.tradeRouteSeedPending
 	w.tradeRouteSeedValue = o.tradeRouteSeedValue
@@ -306,11 +307,11 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 		w.listOrderTemplates()
 		w.playerEntInfo()
 		w.characterReport()
-		w.playerBannerState()
+		w.playerBanner()
 		if o.acctFlag {
 			panic(notImplemented("charge_account"))
 		}
-		w.reportAccountState()
+		w.reportAccount()
 		w.summaryReportState()
 		w.playerReportState()
 		w.scanCharSkillLore()

@@ -3,6 +3,111 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Complete player banner and account footer (#153)
+
+Existing report.go implements complete unchanged report.c `player_banner`
+**1645–1722**, `report_account_sup` **1725–1791** and `report_account`
+**1794–1815**. Main and the existing command oracle replace the two state
+projections with those renderers, once in the original order. No second
+effect pass remains. The existing player/calendar/name, html/style and
+sout.go cached FILE/output owners supply the entire closure. The -w option
+is retained in world state for the banner's image path; oracle life open/save
+updates that same flag as its existing C adapter does. No new source
+dependency, pin, later report root or handler is added.
+
+The existing fixture adapter adds direct `account_sup`, banner win/title and
+rules/Times URL setters only. Complete original C definitions were already
+extracted; extraction and the dependency-marker guard are unchanged. No
+successful rendering substitutes or modeled C expectations are introduced.
+The account command, `/tmp/oly-acct.tmp` read/unlink and account-summary text
+are all **#if 0** at the pin: no account input read is active. External
+`charge_account` **1818–1856** / -A remains explicitly unsupported.
+
+Eleven appended sections (nine status **0**, two **134**) compare full raw
+logs/streams/status, saved records and routing/style/cache observations:
+
+- Banner emits for regular **49**, system **48**, savage **51**, NPC **52**
+  and plain subtype **0**; silent **62** has neither output nor allocation.
+  Missing nonsilent PL records allocate, including system players. The
+  compuserve warning retains its original missing space at `you.To`, plus
+  indent **+3** and the following blank line. Names/title are not escaped.
+- Turns **0**, every month **1–8**, **9/16/17**, signed-short endpoints
+  **32767/-32768**, all eight real season names and year rollover are
+  observed. Turn zero clamps the month to **0**, yielding year **1**;
+  negative remainder clamps too, without changing the negative year.
+  The **report.c:1706** month assertion is retained; remainder plus clamp
+  makes it unreachable for these valid stored turn values. Both literal
+  `../head.gif` and -w `head.gif` image tags match, including attributes.
+- Footer root emits/allocates only regular players, not NPC/system/silent
+  or plain players. Quotes, angle brackets, ampersands, spaces and empty
+  URLs are emitted raw; the three spaces between links are preserved.
+  HTML lines carry STYLE_HTML **2**, while the trailing blank and later
+  style probes use **0** even after STYLE_PREV. With no regular players,
+  the loop never resets style; the existing HTML style **2** survives.
+- MASTER **-2** / OUT_BANNER **0**, prior nondefault route, indent/second
+  indent/day and style are observed exactly. Both roots reset routing to
+  **0/0**, not the previous route. Direct account_sup preserves its caller's
+  route **-2/44**, performs no subtype filtering, and can allocate PL even
+  on a character recipient through the existing output owner.
+- Immediate footer output does not allocate missing PL; banner still does
+  at its explicit p_player after initial HTML. No log file opens in either
+  immediate path. First HTML on a blocked ordinary output fails at original
+  **sout.c:158** before the explicit banner allocation or later footer
+  output. Source retains grab_fp/open-before-p_player ordering; failure
+  controls compare the actual diagnostic/assertion, not post-abort state.
+- Buffered banner then footer share the renamed cached inode: `log/200`
+  stays absent and the original file receives **486** raw bytes, while
+  close/reset permits a new **203-byte** footer log. The other faction's
+  retained log contains **689** bytes. Observers flush explicitly; neither
+  renderer closes, flushes, resets or duplicates the accepted cache.
+
+Numeric fixtures were verified against pinned oly.h/sout.h: player/character
+**1/2**, subtypes above, NUM_MONTHS **8**, STYLE_TEXT/HTML/PREV **1/2/-1**,
+MASTER/OUT_BANNER **-2/0**, and signed-short stored turn arithmetic. Actual
+recording branches and bytes were inspected, not inferred from case names.
+
+At **0.93.0-alpha**, unchanged real C runs twice deterministically and Go
+matches **1083 sections / 73273 lines / 1406675 output bytes**. Entire
+inherited **1072 sections / 72518 lines / 1388090 output bytes** and **23243
+input lines / 437538 input bytes** remain exact byte prefixes against HEAD.
+New input totals **23438 lines / 441216 bytes**. Output SHA-256:
+`6b2a5504ef21fc7dd2eb956e2a98eb9dd4725859ef7c68b4e9471f08ea93a14a`.
+Input SHA-256:
+`63e67a732891bdb21774efc3894488e0e5f5a3d42aeeb492eb6c848df373d935`.
+#168 live native traversal still matches raw C/C/Go with shared input
+unchanged. Logs: `tmp/issue153-command{,-update}.log`.
+
+Four temporary linker probes wrap report_account only when player **200**
+has no PL and its log path is a directory, at new expected-failure section
+**1081**. Marker plus return **0** or abort **134**, normal and update modes,
+all reject with harness status **2** at the dependency guard BEFORE expected
+failure/status acceptance or recording replacement. Each negative log records
+the identical before/after output hash above. Probe source/compiler wrapper
+are removed before the final ordinary comparison. Logs:
+`tmp/issue153-negative-{0,134}-{default,update}.log`.
+
+Sequential command refresh/default, move/helper/RNG/code/loadsave/turn-driver/
+default-turn, bounded vet and fresh bounded defaults pass with explicit
+isolated G3_REPO for every tool and run_limited for engine/test executables.
+Counts: move **135/7158**, helper **37/1487**, RNG **321**, code **43/969**,
+loadsave **61/3411**, turn-driver **7/152**, phase **5/484**, calendar **2/119**,
+schedule **4/1801** (the latter scheduling checks are not gameplay acceptance).
+Default turn compares status/raw streams and **2 cwd entries**, not a world
+turn. Logs: `tmp/issue153-{move,helper,rng,code,loadsave,turn-driver,turn,vet,test}.log`.
+Matching captures and temporary probes are removed; literal C whitespace is
+retained. No new defect/prerequisite or oversized closure was found.
+
+Independent parent review confirms all three complete C definitions unchanged
+and present exactly once. The eight-tool tier, bounded vet and fresh tests
+pass (Olympia **1.846s**); logs `tmp/parent153-*.log`. No later report root,
+full-corpus or stage-exit acceptance. Fresh parent post-#153 strict result
+remains a red gate: identical C repeats, C/Go **0**,
+equal raw streams and paths/types/modes, eight saved-report byte differences,
+exit **1** before lifecycle; log `tmp/parent153-strict.log`, captures
+`tmp/parent-stage2-turn`. G3 #358
+stays nonblocking and unchanged: original division/Go panic, malformed
+**C136/Go2**, is NOT passing parity.
+
 ## Complete order templates (#152)
 
 Existing order.go adds complete unchanged order.c `orders_template_sup`

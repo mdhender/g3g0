@@ -498,15 +498,45 @@ func (w *world) turnEndLocReports() {
 	w.showLocNoHeader = false
 }
 
-// playerBannerState is report.c:1645–1722's allocation projection. It occurs
-// after character_report, before summary_provinces allocates silent records.
-func (w *world) playerBannerState() {
+// playerBanner is complete report.c:1645–1722. The initial HTML output
+// precedes p_player, preserving the cached output owner's allocation timing.
+func (w *world) playerBanner() {
 	w.stage("player_banner()")
+	w.outPath = master
+	w.outAltWho = 0 // sout.h OUT_BANNER
 	for pl := range w.loopKind(tPlayer) {
-		if w.subkind(pl) != subPlSilent {
-			w.pPlayer(pl)
+		if w.subkind(pl) == subPlSilent {
+			continue
 		}
+		w.html(pl, "<pre>")
+		p := w.pPlayer(pl)
+		if p.compuserve != 0 {
+			w.indent += 3
+			w.commandOut(pl, "Note:  Olympia Times mailing is turned off for you.To begin receiving the Times via email again, issue the order TIMES 0")
+			w.indent -= 3
+			w.commandOut(pl, "")
+		}
+		w.html(pl, "<center>")
+		if w.winFlag {
+			w.html(pl, "<img src=\"head.gif\" align=middle width=100 height=100 alt=\"\">")
+		} else {
+			w.html(pl, "<img src=\"../head.gif\" align=middle width=100 height=100 alt=\"\">")
+		}
+		w.html(pl, "<h1>")
+		w.commandOut(pl, "%s turn %d", w.gameTitle, w.sysclock.turn)
+		w.commandOut(pl, "Report for %s.", w.boxName(pl))
+		w.html(pl, "</h1>")
+		month, year := olyMonth(w.sysclock), olyYear(w.sysclock)
+		if month < 0 {
+			month = 0
+		}
+		assert(month >= 0 && month < numMonths, "olympia/report.c", 1706, "month >= 0 && month < NUM_MONTHS")
+		w.commandOut(pl, "{<i>}Season \"%s\", month %d, in the year %d.{</i>}", monthNames[month], month+1, year+1)
+		w.html(pl, "</center>")
+		w.commandOut(pl, "")
 	}
+	w.outPath = 0
+	w.outAltWho = 0
 }
 
 // summaryProvincesState is the persistent projection of summary.c:348–389.
@@ -530,21 +560,28 @@ func (w *world) reportOutputState(pl int) {
 	w.pPlayer(pl)
 }
 
-// reportAccountState is report.c:1725–1823. The account command/file-read
-// block is #if 0: no active account input or charge_account is implemented.
-// style(0), then the three html()/STYLE_PREV pairs, leave the style at zero.
-func (w *world) reportAccountState() {
+// reportAccountSup is complete active report.c:1725–1791. The external
+// account command and file read are #if 0; only the footer is active.
+func (w *world) reportAccountSup(pl int) {
+	w.style(0)
+	w.html(pl, "<hr><center><font size=+1>")
+	w.html(pl, "<a href=\"%s\">Rules</a>   <a href=\"%s\"><i>The Olympia Times</i></a>", w.rulesURL, w.timesURL)
+	w.html(pl, "</font></center>")
+	w.commandOut(pl, "")
+}
+
+// reportAccount is complete report.c:1793–1815, not external -A charging.
+func (w *world) reportAccount() {
 	w.stage("report_account()")
+	w.outPath = master
+	w.outAltWho = 0 // sout.h OUT_BANNER
 	for pl := range w.loopKind(tPlayer) {
 		if w.subkind(pl) == subPlRegular {
-			w.style(0)
-			for range 3 {
-				w.style(styleHTML)
-				w.style(stylePrev)
-			}
-			w.reportOutputState(pl)
+			w.reportAccountSup(pl)
 		}
 	}
+	w.outPath = 0
+	w.outAltWho = 0
 }
 
 // summaryReportState projects summary.c:140–389,438–502. Totals, rankings,

@@ -1208,6 +1208,14 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"locations")) turn_end_loc_reports();
    else if(!strcmp(text,"location")) out(n,"%s",char_rep_location(n));
    else if(!strcmp(text,"banner")) player_banner();
+   else if(!strcmp(text,"banner_win")) win_flag=n;
+   else if(!strcmp(text,"banner_title") || !strcmp(text,"rules_url") || !strcmp(text,"times_url")) {
+    char value[8192]="";
+    sscanf(line,"%*s %*s %8191[^\n]",value);
+    if(!strcmp(text,"banner_title")) game_title=str_save(value);
+    else if(!strcmp(text,"rules_url")) rules_url=str_save(value);
+    else times_url=str_save(value);
+   }
    else if(!strcmp(text,"provinces")) drv_summary_provinces();
    else if(!strcmp(text,"templates")) list_order_templates();
    else if(!strcmp(text,"template")) {
@@ -1219,6 +1227,7 @@ int main(int argc, char **argv)
     drv_read_boxes(text);
    }
    else if(!strcmp(text,"account")) report_account();
+   else if(!strcmp(text,"account_sup")) report_account_sup(n);
    else if(!strcmp(text,"summary")) summary_report();
    else if(!strcmp(text,"factions")) player_report();
    else if(!strcmp(text,"gm")) gm_report(n);

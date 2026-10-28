@@ -6,6 +6,42 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Complete player banner and account footer (#153)
+
+Existing report.go implements complete pinned report.c player_banner
+**1645–1722**, report_account_sup **1725–1791** and report_account
+**1794–1815**. Main/oracle replace both state projections with the complete
+renderers once; existing calendar/names, html/style and cached FILE/output
+owners are reused. World state retains -w for the literal banner image path.
+Account-summary input/command/read/unlink is **#if 0** at the pin; external
+charge_account **1818–1856** / -A stays explicitly unsupported. No new source
+dependency/pin, later report root, handler or duplicate output layer.
+
+At **0.93.0-alpha**, eleven appended sections match unchanged real C twice
+and Go: **1083 sections / 73273 lines / 1406675 output bytes**. All inherited
+**1072 sections / 72518 lines / 1388090 output bytes** and **437538 input
+bytes** remain exact prefixes. Actual raw logs and records cover subtype
+filters, missing PL, compuserve's literal `you.To` warning, turns **0/1–9/
+16/17/32767/-32768**, every season/year boundary, both win image paths,
+raw/empty URLs, exact inline HTML/style/PREV/reset bytes, MASTER/frame resets,
+immediate allocations, shared renamed inode and original open-failure asserts.
+Numeric constants and actually reached branches were verified. Four temporary
+marker probes (0/134, ordinary/update) reject at new expected-failure section
+**1081** before status acceptance/update, with unchanged recording hashes;
+probes removed before the final normal check. See
+[complete closure, hashes and evidence](command-compat#complete-player-banner-and-account-footer-153).
+
+Sequential command refresh/default, move/helper/RNG/code/loadsave/turn-driver/
+default-turn, bounded vet and fresh bounded default tests pass with explicit
+isolated G3_REPO and run_limited supervision. Logs: `tmp/issue153-*.log`.
+Independent parent review and the same tool/vet/fresh-test tier pass;
+logs `tmp/parent153-*.log`. No new defect/prerequisite or oversized closure,
+or stage-exit acceptance. Fresh post-#153 strict evidence: C repeats
+identical, C/Go **0**, equal streams/paths/types/modes, eight report-byte
+differences, exit **1** before lifecycle; log `tmp/parent153-strict.log`.
+G3 #358 stays nonblocking and unchanged;
+original division/Go panic with malformed **C136/Go2** is NOT passing parity.
+
 ## Complete order templates (#152)
 
 Existing order.go implements complete pinned order.c orders_template_sup
