@@ -6,6 +6,28 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Visible characters and owner stacks (#142)
+
+Existing display.go implements complete stage-pin display.c highlight_units
+547–558, show_chars_below_highlight 579–593, show_owner_stack 596–626 and
+show_chars_here 629–682, leaving show_chars_below 561–576 and character
+descriptions unchanged. Fifteen appended command-oracle sections execute the
+complete unchanged C closure and compare hidden-first-owner versus later
+hidden owners, nested preorder/prisoners/noncharacter pruning, own-unit
+highlight spaces, province fog short-circuit and controls, ocean flying
+suffix, original assertions, indentation, saved state and raw cached log bytes.
+No new root, gameplay command, source dependency, pin or output owner.
+At **0.82.0-alpha**, real C/C/Go matches **940 sections / 64201 lines /
+1206911 bytes**; all inherited **925 sections / 63547 lines / 1195280 output
+bytes** and **373845 input bytes** are exact unchanged prefixes. #168's live
+raw native traversal check still passes. See [closure and bounded evidence](command-compat#visible-characters-and-owner-stacks-142).
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded default tests pass in independent parent
+acceptance after correcting the ocean fixture. This is not full-world or
+stage-exit acceptance. G3 #358's existing division
+and Go panic are unchanged; the nonblocking malformed C136/Go2 failure
+mismatch is not counted as passing parity.
+
 ## City market rendering (#141)
 
 Existing buy.go implements complete stage-pin buy.c list_market_items

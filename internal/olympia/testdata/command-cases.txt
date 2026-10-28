@@ -20303,3 +20303,250 @@ readfile held-market
 life path log/200
 economy raw 9000
 save 200
+
+section visible characters first hidden owner retained later hidden owner skipped
+entity 9000 3 32
+entity 9100 3 32
+entity 1002 2 0
+field 1002 lord 201
+name 1000 First hidden owner
+name 1001 Later hidden owner
+name 1002 Visible stranger
+link 9000 9100
+link 9000 1000
+link 9000 1001
+link 9000 1002
+field 1000 hidden 1
+field 1001 hidden 1
+predicate really_hidden 1000
+predicate really_hidden 1001
+sout frame 4 9 0 0
+save 1000
+save 1001
+save 1002
+report owner_stack 200 9000
+sout state
+report owner_stack 201 9000
+sout state
+report chars_here 200 9000
+sout state
+save 1000
+save 1001
+save 1002
+save 9000
+readlog 200
+readlog 201
+
+section visible characters nested preorder constant depth prisoners and noncharacter pruning
+entity 9000 3 3
+entity 9100 3 32
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+field 1002 lord 201
+field 1003 lord 200
+field 1004 lord 201
+name 1000 Leader
+name 1001 Child
+name 1002 Grandchild
+name 1003 Sibling
+name 1004 Pruned character
+link 9000 1000
+link 1000 1001
+link 1001 1002
+link 1000 1003
+link 1000 9100
+link 9100 1004
+field 1000 hidden 1
+field 1001 hidden 1
+field 1002 prisoner 1
+predicate really_hidden 1000
+predicate really_hidden 1001
+sout frame 2 11 0 0
+report chars_here 200 9000
+sout state
+report owner_stack 201 9000
+sout state
+report chars_below 200 1000
+sout state
+save 9000
+save 1000
+save 1001
+save 1002
+save 1003
+save 1004
+readlog 200
+readlog 201
+
+section visible characters highlights depend on player recipient not character or MASTER
+field 1001 lord 201
+report highlight 200 1000 3
+report highlight 200 1001 3
+report highlight 201 1001 8
+report highlight 1000 1000 3
+report highlight -2 1000 7
+report highlight 200 1000 150
+report highlight 201 1000 150
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+report chars_here 1000 9000
+sout state
+report chars_here 200 9000
+sout state
+readlog 200
+save 200
+
+section visible characters empty noncharacter and all hidden preserve frame without header
+entity 9000 3 3
+entity 9100 3 32
+sout frame 5 12 1 9
+report chars_here 200 9000
+sout state
+report owner_stack 200 9000
+sout state
+link 9000 9100
+link 9100 1000
+report chars_here 200 9000
+sout state
+link 9000 1001
+field 1001 hidden 1
+report chars_here 200 9000
+sout state
+report files
+report state 9000
+report state 9100
+readlog 200
+
+section visible characters province fog shortcircuits hidden checks and preserves both indents
+entity 9000 3 3
+entity 9100 11 57
+field 9100 strength 1
+link 9000 9100
+link 9000 1000
+link 1000 1001
+sout frame -7 13 1 17
+report chars_here 200 9000
+sout state
+report chars_here 1000 9000
+sout state
+save 9000
+save 1000
+save 1001
+save 9100
+readlog 200
+
+section visible characters fog empty province and signed storm cancellation
+entity 9000 3 3
+entity 9100 11 57
+entity 9101 11 57
+link 9000 9100
+link 9000 9101
+field 9100 strength -1
+sout frame 3 7 0 0
+report chars_here 200 9000
+sout state
+field 9101 strength 1
+report chars_here 200 9000
+sout state
+link 9000 1000
+report chars_here 200 9000
+sout state
+readlog 200
+
+section visible characters fog does not suppress city building or owner stack
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 3 32
+entity 9100 11 57
+field 9100 strength 10
+link 9000 9100
+link 9000 9001
+link 9001 9002
+link 9001 1000
+link 9002 1001
+sout frame 1 8 0 0
+report chars_here 200 9001
+sout state
+report chars_here 200 9002
+sout state
+report owner_stack 200 9001
+sout state
+save 9001
+save 9002
+readlog 200
+
+section visible characters ocean flying suffix only direct characters not descendants
+entity 9000 3 1
+entity 1002 2 0
+field 1001 lord 201
+field 1002 lord 200
+name 1000 Aerial leader
+name 1001 Passenger
+name 1002 Aerial second
+link 9000 1000
+link 1000 1001
+link 9000 1002
+sout frame 0 4 0 0
+report chars_here 200 9000
+sout state
+report owner_stack 200 9000
+sout state
+save 1000
+save 1001
+save 1002
+readlog 200
+
+section visible characters below highlight direct preserves no header no accompany and frame
+entity 1002 2 0
+field 1001 lord 201
+field 1002 lord 200
+link 1000 1001
+link 1001 1002
+field 1002 prisoner 1
+report below_highlight 200 1000 4
+sout state
+readlog 200
+
+section visible characters MASTER style and cached inode remain borrowed
+lore_root
+entity 9000 3 3
+link 9000 1000
+link 1000 1001
+sout frame 2 5 1 23
+sout route -2 0
+sout style 7
+report chars_here 200 9000
+sout state
+output 200 0
+life flush
+readfile log/200
+life rename log/200 held-characters
+report owner_stack 200 9000
+sout state
+life flush
+readfile held-characters
+life path log/200
+save 200
+save 1000
+save 1001
+
+section visible characters invalid highlight depth assertion precedes indent
+sout frame 1 9 0 0
+report highlight 200 1000 2
+
+section visible characters invalid highlight requires zero indent
+sout frame 1 9 0 0
+report highlight 200 1000 3
+
+section visible characters invalid owner container original macro assertion
+report owner_stack 200 9000
+
+section visible characters invalid here container original macro assertion
+report chars_here 200 9000
+
+section visible characters invalid owner negative depth original highlight assertion
+entity 9000 3 32
+link 9000 1000
+sout frame -1 9 0 0
+report owner_stack 200 9000

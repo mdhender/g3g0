@@ -122,6 +122,9 @@ static void list(char *label, ilist l)
 }
 
 int drv_loc_barrier(int who, int where);
+void drv_chars_here(int who, int where);
+void drv_chars_below(int who, int n, int depth);
+char *drv_highlight(int who, int n, int depth);
 void drv_route_view(int who, struct exit_view *v, int mode);
 
 /* Actual auto_attack has already emitted its output. Observe it, then abort:
@@ -1059,6 +1062,17 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "report")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
+   else if(!strcmp(text,"chars_here") || !strcmp(text,"owner_stack") || !strcmp(text,"chars_below")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    if(!strcmp(text,"chars_here")) drv_chars_here(n,a);
+    else if(!strcmp(text,"owner_stack")) show_owner_stack(n,a);
+    else show_chars_below(n,a);
+   }
+   else if(!strcmp(text,"highlight") || !strcmp(text,"below_highlight")) {
+    if(sscanf(line,"%*s %*s %d %d %d",&n,&a,&b)!=3) return 2;
+    if(!strcmp(text,"highlight")) printf("highlight [%s]\n",drv_highlight(n,a,b));
+    else drv_chars_below(n,a,b);
+   }
    else if(!strcmp(text,"market")) {
     if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
     market_report(n,a);

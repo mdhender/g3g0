@@ -3,6 +3,89 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Visible characters and owner stacks (#142)
+
+Existing display.go adds complete stage-pin display.c `highlight_units`
+**547–558**, `show_chars_below_highlight` **579–593**, `show_owner_stack`
+**596–626** and `show_chars_here` **629–682**. Existing `show_chars_below`
+**561–576** and accepted character descriptions are unchanged. The oracle
+extracts all five complete unchanged C definitions, retaining their original
+source locations and macro assertions. New static-function wrappers only
+expose the real functions; they do not render or implement expected logic.
+
+The reused real closure includes display.c liner_desc/liner_desc_char and
+display_with; swear.c player; loc.c all_char_here/add_char_here and province;
+stack.c stack_parent; u.c count_stack_any/count_any and loc_depth; storm.c
+weather_here; original loop.h snapshots and oly.h char_really_hidden macros;
+and whole original code.c/sout.c/io.c, including init_spaces, wiout, routing,
+the accepted FILE cache and save_box. All these dependencies were already
+extracted or linked. No new source dependency, pin, location-report root,
+gameplay command or parallel output/description owner is added.
+
+Fifteen appended sections distinguish the first hidden owner (shown) from
+later hidden owners (skipped), while noncharacters do not consume the first
+owner exception. Ordinary sightings hide even own truly hidden units. Nested
+characters retain depth-first snapshot order and the same descendant depth;
+prisoners are described and noncharacter branches pruned. Highlight bytes
+depend on a player recipient, not a character recipient or MASTER routing;
+literal spacing is checked through depth 150, the original spaces buffer's
+defined range. Ocean `, flying` applies only to direct sightings, not their
+descendants or owner-stack rendering. Fog short-circuits province rendering
+before indent changes (even with negative primary indent), including empty
+provinces; signed storm cancellation, city/building and owner-stack controls
+distinguish that branch. Empty/all-hidden cases emit no header or file and
+preserve both indentation fields; successful wiout calls reset secondary
+indent while restoring primary indent. Raw save_box/record observers,
+MASTER/style/day/output bits and renamed cached-inode bytes remain compared.
+
+Five expected-abort controls compare assertion order and source locations:
+highlight depth **display.c:551** precedes indent **552**, invalid owner
+container fails its original loop macro at **606**, invalid sighting container
+fails earlier in **u.c:388** loc_depth, and negative owner depth fails at
+**display.c:551**. Missing-C-dependency markers are rejected before expected
+statuses and before recording replacement, including these failure cases.
+
+At **0.82.0-alpha**, the real pinned C repeats deterministically, then Go
+matches **940 sections / 64201 lines / 1206911 bytes**. The inherited **925
+sections / 63547 lines / 1195280 recording bytes** and **20305 input lines /
+373845 input bytes** remain exact unchanged prefixes. New input totals are
+**20552 lines / 378933 bytes**; recording SHA-256:
+`b4f5f85b6135273b3c09dc125208a7d9e022e599d863bf905428f9b16fe9b660`.
+#168's separate live native C/C/Go comparison remains enabled and passes over
+the same unchanged input directory. Recording refresh evidence:
+`tmp/issue142-command-update.log`. Matching C captures are removed after checks.
+
+The default command comparison reran both real C executions and Go without
+updating expectations, and passed again. Sequential bounded command/move/
+helper/RNG/code/loadsave/turn-driver/default-turn tools passed with explicit
+`G3_REPO=$PWD/tmp/upstream.git`: move **135/7158**, helper **37/1487**, RNG
+**321**, code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase
+**5/484**, calendar **2/119**, schedule **4/1801**. Default turn matches raw
+streams/status and two cwd entries; it is not a world-turn test. Bounded
+`go vet ./...` and fresh `go test -count=1 -exec ... ./...` passed (Olympia
+**1.519s**). Logs: `tmp/issue142-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+Independent byte inspection confirms each of the five extracted C definitions
+appears complete and unchanged exactly once, and the existing Go
+showCharsBelow body is unchanged. Source/documentation diff whitespace checks
+pass; full diff-check reports only twelve literal trailing-space here-list
+lines emitted by the real save_box writer in the new recording. Those bytes
+are deliberately preserved, not normalized.
+
+Parent review corrected the ocean fixture's mistaken desert subkind before
+acceptance, then regenerated only new real-C expectations. The corrected
+recording has exactly two `, flying` suffixes on direct sightings and none
+on descendants or owner-stack lines. Parent independently reviewed the full
+pinned C/Go diff, verified all five extracted definitions and inherited
+prefixes, and reran all eight tools, bounded vet and fresh bounded defaults.
+Evidence: `tmp/parent142-*.log`; these supersede the pre-review byte/hash
+measurements in the original `issue142` logs.
+
+G3 #358 remains owner-declared nonblocking and unrelated to this task. The
+original market division and Go panic are untouched; malformed C **136** /
+Go **2** is still **not** passing raw/status failure parity. No full-world,
+full-corpus, strict lifecycle or stage-exit acceptance is implied by #142.
+No newly verified local/upstream defect or blocking prerequisite was found.
+
 ## City market rendering (#141)
 
 The existing buy.go now implements complete unchanged buy.c

@@ -3,6 +3,8 @@
 
 package olympia
 
+import "strings"
+
 // Location headers and descriptions from display.c. Complete location-report
 // assembly remains an explicit boundary.
 
@@ -324,6 +326,17 @@ func (w *world) linerDesc(n int) string {
 	return ""
 }
 
+// highlightUnits is display.c:547–558. The literal spaces are part of the
+// line, independently of wiout's secondary indentation metadata.
+func (w *world) highlightUnits(who, n int, depth int32) string {
+	assert(depth >= 3, "olympia/display.c", 551, "depth >= 3")
+	assert(w.indent == 0, "olympia/display.c", 552, "indent == 0")
+	if w.kind(who) == tPlayer && w.player(n) == who {
+		return sout(" *%s", strings.Repeat(" ", int(depth-2)))
+	}
+	return strings.Repeat(" ", int(depth))
+}
+
 // showCharsBelow is display.c:561–576. all_char_here takes a depth-first
 // snapshot, prunes noncharacter branches, and deliberately does not hide units.
 func (w *world) showCharsBelow(who, n int) {
@@ -334,4 +347,66 @@ func (w *world) showCharsBelow(who, n int) {
 		w.wiout(who, 3, "%s", w.linerDesc(i))
 	}
 	w.indent -= 3
+}
+
+// showCharsBelowHighlight is display.c:579–593: all descendants have the
+// same depth, not one extra indentation level per nested character.
+func (w *world) showCharsBelowHighlight(who, n int, depth int32) {
+	depth += 3
+	for _, i := range w.allCharHere(n) {
+		w.wiout(who, depth, "%s%s", w.highlightUnits(who, i, depth), w.linerDesc(i))
+	}
+}
+
+func (w *world) showOwnerStack(who, n int) {
+	depth := w.indent + 3
+	w.indent = 0
+	first := true
+	assert(w.validBox(n), "olympia/display.c", 606, "valid_box(n)")
+	for i := range w.loopHere(n) {
+		if w.kind(i) == tChar {
+			if !first && w.charReallyHidden(i) {
+				continue
+			}
+			w.wiout(who, depth, "%s%s%s", w.highlightUnits(who, i, depth), w.linerDesc(i), w.displayWith(i))
+			w.showCharsBelowHighlight(who, i, depth)
+			first = false
+		}
+	}
+	w.indent = depth - 3
+}
+
+func (w *world) showCharsHere(who, where int) {
+	if w.locDepth(where) == locProvince && w.weatherHere(where, subFog) != 0 {
+		w.commandOut(who, "")
+		w.commandOut(who, "No one can be seen through the fog.")
+		return
+	}
+	depth := w.indent
+	w.indent = 0
+	flying := ""
+	if w.subkind(where) == subOcean {
+		flying = ", flying"
+	}
+	first := true
+	assert(w.validBox(where), "olympia/display.c", 650, "valid_box(where)")
+	for i := range w.loopHere(where) {
+		if w.kind(i) == tChar {
+			if w.charReallyHidden(i) {
+				continue
+			}
+			if first {
+				first = false
+				w.commandOut(who, "")
+				w.commandOut(who, "Seen here:")
+				depth += 3
+			}
+			w.wiout(who, depth, "%s%s%s%s", w.highlightUnits(who, i, depth), w.linerDesc(i), flying, w.displayWith(i))
+			w.showCharsBelowHighlight(who, i, depth)
+		}
+	}
+	if !first {
+		depth -= 3
+	}
+	w.indent = depth
 }

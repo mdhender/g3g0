@@ -1463,6 +1463,23 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch action := args.word(); action {
 			case "order":
 				w.determineOutputOrder()
+			case "chars_here", "owner_stack", "chars_below":
+				n, where := args.num(t), args.num(t)
+				switch action {
+				case "chars_here":
+					w.showCharsHere(n, where)
+				case "owner_stack":
+					w.showOwnerStack(n, where)
+				case "chars_below":
+					w.showCharsBelow(n, where)
+				}
+			case "highlight", "below_highlight":
+				n, who, depth := args.num(t), args.num(t), int32(args.num(t))
+				if action == "highlight" {
+					fmt.Fprintf(&stdout, "highlight [%s]\n", w.highlightUnits(n, who, depth))
+				} else {
+					w.showCharsBelowHighlight(n, who, depth)
+				}
 			case "market":
 				w.marketReport(args.num(t), args.num(t))
 			case "exits", "sailable":
