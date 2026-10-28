@@ -1,0 +1,62 @@
+# Actual C calendar/weather streams; callbacks trace SCHEDULING ONLY.
+section all thirty days then changed turn no schedule reset
+seed 0
+clock 8 0
+daily_events
+streams
+days 1 5
+daily_events
+daily_events
+days 6 30
+streams
+clock 9 0
+days 0 30
+streams
+cal 0 1 30
+shuffle 6
+streams
+daily_events
+
+section skipped dates repeated days and backwards reentry
+seed 80
+clock 9 15
+daily_events
+daily_events
+streams
+clock 9 31
+daily_events
+days 1 30
+streams
+clock 9 7
+daily_events
+seed 128
+clock 10 0
+daily_events
+streams
+days 1 30
+streams
+
+section weather consumed before initial picks and full schedule
+seed 128
+clock 32767 1
+shuffle 6
+rnd 1 1000000
+cal 2 1 30
+streams
+days 0 30
+streams
+clock -32768 0
+cal 1 15 30
+shuffle 3
+streams
+days 0 30
+streams
+
+section minus one guard keeps zero seeded streams until turn changes
+seed 0
+clock -1 0
+days 0 30
+streams
+clock 0 0
+days 0 30
+streams

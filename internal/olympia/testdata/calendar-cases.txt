@@ -1,0 +1,48 @@
+# Direct actual caln/wthr/rnd draws, no callback overlay needed in Go.
+section keyed order weather counter global separation and master turn guards
+seed 0
+clock 8 0
+streams
+cal 2 1 30
+cal 0 1 30
+cal 1 15 30
+cal 0 1 30
+streams
+shuffle 0
+shuffle 1
+shuffle 6
+rnd 1 1000000
+streams
+cal 2 1 30
+shuffle 6
+streams
+seed 80
+cal 0 1 30
+shuffle 6
+streams
+clock 9 15
+cal 0 1 30
+shuffle 6
+streams
+clock 8 30
+cal 0 1 30
+shuffle 6
+streams
+
+section shuffle before keyed picks signed widths and minus one initial guard
+seed 128
+clock -1 0
+cal 0 -2147483648 -2147483620
+shuffle 5
+streams
+clock 32767 30
+shuffle 30
+cal -2147483648 -20 10
+cal 1 15 30
+cal 2 1 30
+streams
+clock -32768 0
+cal 2147483647 2147483620 2147483647
+shuffle 3
+streams
+rnd -1000 1000

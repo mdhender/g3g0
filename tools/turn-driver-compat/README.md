@@ -36,7 +36,7 @@ helpers and runs in default Go tests without an upstream checkout. It reuses
 the already-ported `stage` / `stageSup`. `timesMasthead` in `c2.go` now uses
 the shared month/year helpers while retaining C's local negative-month clamp
 and assertion; `olympia-roundtrip` covers its output. `-r` now enters the
-actual driver under `runEngine` recovery, stopping at `queue_npc_orders`.
+actual driver under `runEngine` recovery, stopping on day 1 at `match_all_trades`.
 Whole-world turns remain opt-in in `turn-compat` and are still failures.
 
 ## Isolated orchestration callbacks (not gameplay acceptance)
@@ -71,8 +71,55 @@ A successful callback comparison proves **call order only**, not NPC, calendar,
 weather, economy, decay or gameplay completion. `turn-compat --full` runs the
 unmodified actual engines and must continue to fail until the unfinished world
 phases and main report-path mutations are implemented. At this task's boundary
-Go prints `process_orders()` and stops with status 2 at `queue_npc_orders`,
+Go prints `process_orders()` and stops with status 2 at day-1 `match_all_trades`,
 before any save, instead of pretending the bare map completed a turn.
+
+## Real calendar and weather-day scheduling (#74)
+
+The separate `calendar` and `schedule` recordings do **not** use the synthetic
+calendar/shuffle fixture above. `prepare-phases.py` extracts complete original
+definitions, macros, initializers and turn guards from day.c:189–227 and
+storm.c:40–104 (plus day.c's original `TAG_TURN`). `schedule-driver.c` links
+the actual engine `olympia/rnd.c`, `lib/rng.c`, `lib/ilist.c` and `glob.c`.
+Sorting uses the actual seed.c `int_comp` and z.c `safe_qsort`; headers and
+`#line` locations are retained. No new RNG, modeled expected dates, Go-derived
+recordings or upstream working-tree builds are involved.
+
+For daily_events (day.c:2206–2271), every original executable statement and
+all function-local static declarations remain intact. Tracing wrappers call
+the real cal_day/wthr_shuffle and print their actual arguments/results, before
+the real first-four-only sort. A **read-only observer appended to the body**
+prints all thirty list elements, selected days and cursor, which otherwise
+cannot be observed outside its local static scope. Leaf daily callbacks trace
+their names/turn/day only. This accepts **scheduling, NOT gameplay**; even the
+already ported default_garrison_pay is traced here, with its actual payroll
+behavior compared separately by command-compat. Production has no test hook,
+and unported weather/damage/ocean/healing/prisoner/curse/aura/dog/faery phases
+continue to fail explicitly (#75–80).
+
+The Go schedule overlay replaces only those leaf callback calls and adds the
+matching observations; its stream wrappers delegate to the existing
+`w.streams.CalDay`/`WthrShuffle`. Default `TestCalendarMatchesC` checks direct
+draws without any overlay. `TestDailyScheduleMatchesC` requires the tool's
+schedule overlay. Private stream seed/counter/turn state is read only by tests,
+not exposed through a new production API.
+
+Two bounded deterministic C runs record each section's raw stdout/stderr/status,
+and bounded Go subprocesses match their actual raw stdout/stderr/exit status
+to those bytes (no fabricated Go success status). There are two direct-stream
+sections / 119 lines / 3,614 bytes and four scheduling sections / 1,801 lines /
+80,348 bytes, separate from the unchanged clock and synthetic phase recordings.
+Every Go child uses `tools/lib/run-limited.sh`, including in default tests.
+Missing-dependency markers are rejected before status handling or recording
+updates. Cases cover all thirty
+days, day 0/15/31 and weekly events, repeated selected weather dates, skipped
+dates and backwards reentry, full unsorted tails, four-weather cap, and schedule
+persistence across changed turn/master seeds. Stream controls separately cover
+keyed order independence, zero calendar counter, sequential weather counters,
+empty/singleton shuffles, global rnd isolation, unchanged-turn master reloads,
+changed-turn reseeds, signed key/range widths and the initial `-1` guard.
+The `-1` turn control intentionally uses the original zero-seeded stream until
+the turn changes; it is a stream guard control, not a valid loaded-world claim.
 
 ## Discriminating cases
 

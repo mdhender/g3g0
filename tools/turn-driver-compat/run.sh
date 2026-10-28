@@ -53,6 +53,7 @@ for run in run1 run2; do
 		run_limited "${RUN_TIMEOUT}" turn-driver "${WORK}/driver" "${CASES}" "$i" \
 			>"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
 		[ "$status" != 124 ] || die "C section $i timed out"
+		! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "C section $i reached an unfinished dependency"
 		{
 			printf 'stdout:\n'; cat "${WORK}/${run}/stdout"
 			printf 'stderr:\n'; cat "${WORK}/${run}/stderr"
@@ -91,6 +92,7 @@ for run in run1 run2; do
 		run_limited "${RUN_TIMEOUT}" turn-phases "${WORK}/phase-driver" "${CASES}" "$i" \
 			>"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
 		[ "$status" != 124 ] || die "C phase section $i timed out"
+		! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "C phase section $i reached an unfinished dependency"
 		[ "$status" = 0 ] || die "C phase section $i failed ($status)"
 		{
 			printf 'stdout:\n'; cat "${WORK}/${run}/stdout"
@@ -109,4 +111,44 @@ fi
 (cd "${ROOT}" && G3G0_PHASE_TRACE=1 RUN_TIMEOUT="${RUN_TIMEOUT}" go test \
 	-overlay "${WORK}/overlay.json" -exec "bash ${ROOT}/tools/lib/run-limited.sh" \
 	-count=1 -run '^TestTurnPhaseMatchesC$' ./internal/olympia)
+
+# Real calendar/weather definitions and original static schedule storage, not
+# the preceding synthetic phase fixture. Leaf gameplay callbacks ONLY trace.
+"${CC}" -std=c11 -Wall -Wextra -ffunction-sections -fdata-sections \
+	-I "${WORK}" -I "${WORK}/g3/olympia" -I "${WORK}/g3/lib" \
+	"${HERE}/schedule-driver.c" "${WORK}/g3/olympia/glob.c" \
+	"${WORK}/g3/olympia/rnd.c" "${WORK}/g3/lib/rng.c" \
+	"${WORK}/g3/lib/ilist.c" "${ldflags[@]}" -o "${WORK}/schedule-driver" \
+	>"${WORK}/schedule-build.log" 2>&1 || die "C schedule driver build failed; see ${WORK}/schedule-build.log"
+for suite in calendar schedule; do
+	CASES="${ROOT}/internal/olympia/testdata/${suite}-cases.txt"
+	EXPECT="${ROOT}/internal/olympia/testdata/${suite}-c-output.txt"
+	sections=$(grep -c '^section ' "${CASES}")
+	for run in run1 run2; do
+		for ((i=0; i<sections; i++)); do
+			status=0
+			(cd "${WORK}/${run}" && run_limited "${RUN_TIMEOUT}" turn-schedule \
+				"${WORK}/schedule-driver" "${CASES}" "$i") \
+				>"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
+			[ "$status" != 124 ] || die "C $suite section $i timed out"
+			! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "C $suite section $i reached an unfinished dependency"
+			[ "$status" = 0 ] || die "C $suite section $i failed ($status)"
+			{
+				printf 'stdout:\n'; cat "${WORK}/${run}/stdout"
+				printf 'stderr:\n'; cat "${WORK}/${run}/stderr"
+				printf '\nexit %d\n' "$status"
+			} >>"${WORK}/${run}/${suite}.txt"
+		done
+	done
+	cmp "${WORK}/run1/${suite}.txt" "${WORK}/run2/${suite}.txt" || die "C $suite is not deterministic"
+	echo "C $suite: ${sections} sections, $(wc -l <"${WORK}/run1/${suite}.txt") lines, deterministic (schedule ONLY, NOT gameplay acceptance)"
+	if [ "$update" = 1 ]; then
+		cp "${WORK}/run1/${suite}.txt" "${EXPECT}"
+	else
+		diff -u "${EXPECT}" "${WORK}/run1/${suite}.txt"
+	fi
+done
+(cd "${ROOT}" && G3G0_SCHEDULE_TRACE=1 RUN_TIMEOUT="${RUN_TIMEOUT}" go test \
+	-overlay "${WORK}/schedule-overlay.json" -exec "bash ${ROOT}/tools/lib/run-limited.sh" \
+	-count=1 -run '^(TestCalendarMatchesC|TestDailyScheduleMatchesC)$' ./internal/olympia)
 echo PASS

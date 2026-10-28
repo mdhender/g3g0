@@ -70,6 +70,7 @@ reads() {
 		case "$2" in
 		olympia/*.h | lib/*.h | olympia/u.c) return 0 ;;
 		olympia/input.c | olympia/day.c | olympia/z.c | lib/ilist.c) return 0 ;;
+		olympia/storm.c | olympia/seed.c | olympia/glob.c | olympia/rnd.c | lib/rng.c) return 0 ;;
 		esac ;;
 	move-compat)
 		case "$2" in

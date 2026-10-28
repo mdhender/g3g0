@@ -7,19 +7,16 @@ package olympia
 // boundaries for #66–#89, NOT implementations, even on an empty world.
 func (w *world) matchAllTrades() { panic(notImplemented("match_all_trades")) }
 
-// #74/#75 own the actual caln/wthr draws. Do not draw from a substitute RNG.
-func (w *world) calDay(pick, low, high int) int { panic(notImplemented("cal_day")) }
-func (w *world) wthrShuffle(days []int)         { panic(notImplemented("wthr_shuffle")) }
-func (w *world) shipCoastalDamage()             { panic(notImplemented("ship_coastal_damage")) }
-func (w *world) randomLocDamage()               { panic(notImplemented("random_loc_damage")) }
-func (w *world) checkOceanChars()               { panic(notImplemented("check_ocean_chars")) }
-func (w *world) healCharacters()                { panic(notImplemented("heal_characters")) }
-func (w *world) weeklyPrisonerEscapeCheck()     { panic(notImplemented("weekly_prisoner_escape_check")) }
-func (w *world) noncreatorCurseErode()          { panic(notImplemented("noncreator_curse_erode")) }
-func (w *world) incrementStoneRingAura()        { panic(notImplemented("increment_stone_ring_aura")) }
-func (w *world) dogsBarkAtHiddenChars()         { panic(notImplemented("dogs_bark_at_hidden_chars")) }
-func (w *world) naturalWeather()                { panic(notImplemented("natural_weather")) }
-func (w *world) autoFaery()                     { panic(notImplemented("auto_faery")) }
+func (w *world) shipCoastalDamage()         { panic(notImplemented("ship_coastal_damage")) }
+func (w *world) randomLocDamage()           { panic(notImplemented("random_loc_damage")) }
+func (w *world) checkOceanChars()           { panic(notImplemented("check_ocean_chars")) }
+func (w *world) healCharacters()            { panic(notImplemented("heal_characters")) }
+func (w *world) weeklyPrisonerEscapeCheck() { panic(notImplemented("weekly_prisoner_escape_check")) }
+func (w *world) noncreatorCurseErode()      { panic(notImplemented("noncreator_curse_erode")) }
+func (w *world) incrementStoneRingAura()    { panic(notImplemented("increment_stone_ring_aura")) }
+func (w *world) dogsBarkAtHiddenChars()     { panic(notImplemented("dogs_bark_at_hidden_chars")) }
+func (w *world) naturalWeather()            { panic(notImplemented("natural_weather")) }
+func (w *world) autoFaery()                 { panic(notImplemented("auto_faery")) }
 
 func (w *world) specialLocsOpen()           { panic(notImplemented("special_locs_open")) }
 func (w *world) specialLocsClose()          { panic(notImplemented("special_locs_close")) }

@@ -96,6 +96,8 @@ for filename, names in {"input.go": ["processOrders", "dailyCommandLoop"],
             # Preserve the production arguments, not merely their call order.
             instrumented = "phase" + method[0].upper() + method[1:]
             body = body.replace(f"w.{method}(", f"w.{instrumented}(")
+            body = body.replace(f"w.streams.{method[0].upper() + method[1:]}(",
+                                f"w.{instrumented}(")
         for go, replacement in mapping.items():
             body = re.sub(rf"w\.{go}\(\)", lambda _: replacement, body)
         source = source[:m.start()] + body + source[m.end():]
@@ -104,3 +106,68 @@ for filename, names in {"input.go": ["processOrders", "dailyCommandLoop"],
     dest.write_text(source)
     overlay[str(path)] = str(dest)
 (work / "overlay.json").write_text(json.dumps({"Replace": overlay}))
+
+# Separate REAL caln/wthr evidence. The older synthetic collision fixture above
+# remains unchanged. Keep the original static declarations and all executable
+# statements; the sole insertion into daily_events is a read-only observation
+# at its end, since its function-local static storage has no external accessor.
+def extract(file, pattern):
+    text = (g3 / file).read_text()
+    m = re.search(pattern, text, re.M | re.S)
+    if not m:
+        sys.exit(f"missing schedule definition: {file} {pattern}")
+    line = text.count("\n", 0, m.start()) + 1
+    return f'#line {line} "olympia/{file}"\n{m[0]}\n'
+
+schedule = '#include <stdio.h>\n#include <stdlib.h>\n#include "z.h"\n#include "oly.h"\n#include "rng.h"\n'
+# Complete stream blocks, including original macros, initializers and guards.
+schedule += extract("day.c", r"^#define\s+TAG_TURN[^\n]*\n")
+schedule += extract("day.c", r"^static rng_stream calendar_rng;.*?^cal_day\(.*?^\}\n")
+schedule += extract("storm.c", r"^static rng_stream weather_rng;.*?^wthr_wreck\(.*?^\}\n")
+schedule += extract("seed.c", r"^int\nint_comp\(.*?^\}\n")
+schedule += extract("z.c", r"^void\nsafe_qsort\(.*?^\}\n")
+schedule += extract("z.c", r"^void\nasfail\(.*?^\}\n")
+daily = next(d for d in definitions if "\ndaily_events(" in d)
+daily_callbacks = sorted(set(re.findall(r"^\s+(\w+)\(\);", daily, re.M)))
+for name in daily_callbacks:
+    schedule += f'void {name}(void) {{ printf("callback {name}: %d %d\\n", sysclock.turn, sysclock.day); }}\n'
+schedule += r'''
+static void print_list(const char *name, ilist l) {
+    printf("%s:", name);
+    for (int i = 0; i < ilist_len(l); i++) printf(" %d", l[i]);
+    printf("\n");
+}
+static int observed_cal_day(int pick, int low, int high) {
+    int n = cal_day(pick, low, high);
+    printf("cal_day %d %d %d -> %d\n", pick, low, high, n);
+    return n;
+}
+static void observed_shuffle(ilist l) {
+    print_list("shuffle input", l);
+    wthr_shuffle(l);
+    print_list("shuffle output", l);
+}
+#define cal_day observed_cal_day
+#define wthr_shuffle observed_shuffle
+'''
+observe = '''
+    printf("schedule: curse=%d faery=%d dog=%d index=%d\\n",
+           curse_erode_day, faery_day, dog_bark_day, wday_index);
+    print_list("weather days", weather_days);
+'''
+schedule += daily.rsplit("}", 1)[0] + observe + "}\n"
+schedule += '#undef cal_day\n#undef wthr_shuffle\n'
+(work / "schedule.c").write_text(schedule)
+
+path = root / "internal/olympia/day.go"
+source = path.read_text()
+m = re.search(r"^func \(w \*world\) dailyEvents\(\) \{.*?^\}", source, re.M | re.S)
+body = m[0]
+for name in daily_callbacks:
+    body = body.replace(f"w.{camel(name)}()", f'w.scheduleCallback("{name}")')
+body = body.replace("w.streams.CalDay(", "w.scheduleCalDay(")
+body = body.replace("w.streams.WthrShuffle(", "w.scheduleShuffle(")
+body = body[:-1] + '\tw.scheduleObserve()\n}'
+dest = work / "schedule-day.go.overlay"
+dest.write_text(source[:m.start()] + body + source[m.end():])
+(work / "schedule-overlay.json").write_text(json.dumps({"Replace": {str(path): str(dest)}}))

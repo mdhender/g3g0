@@ -148,23 +148,24 @@ func (w *world) postMonth() {
 }
 
 // dailyEvents retains the C statics on the world, including the weather
-// cursor. Only the first four shuffled days are sorted (G3 #229).
+// cursor: turn changes do not reset this schedule. The named streams' turn
+// guards are independent. Only the first four shuffled days are sorted (G3 #229).
 func (w *world) dailyEvents() {
 	if w.curseErodeDay == 0 {
-		w.curseErodeDay = w.calDay(0, 1, monthDays)
+		w.curseErodeDay = w.streams.CalDay(0, 1, monthDays)
 	}
 	if w.faeryDay == 0 {
-		w.faeryDay = w.calDay(1, monthDays/2, monthDays)
+		w.faeryDay = w.streams.CalDay(1, monthDays/2, monthDays)
 	}
 	if w.dogBarkDay == 0 {
-		w.dogBarkDay = w.calDay(2, 1, monthDays)
+		w.dogBarkDay = w.streams.CalDay(2, 1, monthDays)
 	}
 	if len(w.weatherDays) == 0 {
 		for i := 1; i <= monthDays; i++ {
 			w.weatherDays = append(w.weatherDays, i)
 		}
-		assert(4 <= monthDays, "olympia/day.c", 2234, "4 <= MONTH_DAYS")
-		w.wthrShuffle(w.weatherDays)
+		assert(4 <= monthDays, "olympia/day.c", 2231, "4 <= MONTH_DAYS")
+		w.streams.WthrShuffle(w.weatherDays)
 		slices.Sort(w.weatherDays[:4])
 	}
 	w.defaultGarrisonPay()
