@@ -62045,3 +62045,775 @@ stderr:
 assertion failure: olympia/u.c (2395): valid_box(where)
 
 exit 134
+stdout:
+section routes hidden see all zero one two known and IN filtering
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 2
+> entity 9002 3 5
+> entity 9100 3 14
+> entity 9200 7 0
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 9000 9100
+> link 9000 9200
+> name 9000 Fork
+> name 9001 Dark woods
+> name 9100 Inner city
+> name 9200 Secret way
+> routes 9000 9001 9002 0 0
+> field 9001 loc_hidden 1
+> field 9100 loc_hidden 1
+> road 9200 9002 1
+> sout frame 2 5 1 17
+> report exits 1000 9000
+> sout state
+route 0 0 frame 2 5 1 17
+vector:
+saved vector:
+> set see_all 1
+> report exits 1000 9000
+> sout state
+route 0 0 frame 2 5 1 17
+vector:
+saved vector:
+> set see_all 2
+> report exits 1000 9000
+> sout state
+route 0 0 frame 2 5 1 17
+vector:
+saved vector:
+> set see_all 0
+> set_known 1000 9001
+> set_known 1000 9200
+> report exits 1000 9000
+> save 9000
+9000 loc plain
+na Fork
+LI
+ wh 8000
+ hl 9100 9200 
+LO
+ pd 9001 9002 0 0 
+
+> save 9001
+9001 loc forest
+na Dark woods
+LI
+ wh 8000
+LO
+ hi 1
+
+> save 9100
+9100 loc city
+na Inner city
+LI
+ wh 9000
+LO
+ hi 1
+
+> save 9200
+9200 road 0
+na Secret way
+LI
+ wh 9000
+GA
+ tl 9002
+ rh 1
+
+> save 200
+200 player pl_regular
+PL
+ kn 9001 9200 
+
+> readlog 200
+log 200:
+1000:0::2/5:17:Routes leaving Fork: 
+1000:0::5/5:17:East, to Desert~[9002], 8~days
+1000:0::2/5:17:Routes leaving Fork: 
+1000:0::5/5:17:North, forest, to Dark woods~[9001], hidden, 8~days
+1000:0::5/5:17:East, to Desert~[9002], 8~days
+1000:0::5/5:17:Secret way, to Desert~[9002], hidden, 8~days
+1000:0::2/5:17:Routes leaving Fork: 
+1000:0::5/5:17:North, forest, to Dark woods~[9001], hidden, 8~days
+1000:0::5/5:17:East, to Desert~[9002], 8~days
+1000:0::5/5:17:In, city, to Inner city~[9100], hidden, 1~day
+1000:0::5/5:17:Secret way, to Desert~[9002], hidden, 8~days
+1000:0::2/5:17:Routes leaving Fork: 
+1000:0::5/5:17:North, forest, to Dark woods~[9001], hidden, 8~days
+1000:0::5/5:17:East, to Desert~[9002], 8~days
+1000:0::5/5:17:Secret way, to Desert~[9002], hidden, 8~days
+stderr:
+
+exit 0
+stdout:
+section routes barrier Hades named and unnamed region and toll framing
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 9000 3 3
+> entity 9001 3 60
+> entity 9002 3 2
+> link 8000 9000
+> link 8001 9001
+> link 8001 9002
+> name 8001 Realm of shade
+> name 9000 Threshold
+> name 9001 Deep pit
+> routes 9000 9001 9002 0 0
+> field 9001 barrier 1
+> set hades_region 8001
+> sout frame 1 7 1 23
+> report exits 1000 9000
+> sout state
+route 0 0 frame 1 0 1 23
+vector:
+saved vector:
+> name 8001
+> report exits 1000 9000
+> sout state
+route 0 0 frame 1 0 1 23
+vector:
+saved vector:
+> save 9000
+9000 loc plain
+na Threshold
+LI
+ wh 8000
+LO
+ pd 9001 9002 0 0 
+
+> save 9001
+9001 loc pit
+na Deep pit
+LI
+ wh 8001
+LO
+ ba 1
+
+> save 9002
+9002 loc forest
+LI
+ wh 8001
+
+> save 200
+200 player pl_regular
+PL
+
+> readlog 200
+log 200:
+1000:0::1/7:23:Routes leaving Threshold: 
+1000:0::4/7:23:North, pit, to Deep pit~[9001], Realm of shade, impassable
+1000:0::7/7:23:A magical barrier prevents entry.
+1000:0::7/1:23:"Notice to mortals, from the Gatekeeper Spirit of Hades: 100 gold/head is removed from any stack taking this road."
+1000:0::4:23:East, to Forest~[9002], Realm of shade, 8~days
+1000:0::7/1:23:"Notice to mortals, from the Gatekeeper Spirit of Hades: 100 gold/head is removed from any stack taking this road."
+1000:0::1:23:Routes leaving Threshold: 
+1000:0::4:23:North, pit, to Deep pit~[9001], impassable
+1000:0::7:23:A magical barrier prevents entry.
+1000:0::7/1:23:"Notice to mortals, from the Gatekeeper Spirit of Hades: 100 gold/head is removed from any stack taking this road."
+1000:0::4:23:East, to Forest~[9002], 8~days
+1000:0::7/1:23:"Notice to mortals, from the Gatekeeper Spirit of Hades: 100 gold/head is removed from any stack taking this road."
+stderr:
+
+exit 0
+stdout:
+section routes roads only blank header hidden same province and impassable cloud
+> entity 8000 3 50
+> entity 9000 3 4
+> entity 9001 3 65
+> entity 9100 3 37
+> entity 9200 7 0
+> entity 9201 7 0
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9000 9200
+> link 9000 9201
+> name 9200 Short trail
+> name 9201 Cloud ladder
+> road 9200 9100 1
+> road 9201 9001 0
+> report exits 1000 9000
+> set see_all 1
+> report exits 1000 9000
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> save 9000
+9000 loc mountain
+LI
+ wh 8000
+ hl 9100 9200 9201 
+
+> save 9200
+9200 road 0
+na Short trail
+LI
+ wh 9000
+GA
+ tl 9100
+ rh 1
+
+> readlog 200
+log 200:
+1000:0::0::
+1000:0::0::Routes leaving Mountain: 
+1000:0::3::Cloud ladder, to Cloud~[9001], impassable
+1000:0::0::
+1000:0::0::Routes leaving Mountain: 
+1000:0::3::Short trail, to Inn~[9100], hidden, 0~days
+1000:0::3::Cloud ladder, to Cloud~[9001], impassable
+stderr:
+
+exit 0
+stdout:
+section routes empty hidden only and sailable nonship no output
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 2
+> link 8000 9000
+> link 8000 9001
+> report exits 1000 9000
+> routes 9000 9001 0 0 0
+> field 9001 loc_hidden 1
+> report exits 1000 9000
+> report sailable 1000 9000
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> readlog 200
+log 200:
+1000:0::0::No known routes leaving Plain~[9000]
+1000:0::0::No known routes leaving Plain~[9000]
+stderr:
+
+exit 0
+stdout:
+section routes ship in transit out and zero direction siblings are retained
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9100 9 30
+> entity 9101 9 34
+> entity 9200 3 37
+> link 8000 9000
+> link 9000 9100
+> link 9000 9101
+> link 9100 9200
+> name 9100 Swift
+> name 9101 Slow
+> field 9100 ship_moving 40
+> field 9101 ship_moving 42
+> set epoch 45
+> set evening 1
+> report exits 1000 9100
+> set see_all 2
+> report exits 1000 9100
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> save 9100
+9100 ship galley
+na Swift
+LI
+ wh 9000
+ hl 9200 
+SL
+ mo 40
+
+> save 9101
+9101 ship roundship-in-progress
+na Slow
+LI
+ wh 9000
+SL
+ mo 42
+
+> readlog 200
+log 200:
+1000:0::0::Routes leaving Swift: 
+1000:0::3::Out, to Ocean~[9000], impassable
+1000:0::3::To Slow~[9101], 0~days
+1000:0::0::Routes leaving Swift: 
+1000:0::3::Out, to Ocean~[9000], impassable
+1000:0::3::To Slow~[9101], 0~days
+1000:0::3::In, to Inn~[9200], 0~days
+stderr:
+
+exit 0
+stdout:
+section routes ocean filtering ports hidden roads and IN ocean islands
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9002 3 3
+> entity 9003 3 4
+> entity 9100 3 14
+> entity 9101 3 5
+> entity 9200 7 0
+> entity 9201 7 0
+> entity 9300 9 30
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 8000 9003
+> link 9002 9100
+> link 9000 9101
+> link 9000 9200
+> link 9000 9201
+> link 9000 9300
+> routes 9000 9001 9002 9003 0
+> routes 9002 0 0 0 9000
+> name 9100 Harbor
+> name 9200 Wet road
+> name 9201 Hidden sea path
+> road 9200 9002 0
+> road 9201 9001 1
+> field 9001 loc_hidden 1
+> report sailable 1000 9300
+> set see_all 1
+> report sailable 1000 9300
+> set see_all 2
+> report sailable 1000 9300
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> save 9000
+9000 loc ocean
+LI
+ wh 8000
+ hl 9101 9200 9201 9300 
+LO
+ pd 9001 9002 9003 0 
+
+> save 9300
+9300 ship galley
+LI
+ wh 9000
+
+> readlog 200
+log 200:
+1000:0::0::Ocean routes:
+1000:0::3::East, city, to Harbor~[9100], 1~day
+1000:0::3::East, to Plain~[9002], impassable
+1000:0::3::South, to Mountain~[9003], impassable
+1000:0::3::Wet road, to Plain~[9002], 2~days
+1000:0::0::
+1000:0::0::Ocean routes:
+1000:0::3::North, to Ocean~[9001], hidden, 3~days
+1000:0::3::East, city, to Harbor~[9100], 1~day
+1000:0::3::East, to Plain~[9002], impassable
+1000:0::3::South, to Mountain~[9003], impassable
+1000:0::3::Wet road, to Plain~[9002], 2~days
+1000:0::3::Hidden sea path, to Ocean~[9001], hidden, 3~days
+1000:0::0::
+1000:0::0::Ocean routes:
+1000:0::3::North, to Ocean~[9001], hidden, 3~days
+1000:0::3::East, city, to Harbor~[9100], 1~day
+1000:0::3::East, to Plain~[9002], impassable
+1000:0::3::South, to Mountain~[9003], impassable
+1000:0::3::In, to Desert~[9101], 2~days
+1000:0::3::Wet road, to Plain~[9002], 2~days
+1000:0::3::Hidden sea path, to Ocean~[9001], hidden, 3~days
+1000:0::0::
+stderr:
+
+exit 0
+stdout:
+section routes no ocean routes and road only sailable header
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9100 9 30
+> entity 9200 7 0
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> report sailable 1000 9100
+> link 9000 9200
+> name 9200 Canal
+> road 9200 9001 0
+> report sailable 1000 9100
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> readlog 200
+log 200:
+1000:0::0::No visible sailable routes
+1000:0::0::
+1000:0::0::
+1000:0::0::Ocean routes:
+1000:0::3::Canal, to Ocean~[9001], 2~days
+1000:0::0::
+stderr:
+
+exit 0
+stdout:
+section routes Uldim summerbridge seasons month done precedence and restoration
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> routes 9000 9001 0 9001 0
+> set turn 2
+> field 9000 uldim 3
+> report exits 1000 9000
+> field 9000 uldim 4
+> field 9000 summer 2
+> report exits 1000 9000
+> field 9000 uldim 0
+> field 9000 summer 1
+> report exits 1000 9000
+> field 9000 summer 2
+> report exits 1000 9000
+> set turn 3
+> report exits 1000 9000
+> set month_done 1
+> report exits 1000 9000
+> set month_done 0
+> set turn 4
+> report exits 1000 9000
+> set turn 7
+> report exits 1000 9000
+> set turn 8
+> report exits 1000 9000
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+LO
+ pd 9001 0 9001 0 
+SL
+ sf 2
+
+> readlog 200
+log 200:
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Plain~[9001], 7~days
+1000:0::3::South, to Plain~[9001], impassable
+1000:0::0::
+1000:0::0::Heavy snow blocks Uldim pass to the south.
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Plain~[9001], impassable
+1000:0::3::South, to Plain~[9001], impassable
+1000:0::0::
+1000:0::0::Heavy snow blocks Uldim pass to the north.
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Plain~[9001], impassable
+1000:0::3::South, to Plain~[9001], 7~days
+1000:0::0::
+1000:0::0::Summerbridge to the north is impassable until the muds dry in the spring.
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Plain~[9001], 7~days
+1000:0::3::South, to Plain~[9001], impassable
+1000:0::0::
+1000:0::0::Summerbridge to the south is impassable until the muds dry in the spring.
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Plain~[9001], 7~days
+1000:0::3::South, to Plain~[9001], impassable
+1000:0::0::
+1000:0::0::Summerbridge to the south is impassable until the muds dry in the spring.
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Plain~[9001], 7~days
+1000:0::3::South, to Plain~[9001], 7~days
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Plain~[9001], 7~days
+1000:0::3::South, to Plain~[9001], 7~days
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Plain~[9001], 7~days
+1000:0::3::South, to Plain~[9001], 7~days
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Plain~[9001], 7~days
+1000:0::3::South, to Plain~[9001], impassable
+1000:0::0::
+1000:0::0::Summerbridge to the south is impassable until the muds dry in the spring.
+stderr:
+
+exit 0
+stdout:
+section routes direct complete helpers transit extras null empty and consumed first
+> entity 8000 3 50
+> entity 9000 3 2
+> entity 9001 9 30
+> entity 9200 7 0
+> name 8000 Beyond
+> name 9000 Grove
+> name 9001 Ship name
+> name 9200 Road name
+> sout frame 2 7 1 19
+> report route_view 1000 0 0 9000 1 0 1 8000 0 1 1 123 2
+route first 0 indent 5 second 0
+> report route_view 1000 0 8 9001 0 0 0 0 0 1 0 0 0
+route first 1 indent 2 second 0
+> report route_view 1000 0 5 9000 -1 0 0 0 0 0 0 0 1
+route first 0 indent 2 second 0
+> report route_view 1000 9200 0 9000 1 0 1 8000 0 1 1 321 2
+route first 0 indent 5 second 0
+> report route_view 1000 9200 0 9000 1 0 0 0 0 0 0 0 0
+route first 1 indent 2 second 0
+> report route_view 1000 9200 0 9000 0 0 0 0 1 0 0 0 1
+route first 0 indent 2 second 0
+> report route_view 1000 0 1 9000 8 1 0 0 0 0 0 0 2
+route first 1 indent 2 second 0
+> report route_view 1000 9200 0 9000 8 1 0 0 0 0 0 0 2
+route first 1 indent 2 second 0
+> set see_all 1
+> report route_view 1000 9200 0 9000 2 1 1 0 0 0 0 0 2
+route first 0 indent 5 second 0
+> sout state
+route 0 0 frame 2 0 1 19
+vector:
+saved vector:
+> save 9000
+9000 loc forest
+na Grove
+
+> save 200
+200 player pl_regular
+PL
+
+> readlog 200
+log 200:
+1000:0::2/7:19:Direct routes:
+1000:0::5/7:19:Forest, to Grove~[9000], Beyond, hidden, 1~day
+1000:0::8/7:19:A magical barrier prevents entry.
+1000:0::8/1:19:"Notice to mortals, from the Gatekeeper Spirit of Hades: 100 gold/head is removed from any stack taking this road."
+1000:0::2:19:Out, to Ship name~[9001], 0~days
+1000:0::2:19:Up, forest, to Grove~[9000], -1~days
+1000:0::2:19:
+1000:0::2:19:Direct routes:
+1000:0::5:19:Road name, to Grove~[9000], hidden, impassable
+1000:0::8:19:A magical barrier prevents entry.
+1000:0::8/1:19:"Notice to mortals, from the Gatekeeper Spirit of Hades: 100 gold/head is removed from any stack taking this road."
+1000:0::2:19:Road name, to Grove~[9000], 1~day
+1000:0::2:19:Road name, to Grove~[9000], impassable
+1000:0::2:19:
+1000:0::2:19:Direct routes:
+1000:0::5:19:Road name, to Grove~[9000], hidden, 2~days
+stderr:
+
+exit 0
+stdout:
+section routes MASTER raw file style header and road framing
+> lore_root
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 2
+> entity 9200 7 0
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> road 9200 9001 0
+> name 9000 Home
+> name 9001 Woods
+> name 9200 Trail
+> sout frame 2 5 1 23
+> sout route -2 0
+> sout style 7
+> report exits 200 9000
+> sout state
+route -2 0 frame 2 5 1 23
+vector:
+saved vector:
+> output 200 0
+output 1
+> life flush
+> readfile log/200
+file bytes log/200 90:
+0:7::2/5:23:
+0:7::2/5:23:Routes leaving Home: 
+0:7::5/5:23:Trail, to Woods~[9001], 8~days
+
+end file bytes
+> save 200
+200 player pl_regular
+PL
+
+stderr:
+
+exit 0
+stdout:
+section routes aftermath rendered preserves sequential shuffle and RNG
+> master 29
+> set turn 17
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 2
+> entity 9002 3 3
+> entity 9003 3 4
+> entity 9004 3 5
+> entity 9100 9 30
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 8000 9003
+> link 8000 9004
+> link 9000 9100
+> routes 9000 9001 9002 9003 9004
+> shuffle 1000 9000
+exitdir 4 9004
+exitdir 1 9001
+exitdir 2 9002
+exitdir 3 9003
+> npc_rolls 1000 9000
+npc direction 1 roll 5
+npc direction 2 roll 1
+npc direction 3 roll 8
+npc direction 4 roll 9
+> report exits 1000 9000
+> report sailable 1000 9100
+> report exits 1000 9000
+> shuffle 1000 9000
+exitdir 2 9002
+exitdir 4 9004
+exitdir 1 9001
+exitdir 3 9003
+> shuffle 1000 9000
+exitdir 2 9002
+exitdir 3 9003
+exitdir 4 9004
+exitdir 1 9001
+> npc_rolls 1000 9000
+npc direction 1 roll 5
+npc direction 2 roll 1
+npc direction 3 roll 8
+npc direction 4 roll 9
+> entity_rolls 1000 2 9000
+prison roll 358
+land dir99 3
+land dir98 1
+land pick 1
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 9001 9002 9003 9004 
+
+> save 9100
+9100 ship galley
+LI
+ wh 9000
+
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> save 200
+200 player pl_regular
+PL
+
+> readlog 200
+log 200:
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Forest~[9001], 8~days
+1000:0::3::East, to Plain~[9002], 7~days
+1000:0::3::South, to Mountain~[9003], 10~days
+1000:0::3::West, to Desert~[9004], 8~days
+1000:0::0::No visible sailable routes
+1000:0::0::
+1000:0::0::Routes leaving Plain: 
+1000:0::3::North, to Forest~[9001], 8~days
+1000:0::3::East, to Plain~[9002], 7~days
+1000:0::3::South, to Mountain~[9003], 10~days
+1000:0::3::West, to Desert~[9004], 8~days
+stderr:
+
+exit 0
+stdout:
+section routes aftermath no call control sequential shuffle and RNG
+> master 29
+> set turn 17
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 2
+> entity 9002 3 3
+> entity 9003 3 4
+> entity 9004 3 5
+> entity 9100 9 30
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 8000 9003
+> link 8000 9004
+> link 9000 9100
+> routes 9000 9001 9002 9003 9004
+> shuffle 1000 9000
+exitdir 4 9004
+exitdir 1 9001
+exitdir 2 9002
+exitdir 3 9003
+> npc_rolls 1000 9000
+npc direction 1 roll 5
+npc direction 2 roll 1
+npc direction 3 roll 8
+npc direction 4 roll 9
+> shuffle 1000 9000
+exitdir 2 9002
+exitdir 4 9004
+exitdir 1 9001
+exitdir 3 9003
+> shuffle 1000 9000
+exitdir 2 9002
+exitdir 3 9003
+exitdir 4 9004
+exitdir 1 9001
+> npc_rolls 1000 9000
+npc direction 1 roll 5
+npc direction 2 roll 1
+npc direction 3 roll 8
+npc direction 4 roll 9
+> entity_rolls 1000 2 9000
+prison roll 358
+land dir99 3
+land dir98 1
+land pick 1
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 9001 9002 9003 9004 
+
+> save 9100
+9100 ship galley
+LI
+ wh 9000
+
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> save 200
+200 player pl_regular
+PL
+
+stderr:
+
+exit 0
+stdout:
+section routes invalid summerbridge retains original assertion
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> field 9000 summer 3
+> set turn 2
+> report exits 1000 9000
+stderr:
+assertion failure: olympia/dir.c (1029): FALSE
+
+exit 134

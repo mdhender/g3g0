@@ -77,7 +77,8 @@ functions = {
               'province_has_port_city', 'summer_uldim_open_now', 'add_province_exit',
               'extra_routes', 'province_exits', 'province_sub_exits', 'subloc_exits',
               'ship_exits', 'building_exits', 'exits_from_loc', 'exits_from_loc_nsew',
-              'exits_from_loc_nsew_select', 'has_ocean_access'],
+              'exits_from_loc_nsew_select', 'has_ocean_access', 'list_exit_extras',
+              'list_exits_sup', 'list_road_sup', 'list_exits', 'list_sailable_routes'],
     'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits', 'find_wield', 'wield_s'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
               'subloc_here', 'count_loc_structures',
@@ -320,6 +321,16 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(text)
     out.write('''
 int drv_loc_barrier(int who, int where) { return show_loc_barrier(who, where); }
+void drv_route_view(int who, struct exit_view *v, int mode) {
+ char first[LEN] = "Direct routes:";
+ extern int second_indent;
+ int old_indent = indent;
+ if(mode == 1) first[0] = 0;
+ if(v->road) list_road_sup(who, 0, v, mode == 0 ? NULL : first);
+ else list_exits_sup(who, 0, v, mode == 0 ? NULL : first);
+ printf("route first %d indent %d second %d\\n", first[0] != 0, indent, second_indent);
+ indent = old_indent;
+}
 char *drv_fetch(FILE *fp) { return fetch_inp(fp); }
 int drv_admission(char *acct, FILE *fp) { return make_new_players_sup(acct, fp); }
 void drv_make_players(void) { make_new_players(); }
@@ -524,6 +535,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section routes '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section routes invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected route status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section description '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

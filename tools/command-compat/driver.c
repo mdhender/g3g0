@@ -20,7 +20,7 @@ void drv_state(struct command *c, int s);
 struct order_list *drv_orders(int pl, int who);
 extern int cur_pri, cmd_wait, flush_always, second_indent;
 extern ilist load_q[5], run_q;
-extern int evening, auto_attack_flag;
+extern int evening, auto_attack_flag, month_done;
 extern ilist second_wait_list, wait_list;
 ilist drv_collectors(void);
 void drv_evening(void), drv_daily(void), drv_players(void), drv_sort_run(void);
@@ -122,6 +122,7 @@ static void list(char *label, ilist l)
 }
 
 int drv_loc_barrier(int who, int where);
+void drv_route_view(int who, struct exit_view *v, int mode);
 
 /* Actual auto_attack has already emitted its output. Observe it, then abort:
  * this is deliberately NOT a successful combat replacement. */
@@ -1051,6 +1052,17 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "report")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
+   else if(!strcmp(text,"exits") || !strcmp(text,"sailable")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    if(!strcmp(text,"exits")) list_exits(n,a); else list_sailable_routes(n,a);
+   }
+   else if(!strcmp(text,"route_view")) {
+    struct exit_view v = {0}; int mode;
+    if(sscanf(line,"%*s %*s %d %d %d %d %d %d %d %d %d %d %d %d %d",
+     &n,&v.road,&v.direction,&v.destination,&v.distance,&v.hidden,&v.dest_hidden,
+     &v.inside,&v.impassable,&v.in_transit,&v.magic_barrier,&v.hades_cost,&mode)!=13) return 2;
+    drv_route_view(n,&v,mode);
+   }
    else if(!strcmp(text,"describe")) printf("description [%s]\n",liner_desc(n));
    else if(!strcmp(text,"describe_out")) {
     sscanf(line,"%*s %*s %d %d",&n,&a);
@@ -1383,6 +1395,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"strength")) p_misc(n)->storm_str = (short)a;
    else if (!strcmp(text,"damage")) p_subloc(n)->damage = (unsigned char)a;
    else if (!strcmp(text,"capacity")) p_subloc(n)->capacity = a;
+   else if (!strcmp(text,"ship_moving")) p_subloc(n)->moving = a;
    else if (!strcmp(text,"structure_defense")) p_subloc(n)->defense = a;
    else if (!strcmp(text,"effort_given")) p_subloc(n)->effort_given = a;
    else if (!strcmp(text,"effort_required")) p_subloc(n)->effort_required = a;
@@ -1494,6 +1507,9 @@ int main(int argc, char **argv)
   {
    sscanf(line, "%*s %31s %d", text, &n);
    if (!strcmp(text, "immediate")) immediate = n;
+   else if (!strcmp(text, "see_all")) immed_see_all = n;
+   else if (!strcmp(text, "month_done")) month_done = n;
+   else if (!strcmp(text, "evening")) evening = n;
    else if (!strcmp(text, "flush")) flush_always = n;
    else if (!strcmp(text, "auto_quit")) auto_quit_turns = n;
    else if (!strcmp(text, "post")) post_has_been_run = n;

@@ -27,6 +27,22 @@ pass at **0.79.1-alpha**. Pin/dependencies and engine/report behavior are
 unchanged. This local harness prerequisite does not include #140, full-world
 or stage-exit acceptance.
 
+## Route rendering (#140)
+
+Existing dir.go implements complete stage-pin dir.c list_exit_extras,
+list_exits_sup, list_road_sup, list_exits and list_sailable_routes (839–1072),
+using actual exitsFromLoc and accepted names/knowledge/seasonal/output owners.
+No movement handler, new source dependency, pin change or location root.
+Thirteen appended command sections exercise byte/state, hidden/see_all/IN,
+road/transit/barrier/Hades, ocean and seasonal branches, real assertions and
+paired shuffle/RNG aftermath. See [exact closure and evidence](command-compat#route-rendering-140).
+The inherited native-directory recording defect was fixed separately in #168;
+its accepted input/recording prefix is preserved exactly. Independent C/C/Go
+route acceptance passes **916 sections / 62819 lines / 1177391 bytes**, plus
+live native traversal, at **0.80.0-alpha**. Sequential command/move/helper/RNG/
+code/loadsave/turn-driver/default-turn, bounded vet and fresh bounded default
+tests pass. No full-world or stage-exit acceptance is included.
+
 ## Noncharacter descriptions (#139)
 
 display.go extends its accepted headers/character owner with complete unchanged

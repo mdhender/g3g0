@@ -62,6 +62,45 @@ No engine/report behavior, upstream harness, source pin/dependency set or
 shared upstream clone is changed. Route rendering remains separate in #140.
 This does not claim Darwin/native Windows, full-world or stage-exit parity.
 
+## Route rendering (#140)
+
+dir.go adds complete dir.c `list_exit_extras` **839–864**,
+`list_exits_sup` **879–930**, `list_road_sup` **933–970**, `list_exits`
+**973–1031** and `list_sailable_routes` **1034–1072**. It reuses real
+exitsFromLoc and the existing names, topology, knowledge, seasonal, output/cache,
+capitalization and plural helpers. No movement handler or location-report root
+is added. All C definitions are extracted unchanged exactly once (verified
+against git show at the pin); no source dependency or pin changes. The direct
+fixture wrapper calls the real static helpers with supplied exit_view fields,
+including transit/extras combinations not constructed by extra_routes, and
+observes nullable/empty/consumed header state and both indentation fields.
+
+Thirteen appended sections cover hidden/known routes, see_all 0/1/2 and IN
+filtering, named/unnamed destinations and regions, first-road blank lines,
+singular/plural/zero/negative distances, roads, transit, barrier and Hades toll,
+empty exits, nonship sailing no-op, ocean/port/mountain/IN filtering, road-only
+sailable routes, Uldim/summerbridge precedence and seasonal boundaries. The
+invalid summerbridge retains dir.c:1029's assertion/status 134; other added
+sections require status 0. Actual save_box state, MASTER/style raw readfile
+bytes and paired no-call aftermath (20 matching shuffle/NPC observations)
+are retained. Extras intentionally reset second_indent through real wiout;
+ordinary exits include transit, while road transit renders impassable.
+
+The initial recording-prefix audit found the inherited filesystem-dependent
+admission diagnostic order, reproduced on untouched main and fixed separately
+in #168. The accepted #168 input/recording prefixes are preserved exactly;
+only the 13 route sections and their 772 real-C recording lines are appended.
+Independent parent acceptance at **0.80.0-alpha** passes C/C/Go at
+**916 sections / 62819 lines / 1177391 bytes**, plus the live native traversal
+comparison. The **1160604-byte / 62047-line** recording prefix and
+**362373-byte / 19745-line** input prefix are byte-exact. Recording SHA-256:
+`c3262a550b22427ee79da758c25cc9b5a042cab82d70be85c64b6d669d2e6703`.
+Parent independently reviewed the complete pinned C and Go diff, verified all
+five extracted definitions unchanged exactly once, and passed sequential
+command/move/helper/RNG/code/loadsave/turn-driver/default-turn comparisons,
+bounded vet and fresh bounded default tests. Logs: `tmp/parent140-*.log`.
+No full corpus/full turn, lifecycle or strict stage-2 exit is claimed.
+
 ## Noncharacter descriptions (#139)
 
 display.go now implements complete stage-pin display.c `ship_cap_s` **77–89**,

@@ -5,12 +5,13 @@ package olympia
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/mdhender/g3g0/internal/rng"
 )
 
 // Ported from olympia/dir.c: map initialization and exit topology/selection.
-// Report rendering and LOS distance are left for later stages.
+// LOS distance is left for later stages.
 //
 // A province's box number gives its place on the map: 10101 is row 1,
 // column 1, and [10199] row 1, column 99.
@@ -431,4 +432,139 @@ func (w *world) hasOceanAccess(where int) int {
 		}
 	}
 	return ret
+}
+
+// Route reporting is dir.c:839–1072. These callers deliberately use the
+// unshuffled exitsFromLoc, including in-transit exits (the C skips are #if 0).
+func (w *world) listExitExtras(who int, v *exitView) {
+	if v.magicBarrier != 0 {
+		w.indent += 3
+		w.commandOut(who, "A magical barrier prevents entry.")
+		w.indent -= 3
+	}
+	if v.hadesCost != 0 {
+		w.indent += 3
+		w.wiout(who, 1, "\"Notice to mortals, from the Gatekeeper Spirit of Hades: 100 gold/head is removed from any stack taking this road.\"")
+		w.indent -= 3
+	}
+}
+
+func (w *world) listExitsSup(who, where int, v *exitView, first *string) {
+	if v.hidden != 0 && w.immedSeeAll == 0 {
+		return
+	}
+	if first != nil && *first != "" {
+		w.commandOut(who, "%s", *first)
+		w.indent += 3
+		*first = ""
+	}
+	var parts []string
+	if v.direction > 0 {
+		parts = append(parts, fullDirS[v.direction])
+	}
+	if w.name(int(v.destination)) != "" && !w.isShipEither(int(v.destination)) {
+		parts = append(parts, subkindS[w.subkind(int(v.destination))])
+	}
+	parts = append(parts, sout("to %s", w.boxName(int(v.destination))))
+	if v.inside != 0 {
+		if s := w.name(int(v.inside)); s != "" {
+			parts = append(parts, s)
+		}
+	}
+	if v.destHidden != 0 {
+		parts = append(parts, "hidden")
+	}
+	if v.impassable != 0 {
+		parts = append(parts, "impassable")
+	} else {
+		parts = append(parts, sout("%d~day%s", v.distance, addS(int(v.distance))))
+	}
+	w.commandOut(who, "%s", capitalize(strings.Join(parts, ", ")))
+	w.listExitExtras(who, v)
+}
+
+func (w *world) listRoadSup(who, where int, v *exitView, first *string) {
+	if v.hidden != 0 && w.immedSeeAll == 0 {
+		return
+	}
+	hid := ""
+	if v.destHidden != 0 {
+		hid = "hidden, "
+	}
+	if first != nil && *first != "" {
+		w.commandOut(who, "")
+		w.commandOut(who, "%s", *first)
+		*first = ""
+		w.indent += 3
+	}
+	dist := "impassable"
+	if v.impassable == 0 && v.inTransit == 0 {
+		dist = sout("%d~day%s", v.distance, addS(int(v.distance)))
+	}
+	w.commandOut(who, "%s, to %s, %s%s", w.justName(int(v.road)), w.boxName(int(v.destination)), hid, dist)
+	w.listExitExtras(who, v)
+}
+
+func (w *world) listExits(who, where int) {
+	l := w.exitsFromLoc(who, where)
+	first := sout("Routes leaving %s: ", w.justName(where))
+	for _, v := range l {
+		if v.road == 0 && (v.direction != dirIn || w.immedSeeAll == 2) {
+			w.listExitsSup(who, where, v, &first)
+		}
+	}
+	for _, v := range l {
+		if v.road != 0 {
+			w.listRoadSup(who, where, v, &first)
+		}
+	}
+	if first != "" {
+		if w.isShipEither(where) {
+			w.commandOut(who, "No current exits from %s", w.boxName(where))
+		} else {
+			w.commandOut(who, "No known routes leaving %s", w.boxName(where))
+		}
+	} else {
+		w.indent -= 3
+	}
+	if (w.uldim(where) == 3 || w.uldim(where) == 4 || w.summerbridge(where) != 0) && !w.summerUldimOpenNow() {
+		w.commandOut(who, "")
+		switch {
+		case w.uldim(where) == 3:
+			w.commandOut(who, "Heavy snow blocks Uldim pass to the south.")
+		case w.uldim(where) == 4:
+			w.commandOut(who, "Heavy snow blocks Uldim pass to the north.")
+		case w.summerbridge(where) == 1:
+			w.commandOut(who, "Summerbridge to the north is impassable until the muds dry in the spring.")
+		case w.summerbridge(where) == 2:
+			w.commandOut(who, "Summerbridge to the south is impassable until the muds dry in the spring.")
+		default:
+			assert(false, "olympia/dir.c", 1029, "FALSE")
+		}
+	}
+}
+
+func (w *world) listSailableRoutes(who, ship int) {
+	if !w.isShipEither(ship) {
+		return
+	}
+	outer := w.loc(ship)
+	l := w.exitsFromLoc(who, outer)
+	first := "Ocean routes:"
+	for _, v := range l {
+		if v.direction > 0 && (v.direction != dirIn || w.immedSeeAll == 2) && v.water != 0 {
+			w.listExitsSup(who, outer, v, &first)
+		}
+	}
+	for _, v := range l {
+		if v.road != 0 && v.water != 0 {
+			w.listRoadSup(who, outer, v, &first)
+		}
+	}
+	if first != "" {
+		w.commandOut(who, "No visible sailable routes")
+	} else {
+		w.indent -= 3
+	}
+	w.commandOut(who, "")
 }

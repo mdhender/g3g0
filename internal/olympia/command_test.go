@@ -1457,6 +1457,35 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch action := args.word(); action {
 			case "order":
 				w.determineOutputOrder()
+			case "exits", "sailable":
+				n, where := args.num(t), args.num(t)
+				if action == "exits" {
+					w.listExits(n, where)
+				} else {
+					w.listSailableRoutes(n, where)
+				}
+			case "route_view":
+				n := args.num(t)
+				v := &exitView{}
+				for _, p := range []*int32{&v.road, &v.direction, &v.destination, &v.distance, &v.hidden, &v.destHidden, &v.inside, &v.impassable, &v.inTransit, &v.magicBarrier, &v.hadesCost} {
+					*p = int32(args.num(t))
+				}
+				mode, oldIndent := args.num(t), w.indent
+				first := "Direct routes:"
+				if mode == 1 {
+					first = ""
+				}
+				p := &first
+				if mode == 0 {
+					p = nil
+				}
+				if v.road != 0 {
+					w.listRoadSup(n, 0, v, p)
+				} else {
+					w.listExitsSup(n, 0, v, p)
+				}
+				fmt.Fprintf(&stdout, "route first %d indent %d second %d\n", b2i(first != ""), w.indent, w.secondIndent)
+				w.indent = oldIndent
 			case "describe":
 				n := args.num(t)
 				fmt.Fprintf(&stdout, "description [%s]\n", w.linerDesc(n))
@@ -1805,6 +1834,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pPlayer(n).unformed.Append(a)
 			case "summer":
 				w.pSubloc(n).summerFlag = int8(a)
+			case "ship_moving":
+				w.pSubloc(n).moving = int32(a)
 			case "uldim":
 				w.pSubloc(n).uldimFlag = int8(a)
 			case "skill_np":
@@ -2060,6 +2091,12 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch field {
 			case "immediate":
 				w.immediate = n != 0
+			case "see_all":
+				w.immedSeeAll = int32(n)
+			case "month_done":
+				w.monthDone = int32(n)
+			case "evening":
+				w.evening = int32(n)
 			case "flush":
 				w.flushAlways = n != 0
 			case "auto_quit":
