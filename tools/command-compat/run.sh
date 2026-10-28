@@ -58,7 +58,11 @@ functions = {
               'noncreator_curse_erode', 'daily_events', 'compute_civ_levels',
               'post_production', 'move_city_gold', 'collect_taxes',
               'add_claim_gold', 'add_noble_points', 'add_unformed_sup', 'add_unformed',
-              'special_locs_open', 'special_locs_close', 'clear_orders_sent'],
+              'special_locs_open', 'special_locs_close', 'clear_orders_sent',
+              'increment_current_aura', 'decrement_ability_shroud', 'decrement_region_shroud',
+              'decrement_meditation_hinder', 'decrement_loc_barrier', 'loyalty_decay',
+              'pillage_decay', 'relic_decay', 'hide_mage_decay'],
+    'scry.c': ['notify_loc_shroud'],
     'seed.c': ['int_comp', 'seed_taxes'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
@@ -87,7 +91,7 @@ functions = {
             'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
             'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
-            'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np',
+            'lookup', 'gold_s', 'comma_num', 'nice_num', 'loyal_s', 'add_np', 'deduct_np',
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
             'consume_item', 'move_item', 'drop_item',
@@ -155,7 +159,7 @@ int immed_see_all, month_done, show_combat_flag;
         out.write(f'#line {gm.count(chr(10), 0, m.start()) + 1} "olympia/gm.c"\n{m.group(0)}')
     for file, names in [('cloud.c', ['cloud_region']),
                         ('tunnel.c', ['tunnel_region', 'under_region']),
-                        ('quest.c', ['nowhere_region'])]:
+                        ('quest.c', ['nowhere_region', 'nowhere_loc'])]:
         source = open(f'{src}/{file}').read()
         for name in names:
             m = re.search(rf'^int {name} = 0;\n', source, re.M)
@@ -212,7 +216,7 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(source[start:end])
             out.write(re.search(r'^static ilist collectors = NULL;\n', source, re.M).group(0))
         if file == 'day.c':
-            start, end = source.index('static rng_stream upkeep_rng;'), source.index('/* Loyalty-decay desertion check:')
+            start, end = source.index('static rng_stream upkeep_rng;'), source.index('/* Starvation flavor')
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/day.c"\n')
             out.write(source[start:end])
             start, end = source.index('static rng_stream calendar_rng;'), source.index('static int\nnear_rocky_coast(')
@@ -252,6 +256,16 @@ void drv_heal(void) { heal_characters(); }
 void drv_dogs(void) { dogs_bark_at_hidden_chars(); }
 void drv_ring(void) { increment_stone_ring_aura(); }
 void drv_curse(void) { noncreator_curse_erode(); }
+void drv_aura(void) { increment_current_aura(); }
+void drv_ability(void) { decrement_ability_shroud(); }
+void drv_shroud(void) { decrement_region_shroud(); }
+void drv_hinder(void) { decrement_meditation_hinder(); }
+void drv_barrier(void) { decrement_loc_barrier(); }
+void drv_loyalty(void) { loyalty_decay(); }
+void drv_pillage(void) { pillage_decay(); }
+void drv_relic(void) { relic_decay(); }
+void drv_hide_mage(void) { hide_mage_decay(); }
+int drv_loyal_roll(int who, int sub) { return up_loyal(who, sub, 1, 2); }
 void drv_city_gold(void) { move_city_gold(); }
 void drv_taxes(void) { collect_taxes(); }
 void drv_claim(void) { add_claim_gold(); }
@@ -404,6 +418,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section monthly '* ]]; then
+   [ "$status" = 0 ] || die "unexpected monthly aura/loyalty status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section accounts '* ]]; then
    [ "$status" = 0 ] || die "unexpected faction settlement status $status in section $i"
   fi

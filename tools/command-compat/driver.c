@@ -47,6 +47,9 @@ void drv_coastal(void), drv_mine(int mine), drv_inn(int inn), drv_loc_damage(voi
 void drv_heal(void);
 int drv_heal_roll(int who, int sub, int low, int high);
 void drv_dogs(void), drv_ring(void), drv_curse(void);
+void drv_aura(void), drv_ability(void), drv_shroud(void), drv_hinder(void);
+void drv_barrier(void), drv_loyalty(void), drv_pillage(void), drv_relic(void), drv_hide_mage(void);
+int drv_loyal_roll(int who, int sub);
 void drv_city_gold(void), drv_replenish(int where, int item, int qty);
 void drv_taxes(void), drv_claim(void), drv_np(void), drv_unformed(void);
 void drv_special_open(void), drv_special_close(void), drv_clear_sent(void);
@@ -372,6 +375,33 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "bark")) { sscanf(line,"%*s %d",&n); bark_dogs(n); }
   else if (!strcmp(op, "ring")) drv_ring();
   else if (!strcmp(op, "curse")) drv_curse();
+  else if (!strcmp(op, "monthly")) {
+   sscanf(line,"%*s %31s %d %d",text,&n,&a);
+   if (!strcmp(text,"aura")) drv_aura();
+   else if (!strcmp(text,"ability")) drv_ability();
+   else if (!strcmp(text,"shroud")) drv_shroud();
+   else if (!strcmp(text,"hinder")) drv_hinder();
+   else if (!strcmp(text,"barrier")) drv_barrier();
+   else if (!strcmp(text,"loyalty")) drv_loyalty();
+   else if (!strcmp(text,"pillage")) drv_pillage();
+   else if (!strcmp(text,"relic")) drv_relic();
+   else if (!strcmp(text,"hide")) drv_hide_mage();
+   else if (!strcmp(text,"roll")) printf("loyal roll %d %d %d\n",n,a,drv_loyal_roll(n,a));
+   else if (!strcmp(text,"loyal")) printf("loyal %d %s\n",n,loyal_s(n));
+   else if (!strcmp(text,"state")) {
+    loop_char(n) {
+     struct entity_char *p=rp_char(n); struct char_magic *m=rp_magic(n);
+     printf("monthly char %d char %d magic %d fresh %d new %d\n",n,p!=NULL,m!=NULL,p?p->fresh_hire:0,p?p->new_lord:0);
+     save_box(stdout,n);
+    } next_char;
+    loop_loc(n) {
+     struct entity_subloc *p=rp_subloc(n);
+     printf("monthly loc %d loc %d subloc %d recent %d\n",n,rp_loc(n)!=NULL,p!=NULL,p?p->recent_loot:0);
+     save_box(stdout,n);
+    } next_loc;
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "events")) daily_events();
   else if (!strcmp(op, "event_days")) drv_event_days();
   else if (!strcmp(op, "bark_roll")) {
@@ -804,6 +834,13 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"magician")) p_magic(n)->magician = (schar)a;
    else if (!strcmp(text,"max_aura")) p_magic(n)->max_aura = a;
    else if (!strcmp(text,"cur_aura")) p_magic(n)->cur_aura = a;
+   else if (!strcmp(text,"ability_shroud")) p_magic(n)->ability_shroud = (short)a;
+   else if (!strcmp(text,"hinder")) p_magic(n)->hinder_meditation = (schar)a;
+   else if (!strcmp(text,"hide_mage")) p_magic(n)->hide_mage = (schar)a;
+   else if (!strcmp(text,"shroud")) p_loc(n)->shroud = (short)a;
+   else if (!strcmp(text,"fresh")) p_char(n)->fresh_hire = (schar)a;
+   else if (!strcmp(text,"recent")) p_subloc(n)->recent_loot = (schar)a;
+   else if (!strcmp(text,"relic_decay")) p_item_magic(n)->relic_decay = (short)a;
    else if (!strcmp(text,"aura_bonus")) p_item_magic(n)->aura_bonus = (short)a;
    else if (!strcmp(text,"auraculum")) p_magic(n)->auraculum = a;
    else if (!strcmp(text,"item_aura")) p_item_magic(n)->aura = (short)a;
@@ -974,6 +1011,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "under_region")) under_region = n;
    else if (!strcmp(text, "tunnel_region")) tunnel_region = n;
    else if (!strcmp(text, "nowhere_region")) nowhere_region = n;
+   else if (!strcmp(text, "nowhere_loc")) nowhere_loc = n;
    else if (!strcmp(text, "hades_player")) hades_player = n;
    else if (!strcmp(text, "faery_player")) faery_player = n;
    else if (!strcmp(text, "backlinks")) pledge_backlinks = n;

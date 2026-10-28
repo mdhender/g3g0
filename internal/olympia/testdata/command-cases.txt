@@ -14486,3 +14486,438 @@ save 9000
 save 9001
 save 9002
 save 9003
+
+section monthly aura asymmetric artifacts per entry not quantity and cap
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 410 4 0
+entity 411 4 0
+entity 412 4 0
+entity 413 4 0
+field 1000 magician 1
+field 1000 max_aura 10
+field 1000 cur_aura 0
+field 1000 auraculum 410
+field 410 item_aura 8
+field 411 aura_bonus 7
+field 412 aura_bonus -2
+field 413 aura_bonus 30
+inventory 1000 410 1
+inventory 1000 411 19
+inventory 1000 412 3
+inventory 1000 413 0
+field 1001 magician 1
+field 1001 max_aura 9
+field 1001 cur_aura 8
+inventory 1001 411 1
+field 1002 magician 1
+field 1002 max_aura -4
+field 1002 cur_aura -3
+field 1003 magician 1
+field 1003 max_aura 5
+field 1003 cur_aura 9
+field 1004 max_aura 20
+field 1004 cur_aura 2
+monthly aura
+monthly state
+monthly aura
+monthly state
+field 1000 cur_aura 22
+monthly aura
+monthly state
+
+section monthly aura auraculum must actually be held and absent magic not allocated
+entity 410 4 0
+field 410 item_aura 9
+field 410 aura_bonus 3
+field 1000 magician 1
+field 1000 max_aura 20
+field 1000 auraculum 410
+field 1000 cur_aura 0
+monthly aura
+save 1000
+inventory 1000 410 6
+monthly aura
+save 1000
+entity 1002 2 0
+monthly state
+
+section monthly positive negative and absent shrouds hinder hide barrier pillage
+place 9000
+entity 9001 3 3
+entity 9002 3 3
+entity 9003 3 3
+entity 9004 3 3
+field 200 touched 9000
+field 201 touched 9001
+entity 1002 2 0
+entity 1003 2 0
+field 1000 ability_shroud 2
+field 1000 hinder 1
+field 1000 hide_mage 127
+field 1001 ability_shroud -1
+field 1001 hinder -128
+field 1001 hide_mage -1
+field 1002 ability_shroud 1
+field 1002 hinder 2
+field 1002 hide_mage 1
+field 9000 barrier 1
+field 9000 shroud 1
+field 9000 pillage 1
+field 9001 barrier 2
+field 9001 shroud 2
+field 9001 pillage 2
+field 9001 recent 1
+field 9002 barrier -1
+field 9002 shroud -32768
+field 9002 pillage -1
+field 9003 pillage -128
+monthly ability
+monthly shroud
+monthly hinder
+monthly barrier
+monthly pillage
+monthly hide
+monthly state
+readlog 200
+readlog 201
+monthly ability
+monthly shroud
+monthly hinder
+monthly barrier
+monthly pillage
+monthly hide
+monthly state
+readlog 200
+readlog 201
+
+section monthly region shroud skill filtering nested stacks noncharacter prune and notifications
+place 9000
+link 1000 1001
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 9100 3 14
+field 1001 lord 201
+field 1002 lord 200
+field 1003 lord 201
+field 1004 lord 201
+link 1001 1002
+link 9000 1003
+link 9000 9100
+link 9100 1004
+entity 843 5 43
+learn 1000 843 1 0
+learn 1001 843 2 0
+learn 1002 843 2 0
+learn 1004 843 2 0
+field 9000 shroud 3
+monthly shroud
+monthly state
+readlog 200
+readlog 201
+monthly shroud
+monthly shroud
+monthly shroud
+monthly state
+readlog 200
+readlog 201
+
+section monthly loyalty all kinds fresh skip absent records and contract before decrement
+master 0
+set turn 9
+entity 204 1 0
+set indep 204
+place 9000
+link 9000 1001
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 1006 2 0
+entity 1007 2 0
+entity 1008 2 0
+entity 1009 2 0
+entity 1010 2 0
+entity 1011 2 0
+field 1000 loyal 0
+field 1000 rate -7
+field 1001 loyal 1
+field 1001 rate 50
+field 1002 loyal 2
+field 1002 rate 9
+field 1003 loyal 4
+field 1003 rate -9
+field 1004 loyal 1
+field 1004 rate 0
+field 1004 fresh 1
+field 1005 loyal 3
+field 1005 rate 0
+field 1005 fresh -1
+field 1006 loyal 5
+field 1006 rate 0
+field 1006 fresh 1
+field 1007 loyal 1
+field 1007 rate 501
+field 1008 loyal 1
+field 1008 rate 510
+field 1010 loyal 5
+field 1010 rate 2
+field 1011 loyal 3
+field 1011 rate 2
+monthly loyalty
+monthly state
+monthly loyal 1000
+monthly loyal 1001
+monthly loyal 1002
+monthly loyal 1003
+monthly loyal 1005
+monthly loyal 1010
+readlog 12
+readlog 200
+
+section monthly loyalty keyed hits misses repeat day and turn guards
+master 0
+set turn 9
+monthly roll 1000 0
+monthly roll 1000 1
+monthly roll 1001 0
+monthly roll 1001 1
+monthly roll 1002 0
+monthly roll 1002 1
+monthly roll 1003 0
+monthly roll 1003 1
+monthly roll 1004 0
+monthly roll 1004 1
+set day 30
+monthly roll 1000 0
+monthly roll 1000 1
+master 1
+monthly roll 1000 0
+monthly roll 1000 1
+set turn 10
+monthly roll 1000 0
+monthly roll 1000 1
+monthly roll 1001 0
+monthly roll 1001 1
+master 0
+monthly roll 1000 0
+monthly roll 1000 1
+
+section monthly loyalty contract fear low rates real desertions and clamps
+master 0
+set turn 9
+entity 204 1 0
+set indep 204
+place 9000
+link 9000 1001
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 1006 2 0
+entity 1007 2 0
+field 1002 lord 200
+field 1003 lord 201
+field 1004 lord 201
+field 1005 lord 200
+field 1006 lord 200
+field 1007 lord 201
+link 9000 1002
+link 9000 1003
+link 9000 1004
+link 9000 1005
+link 9000 1006
+link 9000 1007
+field 1000 loyal 1
+field 1000 rate 49
+field 1001 loyal 1
+field 1001 rate 0
+field 1002 loyal 1
+field 1002 rate -1
+field 1003 loyal 1
+field 1003 rate 50
+field 1004 loyal 3
+field 1004 rate 1
+field 1005 loyal 3
+field 1005 rate 0
+field 1006 loyal 3
+field 1006 rate -1
+field 1007 loyal 3
+field 1007 rate 2
+monthly roll 1000 0
+monthly roll 1001 0
+monthly roll 1002 0
+monthly roll 1004 1
+monthly roll 1005 1
+monthly roll 1006 1
+monthly loyalty
+monthly state
+pstate 200
+pstate 201
+pstate 204
+readlog 12
+readlog 200
+readlog 201
+readlog 204
+monthly loyalty
+monthly state
+readlog 12
+
+section monthly loyalty summon one then zero release retains owner and unstack order
+place 9000
+link 1000 1001
+field 1001 loyal 5
+field 1001 rate 1
+field 1001 moving 9
+field 1001 release 1
+field 200 unit 1001
+monthly loyalty
+monthly state
+monthly loyalty
+monthly state
+monthly loyalty
+monthly state
+readlog 200
+
+section monthly relic owned one two zero negative and nonrelic with real lore transfer
+place 9000
+entity 9999 3 3
+set nowhere_loc 9999
+entity 888 5 43
+entity 889 5 43
+entity 410 4 69
+entity 411 4 69
+entity 412 4 69
+entity 413 4 69
+entity 414 4 69
+entity 415 4 0
+name 410 First relic
+name 411 Second relic
+name 413 Negative relic
+field 410 unique 1000
+field 411 unique 1001
+field 412 unique 1000
+field 413 unique 9000
+field 414 unique 1000
+field 415 unique 1000
+field 410 relic_decay 1
+field 411 relic_decay 2
+field 412 relic_decay 0
+field 413 relic_decay -1
+field 415 relic_decay 1
+field 410 lore 888
+field 411 lore 889
+additem 1000 410 1
+additem 1001 411 1
+inventory 1000 412 1
+inventory 9000 413 1
+inventory 1000 414 1
+inventory 1000 415 1
+monthly relic
+save 410
+save 411
+save 412
+save 413
+save 414
+save 415
+save 1000
+save 1001
+save 9999
+pstate 200
+lore_state 200
+readlog 200
+monthly relic
+save 410
+save 411
+save 413
+save 1000
+save 1001
+save 9999
+lore_state 200
+readlog 200
+
+section monthly loyalty real WAIT interruption independent NP exclusion stack extraction dependents and orders
+master 0
+set turn 9
+entity 204 1 0
+set indep 204
+place 9000
+link 9000 1001
+entity 1002 2 0
+entity 1003 2 0
+field 1002 lord 1000
+field 1003 lord 200
+link 1000 1002
+link 1000 1003
+field 200 unit 1000
+field 200 unit 1001
+field 200 unit 1002
+field 200 unit 1003
+field 200 np 11
+field 1000 loyal 3
+field 1000 rate 1
+field 1000 pledge 1001
+field 1000 hostile 201
+field 1000 moving 8
+field 1002 moving 9
+field 1003 moving 7
+set backlinks 1
+resolve_wait
+queue wait time 100
+load
+do
+queue hide 1
+orders 200 1002 wait time 4
+monthly roll 1000 1
+monthly loyalty
+monthly state
+pstate 200
+pstate 204
+dump
+lists
+orders_file 200
+readlog 12
+readlog 200
+readlog 204
+
+section monthly loyalty fear misses clamp zero and remain until next turn hit
+master 0
+set turn 9
+place 9000
+link 9000 1001
+entity 204 1 0
+set indep 204
+field 1001 loyal 3
+field 1001 rate 1
+monthly roll 1001 1
+monthly loyalty
+monthly state
+monthly loyalty
+monthly state
+master 1
+set turn 10
+monthly roll 1001 1
+monthly loyalty
+monthly state
+readlog 200
+readlog 204
+
+section monthly summon negative releases without ownership change and relic short wrap
+place 9000
+link 1000 1001
+field 1001 loyal 5
+field 1001 rate -1
+entity 410 4 69
+field 410 unique 1000
+field 410 relic_decay -32768
+inventory 1000 410 1
+entity 9999 3 3
+set nowhere_loc 9999
+monthly loyalty
+monthly relic
+monthly state
+save 410
+readlog 200

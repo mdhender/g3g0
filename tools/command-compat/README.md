@@ -2441,3 +2441,86 @@ Bounded `go vet ./...` and fresh `go test -count=1 ./...` passed afterward;
 test binaries used the shared `run-limited.sh` executor. Every compat call
 used `G3_REPO=$PWD/tmp/upstream.git`. No full-world run, new verified bug or
 blocker. `git diff --check` findings are only literal C trailing whitespace.
+
+## Monthly aura, shrouds and loyalty (#85)
+
+This extends the same real-C command harness, not a separate upkeep tool.
+Pin: `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`. Complete definitions newly
+extracted (inclusive original source ranges):
+
+| Source | Definitions and ranges |
+| --- | --- |
+| `day.c` | `increment_current_aura` 722–774; `decrement_ability_shroud` 806–825; `decrement_loc_barrier` 828–853; `decrement_region_shroud` 856–876; `decrement_meditation_hinder` 879–898 |
+| `day.c` | `loyalty_decay` 1007–1075; `relic_decay` 1078–1108; `pillage_decay` 1111–1130; `hide_mage_decay` 1945–1963 |
+| `scry.c` | `notify_loc_shroud` 333–359 |
+| `u.c` | `loyal_s` 1569–1605 |
+
+The original guarded upkeep prefix now spans **day.c 50–115**, including the
+whole `up_loyal` definition (109–114). Its tags, persistent turn guard and
+keyed leaves are C source, not harness replacements. The original
+`quest.c:62` `nowhere_loc` global is also extracted alongside `nowhere_region`.
+`scry.c` is the only newly tracked source dependency; the pin is unchanged.
+
+Production reuses effective aura/auraculum, the world's persistent
+`streams.UpLoyal`, real `unitDeserts`/`setLord`/interruption, NP accounting,
+extraction, inventory transfer/lore, output and save-box implementations.
+Nothing returns fabricated successful gameplay. `postMonth` is unchanged:
+the nine new phases remain in exact C order after unformed settlement.
+
+The twelve new `monthly` sections all require status **0**. Small cases prove:
+
+- Aura recovery per positive inventory **entry**, not quantity or bonus:
+  quantities **19/3** and bonuses **7/-2** give **0 → 6 → 12** with the
+  auraculum. The effective **23** cap is reached from **22** without overshoot;
+  other cases cover one-below cap, already-over-max, negative innate aura,
+  an unheld/held auraculum, nonmagicians and absent magic/character records.
+- Shroud/barrier/hinder/hide timers **2/1/0/negative** and absent records,
+  exact barrier disappearance logs, nested skilled recipients versus
+  learning/unskilled characters and noncharacter subtree pruning. Pillage
+  respects recent-loot, decrements negative values and wraps signed-byte
+  **-128 → 127**, unlike the positive-only magical timers.
+- Every loyalty kind, positive/negative fresh-hire skips and absent records.
+  Contract **49/50**, zero/negative rates and **501/510** distinguish the
+  pre-decrement desertion gate and the **max(50, rate/10)** charge. Fear
+  **2/1/0/-1** tests after decrement, then clamps misses at zero. Keyed hit
+  and miss controls replay across days and same-turn master changes, and
+  reseed on a new turn. A real fear miss survives twice, then deserts on
+  the next-turn hit. Summon **1 → 0** stays stacked until the following call;
+  zero/negative release unstacks, restores actions and retains its owner.
+- Real fear desertion interrupts running WAIT, clears run/wait queues and
+  queued orders, removes attitudes/pledge, resets backlinks, extracts the
+  stack and reswears dependents to their old lord. Its independent-faction
+  destination correctly leaves **11 NP** unchanged (no regular-player NP
+  refund/charge). Saved unit/owner/here order, output and order-file bytes
+  are compared, not just a callback trace.
+- Owned relic timers **1/2/0/-1**, an absent magic record, nonrelic exclusion
+  and short **-32768 → 32767**. Real acquisition queues lore **410/411**;
+  transfer moves the actual inventory and unique owner to nowhere, retains
+  known/lore state and emits exact vanish messages. Repeated negative decay
+  remains negative and transfers again, as C does. These raw signed-field
+  controls alone are not evidence of a publicly reachable upstream defect.
+
+Missing-dependency rejection still precedes monthly status checks and
+`--update`: a temporary driver emitted the marker with status 134 at section
+636; ordinary and update modes both rejected it with **status 2**, leaving
+the recording hash unchanged. The probe was removed after verification.
+
+Two pinned C runs and Go match **648 sections / 48420 lines / 815585 bytes**.
+Previous output **636 sections / 46887 lines / 791460 bytes** and input
+**14488 lines / 259432 bytes** remain exact byte prefixes. New input:
+**14923 lines / 267413 bytes**. Recording SHA-256:
+`490f2f26175f108f7c5f7082dfc00f52ee947dd369f42a04abca496fde747673`.
+Expected bytes are solely C-generated, including trailing whitespace.
+
+Sequential final checks passed: command **648/48420**, move **135/7150**,
+helper **37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+default turn (raw status/stdout/stderr and one state file), then bounded vet
+and fresh bounded default tests with the shared engine executor. Every tool
+used `G3_REPO=$PWD/tmp/upstream.git`. No new verified bug/blocker, full-world
+run, independent fix, commit, push, task closure/tick or stage-2 work.
+
+Version **0.63.0-alpha**; all changes remain **uncommitted** for acceptance.
+Scope clarification: https://github.com/mdhender/g3g0/issues/85#issuecomment-6462040567.
+`garrison_gold` still stops at its unchanged #116 boundary; no successful
+full `postMonth`, maintenance/income, command-family or report-body scope.

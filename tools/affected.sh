@@ -95,7 +95,7 @@ reads() {
 		olympia/perm.c | olympia/storm.c) return 0 ;;
 		olympia/c1.c | olympia/produce.c) return 0 ;;
 		olympia/move.c | olympia/day.c | olympia/seed.c | olympia/io.c) return 0 ;;
-		olympia/buy.c | olympia/lore.c) return 0 ;;
+		olympia/buy.c | olympia/lore.c | olympia/scry.c) return 0 ;;
 		olympia/npc.c | olympia/hades.c | olympia/faery.c | olympia/savage.c) return 0 ;;
 		olympia/necro.c | olympia/report.c) return 0 ;;
 		olympia/cloud.c | olympia/tunnel.c | olympia/quest.c) return 0 ;;

@@ -155,6 +155,19 @@ position (#116 after maintenance #87), so #84 does not accept full post_month
 integration. Run command/move/helper/rng/code/loadsave/turn-driver/default-turn
 sequentially before bounded vet/fresh defaults. No duplicate upkeep/garrison
 harness, new source dependency/pin or full-world success is implied.
+Monthly aura/shroud/loyalty decay (#85) extends command-compat with complete
+day.c increment_current_aura, decrement_ability_shroud/region_shroud,
+decrement_meditation_hinder/loc_barrier, loyalty_decay, pillage_decay,
+relic_decay and hide_mage_decay, plus scry.c notify_loc_shroud and u.c loyal_s.
+Small recordings distinguish per-entry artifact recovery, signed countdown
+quirks, skilled shroud recipients, all loyalty kinds and pre/post-decrement
+gates, keyed hit/miss and turn guards, real desertion/WAIT/stack/dependents,
+independent NP exclusion, and relic ownership/inventory/lore. The real shared
+upkeep stream and lifecycle/output/save closure are reused; post_month's
+order is unchanged and garrison_gold remains the #116 stop. scry.c is newly
+tracked by affected.sh; there is no new pin or upkeep tool. Run the same
+eight comparisons sequentially before bounded vet/fresh default tests.
+No full-world, maintenance/income, report-body or stage-2 scope is implied.
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks
 through dispatch/evenings, including queued multi-day NPC MOVE → WAIT. Also run
 move-compat for the shared travel, message and raft crew-loss contracts; full
@@ -345,6 +358,6 @@ A tool needs rerunning after a pin move if any file it reads changed; [`affected
 | [`turn-compat`](turn-compat) | `testdata/` small real C snapshots and determinism manifest | the whole tree: it builds `olympia-g3` and turns `tests/olympia/fixtures/world.tgz` |
 | [`turn-driver-compat`](turn-driver-compat) | `internal/olympia/testdata/turn-{driver,phase}-c-output.txt`, `{calendar,schedule}-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `u.c`, `input.c`, `day.c`, `z.c`, `storm.c`, `seed.c`, `glob.c`, `rnd.c`; `lib/` `ilist.c`, `rng.c` |
 | [`move-compat`](move-compat) | `internal/olympia/testdata/move-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `dir.c`, `loc.c`, `u.c`, `swear.c`, `move.c`, `input.c`, `perm.c`, `stack.c`, `storm.c`, `garr.c`, `art.c`, `combat.c`, `day.c`, `code.c`, `glob.c`, `z.c`, `sout.c`, `display.c`, `use.c`, `io.c`, `seed.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `item_ents.c`, `admits.c`, `cstrings.c`, `skill_ents.c`, `trades.c`, `req_ents.c` |
-| [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `combat.c`, `art.c`, `display.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `u.c`, `dir.c`, `perm.c`, `storm.c`, `use.c`, `c1.c`, `produce.c`, `c2.c`, `immed.c`, `stealth.c`, `move.c`, `day.c`, `gm.c`, `seed.c`, `io.c`, `buy.c`, `lore.c`, `npc.c`, `hades.c`, `faery.c`, `savage.c`, `necro.c`, `report.c`, `cloud.c`, `tunnel.c`, `quest.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c`, `wait_args.c`, `flag_ents.c`, `admits.c`, `trades.c`, `req_ents.c` |
+| [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `combat.c`, `art.c`, `display.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `u.c`, `dir.c`, `perm.c`, `storm.c`, `use.c`, `c1.c`, `produce.c`, `c2.c`, `immed.c`, `stealth.c`, `move.c`, `day.c`, `gm.c`, `seed.c`, `io.c`, `buy.c`, `lore.c`, `npc.c`, `hades.c`, `faery.c`, `savage.c`, `necro.c`, `report.c`, `cloud.c`, `tunnel.c`, `quest.c`, `scry.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c`, `wait_args.c`, `flag_ents.c`, `admits.c`, `trades.c`, `req_ents.c` |
 
 `genesis-compat`, `island-compat` and `mapgen-compat` have pins of their own and are not covered here.

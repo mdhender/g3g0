@@ -440,6 +440,53 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.incrementStoneRingAura()
 		case "curse":
 			w.noncreatorCurseErode()
+		case "monthly":
+			switch action := args.word(); action {
+			case "aura":
+				w.incrementCurrentAura()
+			case "ability":
+				w.decrementAbilityShroud()
+			case "shroud":
+				w.decrementRegionShroud()
+			case "hinder":
+				w.decrementMeditationHinder()
+			case "barrier":
+				w.decrementLocBarrier()
+			case "loyalty":
+				w.loyaltyDecay()
+			case "pillage":
+				w.pillageDecay()
+			case "relic":
+				w.relicDecay()
+			case "hide":
+				w.hideMageDecay()
+			case "roll":
+				n, a := args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "loyal roll %d %d %d\n", n, a, w.streams.UpLoyal(n, a, 1, 2))
+			case "loyal":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "loyal %d %s\n", n, w.loyalS(n))
+			case "state":
+				for n := range w.loopKind(tChar) {
+					p, m := w.rpChar(n), w.rpMagic(n)
+					fresh, lord := 0, 0
+					if p != nil {
+						fresh, lord = int(p.freshHire), int(p.newLord)
+					}
+					fmt.Fprintf(&stdout, "monthly char %d char %d magic %d fresh %d new %d\n", n, b2i(p != nil), b2i(m != nil), fresh, lord)
+					w.saveBox(&stdout, n)
+				}
+				for n := range w.loopKind(tLoc) {
+					p, recent := w.rpSubloc(n), 0
+					if p != nil {
+						recent = int(p.recentLoot)
+					}
+					fmt.Fprintf(&stdout, "monthly loc %d loc %d subloc %d recent %d\n", n, b2i(w.rpLoc(n) != nil), b2i(p != nil), recent)
+					w.saveBox(&stdout, n)
+				}
+			default:
+				t.Fatalf("unknown monthly %s", action)
+			}
 		case "events":
 			w.dailyEvents()
 		case "event_days":
@@ -1067,6 +1114,20 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pMagic(n).maxAura = int32(a)
 			case "cur_aura":
 				w.pMagic(n).curAura = int32(a)
+			case "ability_shroud":
+				w.pMagic(n).abilityShroud = int16(a)
+			case "hinder":
+				w.pMagic(n).hinderMeditation = int8(a)
+			case "hide_mage":
+				w.pMagic(n).hideMage = int8(a)
+			case "shroud":
+				w.pLoc(n).shroud = int16(a)
+			case "fresh":
+				w.pChar(n).freshHire = int8(a)
+			case "recent":
+				w.pSubloc(n).recentLoot = int8(a)
+			case "relic_decay":
+				w.pItemMagic(n).relicDecay = int16(a)
 			case "aura_bonus":
 				w.pItemMagic(n).auraBonus = int16(a)
 			case "auraculum":
@@ -1354,6 +1415,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.tunnelRegion = int32(n)
 			case "nowhere_region":
 				w.nowhereRegion = int32(n)
+			case "nowhere_loc":
+				w.nowhereLoc = int32(n)
 			case "hades_player":
 				w.hadesPlayer = int32(n)
 			case "faery_player":
