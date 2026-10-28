@@ -1061,6 +1061,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			w.scanCharSkillLore()
 		case "show_lore":
 			w.showLoreSheetsState()
+		case "lore_sheet":
+			w.deliverLoreSheet(args.num(t), args.num(t), args.num(t))
+		case "deliver_lore":
+			w.deliverLore(args.num(t), args.num(t))
 		case "gm_lore":
 			w.gmShowAllSkillsState(args.num(t))
 		case "lore_root":
@@ -2671,4 +2675,23 @@ func TestCommandGarrisonAutoAttackBoundary(t *testing.T) {
 		}
 	}()
 	w.checkAllAutoAttacks()
+}
+
+// #159 must not silently replace #160's offered/research renderer with only
+// a sheet. The stage-1 projection retains its reads, not this real entry point.
+func TestDeliverLoreSkillBoundary(t *testing.T) {
+	w := newWorld()
+	var stdout, stderr strings.Builder
+	w.stdout, w.stderr = &stdout, &stderr
+	w.allocBox(200, tPlayer, subPlRegular)
+	w.allocBox(700, tSkill, 0)
+	defer func() {
+		if r := recover(); r != notImplemented("deliver_skill_lore (#160)") {
+			t.Fatalf("skill delivery boundary = %v", r)
+		}
+		if stdout.Len() != 0 || stderr.Len() != 0 || w.rpPlayer(200) != nil {
+			t.Fatal("skill delivery fabricated output or allocated a recipient")
+		}
+	}()
+	w.deliverLore(200, 700)
 }

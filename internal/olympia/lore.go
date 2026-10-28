@@ -6,6 +6,7 @@ package olympia
 import (
 	"bytes"
 	"fmt"
+	"strings"
 
 	"github.com/mdhender/g3g0/internal/clib"
 )
@@ -73,13 +74,47 @@ func (w *world) scanCharSkillLore() {
 	}
 }
 
-// deliverLoreSheetState is the input/diagnostic projection of lore.c:49–123.
-// Text, @ substitutions and the two legal $ expansions only write deferred
-// report artifacts. Reading the sheet and validating functions cannot be
-// deferred: an unknown function emits stderr and aborts, even in a silent
-// faction. ReadFile preserves fopen success followed by a read error (e.g.
-// a directory), and getlin preserves C's line, NUL and final-line semantics.
-func (w *world) deliverLoreSheetState(num int) {
+// loreFunction is complete lore.c:9–44. A nil emit is used only by the
+// retained stage-1 queue/GM projections, whose rendering belongs to #160.
+func (w *world) loreFunction(fn string, emit func(string, ...any)) {
+	switch fn {
+	case "capturable_animals", "animal_fighters":
+		if emit == nil {
+			return
+		}
+		for i := range w.loopKind(tItem) {
+			p := w.rpItem(i)
+			if p == nil || p.animal == 0 {
+				continue
+			}
+			if fn == "capturable_animals" {
+				if p.capturable != 0 {
+					emit("    %s", w.boxName(i))
+				}
+			} else if p.attack != 0 || p.defense != 0 || p.missile != 0 || i == itemGhostWarrior {
+				emit("    %-20s %s", w.boxName(i), sout("(%d,%d,%d)", p.attack, p.defense, p.missile))
+			}
+		}
+	default:
+		fmt.Fprintf(w.stderr, "bad lore sheet function: %s\n", fn)
+		assert(false, "olympia/lore.c", 43, "FALSE")
+	}
+}
+
+// deliverLoreSheet is complete lore.c:47–117. Header output precedes path
+// validation/open, and display-code conversion follows a successful open.
+func (w *world) deliverLoreSheet(who, num, displayNum int) {
+	w.commandOut(who, "")
+	w.matchLines(who, w.boxName(displayNum))
+	w.loreSheetInput(num, displayNum, func(format string, args ...any) {
+		w.commandOut(who, format, args...)
+	})
+}
+
+// loreSheetInput is the single reader shared with the stage-1 projections.
+// They retain real input/errors until #160 replaces them; they do not invoke
+// real delivery or manufacture output bits. No sheet is opened twice.
+func (w *world) loreSheetInput(num, displayNum int, emit func(string, ...any)) {
 	var path string
 	if w.kind(num) == tSkill {
 		path = sout("%s/lore/%d/%d", w.libdir, w.skillSchool(num), num)
@@ -88,23 +123,61 @@ func (w *world) deliverLoreSheetState(num int) {
 	}
 	data, err := clib.ReadFile(path)
 	if err != nil {
+		if emit != nil {
+			emit("<lore sheet not available>")
+		}
 		fmt.Fprintf(w.stderr, "can't open %s: ", path)
 		clib.Perror(w.stderr, "", err)
 		return
 	}
+	code := ""
+	if emit != nil {
+		code = boxCodeLess(displayNum)
+	}
 	fp := bytes.NewReader(data)
 	for line := getlin(fp); line != nil; line = getlin(fp) {
-		if len(*line) == 0 || (*line)[0] != '$' {
+		if strings.HasPrefix(*line, "#") {
 			continue
 		}
-		switch fn := (*line)[1:]; fn {
-		case "capturable_animals", "animal_fighters":
-			// Only artifact text, no state/diagnostic effects.
-		default:
-			fmt.Fprintf(w.stderr, "bad lore sheet function: %s\n", fn)
-			assert(false, "olympia/lore.c", 43, "FALSE")
+		if strings.HasPrefix(*line, "$") {
+			w.loreFunction((*line)[1:], emit)
+			continue
+		}
+		if emit != nil {
+			var text strings.Builder
+			for p := 0; p < len(*line); {
+				if (*line)[p] == '@' {
+					text.WriteString(code)
+					for p < len(*line) && (*line)[p] == '@' {
+						p++
+					}
+				} else {
+					text.WriteByte((*line)[p])
+					p++
+				}
+			}
+			emit("%s", text.String())
 		}
 	}
+}
+
+// deliverLore is complete lore.c:202–221, except for the explicit #160
+// dependency: real skill delivery must not silently succeed without its
+// offered/research rendering. The stage-1 readers below remain separate roots.
+func (w *world) deliverLore(who, num int) {
+	switch w.kind(num) {
+	case tSkill:
+		panic(notImplemented("deliver_skill_lore (#160)"))
+	case tItem:
+		lore := 0
+		if p := w.rpItemMagic(num); p != nil {
+			lore = int(p.lore)
+		}
+		w.deliverLoreSheet(who, lore, num)
+	default:
+		w.deliverLoreSheet(who, num, num)
+	}
+	w.commandOut(who, "")
 }
 
 func (w *world) deliverLoreState(num int) {
@@ -115,7 +188,7 @@ func (w *world) deliverLoreState(num int) {
 			num = 0
 		}
 	}
-	w.deliverLoreSheetState(num)
+	w.loreSheetInput(num, num, nil)
 }
 
 // showLoreSheetsState is lore.c:259–294's state and raw diagnostic effects.
@@ -158,7 +231,7 @@ func (w *world) gmShowAllSkillsState(pl int) {
 	for _, schools := range []bool{true, false} {
 		for sk := range w.loopKind(tSkill) {
 			if (w.skillSchool(sk) == sk) == schools {
-				w.deliverLoreSheetState(sk)
+				w.loreSheetInput(sk, sk, nil)
 			}
 		}
 	}

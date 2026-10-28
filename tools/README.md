@@ -6,6 +6,49 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Lore sheet rendering (#159)
+
+Existing lore.go completes pinned lore.c functions **9–44**, sheet **47–117**
+and delivery **202–221**, with real skill delivery explicitly NYI pending
+#160's offered/research renderer. One shared reader replaces the diagnostic
+sheet implementation; existing stage-1 queue/GM projections retain their
+reads without real artifact output until replaced. No duplicate reads/effects,
+new queue/GM/main wiring, successful dependency stub or new source/pin.
+
+At **0.99.0-alpha**, sixteen appended cases match unchanged complete real C
+twice and Go: **1158 sections / 77449 lines / 1508521 output bytes**. Entire
+inherited **1142 sections / 77030 lines / 1499775 output bytes** and
+**473763 input bytes** remain exact prefixes. Actual item-chain fixtures
+reach both dollar expansions and ghost **18**'s zero-stat fighter exception;
+item/display remapping, @ runs, comments/blanks/NUL/CR/final lines, missing
+opens versus successful-open read errors, invalid functions and header/assert
+order match. Repeated changed input borrows the renamed cached inode with
+**227** exact bytes. Constants, complete C definitions and reached output
+are verified. See [closure, hashes and evidence](command-compat#lore-sheet-rendering-159).
+
+Four missing-dependency probes (return **0** / abort **134**, default/update)
+reject with harness **2** at section **1156**, before status/update acceptance,
+leaving the recording hash unchanged. Probes and matching captures removed.
+Command refresh/default, move/helper/RNG/code/loadsave/turn-driver/default
+turn pass sequentially, followed by bounded vet and fresh bounded tests
+(Olympia **1.812s**). The new NYI test initially omitted its player box;
+the fixture was corrected and vet/fresh tests pass on rerun. Logs:
+`tmp/issue159-*.log`. Every compat invocation explicitly uses isolated
+`G3_REPO=$PWD/tmp/upstream.git`; engines use shared run_limited.
+
+All ten open issues audited, including unlabeled ones; only #159–166 and
+trackers #19/#132, no bug/follow-C. No new verified defect/blocking prerequisite.
+No whole-world/lifecycle or stage-exit acceptance: latest parent strict #158
+remains red with eight report-byte differences, engines **0**, matching
+streams/paths/types/modes, exit **1** before 13 lifecycle controls. G3 #358/#359
+unchanged/nonblocking; malformed **C136/Go2** is not parity. No commit/push,
+issue/checklist edits or changes to `tmp/parent-stage2-turn`.
+
+Independent parent review verifies all three task C definitions unchanged
+exactly once and both inherited recording prefixes. All eight routine tools,
+bounded vet and fresh bounded tests pass (Olympia **1.744s**);
+logs `tmp/parent159-*.log`. No new strict integration acceptance is claimed.
+
 ## Complete skills, provinces and summary root (#158)
 
 Existing summary.go completes summary.c skills/spells **179–280**, provinces

@@ -326,6 +326,7 @@ int immed_see_all, month_done, show_combat_flag;
         for _, text in sorted(matches):
             out.write(text)
     out.write('''
+void drv_lore_sheet(int who, int num, int display_num) { deliver_lore_sheet(who, num, display_num); }
 char *drv_summary_trunc_name(int who) { return summary_trunc_name(who); }
 int drv_sum_fighters(int who) { return sum_fighters(who); }
 void drv_unit_summary_sup(int pl, int who) { unit_summary_sup(pl, who); }
@@ -596,6 +597,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section lore render '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section lore render invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected lore render status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section location root '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

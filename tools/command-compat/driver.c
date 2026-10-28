@@ -15,6 +15,7 @@
 void glob_init(void);
 void init_lower(void);
 void drv_read_boxes(char *path);
+void drv_lore_sheet(int who, int num, int display_num);
 int drv_load(struct command *c);
 int find_command(char *s);
 void drv_state(struct command *c, int s);
@@ -787,6 +788,12 @@ int main(int argc, char **argv)
   }
   else if (!strcmp(op, "skill_lore")) scan_char_skill_lore();
   else if (!strcmp(op, "show_lore")) show_lore_sheets();
+  else if (!strcmp(op, "lore_sheet")) {
+   sscanf(line,"%*s %d %d %d",&n,&a,&b); drv_lore_sheet(n,a,b);
+  }
+  else if (!strcmp(op, "deliver_lore")) {
+   sscanf(line,"%*s %d %d",&n,&a); deliver_lore(n,a);
+  }
   else if (!strcmp(op, "gm_lore")) {
    sscanf(line,"%*s %d",&n); gm_show_all_skills(n);
   }

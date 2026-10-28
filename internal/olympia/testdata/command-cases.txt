@@ -24965,3 +24965,205 @@ section report invalid summary skill school cycle preserves actual source assert
 entity 700 5 0
 field 700 required 700
 report summary_skills
+
+section lore render item lore id differs from display id comments blanks and contiguous substitutions
+lore_root
+lore_dir lore
+lore_dir lore/etc
+entity 300 4 0
+name 300 Painted tablet
+field 300 lore 777
+lore_file lore/etc/777 #$not_a_function|@ @@ @@@@ x@y@@z| #ordinary|  $ordinary||last @
+sout route -2 2
+deliver_lore 200 300
+readfile log/200
+sout state
+save 300
+lore_state 200
+
+section lore render item remaps skill path but retains item header and substitution
+lore_root
+lore_dir lore
+lore_dir lore/700
+entity 300 4 0
+name 300 Ivory scroll
+entity 700 5 0
+name 700 School
+entity 701 5 0
+name 701 Leaf
+field 701 required 700
+field 300 lore 701
+lore_file lore/700/701 Study @@@ not the lore id.
+deliver_lore 1000 300
+readfile log/200
+save 300
+save 701
+
+section lore render direct skill sheet uses prerequisite school and separate display
+lore_root
+lore_dir lore
+lore_dir lore/700
+entity 700 5 0
+entity 701 5 0
+field 701 required 700
+lore_file lore/700/701 Leaf @|#ignored|
+lore_sheet 201 701 1001
+readfile log/201
+
+section lore render default nonitem delivery trailing blank and missing item lore zero
+lore_root
+lore_dir lore
+lore_dir lore/etc
+entity 9000 3 3
+name 9000 Old place
+entity 300 4 0
+name 300 Unmapped item
+lore_file lore/etc/9000 Location @
+lore_file lore/etc/0 Default @
+deliver_lore 200 9000
+deliver_lore 200 300
+readfile log/200
+save 300
+
+section lore render missing open header placeholder diagnostic and trailing blank
+lore_root
+entity 300 4 0
+name 300 Missing tablet
+field 300 lore 777
+set immediate 1
+deliver_lore 200 300
+
+section lore render enotdir preserves real missing open diagnostics
+lore_root
+lore_file lore not a directory
+entity 300 4 0
+field 300 lore 777
+deliver_lore 200 300
+readfile log/200
+
+section lore render successful directory open read error has header but no placeholder
+lore_root
+lore_dir lore
+lore_dir lore/etc
+lore_dir lore/etc/777
+entity 300 4 0
+field 300 lore 777
+deliver_lore 200 300
+readfile log/200
+
+section lore render actual NUL CR blank and final nonnewline bytes
+lore_root
+lore_dir lore
+lore_dir lore/etc
+entity 300 4 0
+field 300 lore 777
+admission hex lore/etc/777 23636f6d6d656e7400780a0040780a410042400a404000780a0a43520d0a66696e616c204040
+deliver_lore 200 300
+readfile log/200
+
+section lore render both dollar functions actual item chain and every fighter predicate
+lore_root
+lore_dir lore
+lore_dir lore/etc
+entity 300 4 0
+field 300 lore 777
+entity 310 4 0
+name 310 Capturable only
+field 310 animal 1
+field 310 capturable 1
+entity 309 4 0
+name 309 Attack animal
+field 309 animal 1
+field 309 attack 12
+entity 311 4 0
+name 311 Defense animal
+field 311 animal 1
+field 311 defense -3
+entity 308 4 0
+name 308 Missile animal
+field 308 animal 1
+field 308 missile 7
+field 308 capturable -1
+entity 18 4 0
+name 18 Ghost exception
+field 18 animal 1
+entity 312 4 0
+name 312 Nonanimal fighter
+field 312 attack 99
+field 312 capturable 1
+entity 313 4 0
+name 313 Neither
+field 313 animal 1
+entity 314 4 0
+name 314 Missing item record
+lore_file lore/etc/777 $capturable_animals|$animal_fighters|$capturable_animals
+deliver_lore 200 300
+readfile log/200
+save 314
+
+section lore render legal expansions empty and literal dollar after whitespace
+lore_root
+lore_dir lore
+lore_dir lore/etc
+lore_file lore/etc/777 $capturable_animals|$animal_fighters| $not_a_function|#@|@
+lore_sheet 200 777 1000
+readfile log/200
+
+section lore render repeat rereads modified sheet and borrows renamed cached inode
+lore_root
+lore_dir lore
+lore_dir lore/etc
+entity 300 4 0
+field 300 lore 777
+set flush 0
+sout route -2 2
+sout frame 3 8 0 0
+report style 5
+lore_file lore/etc/777 first @
+deliver_lore 200 300
+life rename log/200 log/lore-original
+lore_file lore/etc/777 second @@||last
+deliver_lore 200 300
+life path log/200
+life flush
+readfile log/lore-original
+sout state
+
+section lore render invalid unknown function after visible header and prior text
+lore_root
+lore_dir lore
+lore_dir lore/etc
+lore_file lore/etc/777 Before @|$unknown_function
+set immediate 1
+lore_sheet 200 777 1000
+
+section lore render invalid empty dollar name
+lore_root
+lore_dir lore
+lore_dir lore/etc
+lore_file lore/etc/777 $
+set immediate 1
+lore_sheet 200 777 1000
+
+section lore render invalid whitespace suffix is not a legal function
+lore_root
+lore_dir lore
+lore_dir lore/etc
+lore_file lore/etc/777 $animal_fighters 
+set immediate 1
+lore_sheet 200 777 1000
+
+section lore render invalid skill cycle header precedes path assertion
+lore_root
+entity 700 5 0
+name 700 Cyclic school
+field 700 required 700
+set immediate 1
+lore_sheet 200 700 700
+
+section lore render invalid output open precedes sheet path validation
+lore_root
+entity 700 5 0
+field 700 required 700
+report block 200
+lore_sheet 200 700 700

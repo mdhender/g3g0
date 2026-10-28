@@ -3,6 +3,96 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Lore sheet rendering (#159)
+
+Existing lore.go completes unchanged lore.c `lore_function` **9–44** and
+`deliver_lore_sheet` **47–117**, plus `deliver_lore` **202–221** with one
+explicit dependency boundary: its skill branch stops NYI until #160 ports
+`deliver_skill_lore` and its offered/research output. A dedicated Go test
+requires that stop before output or recipient allocation. The original C
+skill renderer remains fully extracted and unchanged, not stubbed or modeled.
+Direct sheets, item-to-skill sheets and non-skill delivery execute real C.
+
+The old diagnostic-only sheet implementation is replaced by one shared
+reader/parser. Real delivery emits through the accepted commandOut/cache
+owner; existing stage-1 queue/GM projections use the same reader without
+artifact emission, retaining all their input diagnostics and assertions until
+#160 replaces those roots. They neither call the NYI real skill entry nor
+perform an additional read. No queue/GM/main root is newly wired, no later
+skill output is silently implemented, and no successful dependency stub,
+new source dependency/pin or second output owner is added. Existing clib
+ReadFile/getlin retain successful-open read errors, NUL and final-line rules.
+
+Sixteen appended cases (**11 status 0 / 5 status 134**) compare raw file
+bytes, streams/status and saved records:
+
+- Item lore **777** versus display **300**, item-to-leaf **701** via school
+  **700**, direct skill sheets with display **1001**, nonitem **9000**, and
+  absent item magic mapping to **0**. Headers and substitution use the
+  display ID, never the sheet ID. Adjacent **@/@@/@@@@** collapse separately;
+  comments, leading-space #/$ literals, blank lines, actual embedded NUL,
+  retained CR and final nonnewline text match exact C bytes.
+- Actual **T_item=4** fixtures reach both legal dollar functions (not merely
+  similarly populated location records). Capturable-only and negative
+  capturable values, attack-only **12**, defense-only **-3**, missile-only
+  **7**, nonanimal exclusion, neither flag, absent item records and
+  **item_ghost_warrior=18** with zero combat stats reach the real predicates.
+  The output contains the ghost's **(0,0,0)** exception and all three other
+  combat tuples in actual item-chain order. Empty expansions are covered.
+- ENOENT/ENOTDIR emit the header, unavailable placeholder and exact perror;
+  directory fopen succeeds then read fails, producing only the header and
+  delivery's trailing blank, no missing-file diagnostic/placeholder.
+- Invalid unknown/empty/space-suffixed function names retain **lore.c:43**.
+  Immediate output proves the header and earlier body precede the abort.
+  A skill cycle emits its header before **use.c:1182**; blocked output fails
+  first at **sout.c:158**, before even that path validation.
+- Repeated delivery rereads changed input while borrowing the renamed cached
+  log inode. **227** bytes retain MASTER **-2**, OUT_LORE **2**, style **5**,
+  indent **3/8**, exact blanks and substitutions; `log/200` stays absent.
+  These numeric constants and reached bytes, and complete extracted C
+  definition equality, are checked in `tmp/issue159-evidence.log`.
+
+At **0.99.0-alpha**, two unchanged real pinned C runs are deterministic and
+Go matches **1158 sections / 77449 lines / 1508521 output bytes**. Entire
+inherited **1142 sections / 77030 lines / 1499775 output bytes** and
+**24967 input lines / 473763 input bytes** remain exact byte prefixes.
+New input: **25169 lines / 478453 bytes**. Output SHA-256:
+`b312ad0755b50233903f58ed7a07039c5e70e3c2cb1170362646f6e7919e232f`.
+Input SHA-256:
+`ee32b252987eb9af7bdae83a8ee1b743fd030df5890b431f93a01a8bd73a181b`.
+Intentional C trailing spaces and the whitespace-suffixed input are retained.
+
+Four temporary linker controls wrap only the direct sheet adapter at the
+expected cycle failure (**section 1156**). A missing-dependency marker with
+either return **0** or abort **134** makes default and update modes reject
+with harness **2**, before expected status/update acceptance. All recording
+hashes remain unchanged; probe source/compiler wrapper and matching captures
+are removed. Logs: `tmp/issue159-negative-{0,134}-{default,update}.log`.
+
+Sequential checks pass with explicit `G3_REPO=$PWD/tmp/upstream.git` and
+shared run_limited: command refresh/default **1158/77449**, move **135/7158**,
+helper **37/1487**, RNG **321**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+default turn (equal status/raw streams and **2** cwd entries), bounded vet
+and fresh bounded default tests (Olympia **1.812s**). The first fresh test run
+found a missing player box in the new NYI-boundary test fixture, not an engine
+failure; that fixture was corrected and vet/fresh tests rerun successfully.
+Logs: `tmp/issue159-*.log`; matching captures removed.
+
+All ten open issues, including unlabeled ones, are only #159–166 and trackers
+#19/#132: no bug/follow-C priority work. No new verified defect or blocking
+prerequisite found. #160's explicit real-skill dependency remains deferred as
+authorized. Parent strict post-#158 remains red: eight saved-report byte
+differences, engines **0**, matching raw streams/paths/types/modes, exit **1**
+before 13 lifecycle controls. No new whole-world run or stage-exit acceptance;
+G3 #358/#359 remain unchanged/nonblocking, malformed **C136/Go2** is not parity.
+No commit, push, issue/checklist edit or parent strict capture change.
+
+Independent parent complete-C review verifies the three task definitions
+unchanged exactly once and both recording prefixes byte-exact. The eight
+routine tools, bounded vet and fresh bounded tests pass (Olympia **1.744s**);
+logs `tmp/parent159-*.log`. Strict whole-world evidence remains post-#158.
+
 ## Complete skills, provinces and summary root (#158)
 
 Existing summary.go adds complete unchanged summary.c `summary_skills`
