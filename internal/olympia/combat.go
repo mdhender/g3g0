@@ -5,6 +5,91 @@ package olympia
 
 import "fmt"
 
+// fight and wield retain combat.c:110–146's original fields and C int widths.
+// findWield mutates only the three ratings, not the selected-item fields.
+type fight struct {
+	unit, kind, savNum, num, newHealth   int32
+	attack, defense                      int32
+	behind, missile                      int32
+	protects, nprot, ally                int32
+	prisoner, inside                     int32
+	seizeSlot, survivedFatal             int32
+	attackItem, defenseItem, missileItem int32
+}
+
+type wield struct {
+	attack, defense, missile int32
+}
+
+// findWield is combat.c:489–544 find_wield, including the optional fight
+// mutation and NULL selection destination. Strict comparison makes ties first-wins.
+func (w *world) findWield(selected *wield, who int, f *fight) bool {
+	var local wield
+	if selected == nil {
+		selected = &local
+	}
+	*selected = wield{}
+	attackMax, defenseMax, missileMax := int32(-1), int32(-1), int32(-1)
+	assert(w.validBox(who), "olympia/combat.c", 506, "valid_box(who)")
+	for e := range w.loopInv(who) {
+		p := w.rpItemMagic(int(e.item))
+		if p == nil {
+			continue
+		}
+		if n := int32(p.attackBonus); n != 0 && n > attackMax {
+			attackMax, selected.attack = n, e.item
+		}
+		if n := int32(p.defenseBonus); n != 0 && n > defenseMax {
+			defenseMax, selected.defense = n, e.item
+		}
+		if n := int32(p.missileBonus); n != 0 && n > missileMax {
+			missileMax, selected.missile = n, e.item
+		}
+	}
+	if f != nil {
+		if selected.attack != 0 {
+			f.attack += attackMax
+		}
+		if selected.defense != 0 {
+			f.defense += defenseMax
+		}
+		if selected.missile != 0 {
+			f.missile += missileMax
+		}
+	}
+	return selected.attack != 0 || selected.defense != 0 || selected.missile != 0
+}
+
+// wieldS is combat.c:547–588 wield_s. Only attack duplicates are removed:
+// a shared defense/missile item is deliberately still named twice.
+func (w *world) wieldS(who int) string {
+	var selected wield
+	if !w.findWield(&selected, who, nil) {
+		return ""
+	}
+	if selected.attack == selected.missile {
+		selected.missile = 0
+	}
+	if selected.attack == selected.defense {
+		selected.defense = 0
+	}
+	var s string
+	if selected.attack != 0 || selected.missile != 0 {
+		switch {
+		case selected.attack == 0:
+			s = sout(", wielding %s", w.boxName(int(selected.missile)))
+		case selected.missile == 0:
+			s = sout(", wielding %s", w.boxName(int(selected.attack)))
+		default:
+			s = sout(", wielding %s and %s", w.boxName(int(selected.attack)), w.boxName(int(selected.missile)))
+		}
+	}
+	if selected.defense != 0 {
+		s += sout(", wearing %s", w.boxName(int(selected.defense)))
+	}
+	return s
+}
+
 // fortCovers is combat.c's fort_covers(): the number a fort protects.
 // Rafts, completed or not, provide no fort protection.
 func (w *world) fortCovers(n int) int {

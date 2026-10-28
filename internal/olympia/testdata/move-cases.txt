@@ -1972,3 +1972,231 @@ lord 1001 200
 pledge 1001 1001
 castle 1000 301
 rulers 1000
+
+section rank strings and signed byte wrap
+box 1001 2 0 0
+box 201 4 0 0
+description_state
+rank_s 201
+rank_s 1001
+rank 1001 10
+rank_s 1001
+rank 1001 20
+rank_s 1001
+rank 1001 30
+rank_s 1001
+rank 1001 40
+rank_s 1001
+rank 1001 50
+rank_s 1001
+rank 1001 60
+rank_s 1001
+rank 1001 70
+rank_s 1001
+rank 1001 80
+rank_s 1001
+rank 1001 266
+rank_s 1001
+description_state
+
+section aura absent magic and inventory data remain absent
+box 1001 2 0 0
+box 201 4 0 0
+inv 1001 201 7
+description_state
+aura_result 1001
+wield 1001 1 1
+wield 1001 0 0
+description_state
+
+section aura negative innate clamped before signed auraculum and bonuses
+box 1001 2 0 0
+box 203 4 0 0
+box 201 4 0 0
+box 202 4 0 0
+aura 1001 -37 203
+aura_item 203 -19 7
+aura_item 201 29 -11
+aura_item 202 43 5
+inv 1001 203 9
+inv 1001 201 17
+inv 1001 202 2
+description_state
+aura_result 1001
+description_state
+inv 1001 203 1
+inv 1001 201 1
+aura_result 1001
+aura 1001 37 203
+aura_result 1001
+description_state
+
+section aura absent invalid unheld zero negative and positive auraculum
+box 1001 2 0 0
+box 201 4 0 0
+aura_item 201 53 -7
+aura 1001 13 0
+aura_result 1001
+aura 1001 13 999
+aura_result 1001
+aura 1001 13 201
+aura_result 1001
+inv 1001 201 0
+aura_result 1001
+inv 1001 201 -3
+aura_result 1001
+inv 1001 201 4
+aura_result 1001
+description_state
+
+section aura signed short wrapping and invalid inventory filtering
+box 1001 2 0 0
+box 201 4 0 0
+box 202 4 0 0
+box 203 4 0 0
+aura 1001 17 201
+aura_item 201 65529 65523
+aura_item 202 123 32768
+aura_item 203 456 32767
+inv 1001 999 9
+inv 1001 201 2
+inv 1001 202 3
+inv 1001 203 0
+description_state
+aura_result 1001
+inv 1001 203 5
+aura_result 1001
+description_state
+
+section wield asymmetric independent maxima and all optional pointers
+box 1001 2 0 0
+box 205 4 0 0
+box 201 4 0 0
+box 203 4 0 0
+bonuses 205 13 2 3
+bonuses 201 5 23 7
+bonuses 203 11 17 31
+inv 1001 205 9
+inv 1001 201 2
+inv 1001 203 4
+description_state
+wield 1001 1 1
+wield 1001 1 0
+wield 1001 0 1
+wield 1001 0 0
+description_state
+
+section wield first wins equal bonuses not item id or quantity
+box 1001 2 0 0
+box 203 4 0 0
+box 201 4 0 0
+bonuses 203 17 23 31
+bonuses 201 17 23 31
+inv 1001 203 1
+inv 1001 201 99
+description_state
+wield 1001 1 1
+inv 1001 203 0
+wield 1001 1 1
+inv 1001 203 2
+wield 1001 1 1
+description_state
+
+section wield signed negative zero and wrapped bonuses never selected
+box 1001 2 0 0
+box 201 4 0 0
+box 202 4 0 0
+box 203 4 0 0
+bonuses 201 -1 -2 -127
+bonuses 202 128 255 256
+bonuses 203 0 0 0
+inv 1001 201 7
+inv 1001 202 2
+inv 1001 203 13
+description_state
+wield 1001 1 1
+wield 1001 0 1
+bonuses 203 257 127 259
+wield 1001 1 1
+description_state
+
+section wield filters invalid zero negative entries and no magic
+box 1001 2 0 0
+box 201 4 0 0
+box 202 4 0 0
+box 203 4 0 0
+box 204 4 0 0
+bonuses 201 127 127 127
+bonuses 202 126 126 126
+bonuses 203 3 5 7
+inv 1001 999 11
+inv 1001 201 0
+inv 1001 202 -4
+inv 1001 204 23
+inv 1001 203 17
+description_state
+wield 1001 1 1
+description_state
+
+section wield attack defense duplicate suppressed but missile separate
+box 1001 2 0 0
+box 201 4 0 0
+box 202 4 0 0
+bonuses 201 13 19 2
+bonuses 202 3 5 23
+inv 1001 201 2
+inv 1001 202 7
+description_state
+wield 1001 1 1
+description_state
+
+section wield attack missile duplicate suppressed but defense separate
+box 1001 2 0 0
+box 201 4 0 0
+box 202 4 0 0
+bonuses 201 13 2 23
+bonuses 202 3 19 5
+inv 1001 201 2
+inv 1001 202 7
+description_state
+wield 1001 1 1
+description_state
+
+section wield defense missile duplicate retained and single category strings
+box 1001 2 0 0
+box 201 4 0 0
+box 202 4 0 0
+bonuses 201 13 2 3
+bonuses 202 5 19 23
+inv 1001 201 2
+inv 1001 202 7
+description_state
+wield 1001 1 1
+inv 1001 201 0
+bonuses 202 0 19 23
+wield 1001 1 1
+bonuses 202 0 0 23
+wield 1001 1 1
+bonuses 202 0 19 0
+wield 1001 1 1
+bonuses 202 13 0 0
+wield 1001 1 1
+description_state
+
+section invalid rank signed byte assertion
+box 1001 2 0 0
+rank 1001 255
+description_state
+rank_s 1001
+
+section invalid rank unknown positive assertion
+box 1001 2 0 0
+rank 1001 81
+rank_s 1001
+
+section invalid aura inventory owner assertion
+box 999 0 0 0
+aura_result 999
+
+section invalid wield inventory owner assertion
+wield 999 1 1

@@ -28,9 +28,14 @@ echo "G3 revision: ${G3_REV}"
 
 # Complete definitions, original declarations/macros and original source lines.
 # No C gameplay stubs, modeled allocator, or replacement exit shuffle.
-python3 -I - "${WORK}/g3/olympia" "${WORK}/helpers.c" <<'PY'
+python3 -I - "${WORK}/g3/olympia" "${WORK}/helpers.c" "${WORK}/combat-structs.h" <<'PY'
 import re, sys
-src, dest = sys.argv[1:]
+src, dest, structs = sys.argv[1:]
+combat = open(f'{src}/combat.c').read()
+with open(structs, 'w') as out:
+    start = combat.index('struct fight {')
+    end = combat.index('\n};', combat.index('struct wield {')) + 3
+    out.write('#line 110 "olympia/combat.c"\n' + combat[start:end] + '\n')
 functions = {
     'dir.c': ['location_direction', 'exit_distance', 'is_port_city',
               'province_has_port_city', 'summer_uldim_open_now', 'add_province_exit',
@@ -56,7 +61,9 @@ functions = {
     'stack.c': ['here_pos', 'stack_parent', 'stack_leader', 'promote',
                 'unstack', 'leave_stack'],
     'storm.c': ['weather_here'],
-    'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here'],
+    'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here', 'rank_s'],
+    'art.c': ['has_auraculum', 'max_eff_aura'],
+    'combat.c': ['find_wield', 'wield_s'],
     'day.c': ['touch_loc_pl'],
 }
 with open(dest, 'w') as out:
@@ -70,6 +77,8 @@ with open(dest, 'w') as out:
         if file == 'u.c':
             start, end = source.index('static char *num_s[]'), source.index('char *\nnice_num(')
             out.write(source[start:end])
+        if file == 'combat.c':
+            out.write('#include "combat-structs.h"\n')
         for name in names:
             m = re.search(rf'^(?:static )?[^\n(]+\n{name}\(.*?^\}}\n', source, re.M | re.S)
             if not m:
@@ -105,7 +114,7 @@ case "$(uname -s)" in
  *) ldflags=(-Wl,--gc-sections) ;;
 esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -ffunction-sections -fdata-sections "${ldflags[@]}" \
- -I olympia -I lib "${HERE}/driver.c" "${WORK}/helpers.c" \
+ -I olympia -I lib -I "${WORK}" "${HERE}/driver.c" "${WORK}/helpers.c" \
  olympia/{code,glob,z,sout}.c lib/{checked_alloc,ilist,exit_views,rng,rnd,item_ents,admits,cstrings}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
 sections=$(grep -c '^section ' "${CASES}")

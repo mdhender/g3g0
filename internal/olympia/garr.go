@@ -11,6 +11,37 @@ import (
 
 // Ported from olympia/garr.c: the garrison ownership/output closure.
 
+// rankS is garr.c:603–624 rank_s; ranks are the garr.h constants.
+func (w *world) rankS(who int) string {
+	var rank int8
+	if p := w.rpChar(who); p != nil {
+		rank = p.rank
+	}
+	switch rank {
+	case 0:
+		return ""
+	case 10:
+		return ", lord"
+	case 20:
+		return ", knight"
+	case 30:
+		return ", baron"
+	case 40:
+		return ", count"
+	case 50:
+		return ", earl"
+	case 60:
+		return ", marquess"
+	case 70:
+		return ", duke"
+	case 80:
+		return ", king"
+	default:
+		assert(false, "olympia/garr.c", 621, "FALSE")
+	}
+	return ""
+}
+
 // garrisonHere is garrison_here(): the first unit in where's here list if
 // it is a garrison, or 0.
 func (w *world) garrisonHere(where int) int {

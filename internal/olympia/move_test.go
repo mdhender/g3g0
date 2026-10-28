@@ -272,6 +272,34 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 		case "fighter":
 			p := w.pItem(n)
 			p.attack, p.defense, p.missile = int16(b), int16(sk), int16(d)
+		case "rank":
+			w.pChar(n).rank = int8(b)
+		case "rank_s":
+			fmt.Fprintf(&stdout, "rank [%s]\n", w.rankS(n))
+		case "aura":
+			w.pMagic(n).maxAura, w.pMagic(n).auraculum = int32(b), int32(sk)
+		case "aura_item":
+			w.pItemMagic(n).aura, w.pItemMagic(n).auraBonus = int16(b), int16(sk)
+		case "bonuses":
+			p := w.pItemMagic(n)
+			p.attackBonus, p.defenseBonus, p.missileBonus = int8(b), int8(sk), int8(d)
+		case "aura_result":
+			fmt.Fprintf(&stdout, "aura %d %d\n", w.hasAuraculum(n), w.maxEffAura(n))
+		case "wield":
+			selected := wield{91, -83, 77}
+			f := fight{11, -12, 13, -14, 15, 101, -203, 17, 307, -19, 23, -29, 31, -37, 41, -43, 47, -53, 59}
+			var selection *wield
+			var stats *fight
+			if b != 0 {
+				selection = &selected
+			}
+			if sk != 0 {
+				stats = &f
+			}
+			result := w.findWield(selection, n, stats)
+			fmt.Fprintf(&stdout, "wield %d %d %d %d\n", b2i(result), selected.attack, selected.defense, selected.missile)
+			fmt.Fprintf(&stdout, "fight %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", f.unit, f.kind, f.savNum, f.num, f.newHealth, f.attack, f.defense, f.behind, f.missile, f.protects, f.nprot, f.ally, f.prisoner, f.inside, f.seizeSlot, f.survivedFatal, f.attackItem, f.defenseItem, f.missileItem)
+			fmt.Fprintf(&stdout, "wield_s [%s]\n", w.wieldS(n))
 		case "unit":
 			p := w.pChar(n)
 			p.unitItem, p.prisoner, p.loyKind = int32(b), int8(sk), int8(d)
@@ -314,7 +342,7 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 				result = w.moveExitWater(cmd, v, b, d != 0)
 			}
 			fmt.Fprintf(&stdout, "%s %d\nunchanged %d %d %d %d\n", op, result, cmd.who, v.destination, v.distance, cmd.wait)
-		case "state":
+		case "state", "description_state":
 			fmt.Fprintf(&stdout, "state factor %d\n", w.armySlowFactor)
 			for n := range w.loopBoxes() {
 				fmt.Fprintf(&stdout, "box %d %d %d %d here", n, w.kind(n), w.subkind(n), w.loc(n))
@@ -342,6 +370,21 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 						}
 					}
 					fmt.Fprintln(&stdout)
+				}
+			}
+			if op == "description_state" {
+				for n := range w.loopBoxes() {
+					var rank int8
+					if p := w.rpChar(n); p != nil {
+						rank = p.rank
+					}
+					fmt.Fprintf(&stdout, "description %d %d %d %d %d\n", n, b2i(w.rpChar(n) != nil), rank, b2i(w.rpMagic(n) != nil), b2i(w.rpItemMagic(n) != nil))
+					if p := w.rpMagic(n); p != nil {
+						fmt.Fprintf(&stdout, "aura %d %d\n", p.maxAura, p.auraculum)
+					}
+					if p := w.rpItemMagic(n); p != nil {
+						fmt.Fprintf(&stdout, "bonuses %d %d %d %d %d\n", p.aura, p.auraBonus, p.attackBonus, p.defenseBonus, p.missileBonus)
+					}
 				}
 			}
 		case "box":

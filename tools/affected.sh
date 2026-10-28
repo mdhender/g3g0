@@ -76,6 +76,7 @@ reads() {
 		olympia/*.h | lib/*.h) return 0 ;;
 		olympia/dir.c | olympia/loc.c | olympia/u.c | olympia/swear.c) return 0 ;;
 		olympia/input.c | olympia/garr.c | olympia/day.c) return 0 ;;
+		olympia/art.c | olympia/combat.c) return 0 ;;
 		olympia/code.c | olympia/glob.c | olympia/z.c | olympia/sout.c) return 0 ;;
 		olympia/perm.c | olympia/stack.c | lib/admits.c | lib/cstrings.c) return 0 ;;
 		olympia/move.c | olympia/storm.c | lib/item_ents.c) return 0 ;;

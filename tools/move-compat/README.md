@@ -138,3 +138,39 @@ escape dependencies belong to the separately precreated #110–#113 tasks.
 This harness accepts movement helpers, not whole movement execution or
 arrival callbacks. Report rendering and unrelated LOS-distance helpers are not
 extracted; report-path output mutations are checked, not skipped.
+
+## Character-description prerequisites (#114)
+
+Complete pinned definitions are extracted for garr.c `rank_s` (603–624),
+art.c `has_auraculum` (7–18) and `max_eff_aura` (25–50), combat.c
+`find_wield` (489–544) and `wield_s` (547–588). The original combat.c
+`fight` and `wield` structures (110–146) are exported once into a generated
+header shared by the driver and extracted functions, not re-created by the
+driver. Original oly.h/garr.h macros, signed item-magic bonus fields,
+loop.h inventory filtering and code.c box names remain authoritative.
+Go's new art.go owns the original art.c aura responsibilities; no formatter,
+monthly rank computation, movement messages or combat execution is ported here.
+
+Sixteen additional sections cover every rank string, absent character data,
+signed-byte rank wrapping and both invalid-rank assertions; absent, invalid,
+unheld, zero/negative-quantity and held auracula; negative innate aura clamped
+**before** signed auraculum and per-entry bonuses; quantity independence,
+signed-short wrapping and inventory filtering. Equipment cases use independent
+asymmetric maxima, nonascending inventory IDs, unequal quantities, equal ties,
+negative/zero/wrapped signed-byte bonuses, all four NULL/non-NULL selection/stat
+combinations and all single-category strings. All 19 fight fields are dumped:
+only attack/defense/missile ratings change, not selected-item fields or other
+sentinels. Attack/defense, attack/missile and all-three duplicates are suppressed;
+the original defense/missile-only duplicate is intentionally retained.
+Before/after state dumps include inventories in insertion order, character,
+magic and item-magic allocation presence and fields, ownership, here lists and
+output bits. Invalid inventory owners check actual art.c/combat.c assertion bytes;
+the aura assertion uses an allocated deleted box so the earlier rp_magic macro
+can run (an unallocated owner violates that macro's precondition).
+
+The new recording is **99 sections / 4789 lines / 96680 bytes**, generated
+only from two fresh bounded deterministic C executions, then compared with Go.
+The entire old move **83-section input** and **4067-line / 81524-byte output**
+remain exact prefixes. Command input and its **207-section / 7193-line /
+137909-byte output** are unchanged. Recorded trailing whitespace is preserved.
+No new successful dependency stubs or expected-success NYI cases are introduced.

@@ -8,6 +8,18 @@
 #include "z.h"
 #include "oly.h"
 #include "rnd.h"
+#include "combat-structs.h"
+
+int find_wield(struct wield *, int, struct fight *);
+
+static void fight_dump(struct fight *f)
+{
+    printf("fight %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+           f->unit, f->kind, f->sav_num, f->num, f->new_health,
+           f->attack, f->defense, f->behind, f->missile, f->protects,
+           f->nprot, f->ally, f->prisoner, f->inside, f->seize_slot,
+           f->survived_fatal, f->attack_item, f->defense_item, f->missile_item);
+}
 
 void glob_init(void);
 void init_lower(void);
@@ -234,6 +246,29 @@ int main(int argc, char **argv)
         }
         else if (!strcmp(op, "air")) { p_item(a)->fly_cap = b; p_item(a)->animal = c; p_item(a)->is_man_item = d; }
         else if (!strcmp(op, "fighter")) { p_item(a)->attack = b; p_item(a)->defense = c; p_item(a)->missile = d; }
+        else if (!strcmp(op, "rank")) p_char(a)->rank = b;
+        else if (!strcmp(op, "rank_s")) printf("rank [%s]\n", rank_s(a));
+        else if (!strcmp(op, "aura")) { p_magic(a)->max_aura = b; p_magic(a)->auraculum = c; }
+        else if (!strcmp(op, "aura_item")) { p_item_magic(a)->aura = b; p_item_magic(a)->aura_bonus = c; }
+        else if (!strcmp(op, "bonuses")) { p_item_magic(a)->attack_bonus = b; p_item_magic(a)->defense_bonus = c; p_item_magic(a)->missile_bonus = d; }
+        else if (!strcmp(op, "aura_result")) printf("aura %d %d\n", has_auraculum(a), max_eff_aura(a));
+        else if (!strcmp(op, "wield")) {
+            struct wield w = {91, -83, 77};
+            struct fight f = {11, -12, 13, -14, 15, 101, -203, 17, 307, -19, 23, -29, 31, -37, 41, -43, 47, -53, 59};
+            int result = find_wield(b ? &w : NULL, a, c ? &f : NULL);
+            printf("wield %d %d %d %d\n", result, w.attack, w.defense, w.missile);
+            fight_dump(&f);
+            printf("wield_s [%s]\n", wield_s(a));
+        }
+        else if (!strcmp(op, "description_state")) {
+            int n;
+            state_dump();
+            loop_boxes(n) {
+                printf("description %d %d %d %d %d\n", n, rp_char(n) != NULL, char_rank(n), rp_magic(n) != NULL, rp_item_magic(n) != NULL);
+                if (rp_magic(n)) printf("aura %d %d\n", char_max_aura(n), char_auraculum(n));
+                if (rp_item_magic(n)) printf("bonuses %d %d %d %d %d\n", item_aura(n), item_aura_bonus(n), item_attack_bonus(n), item_defense_bonus(n), item_missile_bonus(n));
+            } next_box;
+        }
         else if (!strcmp(op, "unit")) { p_char(a)->unit_item = b; p_char(a)->prisoner = c; p_char(a)->loy_kind = d; }
         else if (!strcmp(op, "inv")) {
             struct item_ent *e = NULL; int i;
