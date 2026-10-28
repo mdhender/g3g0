@@ -101,7 +101,7 @@ functions = {
                   'with_inventory_string', 'display_with', 'mage_s', 'priest_s',
                   'emperor', 'liner_desc_char', 'liner_desc', 'highlight_units',
                   'show_chars_below', 'show_chars_below_highlight', 'show_owner_stack',
-                  'show_chars_here'],
+                  'show_chars_here', 'show_inner_locs', 'show_sublocs_here', 'show_ships_here'],
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
             'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
             'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
@@ -325,6 +325,9 @@ int immed_see_all, month_done, show_combat_flag;
     out.write('''
 int drv_loc_barrier(int who, int where) { return show_loc_barrier(who, where); }
 void drv_chars_here(int who, int where) { show_chars_here(who, where); }
+void drv_inner_locs(int who, int where) { show_inner_locs(who, where); }
+void drv_sublocs_here(int who, int where) { show_sublocs_here(who, where); }
+void drv_ships_here(int who, int where) { show_ships_here(who, where); }
 void drv_chars_below(int who, int n, int depth) { show_chars_below_highlight(who, n, depth); }
 char *drv_highlight(int who, int n, int depth) { return highlight_units(who, n, depth); }
 void drv_route_view(int who, struct exit_view *v, int mode) {
@@ -541,6 +544,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section inner sightings '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section inner sightings invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected inner sightings status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section visible characters '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

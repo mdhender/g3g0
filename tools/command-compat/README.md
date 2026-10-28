@@ -3,6 +3,91 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Inner locations and ship sightings (#143)
+
+Existing display.go adds complete stage-pin display.c `show_inner_locs`
+**685–717**, `show_sublocs_here` **720–797** and `show_ships_here`
+**800–839**. The oracle extracts each complete unchanged definition exactly
+once, with original source locations and loop-macro assertions. Three trivial
+wrappers expose the static functions; expected output is produced only by two
+deterministic executions of real C, never by a replacement renderer.
+
+The reused real closure is display.c `liner_desc` and its location/ship/character
+formatters, `display_owner`, `show_owner_stack`, `show_chars_below_highlight`,
+`highlight_units` and `show_loc_barrier`; u.c `loc_hidden`/`test_known`, swear.c
+`player`, original oly.h `is_loc_or_ship`/`see_all`/`loc_link_open` macros,
+loop.h's copied direct here-list iteration, dir.c `is_port_city` and topology,
+loc.c `province`/`all_char_here`, actual ship capacity/weight dependencies,
+and complete original code.c/sout.c/io.c (names, wiout, cached FILE ownership,
+raw output and save_box). All were already linked/extracted. There is no new
+source dependency, pin, gameplay command, full show_loc root, posts or parallel
+output layer. Previously accepted display.go bytes remain unchanged.
+
+Fourteen appended sections distinguish unknown hidden parents from known
+descendants (the parent still prunes), known hidden containers/ships, see_all
+**0/1/2**, character versus player recipients, and no renderer-added knowledge.
+Direct cities omit owners/recursion but retain barriers; cities reached by
+inner recursion do render owners/descendants. Buildings recurse through both
+locations and ships. Open crosslinks follow direct locations in original list
+order, retain duplicates and direct-target repeats, and omit owners, barriers
+and recursion; closed links remain absent even when known or see_all is set.
+Signed nonzero link_open is exercised. Empty/wrong-kind/all-hidden inputs
+create no header/file and preserve both indent fields and absent records.
+Nonempty cases compare original save_box bytes, raw known-list order before
+save, output bits and exact primary/secondary indentation, including ship
+wiout's fixed secondary **3**. Ocean and port headings, multiple ship order,
+owner/descendant/barrier order, deliberate absence of ship-inner recursion,
+MASTER/style/day routing and renamed cached-inode output are byte-observed.
+
+Fixture numeric constants were checked against pinned oly.h: T_loc **3**,
+T_ship **9**, ocean **1** (not desert **5**), plain **3**, cave **13**, city
+**14**, ruins **17**, temple **29**, galley **30**, roundship **31**, castle
+**32**, tower **46**. Actual C output contains `Ships sighted:` on the ocean
+and `Ships docked at port:` on the city control. The first recording attempt
+correctly rejected status **139** from a synthetic orphan linked city: its
+is_port_city dependency needs a province. The fixture now has a real province;
+no crash was converted to passing parity or bypassed in production.
+
+Four expected-abort cases retain original assertions: invalid containers at
+display.c **691/727/806**, and invalid knowledge recipient at u.c **2334**
+even with see_all=2 (knowledge is evaluated first). A temporary in-memory
+negative-control wrapper emitted a missing-dependency marker and status 134
+only in that last expected-abort case. `--update` rejected it **before** status
+acceptance/recording replacement (section 953); the recording hash remained
+unchanged. Temporary negative-control captures were removed; its diagnostic
+log remains `tmp/issue143-marker.log`.
+
+At **0.83.0-alpha**, real C/C/Go matches **954 sections / 65118 lines /
+1224413 bytes**. The entire inherited **940 sections / 64201 lines /
+1206911 output bytes** and **20552 lines / 378933 input bytes** remain exact
+unchanged prefixes. New input: **20885 lines / 385519 bytes**. Recording
+SHA-256: `0f9c882fd130b4613fa6a32a9cc58d920e8f35e837049dfa5a1273ffc3728d43`.
+Both recording refresh and fresh default command runs passed, including
+#168's separate live raw native C/C/Go traversal over unchanged shared input.
+Matching command captures were removed after the checks.
+
+Sequential bounded command/move/helper/RNG/code/loadsave/turn-driver/default
+turn checks passed with explicit `G3_REPO=$PWD/tmp/upstream.git`: move
+**135/7158**, helper **37/1487**, RNG **321**, code **43/969**, loadsave
+**61/3411**, turn-driver **7/152**, phases **5/484**, calendar **2/119**,
+schedule **4/1801**. Default turn checks raw streams/status and two cwd entries,
+not a whole world. Bounded `go vet ./...` and fresh bounded
+`go test -count=1 -exec ... ./...` pass (Olympia **1.430s**).
+Logs: `tmp/issue143-command{,-update}.log` and
+`tmp/issue143-{move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+Source/document diff whitespace checks pass; full diff-check flags only 25
+literal trailing-space save_box list lines in real C expectations, preserved
+without normalization. No newly verified production defect or prerequisite.
+
+G3 #358 remains owner-declared nonblocking. Existing market division/Go panic
+are untouched, and malformed C **136** / Go **2** remains **not passing** raw
+failure parity. No full-world/full-corpus/strict lifecycle or stage-exit
+acceptance is implied. Independent parent review verified all three complete
+unchanged C definitions exactly once, both inherited byte prefixes and the
+recording hash above. Parent sequential compatibility checks, bounded vet and
+fresh bounded tests passed (Olympia **1.724s**); logs are
+`tmp/parent143-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+
 ## Visible characters and owner stacks (#142)
 
 Existing display.go adds complete stage-pin display.c `highlight_units`

@@ -20550,3 +20550,336 @@ entity 9000 3 32
 link 9000 1000
 sout frame -1 9 0 0
 report owner_stack 200 9000
+
+# #143 constants verified in pinned oly.h: loc=3 ship=9 ocean=1 plain=3
+# city=14 temple=29 galley=30 roundship=31 castle=32 tower=46.
+section inner sightings empty and wrong kinds preserve frame and absent records
+entity 9000 3 3
+entity 9100 9 30
+link 9000 1000
+sout frame 5 12 1 9
+report inner_locs 200 9100
+sout state
+report sublocs_here 200 9000
+sout state
+report ships_here 200 9000
+sout state
+report state 9000
+report state 9100
+report files
+readlog 200
+
+section inner sightings hidden containers prune unknown descendants then known reveals exactly once
+entity 9000 3 3
+entity 9001 3 32
+entity 9002 3 46
+entity 9100 9 30
+name 9001 Hidden castle
+name 9002 Nested tower
+name 9100 Hidden ship
+link 9000 9001
+link 9001 9002
+link 9000 9100
+link 9001 1000
+link 9100 1001
+field 9001 loc_hidden 1
+field 9100 loc_hidden 1
+field 9001 barrier 2
+field 9002 barrier 3
+field 9100 barrier 4
+sout frame 2 8 0 0
+report sublocs_here 200 9000
+report ships_here 200 9000
+report inner_locs 200 9000
+sout state
+report files
+set_known 1000 9002
+report inner_locs 200 9000
+sout state
+set_known 1000 9001
+set_known 200 9100
+report sublocs_here 1000 9000
+sout state
+report ships_here 200 9000
+sout state
+report inner_locs 200 9000
+sout state
+report known 200
+save 9000
+save 9001
+save 9002
+save 9100
+save 1000
+save 1001
+save 200
+readlog 200
+
+section inner sightings seeall one includes unknown hidden locs ships and nested city owners
+entity 9000 3 3
+entity 9001 3 32
+entity 9002 3 14
+entity 9100 9 31
+link 9000 9001
+link 9001 9002
+link 9000 9100
+link 9002 1000
+link 9100 1001
+field 9001 loc_hidden 1
+field 9002 loc_hidden 1
+field 9100 loc_hidden 1
+field 9002 barrier 7
+set see_all 1
+sout frame 1 6 0 0
+report sublocs_here 200 9000
+sout state
+report ships_here 200 9000
+sout state
+report inner_locs 200 9000
+sout state
+report known 200
+save 9000
+save 9001
+save 9002
+save 9100
+save 200
+readlog 200
+
+section inner sightings seeall two has same visibility and never learns locations
+entity 9000 3 3
+entity 9001 3 32
+entity 9100 9 30
+link 9000 9001
+link 9001 9100
+field 9001 loc_hidden 1
+field 9100 loc_hidden 1
+set see_all 2
+report sublocs_here 200 9000
+report ships_here 200 9001
+report inner_locs 200 9000
+sout state
+report known 200
+save 200
+save 9001
+save 9100
+readlog 200
+
+section inner sightings direct city suppresses owner descendants unlike building and recursive city
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 3 32
+entity 9003 3 29
+entity 9004 3 14
+entity 9005 3 46
+entity 1002 2 0
+field 1002 lord 201
+name 9001 Direct city
+name 9002 Building
+name 9003 Suppressed temple
+name 9004 Recursive city
+name 9005 Deep tower
+link 9000 9001
+link 9000 9002
+link 9001 1000
+link 9001 9003
+link 9002 1001
+link 9002 9004
+link 9004 1002
+link 9004 9005
+field 9001 barrier 1
+field 9002 barrier 2
+field 9004 barrier 3
+field 9005 barrier 4
+sout frame 4 11 0 0
+report sublocs_here 200 9000
+sout state
+report inner_locs 201 9000
+sout state
+save 9000
+save 9001
+save 9002
+save 9004
+save 1000
+save 1001
+save 1002
+readlog 200
+readlog 201
+
+section inner sightings crosslinks follow direct order retain duplicates omit owners barriers recursion
+entity 9000 3 3
+entity 9001 3 32
+entity 9002 3 14
+entity 9003 3 29
+entity 9004 3 46
+entity 9200 3 3
+name 9001 Direct castle
+name 9002 First linked city
+name 9003 Closed temple
+name 9004 Last linked tower
+link 9000 9001
+link 9200 9002
+link 9200 9004
+link 9002 1000
+link 9002 9003
+field 9002 barrier 9
+field 9002 link_open 1
+field 9004 link_open -1
+field 9000 link_from 9002
+field 9000 link_from 9003
+field 9000 link_from 9001
+field 9000 link_from 9002
+field 9000 link_from 9004
+field 9001 link_open 1
+report sublocs_here 200 9000
+sout state
+report sublocs_here 200 9000
+sout state
+save 9000
+save 9001
+save 9002
+save 9003
+save 9004
+save 200
+readlog 200
+
+section inner sightings links only hidden unknown known closed seeall ordering
+entity 9000 3 3
+entity 9001 3 13
+entity 9002 3 17
+name 9001 Hidden open cave
+name 9002 Hidden closed ruins
+field 9001 loc_hidden 1
+field 9002 loc_hidden 1
+field 9001 link_open 1
+field 9000 link_from 9002
+field 9000 link_from 9001
+field 9000 link_from 9001
+sout frame 2 9 0 0
+report sublocs_here 200 9000
+sout state
+report files
+set_known 200 9001
+report sublocs_here 200 9000
+sout state
+set see_all 1
+report sublocs_here 201 9000
+sout state
+set see_all 2
+report sublocs_here 201 9000
+sout state
+report known 200
+report known 201
+save 9000
+save 9001
+save 9002
+readlog 200
+readlog 201
+
+section inner sightings ocean versus port headings ship owners barriers no inner recursion
+entity 9000 3 1
+entity 9001 3 14
+entity 9100 9 30
+entity 9101 9 31
+entity 9200 3 46
+name 9100 First galley
+name 9101 Second roundship
+name 9200 Unshown cargo tower
+link 9000 9101
+link 9000 9100
+link 9101 1000
+link 1000 1001
+link 9101 9200
+field 9100 barrier 2
+field 9101 barrier 3
+sout frame 4 8 0 0
+report ships_here 200 9000
+sout state
+link 9001 9101
+link 9001 9100
+report ships_here 201 9001
+sout state
+save 9000
+save 9001
+save 9100
+save 9101
+save 9200
+save 1000
+save 1001
+readlog 200
+readlog 201
+
+section inner sightings hidden ships unknown known seeall one and two at ocean
+entity 9000 3 1
+entity 9100 9 30
+entity 9101 9 31
+link 9000 9101
+link 9000 9100
+field 9100 loc_hidden 1
+field 9101 loc_hidden 1
+sout frame 3 13 0 0
+report ships_here 200 9000
+sout state
+report files
+set_known 1000 9100
+report ships_here 1000 9000
+sout state
+set see_all 1
+report ships_here 201 9000
+sout state
+set see_all 2
+report ships_here 201 9000
+sout state
+report known 200
+report known 201
+save 9100
+save 9101
+save 200
+readlog 200
+readlog 201
+
+section inner sightings MASTER style day and renamed cache reused without reopening
+lore_root
+entity 9000 3 3
+entity 9001 3 32
+entity 9100 9 30
+link 9000 9001
+link 9000 9100
+link 9001 1000
+link 9100 1001
+field 9001 barrier 1
+field 9100 barrier 2
+sout frame 2 5 1 23
+sout route -2 0
+sout style 7
+report sublocs_here 200 9000
+sout state
+life flush
+readfile log/200
+life rename log/200 held-sightings
+report ships_here 200 9000
+sout state
+report inner_locs 200 9000
+sout state
+life flush
+readfile held-sightings
+life path log/200
+save 200
+save 9000
+save 9001
+save 9100
+
+section inner sightings invalid inner container macro assertion
+report inner_locs 200 9000
+
+section inner sightings invalid subloc container macro assertion
+report sublocs_here 200 9000
+
+section inner sightings invalid ships container macro assertion
+report ships_here 200 9000
+
+section inner sightings invalid hidden knowledge recipient checked before seeall
+entity 9000 3 3
+entity 9001 3 32
+link 9000 9001
+field 9001 loc_hidden 1
+set see_all 2
+report inner_locs 9002 9000

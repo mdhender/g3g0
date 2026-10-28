@@ -1463,6 +1463,16 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch action := args.word(); action {
 			case "order":
 				w.determineOutputOrder()
+			case "inner_locs", "sublocs_here", "ships_here":
+				n, where := args.num(t), args.num(t)
+				switch action {
+				case "inner_locs":
+					w.showInnerLocs(n, where)
+				case "sublocs_here":
+					w.showSublocsHere(n, where)
+				case "ships_here":
+					w.showShipsHere(n, where)
+				}
 			case "chars_here", "owner_stack", "chars_below":
 				n, where := args.num(t), args.num(t)
 				switch action {
@@ -1787,6 +1797,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pSubloc(n).questLate = int8(a)
 			case "link_to":
 				w.pSubloc(n).linkTo.Append(a)
+			case "link_from":
+				w.pSubloc(n).linkFrom.Append(a)
 			case "link_open":
 				w.pSubloc(n).linkOpen = int8(a)
 			case "link_when":

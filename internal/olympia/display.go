@@ -410,3 +410,104 @@ func (w *world) showCharsHere(who, where int) {
 	}
 	w.indent = depth
 }
+
+// showInnerLocs is display.c:685–717. Each visible container is rendered
+// before its owners, barrier and recursively nested locations and ships.
+func (w *world) showInnerLocs(who, where int) {
+	first := true
+	assert(w.validBox(where), "olympia/display.c", 691, "valid_box(where)")
+	for i := range w.loopHere(where) {
+		if w.kind(i) == tLoc || w.kind(i) == tShip {
+			if w.locHidden(i) != 0 && !w.testKnown(who, i) && w.immedSeeAll == 0 {
+				continue
+			}
+			if first {
+				first = false
+				w.indent += 3
+			}
+			w.commandOut(who, "%s%s", w.linerDesc(i), w.displayOwner(i))
+			w.showOwnerStack(who, i)
+			w.showLocBarrier(who, i)
+			w.showInnerLocs(who, i)
+		}
+	}
+	if !first {
+		w.indent -= 3
+	}
+}
+
+// showSublocsHere is display.c:720–797. Direct cities omit owners and
+// recursion; open link_from rows only describe the target, retaining duplicates.
+func (w *world) showSublocsHere(who, where int) {
+	first := true
+	assert(w.validBox(where), "olympia/display.c", 727, "valid_box(where)")
+	for i := range w.loopHere(where) {
+		if w.kind(i) == tLoc {
+			if w.locHidden(i) != 0 && !w.testKnown(who, i) && w.immedSeeAll == 0 {
+				continue
+			}
+			if first {
+				first = false
+				w.commandOut(who, "")
+				w.commandOut(who, "Inner locations:")
+				w.indent += 3
+			}
+			if w.subkind(i) == subCity {
+				w.commandOut(who, "%s", w.linerDesc(i))
+				w.showLocBarrier(who, i)
+			} else {
+				w.commandOut(who, "%s%s", w.linerDesc(i), w.displayOwner(i))
+				w.showOwnerStack(who, i)
+				w.showLocBarrier(who, i)
+				w.showInnerLocs(who, i)
+			}
+		}
+	}
+	if p := w.rpSubloc(where); p != nil {
+		for _, i := range p.linkFrom {
+			if w.locHidden(i) != 0 && !w.testKnown(who, i) && w.immedSeeAll == 0 {
+				continue
+			}
+			if w.locLinkOpen(i) != 0 {
+				if first {
+					first = false
+					w.commandOut(who, "")
+					w.commandOut(who, "Inner locations:")
+					w.indent += 3
+				}
+				w.commandOut(who, "%s", w.linerDesc(i))
+			}
+		}
+	}
+	if !first {
+		w.indent -= 3
+	}
+}
+
+func (w *world) showShipsHere(who, where int) {
+	first := true
+	assert(w.validBox(where), "olympia/display.c", 806, "valid_box(where)")
+	for i := range w.loopHere(where) {
+		if w.kind(i) == tShip {
+			if w.locHidden(i) != 0 && !w.testKnown(who, i) && w.immedSeeAll == 0 {
+				continue
+			}
+			if first {
+				first = false
+				w.commandOut(who, "")
+				if w.subkind(where) == subOcean {
+					w.commandOut(who, "Ships sighted:")
+				} else {
+					w.commandOut(who, "Ships docked at port:")
+				}
+				w.indent += 3
+			}
+			w.wiout(who, 3, "%s%s", w.linerDesc(i), w.displayOwner(i))
+			w.showOwnerStack(who, i)
+			w.showLocBarrier(who, i)
+		}
+	}
+	if !first {
+		w.indent -= 3
+	}
+}

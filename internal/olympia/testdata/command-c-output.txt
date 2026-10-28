@@ -64199,3 +64199,920 @@ stderr:
 assertion failure: olympia/display.c (551): depth >= 3
 
 exit 134
+stdout:
+section inner sightings empty and wrong kinds preserve frame and absent records
+> entity 9000 3 3
+> entity 9100 9 30
+> link 9000 1000
+> sout frame 5 12 1 9
+> report inner_locs 200 9100
+> sout state
+route 0 0 frame 5 12 1 9
+vector:
+saved vector:
+> report sublocs_here 200 9000
+> sout state
+route 0 0 frame 5 12 1 9
+vector:
+saved vector:
+> report ships_here 200 9000
+> sout state
+route 0 0 frame 5 12 1 9
+vector:
+saved vector:
+> report state 9000
+report entity 9000 order 0 player 0 attitudes 0 char 0 magic 0
+9000 loc plain
+LI
+ hl 1000 
+
+> report state 9100
+report entity 9100 order 0 player 0 attitudes 0 char 0 magic 0
+9100 ship galley
+
+> report files
+report file 200 0
+report file 201 0
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section inner sightings hidden containers prune unknown descendants then known reveals exactly once
+> entity 9000 3 3
+> entity 9001 3 32
+> entity 9002 3 46
+> entity 9100 9 30
+> name 9001 Hidden castle
+> name 9002 Nested tower
+> name 9100 Hidden ship
+> link 9000 9001
+> link 9001 9002
+> link 9000 9100
+> link 9001 1000
+> link 9100 1001
+> field 9001 loc_hidden 1
+> field 9100 loc_hidden 1
+> field 9001 barrier 2
+> field 9002 barrier 3
+> field 9100 barrier 4
+> sout frame 2 8 0 0
+> report sublocs_here 200 9000
+> report ships_here 200 9000
+> report inner_locs 200 9000
+> sout state
+route 0 0 frame 2 8 0 0
+vector:
+saved vector:
+> report files
+report file 200 0
+report file 201 0
+> set_known 1000 9002
+> report inner_locs 200 9000
+> sout state
+route 0 0 frame 2 8 0 0
+vector:
+saved vector:
+> set_known 1000 9001
+> set_known 200 9100
+> report sublocs_here 1000 9000
+> sout state
+route 0 0 frame 2 0 0 0
+vector:
+saved vector:
+> report ships_here 200 9000
+> sout state
+route 0 0 frame 2 0 0 0
+vector:
+saved vector:
+> report inner_locs 200 9000
+> sout state
+route 0 0 frame 2 0 0 0
+vector:
+saved vector:
+> report known 200
+raw known: 9002 9001 9100
+> save 9000
+9000 loc plain
+LI
+ hl 9001 9100 
+
+> save 9001
+9001 loc castle
+na Hidden castle
+LI
+ wh 9000
+ hl 9002 1000 
+LO
+ hi 1
+ ba 2
+
+> save 9002
+9002 loc tower
+na Nested tower
+LI
+ wh 9001
+LO
+ ba 3
+
+> save 9100
+9100 ship galley
+na Hidden ship
+LI
+ wh 9000
+ hl 1001 
+LO
+ hi 1
+ ba 4
+
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+> save 200
+200 player pl_regular
+PL
+ kn 9001 9002 9100 
+
+> readlog 200
+log 200:
+1000:0::2/8::
+1000:0::2/8::Inner locations:
+1000:0::5/8::Hidden castle~[9001], castle, hidden, owner:
+1000:0::0/8::        <no subkind>~[1000]
+1000:0::5::A magical barrier surrounds Hidden castle~[9001].
+1000:0::8::Nested tower~[9002], tower
+1000:0::8::A magical barrier surrounds Nested tower~[9002].
+200:0::2::
+200:0::2::Ships docked at port:
+200:0::5/3::Hidden ship~[9100], galley, hidden, owner:
+200:0::0/8:: *      <no subkind>~[1001]
+200:0::5::A magical barrier surrounds Hidden ship~[9100].
+200:0::5::Hidden castle~[9001], castle, hidden, owner:
+200:0::0/8:: *      <no subkind>~[1000]
+200:0::5::A magical barrier surrounds Hidden castle~[9001].
+200:0::8::Nested tower~[9002], tower
+200:0::8::A magical barrier surrounds Nested tower~[9002].
+200:0::5::Hidden ship~[9100], galley, hidden, owner:
+200:0::0/8:: *      <no subkind>~[1001]
+200:0::5::A magical barrier surrounds Hidden ship~[9100].
+stderr:
+
+exit 0
+stdout:
+section inner sightings seeall one includes unknown hidden locs ships and nested city owners
+> entity 9000 3 3
+> entity 9001 3 32
+> entity 9002 3 14
+> entity 9100 9 31
+> link 9000 9001
+> link 9001 9002
+> link 9000 9100
+> link 9002 1000
+> link 9100 1001
+> field 9001 loc_hidden 1
+> field 9002 loc_hidden 1
+> field 9100 loc_hidden 1
+> field 9002 barrier 7
+> set see_all 1
+> sout frame 1 6 0 0
+> report sublocs_here 200 9000
+> sout state
+route 0 0 frame 1 0 0 0
+vector:
+saved vector:
+> report ships_here 200 9000
+> sout state
+route 0 0 frame 1 0 0 0
+vector:
+saved vector:
+> report inner_locs 200 9000
+> sout state
+route 0 0 frame 1 0 0 0
+vector:
+saved vector:
+> report known 200
+raw known:
+> save 9000
+9000 loc plain
+LI
+ hl 9001 9100 
+
+> save 9001
+9001 loc castle
+LI
+ wh 9000
+ hl 9002 
+LO
+ hi 1
+
+> save 9002
+9002 loc city
+LI
+ wh 9001
+ hl 1000 
+LO
+ hi 1
+ ba 7
+
+> save 9100
+9100 ship roundship
+LI
+ wh 9000
+ hl 1001 
+LO
+ hi 1
+
+> save 200
+200 player pl_regular
+PL
+
+> readlog 200
+log 200:
+200:0::1/6::
+200:0::1/6::Inner locations:
+200:0::4/6::Castle~[9001], castle, hidden
+200:0::7/6::City~[9002], city, hidden, 1 day, owner:
+200:0::0/10:: *        <no subkind>~[1000]
+200:0::7::A magical barrier surrounds City~[9002].
+200:0::1::
+200:0::1::Ships docked at port:
+200:0::4/3::Roundship~[9100], roundship, hidden, owner:
+200:0::0/7:: *     <no subkind>~[1001]
+200:0::4::Castle~[9001], castle, hidden
+200:0::7::City~[9002], city, hidden, 1 day, owner:
+200:0::0/10:: *        <no subkind>~[1000]
+200:0::7::A magical barrier surrounds City~[9002].
+200:0::4::Roundship~[9100], roundship, hidden, owner:
+200:0::0/7:: *     <no subkind>~[1001]
+stderr:
+
+exit 0
+stdout:
+section inner sightings seeall two has same visibility and never learns locations
+> entity 9000 3 3
+> entity 9001 3 32
+> entity 9100 9 30
+> link 9000 9001
+> link 9001 9100
+> field 9001 loc_hidden 1
+> field 9100 loc_hidden 1
+> set see_all 2
+> report sublocs_here 200 9000
+> report ships_here 200 9001
+> report inner_locs 200 9000
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> report known 200
+raw known:
+> save 200
+200 player pl_regular
+PL
+
+> save 9001
+9001 loc castle
+LI
+ wh 9000
+ hl 9100 
+LO
+ hi 1
+
+> save 9100
+9100 ship galley
+LI
+ wh 9001
+LO
+ hi 1
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Inner locations:
+200:0::3::Castle~[9001], castle, hidden
+200:0::6::Galley~[9100], galley, hidden
+200:0::0::
+200:0::0::Ships docked at port:
+200:0::3/3::Galley~[9100], galley, hidden
+200:0::3::Castle~[9001], castle, hidden
+200:0::6::Galley~[9100], galley, hidden
+stderr:
+
+exit 0
+stdout:
+section inner sightings direct city suppresses owner descendants unlike building and recursive city
+> entity 9000 3 3
+> entity 9001 3 14
+> entity 9002 3 32
+> entity 9003 3 29
+> entity 9004 3 14
+> entity 9005 3 46
+> entity 1002 2 0
+> field 1002 lord 201
+> name 9001 Direct city
+> name 9002 Building
+> name 9003 Suppressed temple
+> name 9004 Recursive city
+> name 9005 Deep tower
+> link 9000 9001
+> link 9000 9002
+> link 9001 1000
+> link 9001 9003
+> link 9002 1001
+> link 9002 9004
+> link 9004 1002
+> link 9004 9005
+> field 9001 barrier 1
+> field 9002 barrier 2
+> field 9004 barrier 3
+> field 9005 barrier 4
+> sout frame 4 11 0 0
+> report sublocs_here 200 9000
+> sout state
+route 0 0 frame 4 0 0 0
+vector:
+saved vector:
+> report inner_locs 201 9000
+> sout state
+route 0 0 frame 4 0 0 0
+vector:
+saved vector:
+> save 9000
+9000 loc plain
+LI
+ hl 9001 9002 
+
+> save 9001
+9001 loc city
+na Direct city
+LI
+ wh 9000
+ hl 1000 9003 
+LO
+ ba 1
+
+> save 9002
+9002 loc castle
+na Building
+LI
+ wh 9000
+ hl 1001 9004 
+LO
+ ba 2
+
+> save 9004
+9004 loc city
+na Recursive city
+LI
+ wh 9002
+ hl 1002 9005 
+LO
+ ba 3
+
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9002
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+LI
+ wh 9004
+CH
+ lo 201
+
+> readlog 200
+log 200:
+200:0::4/11::
+200:0::4/11::Inner locations:
+200:0::7/11::Direct city~[9001], city, 1 day
+200:0::7/11::A magical barrier surrounds Direct city~[9001].
+200:0::7/11::Building~[9002], castle, owner:
+200:0::0/10:: *        <no subkind>~[1001]
+200:0::7::A magical barrier surrounds Building~[9002].
+200:0::10::Recursive city~[9004], city, 1 day, owner:
+200:0::0/13::             <no subkind>~[1002]
+200:0::10::A magical barrier surrounds Recursive city~[9004].
+200:0::13::Deep tower~[9005], tower
+200:0::13::A magical barrier surrounds Deep tower~[9005].
+> readlog 201
+log 201:
+201:0::7::Direct city~[9001], city, 1 day, owner:
+201:0::0/10::          <no subkind>~[1000]
+201:0::7::A magical barrier surrounds Direct city~[9001].
+201:0::10::Suppressed temple~[9003], temple
+201:0::7::Building~[9002], castle, owner:
+201:0::0/10::          <no subkind>~[1001]
+201:0::7::A magical barrier surrounds Building~[9002].
+201:0::10::Recursive city~[9004], city, 1 day, owner:
+201:0::0/13:: *           <no subkind>~[1002]
+201:0::10::A magical barrier surrounds Recursive city~[9004].
+201:0::13::Deep tower~[9005], tower
+201:0::13::A magical barrier surrounds Deep tower~[9005].
+stderr:
+
+exit 0
+stdout:
+section inner sightings crosslinks follow direct order retain duplicates omit owners barriers recursion
+> entity 9000 3 3
+> entity 9001 3 32
+> entity 9002 3 14
+> entity 9003 3 29
+> entity 9004 3 46
+> entity 9200 3 3
+> name 9001 Direct castle
+> name 9002 First linked city
+> name 9003 Closed temple
+> name 9004 Last linked tower
+> link 9000 9001
+> link 9200 9002
+> link 9200 9004
+> link 9002 1000
+> link 9002 9003
+> field 9002 barrier 9
+> field 9002 link_open 1
+> field 9004 link_open -1
+> field 9000 link_from 9002
+> field 9000 link_from 9003
+> field 9000 link_from 9001
+> field 9000 link_from 9002
+> field 9000 link_from 9004
+> field 9001 link_open 1
+> report sublocs_here 200 9000
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> report sublocs_here 200 9000
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> save 9000
+9000 loc plain
+LI
+ hl 9001 
+SL
+ lf 9002 9003 9001 9002 9004 
+
+> save 9001
+9001 loc castle
+na Direct castle
+LI
+ wh 9000
+SL
+ lp 1
+
+> save 9002
+9002 loc city
+na First linked city
+LI
+ wh 9200
+ hl 1000 9003 
+LO
+ ba 9
+SL
+ lp 1
+
+> save 9003
+9003 loc temple
+na Closed temple
+LI
+ wh 9002
+
+> save 9004
+9004 loc tower
+na Last linked tower
+LI
+ wh 9200
+SL
+ lp -1
+
+> save 200
+200 player pl_regular
+PL
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Inner locations:
+200:0::3::Direct castle~[9001], castle
+200:0::3::First linked city~[9002], city, 1 day
+200:0::3::Direct castle~[9001], castle
+200:0::3::First linked city~[9002], city, 1 day
+200:0::3::Last linked tower~[9004], tower
+200:0::0::
+200:0::0::Inner locations:
+200:0::3::Direct castle~[9001], castle
+200:0::3::First linked city~[9002], city, 1 day
+200:0::3::Direct castle~[9001], castle
+200:0::3::First linked city~[9002], city, 1 day
+200:0::3::Last linked tower~[9004], tower
+stderr:
+
+exit 0
+stdout:
+section inner sightings links only hidden unknown known closed seeall ordering
+> entity 9000 3 3
+> entity 9001 3 13
+> entity 9002 3 17
+> name 9001 Hidden open cave
+> name 9002 Hidden closed ruins
+> field 9001 loc_hidden 1
+> field 9002 loc_hidden 1
+> field 9001 link_open 1
+> field 9000 link_from 9002
+> field 9000 link_from 9001
+> field 9000 link_from 9001
+> sout frame 2 9 0 0
+> report sublocs_here 200 9000
+> sout state
+route 0 0 frame 2 9 0 0
+vector:
+saved vector:
+> report files
+report file 200 0
+report file 201 0
+> set_known 200 9001
+> report sublocs_here 200 9000
+> sout state
+route 0 0 frame 2 9 0 0
+vector:
+saved vector:
+> set see_all 1
+> report sublocs_here 201 9000
+> sout state
+route 0 0 frame 2 9 0 0
+vector:
+saved vector:
+> set see_all 2
+> report sublocs_here 201 9000
+> sout state
+route 0 0 frame 2 9 0 0
+vector:
+saved vector:
+> report known 200
+raw known: 9001
+> report known 201
+raw known:
+> save 9000
+9000 loc plain
+SL
+ lf 9002 9001 9001 
+
+> save 9001
+9001 loc cave
+na Hidden open cave
+LO
+ hi 1
+SL
+ lp 1
+
+> save 9002
+9002 loc ruins
+na Hidden closed ruins
+LO
+ hi 1
+
+> readlog 200
+log 200:
+200:0::2/9::
+200:0::2/9::Inner locations:
+200:0::5/9::Hidden open cave~[9001], cave, hidden, 1 day
+200:0::5/9::Hidden open cave~[9001], cave, hidden, 1 day
+> readlog 201
+log 201:
+201:0::2/9::
+201:0::2/9::Inner locations:
+201:0::5/9::Hidden open cave~[9001], cave, hidden, 1 day
+201:0::5/9::Hidden open cave~[9001], cave, hidden, 1 day
+201:0::2/9::
+201:0::2/9::Inner locations:
+201:0::5/9::Hidden open cave~[9001], cave, hidden, 1 day
+201:0::5/9::Hidden open cave~[9001], cave, hidden, 1 day
+stderr:
+
+exit 0
+stdout:
+section inner sightings ocean versus port headings ship owners barriers no inner recursion
+> entity 9000 3 1
+> entity 9001 3 14
+> entity 9100 9 30
+> entity 9101 9 31
+> entity 9200 3 46
+> name 9100 First galley
+> name 9101 Second roundship
+> name 9200 Unshown cargo tower
+> link 9000 9101
+> link 9000 9100
+> link 9101 1000
+> link 1000 1001
+> link 9101 9200
+> field 9100 barrier 2
+> field 9101 barrier 3
+> sout frame 4 8 0 0
+> report ships_here 200 9000
+> sout state
+route 0 0 frame 4 0 0 0
+vector:
+saved vector:
+> link 9001 9101
+> link 9001 9100
+> report ships_here 201 9001
+> sout state
+route 0 0 frame 4 0 0 0
+vector:
+saved vector:
+> save 9000
+9000 loc ocean
+LI
+
+> save 9001
+9001 loc city
+LI
+ hl 9101 9100 
+
+> save 9100
+9100 ship galley
+na First galley
+LI
+ wh 9001
+LO
+ ba 2
+
+> save 9101
+9101 ship roundship
+na Second roundship
+LI
+ wh 9001
+ hl 1000 9200 
+LO
+ ba 3
+
+> save 9200
+9200 loc tower
+na Unshown cargo tower
+LI
+ wh 9101
+
+> save 1000
+1000 char 0
+LI
+ wh 9101
+ hl 1001 
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+> readlog 200
+log 200:
+200:0::4/8::
+200:0::4/8::Ships sighted:
+200:0::7/3::Second roundship~[9101], roundship, owner:
+200:0::0/10:: *        <no subkind>~[1000], accompanied~by:
+200:0::0/13:: *           <no subkind>~[1001]
+200:0::7::A magical barrier surrounds Second roundship~[9101].
+200:0::7/3::First galley~[9100], galley
+200:0::7::A magical barrier surrounds First galley~[9100].
+> readlog 201
+log 201:
+201:0::4::
+201:0::4::Ships docked at port:
+201:0::7/3::Second roundship~[9101], roundship, owner:
+201:0::0/10::          <no subkind>~[1000], accompanied~by:
+201:0::0/13::             <no subkind>~[1001]
+201:0::7::A magical barrier surrounds Second roundship~[9101].
+201:0::7/3::First galley~[9100], galley
+201:0::7::A magical barrier surrounds First galley~[9100].
+stderr:
+
+exit 0
+stdout:
+section inner sightings hidden ships unknown known seeall one and two at ocean
+> entity 9000 3 1
+> entity 9100 9 30
+> entity 9101 9 31
+> link 9000 9101
+> link 9000 9100
+> field 9100 loc_hidden 1
+> field 9101 loc_hidden 1
+> sout frame 3 13 0 0
+> report ships_here 200 9000
+> sout state
+route 0 0 frame 3 13 0 0
+vector:
+saved vector:
+> report files
+report file 200 0
+report file 201 0
+> set_known 1000 9100
+> report ships_here 1000 9000
+> sout state
+route 0 0 frame 3 0 0 0
+vector:
+saved vector:
+> set see_all 1
+> report ships_here 201 9000
+> sout state
+route 0 0 frame 3 0 0 0
+vector:
+saved vector:
+> set see_all 2
+> report ships_here 201 9000
+> sout state
+route 0 0 frame 3 0 0 0
+vector:
+saved vector:
+> report known 200
+raw known: 9100
+> report known 201
+raw known:
+> save 9100
+9100 ship galley
+LI
+ wh 9000
+LO
+ hi 1
+
+> save 9101
+9101 ship roundship
+LI
+ wh 9000
+LO
+ hi 1
+
+> save 200
+200 player pl_regular
+PL
+ kn 9100 
+
+> readlog 200
+log 200:
+1000:0::3/13::
+1000:0::3/13::Ships sighted:
+1000:0::6/3::Galley~[9100], galley, hidden
+> readlog 201
+log 201:
+201:0::3::
+201:0::3::Ships sighted:
+201:0::6/3::Roundship~[9101], roundship, hidden
+201:0::6/3::Galley~[9100], galley, hidden
+201:0::3::
+201:0::3::Ships sighted:
+201:0::6/3::Roundship~[9101], roundship, hidden
+201:0::6/3::Galley~[9100], galley, hidden
+stderr:
+
+exit 0
+stdout:
+section inner sightings MASTER style day and renamed cache reused without reopening
+> lore_root
+> entity 9000 3 3
+> entity 9001 3 32
+> entity 9100 9 30
+> link 9000 9001
+> link 9000 9100
+> link 9001 1000
+> link 9100 1001
+> field 9001 barrier 1
+> field 9100 barrier 2
+> sout frame 2 5 1 23
+> sout route -2 0
+> sout style 7
+> report sublocs_here 200 9000
+> sout state
+route -2 0 frame 2 0 1 23
+vector:
+saved vector:
+> life flush
+> readfile log/200
+file bytes log/200 177:
+0:7::2/5:23:
+0:7::2/5:23:Inner locations:
+0:7::5/5:23:Castle~[9001], castle, owner:
+0:7::0/8:23: *      <no subkind>~[1000]
+0:7::5:23:A magical barrier surrounds Castle~[9001].
+
+end file bytes
+> life rename log/200 held-sightings
+> report ships_here 200 9000
+> sout state
+route -2 0 frame 2 0 1 23
+vector:
+saved vector:
+> report inner_locs 200 9000
+> sout state
+route -2 0 frame 2 0 1 23
+vector:
+saved vector:
+> life flush
+> readfile held-sightings
+file bytes held-sightings 621:
+0:7::2/5:23:
+0:7::2/5:23:Inner locations:
+0:7::5/5:23:Castle~[9001], castle, owner:
+0:7::0/8:23: *      <no subkind>~[1000]
+0:7::5:23:A magical barrier surrounds Castle~[9001].
+0:7::2:23:
+0:7::2:23:Ships docked at port:
+0:7::5/3:23:Galley~[9100], galley, owner:
+0:7::0/8:23: *      <no subkind>~[1001]
+0:7::5:23:A magical barrier surrounds Galley~[9100].
+0:7::5:23:Castle~[9001], castle, owner:
+0:7::0/8:23: *      <no subkind>~[1000]
+0:7::5:23:A magical barrier surrounds Castle~[9001].
+0:7::5:23:Galley~[9100], galley, owner:
+0:7::0/8:23: *      <no subkind>~[1001]
+0:7::5:23:A magical barrier surrounds Galley~[9100].
+
+end file bytes
+> life path log/200
+path log/200 missing
+> save 200
+200 player pl_regular
+PL
+
+> save 9000
+9000 loc plain
+LI
+ hl 9001 9100 
+
+> save 9001
+9001 loc castle
+LI
+ wh 9000
+ hl 1000 
+LO
+ ba 1
+
+> save 9100
+9100 ship galley
+LI
+ wh 9000
+ hl 1001 
+LO
+ ba 2
+
+stderr:
+
+exit 0
+stdout:
+section inner sightings invalid inner container macro assertion
+> report inner_locs 200 9000
+stderr:
+assertion failure: olympia/display.c (691): valid_box(where)
+
+exit 134
+stdout:
+section inner sightings invalid subloc container macro assertion
+> report sublocs_here 200 9000
+stderr:
+assertion failure: olympia/display.c (727): valid_box(where)
+
+exit 134
+stdout:
+section inner sightings invalid ships container macro assertion
+> report ships_here 200 9000
+stderr:
+assertion failure: olympia/display.c (806): valid_box(where)
+
+exit 134
+stdout:
+section inner sightings invalid hidden knowledge recipient checked before seeall
+> entity 9000 3 3
+> entity 9001 3 32
+> link 9000 9001
+> field 9001 loc_hidden 1
+> set see_all 2
+> report inner_locs 9002 9000
+stderr:
+assertion failure: olympia/u.c (2334): valid_box(who)
+
+exit 134

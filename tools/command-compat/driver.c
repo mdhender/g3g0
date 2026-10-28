@@ -123,6 +123,9 @@ static void list(char *label, ilist l)
 
 int drv_loc_barrier(int who, int where);
 void drv_chars_here(int who, int where);
+void drv_inner_locs(int who, int where);
+void drv_sublocs_here(int who, int where);
+void drv_ships_here(int who, int where);
 void drv_chars_below(int who, int n, int depth);
 char *drv_highlight(int who, int n, int depth);
 void drv_route_view(int who, struct exit_view *v, int mode);
@@ -1062,6 +1065,12 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "report")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
+   else if(!strcmp(text,"inner_locs") || !strcmp(text,"sublocs_here") || !strcmp(text,"ships_here")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    if(!strcmp(text,"inner_locs")) drv_inner_locs(n,a);
+    else if(!strcmp(text,"sublocs_here")) drv_sublocs_here(n,a);
+    else drv_ships_here(n,a);
+   }
    else if(!strcmp(text,"chars_here") || !strcmp(text,"owner_stack") || !strcmp(text,"chars_below")) {
     if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
     if(!strcmp(text,"chars_here")) drv_chars_here(n,a);
@@ -1341,6 +1350,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"last_order")) p_player(n)->last_order_turn = a;
    else if (!strcmp(text,"quest")) p_subloc(n)->quest_late = (schar)a;
    else if (!strcmp(text,"link_to")) ilist_append(&p_subloc(n)->link_to,a);
+   else if (!strcmp(text,"link_from")) ilist_append(&p_subloc(n)->link_from,a);
    else if (!strcmp(text,"link_open")) p_subloc(n)->link_open = (schar)a;
    else if (!strcmp(text,"link_when")) p_subloc(n)->link_when = (schar)a;
    else if (!strcmp(text,"rank")) p_char(n)->rank = (schar)a;

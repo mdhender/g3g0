@@ -6,6 +6,27 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Inner locations and ship sightings (#143)
+
+Existing display.go adds complete stage-pin display.c show_inner_locs 685–717,
+show_sublocs_here 720–797 and show_ships_here 800–839, reusing descriptions,
+owners/owner stacks, knowledge, barrier rendering and cached output. Fourteen
+appended command-oracle sections compare complete unchanged real C, raw state
+and report bytes: known/unknown hidden containers and ships, see_all 0/1/2,
+direct-city versus building/recursive-city branches, deep nesting, open/closed
+crosslinks with duplicates/order, actual ocean/port headings and owner/barrier
+ordering. Original assertions and expected-abort dependency-marker rejection
+are checked; numeric fixture constants are verified against pinned oly.h.
+No root/posts, commands, new dependency/pin or output owner.
+At **0.83.0-alpha**, C/C/Go matches **954 sections / 65118 lines / 1224413
+bytes**, with the entire inherited **940/64201/1206911 output** and **378933
+input-byte** prefixes unchanged, plus #168's live native-order comparison.
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded defaults pass in independent parent acceptance.
+See [exact closure, evidence and limits](command-compat#inner-locations-and-ship-sightings-143).
+No full-world/stage-exit claim. G3 #358 remains nonblocking: existing division
+and Go panic are untouched, malformed C136/Go2 is still not passing parity.
+
 ## Visible characters and owner stacks (#142)
 
 Existing display.go implements complete stage-pin display.c highlight_units
