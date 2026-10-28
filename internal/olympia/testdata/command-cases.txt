@@ -20883,3 +20883,356 @@ link 9000 9001
 field 9001 loc_hidden 1
 set see_all 2
 report inner_locs 9002 9000
+
+section ancillary empty sections preserve absent records cache and indentation
+entity 9000 3 3
+sout frame 4 9 0 0
+report ancillary_state 9000
+report ancillary_state 201
+report ancillary 0 201 9000
+report ancillary 1 201 9000
+report posts 201 9000 0
+report ancillary 2 201 9000
+report ancillary 3 201 9000
+report ancillary 4 201 9000
+sout state
+report files
+report ancillary_state 9000
+report ancillary_state 201
+save 9000
+
+section ancillary nearby cities stored order duplicates safe haven and taught skills
+entity 9000 3 3
+entity 9001 3 4
+entity 9100 3 14
+entity 9101 3 14
+entity 9200 5 0
+entity 9201 5 0
+name 9000 Origin plain
+name 9001 Remote province
+name 9100 First city
+name 9101 Haven
+name 9200 Navigation
+name 9201 Alchemy
+link 9000 9100
+link 9001 9101
+field 9101 safe -1
+field 9000 near_city 9101
+field 9000 near_city 9100
+field 9000 near_city 9101
+field 9000 teaches 9201
+field 9000 teaches 9200
+field 9000 teaches 9201
+sout frame 2 11 0 0
+report ancillary 0 200 9000
+report ancillary 1 1000 9000
+report ancillary 0 200 9000
+report ancillary_state 9000
+report ancillary_state 200
+sout state
+save 9000
+save 9101
+readlog 200
+
+section ancillary posts direct order first last quotes empty lines authors and both names
+entity 9000 3 14
+name 9000 Posting square
+entity 9100 10 0
+entity 9101 10 0
+entity 9102 10 0
+entity 9103 10 0
+entity 9200 3 46
+entity 9201 10 0
+link 9000 9102
+link 9000 1001
+link 9000 9100
+link 9000 9200
+link 9200 9201
+link 9000 9101
+link 9000 9103
+report post_line 9102 @first line 100% <b>raw</b>
+report post_line 9102 @
+report post_line 9102 @last "quoted" line
+field 9102 creator 1001
+report post_line 9100 @single
+report post_line 9101 @
+report post_line 9103 @
+report post_line 9103 @second
+report post_line 9201 @nested omitted
+field 9103 creator 1000
+sout frame 2 7 0 0
+report posts 200 9000 0
+sout state
+report posts 1000 9000 1
+sout state
+report ancillary_state 9100
+report ancillary_state 9101
+report ancillary_state 9102
+report ancillary_state 200
+save 9000
+save 9100
+save 9101
+save 9102
+save 9103
+readlog 200
+
+section ancillary posts MASTER day markup and renamed cached inode
+lore_root
+entity 9000 3 3
+entity 9100 10 0
+link 9000 9100
+report post_line 9100 @quoted 50% <i>inline</i>
+sout frame 1 5 1 23
+sout route -2 0
+sout style 7
+report posts 200 9000 1
+life flush
+readfile log/200
+life rename log/200 held-posts
+report posts 200 9000 0
+sout state
+life flush
+readfile held-posts
+life path log/200
+report ancillary_state 200
+save 200
+
+section ancillary invalid post missing misc before any heading
+entity 9000 3 3
+entity 9100 10 0
+link 9000 9100
+report posts 200 9000 0
+
+section ancillary invalid post allocated misc empty text before any heading
+entity 9000 3 3
+entity 9100 10 0
+link 9000 9100
+report post_empty 9100
+report posts 200 9000 1
+
+section ancillary invalid later post asserts before separator after valid text
+entity 9000 3 3
+entity 9100 10 0
+entity 9101 10 0
+link 9000 9101
+link 9000 9100
+report post_line 9101 @valid first
+report posts 200 9000 1
+
+section ancillary invalid post container assertion before traversal
+report posts 200 9000 0
+
+section ancillary invalid teaches container assertion even empty
+report ancillary 1 200 9000
+
+section ancillary weather combinations direct storms ordered privileged and ordinary
+entity 9000 3 3
+entity 9100 11 59
+entity 9101 11 58
+entity 9102 11 57
+link 9000 9102
+link 9000 9100
+link 9000 9101
+field 9100 strength 3
+field 9101 strength 0
+field 9102 strength 0
+sout frame 2 8 0 0
+report ancillary 2 200 9000
+field 200 weather_seen 9000
+report ancillary 2 1000 9000
+field 9101 strength 5
+report ancillary 2 200 9000
+field 9102 strength -2
+report ancillary 2 200 9000
+field 9100 strength 0
+report ancillary 2 200 9000
+field 9101 strength 0
+report ancillary 2 200 9000
+field 9102 strength 0
+report ancillary 2 200 9000
+field 9101 strength 5
+report ancillary 2 200 9000
+field 9101 strength 0
+field 9100 strength 3
+field 9102 strength -2
+report ancillary 2 200 9000
+sout state
+report ancillary_state 200
+report ancillary_state 9000
+save 9000
+save 9100
+save 9101
+save 9102
+readlog 200
+
+section ancillary weather sublocation inherits province weather not direct storm list building suppresses
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 3 46
+entity 9100 11 59
+entity 9101 11 58
+link 9000 9001
+link 9001 9002
+link 9000 9100
+link 9001 9101
+field 9100 strength 4
+field 9101 strength 7
+field 200 weather_seen 9000
+report ancillary 2 200 9000
+report ancillary 2 1000 9001
+report ancillary 2 200 9002
+report ancillary_state 200
+sout state
+save 9000
+save 9001
+save 9002
+readlog 200
+
+section ancillary weather output allocates missing player before visibility and unrelated view does not authorize
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 11 59
+entity 202 1 0
+link 9000 9100
+field 9100 strength 3
+report ancillary_state 202
+report ancillary 2 202 9000
+report ancillary_state 202
+field 201 weather_seen 9001
+report ancillary 2 201 9000
+report ancillary_state 201
+readlog 202
+readlog 201
+
+section ancillary weather sums cancellation before privilege validation
+entity 9000 3 3
+entity 9100 11 59
+entity 9101 11 59
+link 9000 9100
+link 9000 9101
+field 9100 strength 3
+field 9101 strength -3
+report ancillary 2 9002 9000
+sout state
+report files
+
+section ancillary invalid weather recipient only after weather heading
+entity 9000 3 3
+entity 9002 3 3
+entity 9100 11 59
+link 9000 9100
+field 9100 strength 3
+report ancillary 2 9002 9000
+
+section ancillary rulers castle owner pledge rank and original first garrison choice
+entity 9000 3 3
+entity 9001 3 4
+entity 9100 3 32
+entity 9200 2 64
+entity 9201 2 64
+entity 9300 3 14
+link 9001 9300
+link 9300 9100
+link 9100 1001
+link 9000 9201
+link 9000 9200
+field 9201 castle 9100
+field 9200 castle 0
+field 1001 pledge 1000
+field 1000 rank 40
+report ancillary 3 200 9000
+report ancillary_state 9201
+report ancillary_state 9200
+save 9201
+save 9200
+save 1000
+save 1001
+readlog 200
+
+section ancillary rulers no castle no owner ocean and sublocation skips
+entity 9000 3 3
+entity 9001 3 1
+entity 9002 3 14
+entity 9100 3 32
+entity 9200 2 64
+entity 9201 2 64
+link 9000 9002
+link 9000 9200
+link 9001 9201
+link 9000 9100
+report ancillary 3 200 9000
+field 9200 castle 9100
+report ancillary 3 200 9000
+report ancillary 3 200 9002
+field 9201 castle 9100
+report ancillary 3 200 9001
+report ancillary_state 9200
+report ancillary_state 9201
+sout state
+save 9200
+readlog 200
+
+section ancillary stats damage ship capacity weights nested characters allocation and repeat
+entity 10 4 0
+field 10 weight 7
+entity 9000 9 30
+entity 9001 9 31
+entity 9002 3 46
+entity 1002 2 0
+entity 9010 4 0
+entity 9011 4 0
+field 9010 weight 13
+field 9011 weight 19
+link 9000 1000
+link 1000 1001
+link 1001 1002
+field 1000 noble_item 9010
+field 1001 noble_item 9010
+inventory 1001 9011 11
+field 9000 capacity 1300
+field 9000 damage 17
+field 9001 capacity 2000
+field 9001 damage 100
+field 9002 damage 261
+sout frame 3 6 0 0
+report ancillary_state 1000
+report ancillary_state 1001
+report ancillary_state 1002
+report ancillary 4 200 9000
+report ancillary 4 200 9000
+report ancillary 4 200 9001
+report ancillary 4 200 9002
+report ancillary_state 1000
+report ancillary_state 1001
+report ancillary_state 1002
+sout state
+save 9000
+save 9001
+save 9002
+save 1000
+save 1001
+save 1002
+readlog 200
+
+section ancillary stats undamaged empty ship capacity and signed overflow multiplication
+entity 9000 9 30
+entity 9001 9 31
+entity 9010 4 0
+field 9000 capacity 1111
+field 9001 capacity 1000000
+field 9010 weight 30000
+link 9001 1000
+field 1000 noble_item 9010
+inventory 1000 9010 1000
+report ancillary 4 200 9000
+report ancillary 4 200 9001
+report ancillary_state 1000
+sout state
+save 1000
+readlog 200
+
+section ancillary invalid capacity on nonship retains ship weight assertion after damage
+entity 9000 3 46
+field 9000 capacity 20
+field 9000 damage 10
+report ancillary 4 200 9000

@@ -126,6 +126,7 @@ void drv_chars_here(int who, int where);
 void drv_inner_locs(int who, int where);
 void drv_sublocs_here(int who, int where);
 void drv_ships_here(int who, int where);
+void drv_ancillary(int mode, int who, int where);
 void drv_chars_below(int who, int n, int depth);
 char *drv_highlight(int who, int n, int depth);
 void drv_route_view(int who, struct exit_view *v, int mode);
@@ -1065,6 +1066,26 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "report")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
+   else if(!strcmp(text,"ancillary")) {
+    if(sscanf(line,"%*s %*s %d %d %d",&b,&n,&a)!=3) return 2;
+    drv_ancillary(b,n,a);
+   }
+   else if(!strcmp(text,"posts")) {
+    if(sscanf(line,"%*s %*s %d %d %d",&n,&a,&b)!=3) return 2;
+    show_loc_posts(n,a,b);
+   }
+   else if(!strcmp(text,"post_line")) {
+    char *s=strchr(line,'@'); if(!s) return 2;
+    cstrings_append(&p_misc(n)->post_txt,str_save(s+1));
+   }
+   else if(!strcmp(text,"post_empty")) { p_misc(n); }
+   else if(!strcmp(text,"ancillary_state")) {
+    struct entity_subloc *s=rp_subloc(n); struct entity_player *p=rp_player(n);
+    printf("ancillary records %d SL %d PL %d MI %d IM %d CH %d\n",n,s!=NULL,p!=NULL,rp_misc(n)!=NULL,rp_item_magic(n)!=NULL,rp_char(n)!=NULL);
+    list("near",s ? s->near_cities : NULL); list("teaches",s ? s->teaches : NULL);
+    list("weather",p ? p->weather_seen : NULL);
+    list("output",p ? p->output : NULL);
+   }
    else if(!strcmp(text,"inner_locs") || !strcmp(text,"sublocs_here") || !strcmp(text,"ships_here")) {
     if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
     if(!strcmp(text,"inner_locs")) drv_inner_locs(n,a);
@@ -1381,6 +1402,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"rate")) p_char(n)->loy_rate = a;
    else if (!strcmp(text,"pledge")) p_magic(n)->pledge = a;
    else if (!strcmp(text,"castle")) p_misc(n)->garr_castle = a;
+   else if (!strcmp(text,"near_city")) ilist_append(&p_subloc(n)->near_cities,a);
+   else if (!strcmp(text,"teaches")) ilist_append(&p_subloc(n)->teaches,a);
    else if (!strcmp(text,"unit")) ilist_append(&p_player(n)->units,a);
    else if (!strcmp(text,"np")) p_player(n)->noble_points = (short)a;
    else if (!strcmp(text,"first_turn")) p_player(n)->first_turn = a;

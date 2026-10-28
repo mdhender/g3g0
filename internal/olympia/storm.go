@@ -241,6 +241,16 @@ func (w *world) weatherHere(where, sk int) int32 {
 	return sum
 }
 
+// canSeeWeatherHere is storm.c:1661–1676. Read, never allocate, the player's
+// weather view, and normalize the queried location only after the assertion.
+func (w *world) canSeeWeatherHere(who, where int) bool {
+	pl := w.player(who)
+	assert(w.validBox(pl), "olympia/storm.c", 1667, "valid_box(pl)")
+	where = w.province(where)
+	p := w.rpPlayer(pl)
+	return p != nil && testBit(p.weatherSeen, where)
+}
+
 func (w *world) updateWeatherViewLocSup(who, where int) {
 	pl := w.player(who)
 	assert(w.validBox(pl), "olympia/storm.c", 1622, "valid_box(pl)")

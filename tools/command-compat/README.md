@@ -3,6 +3,95 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Ancillary location sections and posts (#144)
+
+Existing display.go now implements complete stage-pin display.c
+`show_loc_stats` **92–122**, `show_nearby_cities` **842–869**,
+`show_loc_skills` **872–892**, `show_loc_posts` **895–963**,
+`show_weather` **966–1012** and `show_loc_ruler` **1015–1046**.
+The oracle extracts these complete unchanged definitions, replacing the
+rejected `show_loc_posts` dependency, and adds complete storm.c
+`can_see_weather_here` **1661–1676** in the existing storm.go owner.
+The existing location-report root remains deferred to #145; no parallel
+projection/output path, POST handler or weather-magic command is introduced.
+
+The real reused closure is display.c `liner_desc`/`liner_desc_storm`,
+`safe_haven_s`; storm.c `weather_here`; garr.c `garrison_here`,
+`top_ruler`, `province_admin`, `rank_s`; loc.c `first_character`,
+`province`, `building_owner`, `all_char_here`/`add_char_here`; swear.c
+`player`/`lord`; u.c `ship_cap`, `ship_weight`, `determine_unit_weights`,
+`add_item_weight`, `comma_num`; original oly.h `noble_item`, `safe_haven`,
+`loc_damage`, `garrison_castle`, `item_creator` and storm-field macros;
+original loop.h direct-here and taught-skill copied loops;
+and complete code.c/sout.c/io.c for names, comma_append, raw output,
+cached FILE/inode ownership and actual save_box. All source dependencies were
+already tracked: no pin or dependency-table change.
+
+Nineteen appended sections exercise direct post order, nonpost and nested-post
+skips, single/multiple/empty text lines, first/last quotes, authors and absent
+item-magic records, both full-location names, retained text on repeat calls,
+MASTER/style/day output and renamed cached inodes. Missing/allocated-empty
+post text asserts at display.c **912**, including a malformed second post
+after valid output but before its separator. Invalid post/skills containers
+retain macro assertions **904/878**. Nearby cities retain duplicates/order
+and safe-haven suffixes; taught skills retain stored order and duplicates.
+Weather controls cover all eight rain/wind/fog combinations, signed strengths
+and cancellation, ordinary versus privileged output, stale province views,
+output allocating a missing player record before visibility lookup, and the
+distinction between province weather aggregation and the queried location's
+direct storm descriptions.
+Buildings suppress weather; nested storms do not contribute to province sums.
+Rulers retain first-character garrison selection, castle/no-owner/no-castle
+branches, top pledge/rank, and ocean/sublocation skips. Stats retain damage
+byte wrapping, zero damaged capacity, nested noble/item weights, repeat reads,
+absent records and signed C-int percentage arithmetic. Raw record flags,
+lists, output bits, indentation and save_box bytes supplement report bytes.
+
+Fixture values are checked against pinned oly.h, not descriptive labels:
+T_player **1**, T_char **2**, T_loc **3**, T_item **4**, T_skill **5**,
+T_ship **9**, T_post **10**, T_storm **11** (not T_deadchar **8**),
+ocean **1**, plain **3**, mountain **4**, city **14**, galley **30**,
+roundship **31**, castle **32**, tower **46**, fog/wind/rain **57/58/59**,
+garrison **64**, item_peasant **10**. The synthetic fallback-weight control
+includes that real item record; no invalid fixture crash is blessed as parity.
+The overflow fixture builds **30,030,000** weight using a short-safe item
+weight **30,000** and inventory quantity **1000**, rather than silently
+truncating a large item weight. Actual C renders **-1291%** at capacity
+**1,000,000**, distinguishing signed 32-bit multiplication from a widened ratio.
+
+At **0.84.0-alpha**, recording refresh and a fresh default command run both
+pass real C/C/Go: **973 sections / 66015 lines / 1241870 bytes**. All inherited
+**954 sections / 65118 lines / 1224413 output bytes** and **20885 lines /
+385519 input bytes** remain exact prefixes. New input is **21238 lines /
+393356 bytes**. Recording SHA-256:
+`4a83dabbf7bf4a812d7d75423a2e012c787eb95c90b972f8998560130bbb4f1f`.
+#168's separate live native-order check still matches C/C/Go (**28 lines /
+426 bytes**) without mutating its shared input. A temporary compiler/driver
+overlay injected a missing-dependency marker and status **134** in expected
+malformed-post section **958**. `--update` rejected it before status acceptance
+or recording replacement (status **2**, then-current recording hash unchanged).
+Temporary overlay scripts and captures were removed; the diagnostic is
+`tmp/issue144-marker.log`.
+
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded `go vet ./...` and fresh bounded `go test -count=1` defaults pass.
+Evidence logs: `tmp/issue144-{command-update,command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+Every compatibility invocation explicitly uses isolated `tmp/upstream.git`;
+every engine and Go test executable is bounded by run_limited. code-compat
+deliberately retains its unchanged older pin. Default turn is the small
+diagnostic comparator, not a world turn; loadsave's saved worlds were not run.
+Intentional C save_box trailing spaces in the recording are preserved.
+
+Independent parent review verified all seven complete unchanged C definitions
+exactly once, both inherited byte prefixes and the recording/input hashes.
+Parent sequential compatibility checks, bounded vet and fresh bounded default
+tests pass (Olympia **1.469s**). Logs:
+`tmp/parent144-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+
+No full-world or stage-exit acceptance is implied. G3 #358 remains owner-declared
+nonblocking: original division and Go panic are unchanged; malformed C **136**
+versus Go **2** is not passing parity.
+
 ## Inner locations and ship sightings (#143)
 
 Existing display.go adds complete stage-pin display.c `show_inner_locs`

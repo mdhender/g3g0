@@ -8,6 +8,185 @@ import "strings"
 // Location headers and descriptions from display.c. Complete location-report
 // assembly remains an explicit boundary.
 
+// showLocStats is display.c:92–122. Keep signed C-int multiplication before
+// division and use the existing shipWeight traversal without allocating records.
+func (w *world) showLocStats(who, where int) {
+	first := true
+	if p := w.rpSubloc(where); p != nil && p.damage != 0 {
+		w.commandOut(who, "")
+		first = false
+		w.commandOut(who, "Damage: %d%%", p.damage)
+	}
+	if sc := w.shipCap(where); sc != 0 {
+		sw := w.shipWeight(where)
+		if first {
+			w.commandOut(who, "")
+		}
+		w.commandOut(who, "Ship capacity: %s/%s (%d%%)", commaNum(int(sw)), commaNum(int(sc)), sw*100/sc)
+	}
+}
+
+// showNearbyCities is display.c:842–869; duplicates and stored order survive.
+func (w *world) showNearbyCities(who, where int) {
+	p := w.rpSubloc(where)
+	if p == nil || len(p.nearCities) < 1 {
+		return
+	}
+	w.commandOut(who, "")
+	w.commandOut(who, "Cities rumored to be nearby:")
+	w.indent += 3
+	for _, city := range p.nearCities {
+		suffix := w.safeHavenS(city)
+		w.commandOut(who, "%s, in %s%s", w.boxName(city), w.boxName(w.province(city)), suffix)
+	}
+	w.indent -= 3
+}
+
+// showLocSkills is display.c:872–892, including loop_loc_teach's assertion
+// and copied iteration rather than sorting the saved teaches list.
+func (w *world) showLocSkills(who, where int) {
+	assert(w.validBox(where), "olympia/display.c", 878, "valid_box(where)")
+	s := ""
+	if p := w.rpSubloc(where); p != nil {
+		for _, i := range append([]int(nil), p.teaches...) {
+			if s != "" {
+				s += ", "
+			}
+			s += w.boxName(i)
+		}
+	}
+	if s != "" {
+		w.commandOut(who, "")
+		w.commandOut(who, "Skills taught here:")
+		w.indent += 3
+		w.commandOut(who, "%s", s)
+		w.indent -= 3
+	}
+}
+
+// showLocPosts is complete display.c:895–963, not an allocation projection.
+// Validate each post before printing its separator; text is transient, not saved.
+func (w *world) showLocPosts(who, where int, showFullLoc bool) {
+	flag := true
+	assert(w.validBox(where), "olympia/display.c", 904, "valid_box(where)")
+	for post := range w.loopHere(where) {
+		if w.kind(post) != tPost {
+			continue
+		}
+		p := w.rpMisc(post)
+		assert(p != nil && len(p.postTxt) >= 1, "olympia/display.c", 912, "FALSE")
+		l := p.postTxt
+		if flag {
+			w.commandOut(who, "")
+			var name string
+			if showFullLoc {
+				name = w.boxName(where)
+			} else {
+				name = w.justName(where)
+			}
+			w.commandOut(who, "Posted in %s:", name)
+			flag = false
+			w.indent += 3
+		} else {
+			w.commandOut(who, "")
+		}
+		creator := 0
+		if m := w.rpItemMagic(post); m != nil {
+			creator = int(m.creator)
+		}
+		if creator != 0 {
+			w.commandOut(who, "Posted by %s:", w.boxName(creator))
+		} else {
+			w.commandOut(who, "Posted:")
+		}
+		w.indent += 3
+		first := true
+		for i, line := range l {
+			before, after := "", ""
+			if first {
+				before = "\""
+			}
+			if i+1 == len(l) {
+				after = "\""
+			}
+			w.commandOut(who, "%s%s%s", before, line, after)
+			if first {
+				first = false
+				w.indent++
+			}
+		}
+		if !first {
+			w.indent--
+		}
+		w.indent -= 3
+	}
+	if !flag {
+		w.indent -= 3
+	}
+}
+
+// showWeather is display.c:966–1012. Weather aggregates at the province,
+// but privileged storm descriptions traverse the original direct location.
+func (w *world) showWeather(who, where int) {
+	rain := w.weatherHere(where, subRain)
+	wind := w.weatherHere(where, subWind)
+	fog := w.weatherHere(where, subFog)
+	if rain == 0 && wind == 0 && fog == 0 {
+		return
+	}
+	w.commandOut(who, "")
+	if rain != 0 {
+		w.commandOut(who, "It is raining.")
+	}
+	if wind != 0 {
+		w.commandOut(who, "It is windy.")
+	}
+	if fog != 0 {
+		w.commandOut(who, "The province is blanketed in fog.")
+	}
+	if w.canSeeWeatherHere(who, where) {
+		first := true
+		assert(w.validBox(where), "olympia/display.c", 994, "valid_box(where)")
+		for i := range w.loopHere(where) {
+			if w.kind(i) != tStorm {
+				continue
+			}
+			if first {
+				w.indent += 3
+				first = false
+			}
+			w.commandOut(who, "%s", w.linerDesc(i))
+		}
+		if !first {
+			w.indent -= 3
+		}
+	}
+}
+
+// showLocRuler is display.c:1015–1046; topRuler runs even without a castle.
+func (w *world) showLocRuler(who, where int) {
+	if w.locDepth(where) != locProvince || w.subkind(where) == subOcean {
+		return
+	}
+	garr := w.garrisonHere(where)
+	if garr == 0 {
+		return
+	}
+	castle := 0
+	if p := w.rpMisc(garr); p != nil {
+		castle = int(p.garrCastle)
+	}
+	ruler := w.topRuler(garr)
+	if castle != 0 {
+		prov := w.province(castle)
+		w.commandOut(who, "Province controlled by %s, in %s", w.boxNameKind(castle), w.boxName(prov))
+		if ruler != 0 {
+			w.commandOut(who, "Ruled by %s%s", w.boxName(ruler), w.rankS(ruler))
+		}
+		w.commandOut(who, "")
+	}
+}
+
 // locInsideString is display.c:8–49. Nested buildings still name the province,
 // not their immediate container; region names are raw names without box codes.
 func (w *world) locInsideString(where int) string {

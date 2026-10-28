@@ -1463,6 +1463,50 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch action := args.word(); action {
 			case "order":
 				w.determineOutputOrder()
+			case "ancillary":
+				mode, n, where := args.num(t), args.num(t), args.num(t)
+				switch mode {
+				case 0:
+					w.showNearbyCities(n, where)
+				case 1:
+					w.showLocSkills(n, where)
+				case 2:
+					w.showWeather(n, where)
+				case 3:
+					w.showLocRuler(n, where)
+				case 4:
+					w.showLocStats(n, where)
+				}
+			case "posts":
+				n, where, full := args.num(t), args.num(t), args.num(t)
+				w.showLocPosts(n, where, full != 0)
+			case "post_line":
+				n := args.num(t)
+				_, text, ok := strings.Cut(args.rest, "@")
+				if !ok {
+					t.Fatal("missing post text delimiter")
+				}
+				w.pMisc(n).postTxt = append(w.pMisc(n).postTxt, text)
+			case "post_empty":
+				w.pMisc(args.num(t))
+			case "ancillary_state":
+				n := args.num(t)
+				s, p := w.rpSubloc(n), w.rpPlayer(n)
+				fmt.Fprintf(&stdout, "ancillary records %d SL %d PL %d MI %d IM %d CH %d\n", n, b2i(s != nil), b2i(p != nil), b2i(w.rpMisc(n) != nil), b2i(w.rpItemMagic(n) != nil), b2i(w.rpChar(n) != nil))
+				if s != nil {
+					helperList(&stdout, "near", s.nearCities)
+					helperList(&stdout, "teaches", s.teaches)
+				} else {
+					helperList(&stdout, "near", nil)
+					helperList(&stdout, "teaches", nil)
+				}
+				if p != nil {
+					helperList(&stdout, "weather", p.weatherSeen)
+					helperList(&stdout, "output", p.output)
+				} else {
+					helperList(&stdout, "weather", nil)
+					helperList(&stdout, "output", nil)
+				}
 			case "inner_locs", "sublocs_here", "ships_here":
 				n, where := args.num(t), args.num(t)
 				switch action {
@@ -1939,6 +1983,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pMisc(n).bindStorm = int32(a)
 			case "bound_storm":
 				w.pSubloc(n).boundStorms.Append(a)
+			case "near_city":
+				w.pSubloc(n).nearCities.Append(a)
+			case "teaches":
+				w.pSubloc(n).teaches.Append(a)
 			case "damage":
 				w.pSubloc(n).damage = uint8(a)
 			case "capacity":

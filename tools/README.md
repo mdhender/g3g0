@@ -6,6 +6,30 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Ancillary location sections and posts (#144)
+
+Existing display.go implements complete stage-pin display.c nearby cities
+842–869, taught skills 872–892, posts 895–963, weather 966–1012, ruler
+1015–1046 and location stats 92–122. The existing command oracle extracts
+all six unchanged original definitions and storm.c can_see_weather_here
+1661–1676, replacing the rejected posts dependency. Existing topology,
+weather views, garrison ownership, names, ship weights and cached output
+remain the owners; no POST/weather command or #145 location root is added.
+Nineteen appended sections cover asymmetric valid/malformed posts, exact
+quote/author/name order, empty text, stored city/skill order and safe havens,
+all weather combinations and direct-versus-province storm visibility,
+castle/ruler branches, ship stats, original assertions and raw state/cache.
+At **0.84.0-alpha**, real C/C/Go compares **973 sections / 66015 lines /
+1241870 bytes**, retaining exact **954 sections / 65118 lines / 1224413
+output-byte** and **385519 input-byte** prefixes. See
+[closure and task evidence](command-compat#ancillary-location-sections-and-posts-144).
+Recording refresh/default command and #168's live native C/C/Go comparison
+pass, as do sequential move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded default tests. Expected-abort marker injection
+is rejected before recording update; temporary controls are removed.
+No full-world or stage-exit claim. G3 #358 remains nonblocking; original
+division/Go panic are untouched and malformed C136/Go2 is not passing parity.
+
 ## Inner locations and ship sightings (#143)
 
 Existing display.go adds complete stage-pin display.c show_inner_locs 685–717,

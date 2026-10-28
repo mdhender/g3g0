@@ -101,7 +101,9 @@ functions = {
                   'with_inventory_string', 'display_with', 'mage_s', 'priest_s',
                   'emperor', 'liner_desc_char', 'liner_desc', 'highlight_units',
                   'show_chars_below', 'show_chars_below_highlight', 'show_owner_stack',
-                  'show_chars_here', 'show_inner_locs', 'show_sublocs_here', 'show_ships_here'],
+                  'show_chars_here', 'show_inner_locs', 'show_sublocs_here', 'show_ships_here',
+                  'show_nearby_cities', 'show_loc_skills', 'show_loc_posts',
+                  'show_weather', 'show_loc_ruler', 'show_loc_stats'],
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
             'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
             'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
@@ -138,7 +140,7 @@ functions = {
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
     'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit',
                'admit_comp', 'print_admit_sup', 'print_admit', 'print_att_sup', 'print_att'],
-    'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
+    'storm.c': ['weather_here', 'can_see_weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
                 'update_weather_view_locs', 'new_storm', 'create_some_storms',
                 'natural_weather', 'v_bind_storm', 'd_bind_storm',
                 'move_storm', 'move_bound_storms', 'dissipate_storm', 'storm_report'],
@@ -328,6 +330,15 @@ void drv_chars_here(int who, int where) { show_chars_here(who, where); }
 void drv_inner_locs(int who, int where) { show_inner_locs(who, where); }
 void drv_sublocs_here(int who, int where) { show_sublocs_here(who, where); }
 void drv_ships_here(int who, int where) { show_ships_here(who, where); }
+void drv_ancillary(int mode, int who, int where) {
+ switch(mode) {
+ case 0: show_nearby_cities(who, where); break;
+ case 1: show_loc_skills(who, where); break;
+ case 2: show_weather(who, where); break;
+ case 3: show_loc_ruler(who, where); break;
+ case 4: show_loc_stats(who, where); break;
+ }
+}
 void drv_chars_below(int who, int n, int depth) { show_chars_below_highlight(who, n, depth); }
 char *drv_highlight(int who, int n, int depth) { return highlight_units(who, n, depth); }
 void drv_route_view(int who, struct exit_view *v, int mode) {
@@ -518,7 +529,6 @@ int show_loc_no_header, win_flag;
 /* This allocation-only probe has no known locations to render. Never turn a
  * newly reached rendering dependency into a successful C oracle result. */
 void show_loc(int who, int where) STUB("show_loc")
-void show_loc_posts(int who, int where, int full) STUB("show_loc_posts")
 ilist trades_to_check;
 ''')
 PY
@@ -543,7 +553,14 @@ for run in run1 run2; do
   (run_limited "${RUN_TIMEOUT}" command-driver "${WORK}/driver" "${CASES}" "$i" "${WORK}/${run}/${i}") \
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
-  ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section ancillary '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section ancillary invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected ancillary status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section inner sightings '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in
