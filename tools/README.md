@@ -6,6 +6,36 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Summary rankings and totals (#157)
+
+Source-corresponding summary.go adds active summary.c rank comparator/ranking/
+output **15–119**, totals/unit counts **127–176** and men/gold/land **283–345**,
+with the original scratch globals in world.go and original ordinal helper in
+u.go **1711–1724**. SHOW_TOP stays FALSE. Reuses actual unit/inventory/accounting,
+garrison ownership, sort and cached output owners; no new dependency/pin or
+output layer. Summary projections/root/main wiring remain unchanged until #158.
+
+At **0.97.0-alpha**, nine appended cases compare complete unchanged real C
+twice and Go: **1133 sections / 76217 lines / 1479826 output bytes**. Inherited
+**1124 sections / 75560 lines / 1466335 output bytes** and **463271 input bytes**
+remain exact prefixes. Asymmetric/tied ranks, denominators, zero/one regular
+faction, duplicate/foreign controlled rows versus actual ownership, prisoner/
+nested men and gold, garrison **9/10**, shared rulers and cached inode reuse
+reach their actual branches. Four dependency-marker controls reject before
+expected failure or update, preserving the recording hash.
+See [closure, hashes and evidence](command-compat#summary-rankings-and-totals-157).
+
+Command refresh/default, move/helper/RNG/code/loadsave/turn-driver/default
+turn pass sequentially, followed by bounded vet and fresh bounded tests
+(Olympia **1.532s**); logs `tmp/issue157-*.log`.
+Independent parent complete-C review and the same tool/vet/fresh-test tier
+pass (Olympia **1.618s**); logs `tmp/parent157-*.log`.
+Parent strict post-#156 evidence remains the latest
+whole-world diagnostic: deterministic C repeats, both engines **0**, equal raw
+streams/paths/types/modes, eight report-byte differences and exit **1** before
+lifecycle. No stage-exit acceptance. G3 #358/#359 are unchanged/nonblocking;
+malformed **C136/Go2** is not parity. Parent strict captures are untouched.
+
 ## Player-report composition, storms and garrisons (#156)
 
 Existing report.go replaces playerReportState with complete report.c support

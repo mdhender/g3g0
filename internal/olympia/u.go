@@ -1018,6 +1018,23 @@ func (w *world) stackSubItem(who, item, qty int) bool {
 	return true
 }
 
+// ordinal is complete u.c:1711–1724, including its original 10–19 test
+// (not a generalized last-two-digits rule).
+func ordinal(n int) string {
+	suffix := "th"
+	if n < 10 || n > 19 {
+		switch n % 10 {
+		case 1:
+			suffix = "st"
+		case 2:
+			suffix = "nd"
+		case 3:
+			suffix = "rd"
+		}
+	}
+	return sout("%s%s", commaNum(n), suffix)
+}
+
 func (w *world) autocharge(who, amount int) bool {
 	return w.stackSubItem(who, itemGold, amount)
 }

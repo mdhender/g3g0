@@ -444,9 +444,8 @@ func fuzzyStrcmp(one, two string) bool {
 // safeQsort is safe_qsort(base, nmemb, size, comp): qsort() of l by comp,
 // skipped for fewer than two elements. qsort() is not stable, and neither
 // is slices.SortFunc, so the two can order elements that comp finds equal
-// differently. Every comp in the engine either is int_comp() on ints,
-// where equal elements are the same, or breaks ties, so the order is the
-// same.
+// differently. Summary ranks deliberately have no ID tie-break: equal
+// values receive the same ordinal regardless of their relative order.
 func safeQsort[T any](l []T, comp func(a, b T) int) {
 	if len(l) > 1 {
 		slices.SortFunc(l, comp)

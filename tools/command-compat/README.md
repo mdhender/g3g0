@@ -3,6 +3,99 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Summary rankings and totals (#157)
+
+Source-corresponding summary.go implements the active complete summary.c
+`rank_comp` **15–22**, `ranking` **33–41**, `out_rank_mine_top` **72–89**,
+`out_ranking` **92–119**, `collect_game_totals` **127–159**,
+`summary_units` **162–176**, `summary_men` **283–303**, `summary_gold`
+**306–320** and `summary_land_owned` **323–345**. Existing u.go supplies
+complete `ordinal` **1711–1724**, retaining C's literal **10–19** check
+(thus **111st**, not an independent suffix correction). world.go owns the
+original ranks/nplayers/ncontrolled/nother scratch fields. Existing accounting,
+inventory, copied unit loops, garrison strength/unique ruler lists, sorting
+and sout.go's cached output owner are reused. SHOW_TOP remains FALSE;
+the dormant `top_rank` display is not invoked or newly implemented.
+
+The summary root, skills/spells/provinces and projection replacement remain
+**#158**. Neither main nor summaryReportState/summaryProvincesState is changed
+or additionally wired, so the existing persistent effects still run once.
+The C oracle already extracts every complete definition and dependency above.
+The adapter only dispatches direct calls and observes original scratch fields;
+no new source dependency, pin, rewritten C model or output layer is added.
+Exact complete-definition equality, fixture constants and actual reached
+branches are checked in `tmp/issue157-evidence.log`.
+
+Nine appended sections (eight status **0**, one **134**) compare raw report
+bytes, streams/status, saved records and original scratch state:
+
+- Five asymmetric regular factions rank **4000,1000,1000,0,-5** as
+  **1st,2nd,2nd,4th,5th**, excluding system/NPC/silent values even when
+  larger. Zero/positive/negative denominators, all-five ties and repeated
+  membership changes exercise scratch-list clearing without evaluating top.
+- Controlled totals use actual unit-list rows, not character ownership:
+  duplicated and foreign listed units give **2 players / 4 controlled /
+  3 other**, while actual owner counts are **2,1,1,1,1**. Repeated calls
+  clear character marks and counters, retaining unrelated player temps.
+- Zero regular factions create no rank list or output, and leave absent
+  player records absent. One regular faction with no player record is
+  counted without allocation; only real output subsequently allocates it.
+- Men totals **1231/999/4000/20/0**, gold **2000/2000/9000/7/0** include
+  prisoners, nested/foreign and nonregular characters, nonfighter men and
+  signed nonzero man flags, but exclude player/location holdings and
+  nonman/missing-item records. Player temps reset each pass; character
+  temp **41** survives. Gold ties produce equal first ranks.
+- Actual garrisons reach strengths **9,9,10,10**, then **10** after one
+  added soldier. Shared pledged rulers count each faction only once;
+  repeated same-faction rulers are deduplicated. An empty castle contributes
+  nothing. Regular and nonregular ruler counts rise **1 → 2**, with an
+  unrelated regular faction remaining zero.
+- Output after renaming the cached log appends to the original inode;
+  `log/200` remains absent and `log/rank-original` contains **174** exact
+  bytes. The failed output open retains **sout.c:158**, not a new assertion.
+
+At **0.97.0-alpha**, complete unchanged real C repeats deterministically and
+Go matches **1133 sections / 76217 lines / 1479826 output bytes**. All inherited
+**1124 sections / 75560 lines / 1466335 output bytes** and **24431 input
+lines / 463271 input bytes** remain exact unchanged HEAD prefixes.
+New input: **24697 lines / 468406 bytes**. Output SHA-256:
+`efd25aa486381603c682cbb58f9bb6da12d975e78dfcf173d0848c001ac6fff9`.
+Input SHA-256:
+`453a5347380170032686c5424fc83349e0a93fb0029589b93980053c63d79a34`.
+
+Four temporary linker probes wrap only the direct summary adapter at expected
+failure section **1132**, emit the rejected dependency marker and exit **0**
+or abort **134**. Both default and update modes reject with harness status
+**2** before expected-failure acceptance or recording replacement. Every
+before/after recording hash stays unchanged. Logs:
+`tmp/issue157-negative-{0,134}-{default,update}.log`. Probe source/compiler
+wrapper and matching/provisional captures are removed before final refresh.
+
+Final real-C command refresh/default pass **1133/76217**, including native
+traversal on unchanged shared input. Sequential move **135/7158**, helper
+**37/1487**, RNG **321**, code **43/969** (its unchanged older pin), loadsave
+**61/3411**, turn-driver **7/152**, phase **5/484**, calendar **2/119**,
+schedule **4/1801** and default turn (**2 cwd entries**, raw streams/status)
+all pass. Bounded `go vet ./...` and fresh bounded
+`go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...` pass
+(Olympia **1.532s**). All use explicit isolated G3_REPO and the existing
+run_limited owner. Source-only whitespace checks pass; literal C recording
+trailing spaces remain unnormalized. Matching captures are removed. Logs:
+`tmp/issue157-command{,-update}.log`,
+`tmp/issue157-{move,helper,rng,code,loadsave,turn-driver,turn,vet,test}.log`.
+Independent parent review verifies all ten complete C definitions unchanged
+exactly once; the same eight-tool/vet/fresh-test tier passes (Olympia
+**1.618s**), logs `tmp/parent157-*.log`.
+These are task checks, not a whole-world/lifecycle or stage-exit acceptance.
+The latest parent strict post-#156 result remains identical C repeats,
+both engines **0**, equal raw streams/paths/types/modes, eight saved-report
+byte differences, exit **1** before lifecycle; parent captures are untouched.
+No new defect, prerequisite or oversized closure was found. The parent supplied
+the all-twelve-open-issue audit, including unlabeled issues and no bug/follow-C.
+G3 #358 remains unchanged/nonblocking (**C136/Go2 is not parity**), and
+G3 #359's source-linked native truncation remains unchanged. No commit, push,
+issue change or checklist tick is part of this task.
+
 ## Player-report composition, storms and garrisons (#156)
 
 Existing report.go now implements complete `player_report_sup` **1188–1212**

@@ -1731,6 +1731,30 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 					fmt.Fprintf(&stdout, "summary temp %d %d\n", n, w.bx[n].temp)
 				}
 				fmt.Fprintf(&stdout, "summary totals %d %d %d %d %d\n", w.unitSummaryTotals[0], w.unitSummaryTotals[1], w.unitSummaryTotals[2], w.unitSummaryTotals[3], w.unitSummaryTotals[4])
+			case "game_totals":
+				w.collectGameTotals()
+			case "ranking":
+				w.outRanking("Test ranks:", int32(args.num(t)))
+			case "summary_units":
+				w.summaryUnits()
+			case "summary_men":
+				w.summaryMen()
+			case "summary_gold":
+				w.summaryGold()
+			case "summary_land":
+				w.summaryLandOwned()
+			case "rank_state":
+				fmt.Fprintf(&stdout, "game totals %d %d %d\n", w.summaryNPlayers, w.summaryNControlled, w.summaryNOther)
+				fmt.Fprintf(&stdout, "ranks allocated %d count %d\n", b2i(w.summaryRanks != nil), len(w.summaryRanks))
+				for n := range w.loopKind(tPlayer) {
+					fmt.Fprintf(&stdout, "rank temp %d %d\n", n, w.bx[n].temp)
+				}
+				for n := range w.loopKind(tChar) {
+					fmt.Fprintf(&stdout, "rank char %d %d\n", n, w.bx[n].temp)
+				}
+			case "ordinal":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "ordinal %d [%s]\n", n, ordinal(n))
 			case "summary":
 				w.summaryReportState()
 			case "factions":

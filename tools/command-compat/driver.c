@@ -62,6 +62,7 @@ void drv_decay_mines(void), drv_decay_ghosts(void), drv_decay_corpses(void), drv
 int drv_corpse_roll(int who);
 void drv_auto_drop(void), drv_link_decay(void), drv_quest_decay(void), drv_kings(void);
 void drv_summary_provinces(void);
+void drv_summary_parts(int mode, int total), drv_summary_state(void);
 int drv_rank_threshold(int n), drv_rank_lower(int n), drv_rank_sup(int n);
 char *drv_summary_trunc_name(int who);
 int drv_sum_fighters(int who);
@@ -1261,6 +1262,14 @@ int main(int argc, char **argv)
     loop_char(n) { printf("summary temp %d %d\n",n,bx[n]->temp); } next_char;
     drv_summary_totals();
    }
+   else if(!strcmp(text,"game_totals")) drv_summary_parts(0,0);
+   else if(!strcmp(text,"ranking")) drv_summary_parts(1,n);
+   else if(!strcmp(text,"summary_units")) drv_summary_parts(2,0);
+   else if(!strcmp(text,"summary_men")) drv_summary_parts(3,0);
+   else if(!strcmp(text,"summary_gold")) drv_summary_parts(4,0);
+   else if(!strcmp(text,"summary_land")) drv_summary_parts(5,0);
+   else if(!strcmp(text,"rank_state")) drv_summary_state();
+   else if(!strcmp(text,"ordinal")) printf("ordinal %d [%s]\n",n,ordinal(n));
    else if(!strcmp(text,"summary")) summary_report();
    else if(!strcmp(text,"factions")) player_report();
    else if(!strcmp(text,"faction_sup")) player_report_sup(n);

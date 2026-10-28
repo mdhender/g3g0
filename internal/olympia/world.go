@@ -58,6 +58,12 @@ type world struct {
 	unitSummaryTotals [5]int32
 	locStackExplain   bool // report.c's foreign-faction footnote scratch
 
+	// summary.c's original ranks/nplayers/ncontrolled/nother scratch globals.
+	summaryRanks       lists.IList
+	summaryNPlayers    int32
+	summaryNControlled int32
+	summaryNOther      int32
+
 	// libdir is libdir, the data directory (-l), which load_box()'s
 	// diagnostic names. C starts it "lib".
 	libdir string

@@ -376,6 +376,23 @@ int drv_admission(char *acct, FILE *fp) { return make_new_players_sup(acct, fp);
 void drv_make_players(void) { make_new_players(); }
 int drv_load(struct command *c) { return load_command(c); }
 void drv_summary_provinces(void) { summary_provinces(); }
+void drv_summary_parts(int mode, int total) {
+ switch(mode) {
+ case 0: collect_game_totals(); break;
+ case 1: out_ranking("Test ranks:",total); break;
+ case 2: summary_units(); break;
+ case 3: summary_men(); break;
+ case 4: summary_gold(); break;
+ case 5: summary_land_owned(); break;
+ }
+}
+void drv_summary_state(void) {
+ int n;
+ printf("game totals %d %d %d\\n",nplayers,ncontrolled,nother);
+ printf("ranks allocated %d count %d\\n",ranks!=NULL,ilist_len(ranks));
+ loop_player(n) { printf("rank temp %d %d\\n",n,bx[n]->temp); } next_player;
+ loop_char(n) { printf("rank char %d %d\\n",n,bx[n]->temp); } next_char;
+}
 void drv_garrison_pay(void) { default_garrison_pay(); }
 void drv_sink(int ship) { sink_ship(ship); }
 void drv_collapse(int fort) { building_collapses(fort); }
