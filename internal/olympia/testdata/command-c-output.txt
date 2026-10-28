@@ -29816,3 +29816,2448 @@ queue_npc_orders()
 assertion failure: olympia/art.c (1215): owner
 
 exit 134
+stdout:
+section weather fierce winds repeated same day then next day share shuffle and mint
+> master 0
+> set turn 1
+> set day 3
+> weather_map 64
+> weather natural
+> weather natural
+> set day 17
+> weather natural
+> weather state
+storm 79711
+79711 storm wind
+LI
+ wh 9032
+MI
+ ss 3
+
+storm 80382
+80382 storm wind
+LI
+ wh 9029
+MI
+ ss 2
+
+storm 87726
+87726 storm wind
+LI
+ wh 9040
+MI
+ ss 2
+
+storm 88591
+88591 storm fog
+LI
+ wh 9038
+MI
+ ss 3
+
+storm 110158
+110158 storm fog
+LI
+ wh 9000
+MI
+ ss 3
+
+storm 114259
+114259 storm wind
+LI
+ wh 9034
+MI
+ ss 3
+
+storm 121151
+121151 storm fog
+LI
+ wh 9051
+MI
+ ss 3
+
+storm 136539
+136539 storm wind
+LI
+ wh 9060
+MI
+ ss 2
+
+storm 139413
+139413 storm fog
+LI
+ wh 9056
+MI
+ ss 2
+
+storm 140449
+140449 storm fog
+LI
+ wh 9044
+MI
+ ss 3
+
+storm 144422
+144422 storm fog
+LI
+ wh 9025
+MI
+ ss 2
+
+storm 149794
+149794 storm wind
+LI
+ wh 9016
+MI
+ ss 3
+
+province 9000
+here: 110158
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here: 149794
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here: 144422
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here: 80382
+province 9030
+here:
+province 9031
+here:
+province 9032
+here: 79711
+province 9033
+here:
+province 9034
+here: 114259
+province 9035
+here:
+province 9036
+here:
+province 9037
+here:
+province 9038
+here: 88591
+province 9039
+here:
+province 9040
+here: 87726
+province 9041
+here:
+province 9042
+here:
+province 9043
+here:
+province 9044
+here: 140449
+province 9045
+here:
+province 9046
+here:
+province 9047
+here:
+province 9048
+here:
+province 9049
+here:
+province 9050
+here:
+province 9051
+here: 121151
+province 9052
+here:
+province 9053
+here:
+province 9054
+here:
+province 9055
+here:
+province 9056
+here: 139413
+province 9057
+here:
+province 9058
+here:
+province 9059
+here:
+province 9060
+here: 136539
+province 9061
+here:
+province 9062
+here:
+province 9063
+here:
+show_garrison 0
+output: 9000 9044 9016 9032 9051 9025 9060 9040 9056 9038 9034 9029
+> weather probe 9013 4409
+weather shuffle: 370 321 342 363 356 307 314 328 349 335 300
+weather strength 3
+> newitem 1000 42
+created 63603
+> save_new
+63603 item scroll
+IT
+ un 1000
+
+> readlog 200
+log 200:
+9000:0::0::It has become quite foggy.
+9044:0::0::It has become quite foggy.
+9016:0::0::It has become quite windy.
+9032:0::0::It has become quite windy.
+9051:0::0::It has become quite foggy.
+9025:0::0::It has become quite foggy.
+9060:0::0::It has become quite windy.
+9040:0::0::It has become quite windy.
+9056:0::0::It has become quite foggy.
+9038:0::0::It has become quite foggy.
+9034:0::0::It has become quite windy.
+9029:0::0::It has become quite windy.
+stderr:
+
+exit 0
+stdout:
+section weather snowmelt exact threshold fog before rain
+> master 19
+> set turn 2
+> set day 30
+> weather_map 32
+> weather natural
+> weather state
+storm 82906
+82906 storm rain
+LI
+ wh 9000
+MI
+ ss 2
+
+storm 133089
+133089 storm fog
+LI
+ wh 9003
+MI
+ ss 3
+
+province 9000
+here: 82906
+province 9001
+here:
+province 9002
+here:
+province 9003
+here: 133089
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here:
+province 9030
+here:
+province 9031
+here:
+show_garrison 0
+output: 9003 9000
+> weather probe 9013 7739
+weather shuffle: 300 356 363 321 349 370 314 342 335 307 328
+weather strength 2
+> readlog 200
+log 200:
+9003:0::0::It has become quite foggy.
+9000:0::0::It has begun to rain.
+stderr:
+
+exit 0
+stdout:
+section weather blossom bloom no draws even above threshold
+> master 19
+> set turn 3
+> weather_map 64
+> weather natural
+> weather state
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here:
+province 9030
+here:
+province 9031
+here:
+province 9032
+here:
+province 9033
+here:
+province 9034
+here:
+province 9035
+here:
+province 9036
+here:
+province 9037
+here:
+province 9038
+here:
+province 9039
+here:
+province 9040
+here:
+province 9041
+here:
+province 9042
+here:
+province 9043
+here:
+province 9044
+here:
+province 9045
+here:
+province 9046
+here:
+province 9047
+here:
+province 9048
+here:
+province 9049
+here:
+province 9050
+here:
+province 9051
+here:
+province 9052
+here:
+province 9053
+here:
+province 9054
+here:
+province 9055
+here:
+province 9056
+here:
+province 9057
+here:
+province 9058
+here:
+province 9059
+here:
+province 9060
+here:
+province 9061
+here:
+province 9062
+here:
+province 9063
+here:
+show_garrison 0
+output:
+> weather probe 9013 59
+weather shuffle: 328 342 314 370 356 349 363 321 300 335 307
+weather strength 2
+stderr:
+
+exit 0
+stdout:
+section weather sunsear 63 provinces one rain
+> master 255
+> set turn 4
+> set day 1
+> weather_map 63
+> weather natural
+> weather state
+storm 96057
+96057 storm rain
+LI
+ wh 9003
+MI
+ ss 3
+
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+province 9003
+here: 96057
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here:
+province 9030
+here:
+province 9031
+here:
+province 9032
+here:
+province 9033
+here:
+province 9034
+here:
+province 9035
+here:
+province 9036
+here:
+province 9037
+here:
+province 9038
+here:
+province 9039
+here:
+province 9040
+here:
+province 9041
+here:
+province 9042
+here:
+province 9043
+here:
+province 9044
+here:
+province 9045
+here:
+province 9046
+here:
+province 9047
+here:
+province 9048
+here:
+province 9049
+here:
+province 9050
+here:
+province 9051
+here:
+province 9052
+here:
+province 9053
+here:
+province 9054
+here:
+province 9055
+here:
+province 9056
+here:
+province 9057
+here:
+province 9058
+here:
+province 9059
+here:
+province 9060
+here:
+province 9061
+here:
+province 9062
+here:
+show_garrison 0
+output: 9003
+> weather probe 9013 315
+weather shuffle: 314 342 321 300 335 370 363 307 356 349 328
+weather strength 3
+> readlog 200
+log 200:
+9003:0::0::It has begun to rain.
+stderr:
+
+exit 0
+stdout:
+section weather thunder rain 64 provinces doubled allocation
+> master 19
+> set turn 5
+> set day 29
+> weather_map 64
+> weather natural
+> weather state
+storm 103908
+103908 storm rain
+LI
+ wh 9022
+MI
+ ss 2
+
+storm 114706
+114706 storm rain
+LI
+ wh 9056
+MI
+ ss 3
+
+storm 116784
+116784 storm rain
+LI
+ wh 9057
+MI
+ ss 3
+
+storm 149659
+149659 storm rain
+LI
+ wh 9031
+MI
+ ss 3
+
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here: 103908
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here:
+province 9030
+here:
+province 9031
+here: 149659
+province 9032
+here:
+province 9033
+here:
+province 9034
+here:
+province 9035
+here:
+province 9036
+here:
+province 9037
+here:
+province 9038
+here:
+province 9039
+here:
+province 9040
+here:
+province 9041
+here:
+province 9042
+here:
+province 9043
+here:
+province 9044
+here:
+province 9045
+here:
+province 9046
+here:
+province 9047
+here:
+province 9048
+here:
+province 9049
+here:
+province 9050
+here:
+province 9051
+here:
+province 9052
+here:
+province 9053
+here:
+province 9054
+here:
+province 9055
+here:
+province 9056
+here: 114706
+province 9057
+here: 116784
+province 9058
+here:
+province 9059
+here:
+province 9060
+here:
+province 9061
+here:
+province 9062
+here:
+province 9063
+here:
+show_garrison 0
+output: 9057 9022 9031 9056
+> weather probe 9013 7483
+weather shuffle: 356 370 342 307 321 300 363 335 314 328 349
+weather strength 2
+> newitem 1000 42
+created 77706
+> save_new
+77706 item scroll
+IT
+ un 1000
+
+> readlog 200
+log 200:
+9057:0::0::It has begun to rain.
+9022:0::0::It has begun to rain.
+9031:0::0::It has begun to rain.
+9056:0::0::It has begun to rain.
+stderr:
+
+exit 0
+stdout:
+section weather harvest no draws and next year resets weather only at first draw
+> master 19
+> set turn 6
+> weather_map 32
+> weather natural
+> weather probe 9000 59
+weather shuffle: 314 349 335 307 342 321 356 328 370 363 300
+weather strength 2
+> set turn 14
+> weather natural
+> weather probe 9000 59
+weather shuffle: 342 300 314 328 363 370 349 335 321 356 307
+weather strength 2
+> weather state
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here:
+province 9030
+here:
+province 9031
+here:
+show_garrison 0
+output:
+stderr:
+
+exit 0
+stdout:
+section weather waning days rain fog rain exclusion and repeat
+> master 33
+> set turn 7
+> set day 7
+> weather_map 32
+> weather natural
+> weather natural
+> weather state
+storm 81740
+81740 storm fog
+LI
+ wh 9008
+MI
+ ss 2
+
+storm 97545
+97545 storm rain
+LI
+ wh 9013
+MI
+ ss 3
+
+storm 110571
+110571 storm fog
+LI
+ wh 9021
+MI
+ ss 2
+
+storm 113917
+113917 storm rain
+LI
+ wh 9019
+MI
+ ss 2
+
+storm 114157
+114157 storm rain
+LI
+ wh 9031
+MI
+ ss 2
+
+storm 144349
+144349 storm rain
+LI
+ wh 9015
+MI
+ ss 3
+
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here: 81740
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here: 97545
+province 9014
+here:
+province 9015
+here: 144349
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here: 113917
+province 9020
+here:
+province 9021
+here: 110571
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here:
+province 9030
+here:
+province 9031
+here: 114157
+show_garrison 0
+output: 9013 9021 9015 9019 9008 9031
+> weather probe 9000 1851
+weather shuffle: 342 300 363 356 321 335 314 307 349 370 328
+weather strength 2
+> readlog 200
+log 200:
+9013:0::0::It has begun to rain.
+9021:0::0::It has become quite foggy.
+9015:0::0::It has begun to rain.
+9019:0::0::It has begun to rain.
+9008:0::0::It has become quite foggy.
+9031:0::0::It has begun to rain.
+stderr:
+
+exit 0
+stdout:
+section weather dark night wind season rollover and new year
+> master 0
+> set turn 8
+> set day 30
+> weather_map 32
+> weather natural
+> weather probe 9000 7738
+weather shuffle: 356 314 335 370 328 342 321 300 307 363 349
+weather strength 3
+> set turn 9
+> set day 1
+> weather natural
+> weather state
+storm 81660
+81660 storm wind
+LI
+ wh 9024
+MI
+ ss 3
+
+storm 111373
+111373 storm fog
+LI
+ wh 9017
+MI
+ ss 3
+
+storm 119195
+119195 storm wind
+LI
+ wh 9029
+MI
+ ss 3
+
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here: 111373
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here: 81660
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here: 119195
+province 9030
+here:
+province 9031
+here:
+show_garrison 0
+output: 9029 9017 9024
+> weather probe 9000 314
+weather shuffle: 349 363 370 335 307 328 321 314 356 342 300
+weather strength 3
+> readlog 200
+log 200:
+9029:0::0::It has become quite windy.
+9017:0::0::It has become quite foggy.
+9024:0::0::It has become quite windy.
+stderr:
+
+exit 0
+stdout:
+section weather below threshold still shuffles each active kind
+> master 19
+> set turn 1
+> weather_map 31
+> weather natural
+> weather state
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here:
+province 9030
+here:
+show_garrison 0
+output:
+> weather probe 9000 57
+weather shuffle: 363 300 328 321 335 314 307 370 342 356 349
+weather strength 2
+stderr:
+
+exit 0
+stdout:
+section weather empty map zero and one candidates never draw shuffle
+> master 0
+> set turn 1
+> weather count
+provinces 0
+> weather natural
+> weather probe 9000 57
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> weather_map 1
+> weather count
+provinces 1
+> weather natural
+> weather some 99 59
+> weather state
+storm 110158
+110158 storm rain
+LI
+ wh 9000
+MI
+ ss 3
+
+province 9000
+here: 110158
+show_garrison 0
+output: 9000
+> weather probe 9000 57
+weather shuffle: 321 342 356 328 314 363 300 370 335 307 349
+weather strength 2
+> readlog 200
+log 200:
+9000:0::0::It has begun to rain.
+stderr:
+
+exit 0
+stdout:
+section weather all greater regions excluded yet count towards threshold
+> master 0
+> set turn 5
+> set day 2
+> weather_map 32
+> set faery_region 8000
+> weather natural
+> weather probe 9000 571
+weather shuffle: 328 363 342 300 335 349 370 307 314 321 356
+weather strength 2
+> set faery_region 0
+> set hades_region 8000
+> weather natural
+> weather probe 9000 571
+weather shuffle: 363 328 307 342 300 370 335 356 349 321 314
+weather strength 2
+> set hades_region 0
+> set cloud_region 8000
+> weather natural
+> set cloud_region 0
+> set tunnel_region 8000
+> weather natural
+> set tunnel_region 0
+> set under_region 8000
+> weather natural
+> set under_region 0
+> set nowhere_region 8000
+> weather natural
+> weather state
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here:
+province 9030
+here:
+province 9031
+here:
+show_garrison 0
+output:
+> set nowhere_region 0
+> weather natural
+> weather state
+storm 93483
+93483 storm rain
+LI
+ wh 9004
+MI
+ ss 3
+
+storm 116401
+116401 storm rain
+LI
+ wh 9020
+MI
+ ss 3
+
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here: 93483
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here: 116401
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here:
+province 9030
+here:
+province 9031
+here:
+show_garrison 0
+output: 9020 9004
+> weather probe 9000 571
+weather shuffle: 328 356 363 300 349 335 370 307 314 321 342
+weather strength 2
+> readlog 200
+log 200:
+9020:0::0::It has begun to rain.
+9004:0::0::It has begun to rain.
+stderr:
+
+exit 0
+stdout:
+section weather existing positive negative zero and nested storms filter before shuffle
+> master 19
+> set turn 5
+> set day 9
+> weather_map 32
+> entity 70001 11 59
+> field 70001 strength 5
+> link 9000 70001
+> entity 70002 11 59
+> field 70002 strength -2
+> link 9001 70002
+> entity 70003 11 59
+> field 70003 strength 0
+> link 9002 70003
+> entity 70004 11 59
+> field 70004 strength 8
+> entity 9500 3 9
+> link 9003 9500
+> link 9500 70004
+> entity 70005 11 57
+> field 70005 strength 3
+> link 9004 70005
+> weather some 40 59
+> weather some 40 59
+> weather state
+storm 70001
+70001 storm rain
+LI
+ wh 9000
+MI
+ ss 5
+
+storm 70002
+70002 storm rain
+LI
+ wh 9001
+MI
+ ss -2
+
+storm 70003
+70003 storm rain
+LI
+ wh 9002
+
+storm 70004
+70004 storm rain
+LI
+ wh 9500
+MI
+ ss 8
+
+storm 70005
+70005 storm fog
+LI
+ wh 9004
+MI
+ ss 3
+
+storm 83011
+83011 storm rain
+LI
+ wh 9012
+MI
+ ss 3
+
+storm 83672
+83672 storm rain
+LI
+ wh 9007
+MI
+ ss 2
+
+storm 84154
+84154 storm rain
+LI
+ wh 9025
+MI
+ ss 2
+
+storm 92189
+92189 storm rain
+LI
+ wh 9017
+MI
+ ss 3
+
+storm 95955
+95955 storm rain
+LI
+ wh 9019
+MI
+ ss 2
+
+storm 97181
+97181 storm rain
+LI
+ wh 9023
+MI
+ ss 2
+
+storm 98098
+98098 storm rain
+LI
+ wh 9004
+MI
+ ss 2
+
+storm 103375
+103375 storm rain
+LI
+ wh 9029
+MI
+ ss 3
+
+storm 103908
+103908 storm rain
+LI
+ wh 9024
+MI
+ ss 3
+
+storm 107096
+107096 storm rain
+LI
+ wh 9008
+MI
+ ss 2
+
+storm 107530
+107530 storm rain
+LI
+ wh 9022
+MI
+ ss 2
+
+storm 113294
+113294 storm rain
+LI
+ wh 9030
+MI
+ ss 2
+
+storm 114706
+114706 storm rain
+LI
+ wh 9026
+MI
+ ss 2
+
+storm 115926
+115926 storm rain
+LI
+ wh 9028
+MI
+ ss 3
+
+storm 116784
+116784 storm rain
+LI
+ wh 9027
+MI
+ ss 2
+
+storm 118498
+118498 storm rain
+LI
+ wh 9009
+MI
+ ss 3
+
+storm 120131
+120131 storm rain
+LI
+ wh 9013
+MI
+ ss 3
+
+storm 121092
+121092 storm rain
+LI
+ wh 9005
+MI
+ ss 3
+
+storm 122903
+122903 storm rain
+LI
+ wh 9011
+MI
+ ss 2
+
+storm 126215
+126215 storm rain
+LI
+ wh 9014
+MI
+ ss 2
+
+storm 126367
+126367 storm rain
+LI
+ wh 9010
+MI
+ ss 2
+
+storm 127072
+127072 storm rain
+LI
+ wh 9018
+MI
+ ss 2
+
+storm 127437
+127437 storm rain
+LI
+ wh 9020
+MI
+ ss 2
+
+storm 128997
+128997 storm rain
+LI
+ wh 9015
+MI
+ ss 3
+
+storm 139383
+139383 storm rain
+LI
+ wh 9006
+MI
+ ss 2
+
+storm 139915
+139915 storm rain
+LI
+ wh 9016
+MI
+ ss 2
+
+storm 141346
+141346 storm rain
+LI
+ wh 9031
+MI
+ ss 2
+
+storm 144923
+144923 storm rain
+LI
+ wh 9003
+MI
+ ss 2
+
+storm 146403
+146403 storm rain
+LI
+ wh 9002
+MI
+ ss 3
+
+storm 149659
+149659 storm rain
+LI
+ wh 9021
+MI
+ ss 2
+
+province 9000
+here: 70001
+province 9001
+here: 70002
+province 9002
+here: 70003 146403
+province 9003
+here: 9500 144923
+province 9004
+here: 70005 98098
+province 9005
+here: 121092
+province 9006
+here: 139383
+province 9007
+here: 83672
+province 9008
+here: 107096
+province 9009
+here: 118498
+province 9010
+here: 126367
+province 9011
+here: 122903
+province 9012
+here: 83011
+province 9013
+here: 120131
+province 9014
+here: 126215
+province 9015
+here: 128997
+province 9016
+here: 139915
+province 9017
+here: 92189
+province 9018
+here: 127072
+province 9019
+here: 95955
+province 9020
+here: 127437
+province 9021
+here: 149659
+province 9022
+here: 107530
+province 9023
+here: 97181
+province 9024
+here: 103908
+province 9025
+here: 84154
+province 9026
+here: 114706
+province 9027
+here: 116784
+province 9028
+here: 115926
+province 9029
+here: 103375
+province 9030
+here: 113294
+province 9031
+here: 141346
+show_garrison 0
+output: 9027 9024 9021 9026 9016 9005 9031 9004 9010 9023 9002 9011 9012 9007 9015 9028 9006 9019 9014 9020 9030 9025 9017 9003 9009 9008 9013 9018 9022 9029
+> weather probe 9000 2363
+weather shuffle: 314 356 321 370 349 363 307 328 300 342 335
+weather strength 3
+> readlog 200
+log 200:
+9027:0::0::It has begun to rain.
+9024:0::0::It has begun to rain.
+9021:0::0::It has begun to rain.
+9026:0::0::It has begun to rain.
+9016:0::0::It has begun to rain.
+9005:0::0::It has begun to rain.
+9031:0::0::It has begun to rain.
+9004:0::0::It has begun to rain.
+9010:0::0::It has begun to rain.
+9023:0::0::It has begun to rain.
+9002:0::0::It has begun to rain.
+9011:0::0::It has begun to rain.
+9012:0::0::It has begun to rain.
+9007:0::0::It has begun to rain.
+9015:0::0::It has begun to rain.
+9028:0::0::It has begun to rain.
+9006:0::0::It has begun to rain.
+9019:0::0::It has begun to rain.
+9014:0::0::It has begun to rain.
+9020:0::0::It has begun to rain.
+9030:0::0::It has begun to rain.
+9025:0::0::It has begun to rain.
+9017:0::0::It has begun to rain.
+9003:0::0::It has begun to rain.
+9009:0::0::It has begun to rain.
+9008:0::0::It has begun to rain.
+9013:0::0::It has begun to rain.
+9018:0::0::It has begun to rain.
+9022:0::0::It has begun to rain.
+9029:0::0::It has begun to rain.
+stderr:
+
+exit 0
+stdout:
+section weather new explicit entity strength wrap output suppression and relocation
+> master 0
+> set turn 1
+> weather_map 3
+> link 9000 1000
+> field 200 touched 9000
+> entity 70000 11 59
+> entity 70001 11 59
+> garrison_view 1
+> weather new 70000 59 65538 9000
+new storm 0
+> weather new 70001 59 3 9000
+new storm 0
+> weather new 70001 59 -1 9001
+new storm 0
+> weather new 0 58 3 9002
+new storm 0
+> weather new 0 57 0 9002
+new storm 0
+> weather state
+storm 70000
+70000 storm rain
+LI
+ wh 9000
+MI
+ ss 2
+
+storm 70001
+70001 storm rain
+LI
+ wh 9001
+MI
+ ss -1
+
+storm 110158
+110158 storm wind
+LI
+ wh 9002
+MI
+ ss 3
+
+storm 140449
+140449 storm fog
+LI
+ wh 9002
+
+province 9000
+here: 1000 70000
+province 9001
+here: 70001
+province 9002
+here: 110158 140449
+show_garrison 0
+output: 9000 9001 9002
+> weather probe 9000 59
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 3
+> save 9000
+9000 loc ocean
+LI
+ wh 8000
+ hl 1000 70000 
+
+> save 9001
+9001 loc forest
+LI
+ wh 8000
+ hl 70001 
+
+> readlog 200
+log 200:
+9000:0::0::It has begun to rain.
+9001:0::0::It has begun to rain.
+9002:0::0::It has become quite windy.
+9002:0::0::It has become quite foggy.
+stderr:
+
+exit 0
+stdout:
+section weather nonzero province count retains original static lifetime
+> master 0
+> set turn 5
+> weather_map 31
+> weather count
+provinces 31
+> entity 9031 3 3
+> link 8000 9031
+> weather count
+provinces 31
+> weather natural
+> weather state
+province 9000
+here:
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here:
+province 9030
+here:
+province 9031
+here:
+show_garrison 0
+output:
+> weather probe 9000 59
+weather shuffle: 321 363 328 314 300 349 370 342 356 335 307
+weather strength 3
+stderr:
+
+exit 0
+stdout:
+section weather bind real command start completion rebind and aura charge
+> master 0
+> set turn 1
+> weather_map 2
+> entity 9400 9 30
+> entity 9401 9 30
+> link 9000 9400
+> link 9000 9401
+> link 9400 1000
+> field 1000 cur_aura 12
+> entity 70000 11 59
+> field 70000 summoner 1000
+> weather new 70000 59 3 9000
+new storm 0
+> queue bind 70000
+> load
+load 1
+> do
+> dump
+cmd 6 who 1000 state 2 status 1 wait 7 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 70000 0 0 0 0 0 0 0; parse [bind] [70000]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 1
+> finish
+finish 1
+> save 70000
+70000 storm rain
+LI
+ wh 9000
+MI
+ sb 1000
+ ss 3
+ bs 9400
+
+> save 9400
+9400 ship galley
+LI
+ wh 9000
+ hl 1000 
+SL
+ bs 70000 
+
+> save 1000
+1000 char 0
+LI
+ wh 9400
+CH
+ lo 200
+CM
+ ca 9
+CO
+ li bind 70000
+ ar 70000 0 0 0 0 0 0 0
+ st 1
+ pr 3
+
+> link 9401 1000
+> weather start 70000
+bind start 1
+> weather finish 70000
+bind finish 1
+> weather finish 70000
+bind finish 1
+> save 70000
+70000 storm rain
+LI
+ wh 9000
+MI
+ sb 1000
+ ss 3
+ bs 9401
+
+> save 9400
+9400 ship galley
+LI
+ wh 9000
+SL
+
+> save 9401
+9401 ship galley
+LI
+ wh 9000
+ hl 1000 
+SL
+ bs 70000 
+
+> save 1000
+1000 char 0
+LI
+ wh 9401
+CH
+ lo 200
+CM
+ ca 3
+CO
+ li bind 70000
+ ar 70000 0 0 0 0 0 0 0
+ st 1
+ pr 3
+
+> readlog 200
+log 200:
+9000:0::0::It has begun to rain.
+1000:0::0::> bind 70000
+1000:0::0::Bound Rain~[p000] to Galley~[9400].
+1000:0::0::Bound Rain~[p000] to Galley~[9401].
+1000:0::0::Bound Rain~[p000] to Galley~[9401].
+stderr:
+
+exit 0
+stdout:
+section weather bind control ship province and aura failures rechecked on finish
+> set turn 1
+> weather_map 2
+> link 9000 1000
+> entity 9400 9 30
+> link 9000 9400
+> entity 70000 11 59
+> link 9000 70000
+> weather start 99999
+bind start 0
+> weather finish 99999
+bind finish 0
+> weather start 70000
+bind start 0
+> weather finish 70000
+bind finish 0
+> field 70000 summoner 1000
+> weather start 70000
+bind start 0
+> weather finish 70000
+bind finish 0
+> link 9400 1000
+> link 9001 70000
+> weather start 70000
+bind start 0
+> weather finish 70000
+bind finish 0
+> link 9000 70000
+> weather start 70000
+bind start 0
+> weather finish 70000
+bind finish 0
+> field 1000 cur_aura 2
+> weather start 70000
+bind start 0
+> weather finish 70000
+bind finish 0
+> field 1000 cur_aura 3
+> weather start 70000
+bind start 1
+> field 1000 cur_aura 0
+> weather finish 70000
+bind finish 0
+> save 70000
+70000 storm rain
+LI
+ wh 9000
+MI
+ sb 1000
+
+> save 9400
+9400 ship galley
+LI
+ wh 9000
+ hl 1000 
+
+> save 1000
+1000 char 0
+LI
+ wh 9400
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] doesn't control any storm [99999].
+1000:0::0::<no subkind>~[1000] doesn't control storm [99999] anymore.
+1000:0::0::<no subkind>~[1000] doesn't control any storm [p000].
+1000:0::0::<no subkind>~[1000] doesn't control storm [p000] anymore.
+1000:0::0::<no subkind>~[1000] must be on a ship to bind the storm to.
+1000:0::0::<no subkind>~[1000] is no longer on a ship.
+1000:0::0::Storm must be in the same province as the ship it is to be bound to.
+1000:0::0::Storm is no longer in the same province as the ship it is to be bound to.
+1000:0::0::Three aura required, current level is zero.
+1000:0::0::Three aura required, current level is zero.
+1000:0::0::Three aura required, current level is two.
+1000:0::0::Three aura required, current level is two.
+1000:0::0::Three aura required, current level is zero.
+stderr:
+
+exit 0
+stdout:
+section weather invalid storm kind exact assertion before allocation
+> weather_map 1
+> weather new 0 50 2 9000
+stderr:
+assertion failure: olympia/storm.c (284): sk == sub_rain || sk == sub_wind || sk == sub_fog
+
+exit 134
+stdout:
+section weather invalid destination depth exact assertion
+> entity 8000 3 50
+> weather new 0 59 2 8000
+stderr:
+assertion failure: olympia/storm.c (285): loc_depth(where) == LOC_province
+
+exit 134
+stdout:
+section weather invalid month exact assertion
+> set turn 0
+> weather natural
+stderr:
+assertion failure: olympia/storm.c (1611): FALSE
+
+exit 134
+stdout:
+section weather real garrison ruler pledge touched and untouched output routing
+> master 0
+> set turn 1
+> set day 17
+> set show_day 1
+> weather_map 1
+> entity 9300 3 32
+> link 9000 9300
+> link 9300 1000
+> field 1000 lord 200
+> field 1000 pledge 1001
+> field 1001 lord 201
+> entity 1004 2 64
+> field 1004 lord 201
+> field 1004 castle 9300
+> link 9000 1004
+> entity 202 1 51
+> field 202 touched 9000
+> entity 203 1 51
+> weather some 1 59
+> weather some 1 58
+> weather some 1 57
+> weather state
+storm 110158
+110158 storm rain
+LI
+ wh 9000
+MI
+ ss 3
+
+storm 140449
+140449 storm wind
+LI
+ wh 9000
+MI
+ ss 3
+
+storm 149794
+149794 storm fog
+LI
+ wh 9000
+MI
+ ss 3
+
+province 9000
+here: 9300 1004 110158 140449 149794
+show_garrison 0
+output: 9000
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_regular
+PL
+
+> save 202
+202 player pl_savage
+PL
+
+> save 203
+203 player pl_savage
+PL
+
+> readlog 200
+log 200:
+9000:0::0:17:It has begun to rain.
+9000:0::0:17:It has become quite windy.
+9000:0::0:17:It has become quite foggy.
+> readlog 201
+log 201:
+9000:0::0:17:It has begun to rain.
+9000:0::0:17:It has become quite windy.
+9000:0::0:17:It has become quite foggy.
+> readlog 202
+log 202:
+9000:0::0:17:It has begun to rain.
+9000:0::0:17:It has become quite windy.
+9000:0::0:17:It has become quite foggy.
+> readlog 203
+log 203:
+> emit 9000 75
+> readlog 201
+log 201:
+9000:0::0:17:It has begun to rain.
+9000:0::0:17:It has become quite windy.
+9000:0::0:17:It has become quite foggy.
+stderr:
+
+exit 0
+stdout:
+section weather mint occupied first slot and shared allocator interleaving
+> master 0
+> set turn 1
+> set day 1
+> weather_map 32
+> entity 110158 11 58
+> field 110158 strength 2
+> link 9000 110158
+> weather probe 9000 315
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> weather natural
+> newitem 1000 42
+created 64258
+> save_new
+64258 item scroll
+IT
+ un 1000
+
+> weather natural
+> weather state
+storm 79711
+79711 storm fog
+LI
+ wh 9029
+MI
+ ss 2
+
+storm 110158
+110158 storm wind
+LI
+ wh 9000
+MI
+ ss 2
+
+storm 110159
+110159 storm fog
+LI
+ wh 9013
+MI
+ ss 3
+
+storm 121151
+121151 storm wind
+LI
+ wh 9017
+MI
+ ss 2
+
+storm 140449
+140449 storm wind
+LI
+ wh 9004
+MI
+ ss 2
+
+province 9000
+here: 110158
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here: 140449
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here: 110159
+province 9014
+here:
+province 9015
+here:
+province 9016
+here:
+province 9017
+here: 121151
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here:
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here: 79711
+province 9030
+here:
+province 9031
+here:
+show_garrison 0
+output: 9013 9004 9029 9017
+> weather probe 9000 315
+weather shuffle: 300 335 370 321 349 342 314 356 307 363 328
+weather strength 2
+> readlog 200
+log 200:
+9013:0::0::It has become quite foggy.
+9004:0::0::It has become quite windy.
+9029:0::0::It has become quite foggy.
+9017:0::0::It has become quite windy.
+stderr:
+
+exit 0

@@ -330,6 +330,9 @@ func init() {
 	}
 	for i := range cmdTbl {
 		switch cmdTbl[i].name {
+		case "bind":
+			cmdTbl[i].start = (*world).vBindStorm
+			cmdTbl[i].finish = (*world).dBindStorm
 		case "stop", "xyzzy", "plugh":
 			// These three real C handlers do nothing except return TRUE.
 			cmdTbl[i].start = func(*world, *command) int { return 1 }

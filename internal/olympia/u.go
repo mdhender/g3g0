@@ -12,6 +12,59 @@ import (
 
 // Ported from olympia/u.c.
 
+// nprovinces retains u.c:2511–2526's nonzero static cache for this world.
+func (w *world) nprovinces() int {
+	if w.nprov != 0 {
+		return w.nprov
+	}
+	for range w.loopProvince() {
+		w.nprov++
+	}
+	return w.nprov
+}
+
+func (w *world) greaterRegion(who int) int {
+	reg := w.region(who)
+	if reg != int(w.faeryRegion) && reg != int(w.hadesRegion) &&
+		reg != int(w.nowhereRegion) && reg != int(w.cloudRegion) &&
+		reg != int(w.tunnelRegion) && reg != int(w.underRegion) {
+		reg = 0
+	}
+	return reg
+}
+
+func (w *world) deductAura(who, amount int) bool {
+	p := w.rpMagic(who)
+	if p == nil || int(p.curAura) < amount {
+		return false
+	}
+	p.curAura -= int32(amount)
+	return true
+}
+
+func (w *world) chargeAura(who, amount int) bool {
+	if !w.deductAura(who, amount) {
+		w.commandOut(who, "%s aura required, current level is %s.", capitalize(niceNum(amount)), niceNum(w.charCurAura(who)))
+		return false
+	}
+	return true
+}
+
+func (w *world) charCurAura(who int) int {
+	if p := w.rpMagic(who); p != nil {
+		return int(p.curAura)
+	}
+	return 0
+}
+
+func (w *world) checkAura(who, amount int) bool {
+	if w.charCurAura(who) < amount {
+		w.commandOut(who, "%s aura required, current level is %s.", capitalize(niceNum(amount)), niceNum(w.charCurAura(who)))
+		return false
+	}
+	return true
+}
+
 func (w *world) surviveFatal(who int) bool {
 	if w.hasSkill(who, skSurviveFatal) == 0 {
 		return false

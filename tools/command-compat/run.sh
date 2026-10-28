@@ -75,6 +75,7 @@ functions = {
     'display.c': ['with_inventory_string', 'display_with', 'mage_s', 'priest_s',
                   'emperor', 'liner_desc_char', 'liner_desc', 'show_chars_below'],
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
+            'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
             'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np',
@@ -100,7 +101,8 @@ functions = {
     'produce.c': ['init_collect_list'],
     'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit'],
     'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
-                'update_weather_view_locs'],
+                'update_weather_view_locs', 'new_storm', 'create_some_storms',
+                'natural_weather', 'v_bind_storm', 'd_bind_storm'],
     'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school'],
     'report.c': ['char_rep_location'],
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
@@ -135,6 +137,15 @@ int immed_see_all, month_done, show_combat_flag;
         if not m:
             sys.exit(f'no {name} definition in gm.c')
         out.write(f'#line {gm.count(chr(10), 0, m.start()) + 1} "olympia/gm.c"\n{m.group(0)}')
+    for file, names in [('cloud.c', ['cloud_region']),
+                        ('tunnel.c', ['tunnel_region', 'under_region']),
+                        ('quest.c', ['nowhere_region'])]:
+        source = open(f'{src}/{file}').read()
+        for name in names:
+            m = re.search(rf'^int {name} = 0;\n', source, re.M)
+            if not m:
+                sys.exit(f'no {name} definition in {file}')
+            out.write(f'#line {source.count(chr(10), 0, m.start()) + 1} "olympia/{file}"\n{m.group(0)}')
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
         # Original data declarations too: no copied or modeled tag/number table.
@@ -177,6 +188,11 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(re.search(r'^static ilist ocean_chars = NULL;\n', source, re.M).group(0))
         if file == 'buy.c':
             out.write('static void attempt_trade(struct trade *b, struct trade *s) { fprintf(stderr, "out-of-scope C dependency: attempt_trade\\n"); fflush(NULL); abort(); }\n')
+        if file == 'storm.c':
+            start = source.index('static rng_stream weather_rng;')
+            end = source.index('int\nv_bind_storm(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/storm.c"\n')
+            out.write(source[start:end])
         matches = []
         for name in names:
             pattern = rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n'
@@ -208,6 +224,7 @@ int drv_bandit(int faery, int who, int where) {
  return faery ? create_faery_bandit(who, where) : create_hades_bandit(who, where);
 }
 int drv_market(int who) { return market_here(who); }
+void drv_storms(int num, int sk) { create_some_storms(num, sk); }
 int drv_savage_count(void) { return num_savages; }
 int drv_savage_hates(int where) { return savage_hates(where); }
 int drv_savage_here(int where) { return savage_hate_here(where); }
@@ -314,6 +331,14 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section weather '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section weather invalid '*|'section weather without province preserves loop assertion'|\
+    'section weather mage unowned assertion') expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected weather status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section hades '* || "${section_names[$i]}" == 'section npc route '* ]]; then
    [ "$status" = 0 ] || die "unexpected Hades/NPC status $status in section $i"
   fi

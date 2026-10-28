@@ -1538,3 +1538,75 @@ No full-turn/stage-exit success, unrelated RECLAIM/USE/combat handler or token
 artifact generation is claimed. Version **0.50.0-alpha**; defaults remain
 recorded/fast and worlds opt-in. No new verified public-engine bug or blocker
 was found; nonblocking G3 #309/#352/#353/#354/#355 remain unchanged.
+
+## Natural weather creation and binding (#75)
+
+This extends the existing real-source command harness instead of introducing
+weather-compat: creation/binding needs its already accepted allocator, shared
+mint stream, set_where, aura/command machinery, garrison/location output and
+save_box. No parallel lifecycle, RNG adapter or successful gameplay stub is
+introduced. Pin remains **6a25f2d252ce45bd5adbe3baaccb3be3eed56279**.
+
+Complete original storm.c definitions are extracted with their original
+locations: RNG prefix **40–104**, BIND **107–187**, new_storm **279–323**,
+create_some_storms **1525–1554** and natural_weather **1558–1613**. Existing
+weather_here and view helpers remain unchanged. Only phase counters are
+omitted. u.c's complete nprovinces **2511–2526**, greater_region **2609–2624**,
+deduct_aura **1773–1784**, charge_aura **1788–1799** and check_aura
+**1803–1814** close the bounded helper dependencies. Original greater-region
+global definitions additionally come from **cloud.c**, **tunnel.c** and
+**quest.c**; these dependencies are listed in tools/README.md and affected.sh.
+
+Go uses the existing world-owned WthrShuffle/WthrStorm with the exact
+province, day*256+kind key, original candidate iteration order and sequential
+shuffle counter. Strength leaves do not consume the shuffle counter. The
+nonzero nprovinces cache retains C static lifetime on the world. The scratch
+candidate slice itself has no observable persistence: C clears it on every
+call. BIND's start/finish callbacks are installed in the real command table.
+
+**21 appended sections** cover all eight seasons, month/year rollover,
+0/1/31/32/63/64 provinces, reversed map construction with ocean/forest/plain/
+mountain terrain, all six special-region exclusions, zero/positive/negative
+and nested current storms, candidate exhaustion and repeated generation on
+the same and later days. Below-threshold active seasons still shuffle;
+Blossom/Harvest do not. Rain/fog/rain order is retained in Waning Days.
+Real storm saves, province here-lists, signed-short strength wrapping,
+explicit-ID relocation, first-weather message suppression, output flags,
+ruler/pledge/touched versus untouched logs and resetting show_to_garrison
+are compared. A mint collision skips occupied **110158 → 110159**; real
+unique-item allocation interleaved with storms proves the shared allocator
+order. Pre/post shuffle probes observe persistent wthr state and keyed
+strength independently of mint.
+
+BIND is queued/loaded/dispatched/completed through real callbacks, then
+rebound between two ships; old/new ship lists, the storm backlink and aura
+**12 → 9 → 6 → 3** are serialized. Ownership, ship, province and aura failures
+are checked at both start and finish, including aura lost after validation.
+Invalid kind/depth/month retain exact source assertions, stderr and status
+134. All other new sections require status 0.
+
+Two actual bounded C executions yield **482 sections / 32263 lines / 558979
+bytes**, byte-identical to Go. Previous **461 sections / 29818 lines / 527434
+bytes** of output and **9861 lines / 175204 bytes** of input remain exact
+unchanged prefixes; new input totals **10197 lines / 181494 bytes**. Raw C
+save trailing whitespace is deliberately retained. The entire previous move
+recording and all calendar/schedule recordings remain unchanged.
+
+A removed ephemeral expected-134 case dispatched the actual unported ATTACK
+handler. Both normal and --update runs rejected its missing-dependency
+marker with status 2 **before** status acceptance or recording updates.
+The expected-output SHA-256 remained
+`4ba88adc2281065fa898669e94c43b5bb876ab020c42b6a5ca2672499598ef1b`.
+
+Command normal/update, move (135/7150), helper (37/1487), rng (321 results),
+code (43/969), loadsave (61/3411), turn-driver (7/152), ordering-only phase
+trace (5/484), calendar (2/119), schedule (4/1801) and default turn comparisons
+pass sequentially. The schedule/phase traces are **not gameplay acceptance**.
+No full-world or four-weather-day integration success is claimed: it remains
+opt-in and the known full turn boundary is day-1 match_all_trades (#81).
+Movement/decay (#76) and unrelated weather magic remain explicitly unported;
+the existing dailyEvents call position is unchanged. No newly verified bug
+or upstream blocker was found; known nonblocking upstream issues are retained.
+Bounded go vet and fresh bounded default all-tests also pass. Full-world
+tests were not run for this task.
+Version **0.52.0-alpha**; no commit or push by this task.

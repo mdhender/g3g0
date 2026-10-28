@@ -117,6 +117,54 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "weather_map":
+			count := args.num(t)
+			w.allocBox(8000, tLoc, subRegion)
+			for i := count - 1; i >= 0; i-- {
+				n := 9000 + i
+				w.allocBox(n, tLoc, 1+i%4)
+				w.setWhere(n, 8000)
+				setBit(&w.pPlayer(200).locs, n)
+			}
+		case "weather":
+			switch action := args.word(); action {
+			case "natural":
+				w.naturalWeather()
+			case "some":
+				w.createSomeStorms(args.num(t), args.num(t))
+			case "new":
+				fmt.Fprintf(&stdout, "new storm %d\n", w.newStorm(args.num(t), args.num(t), args.num(t), args.num(t)))
+			case "start":
+				c.a = int32(args.num(t))
+				fmt.Fprintf(&stdout, "bind start %d\n", w.vBindStorm(c))
+			case "finish":
+				c.a = int32(args.num(t))
+				fmt.Fprintf(&stdout, "bind finish %d\n", w.dBindStorm(c))
+			case "count":
+				fmt.Fprintf(&stdout, "provinces %d\n", w.nprovinces())
+			case "state":
+				for n := range w.loopKind(tStorm) {
+					fmt.Fprintf(&stdout, "storm %d\n", n)
+					w.saveBox(&stdout, n)
+				}
+				for n := range w.loopProvince() {
+					fmt.Fprintf(&stdout, "province %d\n", n)
+					helperList(&stdout, "here", w.pLocInfo(n).hereList)
+				}
+				fmt.Fprintf(&stdout, "show_garrison %d\n", b2i(w.showToGarrison))
+				helperList(&stdout, "output", w.pPlayer(200).output)
+			case "probe":
+				n, a := args.num(t), args.num(t)
+				l := make([]int, 11)
+				for i := range l {
+					l[i] = 300 + i*7
+				}
+				w.streams.WthrShuffle(l)
+				helperList(&stdout, "weather shuffle", l)
+				fmt.Fprintf(&stdout, "weather strength %d\n", w.streams.WthrStorm(n, a, 2, 3))
+			default:
+				t.Fatalf("unknown weather %s", action)
+			}
 		case "garrison":
 			switch action := args.word(); action {
 			case "ping":
@@ -991,6 +1039,14 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.faeryRegion = int32(n)
 			case "hades_region":
 				w.hadesRegion = int32(n)
+			case "cloud_region":
+				w.cloudRegion = int32(n)
+			case "under_region":
+				w.underRegion = int32(n)
+			case "tunnel_region":
+				w.tunnelRegion = int32(n)
+			case "nowhere_region":
+				w.nowhereRegion = int32(n)
 			case "hades_player":
 				w.hadesPlayer = int32(n)
 			case "backlinks":

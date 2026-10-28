@@ -43,6 +43,7 @@ void drv_garrison_pay(void);
 extern int gold_garrison;
 extern int gold_combat, gold_combat_indep;
 void drv_inherit_rolls(int from, int item, int qty);
+void drv_storms(int num, int sk);
 
 static void wait_dump(struct command *c)
 {
@@ -120,6 +121,39 @@ int main(int argc, char **argv)
    for (i=0;i<16;i++) seed[i]=n+i;
    s=fopen(sout("%s/randseed",libdir),"wb"); if(!s) return 2;
    fwrite(seed,1,16,s); fclose(s); load_seed(sout("%s/randseed",libdir));
+  }
+  else if (!strcmp(op, "weather_map")) {
+   sscanf(line,"%*s %d",&a);
+   alloc_box(8000,T_loc,sub_region);
+   for(i=a-1;i>=0;i--) {
+    n=9000+i; alloc_box(n,T_loc,1+i%4); set_where(n,8000);
+    set_bit(&p_player(200)->locs,n);
+   }
+  }
+  else if (!strcmp(op, "weather")) {
+   n=a=b=d=0;
+   sscanf(line,"%*s %31s %d %d %d %d",text,&n,&a,&b,&d);
+   if(!strcmp(text,"natural")) natural_weather();
+   else if(!strcmp(text,"some")) drv_storms(n,a);
+   else if(!strcmp(text,"new")) printf("new storm %d\n",new_storm(n,a,b,d));
+   else if(!strcmp(text,"start")) { c->a=n; printf("bind start %d\n",v_bind_storm(c)); }
+   else if(!strcmp(text,"finish")) { c->a=n; printf("bind finish %d\n",d_bind_storm(c)); }
+   else if(!strcmp(text,"count")) printf("provinces %d\n",nprovinces());
+   else if(!strcmp(text,"state")) {
+    loop_storm(n) { printf("storm %d\n",n); save_box(stdout,n); } next_storm;
+    loop_province(n) {
+     printf("province %d\n",n); list("here",p_loc_info(n)->here_list);
+    } next_province;
+    printf("show_garrison %d\n",show_to_garrison);
+    list("output",p_player(200)->output);
+   }
+   else if(!strcmp(text,"probe")) {
+    ilist l=NULL;
+    for(i=0;i<11;i++) ilist_append(&l,300+i*7);
+    wthr_shuffle(l); list("weather shuffle",l); ilist_reclaim(&l);
+    printf("weather strength %d\n",wthr_storm(n,a,2,3));
+   }
+   else return 2;
   }
   else if (!strcmp(op, "garrison")) {
    sscanf(line,"%*s %31s %d",text,&n);
@@ -725,6 +759,10 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "gm")) gm_player = n;
    else if (!strcmp(text, "faery_region")) faery_region = n;
    else if (!strcmp(text, "hades_region")) hades_region = n;
+   else if (!strcmp(text, "cloud_region")) cloud_region = n;
+   else if (!strcmp(text, "under_region")) under_region = n;
+   else if (!strcmp(text, "tunnel_region")) tunnel_region = n;
+   else if (!strcmp(text, "nowhere_region")) nowhere_region = n;
    else if (!strcmp(text, "hades_player")) hades_player = n;
    else if (!strcmp(text, "backlinks")) pledge_backlinks = n;
    else if (!strcmp(text, "garrison_pay")) garrison_pay = n;

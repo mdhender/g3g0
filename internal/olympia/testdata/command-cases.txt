@@ -9859,3 +9859,339 @@ orders 200 200 format 13
 entity 60000 4 63
 field 60000 token_num 1
 process
+
+# #75: real storm.c generation, creation/binding, shared wthr and mint.
+# Map construction allocates in descending ID order and mixes ocean/forest/
+# plain/mountain. Expected state and logs are produced only by pinned C.
+section weather fierce winds repeated same day then next day share shuffle and mint
+master 0
+set turn 1
+set day 3
+weather_map 64
+weather natural
+weather natural
+set day 17
+weather natural
+weather state
+weather probe 9013 4409
+newitem 1000 42
+save_new
+readlog 200
+
+section weather snowmelt exact threshold fog before rain
+master 19
+set turn 2
+set day 30
+weather_map 32
+weather natural
+weather state
+weather probe 9013 7739
+readlog 200
+
+section weather blossom bloom no draws even above threshold
+master 19
+set turn 3
+weather_map 64
+weather natural
+weather state
+weather probe 9013 59
+
+section weather sunsear 63 provinces one rain
+master 255
+set turn 4
+set day 1
+weather_map 63
+weather natural
+weather state
+weather probe 9013 315
+readlog 200
+
+section weather thunder rain 64 provinces doubled allocation
+master 19
+set turn 5
+set day 29
+weather_map 64
+weather natural
+weather state
+weather probe 9013 7483
+newitem 1000 42
+save_new
+readlog 200
+
+section weather harvest no draws and next year resets weather only at first draw
+master 19
+set turn 6
+weather_map 32
+weather natural
+weather probe 9000 59
+set turn 14
+weather natural
+weather probe 9000 59
+weather state
+
+section weather waning days rain fog rain exclusion and repeat
+master 33
+set turn 7
+set day 7
+weather_map 32
+weather natural
+weather natural
+weather state
+weather probe 9000 1851
+readlog 200
+
+section weather dark night wind season rollover and new year
+master 0
+set turn 8
+set day 30
+weather_map 32
+weather natural
+weather probe 9000 7738
+set turn 9
+set day 1
+weather natural
+weather state
+weather probe 9000 314
+readlog 200
+
+section weather below threshold still shuffles each active kind
+master 19
+set turn 1
+weather_map 31
+weather natural
+weather state
+weather probe 9000 57
+
+section weather empty map zero and one candidates never draw shuffle
+master 0
+set turn 1
+weather count
+weather natural
+weather probe 9000 57
+weather_map 1
+weather count
+weather natural
+weather some 99 59
+weather state
+weather probe 9000 57
+readlog 200
+
+section weather all greater regions excluded yet count towards threshold
+master 0
+set turn 5
+set day 2
+weather_map 32
+set faery_region 8000
+weather natural
+weather probe 9000 571
+set faery_region 0
+set hades_region 8000
+weather natural
+weather probe 9000 571
+set hades_region 0
+set cloud_region 8000
+weather natural
+set cloud_region 0
+set tunnel_region 8000
+weather natural
+set tunnel_region 0
+set under_region 8000
+weather natural
+set under_region 0
+set nowhere_region 8000
+weather natural
+weather state
+set nowhere_region 0
+weather natural
+weather state
+weather probe 9000 571
+readlog 200
+
+section weather existing positive negative zero and nested storms filter before shuffle
+master 19
+set turn 5
+set day 9
+weather_map 32
+entity 70001 11 59
+field 70001 strength 5
+link 9000 70001
+entity 70002 11 59
+field 70002 strength -2
+link 9001 70002
+entity 70003 11 59
+field 70003 strength 0
+link 9002 70003
+entity 70004 11 59
+field 70004 strength 8
+entity 9500 3 9
+link 9003 9500
+link 9500 70004
+entity 70005 11 57
+field 70005 strength 3
+link 9004 70005
+weather some 40 59
+weather some 40 59
+weather state
+weather probe 9000 2363
+readlog 200
+
+section weather new explicit entity strength wrap output suppression and relocation
+master 0
+set turn 1
+weather_map 3
+link 9000 1000
+field 200 touched 9000
+entity 70000 11 59
+entity 70001 11 59
+garrison_view 1
+weather new 70000 59 65538 9000
+weather new 70001 59 3 9000
+weather new 70001 59 -1 9001
+weather new 0 58 3 9002
+weather new 0 57 0 9002
+weather state
+weather probe 9000 59
+save 9000
+save 9001
+readlog 200
+
+section weather nonzero province count retains original static lifetime
+master 0
+set turn 5
+weather_map 31
+weather count
+entity 9031 3 3
+link 8000 9031
+weather count
+weather natural
+weather state
+weather probe 9000 59
+
+section weather bind real command start completion rebind and aura charge
+master 0
+set turn 1
+weather_map 2
+entity 9400 9 30
+entity 9401 9 30
+link 9000 9400
+link 9000 9401
+link 9400 1000
+field 1000 cur_aura 12
+entity 70000 11 59
+field 70000 summoner 1000
+weather new 70000 59 3 9000
+queue bind 70000
+load
+do
+dump
+set wait 1
+finish
+save 70000
+save 9400
+save 1000
+link 9401 1000
+weather start 70000
+weather finish 70000
+weather finish 70000
+save 70000
+save 9400
+save 9401
+save 1000
+readlog 200
+
+section weather bind control ship province and aura failures rechecked on finish
+set turn 1
+weather_map 2
+link 9000 1000
+entity 9400 9 30
+link 9000 9400
+entity 70000 11 59
+link 9000 70000
+weather start 99999
+weather finish 99999
+weather start 70000
+weather finish 70000
+field 70000 summoner 1000
+weather start 70000
+weather finish 70000
+link 9400 1000
+link 9001 70000
+weather start 70000
+weather finish 70000
+link 9000 70000
+weather start 70000
+weather finish 70000
+field 1000 cur_aura 2
+weather start 70000
+weather finish 70000
+field 1000 cur_aura 3
+weather start 70000
+field 1000 cur_aura 0
+weather finish 70000
+save 70000
+save 9400
+save 1000
+readlog 200
+
+section weather invalid storm kind exact assertion before allocation
+weather_map 1
+weather new 0 50 2 9000
+
+section weather invalid destination depth exact assertion
+entity 8000 3 50
+weather new 0 59 2 8000
+
+section weather invalid month exact assertion
+set turn 0
+weather natural
+
+section weather real garrison ruler pledge touched and untouched output routing
+master 0
+set turn 1
+set day 17
+set show_day 1
+weather_map 1
+entity 9300 3 32
+link 9000 9300
+link 9300 1000
+field 1000 lord 200
+field 1000 pledge 1001
+field 1001 lord 201
+entity 1004 2 64
+field 1004 lord 201
+field 1004 castle 9300
+link 9000 1004
+entity 202 1 51
+field 202 touched 9000
+entity 203 1 51
+weather some 1 59
+weather some 1 58
+weather some 1 57
+weather state
+save 200
+save 201
+save 202
+save 203
+readlog 200
+readlog 201
+readlog 202
+readlog 203
+emit 9000 75
+readlog 201
+
+section weather mint occupied first slot and shared allocator interleaving
+master 0
+set turn 1
+set day 1
+weather_map 32
+entity 110158 11 58
+field 110158 strength 2
+link 9000 110158
+weather probe 9000 315
+weather natural
+newitem 1000 42
+save_new
+weather natural
+weather state
+weather probe 9000 315
+readlog 200

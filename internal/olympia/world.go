@@ -197,6 +197,7 @@ type world struct {
 	// and clock only when the C turn guard calls for reseeding.
 	streams   *rng.Streams
 	outVector lists.IList // sout.c out_vector
+	nprov     int         // u.c nprovinces: cached once nonzero
 
 	// testUseConstReportDate is test_use_const_report_date in main.c,
 	// which times_masthead() reads.

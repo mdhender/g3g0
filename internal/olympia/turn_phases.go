@@ -15,7 +15,6 @@ func (w *world) weeklyPrisonerEscapeCheck() { panic(notImplemented("weekly_priso
 func (w *world) noncreatorCurseErode()      { panic(notImplemented("noncreator_curse_erode")) }
 func (w *world) incrementStoneRingAura()    { panic(notImplemented("increment_stone_ring_aura")) }
 func (w *world) dogsBarkAtHiddenChars()     { panic(notImplemented("dogs_bark_at_hidden_chars")) }
-func (w *world) naturalWeather()            { panic(notImplemented("natural_weather")) }
 func (w *world) autoFaery()                 { panic(notImplemented("auto_faery")) }
 
 func (w *world) specialLocsOpen()           { panic(notImplemented("special_locs_open")) }
