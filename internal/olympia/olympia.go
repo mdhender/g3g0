@@ -304,7 +304,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 		w.determineOutputOrder()
 		w.turnEndLocReports()
 		w.listOrderTemplatesState()
-		w.playerEntInfoState()
+		w.playerEntInfo()
 		w.characterReportState()
 		w.playerBannerState()
 		if o.acctFlag {

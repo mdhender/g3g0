@@ -3,6 +3,80 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Admission permissions, attitudes and player entity reports (#148)
+
+Existing perm.go implements complete unchanged perm.c `admit_comp`,
+`print_admit_sup`, `print_admit` **141–223** and `print_att_sup`/`print_att`
+**426–488**, including both complete closing definitions.
+Existing report.go replaces playerEntInfoState with complete report.c
+`player_ent_info` **783–798** and main calls that renderer exactly once.
+The closure uses accepted #146 `show_unclaimed` **746–780**, inventory
+comparison/formatting, existing box-code/validity and player/disposition
+accessors, int_comp/safe_qsort, and the original sout.c output/cache owner.
+All C definitions were already extracted/linked; no new dependency or pin.
+The character root remains deferred: reportAttitudeState is still its
+state-only projection until #151, not an extra rendering/sorting pass.
+
+Eleven appended sections compare original C/C/Go bytes, raw lists, record
+allocation and save_box output. Coverage includes missing/allocated-empty
+player records, missing/empty attitude lists, invalid-only lists and targets,
+valid empty admissions (heading but no command row), sense 0/1/negative,
+equal admission targets, duplicates, unsorted admission members, retained
+invalid references, all three in-place attitude sorts and inventory sorting.
+Explicit member counts **11/12/13** run both without and with `all` (which
+itself consumes one slot). Attitude valid counts are **11/12/13** across
+hostile/neutral/defend; invalid rows do not consume slots. Real continuation
+lines retain ten admission padding spaces and seven attitude header spaces.
+Neutral-first and defend-first controls cover the lazy heading and literal
+trailing space in `defend `. Primary/secondary indentation and day framing
+are preserved, including a repeated root using the renamed cached inode
+(**358 raw bytes** under `log/original`). Original nonplayer assertion is
+perm.c **197**, status **134**; the other ten new sections exit **0**.
+
+Constants checked against pinned oly.h: player/character/item **1/2/4**;
+system/regular/savage/NPC/silent subtypes **48/49/51/52/62**. Root cases
+actually emit all three sections for each nonsilent subtype, including
+subtype 0, and compare raw files **202–205/207**; silent **206** has no file,
+no missing-player allocation and retains unsorted original lists/inventory.
+Items **501/502** are synthetic and **9999/8888** deliberately absent.
+The subtype raw-file fixture uses its actual cwd-relative output root;
+missing-file observations are not used as evidence of rendered bytes.
+
+At **0.88.0-alpha**, final refresh/default checks match complete real C twice
+and Go: **1017 sections / 68918 lines / 1310660 output bytes**. The inherited
+**1006 sections / 68035 lines / 1290206 output bytes** and **21934 lines /
+408111 input bytes** remain exact unchanged prefixes against HEAD. New input:
+**22223 lines / 414715 bytes**. Output SHA-256:
+`0f4c2412955269f5667d56926ab1003a9f98b1cd5920704bc7b163370cdd724d`.
+Input SHA-256:
+`79f6954b243f34ec6086307632a659c5eb6eea4ab554b0ebb1ad752e7c4bb5c8`.
+#168 live native traversal C/C/Go still matches, shared input unchanged.
+Logs: `tmp/issue148-command{,-update}.log`.
+
+Temporary linker controls wrapped only print_admit at expected-abort section
+**1016**, emitted the missing-dependency marker and returned **0** or aborted
+**134**. Normal/update runs all rejected with harness status **2** at the
+marker check, before expected-failure acceptance/recording replacement;
+each probe preserved the recording hash. Probe sources/wrapper were removed
+before the final unchanged-C refresh. Logs: `tmp/issue148-negative-*.log`.
+
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded default tests pass, all compatibility tools
+with explicit isolated `G3_REPO` and engines under run_limited. See
+`tmp/issue148-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+No new production defect or prerequisite was found. These are permission
+reports, not valid new-player admissions or new commands. No later report
+root, full-world/full-corpus/strict-lifecycle or stage-exit acceptance.
+Latest strict evidence remains the parent's post-#145 run: identical C
+repeats, C/Go 0, matching streams and paths/types/modes, eight saved-report
+byte differences, exit **1** before lifecycle. This task does not refresh it.
+G3 #358 remains nonblocking: original division/Go panic untouched and
+malformed C136/Go2 is NOT passing parity. Independent parent review verified
+the six complete unchanged C definitions exactly once, inherited prefixes
+and both hashes above. Parent sequential compatibility checks, bounded vet
+and fresh bounded default tests pass (Olympia **1.595s**). Logs:
+`tmp/parent148-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+
 ## Capacity and item-granted skills (#147)
 
 Existing report.go implements complete unchanged pinned report.c

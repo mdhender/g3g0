@@ -1618,9 +1618,12 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				fmt.Fprintf(&stdout, "header [%s]\n", w.showLocHeader(n))
 				fmt.Fprintf(&stdout, "header records %d %d\n", b2i(w.rpLoc(n) != nil), b2i(w.rpSubloc(n) != nil))
 			case "players":
-				// C executes the complete original player_ent_info closure.
-				// Only report artifacts are deferred, never the compared state.
-				w.playerEntInfoState()
+				w.playerEntInfo()
+			case "permissions":
+				w.printAdmit(args.num(t))
+			case "attitudes":
+				n, target := args.num(t), args.num(t)
+				w.printAtt(n, target)
 			case "characters":
 				w.characterReportState()
 			case "locations":

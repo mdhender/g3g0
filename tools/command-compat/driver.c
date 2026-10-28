@@ -1164,6 +1164,11 @@ int main(int argc, char **argv)
     printf("header records %d %d\n",rp_loc(n)!=NULL,rp_subloc(n)!=NULL);
    }
    else if(!strcmp(text,"players")) player_ent_info();
+   else if(!strcmp(text,"permissions")) print_admit(n);
+   else if(!strcmp(text,"attitudes")) {
+    sscanf(line,"%*s %*s %d %d",&n,&a);
+    print_att(n,a);
+   }
    else if(!strcmp(text,"characters")) character_report();
    else if(!strcmp(text,"locations")) turn_end_loc_reports();
    else if(!strcmp(text,"location")) out(n,"%s",char_rep_location(n));

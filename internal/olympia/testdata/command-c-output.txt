@@ -68033,3 +68033,886 @@ stderr:
 assertion failure: olympia/use.c (1182): count++ < 1000
 
 exit 134
+stdout:
+section report permissions missing empty and invalid records preserve allocation and no output
+> entity 202 1 49
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report attitudes 200 202
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report permissions 202
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report admit 202 9999 1 1000
+> report permissions 202
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+raw admit 9999 1
+members: 1000
+202 player pl_regular
+PL
+
+> report files
+report file 200 0
+report file 201 0
+report file 202 0
+stderr:
+
+exit 0
+stdout:
+section report permissions valid empty target prints heading without row and sense all alone
+> report admit 200 1000 0 0
+> sout frame 4 9 1 6
+> report permissions 200
+> sout state
+route 0 0 frame 4 9 1 6
+vector:
+saved vector:
+> report admit 200 1001 -2 0
+> report permissions 200
+> sout state
+route 0 0 frame 4 9 1 6
+vector:
+saved vector:
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+raw admit 1000 0
+members:
+raw admit 1001 -2
+members:
+200 player pl_regular
+PL
+ am 1001 -2 
+
+> readlog 200
+log 200:
+200:0::4/9:6:
+200:0::4/9:6:Admit permissions:
+200:0::4/9:6:
+200:0::4/9:6:
+200:0::4/9:6:Admit permissions:
+200:0::4/9:6:
+200:0::7/9:6:admit 1001  all
+stderr:
+
+exit 0
+stdout:
+section report permissions equal targets retain duplicates invalid references and unsorted members
+> entity 501 4 0
+> entity 502 4 0
+> field 501 weight 3
+> field 502 weight 7
+> name 501 stone
+> plural 501 stones
+> name 502 iron
+> plural 502 irons
+> report admit 200 1001 0 1001
+> report member 200 200
+> report member 200 9999
+> report member 200 1000
+> report member 200 1001
+> report admit 200 9999 1 1000
+> report admit 200 1000 1 1001
+> report admit 200 1001 1 200
+> report admit 200 1000 0 200
+> inventory 200 502 2
+> inventory 200 9999 4
+> inventory 200 501 3
+> inventory 200 502 0
+> field 200 hostile 1001
+> field 200 hostile 9999
+> field 200 hostile 200
+> field 200 hostile 1001
+> field 200 neutral 1000
+> field 200 neutral 201
+> field 200 defend 1001
+> field 200 defend 1000
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 502 2
+raw item 9999 4
+raw item 501 3
+raw item 502 0
+raw units:
+raw admit 1001 0
+members: 1001 200 9999 1000 1001
+raw admit 9999 1
+members: 1000
+raw admit 1000 1
+members: 1001
+raw admit 1001 1
+members: 200
+raw admit 1000 0
+members: 200
+raw hostile: 1001 9999 200 1001
+raw neutral: 1000 201
+raw defend: 1001 1000
+200 player pl_regular
+il	502 2 \
+	501 3
+an 1000 201 
+ad 1001 1000 
+ah 1001 200 1001 
+PL
+ am 1001 0 1001 200 1000 1001 
+ am 1000 1 1001 
+ am 1001 1 200 
+ am 1000 0 200 
+
+> report players
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 501 3
+raw item 502 2
+raw item 502 0
+raw item 9999 4
+raw units:
+raw admit 1000 1
+members: 1001
+raw admit 1000 0
+members: 200
+raw admit 1001 0
+members: 1001 200 9999 1000 1001
+raw admit 1001 1
+members: 200
+raw admit 9999 1
+members: 1000
+raw hostile: 200 1001 1001 9999
+raw neutral: 201 1000
+raw defend: 1000 1001
+200 player pl_regular
+il	501 3 \
+	502 2
+an 201 1000 
+ad 1000 1001 
+ah 200 1001 1001 
+PL
+ am 1000 1 1001 
+ am 1000 0 200 
+ am 1001 0 1001 200 1000 1001 
+ am 1001 1 200 
+
+> report players
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 501 3
+raw item 502 2
+raw item 502 0
+raw item 9999 4
+raw units:
+raw admit 1000 1
+members: 1001
+raw admit 1000 0
+members: 200
+raw admit 1001 0
+members: 1001 200 9999 1000 1001
+raw admit 1001 1
+members: 200
+raw admit 9999 1
+members: 1000
+raw hostile: 200 1001 1001 9999
+raw neutral: 201 1000
+raw defend: 1000 1001
+200 player pl_regular
+il	501 3 \
+	502 2
+an 201 1000 
+ad 1000 1001 
+ah 200 1001 1001 
+PL
+ am 1000 1 1001 
+ am 1000 0 200 
+ am 1001 0 1001 200 1000 1001 
+ am 1001 1 200 
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Admit permissions:
+200:0::0::
+200:0::3::admit 1000  all 1001
+200:0::3::admit 1000  200
+200:0::3::admit 1001 1001  200 1000 1001
+200:0::3::admit 1001  all  200
+200:0::0::
+200:0::0::Declared attitudes:
+200:0::3::hostile  200 1001 1001
+200:0::3::neutral  201 1000
+200:0::3::defend  1000 1001
+200:0::0::
+200:0::0::Unclaimed items:
+200:0::0::
+200:0::0::      qty  name                              weight
+200:0::0::      ---  ----                              ------
+200:0::0::        3  stones~[501]                           9  
+200:0::0::        2  irons~[502]                           14  
+200:0::0::
+200:0::0::Admit permissions:
+200:0::0::
+200:0::3::admit 1000  all 1001
+200:0::3::admit 1000  200
+200:0::3::admit 1001 1001  200 1000 1001
+200:0::3::admit 1001  all  200
+200:0::0::
+200:0::0::Declared attitudes:
+200:0::3::hostile  200 1001 1001
+200:0::3::neutral  201 1000
+200:0::3::defend  1000 1001
+200:0::0::
+200:0::0::Unclaimed items:
+200:0::0::
+200:0::0::      qty  name                              weight
+200:0::0::      ---  ----                              ------
+200:0::0::        3  stones~[501]                           9  
+200:0::0::        2  irons~[502]                           14  
+stderr:
+
+exit 0
+stdout:
+section report permission continuation eleven twelve thirteen values with and without all
+> report admit 200 1000 0 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report admit 200 1000 0 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report admit 200 1000 0 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report admit 200 1001 1 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report admit 200 1001 1 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report admit 200 1001 1 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report member 200 200
+> report member 200 1000
+> report member 200 1001
+> report permissions 200
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+raw admit 1000 0
+members: 1001 200 1000 1001 200 1000 1001 200 1000 1001 200
+raw admit 1000 0
+members: 1001 200 1000 1001 200 1000 1001 200 1000 1001 200 1000
+raw admit 1000 0
+members: 1001 200 1000 1001 200 1000 1001 200 1000 1001 200 1000 1001
+raw admit 1001 1
+members: 1001 200 1000 1001 200 1000 1001 200 1000 1001 200
+raw admit 1001 1
+members: 1001 200 1000 1001 200 1000 1001 200 1000 1001 200 1000
+raw admit 1001 1
+members: 1001 200 1000 1001 200 1000 1001 200 1000 1001 200 1000 1001
+200 player pl_regular
+PL
+ am 1000 0 1001 200 1000 1001 200 1000 1001 \
+	200 1000 1001 200 
+ am 1000 0 1001 200 1000 1001 200 1000 1001 \
+	200 1000 1001 200 1000 
+ am 1000 0 1001 200 1000 1001 200 1000 1001 \
+	200 1000 1001 200 1000 1001 
+ am 1001 1 1001 200 1000 1001 200 1000 1001 \
+	200 1000 1001 200 
+ am 1001 1 1001 200 1000 1001 200 1000 1001 \
+	200 1000 1001 200 1000 
+ am 1001 1 1001 200 1000 1001 200 1000 1001 \
+	200 1000 1001 200 1000 1001 
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Admit permissions:
+200:0::0::
+200:0::3::admit 1000 1001  200 1000 1001  200 1000 1001  200 1000 1001  200
+200:0::3::admit 1000 1001  200 1000 1001  200 1000 1001  200 1000 1001  200
+200:0::3::           1000
+200:0::3::admit 1000 1001  200 1000 1001  200 1000 1001  200 1000 1001  200
+200:0::3::           1000 1001
+200:0::3::admit 1001  all 1001  200 1000 1001  200 1000 1001  200 1000 1001
+200:0::3::            200
+200:0::3::admit 1001  all 1001  200 1000 1001  200 1000 1001  200 1000 1001
+200:0::3::            200 1000
+200:0::3::admit 1001  all 1001  200 1000 1001  200 1000 1001  200 1000 1001
+200:0::3::            200 1000 1001
+stderr:
+
+exit 0
+stdout:
+section report attitude continuation eleven twelve thirteen and invalid entries do not count
+> field 1000 hostile 1001
+> field 1000 hostile 200
+> field 1000 hostile 1000
+> field 1000 hostile 9999
+> field 1000 hostile 1001
+> field 1000 hostile 200
+> field 1000 hostile 1000
+> field 1000 hostile 1001
+> field 1000 hostile 200
+> field 1000 hostile 1000
+> field 1000 hostile 1001
+> field 1000 hostile 200
+> field 1000 neutral 1001
+> field 1000 neutral 200
+> field 1000 neutral 1000
+> field 1000 neutral 1001
+> field 1000 neutral 200
+> field 1000 neutral 1000
+> field 1000 neutral 1001
+> field 1000 neutral 200
+> field 1000 neutral 1000
+> field 1000 neutral 1001
+> field 1000 neutral 200
+> field 1000 neutral 1000
+> field 1000 defend 1001
+> field 1000 defend 200
+> field 1000 defend 1000
+> field 1000 defend 1001
+> field 1000 defend 200
+> field 1000 defend 1000
+> field 1000 defend 1001
+> field 1000 defend 200
+> field 1000 defend 1000
+> field 1000 defend 1001
+> field 1000 defend 200
+> field 1000 defend 1000
+> field 1000 defend 1001
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 1001 200 1000 9999 1001 200 1000 1001 200 1000 1001 200
+raw neutral: 1001 200 1000 1001 200 1000 1001 200 1000 1001 200 1000
+raw defend: 1001 200 1000 1001 200 1000 1001 200 1000 1001 200 1000 1001
+1000 char 0
+an 1001 200 1000 1001 200 1000 1001 200 1000 \
+	1001 200 1000 
+ad 1001 200 1000 1001 200 1000 1001 200 1000 \
+	1001 200 1000 1001 
+ah 1001 200 1000 1001 200 1000 1001 200 1000 \
+	1001 200 
+CH
+ lo 200
+
+> sout frame 5 8 0 0
+> report attitudes 200 1000
+> sout state
+route 0 0 frame 5 8 0 0
+vector:
+saved vector:
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 200 200 200 200 1000 1000 1000 1001 1001 1001 1001 9999
+raw neutral: 200 200 200 200 1000 1000 1000 1000 1001 1001 1001 1001
+raw defend: 200 200 200 200 1000 1000 1000 1000 1001 1001 1001 1001 1001
+1000 char 0
+an 200 200 200 200 1000 1000 1000 1000 1001 \
+	1001 1001 1001 
+ad 200 200 200 200 1000 1000 1000 1000 1001 \
+	1001 1001 1001 1001 
+ah 200 200 200 200 1000 1000 1000 1001 1001 \
+	1001 1001 
+CH
+ lo 200
+
+> report attitudes 200 1000
+> readlog 200
+log 200:
+200:0::5/8::
+200:0::5/8::Declared attitudes:
+200:0::8/8::hostile  200  200  200  200 1000 1000 1000 1001 1001 1001 1001
+200:0::8/8::neutral  200  200  200  200 1000 1000 1000 1000 1001 1001 1001
+200:0::8/8::        1001
+200:0::8/8::defend   200  200  200  200 1000 1000 1000 1000 1001 1001 1001
+200:0::8/8::        1001 1001
+200:0::5/8::
+200:0::5/8::Declared attitudes:
+200:0::8/8::hostile  200  200  200  200 1000 1000 1000 1001 1001 1001 1001
+200:0::8/8::neutral  200  200  200  200 1000 1000 1000 1000 1001 1001 1001
+200:0::8/8::        1001
+200:0::8/8::defend   200  200  200  200 1000 1000 1000 1000 1001 1001 1001
+200:0::8/8::        1001 1001
+stderr:
+
+exit 0
+stdout:
+section report attitude invalid only lists have no heading and neutral can own first output
+> field 1000 hostile 9999
+> field 1000 hostile 8888
+> field 1000 neutral 9999
+> field 1000 defend 8888
+> report attitudes 200 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 8888 9999
+raw neutral: 9999
+raw defend: 8888
+1000 char 0
+CH
+ lo 200
+
+> report files
+report file 200 0
+report file 201 0
+> field 1000 neutral 1001
+> report attitudes 200 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 8888 9999
+raw neutral: 1001 9999
+raw defend: 8888
+1000 char 0
+an 1001 
+CH
+ lo 200
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Declared attitudes:
+200:0::3::neutral 1001
+stderr:
+
+exit 0
+stdout:
+section report attitude defend first preserves trailing header space and missing player
+> entity 202 1 49
+> field 1000 defend 1001
+> field 1000 defend 200
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report attitudes 202 1000
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile:
+raw neutral:
+raw defend: 200 1001
+1000 char 0
+ad 200 1001 
+CH
+ lo 200
+
+> readlog 202
+log 202:
+202:0::0::
+202:0::0::Declared attitudes:
+202:0::3::defend   200 1001
+stderr:
+
+exit 0
+stdout:
+section report player root all subtypes output in real loop order and skip silent mutation
+> lore_root
+> entity 202 1 48
+> entity 203 1 49
+> entity 204 1 51
+> entity 205 1 52
+> entity 206 1 62
+> entity 207 1 0
+> entity 501 4 0
+> name 501 coin
+> plural 501 coins
+> report admit 202 1000 1 0
+> report admit 203 1000 1 0
+> report admit 204 1000 1 0
+> report admit 205 1000 1 0
+> report admit 206 1001 1 1001
+> report admit 206 1000 0 200
+> report admit 207 1000 1 0
+> field 202 hostile 1001
+> field 203 neutral 1000
+> field 204 defend 1001
+> field 205 hostile 1000
+> field 206 hostile 1001
+> field 206 hostile 200
+> field 207 defend 1000
+> inventory 202 501 1
+> inventory 203 501 2
+> inventory 204 501 3
+> inventory 205 501 4
+> inventory 206 501 5
+> inventory 206 200 1
+> inventory 207 501 6
+> report players
+> report state 202
+report entity 202 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 501 1
+raw units:
+raw admit 1000 1
+members:
+raw hostile: 1001
+raw neutral:
+raw defend:
+202 player pl_system
+il	501 1
+ah 1001 
+PL
+ am 1000 1 
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 501 2
+raw units:
+raw admit 1000 1
+members:
+raw hostile:
+raw neutral: 1000
+raw defend:
+203 player pl_regular
+il	501 2
+an 1000 
+PL
+ am 1000 1 
+
+> report state 204
+report entity 204 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 501 3
+raw units:
+raw admit 1000 1
+members:
+raw hostile:
+raw neutral:
+raw defend: 1001
+204 player pl_savage
+il	501 3
+ad 1001 
+PL
+ am 1000 1 
+
+> report state 205
+report entity 205 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 501 4
+raw units:
+raw admit 1000 1
+members:
+raw hostile: 1000
+raw neutral:
+raw defend:
+205 player pl_npc
+il	501 4
+ah 1000 
+PL
+ am 1000 1 
+
+> report state 206
+report entity 206 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 501 5
+raw item 200 1
+raw units:
+raw admit 1001 1
+members: 1001
+raw admit 1000 0
+members: 200
+raw hostile: 1001 200
+raw neutral:
+raw defend:
+206 player pl_silent
+il	501 5 \
+	200 1
+ah 1001 200 
+PL
+ am 1001 1 1001 
+ am 1000 0 200 
+
+> report state 207
+report entity 207 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 501 6
+raw units:
+raw admit 1000 1
+members:
+raw hostile:
+raw neutral:
+raw defend: 1000
+207 player 0
+il	501 6
+ad 1000 
+PL
+ am 1000 1 
+
+> life flush
+> readfile log/202
+file bytes log/202 378:
+202:0::0::
+202:0::0::Admit permissions:
+202:0::0::
+202:0::3::admit 1000  all
+202:0::0::
+202:0::0::Declared attitudes:
+202:0::3::hostile 1001
+202:0::0::
+202:0::0::Unclaimed items:
+202:0::0::
+202:0::0::      qty  name                              weight
+202:0::0::      ---  ----                              ------
+202:0::0::        1  coin~[501]                             0  
+
+end file bytes
+> readfile log/203
+file bytes log/203 378:
+203:0::0::
+203:0::0::Admit permissions:
+203:0::0::
+203:0::3::admit 1000  all
+203:0::0::
+203:0::0::Declared attitudes:
+203:0::3::neutral 1000
+203:0::0::
+203:0::0::Unclaimed items:
+203:0::0::
+203:0::0::      qty  name                              weight
+203:0::0::      ---  ----                              ------
+203:0::0::        2  coins~[501]                            0  
+
+end file bytes
+> readfile log/204
+file bytes log/204 378:
+204:0::0::
+204:0::0::Admit permissions:
+204:0::0::
+204:0::3::admit 1000  all
+204:0::0::
+204:0::0::Declared attitudes:
+204:0::3::defend  1001
+204:0::0::
+204:0::0::Unclaimed items:
+204:0::0::
+204:0::0::      qty  name                              weight
+204:0::0::      ---  ----                              ------
+204:0::0::        3  coins~[501]                            0  
+
+end file bytes
+> readfile log/205
+file bytes log/205 378:
+205:0::0::
+205:0::0::Admit permissions:
+205:0::0::
+205:0::3::admit 1000  all
+205:0::0::
+205:0::0::Declared attitudes:
+205:0::3::hostile 1000
+205:0::0::
+205:0::0::Unclaimed items:
+205:0::0::
+205:0::0::      qty  name                              weight
+205:0::0::      ---  ----                              ------
+205:0::0::        4  coins~[501]                            0  
+
+end file bytes
+> readfile log/206
+file bytes log/206 missing
+> readfile log/207
+file bytes log/207 378:
+207:0::0::
+207:0::0::Admit permissions:
+207:0::0::
+207:0::3::admit 1000  all
+207:0::0::
+207:0::0::Declared attitudes:
+207:0::3::defend  1000
+207:0::0::
+207:0::0::Unclaimed items:
+207:0::0::
+207:0::0::      qty  name                              weight
+207:0::0::      ---  ----                              ------
+207:0::0::        6  coins~[501]                            0  
+
+end file bytes
+> report files
+report file 200 0
+report file 201 0
+report file 202 1
+report file 203 1
+report file 204 1
+report file 205 1
+report file 206 0
+report file 207 1
+stderr:
+
+exit 0
+stdout:
+section report player root missing records allocated except silent without output
+> entity 202 1 48
+> entity 203 1 49
+> entity 204 1 51
+> entity 205 1 52
+> entity 206 1 62
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_system
+
+> report state 206
+report entity 206 order 0 player 0 attitudes 0 char 0 magic 0
+206 player pl_silent
+
+> report players
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_system
+PL
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_regular
+PL
+
+> report state 204
+report entity 204 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+204 player pl_savage
+PL
+
+> report state 205
+report entity 205 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+205 player pl_npc
+PL
+
+> report state 206
+report entity 206 order 0 player 0 attitudes 0 char 0 magic 0
+206 player pl_silent
+
+> report files
+report file 200 0
+report file 201 0
+report file 202 0
+report file 203 0
+report file 204 0
+report file 205 0
+report file 206 0
+stderr:
+
+exit 0
+stdout:
+section report permissions attitudes and player root share original renamed cached output
+> lore_root
+> sout text 200 out 0 1 cached prefix
+> life rename log/200 log/original
+> report admit 200 1000 1 1001
+> field 200 defend 1001
+> sout frame 2 7 1 9
+> report permissions 200
+> report attitudes 200 200
+> report players
+> sout state
+route 0 0 frame 2 7 1 9
+vector:
+saved vector:
+> life flush
+> readfile log/original
+file bytes log/original 358:
+200:0::0::cached prefix
+200:0::2/7:9:
+200:0::2/7:9:Admit permissions:
+200:0::2/7:9:
+200:0::5/7:9:admit 1000  all 1001
+200:0::2/7:9:
+200:0::2/7:9:Declared attitudes:
+200:0::5/7:9:defend  1001
+200:0::2/7:9:
+200:0::2/7:9:Admit permissions:
+200:0::2/7:9:
+200:0::5/7:9:admit 1000  all 1001
+200:0::2/7:9:
+200:0::2/7:9:Declared attitudes:
+200:0::5/7:9:defend  1001
+
+end file bytes
+> report files
+report file 200 0
+report file 201 0
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw units:
+raw admit 1000 1
+members: 1001
+raw hostile:
+raw neutral:
+raw defend: 1001
+200 player pl_regular
+ad 1001 
+PL
+ am 1000 1 1001 
+
+stderr:
+
+exit 0
+stdout:
+section report invalid permissions nonplayer assertion precedes player allocation
+> report permissions 1000
+stderr:
+assertion failure: olympia/perm.c (197): kind(pl) == T_player
+
+exit 134

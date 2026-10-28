@@ -3,6 +3,106 @@
 
 package olympia
 
+import (
+	"strings"
+
+	"github.com/mdhender/g3g0/internal/lists"
+)
+
+// printAdmit is perm.c:141–223. Sorting mutates the saved admission list,
+// but neither invalid references nor the original member order are changed.
+func (w *world) printAdmit(pl int) {
+	assert(w.kind(pl) == tPlayer, "olympia/perm.c", 197, "kind(pl) == T_player")
+	p := w.pPlayer(pl)
+	safeQsort(p.admits, func(a, b *admit) int { return int(a.targ - b.targ) })
+	first := true
+	for _, a := range p.admits {
+		if !w.validBox(int(a.targ)) {
+			continue
+		}
+		if first {
+			w.commandOut(pl, "")
+			w.commandOut(pl, "Admit permissions:")
+			w.commandOut(pl, "")
+			w.indent += 3
+			first = false
+		}
+		w.printAdmitSup(pl, a)
+	}
+	if !first {
+		w.indent -= 3
+	}
+}
+
+func (w *world) printAdmitSup(pl int, p *admit) {
+	buf := sout("admit %4s", boxCodeLess(int(p.targ)))
+	count := 0
+	if p.sense != 0 {
+		buf += "  all"
+		count++
+	}
+	for _, n := range p.l {
+		if !w.validBox(n) {
+			continue
+		}
+		count++
+		if count >= 12 {
+			w.commandOut(pl, "%s", buf)
+			buf = "          "
+			count = 1
+		}
+		buf += sout(" %4s", boxCodeLess(n))
+	}
+	if count != 0 {
+		w.commandOut(pl, "%s", buf)
+	}
+}
+
+// printAtt is complete perm.c:426–488. Each original list is sorted only
+// when its renderer is reached; no disposition record is allocated.
+func (w *world) printAtt(who, n int) {
+	p := w.rpDisp(n)
+	if p == nil {
+		return
+	}
+	first := true
+	w.printAttSup(who, p.hostile, "hostile", &first)
+	w.printAttSup(who, p.neutral, "neutral", &first)
+	w.printAttSup(who, p.defend, "defend ", &first)
+	if !first {
+		w.indent -= 3
+	}
+}
+
+func (w *world) printAttSup(who int, l lists.IList, header string, first *bool) {
+	if len(l) == 0 {
+		return
+	}
+	buf, count := header, 0
+	safeQsort(l, intComp)
+	for _, n := range l {
+		if !w.validBox(n) {
+			continue
+		}
+		if *first {
+			w.commandOut(who, "")
+			w.commandOut(who, "Declared attitudes:")
+			w.indent += 3
+			*first = false
+		}
+		count++
+		if count >= 12 {
+			w.commandOut(who, "%s", buf)
+			buf = strings.Repeat(" ", len(header))
+			count = 1
+		}
+		buf += sout(" %4s", boxCodeLess(n))
+	}
+	if count != 0 {
+		w.commandOut(who, "%s", buf)
+	}
+}
+
 // rpAdmit deliberately uses pPlayer, as does C: a lookup may allocate it.
 func (w *world) rpAdmit(pl, targ int) *admit {
 	assert(w.kind(pl) == tPlayer, "olympia/perm.c", 16, "kind(pl) == T_player")

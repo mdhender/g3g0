@@ -6,6 +6,37 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Admission permissions, attitudes and player entity reports (#148)
+
+Existing perm.go adds complete pinned perm.c admit comparator/renderers
+**141–223** and attitude renderers **426–488** (complete closing definition);
+report.go/main replace playerEntInfoState with real player_ent_info
+**783–798**, reusing accepted showUnclaimed and original cached output.
+The still-deferred character root retains only reportAttitudeState until
+#151. Original in-place admission/inventory/three attitude sorts, retained
+invalid references, unsorted admission members, allocation/output order and
+silent skip are unchanged. No new dependency/pin, commands, valid new-player
+admissions or later roots.
+
+At **0.88.0-alpha**, eleven appended sections match unchanged C twice and Go:
+**1017 sections / 68918 lines / 1310660 output bytes**. The inherited
+**1006-section / 68035-line / 1290206-output-byte** and **408111-input-byte**
+prefixes remain exact. Numeric constants and actual branch reach include
+equal targets, duplicates, all player subtypes and 11/12/13 continuations;
+#168 live native traversal still matches. Four temporary marker controls
+(exit 0/134, normal/update) reject before expected-failure acceptance or
+recording replacement, preserving the recording hash. Probe files removed.
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded defaults pass with explicit isolated
+`G3_REPO` throughout. See [closure, hashes, evidence and caveats](command-compat#admission-permissions-attitudes-and-player-entity-reports-148)
+and `tmp/issue148-*.log`. Independent parent review and the same acceptance
+tier pass; parent logs are `tmp/parent148-*.log`.
+
+No new strict/full-world/stage-exit acceptance: latest strict post-#145 C
+repeats match, C/Go 0, streams and entry paths/types/modes match, eight report
+byte differences exit 1 before lifecycle. G3 #358 remains nonblocking;
+original division/Go panic untouched, malformed C136/Go2 NOT passing parity.
+
 ## Capacity and item-granted skills (#147)
 
 Existing report.go adds complete pinned report.c show_carry_capacity

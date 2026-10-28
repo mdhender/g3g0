@@ -212,31 +212,22 @@ func (w *world) determineOutputOrder() {
 	}
 }
 
-// playerEntInfoState preserves the database effects of player_ent_info
-// (report.c:783–799), not its deferred stage-2 report artifacts. print_admit
-// allocates the player record and sorts the original admissions; print_att
-// sorts all three original attitude lists; show_unclaimed sorts inventory.
-// Invalid references remain in these lists, even when rendering/save writers
-// filter them. Admission members are not sorted. Silent players do none of it.
-func (w *world) playerEntInfoState() {
+// playerEntInfo is complete report.c:783–798. Each renderer owns its original
+// allocations, in-place sorts and output; silent players skip all three.
+func (w *world) playerEntInfo() {
 	for pl := range w.loopKind(tPlayer) {
 		if w.subkind(pl) == subPlSilent {
 			continue
 		}
-		p := w.pPlayer(pl)
-		safeQsort(p.admits, func(a, b *admit) int { return int(a.targ - b.targ) })
-		w.reportAttitudeState(pl)
-		safeQsort(w.bx[pl].items, invItemComp)
-		// show_unclaimed's plural formatter can warn on stderr, which is
-		// observable even though the inventory report itself is deferred.
-		for e := range w.loopInv(pl) {
-			w.pluralItemBox(int(e.item), int(e.qty))
-		}
+		w.printAdmit(pl)
+		w.printAtt(pl, pl)
+		w.showUnclaimed(pl, pl)
 	}
 }
 
-// reportAttitudeState is the persistent part of perm.c:427–498. A missing
+// reportAttitudeState is the persistent part of perm.c:426–488. A missing
 // attitude record is not allocated, and invalid entries are not removed.
+// Only the still-deferred character root uses this projection (until #151).
 func (w *world) reportAttitudeState(n int) {
 	if p := w.rpDisp(n); p != nil {
 		safeQsort(p.hostile, intComp)
