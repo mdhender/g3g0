@@ -34,6 +34,7 @@ printf 'Rejected option diagnostic input.\n' >"${WORK}/empty/input.txt"
 run_engine() {
 	local bin="$1" input="$2" out="$3" status=0
 	shift 3
+	[ -d "$input" ] && [ ! -L "$input" ] || die "engine input must be an actual directory, not a symlink: $input"
 	rm -rf "${out}"
 	mkdir -p "${out}/cwd"
 	cp -a "${input}/." "${out}/cwd/"
@@ -41,6 +42,27 @@ run_engine() {
 	(cd "${out}/cwd" && run_limited "${RUN_TIMEOUT}" olympia-g3 "${bin}" "${ARGS[@]}" "$@" \
 		</dev/null >"${out}/stdout" 2>"${out}/stderr") || status=$?
 	echo "${status}" >"${out}/status"
+}
+
+run_c_engine() {
+	run_engine "$@"
+	local out="$3" marker_status=0
+	# Never bless a missing C dependency, even on an expected diagnostic/failure.
+	grep -Ei 'out-of-scope|not yet implemented|missing.*dependency|C stub' \
+		"${out}/stdout" "${out}/stderr" >&2 || marker_status=$?
+	[ "$marker_status" = 1 ] || die "invalid C reference or unreadable streams; see ${out}"
+}
+
+# Validate every entry (rejecting unsupported types), then use the shared
+# portable lstat policy for all cwd modes, including directories and cwd itself.
+# A failed listing/capture is a harness error (2), never an ordinary mismatch (1).
+compare_captures() {
+	local left="$1" right="$2" bytes_status=0 modes_status=0
+	"${COMPARE}" "$left" "$right" || bytes_status=$?
+	[ "$bytes_status" -le 1 ] || return 2
+	python3 "${HERE}/../lib/tree-modes.py" "$left/cwd" "$right/cwd" || modes_status=$?
+	[ "$modes_status" -le 1 ] || return 2
+	[ "$bytes_status" = 0 ] && [ "$modes_status" = 0 ]
 }
 
 if [ "$full" = 1 ]; then
@@ -70,32 +92,31 @@ if [ "$full" = 1 ]; then
 		tar xzf "${WORLD}" -C "${WORK}/input"
 		printf '%s\n' "$input_stamp" >"${WORK}/input.stamp"
 	fi
-	run_engine "${C_BIN}" "${WORK}/input" "${WORK}/c"
-	run_engine "${C_BIN}" "${WORK}/input" "${WORK}/c-again"
+	run_c_engine "${C_BIN}" "${WORK}/input" "${WORK}/c"
+	run_c_engine "${C_BIN}" "${WORK}/input" "${WORK}/c-again"
 	[ "$(cat "${WORK}/c/status")" = 0 ] || die "C turn failed (status $(cat "${WORK}/c/status")); see ${WORK}/c"
-	# Check even deferred reports for reference determinism, not just state.
-	diff -rq "${WORK}/c" "${WORK}/c-again" >"${WORK}/determinism.diff" ||
+	compare_captures "${WORK}/c" "${WORK}/c-again" >"${WORK}/determinism.diff" ||
 		die "C is nondeterministic; see ${WORK}/determinism.diff"
 	{
 		echo "pin ${PINNED_REV}"
 		echo "args ${ARGS[*]}"
 		echo "binary $(shasum -a 256 "${C_BIN}" | cut -d' ' -f1)"
 		echo "world.tgz $(shasum -a 256 "${WORLD}" | cut -d' ' -f1)"
-		echo "C repeats: identical status, stdout, stderr, entire cwd (including reports)"
+		echo "C repeats: identical status, stdout, stderr, entire cwd (all entry types/modes/bytes)"
 		"${COMPARE}" --manifest "${WORK}/c"
 	} >"${WORK}/c-determinism.txt"
 	rm -rf "${WORK}/c-again"
 	echo "PASS: two pinned C turns identical, including report artifacts"
 	if [ "$record" = 1 ]; then
-		run_engine "${C_BIN}" "${WORK}/empty" "${WORK}/rejected-c" '-?'
-		run_engine "${C_BIN}" "${WORK}/empty" "${WORK}/rejected-c-again" '-?'
-		diff -rq "${WORK}/rejected-c" "${WORK}/rejected-c-again" || die "small C case is nondeterministic"
+		run_c_engine "${C_BIN}" "${WORK}/empty" "${WORK}/rejected-c" '-?'
+		run_c_engine "${C_BIN}" "${WORK}/empty" "${WORK}/rejected-c-again" '-?'
+		compare_captures "${WORK}/rejected-c" "${WORK}/rejected-c-again" || die "small C case is nondeterministic"
 		rm -rf "${HERE}/testdata/rejected-option" "${HERE}/testdata/world-sample"
 		mkdir -p "${HERE}/testdata/world-sample/cwd/lib"
 		cp -a "${WORK}/rejected-c" "${HERE}/testdata/rejected-option"
 		# Small, real post-turn state, plus untouched raw process observations.
-		cp "${WORK}/c/"{stdout,stderr,status} "${HERE}/testdata/world-sample/"
-		cp "${WORK}/c/cwd/lib/"{system,randseed,ship} "${HERE}/testdata/world-sample/cwd/lib/"
+		cp -p "${WORK}/c/"{stdout,stderr,status} "${HERE}/testdata/world-sample/"
+		cp -p "${WORK}/c/cwd/lib/"{system,randseed,ship,times_0} "${HERE}/testdata/world-sample/cwd/lib/"
 		cp "${WORK}/c-determinism.txt" "${HERE}/testdata/"
 		{
 			echo "rejected-option C repeats: identical status, stdout, stderr, entire cwd"
@@ -107,17 +128,18 @@ fi
 
 # Fast defaults: comparator contracts on C recordings, then a real Go
 # diagnostic run compared byte-for-byte with the small pinned C recording.
+python3 "${HERE}/../lib/tree-modes-test.py"
 (cd "${ROOT}" && RUN_TIMEOUT="${RUN_TIMEOUT}" go test -count=1 \
 	-exec "bash ${HERE}/../lib/run-limited.sh" ./tools/turn-compat)
 run_engine "${GO_BIN}" "${WORK}/empty" "${WORK}/rejected-go" '-?'
-"${COMPARE}" "${HERE}/testdata/rejected-option" "${WORK}/rejected-go"
+compare_captures "${HERE}/testdata/rejected-option" "${WORK}/rejected-go"
 rm -rf "${WORK}/rejected-go"
 [ "$full" = 1 ] || exit 0
 
 run_engine "${GO_BIN}" "${WORK}/input" "${WORK}/go"
 echo "turn: C status $(cat "${WORK}/c/status"), Go status $(cat "${WORK}/go/status")"
 status=0
-"${COMPARE}" "${WORK}/c" "${WORK}/go" >"${WORK}/diff.txt" || status=$?
+compare_captures "${WORK}/c" "${WORK}/go" >"${WORK}/diff.txt" || status=$?
 {
 	diff -u --label C/stdout --label Go/stdout "${WORK}/c/stdout" "${WORK}/go/stdout" || true
 	diff -u --label C/stderr --label Go/stderr "${WORK}/c/stderr" "${WORK}/go/stderr" || true
@@ -126,7 +148,7 @@ cat "${WORK}/diff.txt"
 if [ "$status" = 0 ]; then
 	rm -rf "${WORK}/c" "${WORK}/go"
 else
-	echo "FAIL: raw captures and state retained in ${WORK}/{c,go}; ${WORK}/diff.txt"
+	echo "FAIL: raw captures and complete cwd retained in ${WORK}/{c,go}; ${WORK}/diff.txt"
 	[ "$(cat "${WORK}/go/status")" != "$TIMEOUT_STATUS" ] || echo "Go timed out after ${RUN_TIMEOUT}s"
 fi
 [ "$status" = 0 ] || exit "$status"
@@ -162,19 +184,21 @@ for case_name in no-save empty-act dot-act partial-act act-file \
 		case "$case_name" in times_*) expected_status=1 ;; esac
 		;;
 	esac
-	run_engine "${C_BIN}" "${base}/input" "${base}/c"
-	run_engine "${C_BIN}" "${base}/input" "${base}/c-again"
+	run_c_engine "${C_BIN}" "${base}/input" "${base}/c"
+	run_c_engine "${C_BIN}" "${base}/input" "${base}/c-again"
 	[ "$(cat "${base}/c/status")" = "$expected_status" ] || die "${case_name}: unexpected C status; see ${base}"
-	diff -rq "${base}/c" "${base}/c-again" >"${base}/determinism.diff" ||
+	compare_captures "${base}/c" "${base}/c-again" >"${base}/determinism.diff" ||
 		die "${case_name}: C is nondeterministic; see ${base}"
 	rm -rf "${base}/c-again"
 	run_engine "${GO_BIN}" "${base}/input" "${base}/go"
-	if ! "${COMPARE}" "${base}/c" "${base}/go" >"${base}/diff.txt"; then
+	status=0
+	compare_captures "${base}/c" "${base}/go" >"${base}/diff.txt" || status=$?
+	if [ "$status" != 0 ]; then
 		cat "${base}/diff.txt"
 		diff -u "${base}/c/stdout" "${base}/go/stdout" || true
 		diff -u "${base}/c/stderr" "${base}/go/stderr" || true
 		echo "FAIL: ${case_name}; raw captures retained in ${base}"
-		exit 1
+		exit "$status"
 	fi
 	printf '%s: C/C deterministic, C/Go status %s; ' "$case_name" "$expected_status" | tee -a "${WORK}/lifecycle.txt"
 	cat "${base}/diff.txt" | tee -a "${WORK}/lifecycle.txt"

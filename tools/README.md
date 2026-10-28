@@ -93,6 +93,21 @@ Vet, fresh bounded default tests, default turn and command comparisons pass
 (command 859 sections / 59841 lines, deterministic). Logs and enumeration:
 `tmp/issue133-*.log`, full TSV `tmp/issue133-roundtrip-results.tsv`.
 
+## Strict whole-tree turn gate (#134)
+
+`turn-compat` now excludes no artifacts: C/C and C/Go compare every cwd
+entry, including empty directories, types, all-entry permission/special bits
+(the unchanged `lib/tree-modes.py` policy), regular bytes and raw streams/status.
+Nonregular entries and failed listings/captures are errors, not omissions or
+ordinary mismatches. Defaults remain tiny recorded cases with no world turn.
+Two fresh unchanged pinned C turns match all 233 cwd entries. The strict
+C/Go gate honestly exits 1 on eight `lib/save/1` report-byte differences;
+both engines exit 0, raw streams match and no paths/types/modes differ.
+Lifecycle controls now use the same strict comparator but are not reached
+past this ordinary-turn failure. See `turn-compat/README.md` and
+`tmp/issue134-turn-full{,-record}.log`; prior stage-1 artifact-excluding
+acceptance below remains historical, not strict stage-2 acceptance.
+
 ## Check tiers
 
 **Routine task acceptance.**
@@ -618,7 +633,7 @@ tools/box-compat/run.sh --full       # after olympia-roundtrip, whose games it r
 tools/boxfile-compat/run.sh --full
 tools/check-compat/run.sh --full
 tools/loadsave-compat/run.sh --full
-tools/turn-compat/run.sh --full      # stage-1 turn/state exit, integrated in #123
+tools/turn-compat/run.sh --full      # strict stage-2 whole-tree gate; reports included
 ```
 
 Run these one at a time: `box-compat`, `boxfile-compat`, `check-compat` and `loadsave-compat` read the games `olympia-roundtrip` caches, so do not run them while `olympia-roundtrip --fresh` rebuilds that cache.
@@ -678,7 +693,7 @@ stage 2. No unresolved stage-1 blocker is currently known.
 |---|---|
 | `G3G0_FULL=1` | lets the whole-game Go tests (`TestBoxWorlds`, `TestBoxfileWorlds`, `TestCheckWorlds`, `TestLoadSaveWorlds`) run; `-short` always skips them. They compare nothing on their own: they need the game list that `box-compat`, `boxfile-compat`, `check-compat` or `loadsave-compat` hands them, and skip without it. |
 | `--full` | `box-compat`, `boxfile-compat`, `check-compat`, `loadsave-compat`: also compare every saved game (`world.tgz` and each game cached by `olympia-roundtrip`). |
-| `--full` | `turn-compat`: run two identical pinned C world turns to establish determinism, then compare a real Go turn's state paths/bytes and raw stdout/stderr/status. Report artifacts alone are deferred. |
+| `--full` | `turn-compat`: repeat pinned C world turns, then compare Go's complete cwd (paths/types/modes/empty directories/regular bytes, reports included) and raw stdout/stderr/status. Currently red until pending report tasks land. |
 | `--games N` | `box-compat`, `boxfile-compat`, `check-compat`, `loadsave-compat`: compare `N` saved games, always the same ones: `world.tgz` and cached games spread evenly over the sorted list. |
 | `--determinism-all` | `olympia-roundtrip`: check that C gives the same result twice on every selected case, not just the fixed sample. |
 

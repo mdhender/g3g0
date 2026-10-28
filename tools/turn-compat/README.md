@@ -1,15 +1,14 @@
-# Turn comparison (stage 1, #56)
+# Strict whole-tree turn comparison (#56, #134)
 
 Pinned reference: [playbymail/olympia-g3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 No turn engine code is implemented here. The reference is real C, never Go.
 
-For #131, `--full --record` refreshes provenance from two actual turns at
-this pin: only the pin and C binary hash change; all recorded state/raw
-streams, fixture hash and entire-capture manifest entries remain identical.
-The hardcoded provenance test follows the new pin. The stage-1 comparator
-exclusions below deliberately remain until #134; this is not report-byte
-acceptance. Historical evidence below retains its original pin and hashes.
+There are no artifact exclusions. Both C/C determinism and C/Go comparison
+cover every cwd entry, including empty directories, types, permission/special
+bits and regular-file bytes, plus unfiltered stdout/stderr/status. The strict
+full gate is intentionally red until the report implementation tasks land;
+historical stage-1 acceptance below had a narrower contract.
 
 ```sh
 tools/turn-compat/run.sh                 # fast recorded checks; no world turn or C build
@@ -21,10 +20,19 @@ tools/turn-compat/run.sh --full --record # explicitly refresh C-only recordings,
 
 The Go tests exercise the comparator's observable contract on a tiny recorded
 slice of the real C world turn: `system`, `randseed`, the empty `ship`, raw
-stdout, raw stderr and status. Negative controls check changed bytes, missing
-files (including empty ones), extra files, orders, factions, trade routes,
-unknown paths, output whitespace, exit status, and the precise report exclusions.
-These mutations test the comparator, not expected engine behavior.
+stdout, raw stderr, status and the small real `times_0` report. Negative
+controls check changed report/database bytes, missing files (including empty
+ones), extra files, orders, factions, trade routes, unknown paths outside lib,
+whitespace, status, deleted empty directories, regular/directory/root modes,
+special permission bits and file/directory replacement in both directions.
+Symlinks, FIFOs and sockets are rejected explicitly, including in formerly
+excluded report paths; required capture files and cwd cannot be missing.
+Synthetic mutations test the comparator, not expected engine behavior.
+The shared mode helper's own controls inject lstat/scandir failures on either
+or both sides; shell controls ensure capture/listing failure stays exit 2,
+distinct from an ordinary mismatch (1). C streams are checked for missing
+dependency/stub/NYI markers before accepting any result or recording, including
+expected failures; controls cover markers in either stream and missing streams.
 
 The harness also runs the real Go engine with the turn arguments below plus
 `-?`, comparing its rejected-option diagnostic and unchanged input file with
@@ -32,10 +40,10 @@ two recorded C runs. It never treats that diagnostic as a successful turn.
 `go test ./...` needs no C checkout and never runs a whole-world turn here.
 
 `testdata/c-determinism.txt` records the C pin, binary and world archive SHA-256,
-arguments, successful repeat check, and a state/output digest manifest. Tests
+arguments, successful repeat check, and an all-entry mode/type/digest manifest. Tests
 check each small snapshot against that manifest. This is recorded provenance,
 not a claim to have rerun C during default tests. The recordings total about
-20 KB; `--record` writes them only after real pinned C repeats match, before
+25 KB; `--record` writes them only after real pinned C repeats match, before
 looking at Go. It never accepts NYI as a successful turn expectation.
 
 ## Full comparison
@@ -53,7 +61,7 @@ Timeout is status 124; signal death remains 128 + signal, without shell noise.
 No stdout/stderr filtering, NYI special case, or status normalization occurs.
 
 The C turn runs twice on every `--full` invocation. Both statuses must be zero
-and the *entire* captures must match, including deferred report files. A failed
+and the *entire* captures must match, including all report files. A failed
 or nondeterministic C reference stops the harness with exit 2 and retained
 evidence, rather than blessing a Go comparison. Only then is Go compared to C.
 
@@ -62,7 +70,7 @@ on copies of that same input: no `-S`; empty, dot-only, partial and non-director
 cwd-relative `act`; and EISDIR at `times_press`, `times_rumor`, `times_0`,
 `players`, `email`, `totimes`, `forward` and `factions`. Missing `act` is covered
 by the ordinary world. Each control repeats C (entire captures, artifacts
-included), then compares Go's raw streams/status and every non-artifact file.
+included), then compares Go's raw streams/status and every cwd entry.
 Times failures require C status 1, while writer errors and no-admission paths
 require C status 0. The masthead failure occurs after saving; press/rumor
 failures precede the turn. Valid admissions and external account charging are
@@ -72,7 +80,7 @@ deleted immediately. A mismatch exits 1 with evidence under
 `$WORK/lifecycle/CASE`; a C failure/nondeterminism exits 2. The concise passing
 summary is `$WORK/lifecycle.txt`. Defaults still run no whole-world turn.
 
-### Database ownership and report boundary
+### Whole-tree contract
 
 At the pin, `io.c:save_db` calls `save_seed`, `save_trade_routes`, `save_system`,
 `write_all_boxes`, `write_master`, `save_orders` and `rename_act_join_files`.
@@ -80,24 +88,29 @@ These own `randseed`, optional `trade_routes`, `system`, `loc`, `item`, `skill`,
 `gate`, `road`, `ship`, `unform`, `misc`, `fact/*`, `master`, `orders/*` and
 act/join state. Comparing only an allowlist would miss new state or extra files.
 
-Instead, the comparator compares **every file in the working directory**, with
-only these exact stage-2 output artifacts excluded:
+Instead, the comparator captures **every entry in the working directory**,
+including the cwd root itself, `lib/log`, `lib/save`, Times and auxiliary
+reports, lore input, `startloc`, unknown paths and everything outside `lib`.
+Missing/extra entries and type replacements fail; empty files and directories
+count. File contents are raw bytes, with no whitespace or routing normalization.
 
-* `lib/log/*`, `lib/save/*`: `sout.c` and `io.c:save_logdir`.
-* `lib/players`, `lib/email`, `lib/forward`, `lib/factions`, `lib/totimes`:
-  the writers in `main.c`.
-* `lib/times_0`, `lib/times_press`, `lib/times_rumor`: `c2.c`.
+`tools/lib/tree-modes.py` actually compares lstat types and permission/special
+bits on **all entries**, including directories and the root, not only regular
+files. The Go capture deliberately enforces the same stronger mode contract;
+the shared helper remains unchanged. The shell runs both comparators for C/C
+and C/Go. Symlinks and other nonregular/nondirectory entries are unsupported
+capture errors (exit 2), not silently omitted, followed or treated as ordinary
+differences. The helper alone can list such types; capture validation rejects
+them first. Failed/partial listings are never accepted as equal.
 
-Report routines still run in C. Any changes they make to database state
-(for example known/lore state in faction records) remain compared. Lore input,
-`startloc`, unknown files and files outside `lib` remain compared too. No broad
-`times_*` or faction filename filtering is used. Missing and extra files fail;
-empty files count. Nonregular state files are harness errors, not followed
-symlinks. Empty directories and file permissions are not serialized DB bytes.
+Capture-container permissions and stdout/stderr/status *file modes* are harness
+plumbing, not engine output: only their exact bytes are compared. In the
+manifest these observations have the sentinel mode `----------`; cwd entries
+carry their real modes. Directory rows have `-` instead of a byte digest.
 
 ## Cache, prerequisites and evidence
 
-Requires Go, Bash, Perl, `cmp`/`diff`, `tar`, `shasum`; full mode also needs a
+Requires Go, Bash, Python 3, Perl, `mkfifo`, `diff`, `tar`, `shasum`; full mode also needs a
 clone containing the pin and CMake/Ninja/C11 when no reusable C build exists.
 
 * `WORK`: defaults to `tmp/turn-compat`; all builds and captures live here.
@@ -109,19 +122,41 @@ clone containing the pin and CMake/Ninja/C11 when no reusable C build exists.
   with upstream's unchanged debug preset. It never builds in the source clone.
 * Input is cached by pin and archive digest. C is repeated each full run,
   so an old deterministic marker cannot hide changed C behavior.
+  Engines run only in actual directory copies, never against cached inputs
+  or using a symlink as the input-copy source.
 
 Example using the accepted existing export without rebuilding:
 
 ```sh
-G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue97-roundtrip" \
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/stage2-roundtrip" \
   tools/turn-compat/run.sh --full
 ```
 
 On mismatch, exit 1; `$WORK/{c,go}/{cwd,stdout,stderr,status}` retain raw
-evidence and `diff.txt` lists all state path/byte differences and unfiltered
+evidence and `diff.txt` lists all cwd path/type/mode/byte differences and unfiltered
 stdout/stderr diffs. `c-determinism.txt` retains repeat metadata. The redundant
 matching C repeat is deleted immediately; matching Go/C game outputs are
 deleted after success. The input and C build remain reusable.
+
+### #134 strict-gate evidence (2026-10-28)
+
+With `G3_REPO="$PWD/tmp/upstream.git"`, `C_CACHE="$PWD/tmp/stage2-roundtrip"`
+and `WORK="$PWD/tmp/issue134-turn"`, `--full --record` ran two fresh unchanged
+pinned C turns, both status 0. All 233 cwd entries, modes/types/bytes and raw
+streams/status matched. The provenance manifest now includes directories,
+modes and every previously excluded report digest. Original small recording
+bytes are unchanged; only the tiny real-C `times_0` report is added.
+
+C/Go both exit 0 with identical raw stdout/stderr. Strict comparison exits 1
+on exactly eight report-byte differences: `lib/save/1/{100,200,202,203,204,205,
+210,players}`. No paths/types/modes or other bytes differ. These are pending
+stage-2 reports, not normalized successes. Lifecycle controls are not reached
+after the ordinary strict turn fails; their comparator is strengthened too,
+but their historical passing status is not new strict acceptance.
+Evidence: `tmp/issue134-turn-full-record.log`,
+`tmp/issue134-turn/{determinism.diff,c-determinism.txt,diff.txt,c,go}`.
+
+### Historical stage-1 evidence (narrower artifact-excluding contract)
 
 Initial Linux amd64 recording: C statuses 0/0, identical stdout, stderr and
 entire post-turn directory; Go status 2, `olympia-g3: load_db (-r -S): not yet
