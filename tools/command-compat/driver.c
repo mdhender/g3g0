@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include "z.h"
@@ -15,6 +16,7 @@
 void glob_init(void);
 void init_lower(void);
 void drv_read_boxes(char *path);
+void drv_list_player(int pl);
 void drv_gm_economy(char *part, int pl);
 int drv_gm_pct(int n, int d);
 extern int gold_common_magic, gold_lead_to_gold, gold_times, gold_petty_thief, gold_pillage, gold_ferry;
@@ -846,6 +848,14 @@ int main(int argc, char **argv)
    }
    else if(!strcmp(text,"times_open")) open_times();
    else if(!strcmp(text,"times_close")) close_times();
+   else if(!strcmp(text,"times_masthead")) times_masthead();
+   else if(!strcmp(text,"entries")) {
+    DIR *dir; struct dirent *de; int count=0;
+    sscanf(line,"%*s %*s %8191s",path);
+    dir=opendir(path); if(!dir) return 2;
+    while((de=readdir(dir))) if(strcmp(de->d_name,".") && strcmp(de->d_name,"..")) count++;
+    closedir(dir); printf("entries %s %d\n",path,count);
+   }
    else if(!strcmp(text,"fill")) {
     for(i=201;i<200+(FOPEN_MAX-10);i++) {
      if(!valid_box(i)) alloc_box(i,T_player,sub_pl_regular);
@@ -878,6 +888,9 @@ int main(int argc, char **argv)
    char path[8192]; struct stat st;
    sscanf(line,"%*s %8191s",text);
    if(!strcmp(text,"players")) write_player_list();
+   else if(!strcmp(text,"player")) {
+    sscanf(line,"%*s %*s %d",&n); drv_list_player(n);
+   }
    else if(!strcmp(text,"email")) write_email();
    else if(!strcmp(text,"totimes")) write_totimes();
    else if(!strcmp(text,"forward")) write_forwards();
@@ -902,6 +915,9 @@ int main(int argc, char **argv)
     else if(!strcmp(text,"empty")) p_player(n)->email=str_save("");
     else if(!strcmp(text,"visible")) p_player(n)->vis_email=str_save("public@example.test");
     else if(!strcmp(text,"cis")) p_player(n)->compuserve=1;
+    else if(!strcmp(text,"visible_empty")) p_player(n)->vis_email=str_save("");
+    else if(!strcmp(text,"name_empty")) p_player(n)->full_name=str_save("");
+    else if(!strcmp(text,"name_null")) p_player(n)->full_name=NULL;
     else return 2;
    }
    else return 2;
@@ -1239,11 +1255,14 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"location")) out(n,"%s",char_rep_location(n));
    else if(!strcmp(text,"banner")) player_banner();
    else if(!strcmp(text,"banner_win")) win_flag=n;
-   else if(!strcmp(text,"banner_title") || !strcmp(text,"rules_url") || !strcmp(text,"times_url")) {
+   else if(!strcmp(text,"banner_title") || !strcmp(text,"rules_url") || !strcmp(text,"times_url") ||
+           !strcmp(text,"from_host") || !strcmp(text,"game_url")) {
     char value[8192]="";
     sscanf(line,"%*s %*s %8191[^\n]",value);
     if(!strcmp(text,"banner_title")) game_title=str_save(value);
     else if(!strcmp(text,"rules_url")) rules_url=str_save(value);
+    else if(!strcmp(text,"from_host")) from_host=str_save(value);
+    else if(!strcmp(text,"game_url")) game_url=str_save(value);
     else times_url=str_save(value);
    }
    else if(!strcmp(text,"provinces")) drv_summary_provinces();

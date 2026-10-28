@@ -81789,3 +81789,900 @@ alloc_fp: can't open ./log/200: Is a directory
 assertion failure: olympia/sout.c (158): FALSE
 
 exit 134
+stdout:
+section post writer bodies private visible CIS silent system and new marker
+> lore_root
+> name 200 First Faction
+> name 201 Second Faction
+> identity 200 Private private@example.test
+> identity 201 Public secret@example.test
+> post mail 201 visible
+> post mail 201 cis
+> post new 201
+> post new 201
+> entity 202 1 62
+> identity 202 Silent silent@example.test
+> entity 203 1 48
+> identity 203 System system@example.test
+> entity 204 1 49
+> post empty_player 204
+> post all
+> readfile players
+file bytes players 196:
+ num   faction
+ ---   -------
+ 200    First Faction
+        Private <private@example.test>
+
+ 201 *  Second Faction
+        Public <public@example.test>
+
+
+                * -- New player this turn
+
+end file bytes
+> readfile email
+file bytes email 81:
+private@example.test
+secret@example.test
+silent@example.test
+system@example.test
+
+end file bytes
+> readfile totimes
+file bytes totimes 61:
+private@example.test
+silent@example.test
+system@example.test
+
+end file bytes
+> readfile forward
+file bytes forward 149:
+200|private@example.test
+201|secret@example.test
+202|silent@example.test
+203|system@example.test
+1000|private@example.test
+1001|private@example.test
+
+end file bytes
+> readfile factions
+file bytes factions 97:
+200|private@example.test
+201|secret@example.test
+202|silent@example.test
+203|system@example.test
+
+end file bytes
+> admission state
+new players: 201 201
+vector:
+admission player 200 record 1
+200 player pl_regular
+na First Faction
+PL
+ fn Private
+ em private@example.test
+
+admission player 201 record 1
+201 player pl_regular
+na Second Faction
+PL
+ fn Public
+ em secret@example.test
+ ve public@example.test
+ ci 1
+
+admission player 202 record 1
+202 player pl_silent
+PL
+ fn Silent
+ em silent@example.test
+
+admission player 203 record 1
+203 player pl_system
+PL
+ fn System
+ em system@example.test
+
+admission player 204 record 0
+204 player pl_regular
+
+stderr:
+write_player_list()
+
+exit 0
+stdout:
+section post writer bodies empty versus absent pointers and overwritten files
+> lore_root
+> identity 200 Private private@example.test
+> post mail 200 visible_empty
+> post mail 200 name_empty
+> post mail 201 empty
+> post mail 201 name_null
+> post all
+> readfile players
+file bytes players 85:
+ num   faction
+ ---   -------
+ 200    Player
+         <>
+
+ 201    Player
+        <>
+
+
+end file bytes
+> readfile email
+file bytes email 22:
+private@example.test
+
+
+end file bytes
+> readfile totimes
+file bytes totimes 22:
+private@example.test
+
+
+end file bytes
+> readfile forward
+file bytes forward 77:
+200|private@example.test
+1000|private@example.test
+1001|private@example.test
+
+end file bytes
+> readfile factions
+file bytes factions 25:
+200|private@example.test
+
+end file bytes
+> post mail 200 null
+> post mail 201 null
+> post all
+> readfile players
+file bytes players 30:
+ num   faction
+ ---   -------
+
+end file bytes
+> readfile email
+file bytes email 0:
+
+end file bytes
+> readfile totimes
+file bytes totimes 0:
+
+end file bytes
+> readfile forward
+file bytes forward 0:
+
+end file bytes
+> readfile factions
+file bytes factions 0:
+
+end file bytes
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+write_player_list()
+write_player_list()
+
+exit 0
+stdout:
+section post writer bodies direct list helper public-only name-only and allocated-empty
+> lore_root
+> post mail 200 visible
+> post player 200
+ 200    Player
+        <public@example.test>
+
+> identity 200 Name private@example.test
+> post mail 200 null
+> post mail 200 visible_empty
+> post player 200
+ 200    Player
+        Name <>
+
+> identity 201 OnlyName private@example.test
+> post mail 201 null
+> post new 201
+> post player 201
+ 201 *  Player
+        OnlyName
+
+> post mail 201 name_empty
+> post player 201
+ 201 *  Player
+
+> post mail 201 name_null
+> post player 201
+ 201 *  Player
+
+> entity 202 1 49
+> post player 202
+ 202    Player
+
+> save 202
+202 player pl_regular
+PL
+
+stderr:
+
+exit 0
+stdout:
+section post writer bodies garrison faction dedup retains identical address routes
+> lore_root
+> identity 200 Same shared@example.test
+> identity 201 Other shared@example.test
+> entity 1002 2 0
+> field 1002 lord 201
+> field 1000 pledge 1001
+> field 1001 pledge 1002
+> entity 3000 3 32
+> link 3000 1000
+> entity 1100 2 64
+> field 1100 lord 200
+> field 1100 castle 3000
+> entity 1101 2 64
+> field 1101 lord 201
+> field 1101 castle 3000
+> post forward
+> post factions
+> readfile forward
+file bytes forward 273:
+200|shared@example.test
+201|shared@example.test
+1000|shared@example.test
+1001|shared@example.test
+1002|shared@example.test
+1100|shared@example.test
+1101|shared@example.test
+1100|shared@example.test
+1100|shared@example.test
+1101|shared@example.test
+1101|shared@example.test
+
+end file bytes
+> readfile factions
+file bytes factions 48:
+200|shared@example.test
+201|shared@example.test
+
+end file bytes
+> save 1100
+1100 char garrison
+CH
+ lo 200
+MI
+ gc 3000
+
+> save 1101
+1101 char garrison
+CH
+ lo 201
+MI
+ gc 3000
+
+stderr:
+
+exit 0
+stdout:
+section post writer bodies failure after success retains renamed content and continues
+> lore_root
+> identity 200 Private private@example.test
+> post all
+> life rename players held_players
+> life rename email held_email
+> life rename totimes held_totimes
+> life rename forward held_forward
+> life rename factions held_factions
+> lore_dir players
+> lore_dir email
+> lore_dir totimes
+> lore_dir forward
+> lore_dir factions
+> post empty_player 201
+> post all
+> readfile held_players
+file bytes held_players 85:
+ num   faction
+ ---   -------
+ 200    Player
+        Private <private@example.test>
+
+
+end file bytes
+> readfile held_email
+file bytes held_email 21:
+private@example.test
+
+end file bytes
+> readfile held_totimes
+file bytes held_totimes 21:
+private@example.test
+
+end file bytes
+> readfile held_forward
+file bytes held_forward 77:
+200|private@example.test
+1000|private@example.test
+1001|private@example.test
+
+end file bytes
+> readfile held_factions
+file bytes held_factions 25:
+200|private@example.test
+
+end file bytes
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+ fn Private
+ em private@example.test
+
+admission player 201 record 0
+201 player pl_regular
+
+stderr:
+write_player_list()
+write_player_list()
+can't write ./playersIs a directory
+can't write ./emailIs a directory
+can't write ./totimesIs a directory
+can't write ./forwardIs a directory
+can't write ./factionsIs a directory
+
+exit 0
+stdout:
+section post writer bodies saved real reports and players recreate empty log
+> lore_root
+> set turn 7
+> identity 200 Private private@example.test
+> post new 200
+> report banner
+> report account
+> report include
+> life close
+> post all
+> readfile log/200
+file bytes log/200 513:
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 7
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Waning days", month 7, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+1:0::0::#include 0
+1:0::0::
+
+end file bytes
+> readfile log/201
+file bytes log/201 513:
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 7
+0:0::0::Report for Player~[201].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Waning days", month 7, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+1:0::0::#include 0
+1:0::0::
+
+end file bytes
+> readfile players
+file bytes players 128:
+ num   faction
+ ---   -------
+ 200 *  Player
+        Private <private@example.test>
+
+
+                * -- New player this turn
+
+end file bytes
+> life save 0
+> readfile save/7/200
+file bytes save/7/200 513:
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 7
+0:0::0::Report for Player~[200].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Waning days", month 7, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+1:0::0::#include 0
+1:0::0::
+
+end file bytes
+> readfile save/7/201
+file bytes save/7/201 513:
+0:2::0::<pre>
+0:2::0::<center>
+0:2::0::<img src="../head.gif" align=middle width=100 height=100 alt="">
+0:2::0::<h1>
+0:0::0::Olympia G3 turn 7
+0:0::0::Report for Player~[201].
+0:2::0::</h1>
+0:0::0::{<i>}Season "Waning days", month 7, in the year 1.{</i>}
+0:2::0::</center>
+0:0::0::
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+1:0::0::#include 0
+1:0::0::
+
+end file bytes
+> readfile save/7/players
+file bytes save/7/players 128:
+ num   faction
+ ---   -------
+ 200 *  Player
+        Private <private@example.test>
+
+
+                * -- New player this turn
+
+end file bytes
+> readfile players
+file bytes players missing
+> life entries log
+entries log 0
+> readfile email
+file bytes email 21:
+private@example.test
+
+end file bytes
+> readfile totimes
+file bytes totimes 21:
+private@example.test
+
+end file bytes
+> readfile forward
+file bytes forward 77:
+200|private@example.test
+1000|private@example.test
+1001|private@example.test
+
+end file bytes
+> readfile factions
+file bytes factions 25:
+200|private@example.test
+
+end file bytes
+stderr:
+player_banner()
+report_account()
+write_player_list()
+
+exit 0
+stdout:
+section post writer bodies no save retains live real reports and player list
+> lore_root
+> set turn 8
+> identity 200 Private private@example.test
+> report account
+> report include
+> life close
+> post all
+> readfile log/200
+file bytes log/200 231:
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+1:0::0::#include 0
+1:0::0::
+
+end file bytes
+> readfile players
+file bytes players 85:
+ num   faction
+ ---   -------
+ 200    Player
+        Private <private@example.test>
+
+
+end file bytes
+> life path save
+path save missing
+> life entries log
+entries log 2
+stderr:
+report_account()
+write_player_list()
+
+exit 0
+stdout:
+section post writer bodies renamed buffered report retains inode across save
+> lore_root
+> set turn 9
+> set flush 0
+> identity 200 Private private@example.test
+> report account
+> post players
+> life save 0
+> report account
+> life close
+> readfile save/9/200
+file bytes save/9/200 406:
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+
+end file bytes
+> readfile save/9/players
+file bytes save/9/players 85:
+ num   faction
+ ---   -------
+ 200    Player
+        Private <private@example.test>
+
+
+end file bytes
+> life entries log
+entries log 0
+> report account
+> life close
+> readfile log/200
+file bytes log/200 203:
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+
+end file bytes
+> readfile save/9/200
+file bytes save/9/200 406:
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+0:2::0::<hr><center><font size=+1>
+0:2::0::<a href="http://oly.v-labs.be/g3/node/11">Rules</a>   <a href="http://oly.v-labs.be/g3/node/409"><i>The Olympia Times</i></a>
+0:2::0::</font></center>
+0:0::0::
+
+end file bytes
+stderr:
+report_account()
+write_player_list()
+report_account()
+report_account()
+
+exit 0
+stdout:
+section lifecycle Times bodies zero players turn zero and custom headers
+> lore_root
+> death subkind 200 48
+> death subkind 201 62
+> set turn 0
+> report banner_title Auxiliary Test Game
+> report from_host sender@example.test
+> report game_url https://example.test/join
+> life times_masthead
+> life times_open
+> readfile times_0
+file bytes times_0 730:
+From: sender@example.test
+Subject: Auxiliary Test Game - The Olympia Times - Issue 0
+
+   +----------------------------------------------------------------------+
+   | The Olympia Times                                Fierce winds year 1 |
+   | January 1, 2000                                                      |
+   |                                                                      |
+   | turn 0, 0 players                                sender@example.test |
+   +----------------------------------------------------------------------+
+
+     Questions, comments, to play: https://example.test/join
+
+                             Olympia PBEM
+
+                                *  *  *
+
+                                *  *  *
+
+
+end file bytes
+> readfile times_press
+file bytes times_press 201:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile times_rumor
+file bytes times_rumor 116:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> life times_close
+> life times_close
+stderr:
+
+exit 0
+stdout:
+section lifecycle Times bodies singular absent record and calendar year rollover
+> lore_root
+> death subkind 201 62
+> post empty_player 200
+> set turn 8
+> life times_masthead
+> readfile times_0
+file bytes times_0 724:
+From: g3@olympia.v-labs.be
+Subject: Olympia G3 - The Olympia Times - Issue 8
+
+   +----------------------------------------------------------------------+
+   | The Olympia Times                                  Dark night year 1 |
+   | January 1, 2000                                                      |
+   |                                                                      |
+   | turn 8, 1 player                                g3@olympia.v-labs.be |
+   +----------------------------------------------------------------------+
+
+     Questions, comments, to play: http://olympia.v-labs.be/g3
+
+                             Olympia PBEM
+
+                                *  *  *
+
+                                *  *  *
+
+
+end file bytes
+> set turn 9
+> life times_masthead
+> readfile times_0
+file bytes times_0 724:
+From: g3@olympia.v-labs.be
+Subject: Olympia G3 - The Olympia Times - Issue 9
+
+   +----------------------------------------------------------------------+
+   | The Olympia Times                                Fierce winds year 2 |
+   | January 1, 2000                                                      |
+   |                                                                      |
+   | turn 9, 1 player                                g3@olympia.v-labs.be |
+   +----------------------------------------------------------------------+
+
+     Questions, comments, to play: http://olympia.v-labs.be/g3
+
+                             Olympia PBEM
+
+                                *  *  *
+
+                                *  *  *
+
+
+end file bytes
+> admission state
+new players:
+vector:
+admission player 200 record 0
+200 player pl_regular
+
+admission player 201 record 1
+201 player pl_silent
+PL
+
+stderr:
+
+exit 0
+stdout:
+section lifecycle Times bodies plural count includes no-email and missing records
+> lore_root
+> entity 202 1 49
+> entity 203 1 48
+> entity 204 1 62
+> set turn 17
+> life times_masthead
+> readfile times_0
+file bytes times_0 725:
+From: g3@olympia.v-labs.be
+Subject: Olympia G3 - The Olympia Times - Issue 17
+
+   +----------------------------------------------------------------------+
+   | The Olympia Times                                Fierce winds year 3 |
+   | January 1, 2000                                                      |
+   |                                                                      |
+   | turn 17, 3 players                              g3@olympia.v-labs.be |
+   +----------------------------------------------------------------------+
+
+     Questions, comments, to play: http://olympia.v-labs.be/g3
+
+                             Olympia PBEM
+
+                                *  *  *
+
+                                *  *  *
+
+
+end file bytes
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+admission player 202 record 0
+202 player pl_regular
+
+admission player 203 record 0
+203 player pl_system
+
+admission player 204 record 0
+204 player pl_silent
+
+stderr:
+
+exit 0
+stdout:
+section lifecycle Times bodies repeated opens use renamed streams and reset on close
+> lore_root
+> life times_open
+> life rename times_press held_press
+> life rename times_rumor held_rumor
+> life times_open
+> readfile held_press
+file bytes held_press 402:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile held_rumor
+file bytes held_rumor 232:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> life times_close
+> life times_open
+> life times_close
+> readfile times_press
+file bytes times_press 201:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile times_rumor
+file bytes times_rumor 116:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+stderr:
+
+exit 0
+stdout:
+section lifecycle fatal Times masthead failure after successful press and rumor
+> lore_root
+> life times_open
+> life times_close
+> readfile times_press
+file bytes times_press 201:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile times_rumor
+file bytes times_rumor 116:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> lore_dir times_0
+> life times_masthead
+stderr:
+can't write ./times_0
+exit 1
+stdout:
+section lifecycle fatal Times masthead ENOENT
+> lore_root
+> admission lib missing
+> life times_masthead
+stderr:
+can't write missing/times_0
+exit 1
+stdout:
+section lifecycle fatal Times masthead ENOTDIR
+> lore_root
+> lore_file blocked not-directory
+> admission lib blocked
+> life times_masthead
+stderr:
+can't write blocked/times_0
+exit 1
+stdout:
+section lifecycle fatal Times rumor failure preserves real flushed press bytes
+> lore_root
+> lore_dir times_rumor
+> life watch times_press
+> life times_open
+path times_press nonempty
+stderr:
+can't write ./times_rumor
+exit 1

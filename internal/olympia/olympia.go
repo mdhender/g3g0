@@ -6,8 +6,8 @@
 // So far it ports main() in olympia/main.c: the command line, what main()
 // prints before it dispatches, the -R self-test, the -t ilist test, and a
 // run that loads an existing game (load_db), runs a turn with -r, checks it,
-// saves it with -S (save_db) and writes the Times masthead. Report paths
-// preserve state and diagnostics; report artifacts remain stage 2. Other
+// saves it with -S (save_db) and writes the Times masthead. Report assembly
+// and auxiliary writers preserve C's output and state ordering. Other
 // modes and unported gameplay stop with "not yet implemented", as does a
 // load that has to build a new world.
 //
@@ -321,11 +321,11 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 		w.addNewPlayers()
 		w.genIncludeSection() // must be last, before closing output
 		w.closeLogfile()
-		w.writePlayerListState()
-		w.writeEmailState()
-		w.writeTotimesState()
-		w.writeForwardsState()
-		w.writeFactionsState()
+		w.writePlayerList()
+		w.writeEmail()
+		w.writeTotimes()
+		w.writeForwards()
+		w.writeFactions()
 	}
 
 	w.checkDb() // check database integrity
@@ -351,10 +351,8 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	return 0
 }
 
-// The main.c:50–290 post writers retain real fopen("w")/fclose decisions
-// and nonfatal diagnostics. Artifact bodies alone belong to stage 2. In
-// particular, forward ownership validation must happen AFTER a successful
-// open, not as a projection run before (or instead of) the real IO.
+// The main.c:50–290 writers open before traversing any player or ownership
+// state. Failed opens retain their nonfatal diagnostics and have no effects.
 func (w *world) openPostWriter(name string) *clib.File {
 	fnam := sout("%s/%s", w.libdir, name)
 	fp, err := clib.Fopen(fnam)
@@ -366,71 +364,112 @@ func (w *world) openPostWriter(name string) *clib.File {
 	return fp
 }
 
-// writeTotimesState and writeEmailState have no persistent body effects:
-// their rp_player/email/compuserve reads only select deferred artifact text.
-func (w *world) writeTotimesState() {
+func (w *world) writeTotimes() {
 	if fp := w.openPostWriter("totimes"); fp != nil {
+		for pl := range w.loopKind(tPlayer) {
+			if p := w.rpPlayer(pl); p != nil && p.email != nil && p.compuserve == 0 {
+				fmt.Fprintf(fp, "%s\n", *p.email)
+			}
+		}
 		fp.Close()
 	}
 }
 
-func (w *world) writeEmailState() {
+func (w *world) writeEmail() {
 	if fp := w.openPostWriter("email"); fp != nil {
+		for pl := range w.loopKind(tPlayer) {
+			if p := w.rpPlayer(pl); p != nil && p.email != nil {
+				fmt.Fprintf(fp, "%s\n", *p.email)
+			}
+		}
 		fp.Close()
 	}
 }
 
-func (w *world) writePlayerListState() {
+func (w *world) listAPlayer(fp io.Writer, pl int, flag *bool) {
+	p := w.pPlayer(pl)
+	s := ""
+	if p.email != nil || p.visEmail != nil {
+		email := p.email
+		if p.visEmail != nil {
+			email = p.visEmail
+		}
+		if p.fullName != nil {
+			s = sout("%s <%s>", *p.fullName, *email)
+		} else {
+			s = sout("<%s>", *email)
+		}
+	} else if p.fullName != nil {
+		s = *p.fullName
+	}
+	c := ' '
+	if w.newPlayers.Lookup(pl) >= 0 {
+		c = '*'
+		*flag = true
+	}
+	fmt.Fprintf(fp, "%4s %c  %s\n", boxCodeLess(pl), c, w.justName(pl))
+	if s != "" {
+		fmt.Fprintf(fp, "        %s\n", s)
+	}
+	fmt.Fprint(fp, "\n")
+}
+
+func (w *world) writePlayerList() {
 	w.stage("write_player_list()")
 	fp := w.openPostWriter("players")
 	if fp == nil {
 		return
 	}
+	fmt.Fprintf(fp, "%4s   %s\n", "num", "faction")
+	fmt.Fprintf(fp, "%4s   %s\n", "---", "-------")
+	flag := false
 	for pl := range w.loopKind(tPlayer) {
 		if p := w.rpPlayer(pl); p != nil && p.email != nil && w.subkind(pl) == subPlRegular {
-			// list_a_player's allocation and name access, not its text.
-			w.pPlayer(pl)
-			w.justName(pl)
+			w.listAPlayer(fp, pl, &flag)
 		}
+	}
+	if flag {
+		fmt.Fprint(fp, "\n                * -- New player this turn\n")
 	}
 	fp.Close()
 }
 
-// writeForwardSupState covers both write_forward_sup and write_faction_sup:
-// player() follows/validates ownership even if no email will be rendered.
-func (w *world) writeForwardSupState(whoFor int) {
+// writeForwardSup also implements the identical main.c write_faction_sup.
+func (w *world) writeForwardSup(whoFor, target int, fp *clib.File) {
 	pl := w.player(whoFor)
-	w.rpPlayer(pl) // player_email: preserve its raw box access, including 0.
+	if p := w.rpPlayer(pl); p != nil && p.email != nil && *p.email != "" {
+		fmt.Fprintf(fp, "%s|%s\n", boxCodeLess(target), *p.email)
+	}
 }
 
-func (w *world) writeForwardsState() {
+func (w *world) writeForwards() {
 	fp := w.openPostWriter("forward")
 	if fp == nil {
 		return
 	}
 	for i := range w.loopKind(tPlayer) {
-		w.writeForwardSupState(i)
+		w.writeForwardSup(i, i, fp)
 	}
 	for i := range w.loopKind(tChar) {
-		w.writeForwardSupState(i)
+		w.writeForwardSup(i, i, fp)
 	}
 	for i := range w.loopSubkind(subGarrison) {
 		for _, pl := range w.playersWhoRuleHere(i) {
 			if pl != 0 {
-				w.writeForwardSupState(pl)
+				w.writeForwardSup(pl, i, fp)
 			}
 		}
 	}
 	fp.Close()
 }
 
-func (w *world) writeFactionsState() {
+func (w *world) writeFactions() {
 	fp := w.openPostWriter("factions")
 	if fp == nil {
 		return
 	}
 	for i := range w.loopKind(tPlayer) {
-		w.writeForwardSupState(i)
+		w.writeForwardSup(i, i, fp)
 	}
 	fp.Close()
 }

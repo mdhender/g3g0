@@ -1148,6 +1148,16 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.openTimes()
 			case "times_close":
 				w.closeTimes()
+			case "times_masthead":
+				w.testUseConstReportDate = true
+				w.timesMasthead()
+			case "entries":
+				path := args.word()
+				entries, err := os.ReadDir(path)
+				if err != nil {
+					t.Fatal(err)
+				}
+				fmt.Fprintf(&stdout, "entries %s %d\n", path, len(entries))
 			case "fill":
 				for i := 201; i < 200+maxPlayerOutput(); i++ {
 					if !w.validBox(i) {
@@ -1178,21 +1188,25 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		case "post":
 			switch action := args.word(); action {
 			case "players":
-				w.writePlayerListState()
+				w.writePlayerList()
+			case "player":
+				flag := false
+				// The direct static C adapter renders to stdout, without opening a file.
+				w.listAPlayer(&stdout, args.num(t), &flag)
 			case "email":
-				w.writeEmailState()
+				w.writeEmail()
 			case "totimes":
-				w.writeTotimesState()
+				w.writeTotimes()
 			case "forward":
-				w.writeForwardsState()
+				w.writeForwards()
 			case "factions":
-				w.writeFactionsState()
+				w.writeFactions()
 			case "all":
-				w.writePlayerListState()
-				w.writeEmailState()
-				w.writeTotimesState()
-				w.writeForwardsState()
-				w.writeFactionsState()
+				w.writePlayerList()
+				w.writeEmail()
+				w.writeTotimes()
+				w.writeForwards()
+				w.writeFactions()
 			case "file":
 				path := args.word()
 				st, err := os.Stat(path)
@@ -1220,6 +1234,14 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 					p.visEmail = &s
 				case "cis":
 					p.compuserve = 1
+				case "visible_empty":
+					s := ""
+					p.visEmail = &s
+				case "name_empty":
+					s := ""
+					p.fullName = &s
+				case "name_null":
+					p.fullName = nil
 				default:
 					t.Fatalf("unknown mail %s", kind)
 				}
@@ -1744,6 +1766,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.rulesURL = args.ctext()
 			case "times_url":
 				w.timesURL = args.ctext()
+			case "from_host":
+				w.fromHost = args.ctext()
+			case "game_url":
+				w.gameURL = args.ctext()
 			case "provinces":
 				w.summaryProvinces()
 			case "templates":

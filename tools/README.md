@@ -6,6 +6,57 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Auxiliary files and saved report lifecycle (#165)
+
+Existing olympia.go replaces all five post-writer projections directly in
+main/oracle with complete main.c **50–290** bodies. Opens still precede
+ownership/allocation effects; nonfatal failure and original call order remain.
+The original eight C definitions are checked unchanged exactly once. Existing
+real io.go saveLogdir (**io.c 3031–3069**) and c2.go Times (**c2.c 338–472**)
+are reused unchanged, as is sout.go's bounded output cache. The oracle adds
+complete original times_masthead and months data, not another implementation.
+
+At **0.105.0-alpha**, sixteen new cases (**12 success / 4 fatal status 1**)
+match pinned real C twice and Go: **1234 sections / 82688 lines / 1635428
+output bytes**. Inherited **1218 sections / 81791 lines / 1615381 output
+bytes** and **507858 input bytes** remain exact prefixes. Input is now
+**26815 lines / 513156 bytes**. Private/visible/CIS/empty/absent addresses,
+full-name pointer distinctions, all relevant player kinds/missing records,
+preseeded new-player marker, duplicate garrison address routes, all-five
+failure-after-success, saved/no-save/renamed real report bodies and recreated
+empty log reach their actual branches. Existing Times verifies **0/1/3**
+regular-player counts, turn **0/8/9/17** calendar/year boundaries, custom
+headers, fixed date, exact press/rumor **201/116-byte** headers, repeated
+renamed streams and fatal opens. Constants/complete definitions/prefixes are
+audited; see [closure and hashes](command-compat#auxiliary-files-and-saved-report-lifecycle-165).
+
+Four temporary missing-dependency controls (return **0** / abort **134**,
+default/update) reject ownership-cycle section **818** with harness **2**
+before expected-status/update acceptance, preserving both recording hashes.
+Probe source/compiler wrapper and matching captures are removed. Sequential
+command refresh/default/post-probe, move/helper/RNG/code/loadsave/turn-driver/
+default-turn, bounded vet and fresh bounded default tests pass (Olympia
+**2.067s**). Every compat call explicitly uses isolated
+`G3_REPO=$PWD/tmp/upstream.git`; engines/tests use shared run_limited.
+Source-only whitespace/gofmt checks pass; raw C recording bytes are retained.
+Logs: `tmp/issue165-*.log`.
+
+Independent parent complete-C/diff review verifies all eleven extracted
+definitions unchanged exactly once and inherited input/output prefixes exact.
+All eight routine tools, bounded vet and fresh bounded tests pass (Olympia
+**1.726s**); logs `tmp/parent165-*.log`. Fresh strict full acceptance passes:
+two identical pinned C turns, C/Go status **0**, identical raw streams and all
+**233 cwd entries**, including reports, types, modes, empty directories and
+bytes. All **13 lifecycle controls** also pass under the same artifact-inclusive
+contract. Evidence: `tmp/parent165-strict.log` and
+`tmp/parent-stage2-turn/lifecycle.txt`. Broader final-tier acceptance remains
+#166; this is not yet stage completion.
+
+No new verified defect, missing renderer prerequisite, oversized closure,
+independent fix, later command/admission/charge/mail/HTML work, or duplicated
+owner. G3 #358/#359 are unchanged/nonblocking; malformed **C136/Go2** is not
+parity.
+
 ## Include section assembly (#164)
 
 Existing report.go completes pinned report.c rep_player **1353–1363**,

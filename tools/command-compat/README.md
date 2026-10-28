@@ -3,6 +3,115 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Auxiliary files and saved report lifecycle (#165)
+
+Existing olympia.go replaces its five writer projections directly in main
+and the oracle with complete main.c bodies, keeping opens before traversal
+and the original players/email/totimes/forward/factions order. Shared real
+ownership, garrison traversal, names and output-cache owners are reused;
+write_faction_sup and write_forward_sup have the same Go implementation,
+matching their identical C bodies. There is no second effects pass/cache.
+
+| Complete original definition | Inclusive pinned lines |
+|---|---|
+| main.c `write_totimes` | 50–79 |
+| main.c `write_email` | 82–107 |
+| main.c `list_a_player` | 109–149 |
+| main.c `write_player_list` | 152–189 |
+| main.c `write_forward_sup` | 192–204 |
+| main.c `write_forwards` | 207–248 |
+| main.c `write_faction_sup` | 251–263 |
+| main.c `write_factions` | 266–290 |
+| c2.c `open_times` | 338–377 |
+| c2.c `times_masthead` | 380–454 |
+| c2.c `close_times` | 457–472 |
+| io.c `save_logdir` (unchanged entire IO translation unit) | 3031–3069 |
+
+All eleven extracted definitions are checked unchanged exactly once; the
+entire real io.c remains unchanged. `times_masthead` and its original months
+declaration now join the existing extraction. The fixture enables the real
+constant-report-date flag; no Times implementation is added. Existing c2.go,
+io.go and sout.go are unchanged. No source dependency or pin changes.
+
+Sixteen appended sections (**12 success / 4 fatal status 1**) compare real
+bodies, raw diagnostics/status and saved state:
+
+- Private versus visible email; empty versus absent email/visible/full-name
+  pointers; regular/system/silent/missing records; CIS exclusion only from
+  totimes. Direct original static list helper cases cover public-only,
+  name-only, empty-name and absent-record allocation branches unreachable
+  through the root's email eligibility gate. Duplicate preseeded new-player
+  IDs produce stars and one footer, without admitting anyone.
+- Two garrisons and a three-noble pledge chain deduplicate factions, not
+  equal addresses: each garrison has its ordinary character route plus two
+  identical-address ruling routes (three matching rows each). Empty addresses
+  produce email/totimes blank lines but no forward/faction rows.
+- Failure after all five successful writers preserves renamed old bodies,
+  reports all five EISDIR failures and leaves missing player records absent.
+  Inherited ownership-cycle/castle failure controls still establish that
+  validation happens only after successful forward open.
+- Actual banners/account/include logs and players bytes match before/after
+  save, with an explicitly empty recreated log; no-save retains live reports.
+  Buffered cached output reaches the renamed inode twice (**406 bytes**),
+  then close/reset creates a new **203-byte** live log, leaving saved bytes
+  unchanged. No duplicate report pass or invented output membership.
+- Times has zero/singular/plural **0/1/3** regular players, including missing
+  player records without allocating them; turns **0/8/9/17**, month-zero clamp,
+  year rollover, custom From/Subject/URL, fixed **January 1, 2000** date,
+  exact **201-byte press / 116-byte rumor** headers, repeated renamed streams
+  (**402/232 bytes**) and close/reset. Masthead EISDIR/ENOENT/ENOTDIR and
+  rumor failure retain fatal status **1** with no perror/newline. The inherited
+  press-before-rumor flush and press/rumor failure controls remain real.
+
+Constants audited against oly.h: player **1**, char **2**, system/regular/
+silent **48/49/62**, garrison **64**, **8** months, raw player_email and
+player_compuserve accessors. The recorded body rows, counts and lengths above
+are actually reached C branches, not fixture intentions.
+
+Pinned C twice deterministically and Go match **1234 sections / 82688 lines /
+1635428 output bytes**. Inherited **1218 sections / 81791 lines / 1615381
+output bytes**, and **26569 lines / 507858 input bytes**, remain exact prefixes.
+New input is **26815 lines / 513156 bytes**. SHA-256:
+
+- Input: `6a711d79ca5d5a65ca2184b430766037e89df591c6caf1c662bdd7498c174c27`
+- Output: `d08f0a35fbcd021dc44470da263bf483302cd070c31a8ea3bcfe54321b6b4336`
+- Inherited input: `03264d856def78a7aca8ed6b2592f63bd9915c83303b5b86c819020f39c07681`
+- Inherited output: `237f5b00267c9c5fe26739bf7b9ef972b5f651961928423dd35453ef46de30a4`
+
+Four temporary missing-dependency probes wrap write_forwards at inherited
+ownership-cycle section **818**, which ordinarily requires **134**. Both
+return **0** and abort **134**, in default and --update modes, reject with
+harness **2** at the marker check before expected-status/update acceptance.
+Both recording hashes remain unchanged. An initial probe also rejected the
+prior failed-open section **817**; it was narrowed to section 818 before all
+four final controls. Probe source/compiler wrapper and matching captures are
+removed. Logs: `tmp/issue165-negative-*.log`.
+
+Sequential command refresh/default/post-probe, move **135/7158**, helper
+**37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+and default turn pass. Default turn compares raw status/stdout/stderr and two
+cwd entries under the strict contract, not a world turn. Bounded vet and fresh
+bounded default tests pass. Every compat call explicitly sets isolated
+`G3_REPO=$PWD/tmp/upstream.git`; engines/tests use shared run_limited.
+Logs: `tmp/issue165-{command-*,validation,source-audit,vet,tests}.log`.
+
+Version **0.105.0-alpha**. Parent's all-four-open-issue
+audit is the task prerequisite: #165/#166 and trackers #19/#132, no bug/follow-C.
+No newly verified defect/prerequisite/oversized closure or independent fix.
+G3 #358/#359 are unchanged/nonblocking; malformed **C136/Go2** is not parity.
+No valid admissions, later commands, charge/mail/HTML conversion or new owner.
+
+Independent parent review verifies all eleven extracted definitions complete,
+unchanged and exactly once, plus exact inherited input/output prefixes. All
+eight routine tools, bounded vet and fresh bounded tests pass (Olympia
+**1.726s**); logs `tmp/parent165-*.log`. Fresh strict full comparison passes
+two identical C turns and exact C/Go status **0**, raw streams and all **233
+cwd entries**, reports/types/modes/empty directories/bytes included. All **13
+lifecycle controls** pass under that same contract. Evidence:
+`tmp/parent165-strict.log`, `tmp/parent-stage2-turn/lifecycle.txt`.
+The broader final tier and stage acceptance remain #166.
+
 ## Include section assembly (#164)
 
 Existing report.go completes all six pinned report.c definitions:

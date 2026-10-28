@@ -171,7 +171,7 @@ functions = {
              'gm_show_locs_visited', 'gm_loyalty_stats', 'region_occupy_comp', 'gm_land_stats',
              'wealth_list_comp', 'gm_faction_wealth', 'nobles_list_comp', 'gm_nobles_list',
              'gm_player_details', 'list_all_notices', 'list_all_items', 'gm_report'],
-    'c2.c': ['v_stop', 'v_format', 'v_notab', 'open_times', 'close_times'],
+    'c2.c': ['v_stop', 'v_format', 'v_notab', 'open_times', 'times_masthead', 'close_times'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts'],
     'main.c': ['write_totimes', 'write_email', 'list_a_player', 'write_player_list',
@@ -229,6 +229,8 @@ int immed_see_all, month_done, show_combat_flag;
             start, end = source.index('#define DASH_LINE'), source.index('char *months[]')
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/c2.c"\n')
             out.write(source[start:end])
+            out.write(re.search(r'^char \*months\[\] = \{.*?^\};\n', source, re.M | re.S).group(0))
+            out.write('int test_use_const_report_date = 1;\n')
         if file == 'add.c':
             for pattern in [r'^ilist new_players = NULL;\n', r'^static ilist new_chars = NULL;\n']:
                 out.write(re.search(pattern, source, re.M).group(0))
@@ -401,6 +403,7 @@ void drv_route_view(int who, struct exit_view *v, int mode) {
 char *drv_fetch(FILE *fp) { return fetch_inp(fp); }
 int drv_admission(char *acct, FILE *fp) { return make_new_players_sup(acct, fp); }
 void drv_make_players(void) { make_new_players(); }
+void drv_list_player(int pl) { int flag = 0; list_a_player(stdout, pl, &flag); }
 int drv_load(struct command *c) { return load_command(c); }
 void drv_summary_provinces(void) { summary_provinces(); }
 void drv_summary_parts(int mode, int total) {
