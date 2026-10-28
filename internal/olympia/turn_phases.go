@@ -7,8 +7,6 @@ package olympia
 // boundaries for #66–#89, NOT implementations, even on an empty world.
 func (w *world) matchAllTrades() { panic(notImplemented("match_all_trades")) }
 
-func (w *world) checkOceanChars()           { panic(notImplemented("check_ocean_chars")) }
-func (w *world) healCharacters()            { panic(notImplemented("heal_characters")) }
 func (w *world) weeklyPrisonerEscapeCheck() { panic(notImplemented("weekly_prisoner_escape_check")) }
 func (w *world) noncreatorCurseErode()      { panic(notImplemented("noncreator_curse_erode")) }
 func (w *world) incrementStoneRingAura()    { panic(notImplemented("increment_stone_ring_aura")) }

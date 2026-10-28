@@ -43,6 +43,8 @@ void drv_garrison_pay(void);
 void drv_sink(int ship), drv_collapse(int fort);
 int drv_coast(int where);
 void drv_coastal(void), drv_mine(int mine), drv_inn(int inn), drv_loc_damage(void);
+void drv_heal(void);
+int drv_heal_roll(int who, int sub, int low, int high);
 extern int gold_garrison;
 extern int gold_combat, gold_combat_indep;
 void drv_inherit_rolls(int from, int item, int qty);
@@ -351,6 +353,13 @@ int main(int argc, char **argv)
    } next_char;
   }
   else if (!strcmp(op, "ocean_add")) { sscanf(line,"%*s %d",&n); drv_ocean(n); }
+  else if (!strcmp(op, "ocean_init")) init_ocean_chars();
+  else if (!strcmp(op, "ocean_check")) check_ocean_chars();
+  else if (!strcmp(op, "heal")) drv_heal();
+  else if (!strcmp(op, "heal_roll")) {
+   sscanf(line,"%*s %d %d %d %d",&n,&a,&b,&d);
+   printf("heal roll %d\n",drv_heal_roll(n,a,b,d));
+  }
   else if (!strcmp(op, "arrival_state")) {
    list("ocean",drv_oceans());
    loop_char(n) {

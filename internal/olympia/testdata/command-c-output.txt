@@ -39213,3 +39213,928 @@ log 201:
 stderr:
 
 exit 0
+stdout:
+section ocean initialized snapshot timer fourteen fifteen plunge and cleanup
+> master 0
+> set turn 1
+> set day 7
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 10 4 0
+> link 10000 9000
+> link 10000 9001
+> routes 9000 0 9001 0 0
+> link 9000 1000
+> link 9000 1001
+> field 1000 health 100
+> field 1001 health 100
+> field 1000 time_flying 14
+> field 1001 time_flying 14
+> ocean_init
+> arrival_state
+ocean: 1000 1001
+arrival char 1000 allocated 1 time 14 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 14 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output:
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> ocean_check
+> arrival_state
+ocean: 1000 1001
+arrival char 1000 allocated 1 time 15 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 15 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output:
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> ocean_check
+> arrival_state
+ocean: 1000 1001
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000 12 1001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 item dead body
+na dead body
+CH
+ he 100
+ tf 16
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9001
+MI
+ ol 200
+
+> save 1001
+1001 item dead body
+na dead body
+CH
+ he 100
+ tf 16
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9001
+MI
+ ol 200
+
+> ocean_check
+> arrival_state
+ocean:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000 12 1001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 item dead body
+na dead body
+CH
+ he 100
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9001
+MI
+ ol 200
+
+> save 1001
+1001 item dead body
+na dead body
+CH
+ he 100
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9001
+MI
+ ol 200
+
+> readlog 200
+log 200:
+1000:0::0::Flight can no longer be maintained.  <no subkind>~[1000] plunges into the sea.
+1000:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1000] died in Ocean~[9000].
+1001:0::0::Flight can no longer be maintained.  <no subkind>~[1001] plunges into the sea.
+1001:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1001] died in Ocean~[9000].
+stderr:
+
+exit 0
+stdout:
+section ocean nested parent gate duplicate snapshot and shore survival
+> master 0
+> set turn 1
+> set day 7
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 10 4 0
+> entity 1002 2 0
+> link 10000 9000
+> link 10000 9001
+> routes 9000 0 9001 0 0
+> link 9000 1000
+> link 1000 1001
+> link 1001 1002
+> field 1002 lord 200
+> field 1000 health 100
+> field 1001 health 100
+> field 1002 health 100
+> field 1000 time_flying 14
+> field 1001 time_flying 16
+> field 1002 time_flying 16
+> entity 611 5 43
+> learn 1000 611 2 21
+> ocean_init
+> ocean_add 1000
+> ocean_check
+> arrival_state
+ocean: 1001 1002
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather:
+output: 1000 1001 1002 12 11
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> save 1001
+1001 item dead body
+na dead body
+LI
+CH
+ he 100
+ tf 17
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9001
+MI
+ ol 200
+
+> save 1002
+1002 item dead body
+na dead body
+CH
+ he 100
+ tf 17
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9001
+MI
+ ol 200
+
+> ocean_check
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather:
+output: 1000 1001 1002 12 11
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> readlog 200
+log 200:
+1000:0::0::Flight can no longer be maintained.  <no subkind>~[1000] plunges into the sea.
+1001:0::0::Flight can no longer be maintained.  <no subkind>~[1000] plunges into the sea.
+1002:0::0::Flight can no longer be maintained.  <no subkind>~[1000] plunges into the sea.
+1002:0::0::*** <no subkind> has died ***
+1001:0::0::<no subkind>~[1002] has died.
+12:0::0::<no subkind>~[1002] died in Ocean~[9000].
+1001:0::0::<no subkind>~[1002] unstacks from us.
+1001:0::0::*** <no subkind> has died ***
+1000:0::0::<no subkind>~[1001] has died.
+12:0::0::<no subkind>~[1001] died in Ocean~[9000].
+1000:0::0::<no subkind>~[1001] unstacks from us.
+1000:0::0::<no subkind>~[1000] would have died, but survived a fatal wound!
+1000:0::0::Forgot [611].
+1000:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1000] washed ashore at Plain~[9001].
+11:0::0::kill_stack_ocean, swam ashore, who=1000
+stderr:
+
+exit 0
+stdout:
+section ocean nonocean duplicate cleanup before next snapshot entry
+> entity 9000 3 3
+> link 9000 1000
+> link 9000 1001
+> field 1000 time_flying 16
+> field 1001 time_flying 17
+> ocean_add 1000
+> ocean_add 1000
+> ocean_add 1001
+> ocean_check
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output:
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section healing outer health gates clamp and adjacent mates deaths
+> master 0
+> set turn 1
+> set day 7
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 3
+> entity 10 4 0
+> entity 1 4 0
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> entity 1006 2 0
+> link 10000 9000
+> link 9000 1000
+> link 1000 1001
+> link 1000 1002
+> link 9000 1003
+> link 9000 1004
+> link 9000 1005
+> link 9000 1006
+> field 1002 lord 200
+> field 1003 lord 200
+> field 1004 lord 200
+> field 1005 lord 200
+> field 1000 health 1
+> field 1001 health 0
+> field 1002 health 99
+> field 1003 health -1
+> field 1004 health 100
+> field 1005 health 0
+> field 1006 health 101
+> field 1006 sick 1
+> field 1000 sick 1
+> field 1001 sick 1
+> inventory 1000 1 19
+> inventory 1001 1 23
+> orders 200 1000 wait time 9
+> orders 200 1001 wait time 8
+> who 1000
+> load
+load 1
+> who 1001
+> load
+load 1
+> heal_roll 1000 0 1 100
+heal roll 94
+> heal_roll 1001 0 1 100
+heal roll 45
+> heal
+> save 1000
+1000 item dead body
+na dead body
+LI
+CH
+ si 1
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+CO
+ li wait time 9
+ ar 0 9 0 0 0 0 0 0
+ wa -1
+ po 1
+ pr 1
+
+> save 1001
+1001 item dead body
+na dead body
+LI
+CH
+ si 1
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+CO
+ li wait time 8
+ ar 0 8 0 0 0 0 0 0
+ wa -1
+ po 1
+ pr 1
+
+> save 1002
+1002 char 0
+il	1 42
+LI
+ wh 9000
+CH
+ lo 200
+ he 100
+
+> save 1003
+1003 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he -1
+
+> save 1004
+1004 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 100
+
+> save 1005
+1005 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 12
+
+> save 1006
+1006 char 0
+LI
+ wh 9000
+CH
+ he 101
+ si 1
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1000 12 1001 1002 1005
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> orders_file 200
+orders file 200:
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] lost one health.
+1000:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1000] died in Plain~[9000].
+1001:0::0::Taken from <no subkind>~[1000]:
+1001:0::3::19~<no subkind>~[1]
+1001:0::0::<no subkind>~[1001] lost zero health.
+1001:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1001] died in Plain~[9000].
+1002:0::0::Taken from <no subkind>~[1001]:
+1002:0::3::42~<no subkind>~[1]
+1002:0::0::<no subkind>~[1002] gained one health.
+1002:0::0::<no subkind>~[1002] is fully healed.
+1005:0::0::<no subkind>~[1005] gained 12 health.
+stderr:
+warning: plural name not set for item [1]
+warning: plural name not set for item [1]
+
+exit 0
+stdout:
+section healing plain wounded daily keyed replay guard reload and turn
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> link 9000 1000
+> link 9000 1001
+> field 1000 health 50
+> field 1001 health 100
+> heal_roll 1000 0 1 100
+heal roll 94
+> heal_roll 1000 1 3 15
+heal roll 6
+> heal
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 56
+
+> master 100
+> heal_roll 1000 0 1 100
+heal roll 94
+> heal_roll 1000 1 3 15
+heal roll 6
+> heal
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 62
+
+> set day 14
+> heal_roll 1000 0 1 100
+heal roll 17
+> heal_roll 1000 1 3 15
+heal roll 10
+> heal
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 72
+
+> set turn 2
+> heal_roll 1000 0 1 100
+heal roll 64
+> heal_roll 1000 1 3 15
+heal roll 4
+> heal
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 76
+
+> set turn 1
+> heal_roll 1000 0 1 100
+heal roll 45
+> heal_roll 1000 1 3 15
+heal roll 5
+> heal
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 81
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] gained six health.
+1000:0::0::<no subkind>~[1000] gained six health.
+1000:0::0::<no subkind>~[1000] gained ten health.
+1000:0::0::<no subkind>~[1000] gained four health.
+1000:0::0::<no subkind>~[1000] gained five health.
+stderr:
+
+exit 0
+stdout:
+section healing plain exact five six ten eleven recovery and sick loss
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> entity 1103 2 0
+> entity 1020 2 0
+> entity 1161 2 0
+> entity 1040 2 0
+> link 9000 1000
+> link 9000 1001
+> field 1000 health 100
+> field 1001 health 100
+> link 9000 1103
+> link 9000 1020
+> link 9000 1161
+> link 9000 1040
+> field 1103 lord 200
+> field 1020 lord 200
+> field 1161 lord 200
+> field 1040 lord 200
+> field 1103 sick 1
+> field 1020 sick 1
+> field 1161 sick 1
+> field 1040 sick 1
+> field 1103 health 50
+> field 1020 health 50
+> field 1161 health 50
+> field 1040 health 50
+> heal_roll 1103 0 1 100
+heal roll 5
+> heal_roll 1020 0 1 100
+heal roll 6
+> heal_roll 1161 0 1 100
+heal roll 10
+> heal_roll 1040 0 1 100
+heal roll 11
+> heal
+> save 1103
+1103 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 56
+
+> save 1020
+1020 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 35
+ si 1
+
+> save 1161
+1161 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 41
+ si 1
+
+> save 1040
+1040 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 36
+ si 1
+
+> readlog 200
+log 200:
+1020:0::0::<no subkind>~[1020] lost 15 health.
+1040:0::0::<no subkind>~[1040] lost 14 health.
+1103:0::0::<no subkind>~[1103] defeated illness and is now recovering.
+1103:0::0::<no subkind>~[1103] gained six health.
+1161:0::0::<no subkind>~[1161] lost nine health.
+stderr:
+
+exit 0
+stdout:
+section healing inn exact five six ten eleven recovery before healing
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> entity 9100 3 37
+> entity 1103 2 0
+> entity 1020 2 0
+> entity 1161 2 0
+> entity 1040 2 0
+> link 9000 9100
+> link 9000 1000
+> link 9000 1001
+> field 1000 health 100
+> field 1001 health 100
+> link 9100 1103
+> link 9100 1020
+> link 9100 1161
+> link 9100 1040
+> field 1103 lord 200
+> field 1020 lord 200
+> field 1161 lord 200
+> field 1040 lord 200
+> field 1103 sick 1
+> field 1020 sick 1
+> field 1161 sick 1
+> field 1040 sick 1
+> field 1103 health 50
+> field 1020 health 50
+> field 1161 health 50
+> field 1040 health 50
+> heal_roll 1103 0 1 100
+heal roll 5
+> heal_roll 1020 0 1 100
+heal roll 6
+> heal_roll 1161 0 1 100
+heal roll 10
+> heal_roll 1040 0 1 100
+heal roll 11
+> heal
+> save 1103
+1103 char 0
+LI
+ wh 9100
+CH
+ lo 200
+ he 56
+
+> save 1020
+1020 char 0
+LI
+ wh 9100
+CH
+ lo 200
+ he 65
+
+> save 1161
+1161 char 0
+LI
+ wh 9100
+CH
+ lo 200
+ he 59
+
+> save 1040
+1040 char 0
+LI
+ wh 9100
+CH
+ lo 200
+ he 36
+ si 1
+
+> readlog 200
+log 200:
+1020:0::0::<no subkind>~[1020] defeated illness and is now recovering.
+1020:0::0::<no subkind>~[1020] gained 15 health.
+1040:0::0::<no subkind>~[1040] lost 14 health.
+1103:0::0::<no subkind>~[1103] defeated illness and is now recovering.
+1103:0::0::<no subkind>~[1103] gained six health.
+1161:0::0::<no subkind>~[1161] defeated illness and is now recovering.
+1161:0::0::<no subkind>~[1161] gained nine health.
+stderr:
+
+exit 0
+stdout:
+section healing amount endpoints exact full clamp and sick fatal survival
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> entity 1023 2 0
+> entity 611 5 43
+> link 9000 1000
+> link 9000 1001
+> link 9000 1023
+> field 1023 lord 200
+> field 1000 health 100
+> field 1001 health 85
+> field 1023 health 50
+> heal_roll 1001 1 3 15
+heal roll 15
+> heal_roll 1023 1 3 15
+heal roll 3
+> heal
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 100
+
+> save 1023
+1023 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 53
+
+> field 1001 health 3
+> field 1001 sick 1
+> learn 1001 611 2 21
+> heal
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> readlog 200
+log 200:
+1001:0::0::<no subkind>~[1001] gained 15 health.
+1001:0::0::<no subkind>~[1001] is fully healed.
+1023:0::0::<no subkind>~[1023] gained three health.
+1001:0::0::<no subkind>~[1001] lost three health.
+1001:0::0::<no subkind>~[1001] would have died, but survived a fatal wound!
+1001:0::0::Forgot [611].
+1001:0::0::Health is now 100.
+1023:0::0::<no subkind>~[1023] gained three health.
+stderr:
+
+exit 0
+stdout:
+section ocean signed char timer wrap parent gate then cleanup
+> entity 9000 3 1
+> entity 9001 3 3
+> link 9000 1000
+> link 1000 1001
+> field 1000 time_flying 127
+> field 1001 time_flying 126
+> ocean_init
+> ocean_check
+> arrival_state
+ocean: 1000 1001
+arrival char 1000 allocated 1 time -128 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 127 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output:
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+ tf -128
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ tf 127
+
+> link 9001 1000
+> ocean_check
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output:
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+ hl 1001 
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section healing independent weather and mint control
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> link 9000 1000
+> link 9000 1001
+> field 1000 health 50
+> field 1001 health 100
+> weather probe 9000 257
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> newitem 1000 0
+created 65748
+> weather probe 9000 257
+weather shuffle: 321 342 356 328 314 363 300 370 335 307 349
+weather strength 2
+> newitem 1000 0
+created 68643
+stderr:
+
+exit 0
+stdout:
+section healing independent weather and mint with real healing
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> link 9000 1000
+> link 9000 1001
+> field 1000 health 50
+> field 1001 health 100
+> weather probe 9000 257
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> newitem 1000 0
+created 65748
+> heal
+> weather probe 9000 257
+weather shuffle: 321 342 356 328 314 363 300 370 335 307 349
+weather strength 2
+> newitem 1000 0
+created 68643
+stderr:
+
+exit 0

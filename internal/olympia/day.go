@@ -7,6 +7,60 @@ import "slices"
 
 // Ported from olympia/day.c: location-touching state, including day 0.
 
+// healCharSup is day.c:519–578, using the world's guarded, per-day upkeep
+// leaves. Recovery precedes the independent amount draw and healing branch.
+func (w *world) healCharSup(who int) {
+	h, sick := 0, false
+	if p := w.rpChar(who); p != nil {
+		h, sick = int(p.health), p.sick != 0
+	}
+	if h >= 100 {
+		return
+	}
+	chance := 5
+	if w.subkind(w.subloc(who)) == subInn {
+		chance = 10
+	}
+	if sick && w.streams.UpHeal(who, 0, 1, 100) <= chance {
+		w.commandOut(who, "%s defeated illness and is now recovering.", w.boxName(who))
+		w.pChar(who).sick = 0
+		sick = false
+	}
+	amount := w.streams.UpHeal(who, 1, 3, 15)
+	if sick {
+		if h-amount < 0 {
+			amount = h
+		}
+		w.commandOut(who, "%s lost %s health.", w.boxName(who), niceNum(amount))
+		w.pChar(who).health -= int8(amount)
+		if w.pChar(who).health <= 0 {
+			w.killChar(who, mates)
+		}
+	} else {
+		if h+amount > 100 {
+			amount = 100 - h
+		}
+		w.commandOut(who, "%s gained %s health.", w.boxName(who), niceNum(amount))
+		w.pChar(who).health += int8(amount)
+		if h+amount >= 100 {
+			w.commandOut(who, "%s is fully healed.", w.boxName(who))
+		}
+	}
+}
+
+// healCharacters is day.c:616–632, retaining the deletion-safe kind chain.
+func (w *world) healCharacters() {
+	for who := range w.loopKind(tChar) {
+		n := 0
+		if p := w.rpChar(who); p != nil {
+			n = int(p.health)
+		}
+		if n >= 0 && n < 100 {
+			w.healCharSup(who)
+		}
+	}
+}
+
 // defaultGarrisonPay is day.c:581–613, including payments to non-immediate
 // descendants, zero-pay output and gen_item's negative-pay assertion.
 func (w *world) defaultGarrisonPay() {

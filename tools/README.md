@@ -69,6 +69,20 @@ shuffle/mint aftermath distinguish the per-day leaf keys and turn guards.
 Run command/move/helper/rng/code/loadsave/turn-driver/default turn sequentially
 before vet/default tests. No source dependency or pin change; no duplicate
 weather harness, character damage helper, unrelated command or full turn.
+Ocean polling and weekly healing (#79) extend command-compat, not a new
+upkeep-compat tool: complete move.c init_ocean_chars/check_ocean_chars and
+day.c heal_char_sup/heal_characters use the accepted real stack-death,
+survival/shore-arrival, MATES inheritance, command queues, output and save
+closure. Existing load-time initialization and dailyEvents positions/weekly
+gates are unchanged. The world's existing UpHeal stream supplies both keyed
+subdraws; the C driver extracts the original guarded upkeep prefix. Actual
+gameplay cases include real init_ocean_chars → checks, snapshot mutation,
+plain/inn recovery thresholds, health clamps/deaths and per-day/turn replay.
+Weekly boundaries remain in the real-C schedule suite, which proves schedule
+order only, not healing gameplay. Run the same eight tools sequentially
+before bounded vet/default tests. No new source dependency/pin or RNG adapter.
+The older broad boundary notes do not add add_char_damage to #79: that
+unrelated helper is not required by these functions and remains unported.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks

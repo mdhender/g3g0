@@ -424,6 +424,14 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			}
 		case "ocean_add":
 			w.oceanChars.Append(args.num(t))
+		case "ocean_init":
+			w.initOceanChars()
+		case "ocean_check":
+			w.checkOceanChars()
+		case "heal":
+			w.healCharacters()
+		case "heal_roll":
+			fmt.Fprintf(&stdout, "heal roll %d\n", w.streams.UpHeal(args.num(t), args.num(t), args.num(t), args.num(t)))
 		case "arrival_state":
 			helperList(&stdout, "ocean", w.oceanChars)
 			for n := range w.loopKind(tChar) {

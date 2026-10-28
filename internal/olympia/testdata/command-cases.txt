@@ -12246,3 +12246,335 @@ damage inn 9128
 save 9128
 readlog 200
 readlog 201
+
+section ocean initialized snapshot timer fourteen fifteen plunge and cleanup
+master 0
+set turn 1
+set day 7
+set gm 200
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 10 4 0
+link 10000 9000
+link 10000 9001
+routes 9000 0 9001 0 0
+link 9000 1000
+link 9000 1001
+field 1000 health 100
+field 1001 health 100
+field 1000 time_flying 14
+field 1001 time_flying 14
+ocean_init
+arrival_state
+ocean_check
+arrival_state
+ocean_check
+arrival_state
+save 1000
+save 1001
+ocean_check
+arrival_state
+save 1000
+save 1001
+readlog 200
+
+section ocean nested parent gate duplicate snapshot and shore survival
+master 0
+set turn 1
+set day 7
+set gm 200
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 10 4 0
+entity 1002 2 0
+link 10000 9000
+link 10000 9001
+routes 9000 0 9001 0 0
+link 9000 1000
+link 1000 1001
+link 1001 1002
+field 1002 lord 200
+field 1000 health 100
+field 1001 health 100
+field 1002 health 100
+field 1000 time_flying 14
+field 1001 time_flying 16
+field 1002 time_flying 16
+entity 611 5 43
+learn 1000 611 2 21
+ocean_init
+ocean_add 1000
+ocean_check
+arrival_state
+save 1000
+save 1001
+save 1002
+ocean_check
+arrival_state
+save 1000
+readlog 200
+
+section ocean nonocean duplicate cleanup before next snapshot entry
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1000 time_flying 16
+field 1001 time_flying 17
+ocean_add 1000
+ocean_add 1000
+ocean_add 1001
+ocean_check
+arrival_state
+save 1000
+save 1001
+
+section healing outer health gates clamp and adjacent mates deaths
+master 0
+set turn 1
+set day 7
+set gm 200
+entity 10000 3 50
+entity 9000 3 3
+entity 10 4 0
+entity 1 4 0
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 1006 2 0
+link 10000 9000
+link 9000 1000
+link 1000 1001
+link 1000 1002
+link 9000 1003
+link 9000 1004
+link 9000 1005
+link 9000 1006
+field 1002 lord 200
+field 1003 lord 200
+field 1004 lord 200
+field 1005 lord 200
+field 1000 health 1
+field 1001 health 0
+field 1002 health 99
+field 1003 health -1
+field 1004 health 100
+field 1005 health 0
+field 1006 health 101
+field 1006 sick 1
+field 1000 sick 1
+field 1001 sick 1
+inventory 1000 1 19
+inventory 1001 1 23
+orders 200 1000 wait time 9
+orders 200 1001 wait time 8
+who 1000
+load
+who 1001
+load
+heal_roll 1000 0 1 100
+heal_roll 1001 0 1 100
+heal
+save 1000
+save 1001
+save 1002
+save 1003
+save 1004
+save 1005
+save 1006
+inherit state
+orders_file 200
+readlog 200
+
+section healing plain wounded daily keyed replay guard reload and turn
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1000 health 50
+field 1001 health 100
+heal_roll 1000 0 1 100
+heal_roll 1000 1 3 15
+heal
+save 1000
+master 100
+heal_roll 1000 0 1 100
+heal_roll 1000 1 3 15
+heal
+save 1000
+set day 14
+heal_roll 1000 0 1 100
+heal_roll 1000 1 3 15
+heal
+save 1000
+set turn 2
+heal_roll 1000 0 1 100
+heal_roll 1000 1 3 15
+heal
+save 1000
+set turn 1
+heal_roll 1000 0 1 100
+heal_roll 1000 1 3 15
+heal
+save 1000
+readlog 200
+
+section healing plain exact five six ten eleven recovery and sick loss
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+entity 1103 2 0
+entity 1020 2 0
+entity 1161 2 0
+entity 1040 2 0
+link 9000 1000
+link 9000 1001
+field 1000 health 100
+field 1001 health 100
+link 9000 1103
+link 9000 1020
+link 9000 1161
+link 9000 1040
+field 1103 lord 200
+field 1020 lord 200
+field 1161 lord 200
+field 1040 lord 200
+field 1103 sick 1
+field 1020 sick 1
+field 1161 sick 1
+field 1040 sick 1
+field 1103 health 50
+field 1020 health 50
+field 1161 health 50
+field 1040 health 50
+heal_roll 1103 0 1 100
+heal_roll 1020 0 1 100
+heal_roll 1161 0 1 100
+heal_roll 1040 0 1 100
+heal
+save 1103
+save 1020
+save 1161
+save 1040
+readlog 200
+
+section healing inn exact five six ten eleven recovery before healing
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+entity 9100 3 37
+entity 1103 2 0
+entity 1020 2 0
+entity 1161 2 0
+entity 1040 2 0
+link 9000 9100
+link 9000 1000
+link 9000 1001
+field 1000 health 100
+field 1001 health 100
+link 9100 1103
+link 9100 1020
+link 9100 1161
+link 9100 1040
+field 1103 lord 200
+field 1020 lord 200
+field 1161 lord 200
+field 1040 lord 200
+field 1103 sick 1
+field 1020 sick 1
+field 1161 sick 1
+field 1040 sick 1
+field 1103 health 50
+field 1020 health 50
+field 1161 health 50
+field 1040 health 50
+heal_roll 1103 0 1 100
+heal_roll 1020 0 1 100
+heal_roll 1161 0 1 100
+heal_roll 1040 0 1 100
+heal
+save 1103
+save 1020
+save 1161
+save 1040
+readlog 200
+
+section healing amount endpoints exact full clamp and sick fatal survival
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+entity 1023 2 0
+entity 611 5 43
+link 9000 1000
+link 9000 1001
+link 9000 1023
+field 1023 lord 200
+field 1000 health 100
+field 1001 health 85
+field 1023 health 50
+heal_roll 1001 1 3 15
+heal_roll 1023 1 3 15
+heal
+save 1001
+save 1023
+field 1001 health 3
+field 1001 sick 1
+learn 1001 611 2 21
+heal
+save 1001
+readlog 200
+
+section ocean signed char timer wrap parent gate then cleanup
+entity 9000 3 1
+entity 9001 3 3
+link 9000 1000
+link 1000 1001
+field 1000 time_flying 127
+field 1001 time_flying 126
+ocean_init
+ocean_check
+arrival_state
+save 1000
+save 1001
+link 9001 1000
+ocean_check
+arrival_state
+save 1000
+save 1001
+readlog 200
+
+section healing independent weather and mint control
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1000 health 50
+field 1001 health 100
+weather probe 9000 257
+newitem 1000 0
+weather probe 9000 257
+newitem 1000 0
+
+section healing independent weather and mint with real healing
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1000 health 50
+field 1001 health 100
+weather probe 9000 257
+newitem 1000 0
+heal
+weather probe 9000 257
+newitem 1000 0

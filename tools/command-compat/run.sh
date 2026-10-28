@@ -48,11 +48,12 @@ functions = {
                'save_v_array', 'restore_v_array', 'move_exit_land', 'land_check',
                'can_move_here', 'can_move_at_outer_level', 'suspend_stack_actions',
                'clear_guard_flag', 'v_move', 'd_move',
+               'init_ocean_chars', 'check_ocean_chars',
                'v_exit', 'v_enter', 'v_north', 'v_south', 'v_east', 'v_west'],
     'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched',
               'default_garrison_pay', 'maint_cost', 'storm_decay', 'storm_move',
               'near_rocky_coast', 'ship_coastal_damage', 'mine_calamity',
-              'inn_calamity', 'random_loc_damage'],
+              'inn_calamity', 'random_loc_damage', 'heal_char_sup', 'heal_characters'],
     'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
@@ -188,6 +189,10 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(source[start:end])
         if file == 'produce.c':
             out.write(re.search(r'^static ilist collectors = NULL;\n', source, re.M).group(0))
+        if file == 'day.c':
+            start, end = source.index('static rng_stream upkeep_rng;'), source.index('/* Loyalty-decay desertion check:')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/day.c"\n')
+            out.write(source[start:end])
         if file == 'move.c':
             out.write('#line 8 "olympia/move.c"\n')
             out.write(re.search(r'^static ilist ocean_chars = NULL;\n', source, re.M).group(0))
@@ -220,6 +225,8 @@ void drv_coastal(void) { ship_coastal_damage(); }
 void drv_mine(int mine) { mine_calamity(mine); }
 void drv_inn(int inn) { inn_calamity(inn); }
 void drv_loc_damage(void) { random_loc_damage(); }
+void drv_heal(void) { heal_characters(); }
+int drv_heal_roll(int who, int sub, int low, int high) { return up_heal(who, sub, low, high); }
 void drv_state(struct command *c, int s) { set_state(c, s, c->pri); }
 struct order_list *drv_orders(int pl, int who) { return p_order_head(pl, who); }
 void drv_evening(void) { evening_phase(); }
@@ -359,6 +366,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section healing '* || "${section_names[$i]}" == 'section ocean '* ]]; then
+   [ "$status" = 0 ] || die "unexpected healing/ocean status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section damage '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

@@ -1951,3 +1951,99 @@ open-issue arrival checks found only enhancements, no local bug/follow-c.
 Known nonblocking G3 #309/#352/#353/#354/#355 remain deliberately unchanged.
 Version **0.56.0-alpha**, left uncommitted for parent review, not accepted,
 closed, staged, committed or pushed by this task.
+
+## Ocean characters and weekly healing (#79)
+
+The actual issue names ocean polling and healing, not `add_char_damage`.
+This extends the existing lifecycle/stream harness rather than introducing
+an upkeep-only tool or widening the task to unrelated damage/commands.
+Complete original definitions at unchanged pin
+`6a25f2d252ce45bd5adbe3baaccb3be3eed56279` are extracted with original headers,
+macros and `#line` locations (only phase instrumentation is omitted):
+
+| source | definition | exact complete lines | count |
+|---|---|---|---|
+| move.c | init_ocean_chars | 835–849 | 15 |
+| move.c | check_ocean_chars | 852–898 | 47 |
+| day.c | heal_char_sup | 519–578 | 60 |
+| day.c | heal_characters | 616–632 | 17 |
+
+These endpoints are checked against the pinned source, not older boundary
+notes: day.c:581 starts default_garrison_pay, not more healing. The four
+definitions total **139 C lines**, of which **124** implement the three new
+Go definitions. The existing Go initOceanChars body and loadDb call remain
+unchanged. The C harness also extracts the original day.c:50–107 upkeep
+prefix, including static state, purpose tags, begin_upkeep, up_today and
+up_heal. No new upstream file is read, so dependency metadata and pin stay
+unchanged. Go reuses the world's existing `streams.UpHeal` directly:
+`upkp` turn guard, per-day `heal` child, `(who, 0)` recovery in 1–100 and
+independent `(who, 1)` amount in 3–15. No adapter, new RNG or manual reseed.
+
+**11 small appended sections** compare actual gameplay, not callbacks:
+
+- Real init_ocean_chars populates the list in character-chain order, then
+  check_ocean_chars runs repeatedly. Two adjacent leaders go **14 → 15 → 16**,
+  really drown, become serialized bodies, then have timers/list entries
+  cleaned on the following check. Invalid/no-longer-ocean cleanup allocates
+  char state before the branch as C does and removes every duplicate value.
+- Nested followers start at **16**, increment to **17**, but the parent gate
+  stops independent plunges. A duplicate leader reaches 16 later in that
+  same snapshot: real reverse stack deaths remove its children, while the
+  leader's real known survive-fatal skill **611** is consumed. It washes
+  ashore at **9001** through actual extraction/movement/arrival output.
+  Its live-list removal does not skip the snapshot's remaining entries;
+  dead follower cleanup happens on the next poll. Plunging uses real VECT,
+  deaths, logs, output bits, ownership, body saves and touched/known state.
+- Separate nonocean duplicates prove removal cannot skip the next snapshot
+  entry. Signed-char timers **127 → -128**, and a follower **126 → 127**,
+  preserve C widths before later land relocation clears both.
+- Actual recovery keys **1103/1020/1161/1040** yield **5/6/10/11** on day 7.
+  On plain only 5 recovers; inside an inn 5, 6 and 10 recover while 11
+  remains sick. Recovery is followed by a gain in the same invocation;
+  continued illness loses the independent amount. Amount endpoint keys
+  **1023/1001** yield **3/15**. An exact **85 + 15 → 100** and a clamped
+  **99 → 100** emit fully-healed messages. Sick loss clamps to remaining
+  health, including zero, before the real MATES death/survival path.
+- Outer traversal handles **0, -1, 99, 100, 101**: zero healthy health gains,
+  zero sick health dies, negative and 100+ health skip. Two adjacent sick
+  deaths transfer **19 → 42** items through real MATES inheritance and leave
+  the next wounded character reachable. Actual loaded WAIT orders, queue
+  cleanup, serialized commands/order files, real logs and output are observed.
+  Another fatal illness really consumes survival skill 611 and restores 100.
+- Initially seeded upkeep survives master reload in the guarded turn:
+  health **50 → 56 → 62** replays the same day's amount; day 14 yields 10,
+  turn 2 yields 4, return to turn 1 under the new master yields 5.
+  Paired no-call controls retain both weather shuffles and unique-item
+  mint allocations **65748 / 68643**, proving subsystem isolation.
+
+Two deterministic bounded pinned C runs produce **564 sections / 40140 lines /
+684313 bytes**, exactly matched by Go's raw stdout/stderr/status and real
+state/log/order observations. Prior command input **12248 lines / 218785 bytes**
+and output **553 sections / 39215 lines / 669382 bytes** remain exact byte
+prefixes: **zero old bytes changed**. New input is **12580 lines / 224361 bytes**.
+Entire move input **3150 lines / 53589 bytes** and output **135 sections /
+7150 lines / 142755 bytes** remain identical. Literal C trailing whitespace
+in recorded here lists is retained, not normalized.
+
+A removed ephemeral expected-134 case queued, loaded and dispatched ATTACK.
+Normal and `--update` both rejected `out-of-scope C dependency: v_attack`
+with status **2**, before abort-status acceptance and before recording.
+Expected-output SHA-256 stayed
+`ed21ae2739e9eb4ba189ee09b83bf7f307282fb3eb3766c46c24ebb1f129fdf1`.
+The probe and scratch key-search data are removed; no permanent test depends
+on that private missing-handler name. All new permanent sections require
+status zero; no successful unimplemented handler was introduced.
+
+Command (update and normal), move, helper, rng, code, loadsave, turn-driver
+and default turn comparisons pass sequentially before bounded vet and fresh
+default all-tests. All engine processes retain shared run_limited supervision.
+DailyEvents positions and weekly gating are unchanged. Real-C schedule-suite
+weekly boundaries pass, but callback traces accept only scheduling, not this
+healing gameplay. Whole-world turns remain opt-in and were not run; the known
+day-1 full-turn boundary is still match_all_trades (#81). add_char_damage,
+unrelated commands/combat, later daily/monthly phases and reports remain
+explicit boundaries. No full-world/stage-exit success or task acceptance is
+claimed. No newly verified public-engine bug or blocker was found; arrival
+checks still show only enhancements, no local bug/follow-c. Known nonblocking
+G3 #309/#352/#353/#354/#355 remain unchanged. Version **0.57.0-alpha**; changes
+remain uncommitted, unstaged and unaccepted for parent review.

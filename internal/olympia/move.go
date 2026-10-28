@@ -657,3 +657,24 @@ func (w *world) initOceanChars() {
 		}
 	}
 }
+
+// checkOceanChars is move.c:852–898. The snapshot survives deaths and
+// removals from oceanChars; even dead entries allocate char state before cleanup.
+func (w *world) checkOceanChars() {
+	for _, who := range w.oceanChars.Copy() {
+		where := w.subloc(who)
+		p := w.pChar(who)
+		if w.kind(who) != tChar || w.subkind(where) != subOcean {
+			p.timeFlying = 0
+			w.oceanChars.RemValue(who)
+			continue
+		}
+		p.timeFlying++
+		if p.timeFlying <= 15 || w.stackParent(who) != 0 {
+			continue
+		}
+		w.vectorStack(who, true)
+		w.commandOut(vect, "Flight can no longer be maintained.  %s plunges into the sea.", w.boxName(who))
+		w.killStackOcean(who)
+	}
+}
