@@ -2684,3 +2684,78 @@ Every compat call used `G3_REPO=$PWD/tmp/upstream.git`. No full-world run,
 independent fix, commit, push, issue closure/tick or stage-2 work.
 
 Version **0.65.0-alpha**; changes remain **uncommitted** for parent acceptance.
+
+## Month-end garrison tax forwarding (#116)
+
+Pin remains `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`. The harness extracts
+complete original definitions, including all assertions and their source lines:
+
+| Source | Definition |
+|---|---|
+| `garr.c` | `garrison_gold` **446–549** |
+| `build.c` | `province_subloc` **160–177** (new tracked source dependency) |
+| `gm.c` | `int gold_provinces = 0;` **14** |
+
+The requested 446–558 span crosses into the unrelated
+`count_castle_garrisons` definition beginning at 552; the complete tax
+settlement ends at 549 at this exact pin. Existing real `clear_temps`
+**u.c:1352–1362**, `charge_maint_sup` **day.c:1325–1349**, strength, ownership,
+inventory, actor-first stack payment, output and save-box closure are reused.
+There is no successful maintenance/gameplay substitute. Only existing phase
+instrumentation is omitted. Production `postMonth`'s position is unchanged;
+its next explicit unfinished boundary is `ghost_warrior_decay` (#88).
+
+The **23 new sections** cover:
+
+- Tax **53**, maintenance **20**, own balance **7**, owner balance **13**:
+  consume **33**, forward **16**, leave the original **7**, pay owner to **29**.
+  A repeated zero-base call resets location temps and tax, retains forward
+  **16**, and really starves **10 → 7** soldiers. Raw output bits and logs match.
+- Full-tax spend and own funds beyond the tax base; friendly-stack money
+  supplies **6** of **20** upkeep after the actor's **14**. The implementation
+  measures spent against the actor's before/after gold, not stack totals.
+- Paid strength **9/10**, plus real starvation **10 → 9** and **11 → 10**
+  with tax **46** and tariff **5**: the **one** unspendable gold is consumed
+  before strength testing; only the surviving ten restore it locally.
+- Direct province castle and first-city castle restoration, full odd
+  remainders and forward **-1**; province-child precedence, first-city-only
+  search and no deeper recursion. Odd one-gold remainder truncates to zero
+  without resetting an old forwarding value.
+- Multiple garrisons produce **16 + 23 = 39** and **29** for two castles;
+  actual owner payouts, faction routing, balances and signed-int GM sum
+  **2147483500 → 2147483568** match. A shared province's tax is consumed by
+  the first subtype-chain garrison, not duplicated for the second.
+- Missing castle, absent misc, unowned castle, default garrison with stale
+  fields, and no garrisons; temps clear even with no active garrison. A noble
+  item with zero unit upkeep forwards **27** from tax **55**, then retains
+  forward **27** on a zero-base call without inventing a maintenance payment.
+- Paired real-tax/no-call controls preserve keyed income, weather, exit
+  shuffle and mint bytes across same-turn master changes and the next turn.
+- Nonprovince garrison aborts at **garr.c:471**; unlocated
+  `province_subloc` reaches `subloc_here`'s **loc.c:338** `loop_here` assertion.
+  Both require **134**, while every ordinary new section requires **0**.
+
+Fixtures use real subtype-chain updates (`change_box_subkind`), not just
+assignment to `skind`, and create the soldier box required by the original
+strength macros. A temporary linker wrapper emitted an out-of-scope marker
+and aborted on section **701**, which ordinarily requires status 134. Both
+normal and `--update` modes rejected it with status **2** before assertion
+acceptance or recording replacement; the recording hash was unchanged.
+The probe was removed. No new verified upstream defect or blocker was found.
+
+Two pinned C runs and Go match **706 sections / 52160 lines / 881837 bytes**.
+Prior **683 sections / 50572 lines / 853708 bytes** of output and
+**15712 lines / 281967 bytes** of input are exact byte prefixes. New input is
+**16225 lines / 291764 bytes**. Output SHA-256:
+`eca91b35e8bee3a1c75866ae378b803f2822f106542b86a8066fce565068c800`.
+The C writer's trailing whitespace remains unmodified.
+
+Sequential checks passed: command **706/52160**, move **135/7150**, helper
+**37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+default turn (identical raw status/stdout/stderr and one state file), followed
+by bounded vet and fresh bounded default tests using shared `run_limited`.
+Every compat call used `G3_REPO=$PWD/tmp/upstream.git`. No full-world run,
+independent fix, commit, push, closure/tick or stage-2 work.
+
+Version **0.66.0-alpha**; changes remain **uncommitted** for parent acceptance.

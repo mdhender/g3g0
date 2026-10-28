@@ -83,7 +83,8 @@ functions = {
               'region', 'mark_loc_stack_known', 'add_here', 'all_here'],
     'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here',
                'rank_s', 'garrison_notices', 'garrison_spot_check',
-               'garrison_strength', 'ping_garrisons'],
+               'garrison_strength', 'ping_garrisons', 'garrison_gold'],
+    'build.c': ['province_subloc'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
     'display.c': ['with_inventory_string', 'display_with', 'mage_s', 'priest_s',
@@ -154,7 +155,7 @@ int immed_see_all, month_done, show_combat_flag;
     gm = open(f'{src}/gm.c').read()
     for name in ['gold_garrison', 'gold_combat', 'gold_combat_indep',
                  'gold_pot_basket', 'gold_trade', 'gold_opium', 'gold_taxes',
-                 'gold_inn', 'gold_temple']:
+                 'gold_inn', 'gold_temple', 'gold_provinces']:
         m = re.search(rf'^int {name} = 0;\n', gm, re.M)
         if not m:
             sys.exit(f'no {name} definition in gm.c')

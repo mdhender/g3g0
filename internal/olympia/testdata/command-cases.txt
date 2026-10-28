@@ -15710,3 +15710,516 @@ shuffle 0 9000
 newitem 9001 0
 save_new
 income roll 9102 0 50 75
+
+section garrison tax odd remainder owner payout own funds and repeated zero base
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+name 12 soldier
+plural 12 soldiers
+field 12 man 1
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 3 32
+link 9001 9100
+link 9100 1001
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+field 9100 temp 999
+field 9000 temp -333
+inventory 1000 12 10
+inventory 1000 1 7
+inventory 1001 1 13
+inventory 9000 96 53
+garrison metric -17
+garrison_view 1
+garrison tax
+garrison taxstate
+garrison state
+monthly state
+readlog 200
+garrison tax
+garrison taxstate
+garrison state
+monthly state
+readlog 200
+
+section garrison tax entire base exact spend retains previous forward
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+link 9000 1000
+death subkind 1000 64
+field 1000 garr_forward 71
+inventory 1000 12 10
+inventory 1000 1 11
+inventory 9000 96 20
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax maintenance dips into own funds beyond smaller base
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+link 9000 1000
+death subkind 1000 64
+field 1000 garr_forward 72
+inventory 1000 12 10
+inventory 1000 1 19
+inventory 9000 96 7
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax friendly stack funds full payment only own gold measures spent
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+link 9000 1001
+link 1001 1000
+death subkind 1000 64
+field 1000 garr_forward 73
+inventory 1000 12 10
+inventory 1000 1 3
+inventory 1001 1 17
+inventory 9000 96 11
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax nine paid consumes surplus before rejecting local castle
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+entity 9100 3 32
+link 9000 9100
+link 9100 1001
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+field 1000 garr_forward 74
+inventory 1000 12 9
+inventory 1000 1 7
+inventory 9000 96 51
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax ten paid restores remainder to province of local castle
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+entity 9100 3 32
+link 9000 9100
+link 9100 1001
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+field 1000 garr_forward 75
+inventory 1000 12 10
+inventory 1000 1 7
+inventory 9000 96 51
+garrison tax
+garrison taxstate
+monthly state
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax starvation ten becomes nine consumes unspendable remainder
+master 0
+set turn 9
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+entity 15 4 0
+name 15 elite guard
+plural 15 elite guards
+field 15 man 1
+entity 9000 3 3
+entity 9100 3 32
+link 9000 9100
+link 9100 1001
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+field 1000 garr_forward 76
+inventory 1000 15 10
+inventory 9000 96 46
+garrison strength 1000
+upkeep flavor 1000 15
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax starvation eleven becomes ten local restoration after loss
+master 0
+set turn 9
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+entity 15 4 0
+name 15 elite guard
+plural 15 elite guards
+field 15 man 1
+entity 9000 3 3
+entity 9100 3 32
+link 9000 9100
+link 9100 1001
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+field 1000 garr_forward 77
+inventory 1000 15 11
+inventory 9000 96 46
+garrison strength 1000
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax starvation no funds nine drops to six and stale fields persist
+master 0
+set turn 9
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+name 12 soldier
+plural 12 soldiers
+field 12 man 1
+entity 9000 3 3
+link 9000 1000
+death subkind 1000 64
+field 1000 garr_forward 78
+inventory 1000 12 9
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax local castle in first city restores full odd balance
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+entity 9050 3 14
+entity 9100 3 32
+link 9000 9050
+link 9050 9100
+link 9100 1001
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+inventory 1000 12 10
+inventory 9000 96 55
+garrison subloc 9100 32
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax province subloc precedence first city only and no deeper recursion
+entity 9000 3 3
+entity 9050 3 14
+entity 9051 3 14
+entity 9060 3 15
+entity 9100 3 32
+entity 9101 3 32
+entity 9102 3 32
+link 9000 9050
+link 9000 9051
+link 9051 9102
+garrison subloc 9000 32
+link 9050 9060
+link 9060 9101
+garrison subloc 9060 32
+link 9050 9101
+garrison subloc 9101 32
+link 9000 9100
+garrison subloc 9101 32
+
+section garrison tax default skip retains tax forward inventory and clears all location temps
+entity 9000 3 3
+entity 9100 3 32
+field 9000 temp 123
+field 9100 temp 456
+field 1000 temp 789
+death subkind 1000 64
+field 1000 default_garrison 1
+field 1000 garr_tax 81
+field 1000 garr_forward -1
+garrison tax
+garrison taxstate
+monthly state
+garrison tax
+garrison taxstate
+
+section garrison tax no garrisons still clears castle temps and no payout
+entity 9000 3 3
+entity 9100 3 32
+link 9000 9100
+link 9100 1001
+field 9100 temp 151
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax no assigned castle and missing misc still consumes surplus
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+link 9000 1000
+death subkind 1000 64
+inventory 1000 12 10
+inventory 9000 96 57
+garrison taxstate
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax single odd remaining gold truncates forwarding without field reset
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 3 32
+link 9001 9100
+link 9100 1001
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+field 1000 garr_forward 82
+inventory 1000 12 10
+inventory 9000 96 21
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax multiple units accumulate two castles ordered payouts and signed GM sum
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 3
+entity 9003 3 3
+entity 9100 3 32
+entity 9101 3 32
+link 9003 9100
+link 9003 9101
+link 9100 1001
+entity 1002 2 0
+field 1002 lord 201
+link 9101 1002
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+entity 1100 2 64
+field 1100 lord 200
+field 1100 castle 9100
+link 9001 1100
+entity 1101 2 64
+field 1101 lord 200
+field 1101 castle 9101
+link 9002 1101
+inventory 1000 12 10
+inventory 1100 12 11
+inventory 1101 12 12
+inventory 9000 96 53
+inventory 9001 96 69
+inventory 9002 96 83
+inventory 1001 1 17
+inventory 1002 1 29
+field 9100 temp 888
+field 9101 temp 777
+garrison metric 2147483500
+garrison tax
+garrison taxstate
+garrison state
+monthly state
+readlog 200
+readlog 201
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+readlog 201
+
+section garrison tax unowned castle accumulates but no owner payment or GM accounting
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 3 32
+link 9001 9100
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+inventory 1000 12 10
+inventory 9000 96 53
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison tax multiple garrisons same province consume base in subtype order
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 3 32
+link 9001 9100
+link 9100 1001
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+entity 1100 2 64
+field 1100 lord 200
+field 1100 castle 9100
+link 9000 1100
+inventory 1000 12 10
+inventory 1100 12 10
+inventory 1100 1 30
+inventory 9000 96 53
+garrison tax
+garrison taxstate
+monthly state
+readlog 200
+
+section garrison invalid tax nonprovince retains source assertion
+entity 9000 3 14
+link 9000 1000
+death subkind 1000 64
+garrison tax
+
+section garrison invalid province subloc unlocated retains macro source assertion
+garrison subloc 1000 32
+
+section garrison tax real leaves preserve sibling rng mint and shuffle
+master 0
+set turn 9
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+entity 15 4 0
+name 15 elite guard
+plural 15 elite guards
+field 15 man 1
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 3
+entity 9003 3 3
+routes 9000 9001 9002 9003 0
+link 9000 1000
+death subkind 1000 64
+inventory 1000 15 10
+inventory 9000 96 46
+income roll 9102 0 50 75
+weather probe 9000 257
+garrison tax
+garrison taxstate
+master 9
+weather probe 9000 257
+shuffle 0 9000
+newitem 9001 0
+save_new
+income roll 9102 0 50 75
+set turn 10
+garrison tax
+garrison taxstate
+weather probe 9000 257
+shuffle 0 9000
+newitem 9001 0
+save_new
+income roll 9102 0 50 75
+
+section garrison tax no call control sibling rng mint and shuffle
+master 0
+set turn 9
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+entity 15 4 0
+name 15 elite guard
+plural 15 elite guards
+field 15 man 1
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 3
+entity 9003 3 3
+routes 9000 9001 9002 9003 0
+link 9000 1000
+death subkind 1000 64
+inventory 1000 15 10
+inventory 9000 96 46
+income roll 9102 0 50 75
+weather probe 9000 257
+master 9
+weather probe 9000 257
+shuffle 0 9000
+newitem 9001 0
+save_new
+income roll 9102 0 50 75
+set turn 10
+weather probe 9000 257
+shuffle 0 9000
+newitem 9001 0
+save_new
+income roll 9102 0 50 75
+
+section garrison tax free noble item full base forwards without maintenance and zero base retains forward
+entity 1 4 0
+entity 96 4 0
+entity 12 4 0
+field 12 man 1
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 3 32
+link 9001 9100
+link 9100 1001
+link 9000 1000
+death subkind 1000 64
+field 1000 castle 9100
+field 1000 noble_item 12
+inventory 1000 12 10
+inventory 1000 1 7
+inventory 9000 96 55
+garrison tax
+garrison taxstate
+monthly state
+garrison tax
+garrison taxstate
+garrison state
+monthly state
+readlog 200

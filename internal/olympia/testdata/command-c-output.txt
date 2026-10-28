@@ -50570,3 +50570,1591 @@ income roll 9102 0 61
 stderr:
 
 exit 0
+stdout:
+section garrison tax odd remainder owner payout own funds and repeated zero base
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> name 12 soldier
+> plural 12 soldiers
+> field 12 man 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 32
+> link 9001 9100
+> link 9100 1001
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> field 9100 temp 999
+> field 9000 temp -333
+> inventory 1000 12 10
+> inventory 1000 1 7
+> inventory 1001 1 13
+> inventory 9000 96 53
+> garrison metric -17
+> garrison_view 1
+> garrison tax
+> garrison taxstate
+gold provinces -1
+tax garrison 1000 misc 1 tax 53 forward 16 strength 10
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9100 temp 16
+> garrison state
+garrison pay 2 gold 0 show 1
+vector:
+garrison char 1000 leader 1000 default 0 prisoner 0 npc 1 guard 0 gold 7
+garrison char 1001 leader 1001 default 0 prisoner 0 npc 0 guard 0 gold 29
+player 200
+output: 6 1001
+player 201
+output:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10 \
+	1 7
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	1 29
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc plain
+LI
+ hl 9100 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9001
+ hl 1001 
+
+> readlog 200
+log 200:
+6:0:1000:0::Paid maintenance of 20~gold.
+1001:0::0::Collected 16~gold from owned provinces.
+> garrison tax
+> garrison taxstate
+gold provinces -1
+tax garrison 1000 misc 1 tax 0 forward 16 strength 7
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9100 temp 0
+> garrison state
+garrison pay 2 gold 0 show 1
+vector:
+garrison char 1000 leader 1000 default 0 prisoner 0 npc 1 guard 0 gold 1
+garrison char 1001 leader 1001 default 0 prisoner 0 npc 0 guard 0 gold 29
+player 200
+output: 6 1001
+player 201
+output:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 7 \
+	1 1
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	1 29
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc plain
+LI
+ hl 9100 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9001
+ hl 1001 
+
+> readlog 200
+log 200:
+6:0:1000:0::Paid maintenance of 20~gold.
+1001:0::0::Collected 16~gold from owned provinces.
+6:0:1000:0::Maintenance costs are 20~gold, can afford 7~gold.
+6:0:1000:0::Three~soldiers left service.
+stderr:
+
+exit 0
+stdout:
+section garrison tax entire base exact spend retains previous forward
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 garr_forward 71
+> inventory 1000 12 10
+> inventory 1000 1 11
+> inventory 9000 96 20
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 20 forward 71 strength 10
+tax loc 9000 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10 \
+	1 11
+LI
+ wh 9000
+CH
+ lo 200
+MI
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section garrison tax maintenance dips into own funds beyond smaller base
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 garr_forward 72
+> inventory 1000 12 10
+> inventory 1000 1 19
+> inventory 9000 96 7
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 7 forward 72 strength 10
+tax loc 9000 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10 \
+	1 6
+LI
+ wh 9000
+CH
+ lo 200
+MI
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section garrison tax friendly stack funds full payment only own gold measures spent
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> link 9000 1001
+> link 1001 1000
+> death subkind 1000 64
+> field 1000 garr_forward 73
+> inventory 1000 12 10
+> inventory 1000 1 3
+> inventory 1001 1 17
+> inventory 9000 96 11
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 11 forward 73 strength 10
+tax loc 9000 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10
+LI
+ wh 1001
+CH
+ lo 200
+MI
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	1 11
+LI
+ wh 9000
+ hl 1000 
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1001 
+
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section garrison tax nine paid consumes surplus before rejecting local castle
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> entity 9100 3 32
+> link 9000 9100
+> link 9100 1001
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> field 1000 garr_forward 74
+> inventory 1000 12 9
+> inventory 1000 1 7
+> inventory 9000 96 51
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 51 forward 74 strength 9
+tax loc 9000 temp 0
+tax loc 9100 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 9 \
+	1 7
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 9100 1000 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9000
+ hl 1001 
+
+> readlog 200
+log 200:
+6:0:1000:0::Paid maintenance of 18~gold.
+stderr:
+
+exit 0
+stdout:
+section garrison tax ten paid restores remainder to province of local castle
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> entity 9100 3 32
+> link 9000 9100
+> link 9100 1001
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> field 1000 garr_forward 75
+> inventory 1000 12 10
+> inventory 1000 1 7
+> inventory 9000 96 51
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 51 forward -1 strength 10
+tax loc 9000 temp 0
+tax loc 9100 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10 \
+	1 7
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+il	96 31
+LI
+ hl 9100 1000 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9000
+ hl 1001 
+
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 31 forward -1 strength 10
+tax loc 9000 temp 0
+tax loc 9100 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10 \
+	1 7
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+il	96 11
+LI
+ hl 9100 1000 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9000
+ hl 1001 
+
+> readlog 200
+log 200:
+6:0:1000:0::Paid maintenance of 20~gold.
+6:0:1000:0::Paid maintenance of 20~gold.
+stderr:
+
+exit 0
+stdout:
+section garrison tax starvation ten becomes nine consumes unspendable remainder
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> entity 15 4 0
+> name 15 elite guard
+> plural 15 elite guards
+> field 15 man 1
+> entity 9000 3 3
+> entity 9100 3 32
+> link 9000 9100
+> link 9100 1001
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> field 1000 garr_forward 76
+> inventory 1000 15 10
+> inventory 9000 96 46
+> garrison strength 1000
+garrison strength 10
+> upkeep flavor 1000 15
+starve roll 1000 15 2
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 46 forward 76 strength 9
+tax loc 9000 temp 0
+tax loc 9100 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	15 9
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 9100 1000 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9000
+ hl 1001 
+
+> readlog 200
+log 200:
+6:0:1000:0::Maintenance costs are 50~gold, can afford 46~gold.
+6:0:1000:0::One~elite guard deserted.
+stderr:
+
+exit 0
+stdout:
+section garrison tax starvation eleven becomes ten local restoration after loss
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> entity 15 4 0
+> name 15 elite guard
+> plural 15 elite guards
+> field 15 man 1
+> entity 9000 3 3
+> entity 9100 3 32
+> link 9000 9100
+> link 9100 1001
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> field 1000 garr_forward 77
+> inventory 1000 15 11
+> inventory 9000 96 46
+> garrison strength 1000
+garrison strength 11
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 46 forward -1 strength 10
+tax loc 9000 temp 0
+tax loc 9100 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	15 10
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+il	96 1
+LI
+ hl 9100 1000 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9000
+ hl 1001 
+
+> readlog 200
+log 200:
+6:0:1000:0::Maintenance costs are 55~gold, can afford 46~gold.
+6:0:1000:0::One~elite guard deserted.
+stderr:
+
+exit 0
+stdout:
+section garrison tax starvation no funds nine drops to six and stale fields persist
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> name 12 soldier
+> plural 12 soldiers
+> field 12 man 1
+> entity 9000 3 3
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 garr_forward 78
+> inventory 1000 12 9
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 0 forward 78 strength 6
+tax loc 9000 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 6
+LI
+ wh 9000
+CH
+ lo 200
+MI
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section garrison tax local castle in first city restores full odd balance
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> entity 9050 3 14
+> entity 9100 3 32
+> link 9000 9050
+> link 9050 9100
+> link 9100 1001
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> inventory 1000 12 10
+> inventory 9000 96 55
+> garrison subloc 9100 32
+province subloc 9100 32 9100
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 55 forward -1 strength 10
+tax loc 9000 temp 0
+tax loc 9050 temp 0
+tax loc 9100 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+il	96 35
+LI
+ hl 9050 1000 
+
+monthly loc 9050 loc 0 subloc 0 recent 0
+9050 loc city
+LI
+ wh 9000
+ hl 9100 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9050
+ hl 1001 
+
+> readlog 200
+log 200:
+6:0:1000:0::Paid maintenance of 20~gold.
+stderr:
+
+exit 0
+stdout:
+section garrison tax province subloc precedence first city only and no deeper recursion
+> entity 9000 3 3
+> entity 9050 3 14
+> entity 9051 3 14
+> entity 9060 3 15
+> entity 9100 3 32
+> entity 9101 3 32
+> entity 9102 3 32
+> link 9000 9050
+> link 9000 9051
+> link 9051 9102
+> garrison subloc 9000 32
+province subloc 9000 32 0
+> link 9050 9060
+> link 9060 9101
+> garrison subloc 9060 32
+province subloc 9060 32 0
+> link 9050 9101
+> garrison subloc 9101 32
+province subloc 9101 32 9101
+> link 9000 9100
+> garrison subloc 9101 32
+province subloc 9101 32 9100
+stderr:
+
+exit 0
+stdout:
+section garrison tax default skip retains tax forward inventory and clears all location temps
+> entity 9000 3 3
+> entity 9100 3 32
+> field 9000 temp 123
+> field 9100 temp 456
+> field 1000 temp 789
+> death subkind 1000 64
+> field 1000 default_garrison 1
+> field 1000 garr_tax 81
+> field 1000 garr_forward -1
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 81 forward -1 strength 0
+tax loc 9000 temp 0
+tax loc 9100 temp 0
+> monthly state
+monthly char 1000 char 1 magic 1 fresh 0 new 0
+1000 char garrison
+CH
+ lo 200
+CM
+ dg 1
+MI
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 81 forward -1 strength 0
+tax loc 9000 temp 0
+tax loc 9100 temp 0
+stderr:
+
+exit 0
+stdout:
+section garrison tax no garrisons still clears castle temps and no payout
+> entity 9000 3 3
+> entity 9100 3 32
+> link 9000 9100
+> link 9100 1001
+> field 9100 temp 151
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax loc 9000 temp 0
+tax loc 9100 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 9100 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9000
+ hl 1001 
+
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section garrison tax no assigned castle and missing misc still consumes surplus
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> link 9000 1000
+> death subkind 1000 64
+> inventory 1000 12 10
+> inventory 9000 96 57
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 0 tax 0 forward 0 strength 10
+tax loc 9000 temp 0
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 57 forward 0 strength 10
+tax loc 9000 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10
+LI
+ wh 9000
+CH
+ lo 200
+MI
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section garrison tax single odd remaining gold truncates forwarding without field reset
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 32
+> link 9001 9100
+> link 9100 1001
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> field 1000 garr_forward 82
+> inventory 1000 12 10
+> inventory 9000 96 21
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 21 forward 82 strength 10
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9100 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc plain
+LI
+ hl 9100 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9001
+ hl 1001 
+
+> readlog 200
+log 200:
+6:0:1000:0::Paid maintenance of 20~gold.
+stderr:
+
+exit 0
+stdout:
+section garrison tax multiple units accumulate two castles ordered payouts and signed GM sum
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> entity 9100 3 32
+> entity 9101 3 32
+> link 9003 9100
+> link 9003 9101
+> link 9100 1001
+> entity 1002 2 0
+> field 1002 lord 201
+> link 9101 1002
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> entity 1100 2 64
+> field 1100 lord 200
+> field 1100 castle 9100
+> link 9001 1100
+> entity 1101 2 64
+> field 1101 lord 200
+> field 1101 castle 9101
+> link 9002 1101
+> inventory 1000 12 10
+> inventory 1100 12 11
+> inventory 1101 12 12
+> inventory 9000 96 53
+> inventory 9001 96 69
+> inventory 9002 96 83
+> inventory 1001 1 17
+> inventory 1002 1 29
+> field 9100 temp 888
+> field 9101 temp 777
+> garrison metric 2147483500
+> garrison tax
+> garrison taxstate
+gold provinces 2147483568
+tax garrison 1000 misc 1 tax 53 forward 16 strength 10
+tax garrison 1100 misc 1 tax 69 forward 23 strength 11
+tax garrison 1101 misc 1 tax 83 forward 29 strength 12
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9002 temp 0
+tax loc 9003 temp 0
+tax loc 9100 temp 39
+tax loc 9101 temp 29
+> garrison state
+garrison pay 2 gold 0 show 0
+vector:
+garrison char 1000 leader 1000 default 0 prisoner 0 npc 1 guard 0 gold 0
+garrison char 1001 leader 1001 default 0 prisoner 0 npc 0 guard 0 gold 56
+garrison char 1002 leader 1002 default 0 prisoner 0 npc 0 guard 0 gold 58
+garrison char 1100 leader 1100 default 0 prisoner 0 npc 1 guard 0 gold 0
+garrison char 1101 leader 1101 default 0 prisoner 0 npc 1 guard 0 gold 0
+player 200
+output: 6 1001
+player 201
+output: 6 1002
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	1 56
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly char 1002 char 1 magic 0 fresh 0 new 0
+1002 char 0
+il	1 58
+LI
+ wh 9101
+CH
+ lo 201
+
+monthly char 1100 char 1 magic 0 fresh 0 new 0
+1100 char garrison
+il	12 11
+LI
+ wh 9001
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1101 char 1 magic 0 fresh 0 new 0
+1101 char garrison
+il	12 12
+LI
+ wh 9002
+CH
+ lo 200
+MI
+ gc 9101
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc plain
+LI
+ hl 1100 
+
+monthly loc 9002 loc 0 subloc 0 recent 0
+9002 loc plain
+LI
+ hl 1101 
+
+monthly loc 9003 loc 0 subloc 0 recent 0
+9003 loc plain
+LI
+ hl 9100 9101 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9003
+ hl 1001 
+
+monthly loc 9101 loc 0 subloc 0 recent 0
+9101 loc castle
+LI
+ wh 9003
+ hl 1002 
+
+> readlog 200
+log 200:
+6:0:1000:0::Paid maintenance of 20~gold.
+6:0:1100:0::Paid maintenance of 22~gold.
+1001:0::0::Collected 39~gold from owned provinces.
+> readlog 201
+log 201:
+6:0:1101:0::Paid maintenance of 24~gold.
+1002:0::0::Collected 29~gold from owned provinces.
+> garrison tax
+> garrison taxstate
+gold provinces 2147483568
+tax garrison 1000 misc 1 tax 0 forward 16 strength 6
+tax garrison 1100 misc 1 tax 0 forward 23 strength 7
+tax garrison 1101 misc 1 tax 0 forward 29 strength 8
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9002 temp 0
+tax loc 9003 temp 0
+tax loc 9100 temp 0
+tax loc 9101 temp 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 6
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	1 56
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly char 1002 char 1 magic 0 fresh 0 new 0
+1002 char 0
+il	1 58
+LI
+ wh 9101
+CH
+ lo 201
+
+monthly char 1100 char 1 magic 0 fresh 0 new 0
+1100 char garrison
+il	12 7
+LI
+ wh 9001
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1101 char 1 magic 0 fresh 0 new 0
+1101 char garrison
+il	12 8
+LI
+ wh 9002
+CH
+ lo 200
+MI
+ gc 9101
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc plain
+LI
+ hl 1100 
+
+monthly loc 9002 loc 0 subloc 0 recent 0
+9002 loc plain
+LI
+ hl 1101 
+
+monthly loc 9003 loc 0 subloc 0 recent 0
+9003 loc plain
+LI
+ hl 9100 9101 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9003
+ hl 1001 
+
+monthly loc 9101 loc 0 subloc 0 recent 0
+9101 loc castle
+LI
+ wh 9003
+ hl 1002 
+
+> readlog 200
+log 200:
+6:0:1000:0::Paid maintenance of 20~gold.
+6:0:1100:0::Paid maintenance of 22~gold.
+1001:0::0::Collected 39~gold from owned provinces.
+6:0:1000:0::Maintenance costs are 20~gold, can afford 0~gold.
+6:0:1000:0::Four~<no subkind> left service.
+6:0:1100:0::Maintenance costs are 22~gold, can afford 0~gold.
+6:0:1100:0::Four~<no subkind> deserted.
+> readlog 201
+log 201:
+6:0:1101:0::Paid maintenance of 24~gold.
+1002:0::0::Collected 29~gold from owned provinces.
+6:0:1101:0::Maintenance costs are 24~gold, can afford 0~gold.
+6:0:1101:0::Four~<no subkind> left service.
+stderr:
+warning: plural name not set for item [12]
+warning: plural name not set for item [12]
+warning: plural name not set for item [12]
+
+exit 0
+stdout:
+section garrison tax unowned castle accumulates but no owner payment or GM accounting
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 32
+> link 9001 9100
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> inventory 1000 12 10
+> inventory 9000 96 53
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 53 forward 16 strength 10
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9100 temp 16
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc plain
+LI
+ hl 9100 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9001
+
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section garrison tax multiple garrisons same province consume base in subtype order
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 32
+> link 9001 9100
+> link 9100 1001
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> entity 1100 2 64
+> field 1100 lord 200
+> field 1100 castle 9100
+> link 9000 1100
+> inventory 1000 12 10
+> inventory 1100 12 10
+> inventory 1100 1 30
+> inventory 9000 96 53
+> garrison tax
+> garrison taxstate
+gold provinces 16
+tax garrison 1000 misc 1 tax 53 forward 16 strength 10
+tax garrison 1100 misc 1 tax 0 forward 0 strength 10
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9100 temp 16
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	1 16
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly char 1100 char 1 magic 0 fresh 0 new 0
+1100 char garrison
+il	12 10 \
+	1 10
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ gc 9100
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 1100 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc plain
+LI
+ hl 9100 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9001
+ hl 1001 
+
+> readlog 200
+log 200:
+6:0:1000:0::Paid maintenance of 20~gold.
+6:0:1100:0::Paid maintenance of 20~gold.
+1001:0::0::Collected 16~gold from owned provinces.
+stderr:
+
+exit 0
+stdout:
+section garrison invalid tax nonprovince retains source assertion
+> entity 9000 3 14
+> link 9000 1000
+> death subkind 1000 64
+> garrison tax
+stderr:
+assertion failure: olympia/garr.c (471): loc_depth(where) == LOC_province
+
+exit 134
+stdout:
+section garrison invalid province subloc unlocated retains macro source assertion
+> garrison subloc 1000 32
+stderr:
+assertion failure: olympia/loc.c (338): valid_box(where)
+
+exit 134
+stdout:
+section garrison tax real leaves preserve sibling rng mint and shuffle
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> entity 15 4 0
+> name 15 elite guard
+> plural 15 elite guards
+> field 15 man 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> routes 9000 9001 9002 9003 0
+> link 9000 1000
+> death subkind 1000 64
+> inventory 1000 15 10
+> inventory 9000 96 46
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> weather probe 9000 257
+weather shuffle: 307 349 335 314 300 370 328 342 356 363 321
+weather strength 2
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 46 forward 0 strength 9
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9002 temp 0
+tax loc 9003 temp 0
+> master 9
+> weather probe 9000 257
+weather shuffle: 321 370 349 300 356 328 307 314 335 342 363
+weather strength 2
+> shuffle 0 9000
+exitdir 3 9003
+exitdir 1 9001
+exitdir 2 9002
+> newitem 9001 0
+created 66288
+> save_new
+66288 item 0
+IT
+ un 9001
+
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> set turn 10
+> garrison tax
+> garrison taxstate
+gold provinces 0
+tax garrison 1000 misc 1 tax 0 forward 0 strength 6
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9002 temp 0
+tax loc 9003 temp 0
+> weather probe 9000 257
+weather shuffle: 363 300 370 321 342 356 335 349 328 314 307
+weather strength 2
+> shuffle 0 9000
+exitdir 1 9001
+exitdir 2 9002
+exitdir 3 9003
+> newitem 9001 0
+created 61234
+> save_new
+61234 item 0
+IT
+ un 9001
+
+> income roll 9102 0 50 75
+income roll 9102 0 61
+stderr:
+
+exit 0
+stdout:
+section garrison tax no call control sibling rng mint and shuffle
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> entity 15 4 0
+> name 15 elite guard
+> plural 15 elite guards
+> field 15 man 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> routes 9000 9001 9002 9003 0
+> link 9000 1000
+> death subkind 1000 64
+> inventory 1000 15 10
+> inventory 9000 96 46
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> weather probe 9000 257
+weather shuffle: 307 349 335 314 300 370 328 342 356 363 321
+weather strength 2
+> master 9
+> weather probe 9000 257
+weather shuffle: 321 370 349 300 356 328 307 314 335 342 363
+weather strength 2
+> shuffle 0 9000
+exitdir 3 9003
+exitdir 1 9001
+exitdir 2 9002
+> newitem 9001 0
+created 66288
+> save_new
+66288 item 0
+IT
+ un 9001
+
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> set turn 10
+> weather probe 9000 257
+weather shuffle: 363 300 370 321 342 356 335 349 328 314 307
+weather strength 2
+> shuffle 0 9000
+exitdir 1 9001
+exitdir 2 9002
+exitdir 3 9003
+> newitem 9001 0
+created 61234
+> save_new
+61234 item 0
+IT
+ un 9001
+
+> income roll 9102 0 50 75
+income roll 9102 0 61
+stderr:
+
+exit 0
+stdout:
+section garrison tax free noble item full base forwards without maintenance and zero base retains forward
+> entity 1 4 0
+> entity 96 4 0
+> entity 12 4 0
+> field 12 man 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 32
+> link 9001 9100
+> link 9100 1001
+> link 9000 1000
+> death subkind 1000 64
+> field 1000 castle 9100
+> field 1000 noble_item 12
+> inventory 1000 12 10
+> inventory 1000 1 7
+> inventory 9000 96 55
+> garrison tax
+> garrison taxstate
+gold provinces 27
+tax garrison 1000 misc 1 tax 55 forward 27 strength 10
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9100 temp 27
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10 \
+	1 7
+LI
+ wh 9000
+CH
+ ni 12
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	1 27
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc plain
+LI
+ hl 9100 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9001
+ hl 1001 
+
+> garrison tax
+> garrison taxstate
+gold provinces 27
+tax garrison 1000 misc 1 tax 0 forward 27 strength 10
+tax loc 9000 temp 0
+tax loc 9001 temp 0
+tax loc 9100 temp 0
+> garrison state
+garrison pay 2 gold 0 show 0
+vector:
+garrison char 1000 leader 1000 default 0 prisoner 0 npc 1 guard 0 gold 7
+garrison char 1001 leader 1001 default 0 prisoner 0 npc 0 guard 0 gold 27
+player 200
+output: 1001
+player 201
+output:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char garrison
+il	12 10 \
+	1 7
+LI
+ wh 9000
+CH
+ ni 12
+ lo 200
+MI
+ gc 9100
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	1 27
+LI
+ wh 9100
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc plain
+LI
+ hl 9100 
+
+monthly loc 9100 loc 0 subloc 0 recent 0
+9100 loc castle
+LI
+ wh 9001
+ hl 1001 
+
+> readlog 200
+log 200:
+1001:0::0::Collected 27~gold from owned provinces.
+stderr:
+
+exit 0

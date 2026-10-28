@@ -190,6 +190,26 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pingGarrisons()
 			case "pay":
 				w.defaultGarrisonPay()
+			case "tax":
+				w.garrisonGold()
+			case "metric":
+				w.goldProvinces = int32(args.num(t))
+			case "subloc":
+				n, sk := args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "province subloc %d %d %d\n", n, sk, w.provinceSubloc(n, sk))
+			case "taxstate":
+				fmt.Fprintf(&stdout, "gold provinces %d\n", w.goldProvinces)
+				for n := range w.loopSubkind(subGarrison) {
+					p := w.rpMisc(n)
+					tax, forward := int32(0), int32(0)
+					if p != nil {
+						tax, forward = p.garrTax, p.garrForward
+					}
+					fmt.Fprintf(&stdout, "tax garrison %d misc %d tax %d forward %d strength %d\n", n, b2i(p != nil), tax, forward, w.garrisonStrength(n))
+				}
+				for n := range w.loopKind(tLoc) {
+					fmt.Fprintf(&stdout, "tax loc %d temp %d\n", n, w.bx[n].temp)
+				}
 			case "strength":
 				fmt.Fprintf(&stdout, "garrison strength %d\n", w.garrisonStrength(args.num(t)))
 			case "maint":
@@ -1304,6 +1324,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pMisc(n).opiumDouble = int8(a)
 			case "temp":
 				w.bx[n].temp = int32(a)
+			case "garr_tax":
+				w.pMisc(n).garrTax = int32(a)
+			case "garr_forward":
+				w.pMisc(n).garrForward = int32(a)
 			case "safe":
 				w.pSubloc(n).safe = int8(a)
 			case "loc_hidden":

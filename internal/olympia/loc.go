@@ -5,6 +5,20 @@ package olympia
 
 import "github.com/mdhender/g3g0/internal/lists"
 
+// provinceSubloc is build.c:160–177. Direct province children take
+// precedence over children of the first city; it does not recurse further.
+func (w *world) provinceSubloc(where, sk int) int {
+	prov := w.province(where)
+	city := w.sublocHere(prov, subCity)
+	if n := w.sublocHere(prov, sk); n != 0 {
+		return n
+	}
+	if city != 0 {
+		return w.sublocHere(city, sk)
+	}
+	return 0
+}
+
 // countLocStructures is the complete loc.c:352–366 definition. Only direct
 // location children count, including unowned structures and either subtype.
 func (w *world) countLocStructures(where, a, b int) int32 {

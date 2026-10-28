@@ -11,6 +11,62 @@ import (
 
 // Ported from olympia/garr.c: the garrison ownership/output closure.
 
+// garrisonGold is the complete garr.c:446–549 month-end settlement. In
+// particular, spent measures this unit's gold, not its stack's deductions;
+// garrForward is written only by the two forwarding branches, not reset.
+func (w *world) garrisonGold() {
+	w.clearTemps(tLoc)
+	for garr := range w.loopSubkind(subGarrison) {
+		if w.defaultGarrison(garr) != 0 {
+			continue
+		}
+		where := w.subloc(garr)
+		assert(w.locDepth(where) == locProvince, "olympia/garr.c", 471, "loc_depth(where) == LOC_province")
+		base := w.hasItem(where, itemTaxCookie)
+		w.consumeItem(where, itemTaxCookie, int(base))
+		w.genItem(garr, itemGold, int(base))
+		w.pMisc(garr).garrTax = base
+		hasBefore := w.hasItem(garr, itemGold)
+		w.chargeMaintSup(garr)
+		hasNow := w.hasItem(garr, itemGold)
+		spent := hasBefore - hasNow
+		if spent >= base {
+			continue
+		}
+		remain := base - spent
+		w.consumeItem(garr, itemGold, int(remain))
+		if w.garrisonStrength(garr) < 10 {
+			continue
+		}
+		if w.provinceSubloc(where, subCastle) != 0 {
+			w.genItem(where, itemTaxCookie, int(remain))
+			w.pMisc(garr).garrForward = -1
+			continue
+		}
+		remain /= 2
+		castle := 0
+		if p := w.rpMisc(garr); p != nil {
+			castle = int(p.garrCastle)
+		}
+		if castle != 0 && remain > 0 {
+			w.bx[castle].temp += remain
+			w.pMisc(garr).garrForward = remain
+		}
+	}
+	for i := range w.loopKind(tLoc) {
+		if w.subkind(i) != subCastle {
+			continue
+		}
+		owner := w.buildingOwner(i)
+		if owner == 0 || w.bx[i].temp == 0 {
+			continue
+		}
+		w.commandOut(owner, "Collected %s from owned provinces.", goldS(int(w.bx[i].temp)))
+		w.genItem(owner, itemGold, int(w.bx[i].temp))
+		w.goldProvinces += w.bx[i].temp
+	}
+}
+
 // garrisonStrength is garr.c:54–71. Inventory iteration excludes invalid
 // boxes and nonpositive quantities before applying all four fighter tests.
 func (w *world) garrisonStrength(garr int) int32 {

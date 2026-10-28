@@ -62,6 +62,7 @@ extern int gold_taxes;
 int drv_bark_roll(int who, int hound);
 void drv_event_days(void);
 extern int gold_garrison;
+extern int gold_provinces;
 extern int gold_combat, gold_combat_indep;
 extern int gold_pot_basket, gold_trade, gold_opium;
 int drv_reduce(struct trade *t, int cost);
@@ -197,6 +198,17 @@ int main(int argc, char **argv)
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"ping")) ping_garrisons();
    else if(!strcmp(text,"pay")) drv_garrison_pay();
+   else if(!strcmp(text,"tax")) garrison_gold();
+   else if(!strcmp(text,"metric")) gold_provinces=n;
+   else if(!strcmp(text,"subloc")) { sscanf(line,"%*s %*s %d %d",&n,&a); printf("province subloc %d %d %d\n",n,a,province_subloc(n,a)); }
+   else if(!strcmp(text,"taxstate")) {
+    printf("gold provinces %d\n",gold_provinces);
+    loop_garrison(n) {
+     struct entity_misc *p=rp_misc(n);
+     printf("tax garrison %d misc %d tax %d forward %d strength %d\n",n,p!=NULL,p?p->garr_tax:0,p?p->garr_forward:0,garrison_strength(n));
+    } next_garrison;
+    loop_loc(n) { printf("tax loc %d temp %d\n",n,bx[n]->temp); } next_loc;
+   }
    else if(!strcmp(text,"strength")) printf("garrison strength %d\n",garrison_strength(n));
    else if(!strcmp(text,"maint")) printf("maintenance %d\n",maint_cost(n));
    else if(!strcmp(text,"state")) {
@@ -936,6 +948,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"opium")) p_subloc(n)->opium_econ = a;
    else if (!strcmp(text,"double")) p_misc(n)->opium_double = (schar)a;
    else if (!strcmp(text,"temp")) bx[n]->temp = a;
+   else if (!strcmp(text,"garr_tax")) p_misc(n)->garr_tax = a;
+   else if (!strcmp(text,"garr_forward")) p_misc(n)->garr_forward = a;
    else if (!strcmp(text,"safe")) p_subloc(n)->safe = (schar)a;
    else if (!strcmp(text,"loc_hidden")) p_loc(n)->hidden = (schar)a;
    else if (!strcmp(text,"barrier")) p_loc(n)->barrier = (short)a;
