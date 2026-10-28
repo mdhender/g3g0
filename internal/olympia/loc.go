@@ -5,6 +5,19 @@ package olympia
 
 import "github.com/mdhender/g3g0/internal/lists"
 
+// countLocStructures is the complete loc.c:352–366 definition. Only direct
+// location children count, including unowned structures and either subtype.
+func (w *world) countLocStructures(where, a, b int) int32 {
+	var sum int32
+	assert(w.validBox(where), "olympia/loc.c", 358, "valid_box(where)")
+	for i := range w.loopHere(where) {
+		if w.kind(i) == tLoc && (w.subkind(i) == a || w.subkind(i) == b) {
+			sum++
+		}
+	}
+	return sum
+}
+
 // Complete loc.c:332–351, also used by the city_here macro (loc.h:22).
 func (w *world) sublocHere(where, sk int) int {
 	assert(w.validBox(where), "olympia/loc.c", 338, "valid_box(where)")

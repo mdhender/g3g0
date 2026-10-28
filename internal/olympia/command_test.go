@@ -440,6 +440,25 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.incrementStoneRingAura()
 		case "curse":
 			w.noncreatorCurseErode()
+		case "income":
+			switch action := args.word(); action {
+			case "inn":
+				w.innIncome()
+			case "temple":
+				w.templeIncome()
+			case "roll":
+				n, sub, low, high := args.num(t), args.num(t), args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "income roll %d %d %d\n", n, sub, w.streams.UpIncome(n, sub, low, high))
+			case "count":
+				n, a, b := args.num(t), args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "structures %d %d %d %d\n", n, a, b, w.countLocStructures(n, a, b))
+			case "metrics":
+				w.goldInn, w.goldTemple = int32(args.num(t)), int32(args.num(t))
+			case "state":
+				fmt.Fprintf(&stdout, "income gold inn %d temple %d\n", w.goldInn, w.goldTemple)
+			default:
+				t.Fatalf("unknown income %s", action)
+			}
 		case "monthly":
 			switch action := args.word(); action {
 			case "aura":

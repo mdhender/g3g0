@@ -61,7 +61,7 @@ functions = {
               'special_locs_open', 'special_locs_close', 'clear_orders_sent',
               'increment_current_aura', 'decrement_ability_shroud', 'decrement_region_shroud',
               'decrement_meditation_hinder', 'decrement_loc_barrier', 'loyalty_decay',
-              'pillage_decay', 'relic_decay', 'hide_mage_decay'],
+              'pillage_decay', 'relic_decay', 'hide_mage_decay', 'inn_income', 'temple_income'],
     'scry.c': ['notify_loc_shroud'],
     'seed.c': ['int_comp', 'seed_taxes'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
@@ -76,7 +76,7 @@ functions = {
               'exits_from_loc_nsew_select', 'has_ocean_access'],
     'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits', 'find_wield', 'wield_s'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
-              'subloc_here',
+              'subloc_here', 'count_loc_structures',
               'in_safe_now', 'province', 'building_owner', 'viewloc', 'all_char_here',
               'in_here_list', 'add_to_here_list', 'remove_from_here_list', 'set_where',
               'region', 'mark_loc_stack_known', 'add_here', 'all_here'],
@@ -152,7 +152,8 @@ int immed_see_all, month_done, show_combat_flag;
 ''')
     gm = open(f'{src}/gm.c').read()
     for name in ['gold_garrison', 'gold_combat', 'gold_combat_indep',
-                 'gold_pot_basket', 'gold_trade', 'gold_opium', 'gold_taxes']:
+                 'gold_pot_basket', 'gold_trade', 'gold_opium', 'gold_taxes',
+                 'gold_inn', 'gold_temple']:
         m = re.search(rf'^int {name} = 0;\n', gm, re.M)
         if not m:
             sys.exit(f'no {name} definition in gm.c')
@@ -216,7 +217,7 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(source[start:end])
             out.write(re.search(r'^static ilist collectors = NULL;\n', source, re.M).group(0))
         if file == 'day.c':
-            start, end = source.index('static rng_stream upkeep_rng;'), source.index('/* Starvation flavor')
+            start, end = source.index('static rng_stream upkeep_rng;'), source.index('/*\n *  issue #25 endgame Unit B:')
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/day.c"\n')
             out.write(source[start:end])
             start, end = source.index('static rng_stream calendar_rng;'), source.index('static int\nnear_rocky_coast(')
@@ -265,6 +266,9 @@ void drv_loyalty(void) { loyalty_decay(); }
 void drv_pillage(void) { pillage_decay(); }
 void drv_relic(void) { relic_decay(); }
 void drv_hide_mage(void) { hide_mage_decay(); }
+void drv_income_inn(void) { inn_income(); }
+void drv_income_temple(void) { temple_income(); }
+int drv_income_roll(int inn, int sub, int low, int high) { return up_income(inn, sub, low, high); }
 int drv_loyal_roll(int who, int sub) { return up_loyal(who, sub, 1, 2); }
 void drv_city_gold(void) { move_city_gold(); }
 void drv_taxes(void) { collect_taxes(); }
@@ -418,6 +422,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section income '* ]]; then
+   expected_status=0
+   if [[ "${section_names[$i]}" == 'section income invalid count preserves loop_here valid box assertion' ]]; then
+    expected_status=134
+   fi
+   [ "$status" = "$expected_status" ] || die "unexpected income status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section monthly '* ]]; then
    [ "$status" = 0 ] || die "unexpected monthly aura/loyalty status $status in section $i"
   fi

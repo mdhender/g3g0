@@ -2524,3 +2524,88 @@ Version **0.63.0-alpha**; all changes remain **uncommitted** for acceptance.
 Scope clarification: https://github.com/mdhender/g3g0/issues/85#issuecomment-6462040567.
 `garrison_gold` still stops at its unchanged #116 boundary; no successful
 full `postMonth`, maintenance/income, command-family or report-body scope.
+
+## Monthly inn and temple income (#86)
+
+This extends the same real-C harness, not a duplicate upkeep tool. Pin remains
+`6a25f2d252ce45bd5adbe3baaccb3be3eed56279`. New complete definitions:
+
+| pinned source | definition / range |
+|---|---|
+| `olympia/day.c` | `inn_income`, **1421–1489** |
+| `olympia/day.c` | `temple_income`, **1492–1522** |
+| `olympia/loc.c` | `count_loc_structures`, **352–366** |
+| `olympia/day.c` | original upkeep stream/tags and complete guarded leaf prefix, **50–157**, including `up_income` **150–155** |
+| `olympia/gm.c` | original `int gold_inn = 0;` **12**, `int gold_temple = 0;` **19** |
+
+Only phase instrumentation is omitted. Go reuses persistent
+`w.streams.UpIncome`, real `buildingOwner`/`hasSkill`, inventory/lore,
+output routing and `saveBox`; both accounting scalars and intermediate amounts
+are C-width signed ints (`int32`). Nothing substitutes a modeled owner,
+income stream, inventory or successful unported phase. No new source
+dependency/pin/affected.sh entry is needed. `postMonth` call order is unchanged;
+the earlier `garrisonGold` boundary remains #116 after maintenance #87.
+
+Source-backed acceptance clarification:
+https://github.com/mdhender/g3g0/issues/86#issuecomment-6462255396.
+The issue's original temple-sharing/occupancy wording is not the C contract:
+
+- Inn sharing uses **subloc(inn)**, not province, and counts direct **T_loc**
+  children matching **sub_inn OR 0**, including unowned structures. The count
+  helper checks either subtype once and does not descend or count items/chars.
+  Actual unequal incomes are **12/72/13** with five sharing structures: the
+  middle inn adds its **60** traveller bonus **after** sharing. Empty and
+  unfinished inns are skipped; nested inns share only their immediate parent.
+- Inn base endpoints **50/75**, traveller gate **1/2/8**, and actual bonus
+  endpoints **50/130** are C-recorded. Pillage suppresses an otherwise-hit
+  traveller gate, divides before sharing and selects all three exact flavor
+  messages. Pillage **127** yields zero without creating inventory entries.
+  Out-of-order fixture allocation and placement still emit subtype-chain order.
+- Temples have **no sharing or occupant/capacity scaling**. One- and
+  three-occupant priest-owned temples each pay **100**, while an empty temple,
+  a first nonpriest followed by a priest, learning religion, absent character
+  records/skills and unfinished temples do not pay. Local pillage pays **33**;
+  an unpillaged nested temple still pays **100**, not its province's **33**.
+  A first captive priest remains the owner: inventory/metrics receive the
+  offering even when real prisoner-output routing suppresses its message.
+- Same-turn day/master changes replay **120/120**; the next turn pays **61**;
+  returning to the old turn after the master change reseeds and pays **57**.
+  Scalars initialized at **2147483000/-2147483000** accumulate real income
+  twice without reset or signed overflow. Saved inventories, record presence,
+  here order and raw logs are compared, not just totals.
+- Real-income/no-call pairs retain identical weather shuffles/strengths,
+  exit shuffles and minted IDs **66288/61234** across the turn boundary.
+
+The twelve ordinary `income` sections require status **0**. The explicitly
+named invalid-count section alone requires **134**: `income count 9999 37 0`
+records `assertion failure: olympia/loc.c (358): valid_box(where)` from the
+original `loop_here` macro expansion. Go preserves this assertion at its
+call-site before `loopHere`, rather than silently returning or producing a
+nil-dereference/runtime panic. This is the parent's task-review correction,
+not an independent gameplay change or publicly reachable upstream defect.
+A temporary compiled
+driver wrapper emitted `out-of-scope C dependency: income_probe` and status
+**134** at section **648**. Both ordinary and `--update` runs rejected it
+with status **2** before income status handling and left the recording hash
+unchanged. The temporary probe was removed. Raw malformed-field tests alone
+are not public upstream-defect evidence; no new verified bug/blocker was found.
+
+Two real pinned C runs and Go match **661 sections / 49624 lines / 836364
+bytes**. Previous output **660 sections / 49617 lines / 836187 bytes**, and
+its input **15298 lines / 274081 bytes**, remain exact byte prefixes.
+The accepted **648-section / 48420-line / 815585-byte** output and
+**14923-line / 267413-byte** input prefixes are also byte-verified unchanged,
+retaining the earlier 636-section prefix transitively. New input:
+**15301 lines / 274174 bytes**. Recording SHA-256:
+`2ffa80dd6dd61f28cb3b10a57f7efae146139376ed179ec0d49f07e834f0f91f`.
+Expected bytes come only from real C, including its trailing whitespace.
+
+Sequential final checks passed: command **661/49624**, move **135/7150**,
+helper **37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+default turn (raw status/stdout/stderr and one state file), then bounded vet
+and fresh bounded default tests with the shared `run_limited` engine executor.
+Every compat call used `G3_REPO=$PWD/tmp/upstream.git`. No full-world run,
+independent fix, commit, push, issue closure/tick or stage-2 work.
+
+Version **0.64.0-alpha**; changes remain **uncommitted** for parent acceptance.

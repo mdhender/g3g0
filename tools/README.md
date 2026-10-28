@@ -168,6 +168,24 @@ order is unchanged and garrison_gold remains the #116 stop. scry.c is newly
 tracked by affected.sh; there is no new pin or upkeep tool. Run the same
 eight comparisons sequentially before bounded vet/fresh default tests.
 No full-world, maintenance/income, report-body or stage-2 scope is implied.
+Monthly inn/temple income (#86) extends command-compat with complete day.c
+inn_income/temple_income and loc.c count_loc_structures. It extracts the
+original guarded up_income prefix and gm.c gold_inn/gold_temple scalars,
+reusing persistent w.streams.UpIncome and real ownership, inventory, logs and
+save-box writers. Inn sharing counts both matching direct location subtypes,
+including unowned structures, at subloc(inn), not its province. Pillage divides
+before sharing; traveller bonuses are outside sharing and gated by no pillage.
+Temples have no sharing or occupant/capacity scaling: known religion on the
+first direct character gates a flat 100 offering before local pillage.
+Small cases cover unequal incomes, nested locations, exact subkeys/ranges,
+all pillage flavors, absent records, same-turn master/day guards, next-turn
+reseeding, signed-int accounting and paired mint/weather/exit-shuffle controls.
+The raw invalid count-helper case preserves loop_here's source assertion at
+loc.c:358 and requires status 134; ordinary income cases require status 0.
+Post-month order and the #116 garrison stop are unchanged. Run command/move/
+helper/rng/code/loadsave/turn-driver/default-turn sequentially, then bounded
+vet and fresh default tests. No new source dependency/pin, duplicate upkeep
+tool, full-world success, report-body or stage-2 acceptance is implied.
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks
 through dispatch/evenings, including queued multi-day NPC MOVE → WAIT. Also run
 move-compat for the shared travel, message and raft crew-loss contracts; full

@@ -50,6 +50,9 @@ void drv_dogs(void), drv_ring(void), drv_curse(void);
 void drv_aura(void), drv_ability(void), drv_shroud(void), drv_hinder(void);
 void drv_barrier(void), drv_loyalty(void), drv_pillage(void), drv_relic(void), drv_hide_mage(void);
 int drv_loyal_roll(int who, int sub);
+void drv_income_inn(void), drv_income_temple(void);
+int drv_income_roll(int inn, int sub, int low, int high);
+extern int gold_inn, gold_temple;
 void drv_city_gold(void), drv_replenish(int where, int item, int qty);
 void drv_taxes(void), drv_claim(void), drv_np(void), drv_unformed(void);
 void drv_special_open(void), drv_special_close(void), drv_clear_sent(void);
@@ -375,6 +378,16 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "bark")) { sscanf(line,"%*s %d",&n); bark_dogs(n); }
   else if (!strcmp(op, "ring")) drv_ring();
   else if (!strcmp(op, "curse")) drv_curse();
+  else if (!strcmp(op, "income")) {
+   sscanf(line,"%*s %31s %d %d %d %d",text,&n,&a,&b,&d);
+   if (!strcmp(text,"inn")) drv_income_inn();
+   else if (!strcmp(text,"temple")) drv_income_temple();
+   else if (!strcmp(text,"roll")) printf("income roll %d %d %d\n",n,a,drv_income_roll(n,a,b,d));
+   else if (!strcmp(text,"count")) printf("structures %d %d %d %d\n",n,a,b,count_loc_structures(n,a,b));
+   else if (!strcmp(text,"metrics")) { gold_inn=n; gold_temple=a; }
+   else if (!strcmp(text,"state")) printf("income gold inn %d temple %d\n",gold_inn,gold_temple);
+   else return 2;
+  }
   else if (!strcmp(op, "monthly")) {
    sscanf(line,"%*s %31s %d %d",text,&n,&a);
    if (!strcmp(text,"aura")) drv_aura();
