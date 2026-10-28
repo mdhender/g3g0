@@ -521,6 +521,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section file observer '* ]]; then
+   [ "$status" = 0 ] || die "unexpected file observer status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section lifecycle '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

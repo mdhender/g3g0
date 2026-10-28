@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include "z.h"
@@ -998,6 +999,7 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"players")) player_ent_info();
    else if(!strcmp(text,"characters")) character_report();
    else if(!strcmp(text,"locations")) turn_end_loc_reports();
+   else if(!strcmp(text,"location")) out(n,"%s",char_rep_location(n));
    else if(!strcmp(text,"banner")) player_banner();
    else if(!strcmp(text,"provinces")) drv_summary_provinces();
    else if(!strcmp(text,"templates")) list_order_templates();
@@ -1126,6 +1128,27 @@ int main(int argc, char **argv)
    sscanf(line,"%*s %d",&n); fflush(NULL);
    printf("log %d:\n",n); log = fopen(sout("%s/log/%d",libdir,n),"r");
    if(log) { while((n=fgetc(log)) != EOF) putchar(n); fclose(log); }
+  }
+  else if (!strcmp(op, "readfile")) {
+   char path[8192], data[65537];
+   size_t len;
+   struct stat st;
+   if(sscanf(line,"%*s %8191s",path)!=1) return 2;
+   /* Independent read handle only: never flush or close production FILEs. */
+   if(stat(path,&st)) {
+    if(errno!=ENOENT && errno!=ENOTDIR) return 2;
+    printf("file bytes %s missing\n",path);
+   }
+   else {
+    if(!S_ISREG(st.st_mode) || st.st_size>65536) return 2;
+    log=fopen(path,"rb"); if(!log) return 2;
+    len=fread(data,1,sizeof(data),log);
+    if(ferror(log) || len>65536) { fclose(log); return 2; }
+    fclose(log);
+    printf("file bytes %s %lu:\n",path,(unsigned long)len);
+    fwrite(data,1,len,stdout);
+    printf("\nend file bytes\n");
+   }
   }
   else if (!strcmp(op, "load")) printf("load %d\n", drv_load(c));
   else if (!strcmp(op, "do")) do_command(c);

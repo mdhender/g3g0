@@ -6,11 +6,14 @@ package olympia
 import (
 	"bufio"
 	"encoding/hex"
+	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
+	"syscall"
 	"testing"
 
 	"github.com/mdhender/g3g0/internal/clib"
@@ -1359,6 +1362,9 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.characterReportState()
 			case "locations":
 				w.turnEndLocReportsState()
+			case "location":
+				n := args.num(t)
+				w.commandOut(n, "%s", w.charRepLocation(n))
 			case "banner":
 				w.playerBannerState()
 			case "provinces":
@@ -1475,12 +1481,39 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			}
 		case "readlog":
 			n := args.num(t)
+			clib.FlushAll() // Preserve the C observer's intentional fflush(NULL).
 			fmt.Fprintf(&stdout, "log %d:\n", n)
 			data, err := os.ReadFile(filepath.Join(w.libdir, "log", fmt.Sprint(n)))
 			if err != nil && !os.IsNotExist(err) {
 				t.Fatal(err)
 			}
 			stdout.Write(data)
+		case "readfile":
+			path := args.word()
+			st, err := os.Stat(path)
+			if err != nil {
+				if !os.IsNotExist(err) && !errors.Is(err, syscall.ENOTDIR) {
+					t.Fatal(err)
+				}
+				fmt.Fprintf(&stdout, "file bytes %s missing\n", path)
+				break
+			}
+			if !st.Mode().IsRegular() || st.Size() > 65536 {
+				t.Fatalf("readfile requires a regular file of at most 65536 bytes: %s", path)
+			}
+			// Borrow no production streams; observe disk without flushing caches.
+			f, err := os.Open(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			data, err := io.ReadAll(io.LimitReader(f, 65537))
+			closeErr := f.Close()
+			if err != nil || closeErr != nil || len(data) > 65536 {
+				t.Fatalf("readfile %s: read %v, close %v, size %d", path, err, closeErr, len(data))
+			}
+			fmt.Fprintf(&stdout, "file bytes %s %d:\n", path, len(data))
+			stdout.Write(data)
+			fmt.Fprint(&stdout, "\nend file bytes\n")
 		case "load":
 			fmt.Fprintf(&stdout, "load %d\n", b2i(w.loadCommand(c)))
 		case "do":

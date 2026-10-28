@@ -59839,3 +59839,113 @@ run_q:
 stderr:
 
 exit 0
+stdout:
+section file observer raw blank lines trailing whitespace and absent versus empty
+> lore_root
+> readfile absent
+file bytes absent missing
+> lore_file empty
+> readfile empty
+file bytes empty 0:
+
+end file bytes
+> lore_file raw first  ||last  
+> readfile raw
+file bytes raw 15:
+first  
+
+last  
+end file bytes
+> readfile raw/child
+file bytes raw/child missing
+stderr:
+
+exit 0
+stdout:
+section file observer buffered report output explicit flush and saved log bytes
+> lore_root
+> master 0
+> set flush 0
+> report location 1000
+> readfile log/200
+file bytes log/200 0:
+
+end file bytes
+> life flush
+> readfile log/200
+file bytes log/200 19:
+1000:0::0::nowhere
+
+end file bytes
+> life rename log/200 held
+> entity 8000 3 50
+> entity 9000 3 3
+> name 9000 Observation plain
+> link 8000 9000
+> link 9000 1000
+> report location 1000
+> readfile held
+file bytes held 19:
+1000:0::0::nowhere
+
+end file bytes
+> readfile log/200
+file bytes log/200 missing
+> life flush
+> readfile held
+file bytes held 55:
+1000:0::0::nowhere
+1000:0::0::Observation plain~[9000]
+
+end file bytes
+> life close
+> lore_dir save
+> set turn 17
+> life rename held log/200
+> life save 0
+> readfile save/17/200
+file bytes save/17/200 55:
+1000:0::0::nowhere
+1000:0::0::Observation plain~[9000]
+
+end file bytes
+> readfile log/200
+file bytes log/200 missing
+stderr:
+couldn't rename ./players to ./save/17/players:No such file or directory
+
+exit 0
+stdout:
+section file observer readlog retains intentional flush and raw routing spaces
+> lore_root
+> master 0
+> set flush 0
+> emit 1000 71
+> readfile log/200
+file bytes log/200 0:
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::routing 71  
+> readfile log/200
+file bytes log/200 24:
+1000:0::0::routing 71  
+
+end file bytes
+> emit 1000 72
+> readfile log/200
+file bytes log/200 24:
+1000:0::0::routing 71  
+
+end file bytes
+> life flush
+> readfile log/200
+file bytes log/200 48:
+1000:0::0::routing 71  
+1000:0::0::routing 72  
+
+end file bytes
+stderr:
+
+exit 0

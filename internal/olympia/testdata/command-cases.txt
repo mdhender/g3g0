@@ -18883,3 +18883,52 @@ npc probe 1000
 npc begin 9001
 npc probe 1000
 savage_state
+
+section file observer raw blank lines trailing whitespace and absent versus empty
+lore_root
+readfile absent
+lore_file empty
+readfile empty
+lore_file raw first  ||last  
+readfile raw
+readfile raw/child
+
+section file observer buffered report output explicit flush and saved log bytes
+lore_root
+master 0
+set flush 0
+report location 1000
+readfile log/200
+life flush
+readfile log/200
+life rename log/200 held
+entity 8000 3 50
+entity 9000 3 3
+name 9000 Observation plain
+link 8000 9000
+link 9000 1000
+report location 1000
+readfile held
+readfile log/200
+life flush
+readfile held
+life close
+lore_dir save
+set turn 17
+life rename held log/200
+life save 0
+readfile save/17/200
+readfile log/200
+
+section file observer readlog retains intentional flush and raw routing spaces
+lore_root
+master 0
+set flush 0
+emit 1000 71
+readfile log/200
+readlog 200
+readfile log/200
+emit 1000 72
+readfile log/200
+life flush
+readfile log/200

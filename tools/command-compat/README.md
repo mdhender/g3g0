@@ -5,7 +5,7 @@ e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-
 
 ## G3 #357 follow-C and pin move (#131)
 
-Current recording: **859 sections / 59841 lines**, from two identical real
+Pin-move recording: **859 sections / 59841 lines**, from two identical real
 C runs. All original input sections remain byte-exact; their old descriptive
 names are retained even where the bug they named is now fixed. The appended
 savage-cap case probes the current NPC stream before an explicit source-
@@ -40,6 +40,70 @@ the pin also works. `G3_REV` deliberately overrides the pin.
 Only archives under `tmp/` are compiled; no upstream working tree is modified
 or built. Each C driver and Go test binary runs under shared `run_limited`,
 via `tools/lib/timeout.sh` / `run-limited.sh`, with `RUN_TIMEOUT` seconds.
+
+## Bounded raw file observations (#135)
+
+`readfile PATH` observes a whitespace-free cwd-relative (or absolute) path,
+without flushing, closing, resetting or reopening any production output owner.
+It opens and closes only its own independent read handle. Regular files are
+limited to **65536 bytes**; nonregular files, oversized reads and other I/O
+errors fail the harness, never truncate or masquerade as an empty file.
+ENOENT/ENOTDIR print `file bytes PATH missing`. Existing files print
+`file bytes PATH LENGTH:` and a newline, exactly LENGTH raw bytes, then the
+framing `\nend file bytes\n`. The extra framing newline is not file content;
+the explicit length distinguishes empty files, blank lines, trailing spaces
+and absent final newlines. There is no whitespace or diagnostic normalization.
+
+Use existing `life flush` for intentional post-flush observations. `readlog N`
+retains its historical explicit global fflush followed by unframed log bytes;
+the Go interpreter now explicitly mirrors that flush even with buffering on.
+Neither operation implements production rendering. Existing `report` actions
+already invoke complete pinned C roots; Go's deferred projections remain in
+their existing owners. No speculative report-leaf catalog is added.
+
+Three appended cases cover raw blank/trailing-whitespace bytes, empty/missing
+and ENOTDIR, buffered report output before/after explicit flush, repeated
+observation without cache reset, renamed cached-inode writes, actual saved-log
+bytes, and the intentionally flushing legacy readlog. The sole new leaf action,
+`report location N`, routes the existing `char_rep_location(N)` result through
+real `out`, reusing Go's accepted charRepLocation/commandOut owners. Complete
+unchanged report.c:357–407 was already extracted for death logging; no C
+dependency or rendering implementation is added. Cases distinguish `nowhere`
+from a named province after relocation. Ordinary routing also preserves its
+two trailing spaces. Future auxiliary and Times body cases use the same observer;
+their deferred rendering is not implemented or claimed here.
+
+New `section file observer` cases require C status 0 in addition to the existing
+missing-dependency rejection, including in `--update` mode; an assertion cannot
+silently become a successful observer recording.
+
+At **0.76.6-alpha**, two actual pinned C runs before recording and Go match
+**862 sections / 59951 lines / 1040469 output bytes**. The previous **859
+sections / 59841 lines / 1038509 output bytes**, and **18885 input lines /
+344932 input bytes**, remain exact unchanged byte prefixes. New input totals
+**18934 lines / 345845 bytes**. Recorded output SHA-256:
+`e9d1a9c2bf62020280ff8c19109fe84906c31ae5a84e44f6d6c38b606140e423`.
+
+A temporary one-byte mutation of C-recorded report text (`nowhere` → `Nowhere`)
+made the bounded fresh Go comparator fail at line **59877**, with the exact
+different bytes quoted. The original C bytes and hash were restored. A separate
+temporary C driver probe emitted the rejected missing-dependency marker and
+returned success in section **859**; `--update` rejected it with status **2**
+before replacing the recording (hash unchanged). Neither probe remains.
+Logs: `tmp/issue135-command-update.log`, `tmp/issue135-negative-report-byte.log`,
+`tmp/issue135-negative-dependency.log`, `tmp/issue135-validation.log`.
+
+Fresh bounded `go vet ./...` and `go test -count=1 ./...` pass (Olympia
+1.767s); test binaries use `tools/lib/run-limited.sh`. Sequential default
+command comparison repeats C deterministically and passes all 862 sections;
+default turn passes its comparator contracts and exact raw streams/status
+and two cwd entries (types/modes/bytes). All tool calls explicitly use
+`G3_REPO="$PWD/tmp/upstream.git"`. No full corpus or strict whole-world turn
+is rerun for this harness-only task; the stage-2 report differences remain.
+Engine code, source pin, dependencies and existing recordings' prefixes are
+unchanged. Parent acceptance independently repeated command C/C/Go, vet,
+fresh bounded tests and default turn checks; evidence is in
+`tmp/parent135-{command,vet,tests,turn}.log`.
 
 ## Reference and stub boundary
 
