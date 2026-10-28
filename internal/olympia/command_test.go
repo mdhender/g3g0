@@ -76,6 +76,7 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 	c := w.pCommand(1000)
 	c.who, c.state = 1000, stateDone
 	created := 0
+	savedVector := w.outVector
 	var watched []string
 	fileState := func(path string) {
 		st, err := os.Stat(path)
@@ -959,6 +960,56 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			stdout.Write(data)
 		case "emit":
 			w.commandOut(args.num(t), "routing %d  ", args.num(t))
+		case "sout":
+			switch action := args.word(); action {
+			case "route":
+				w.outPath, w.outAltWho = args.num(t), args.num(t)
+			case "frame":
+				w.indent, w.secondIndent = int32(args.num(t)), int32(args.num(t))
+				w.showDay, w.sysclock.day = args.num(t) != 0, int16(args.num(t))
+			case "style":
+				w.style(int32(args.num(t)))
+			case "clear":
+				w.vectorClear()
+			case "add":
+				w.vectorAdd(args.num(t))
+			case "players":
+				w.vectorPlayers()
+			case "save":
+				savedVector = w.saveOutputVector()
+			case "restore":
+				w.restoreOutputVector(savedVector)
+				savedVector = nil
+			case "state":
+				fmt.Fprintf(&stdout, "route %d %d frame %d %d %d %d\n", w.outPath, w.outAltWho, w.indent, w.secondIndent, b2i(w.showDay), w.sysclock.day)
+				helperList(&stdout, "vector", w.outVector)
+				helperList(&stdout, "saved vector", savedVector)
+			case "text":
+				n, kind, ind, count := args.num(t), args.word(), args.num(t), args.num(t)
+				s := args.ctext()
+				if count < 0 || count*len(s) > 16384 {
+					t.Fatal("oversized sout text")
+				}
+				s = strings.ReplaceAll(strings.Repeat(s, count), "|", "\n")
+				switch kind {
+				case "out":
+					w.commandOut(n, "%s", s)
+				case "wiout":
+					w.wiout(n, int32(ind), "%s", s)
+				case "html":
+					w.html(n, "%s", s)
+				case "lines":
+					w.lines(n, s)
+				case "match":
+					w.matchLines(n, s)
+				case "log":
+					w.logWrite(n, "%s", s)
+				default:
+					t.Fatalf("unknown sout text %s", kind)
+				}
+			default:
+				t.Fatalf("unknown sout %s", action)
+			}
 		case "garrison_view":
 			w.showToGarrison = args.num(t) != 0
 		case "lore_state":
@@ -1414,7 +1465,7 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				fmt.Fprintf(&stdout, "report misc %d %d\n", n, b2i(w.rpMisc(n) != nil))
 				w.saveBox(&stdout, n)
 			case "style":
-				w.styleHTML = int32(args.num(t))
+				w.style(int32(args.num(t)))
 			case "style_probe":
 				w.bottomOut(args.num(t), 0, "style probe")
 			case "skill":

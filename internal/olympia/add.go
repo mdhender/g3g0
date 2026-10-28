@@ -81,12 +81,7 @@ func (w *world) addNewPlayers() {
 	w.stage("new_player_list()")
 	// new_player_list calls sout.c:568–582 vector_players even with no
 	// admissions. Silent and system players participate; only these two skip.
-	w.outVector.Clear()
-	for pl := range w.loopKind(tPlayer) {
-		if pl != int(w.eatPl) && pl != int(w.skillPlayer) {
-			w.outVector.Append(pl)
-		}
-	}
+	w.vectorPlayers()
 }
 
 // renameActJoinFiles is rename_act_join_files(): for each player added

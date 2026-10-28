@@ -521,6 +521,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section sout '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section sout invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected sout status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section file observer '* ]]; then
    [ "$status" = 0 ] || die "unexpected file observer status $status in section $i"
   fi

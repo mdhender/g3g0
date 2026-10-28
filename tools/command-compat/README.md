@@ -105,6 +105,70 @@ unchanged. Parent acceptance independently repeated command C/C/Go, vet,
 fresh bounded tests and default turn checks; evidence is in
 `tmp/parent135-{command,vet,tests,turn}.log`.
 
+## MASTER, styles and section primitives (#136)
+
+At **0.77.0-alpha**, twelve appended sections exercise complete unchanged
+real sout.c:273–283,448–582,620–719, already linked whole. No extraction,
+pin, dependency or successful stub changes are needed. Go extends the same
+sout.go/world.go owner: format once into the LEN-1-byte text before routing,
+prisoners before MASTER, one previous style (not a stack), vector ownership
+transfer, and literal section/header bytes. bottomOut/openPlayerOutput still
+open before p_player and retain the existing buffered cached inode lifetime.
+The admission projection now calls vectorPlayers; the account projection
+retains the three original HTML/previous-style transitions, without adding
+its deferred body. wout is out, with no active wrapping engine at this pin.
+Raw html() styles are implemented; separate -h generation is not.
+
+Fixture-only `sout` actions select route/frame/style, vector clear/add/players/
+save/restore and state observation. `sout text WHO KIND IND COUNT TEXT` repeats
+bounded fixture text (at most 16384 bytes, `|` means newline) and calls actual
+out/wiout/html/lines/match_lines/log_write. It does not supply expected output
+or replace a C dependency. Existing readfile's independent 64-KiB/no-flush
+observer, life flush and readlog are reused unchanged.
+
+Cases distinguish normal/MASTER/vector, duplicates, prisoner suppression,
+location allocations and garrison fanout, silent players and scanner/skill
+exclusions, all eight
+frame variants (unit/day/secondary), negative indents, wiout's secondary reset,
+repeated PREV and nested HTML, comma/empty/long headings, exactly 72 dashes,
+2046/2047/2048/3000-byte inputs, unwrapped lines, raw colon/tilde/newlines,
+output bits, transfer/restore including empty vectors, log_write restoration
+of both ordinary and MASTER fields, prisoner GM, and buffered renamed-inode
+writes. Invalid vectors and log categories retain original assertion locations
+457/708. Every new successful case requires status 0; only the two named
+invalid controls require 134, after missing-dependency rejection.
+
+Two complete real C runs are compared before every recording replacement.
+Final C/C/Go: **874 sections / 60548 lines / 1073778 output bytes**; inputs
+**19198 lines / 350721 bytes**. The entire previous **59951 lines / 1040469
+output bytes** and **18934 lines / 345845 input bytes** remain unchanged byte
+prefixes. Output SHA-256:
+`260a5fea60c89dffdd78241e681bf41b0a989f6320b21e579ce043c08cd101f0`.
+A Go-only Stringer probe guards the single-format-before-fanout boundary,
+including duplicate, prisoner-only and empty vectors.
+
+Negative controls: a temporary missing-dependency marker with successful C
+exit is rejected in --update at section 0, status 2, with recording hash
+unchanged (`tmp/issue136-negative-dependency.log`). A one-byte Title→title
+mutation of the recorded HTML name fails the Go comparator at line 60197
+(`tmp/issue136-negative-byte.log`); original bytes/hash were restored. Neither
+probe remains. Initial fresh tests exposed unallocated recipients in the new
+Go-only test setup; allocating those fixtures fixed the test, not engine code.
+
+Sequential command/move/helper/code/loadsave/turn-driver/default-turn checks
+pass, all with explicit `G3_REPO="$PWD/tmp/upstream.git"` and run_limited engine
+supervision. Bounded vet and fresh bounded defaults pass. Evidence:
+`tmp/issue136-command-{preupdate,update}.log`,
+`tmp/issue136-{command,move,helper,code,loadsave,turn-driver,turn,vet,test}.log`.
+Source diff whitespace checks pass; trailing spaces in the C recording are
+literal preserved data. Parent acceptance independently repeated these checks
+(`tmp/parent136-*.log`) and the strict full turn. Two fresh C turns match;
+C/Go both exit 0 with identical raw streams and no path/type/mode differences.
+Exactly the same eight saved-report byte differences remain deferred renderer
+work, not a claimed green stage-2 gate (`tmp/parent136-turn-full.log`).
+Full corpus was not rerun. No later renderer or external lifecycle feature is
+implemented.
+
 ## Reference and stub boundary
 
 The script extracts complete functions from **real pinned input.c**, retaining

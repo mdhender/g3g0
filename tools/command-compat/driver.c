@@ -18,7 +18,7 @@ int drv_load(struct command *c);
 int find_command(char *s);
 void drv_state(struct command *c, int s);
 struct order_list *drv_orders(int pl, int who);
-extern int cur_pri, cmd_wait, flush_always;
+extern int cur_pri, cmd_wait, flush_always, second_indent;
 extern ilist load_q[5], run_q;
 extern int evening, auto_attack_flag;
 extern ilist second_wait_list, wait_list;
@@ -143,6 +143,7 @@ int main(int argc, char **argv)
  char line[8192], op[32], text[8192], label[32];
  int section = -1, want, n, a, b, d, i, result, created = 0;
  struct command *c;
+ ilist saved_vector = NULL;
  if (argc != 4 || !(fp = fopen(argv[1], "r"))) return 2;
  want = atoi(argv[2]);
  libdir = argv[3];
@@ -711,6 +712,39 @@ int main(int argc, char **argv)
   }
   else if (!strcmp(op, "emit")) {
    sscanf(line,"%*s %d %d",&n,&a); out(n,"routing %d  ",a);
+  }
+  else if (!strcmp(op, "sout")) {
+   sscanf(line,"%*s %31s",label);
+   if(!strcmp(label,"route")) sscanf(line,"%*s %*s %d %d",&out_path,&out_alt_who);
+   else if(!strcmp(label,"frame")) {
+    sscanf(line,"%*s %*s %d %d %d %d",&indent,&second_indent,&show_day,&n); sysclock.day=(short)n;
+   }
+   else if(!strcmp(label,"style")) { sscanf(line,"%*s %*s %d",&n); style(n); }
+   else if(!strcmp(label,"clear")) vector_clear();
+   else if(!strcmp(label,"add")) { sscanf(line,"%*s %*s %d",&n); vector_add(n); }
+   else if(!strcmp(label,"players")) vector_players();
+   else if(!strcmp(label,"save")) saved_vector=save_output_vector();
+   else if(!strcmp(label,"restore")) { restore_output_vector(saved_vector); saved_vector=NULL; }
+   else if(!strcmp(label,"state")) {
+    printf("route %d %d frame %d %d %d %d\n",out_path,out_alt_who,indent,second_indent,show_day,sysclock.day);
+    list("vector",out_vector); list("saved vector",saved_vector);
+   }
+   else if(!strcmp(label,"text")) {
+    char kind[32], data[16385]; size_t len, j;
+    text[0]=0;
+    if(sscanf(line,"%*s %*s %d %31s %d %d %8191[^\n]",&n,kind,&a,&b,text)<4) return 2;
+    len=strlen(text); if(b<0 || (size_t)b*len>16384) return 2;
+    for(j=0;j<(size_t)b*len;j++) data[j]=text[j%len]=='|' ? '\n' : text[j%len];
+    data[j]=0;
+    if(!strcmp(kind,"out")) out(n,"%s",data);
+    else if(!strcmp(kind,"wiout")) wiout(n,a,"%s",data);
+    else if(!strcmp(kind,"html")) html(n,"%s",data);
+    else if(!strcmp(kind,"lines")) lines(n,data);
+    else if(!strcmp(kind,"match")) match_lines(n,data);
+    else if(!strcmp(kind,"log")) log_write(n,"%s",data);
+    else return 2;
+   }
+   else return 2;
   }
   else if (!strcmp(op, "garrison_view")) {
    sscanf(line,"%*s %d",&n); show_to_garrison = n;

@@ -172,6 +172,9 @@ type world struct {
 	indent         int32          // sout.c output framing, not report assembly
 	secondIndent   int32
 	styleHTML      int32
+	prevStyle      int32
+	outPath        int
+	outAltWho      int
 	showToGarrison bool
 	evening        int32
 	autoAttackFlag bool

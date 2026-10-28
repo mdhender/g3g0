@@ -8,13 +8,18 @@ import (
 	"io"
 	"os"
 	"runtime"
+	"strings"
 
 	"github.com/mdhender/g3g0/internal/clib"
+	"github.com/mdhender/g3g0/internal/lists"
 )
 
 // Ported from olympia/sout.c.
 
-const vect = -1 // sout.h VECT
+const (
+	vect   = -1 // sout.h VECT
+	master = -2
+)
 
 func (w *world) openLogfileNondestruct() {
 	_ = os.Mkdir(sout("%s/log", w.libdir), 0o755)
@@ -43,34 +48,102 @@ func sout(format string, a ...any) string {
 // wiout is sout.c:506–519. It resets secondary indentation to zero, even
 // when the caller had a nonzero secondary indent before this call.
 func (w *world) wiout(who int, ind int32, format string, a ...any) {
-	s := sout(format, a...)
+	s := outputText(format, a...)
 	w.secondIndent = ind
-	w.commandOut(who, "%s", s)
+	w.outSup(who, s)
 	w.secondIndent = 0
 }
 
-// commandOut is the default character/player route through out/vout,
-// out_sup and bottom_out. wout is an alias for out in C. Keep raw output
-// framing even in immediate mode, and keep the player's output bit mutation.
-// Report assembly remains stage 2; location and garrison routing is real.
+// vout formats exactly once, before routing (including an empty vector).
+func outputText(format string, a ...any) string {
+	s := fmt.Sprintf(format, a...)
+	s = s[:min(len(s), lenMax-1)]
+	if i := strings.IndexByte(s, 0); i >= 0 {
+		s = s[:i]
+	}
+	return s
+}
+
+// commandOut is out/vout; wout is only an alias, not a wrapping engine.
 func (w *world) commandOut(who int, format string, a ...any) {
+	w.outSup(who, outputText(format, a...))
+}
+
+func (w *world) outSup(who int, s string) {
 	if who == vect {
 		for _, n := range w.outVector {
 			assert(n != vect, "olympia/sout.c", 457, "out_vector[i] != VECT")
-			w.commandOut(n, format, a...)
+			w.outSup(n, s)
 		}
 		return
 	}
 	if w.isPrisoner(who) {
 		return
 	}
-	if w.subkind(who) == subGarrison {
-		w.outGarrison(who, format, a...)
+	if w.outPath == master {
+		w.bottomOut(who, w.outAltWho, s)
+	} else if w.subkind(who) == subGarrison {
+		w.outGarrison(who, s)
 	} else if w.isLocOrShip(who) {
-		w.outLocation(who, format, a...)
+		w.outLocation(who, s)
 	} else {
-		w.bottomOut(w.player(who), who, format, a...)
+		w.bottomOut(w.player(who), who, s)
 	}
+}
+
+func (w *world) style(n int32) {
+	if n == stylePrev { // One previous state, not a stack or swap.
+		w.styleHTML = w.prevStyle
+	} else {
+		w.prevStyle, w.styleHTML = w.styleHTML, n
+	}
+}
+
+func (w *world) html(who int, format string, a ...any) {
+	s := outputText(format, a...)
+	w.style(styleHTML)
+	w.outSup(who, s)
+	w.style(stylePrev)
+}
+
+func (w *world) saveOutputVector() lists.IList {
+	t := w.outVector
+	w.outVector = nil
+	return t
+}
+
+func (w *world) restoreOutputVector(t lists.IList) { w.outVector = t }
+func (w *world) vectorClear()                      { w.outVector.Clear() }
+func (w *world) vectorAdd(who int)                 { w.outVector.Append(who) }
+
+func (w *world) vectorPlayers() {
+	w.vectorClear()
+	for pl := range w.loopKind(tPlayer) {
+		if pl != int(w.eatPl) && pl != int(w.skillPlayer) {
+			w.vectorAdd(pl)
+		}
+	}
+}
+
+func (w *world) lines(who int, s string) {
+	w.style(styleHTML)
+	before := sout("%s", s)
+	after := ""
+	if i := strings.IndexByte(before, ','); i >= 0 {
+		after, before = sout("%s", before[i:]), before[:i]
+	}
+	w.commandOut(who, "")
+	w.commandOut(who, "<name=\"%s\"><font size=+1><b>%s</b>%s</font>", before, before, after)
+	w.commandOut(who, "<hr>")
+	w.style(styleText)
+	w.commandOut(who, "%s", s)
+	w.commandOut(who, "%s", strings.Repeat("-", 72))
+	w.style(0)
+}
+
+func (w *world) matchLines(who int, s string) {
+	w.commandOut(who, "%s", s)
+	w.commandOut(who, "%s", strings.Repeat("-", len(outputText("%s", s))))
 }
 
 func (w *world) canViewLoc(pl int, p *entityPlayer, where, outer int) bool {
@@ -97,19 +170,19 @@ func (w *world) canViewLoc(pl int, p *entityPlayer, where, outer int) bool {
 	return false
 }
 
-func (w *world) outLocation(where int, format string, a ...any) {
+func (w *world) outLocation(where int, s string) {
 	outer := w.viewloc(where)
 	for pl := range w.loopKind(tPlayer) {
 		if w.canViewLoc(pl, w.pPlayer(pl), where, outer) {
-			w.bottomOut(pl, outer, format, a...)
+			w.bottomOut(pl, outer, s)
 		}
 	}
 }
 
-func (w *world) outGarrison(garr int, format string, a ...any) {
+func (w *world) outGarrison(garr int, s string) {
 	for _, pl := range w.playersWhoRuleHere(garr) {
 		if pl != 0 && w.subkind(pl) != subPlSilent {
-			w.bottomOutUnit(pl, 6, garr, format, a...) // sout.h OUT_GARR
+			w.bottomOutUnit(pl, 6, garr, s) // sout.h OUT_GARR
 		}
 	}
 }
@@ -145,17 +218,17 @@ func (w *world) vectorCharHere(where int) {
 	}
 }
 
-// logWrite is the small MASTER route used for code alerts. It bypasses
-// ordinary character routing but shares bottom_out framing and output bits.
+// logWrite borrows MASTER routing and restores both ordinary route fields.
 func (w *world) logWrite(k int, format string, a ...any) {
+	path, alt := w.outPath, w.outAltWho
 	assert(k >= 10 && k <= 20, "olympia/sout.c", 708, "k >= 10 && k <= 20")
-	if !w.isPrisoner(int(w.gmPlayer)) {
-		w.bottomOut(int(w.gmPlayer), k, format, a...)
-	}
+	w.outPath, w.outAltWho = master, k
+	w.commandOut(int(w.gmPlayer), format, a...)
+	w.outPath, w.outAltWho = path, alt
 }
 
-func (w *world) bottomOut(pl, who int, format string, a ...any) {
-	w.bottomOutUnit(pl, who, 0, format, a...)
+func (w *world) bottomOut(pl, who int, s string) {
+	w.bottomOutUnit(pl, who, 0, s)
 }
 
 type playerOutput struct {
@@ -213,7 +286,7 @@ func (w *world) closeLogfile() {
 	w.playerOutput = nil
 }
 
-func (w *world) bottomOutUnit(pl, who, unit int, format string, a ...any) {
+func (w *world) bottomOutUnit(pl, who, unit int, s string) {
 	var fp io.Writer = w.stdout
 	if !w.immediate {
 		if pl == 0 {
@@ -223,9 +296,6 @@ func (w *world) bottomOutUnit(pl, who, unit int, format string, a ...any) {
 		fp = f
 		setBit(&w.pPlayer(pl).output, who)
 	}
-	// vout's buffer has LEN bytes, unlike sout's LEN+1.
-	s := fmt.Sprintf(format, a...)
-	s = s[:min(len(s), lenMax-1)]
 	day := ""
 	if w.showDay {
 		day = fmt.Sprintf("%d", w.sysclock.day)

@@ -245,7 +245,11 @@ func (w *world) reportAccountState() {
 	w.stage("report_account()")
 	for pl := range w.loopKind(tPlayer) {
 		if w.subkind(pl) == subPlRegular {
-			w.styleHTML = 0
+			w.style(0)
+			for range 3 {
+				w.style(styleHTML)
+				w.style(stylePrev)
+			}
 			w.reportOutputState(pl)
 		}
 	}

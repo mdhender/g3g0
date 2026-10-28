@@ -108,6 +108,20 @@ past this ordinary-turn failure. See `turn-compat/README.md` and
 `tmp/issue134-turn-full{,-record}.log`; prior stage-1 artifact-excluding
 acceptance below remains historical, not strict stage-2 acceptance.
 
+## Output primitives (#136)
+
+MASTER routing, styles/HTML, vector ownership and section primitives extend
+the existing sout.go owner and command oracle, not a second report layer.
+Complete unchanged sout.c is already linked; there is no pin or dependency
+change. Twelve new exact-C cases cover routing/frame/state and raw log bytes,
+including buffered renamed-inode output, single previous style, LEN truncation,
+unwrapped newlines and 72-dash sections. Old input/output byte prefixes remain
+unchanged. See command-compat's #136 evidence and negative controls.
+For shared output changes run command/move/helper/code/loadsave/turn-driver/
+default-turn sequentially, then bounded vet and fresh bounded defaults, always
+with explicit `G3_REPO="$PWD/tmp/upstream.git"`. Full report renderers and -h
+generation remain separate; the strict eight saved-report gap is not accepted.
+
 ## Check tiers
 
 **Routine task acceptance.**
