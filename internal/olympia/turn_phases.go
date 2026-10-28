@@ -7,7 +7,6 @@ package olympia
 // boundaries for #66–#89, NOT implementations, even on an empty world.
 func (w *world) specialLocsOpen()           { panic(notImplemented("special_locs_open")) }
 func (w *world) specialLocsClose()          { panic(notImplemented("special_locs_close")) }
-func (w *world) moveCityGold()              { panic(notImplemented("move_city_gold")) }
 func (w *world) garrisonGold()              { panic(notImplemented("garrison_gold")) }
 func (w *world) collectTaxes()              { panic(notImplemented("collect_taxes")) }
 func (w *world) addClaimGold()              { panic(notImplemented("add_claim_gold")) }
@@ -30,7 +29,6 @@ func (w *world) ghostWarriorDecay()         { panic(notImplemented("ghost_warrio
 func (w *world) corpseDecay()               { panic(notImplemented("corpse_decay")) }
 func (w *world) deadBodyRot()               { panic(notImplemented("dead_body_rot")) }
 func (w *world) collapsedMineDecay()        { panic(notImplemented("collapsed_mine_decay")) }
-func (w *world) postProduction()            { panic(notImplemented("post_production")) }
 func (w *world) autoDrop()                  { panic(notImplemented("auto_drop")) }
 func (w *world) linkDecay()                 { panic(notImplemented("link_decay")) }
 func (w *world) questDecay()                { panic(notImplemented("quest_decay")) }

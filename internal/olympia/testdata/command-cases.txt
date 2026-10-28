@@ -13558,3 +13558,282 @@ save 1000
 save 9000
 economy state
 readlog 200
+
+section production civ asymmetric diffusion crown and first duplicate building wins
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 3
+entity 9003 3 1
+entity 9004 3 3
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 8000 9003
+link 8000 9004
+routes 9000 9001 0 0 0
+routes 9001 0 0 0 9002
+routes 9002 0 0 0 0
+routes 9003 9002 0 0 0
+routes 9004 9003 0 0 0
+entity 9100 3 14
+entity 9101 3 32
+entity 9102 3 32
+entity 9103 3 46
+entity 9104 3 29
+entity 9105 3 37
+entity 9106 3 40
+entity 9107 3 14
+entity 9108 3 46
+link 9002 9100
+link 9100 9101
+link 9002 9102
+link 9100 9103
+link 9100 9104
+link 9100 9105
+link 9100 9106
+link 9002 9107
+link 9002 9108
+field 9101 castle_level 2
+field 9102 castle_level 20
+field 9107 major 1
+entity 402 4 0
+field 402 unique 1000
+link 9101 1000
+field 9000 temp 123
+field 9100 temp 321
+production civ
+production state
+production civ
+production state
+
+section production civ major city crown ocean source and reset per province
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 1
+entity 9002 3 3
+entity 9100 3 14
+entity 9101 3 14
+entity 9102 3 46
+entity 9103 3 46
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 9000 9100
+link 9000 9102
+link 9002 9101
+link 9002 9103
+field 9100 major 1
+entity 402 4 0
+field 402 unique 1000
+link 9001 1000
+routes 9000 9001 0 0 0
+routes 9001 9000 0 0 0
+routes 9002 9001 0 0 0
+production civ
+production state
+
+section production complete terrain table existing stock and coast
+master 9
+entity 1 4 0
+entity 10 4 0
+entity 31 4 0
+entity 51 4 0
+entity 59 4 0
+entity 64 4 0
+entity 65 4 0
+entity 66 4 0
+entity 67 4 0
+entity 68 4 0
+entity 70 4 0
+entity 71 4 0
+entity 77 4 0
+entity 78 4 0
+entity 87 4 0
+entity 93 4 0
+entity 8000 3 50
+entity 9000 3 2
+entity 9001 3 27
+entity 9002 3 21
+entity 9003 3 4
+entity 9004 3 20
+entity 9005 3 5
+entity 9006 3 13
+entity 9007 3 3
+entity 9008 3 23
+entity 9009 3 1
+entity 9010 3 11
+entity 9011 3 12
+entity 9012 3 22
+entity 9013 3 6
+entity 9014 3 25
+entity 9015 3 16
+entity 9016 3 26
+entity 9017 3 28
+entity 9018 3 14
+entity 9019 3 9
+link 8000 9000
+link 9000 9001
+link 9000 9002
+link 8000 9003
+link 9003 9004
+link 8000 9005
+link 9005 9006
+link 8000 9007
+link 9007 9008
+link 8000 9009
+link 9007 9010
+link 9007 9011
+link 9007 9012
+link 8000 9013
+link 9007 9014
+link 9007 9015
+link 9007 9016
+link 9007 9017
+link 9007 9018
+link 9009 9019
+routes 9000 9009 0 0 0
+routes 9003 0 0 0 0
+routes 9005 0 0 0 0
+routes 9007 0 0 0 0
+routes 9009 9000 0 0 0
+routes 9013 0 0 0 0
+inventory 9000 77 50
+inventory 9003 78 49
+inventory 9007 51 5
+inventory 9000 59 40
+inventory 9017 93 80
+field 9017 double 1
+field 9013 double 1
+production locations
+production state
+production locations
+production state
+shuffle 0 9000
+
+section production mine full depth table and high depth clamp
+entity 1 4 0
+entity 79 4 0
+entity 82 4 0
+entity 9001 3 40
+entity 9002 3 40
+entity 9003 3 40
+entity 9004 3 40
+entity 9005 3 40
+entity 9006 3 40
+entity 9007 3 40
+entity 9008 3 40
+entity 9009 3 40
+entity 9010 3 40
+entity 9011 3 40
+entity 9012 3 40
+entity 9013 3 40
+entity 9014 3 40
+entity 9015 3 40
+entity 9016 3 40
+entity 9017 3 40
+entity 9018 3 40
+entity 9019 3 40
+entity 9020 3 40
+entity 9021 3 40
+field 9001 shaft_depth 5
+field 9002 shaft_depth 6
+field 9003 shaft_depth 9
+field 9004 shaft_depth 12
+field 9005 shaft_depth 15
+field 9006 shaft_depth 18
+field 9007 shaft_depth 21
+field 9008 shaft_depth 24
+field 9009 shaft_depth 27
+field 9010 shaft_depth 30
+field 9011 shaft_depth 33
+field 9012 shaft_depth 36
+field 9013 shaft_depth 39
+field 9014 shaft_depth 42
+field 9015 shaft_depth 45
+field 9016 shaft_depth 48
+field 9017 shaft_depth 51
+field 9018 shaft_depth 54
+field 9019 shaft_depth 57
+field 9020 shaft_depth 60
+field 9021 shaft_depth 32767
+production locations
+production state
+production floor 9004 1 999
+production mine 9004
+save 9004
+
+section production replenish below equal above floor
+entity 77 4 0
+production floor 1000 77 30
+save 1000
+production floor 1000 77 30
+save 1000
+production floor 1000 77 5
+save 1000
+production floor 1000 77 32
+save 1000
+
+section production tax transfer opium pillage rounding and reseed serialization
+entity 96 4 0
+entity 277 4 0
+entity 294 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 1
+entity 9002 3 3
+entity 9100 3 14
+entity 9101 3 14
+entity 9102 3 37
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 9000 9100
+link 9000 9101
+link 9000 9102
+field 9000 civ 3
+field 9000 pillage 2
+field 9000 opium 3
+field 9100 pillage 2
+field 9100 opium 1
+field 9101 opium 9
+inventory 9000 96 7
+inventory 9100 96 11
+inventory 9101 96 13
+inventory 9102 96 17
+inventory 9001 96 19
+inventory 9000 277 99
+production gold
+production state
+production gold
+production state
+production taxes
+production state
+production gold
+production state
+production taxes
+production state
+
+section production poppy no misc caps stock without creating misc
+entity 93 4 0
+entity 9000 3 28
+inventory 9000 93 100
+production locations
+production state
+
+section production invalid zero mine depth assertion raw helper contract
+entity 9000 3 40
+field 9000 shaft_depth 2
+production mine 9000
+
+section production invalid negative mine depth assertion raw helper contract
+entity 9000 3 40
+field 9000 shaft_depth -32768
+production mine 9000
+
+section production invalid opium tax assertion raw saved state contract
+entity 96 4 0
+entity 277 4 0
+entity 9000 3 3
+field 9000 opium 10
+production taxes

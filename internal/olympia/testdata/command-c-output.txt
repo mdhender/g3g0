@@ -42543,3 +42543,1326 @@ log 200:
 stderr:
 
 exit 0
+stdout:
+section production civ asymmetric diffusion crown and first duplicate building wins
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 1
+> entity 9004 3 3
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 8000 9003
+> link 8000 9004
+> routes 9000 9001 0 0 0
+> routes 9001 0 0 0 9002
+> routes 9002 0 0 0 0
+> routes 9003 9002 0 0 0
+> routes 9004 9003 0 0 0
+> entity 9100 3 14
+> entity 9101 3 32
+> entity 9102 3 32
+> entity 9103 3 46
+> entity 9104 3 29
+> entity 9105 3 37
+> entity 9106 3 40
+> entity 9107 3 14
+> entity 9108 3 46
+> link 9002 9100
+> link 9100 9101
+> link 9002 9102
+> link 9100 9103
+> link 9100 9104
+> link 9100 9105
+> link 9100 9106
+> link 9002 9107
+> link 9002 9108
+> field 9101 castle_level 2
+> field 9102 castle_level 20
+> field 9107 major 1
+> entity 402 4 0
+> field 402 unique 1000
+> link 9101 1000
+> field 9000 temp 123
+> field 9100 temp 321
+> production civ
+> production state
+production loc 8000 temp 0 double 0
+8000 loc region
+LI
+ hl 9000 9001 9002 9003 9004 
+
+production loc 9000 temp 9 double 0
+9000 loc plain
+LI
+ wh 8000
+LO
+ pd 9001 0 0 0 
+ lc 2
+
+production loc 9001 temp 18 double 0
+9001 loc plain
+LI
+ wh 8000
+LO
+ pd 0 0 0 9002 
+ lc 4
+
+production loc 9002 temp 36 double 0
+9002 loc plain
+LI
+ wh 8000
+ hl 9100 9102 9107 9108 
+LO
+ pd 0 0 0 0 
+ lc 9
+
+production loc 9003 temp 0 double 0
+9003 loc ocean
+LI
+ wh 8000
+LO
+ pd 9002 0 0 0 
+
+production loc 9004 temp 0 double 0
+9004 loc plain
+LI
+ wh 8000
+LO
+ pd 9003 0 0 0 
+
+production loc 9100 temp 0 double 0
+9100 loc city
+LI
+ wh 9002
+ hl 9101 9103 9104 9105 9106 
+
+production loc 9101 temp 0 double 0
+9101 loc castle
+LI
+ wh 9100
+ hl 1000 
+SL
+ cl 2
+
+production loc 9102 temp 0 double 0
+9102 loc castle
+LI
+ wh 9002
+SL
+ cl 20
+
+production loc 9103 temp 0 double 0
+9103 loc tower
+LI
+ wh 9100
+
+production loc 9104 temp 0 double 0
+9104 loc temple
+LI
+ wh 9100
+
+production loc 9105 temp 0 double 0
+9105 loc inn
+LI
+ wh 9100
+
+production loc 9106 temp 0 double 0
+9106 loc mine
+LI
+ wh 9100
+
+production loc 9107 temp 0 double 0
+9107 loc city
+LI
+ wh 9002
+SL
+ mc 1
+
+production loc 9108 temp 0 double 0
+9108 loc tower
+LI
+ wh 9002
+
+post 0
+pending trades:
+> production civ
+> production state
+production loc 8000 temp 0 double 0
+8000 loc region
+LI
+ hl 9000 9001 9002 9003 9004 
+
+production loc 9000 temp 9 double 0
+9000 loc plain
+LI
+ wh 8000
+LO
+ pd 9001 0 0 0 
+ lc 2
+
+production loc 9001 temp 18 double 0
+9001 loc plain
+LI
+ wh 8000
+LO
+ pd 0 0 0 9002 
+ lc 4
+
+production loc 9002 temp 36 double 0
+9002 loc plain
+LI
+ wh 8000
+ hl 9100 9102 9107 9108 
+LO
+ pd 0 0 0 0 
+ lc 9
+
+production loc 9003 temp 0 double 0
+9003 loc ocean
+LI
+ wh 8000
+LO
+ pd 9002 0 0 0 
+
+production loc 9004 temp 0 double 0
+9004 loc plain
+LI
+ wh 8000
+LO
+ pd 9003 0 0 0 
+
+production loc 9100 temp 0 double 0
+9100 loc city
+LI
+ wh 9002
+ hl 9101 9103 9104 9105 9106 
+
+production loc 9101 temp 0 double 0
+9101 loc castle
+LI
+ wh 9100
+ hl 1000 
+SL
+ cl 2
+
+production loc 9102 temp 0 double 0
+9102 loc castle
+LI
+ wh 9002
+SL
+ cl 20
+
+production loc 9103 temp 0 double 0
+9103 loc tower
+LI
+ wh 9100
+
+production loc 9104 temp 0 double 0
+9104 loc temple
+LI
+ wh 9100
+
+production loc 9105 temp 0 double 0
+9105 loc inn
+LI
+ wh 9100
+
+production loc 9106 temp 0 double 0
+9106 loc mine
+LI
+ wh 9100
+
+production loc 9107 temp 0 double 0
+9107 loc city
+LI
+ wh 9002
+SL
+ mc 1
+
+production loc 9108 temp 0 double 0
+9108 loc tower
+LI
+ wh 9002
+
+post 0
+pending trades:
+stderr:
+compute_civ_levels()
+compute_civ_levels()
+
+exit 0
+stdout:
+section production civ major city crown ocean source and reset per province
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9002 3 3
+> entity 9100 3 14
+> entity 9101 3 14
+> entity 9102 3 46
+> entity 9103 3 46
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 9000 9100
+> link 9000 9102
+> link 9002 9101
+> link 9002 9103
+> field 9100 major 1
+> entity 402 4 0
+> field 402 unique 1000
+> link 9001 1000
+> routes 9000 9001 0 0 0
+> routes 9001 9000 0 0 0
+> routes 9002 9001 0 0 0
+> production civ
+> production state
+production loc 8000 temp 0 double 0
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+production loc 9000 temp 12 double 0
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 9102 
+LO
+ pd 9001 0 0 0 
+ lc 3
+
+production loc 9001 temp 8 double 0
+9001 loc ocean
+LI
+ wh 8000
+ hl 1000 
+LO
+ pd 9000 0 0 0 
+ lc 2
+
+production loc 9002 temp 8 double 0
+9002 loc plain
+LI
+ wh 8000
+ hl 9101 9103 
+LO
+ pd 9001 0 0 0 
+ lc 2
+
+production loc 9100 temp 0 double 0
+9100 loc city
+LI
+ wh 9000
+SL
+ mc 1
+
+production loc 9101 temp 0 double 0
+9101 loc city
+LI
+ wh 9002
+
+production loc 9102 temp 0 double 0
+9102 loc tower
+LI
+ wh 9000
+
+production loc 9103 temp 0 double 0
+9103 loc tower
+LI
+ wh 9002
+
+post 0
+pending trades:
+stderr:
+compute_civ_levels()
+
+exit 0
+stdout:
+section production complete terrain table existing stock and coast
+> master 9
+> entity 1 4 0
+> entity 10 4 0
+> entity 31 4 0
+> entity 51 4 0
+> entity 59 4 0
+> entity 64 4 0
+> entity 65 4 0
+> entity 66 4 0
+> entity 67 4 0
+> entity 68 4 0
+> entity 70 4 0
+> entity 71 4 0
+> entity 77 4 0
+> entity 78 4 0
+> entity 87 4 0
+> entity 93 4 0
+> entity 8000 3 50
+> entity 9000 3 2
+> entity 9001 3 27
+> entity 9002 3 21
+> entity 9003 3 4
+> entity 9004 3 20
+> entity 9005 3 5
+> entity 9006 3 13
+> entity 9007 3 3
+> entity 9008 3 23
+> entity 9009 3 1
+> entity 9010 3 11
+> entity 9011 3 12
+> entity 9012 3 22
+> entity 9013 3 6
+> entity 9014 3 25
+> entity 9015 3 16
+> entity 9016 3 26
+> entity 9017 3 28
+> entity 9018 3 14
+> entity 9019 3 9
+> link 8000 9000
+> link 9000 9001
+> link 9000 9002
+> link 8000 9003
+> link 9003 9004
+> link 8000 9005
+> link 9005 9006
+> link 8000 9007
+> link 9007 9008
+> link 8000 9009
+> link 9007 9010
+> link 9007 9011
+> link 9007 9012
+> link 8000 9013
+> link 9007 9014
+> link 9007 9015
+> link 9007 9016
+> link 9007 9017
+> link 9007 9018
+> link 9009 9019
+> routes 9000 9009 0 0 0
+> routes 9003 0 0 0 0
+> routes 9005 0 0 0 0
+> routes 9007 0 0 0 0
+> routes 9009 9000 0 0 0
+> routes 9013 0 0 0 0
+> inventory 9000 77 50
+> inventory 9003 78 49
+> inventory 9007 51 5
+> inventory 9000 59 40
+> inventory 9017 93 80
+> field 9017 double 1
+> field 9013 double 1
+> production locations
+> production state
+production loc 8000 temp 0 double 0
+8000 loc region
+LI
+ hl 9000 9003 9005 9007 9009 9013 
+
+production loc 9000 temp 0 double 0
+9000 loc forest
+il	77 50 \
+	59 40 \
+	10 10
+LI
+ wh 8000
+ hl 9001 9002 
+LO
+ pd 9009 0 0 0 
+
+production loc 9001 temp 0 double 0
+9001 loc sacred grove
+il	77 5
+LI
+ wh 9000
+
+production loc 9002 temp 0 double 0
+9002 loc circle of trees
+il	77 5 \
+	64 3
+LI
+ wh 9000
+
+production loc 9003 temp 0 double 0
+9003 loc mountain
+il	78 50 \
+	10 10
+LI
+ wh 8000
+ hl 9004 
+LO
+ pd 0 0 0 0 
+
+production loc 9004 temp 0 double 0
+9004 loc rocky hill
+il	78 50
+LI
+ wh 9003
+
+production loc 9005 temp 0 double 0
+9005 loc desert
+il	78 10
+LI
+ wh 8000
+ hl 9006 
+LO
+ pd 0 0 0 0 
+
+production loc 9006 temp 0 double 0
+9006 loc cave
+il	67 2
+LI
+ wh 9005
+
+production loc 9007 temp 0 double 0
+9007 loc plain
+il	51 5 \
+	10 10
+LI
+ wh 8000
+ hl 9008 9010 9011 9012 9014 9015 9016 9017 9018 
+LO
+ pd 0 0 0 0 
+
+production loc 9008 temp 0 double 0
+9008 loc pasture
+il	51 5
+LI
+ wh 9007
+
+production loc 9009 temp 0 double 0
+9009 loc ocean
+il	87 50 \
+	59 30
+LI
+ wh 8000
+ hl 9019 
+LO
+ pd 9000 0 0 0 
+
+production loc 9010 temp 0 double 0
+9010 loc mallorn grove
+il	65 2 \
+	70 2
+LI
+ wh 9007
+
+production loc 9011 temp 0 double 0
+9011 loc bog
+il	66 4
+LI
+ wh 9007
+
+production loc 9012 temp 0 double 0
+9012 loc pits
+il	66 4
+LI
+ wh 9007
+
+production loc 9013 temp 0 double 1
+9013 loc swamp
+il	66 1 \
+	93 25
+LI
+ wh 8000
+LO
+ pd 0 0 0 0 
+MI
+
+production loc 9014 temp 0 double 0
+9014 loc yew grove
+il	68 5
+LI
+ wh 9007
+
+production loc 9015 temp 0 double 0
+9015 loc graveyard
+il	31 15
+LI
+ wh 9007
+
+production loc 9016 temp 0 double 0
+9016 loc sand pit
+il	71 1
+LI
+ wh 9007
+
+production loc 9017 temp 0 double 0
+9017 loc poppy field
+il	93 50
+LI
+ wh 9007
+
+production loc 9018 temp 0 double 0
+9018 loc city
+il	10 10
+LI
+ wh 9007
+
+production loc 9019 temp 0 double 0
+9019 loc island
+il	59 30
+LI
+ wh 9009
+
+post 0
+pending trades:
+> production locations
+> production state
+production loc 8000 temp 1 double 0
+8000 loc region
+LI
+ hl 9000 9003 9005 9007 9009 9013 
+
+production loc 9000 temp 1 double 0
+9000 loc forest
+il	77 50 \
+	59 40 \
+	10 10
+LI
+ wh 8000
+ hl 9001 9002 
+LO
+ pd 9009 0 0 0 
+
+production loc 9001 temp 1 double 0
+9001 loc sacred grove
+il	77 5
+LI
+ wh 9000
+
+production loc 9002 temp 1 double 0
+9002 loc circle of trees
+il	77 5 \
+	64 3
+LI
+ wh 9000
+
+production loc 9003 temp 1 double 0
+9003 loc mountain
+il	78 50 \
+	10 10
+LI
+ wh 8000
+ hl 9004 
+LO
+ pd 0 0 0 0 
+
+production loc 9004 temp 1 double 0
+9004 loc rocky hill
+il	78 50
+LI
+ wh 9003
+
+production loc 9005 temp 1 double 0
+9005 loc desert
+il	78 10
+LI
+ wh 8000
+ hl 9006 
+LO
+ pd 0 0 0 0 
+
+production loc 9006 temp 1 double 0
+9006 loc cave
+il	67 2
+LI
+ wh 9005
+
+production loc 9007 temp 1 double 0
+9007 loc plain
+il	51 5 \
+	10 10
+LI
+ wh 8000
+ hl 9008 9010 9011 9012 9014 9015 9016 9017 9018 
+LO
+ pd 0 0 0 0 
+
+production loc 9008 temp 1 double 0
+9008 loc pasture
+il	51 5
+LI
+ wh 9007
+
+production loc 9009 temp 1 double 0
+9009 loc ocean
+il	87 50 \
+	59 30
+LI
+ wh 8000
+ hl 9019 
+LO
+ pd 9000 0 0 0 
+
+production loc 9010 temp 1 double 0
+9010 loc mallorn grove
+il	65 2 \
+	70 2
+LI
+ wh 9007
+
+production loc 9011 temp 1 double 0
+9011 loc bog
+il	66 4
+LI
+ wh 9007
+
+production loc 9012 temp 1 double 0
+9012 loc pits
+il	66 4
+LI
+ wh 9007
+
+production loc 9013 temp 1 double 1
+9013 loc swamp
+il	66 1 \
+	93 25
+LI
+ wh 8000
+LO
+ pd 0 0 0 0 
+MI
+
+production loc 9014 temp 1 double 0
+9014 loc yew grove
+il	68 5
+LI
+ wh 9007
+
+production loc 9015 temp 1 double 0
+9015 loc graveyard
+il	31 15
+LI
+ wh 9007
+
+production loc 9016 temp 1 double 0
+9016 loc sand pit
+il	71 1
+LI
+ wh 9007
+
+production loc 9017 temp 1 double 0
+9017 loc poppy field
+il	93 25
+LI
+ wh 9007
+
+production loc 9018 temp 1 double 0
+9018 loc city
+il	10 10
+LI
+ wh 9007
+
+production loc 9019 temp 1 double 0
+9019 loc island
+il	59 30
+LI
+ wh 9009
+
+post 0
+pending trades:
+> shuffle 0 9000
+stderr:
+
+exit 0
+stdout:
+section production mine full depth table and high depth clamp
+> entity 1 4 0
+> entity 79 4 0
+> entity 82 4 0
+> entity 9001 3 40
+> entity 9002 3 40
+> entity 9003 3 40
+> entity 9004 3 40
+> entity 9005 3 40
+> entity 9006 3 40
+> entity 9007 3 40
+> entity 9008 3 40
+> entity 9009 3 40
+> entity 9010 3 40
+> entity 9011 3 40
+> entity 9012 3 40
+> entity 9013 3 40
+> entity 9014 3 40
+> entity 9015 3 40
+> entity 9016 3 40
+> entity 9017 3 40
+> entity 9018 3 40
+> entity 9019 3 40
+> entity 9020 3 40
+> entity 9021 3 40
+> field 9001 shaft_depth 5
+> field 9002 shaft_depth 6
+> field 9003 shaft_depth 9
+> field 9004 shaft_depth 12
+> field 9005 shaft_depth 15
+> field 9006 shaft_depth 18
+> field 9007 shaft_depth 21
+> field 9008 shaft_depth 24
+> field 9009 shaft_depth 27
+> field 9010 shaft_depth 30
+> field 9011 shaft_depth 33
+> field 9012 shaft_depth 36
+> field 9013 shaft_depth 39
+> field 9014 shaft_depth 42
+> field 9015 shaft_depth 45
+> field 9016 shaft_depth 48
+> field 9017 shaft_depth 51
+> field 9018 shaft_depth 54
+> field 9019 shaft_depth 57
+> field 9020 shaft_depth 60
+> field 9021 shaft_depth 32767
+> production locations
+> production state
+production loc 9001 temp 0 double 0
+9001 loc mine
+il	79 15 \
+	1 25
+SL
+ sd 5
+
+production loc 9002 temp 0 double 0
+9002 loc mine
+il	79 12 \
+	1 100
+SL
+ sd 6
+
+production loc 9003 temp 0 double 0
+9003 loc mine
+il	79 10 \
+	1 200
+SL
+ sd 9
+
+production loc 9004 temp 0 double 0
+9004 loc mine
+il	79 8 \
+	1 500 \
+	82 1
+SL
+ sd 12
+
+production loc 9005 temp 0 double 0
+9005 loc mine
+il	79 5 \
+	1 500
+SL
+ sd 15
+
+production loc 9006 temp 0 double 0
+9006 loc mine
+il	79 3 \
+	1 400
+SL
+ sd 18
+
+production loc 9007 temp 0 double 0
+9007 loc mine
+il	1 150
+SL
+ sd 21
+
+production loc 9008 temp 0 double 0
+9008 loc mine
+il	1 50 \
+	82 1
+SL
+ sd 24
+
+production loc 9009 temp 0 double 0
+9009 loc mine
+il	82 2
+SL
+ sd 27
+
+production loc 9010 temp 0 double 0
+9010 loc mine
+il	82 8
+SL
+ sd 30
+
+production loc 9011 temp 0 double 0
+9011 loc mine
+il	82 5
+SL
+ sd 33
+
+production loc 9012 temp 0 double 0
+9012 loc mine
+SL
+ sd 36
+
+production loc 9013 temp 0 double 0
+9013 loc mine
+il	79 10 \
+	1 10
+SL
+ sd 39
+
+production loc 9014 temp 0 double 0
+9014 loc mine
+il	79 10 \
+	1 50 \
+	82 2
+SL
+ sd 42
+
+production loc 9015 temp 0 double 0
+9015 loc mine
+il	1 10 \
+	82 1
+SL
+ sd 45
+
+production loc 9016 temp 0 double 0
+9016 loc mine
+SL
+ sd 48
+
+production loc 9017 temp 0 double 0
+9017 loc mine
+il	79 10 \
+	82 1
+SL
+ sd 51
+
+production loc 9018 temp 0 double 0
+9018 loc mine
+il	1 500
+SL
+ sd 54
+
+production loc 9019 temp 0 double 0
+9019 loc mine
+SL
+ sd 57
+
+production loc 9020 temp 0 double 0
+9020 loc mine
+SL
+ sd 60
+
+production loc 9021 temp 0 double 0
+9021 loc mine
+SL
+ sd 32767
+
+post 0
+pending trades:
+> production floor 9004 1 999
+> production mine 9004
+> save 9004
+9004 loc mine
+il	79 8 \
+	1 999 \
+	82 1
+SL
+ sd 12
+
+stderr:
+
+exit 0
+stdout:
+section production replenish below equal above floor
+> entity 77 4 0
+> production floor 1000 77 30
+> save 1000
+1000 char 0
+il	77 30
+CH
+ lo 200
+
+> production floor 1000 77 30
+> save 1000
+1000 char 0
+il	77 30
+CH
+ lo 200
+
+> production floor 1000 77 5
+> save 1000
+1000 char 0
+il	77 30
+CH
+ lo 200
+
+> production floor 1000 77 32
+> save 1000
+1000 char 0
+il	77 32
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section production tax transfer opium pillage rounding and reseed serialization
+> entity 96 4 0
+> entity 277 4 0
+> entity 294 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9002 3 3
+> entity 9100 3 14
+> entity 9101 3 14
+> entity 9102 3 37
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 9000 9100
+> link 9000 9101
+> link 9000 9102
+> field 9000 civ 3
+> field 9000 pillage 2
+> field 9000 opium 3
+> field 9100 pillage 2
+> field 9100 opium 1
+> field 9101 opium 9
+> inventory 9000 96 7
+> inventory 9100 96 11
+> inventory 9101 96 13
+> inventory 9102 96 17
+> inventory 9001 96 19
+> inventory 9000 277 99
+> production gold
+> production state
+production loc 8000 temp 0 double 0
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+production loc 9000 temp 0 double 0
+9000 loc plain
+il	96 31 \
+	277 99
+LI
+ wh 8000
+ hl 9100 9101 9102 
+LO
+ lc 3
+SL
+ op 3
+ lo 2
+
+production loc 9001 temp 0 double 0
+9001 loc ocean
+il	96 19
+LI
+ wh 8000
+
+production loc 9002 temp 0 double 0
+9002 loc plain
+LI
+ wh 8000
+
+production loc 9100 temp 0 double 0
+9100 loc city
+LI
+ wh 9000
+SL
+ op 1
+ lo 2
+
+production loc 9101 temp 0 double 0
+9101 loc city
+LI
+ wh 9000
+SL
+ op 9
+
+production loc 9102 temp 0 double 0
+9102 loc inn
+il	96 17
+LI
+ wh 9000
+
+post 0
+pending trades:
+> production gold
+> production state
+production loc 8000 temp 1 double 0
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+production loc 9000 temp 1 double 0
+9000 loc plain
+il	96 31 \
+	277 99
+LI
+ wh 8000
+ hl 9100 9101 9102 
+LO
+ lc 3
+SL
+ op 3
+ lo 2
+
+production loc 9001 temp 1 double 0
+9001 loc ocean
+il	96 19
+LI
+ wh 8000
+
+production loc 9002 temp 1 double 0
+9002 loc plain
+LI
+ wh 8000
+
+production loc 9100 temp 1 double 0
+9100 loc city
+LI
+ wh 9000
+SL
+ op 1
+ lo 2
+
+production loc 9101 temp 1 double 0
+9101 loc city
+LI
+ wh 9000
+SL
+ op 9
+
+production loc 9102 temp 1 double 0
+9102 loc inn
+il	96 17
+LI
+ wh 9000
+
+post 0
+pending trades:
+> production taxes
+> production state
+production loc 8000 temp 1 double 0
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+production loc 9000 temp 1 double 0
+9000 loc plain
+il	96 46 \
+	277 5
+LI
+ wh 8000
+ hl 9100 9101 9102 
+LO
+ lc 3
+SL
+ op 3
+ lo 2
+
+production loc 9001 temp 1 double 0
+9001 loc ocean
+il	96 19
+LI
+ wh 8000
+
+production loc 9002 temp 1 double 0
+9002 loc plain
+il	96 50
+LI
+ wh 8000
+
+production loc 9100 temp 1 double 0
+9100 loc city
+il	96 30 \
+	294 1 \
+	277 5
+LI
+ wh 9000
+SL
+ op 1
+ lo 2
+
+production loc 9101 temp 1 double 0
+9101 loc city
+il	96 10 \
+	294 1 \
+	277 15
+LI
+ wh 9000
+SL
+ op 9
+
+production loc 9102 temp 1 double 0
+9102 loc inn
+il	96 17
+LI
+ wh 9000
+
+post 0
+pending trades:
+> production gold
+> production state
+production loc 8000 temp 1 double 0
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+production loc 9000 temp 1 double 0
+9000 loc plain
+il	96 86 \
+	277 5
+LI
+ wh 8000
+ hl 9100 9101 9102 
+LO
+ lc 3
+SL
+ op 3
+ lo 2
+
+production loc 9001 temp 1 double 0
+9001 loc ocean
+il	96 19
+LI
+ wh 8000
+
+production loc 9002 temp 1 double 0
+9002 loc plain
+il	96 50
+LI
+ wh 8000
+
+production loc 9100 temp 1 double 0
+9100 loc city
+il	294 1 \
+	277 5
+LI
+ wh 9000
+SL
+ op 1
+ lo 2
+
+production loc 9101 temp 1 double 0
+9101 loc city
+il	294 1 \
+	277 15
+LI
+ wh 9000
+SL
+ op 9
+
+production loc 9102 temp 1 double 0
+9102 loc inn
+il	96 17
+LI
+ wh 9000
+
+post 0
+pending trades:
+> production taxes
+> production state
+production loc 8000 temp 1 double 0
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+production loc 9000 temp 1 double 0
+9000 loc plain
+il	96 46 \
+	277 5
+LI
+ wh 8000
+ hl 9100 9101 9102 
+LO
+ lc 3
+SL
+ op 3
+ lo 2
+
+production loc 9001 temp 1 double 0
+9001 loc ocean
+il	96 19
+LI
+ wh 8000
+
+production loc 9002 temp 1 double 0
+9002 loc plain
+il	96 50
+LI
+ wh 8000
+
+production loc 9100 temp 1 double 0
+9100 loc city
+il	96 30 \
+	294 1 \
+	277 5
+LI
+ wh 9000
+SL
+ op 1
+ lo 2
+
+production loc 9101 temp 1 double 0
+9101 loc city
+il	96 10 \
+	294 1 \
+	277 15
+LI
+ wh 9000
+SL
+ op 9
+
+production loc 9102 temp 1 double 0
+9102 loc inn
+il	96 17
+LI
+ wh 9000
+
+post 0
+pending trades:
+stderr:
+
+exit 0
+stdout:
+section production poppy no misc caps stock without creating misc
+> entity 93 4 0
+> entity 9000 3 28
+> inventory 9000 93 100
+> production locations
+> production state
+production loc 9000 temp 0 double 0
+9000 loc poppy field
+il	93 25
+
+post 0
+pending trades:
+stderr:
+
+exit 0
+stdout:
+section production invalid zero mine depth assertion raw helper contract
+> entity 9000 3 40
+> field 9000 shaft_depth 2
+> production mine 9000
+stderr:
+assertion failure: olympia/produce.c (109): depth > 0
+
+exit 134
+stdout:
+section production invalid negative mine depth assertion raw helper contract
+> entity 9000 3 40
+> field 9000 shaft_depth -32768
+> production mine 9000
+stderr:
+assertion failure: olympia/produce.c (109): depth > 0
+
+exit 134
+stdout:
+section production invalid opium tax assertion raw saved state contract
+> entity 96 4 0
+> entity 277 4 0
+> entity 9000 3 3
+> field 9000 opium 10
+> production taxes
+stderr:
+assertion failure: olympia/seed.c (696): base > 0
+
+exit 134

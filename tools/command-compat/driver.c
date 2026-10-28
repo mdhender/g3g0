@@ -46,6 +46,7 @@ void drv_coastal(void), drv_mine(int mine), drv_inn(int inn), drv_loc_damage(voi
 void drv_heal(void);
 int drv_heal_roll(int who, int sub, int low, int high);
 void drv_dogs(void), drv_ring(void), drv_curse(void);
+void drv_city_gold(void), drv_replenish(int where, int item, int qty);
 int drv_bark_roll(int who, int hound);
 void drv_event_days(void);
 extern int gold_garrison;
@@ -391,6 +392,25 @@ int main(int argc, char **argv)
     printf("arrival player %d allocated %d\n",n,p!=NULL);
     if(p) { list("known",p->known); list("touched",p->locs); list("weather",p->weather_seen); list("output",p->output); }
    } next_player;
+  }
+  else if (!strcmp(op, "production")) {
+   sscanf(line,"%*s %s %d %d %d",text,&n,&a,&b);
+   if (!strcmp(text,"civ")) compute_civ_levels();
+   else if (!strcmp(text,"locations")) location_production();
+   else if (!strcmp(text,"mine")) mine_production(n);
+   else if (!strcmp(text,"floor")) drv_replenish(n,a,b);
+   else if (!strcmp(text,"taxes")) seed_taxes();
+   else if (!strcmp(text,"gold")) drv_city_gold();
+   else if (!strcmp(text,"post")) post_production(); /* rejects missing #83 */
+   else if (!strcmp(text,"state")) {
+    loop_loc(n) {
+     printf("production loc %d temp %d double %d\n",n,bx[n]->temp,rp_misc(n) ? rp_misc(n)->opium_double : 0);
+     save_box(stdout,n);
+    } next_loc;
+    printf("post %d\n",post_has_been_run);
+    list("pending trades",trades_to_check);
+   }
+   else return 2;
   }
   else if (!strcmp(op, "trade")) {
    struct trade *t=my_malloc(sizeof(*t));
@@ -776,6 +796,13 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"strength")) p_misc(n)->storm_str = (short)a;
    else if (!strcmp(text,"damage")) p_subloc(n)->damage = (unsigned char)a;
    else if (!strcmp(text,"shaft_depth")) p_subloc(n)->shaft_depth = (short)a;
+   else if (!strcmp(text,"castle_level")) p_subloc(n)->castle_lev = (schar)a;
+   else if (!strcmp(text,"major")) p_subloc(n)->major = (schar)a;
+   else if (!strcmp(text,"civ")) p_loc(n)->civ = (schar)a;
+   else if (!strcmp(text,"pillage")) p_subloc(n)->loot = (schar)a;
+   else if (!strcmp(text,"opium")) p_subloc(n)->opium_econ = a;
+   else if (!strcmp(text,"double")) p_misc(n)->opium_double = (schar)a;
+   else if (!strcmp(text,"temp")) bx[n]->temp = a;
    else if (!strcmp(text,"safe")) p_subloc(n)->safe = (schar)a;
    else if (!strcmp(text,"loc_hidden")) p_loc(n)->hidden = (schar)a;
    else if (!strcmp(text,"barrier")) p_loc(n)->barrier = (short)a;

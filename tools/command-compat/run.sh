@@ -55,8 +55,9 @@ functions = {
               'near_rocky_coast', 'ship_coastal_damage', 'mine_calamity',
               'inn_calamity', 'random_loc_damage', 'heal_char_sup', 'heal_characters',
               'dogs_bark_at_hidden_chars', 'increment_stone_ring_aura',
-              'noncreator_curse_erode', 'daily_events'],
-    'seed.c': ['int_comp'],
+              'noncreator_curse_erode', 'daily_events', 'compute_civ_levels',
+              'post_production', 'move_city_gold'],
+    'seed.c': ['int_comp', 'seed_taxes'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
                 'check_prisoner_escape', 'prisoner_escapes', 'prisoner_movement_escape_check',
@@ -95,7 +96,7 @@ functions = {
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
-            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units', 'bark_dogs'],
+            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units', 'bark_dogs', 'clear_temps'],
     'npc.c': ['controlled_humans_here', 'get_exit_dir', 'choose_npc_direction', 'npc_move',
               'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'necro.c': ['auto_undead'],
@@ -107,7 +108,7 @@ functions = {
               'scan_trades', 'match_trades', 'match_all_trades', 'check_validated_trades'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait'],
-    'produce.c': ['init_collect_list'],
+    'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
     'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit'],
     'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
                 'update_weather_view_locs', 'new_storm', 'create_some_storms',
@@ -193,6 +194,10 @@ int immed_see_all, month_done, show_combat_flag;
             start, end = source.index('static char *num_s[]'), source.index('char *\nnice_num(')
             out.write(source[start:end])
         if file == 'produce.c':
+            # Original complete production tables/macros, not a driver copy.
+            start, end = source.index('#define\t\tMOUNTAIN_STONE'), source.index('static void\nreplenish(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/produce.c"\n')
+            out.write(source[start:end])
             out.write(re.search(r'^static ilist collectors = NULL;\n', source, re.M).group(0))
         if file == 'day.c':
             start, end = source.index('static rng_stream upkeep_rng;'), source.index('/* Loyalty-decay desertion check:')
@@ -235,6 +240,8 @@ void drv_heal(void) { heal_characters(); }
 void drv_dogs(void) { dogs_bark_at_hidden_chars(); }
 void drv_ring(void) { increment_stone_ring_aura(); }
 void drv_curse(void) { noncreator_curse_erode(); }
+void drv_city_gold(void) { move_city_gold(); }
+void drv_replenish(int where, int item, int qty) { replenish(where, item, qty); }
 int drv_bark_roll(int who, int hound) { return ent_bark(who, hound); }
 void drv_event_days(void) {
  printf("curse day %d\\n", cal_day(0, 1, MONTH_DAYS));
@@ -354,6 +361,7 @@ with open(f'{dst}/stubs.c', 'w') as out:
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1, pretty_data_files, time_self;
 ilist trades_to_check;
+void location_trades(void) STUB("location_trades")
 ''')
 PY
 
@@ -378,6 +386,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section production '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section production invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected production status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section economy '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

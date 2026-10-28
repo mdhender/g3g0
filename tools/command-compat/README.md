@@ -2221,3 +2221,61 @@ then bounded vet/default tests. Whole-world/stage-exit checks remain opt-in
 and are left for parent acceptance; no new full-world boundary is inferred.
 Version **0.59.0-alpha**. Changes remain uncommitted and unaccepted; no commit,
 push, issue closure, stage tick or stage-exit success is implied.
+
+## #82 — city gold and existing-world production
+
+Acceptance clarification: [#82 comment](https://github.com/mdhender/g3g0/issues/82#issuecomment-6461526153).
+This extends this harness, not a duplicate economy tool. Complete original
+definitions at the same pin are extracted, retaining `#line` and the real
+inventory, traversal, topology, trade queue and save-box dependencies:
+
+| Pinned C source | Definitions/ranges (including return declaration) |
+| --- | --- |
+| `day.c` | `compute_civ_levels` 1792–1929; `post_production` 1932–1942; `move_city_gold` 2005–2024 |
+| `produce.c` | original macros and complete `terr_prod`/`mine_prod` tables 10–88; `replenish` 91–99; `mine_production` 102–117; `location_production` 120–169 |
+| `seed.c` | `seed_taxes` 640–704 |
+| `u.c` | `clear_temps` 1352–1362 (existing Go helper reused) |
+
+Ten new small sections independently run real production helpers:
+
+- Asymmetric civ propagation reaches temps **9 → 18 → 36**, civ **2/4/9**,
+  with no diffusion into an ocean. A second case distinguishes an ocean's
+  own crown bonus as a diffusion source. First nested castle/city/tower win
+  over later duplicates; major/minor cities and per-province flag resets are
+  distinct. Repeated calculation clears old location scratch/civ state.
+- Every terrain row and mine depth **1–20**, including empty rows and sparse
+  mithril yields; depth uses signed-short shaft/3 truncation and clamps above
+  20. Real replenish checks below/equal/above floors and preserves excess stock.
+- Coastal and island flotsam, inland controls, poppy cap-before-double,
+  consumed one-shot tending flag, next-month recapping, no-misc poppies and
+  swamp tending left untouched. A shared exdr shuffle follows production.
+- City tax transfer is additive and repeatable with empty cities; reseeding
+  resets tax/menial/thief stocks, skips oceans/buildings/regions, preserves
+  opium-before-pillage rounding (**46**, **30**, **10** tax cookies) and real
+  serialized inventory/LO/SL state.
+- Raw zero/negative mine depths and opium-10 tax state preserve exact C
+  assertions/status 134. These are malformed helper/saved-state contracts,
+  **not publicly reachable defect claims**. No new C bug was verified.
+
+`postProduction` runs real civ then stops honestly at `location_trades` (#83),
+before location production, tax reseeding or the post flag. A Go boundary
+test proves that ordering, not successful composition. A removed temporary
+expected-134 case called real C `post_production`; both normal and `--update`
+rejected its explicit missing `location_trades` dependency with **status 2**,
+before assertion acceptance/recording, leaving the recording unchanged.
+No successful C gameplay substitute is introduced.
+
+Two deterministic C runs match Go: **616 sections / 43868 lines / 746528 bytes**.
+All previous **606 sections / 42545 lines / 728447 bytes** and input
+**13560 lines / 242037 bytes** remain exact byte prefixes (zero old bytes
+changed). New input: **13839 lines / 247379 bytes**. Recording SHA-256:
+`a3c184638f69745d3a00ef5b17c5be60d524182d681d1ffd176fbf02eef801f0`.
+Literal C trailing whitespace is intentional and is never normalized.
+
+Command/move/helper/rng/code/loadsave/turn-driver/default-turn passed
+sequentially, followed by `go vet ./...` and fresh bounded default tests.
+Every engine process used shared `run_limited`, with `G3_REPO` pointing to the
+bare cache. No new pin/source dependency, local RNG adapter, BUY/SELL or
+new-world command. New-world load initialization remains explicit stage 5;
+postMonth call positions are unchanged. No full-world run or stage-exit
+success is claimed. Version **0.60.0-alpha**, all changes **uncommitted**.

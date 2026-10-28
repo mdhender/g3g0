@@ -475,6 +475,36 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 					helperList(&stdout, "output", p.output)
 				}
 			}
+		case "production":
+			switch action := args.word(); action {
+			case "civ":
+				w.computeCivLevels()
+			case "locations":
+				w.locationProduction()
+			case "mine":
+				w.mineProduction(args.num(t))
+			case "floor":
+				w.replenish(args.num(t), args.num(t), args.num(t))
+			case "taxes":
+				w.seedTaxes()
+			case "gold":
+				w.moveCityGold()
+			case "post":
+				w.postProduction()
+			case "state":
+				for n := range w.loopKind(tLoc) {
+					double := int8(0)
+					if p := w.rpMisc(n); p != nil {
+						double = p.opiumDouble
+					}
+					fmt.Fprintf(&stdout, "production loc %d temp %d double %d\n", n, w.bx[n].temp, double)
+					w.saveBox(&stdout, n)
+				}
+				fmt.Fprintf(&stdout, "post %d\n", w.postHasBeenRun)
+				helperList(&stdout, "pending trades", w.tradesToCheck)
+			default:
+				t.Fatalf("unknown production %s", action)
+			}
 		case "trade":
 			n := args.num(t)
 			w.bx[n].trades.Append(&trade{kind: int32(args.num(t)), item: int32(args.num(t)), qty: int32(args.num(t)), cost: int32(args.num(t)), who: int32(args.num(t)), sort: int32(args.num(t))})
@@ -1060,6 +1090,20 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pMisc(n).onlyVulnerable = int32(a)
 			case "strength":
 				w.pMisc(n).stormStr = int16(a)
+			case "castle_level":
+				w.pSubloc(n).castleLev = int8(a)
+			case "major":
+				w.pSubloc(n).major = int8(a)
+			case "civ":
+				w.pLoc(n).civ = int8(a)
+			case "pillage":
+				w.pSubloc(n).loot = int8(a)
+			case "opium":
+				w.pSubloc(n).opiumEcon = int32(a)
+			case "double":
+				w.pMisc(n).opiumDouble = int8(a)
+			case "temp":
+				w.bx[n].temp = int32(a)
 			case "safe":
 				w.pSubloc(n).safe = int8(a)
 			case "loc_hidden":

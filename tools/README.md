@@ -108,6 +108,19 @@ Run the same eight tools sequentially before bounded vet/default tests.
 No new source dependency/pin or RNG adapter. BUY/SELL/FIND commands and
 month-end restock (#83) remain unported; no full-world/stage-exit success or
 new observed full-world boundary is inferred from the small-map check.
+City gold and existing-world production (#82) extend command-compat with
+complete day.c compute_civ_levels, move_city_gold and post_production,
+produce.c's original terrain/mine tables plus replenish, mine_production and
+location_production, seed.c seed_taxes and u.c clear_temps. The shared real
+inventory, traversal, topology, trade queue and save-box closure is reused.
+Small recorded cases check asymmetric civ diffusion, first-of-type buildings,
+crown bonuses, every resource/depth row, stock floors, poppy capping/doubling,
+coastal flotsam and city-tax transfer/opium/pillage rounding. postProduction
+still stops at location_trades (#83), after real civ calculation and BEFORE
+location production/tax reseeding; it cannot claim successful composition.
+New-world load initialization remains explicitly stage 5. Run the same eight
+comparisons sequentially before vet/fresh bounded defaults; no new source
+dependency/pin, RNG adapter, command handler or full-world success is implied.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks
