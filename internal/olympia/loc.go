@@ -5,6 +5,17 @@ package olympia
 
 import "github.com/mdhender/g3g0/internal/lists"
 
+// Complete loc.c:332–351, also used by the city_here macro (loc.h:22).
+func (w *world) sublocHere(where, sk int) int {
+	assert(w.validBox(where), "olympia/loc.c", 338, "valid_box(where)")
+	for i := range w.loopHere(where) {
+		if w.kind(i) == tLoc && w.subkind(i) == sk {
+			return i
+		}
+	}
+	return 0
+}
+
 // allHere is all_here(): all descendants, including noncharacters. Unlike
 // all_stack this does not prune branches at noncharacter boxes.
 func (w *world) allHere(who int) lists.IList {

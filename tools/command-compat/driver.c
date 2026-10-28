@@ -37,6 +37,7 @@ void drv_nasty(int slot), drv_hades_unit(int who);
 int drv_nasty_roll(int slot, int sub, int low, int high);
 struct exit_view *choose_npc_direction(int who, int where, int dir);
 int drv_savage_count(void), drv_savage_hates(int where), drv_savage_here(int where);
+void drv_unsworn(int who), drv_mob(int who);
 
 static void wait_dump(struct command *c)
 {
@@ -114,6 +115,20 @@ int main(int argc, char **argv)
    for (i=0;i<16;i++) seed[i]=n+i;
    s=fopen(sout("%s/randseed",libdir),"wb"); if(!s) return 2;
    fwrite(seed,1,16,s); fclose(s); load_seed(sout("%s/randseed",libdir));
+  }
+  else if (!strcmp(op, "npc")) {
+   sscanf(line,"%*s %31s %d",text,&n);
+   if(!strcmp(text,"unsworn")) drv_unsworn(n);
+   else if(!strcmp(text,"mob")) drv_mob(n);
+   else if(!strcmp(text,"undead")) auto_undead(n);
+   else if(!strcmp(text,"begin")) begin_npc(n);
+   else if(!strcmp(text,"probe")) {
+    printf("behavior zero %d\n",npc_behavior(n,0,1,2));
+    printf("behavior one %d\n",npc_behavior(n,1,1,2));
+    printf("behavior wait %d\n",npc_behavior(n,1,10,20));
+    printf("behavior wide %d\n",npc_behavior(n,99,-100000,100000));
+   }
+   else return 2;
   }
   else if (!strcmp(op, "savage")) {
    sscanf(line,"%*s %31s %d",text,&n);
@@ -489,6 +504,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"weather_seen")) set_bit(&p_player(n)->weather_seen,a);
    else if (!strcmp(text,"weather_mage")) p_magic(n)->knows_weather = (schar)a;
    else if (!strcmp(text,"summoner")) p_misc(n)->summoned_by = a;
+   else if (!strcmp(text,"npc_home")) p_misc(n)->npc_home = a;
+   else if (!strcmp(text,"npc_created")) p_misc(n)->npc_created = a;
    else if (!strcmp(text,"capturable")) p_item(n)->capturable = (schar)a;
    else if (!strcmp(text,"release")) p_magic(n)->swear_on_release = (schar)a;
    else if (!strcmp(text,"health")) p_char(n)->health = (schar)a;

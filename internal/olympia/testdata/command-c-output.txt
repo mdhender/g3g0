@@ -18600,3 +18600,1395 @@ warning: plural name not set for item [32]
 warning: plural name not set for item [32]
 
 exit 0
+stdout:
+section autonomous unsworn seeded province city choices append in here order
+> master 0
+> set turn 1
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 14
+> entity 9101 3 14
+> link 8000 9000
+> link 8000 9001
+> link 9000 9101
+> link 9000 9100
+> link 9000 1000
+> link 9000 1001
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> field 1002 lord 200
+> field 1003 lord 200
+> field 1004 lord 200
+> field 1005 lord 200
+> field 1000 loyal 1
+> field 1001 loyal 4
+> field 1002 loyal 5
+> field 1003 prisoner 1
+> field 1004 health -1
+> field 1005 subkind 20
+> link 9000 1002
+> link 9000 1003
+> link 9000 1004
+> link 9000 1005
+> routes 9000 9001 0 0 0
+> queue wait time 7
+> npc begin 9000
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 96369
+> npc probe 1001
+behavior zero 1
+behavior one 1
+behavior wait 14
+behavior wide 57686
+> npc probe 1002
+behavior zero 2
+behavior one 1
+behavior wait 14
+behavior wide 14891
+> npc probe 1003
+behavior zero 2
+behavior one 2
+behavior wait 19
+behavior wide 49951
+> npc probe 1004
+behavior zero 1
+behavior one 2
+behavior wait 15
+behavior wide 97028
+> npc probe 1005
+behavior zero 2
+behavior one 2
+behavior wait 12
+behavior wide 67723
+> npc unsworn 1000
+> npc unsworn 1001
+> npc unsworn 1002
+> npc unsworn 1003
+> npc unsworn 1004
+> npc unsworn 1005
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 7]
+orders 1001: [move 9101]
+orders 1004: [move north]
+> orders_file 200
+orders file 200:
+1000:wait time 7
+1001:move 9101
+1004:move north
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 4
+
+> save 1002
+1002 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 5
+
+> save 1003
+1003 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ pr 1
+
+> save 1004
+1004 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he -1
+MI
+ di 1
+
+> save 1005
+1005 char rocky hill
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9101 9100 1000 1001 1002 1003 1004 1005 
+LO
+ pd 9001 0 0 0 
+
+> shuffle 1000 9000
+exitdir 1 9001
+> newitem 1000 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section autonomous unsworn building skip preserves selected stream and queue
+> master 0
+> set turn 1
+> entity 9000 3 3
+> entity 9100 3 14
+> entity 9200 3 32
+> link 9000 9100
+> link 9100 9200
+> link 9200 1000
+> field 1000 loyal 1
+> queue wait time 7
+> npc begin 7777
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 86351
+> master 19
+> npc unsworn 1000
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 86351
+> save 1000
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ lk 1
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 7]
+> orders_file 200
+orders file 200:
+1000:wait time 7
+> shuffle 1000 9000
+stderr:
+
+exit 0
+stdout:
+section autonomous unsworn city goes out on seeded movement and ignores recursive cities
+> master 0
+> set turn 1
+> entity 9000 3 3
+> entity 9100 3 14
+> entity 9200 3 32
+> entity 9300 3 14
+> link 9000 9100
+> link 9100 9200
+> link 9200 9300
+> link 9100 1000
+> link 9100 1001
+> npc begin 9100
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 14
+behavior wide -78549
+> npc probe 1001
+behavior zero 1
+behavior one 2
+behavior wait 14
+behavior wide 34647
+> npc unsworn 1000
+> npc unsworn 1001
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1001: [move out]
+> save 1000
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section autonomous unsworn landless no move retains absent misc and queued orders
+> master 0
+> set turn 1
+> entity 9000 3 3
+> link 9000 1000
+> link 9000 1001
+> npc unsworn 1000
+> npc unsworn 1001
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 96369
+stderr:
+
+exit 0
+stdout:
+section autonomous mob missing misc warns without reseeding or clearing work
+> master 0
+> set turn 10
+> entity 9000 3 3
+> link 9000 1000
+> queue wait time 4
+> npc begin 7777
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 15
+behavior wide 95862
+> master 19
+> npc mob 1000
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 15
+behavior wide 95862
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 4]
+> orders_file 200
+orders file 200:
+1000:wait time 4
+stderr:
+warning: mob's rp_misc is NULL, who=1000
+
+exit 0
+stdout:
+section autonomous mob home four turns versus five seeded disperse and stay
+> master 0
+> set turn 10
+> entity 9000 3 3
+> link 9000 1000
+> link 9000 1001
+> field 1000 npc_home 9000
+> field 1001 npc_home 9000
+> field 1000 npc_created 6
+> field 1001 npc_created 6
+> queue wait time 4
+> npc begin 9000
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 15
+behavior wide -68356
+> npc probe 1001
+behavior zero 1
+behavior one 1
+behavior wait 14
+behavior wide 11407
+> npc mob 1000
+> npc mob 1001
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 4]
+> field 1000 npc_created 5
+> field 1001 npc_created 5
+> npc mob 1000
+> npc mob 1001
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ mc 5
+ mh 9000
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ mc 5
+ mh 9000
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 4]
+orders 1001: [wait time 14] [reclaim "disperses."]
+> orders_file 200
+orders file 200:
+1000:wait time 4
+1001:wait time 14
+1001:reclaim "disperses."
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section autonomous mob away disperses at any age with nonnpc captive and follower
+> master 0
+> set turn 10
+> entity 9000 3 3
+> link 9000 1001
+> link 1001 1000
+> field 1000 npc_home 9001
+> field 1000 npc_created 99
+> field 1000 loyal 1
+> field 1000 prisoner 1
+> field 1001 npc_home 0
+> field 1001 npc_created 10
+> npc begin 9000
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 15
+behavior wide -68356
+> npc probe 1001
+behavior zero 1
+behavior one 1
+behavior wait 14
+behavior wide 11407
+> queue wait time 4
+> npc mob 1000
+> npc mob 1001
+> save 1000
+1000 char 0
+LI
+ wh 1001
+CH
+ lo 200
+ lk 1
+ pr 1
+MI
+ mc 99
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+ hl 1000 
+CH
+ lo 200
+MI
+ mc 10
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 4] [wait time 15] [reclaim "disperses."]
+orders 1001: [wait time 14] [reclaim "disperses."]
+> orders_file 200
+orders file 200:
+1000:wait time 4
+1000:wait time 15
+1000:reclaim "disperses."
+1001:wait time 14
+1001:reclaim "disperses."
+stderr:
+
+exit 0
+stdout:
+section autonomous mob signed turn and created age promotion
+> master 0
+> entity 9000 3 3
+> link 9000 1000
+> field 1000 npc_home 9000
+> set turn 32768
+> field 1000 npc_created 32767
+> npc mob 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> field 1000 npc_created -32773
+> npc mob 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 17] [reclaim "disperses."]
+> set turn 32767
+> field 1000 npc_created 32763
+> npc mob 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 17] [reclaim "disperses."]
+> field 1000 npc_created 32762
+> npc mob 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 17] [reclaim "disperses."]
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ mc 32762
+ mh 9000
+
+> orders_file 200
+orders file 200:
+1000:wait time 17
+1000:reclaim "disperses."
+stderr:
+
+exit 0
+stdout:
+section autonomous mob keyed replay day master location and turn reseeding
+> master 0
+> set turn 10
+> entity 9000 3 3
+> entity 9001 3 3
+> link 9000 1000
+> field 1000 npc_home 1
+> field 1000 npc_created 10
+> npc mob 1000
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 15
+behavior wide -68356
+> set day 28
+> npc mob 1000
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 15
+behavior wide -68356
+> master 19
+> npc mob 1000
+> npc probe 1000
+behavior zero 1
+behavior one 1
+behavior wait 16
+behavior wide -28338
+> link 9001 1000
+> npc mob 1000
+> npc probe 1000
+behavior zero 1
+behavior one 1
+behavior wait 18
+behavior wide -34132
+> set turn 11
+> npc mob 1000
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 12
+behavior wide 91294
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 15] [reclaim "disperses."] [wait time 15] [reclaim "disperses."] [wait time 16] [reclaim "disperses."] [wait time 18] [reclaim "disperses."] [wait time 12] [reclaim "disperses."]
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+MI
+ mc 10
+
+> orders_file 200
+orders file 200:
+1000:wait time 15
+1000:reclaim "disperses."
+1000:wait time 15
+1000:reclaim "disperses."
+1000:wait time 16
+1000:reclaim "disperses."
+1000:wait time 18
+1000:reclaim "disperses."
+1000:wait time 12
+1000:reclaim "disperses."
+> newitem 1000 0
+created 60457
+> save_new
+60457 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section autonomous undead same location summoner attack clears before return then normal program
+> master 0
+> set turn 1
+> entity 9000 3 3
+> link 9000 1000
+> link 9000 1001
+> field 1000 summoner 1001
+> field 1000 loyal 5
+> queue wait time 4
+> npc begin 7777
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 86351
+> master 19
+> npc undead 1000
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 86351
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 5
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 4] [attack 1001]
+> orders_file 200
+orders file 200:
+1000:wait time 4
+1000:attack 1001
+> npc undead 1000
+> npc probe 1000
+behavior zero 1
+behavior one 1
+behavior wait 18
+behavior wide 77101
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 5
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 4] [attack 1001]
+> orders_file 200
+orders file 200:
+1000:wait time 4
+1000:attack 1001
+stderr:
+
+exit 0
+stdout:
+section autonomous undead other location summoner retains state and province choice
+> master 0
+> set turn 1
+> entity 9000 3 3
+> entity 9001 3 3
+> link 9000 1000
+> link 9001 1001
+> field 1000 summoner 1001
+> field 1000 npc_dir 1
+> routes 9000 9001 0 0 0
+> npc begin 9000
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 96369
+> queue wait time 4
+> npc undead 1000
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 96369
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ sb 1001
+ di 1
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 4] [pillage 1]
+> orders_file 200
+orders file 200:
+1000:wait time 4
+1000:pillage 1
+> shuffle 1000 9000
+exitdir 1 9001
+stderr:
+
+exit 0
+stdout:
+section autonomous undead nonsummoned province seeded move pillage no ownership filters
+> master 0
+> set turn 1
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 9000 1001
+> field 1000 loyal 1
+> field 1001 loyal 4
+> field 1001 prisoner 1
+> routes 9000 9001 0 0 0
+> npc begin 9000
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 96369
+> npc probe 1001
+behavior zero 1
+behavior one 1
+behavior wait 14
+behavior wide 57686
+> npc undead 1000
+> npc undead 1001
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 4
+ pr 1
+MI
+ di 1
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [pillage 1]
+orders 1001: [move north]
+> orders_file 200
+orders file 200:
+1000:pillage 1
+1001:move north
+> shuffle 1000 9000
+exitdir 1 9001
+> newitem 1000 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section autonomous undead nested building same physical province is not same subloc
+> master 0
+> set turn 1
+> entity 9000 3 3
+> entity 9100 3 14
+> entity 9200 3 32
+> link 9000 9100
+> link 9100 9200
+> link 9200 1000
+> link 9100 1001
+> field 1000 summoner 1001
+> field 1000 npc_dir -127
+> npc begin 7777
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 86351
+> npc undead 1000
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 19
+behavior wide -85445
+> save 1000
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+MI
+ sb 1001
+ di -127
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [move out]
+> orders_file 200
+orders file 200:
+1000:move out
+stderr:
+
+exit 0
+stdout:
+section autonomous undead city and ship short circuit draw but begin their location
+> master 0
+> set turn 1
+> entity 9000 3 3
+> entity 9100 3 14
+> entity 9200 9 31
+> link 9000 9100
+> link 9000 9200
+> link 9100 1000
+> link 9200 1001
+> npc begin 7777
+> npc undead 1000
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 14
+behavior wide -78549
+> npc undead 1001
+> npc probe 1001
+behavior zero 2
+behavior one 2
+behavior wait 13
+behavior wide 78497
+> save 1000
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9200
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [move out]
+orders 1001: [move out]
+> orders_file 200
+orders file 200:
+1000:move out
+1001:move out
+stderr:
+
+exit 0
+stdout:
+section autonomous undead landless move branch versus pillage branch preserves absent misc
+> master 0
+> set turn 1
+> entity 9000 3 3
+> link 9000 1000
+> link 9000 1001
+> npc undead 1000
+> npc undead 1001
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [pillage 1]
+> orders_file 200
+orders file 200:
+1000:pillage 1
+stderr:
+
+exit 0
+stdout:
+section autonomous undead generated move executes real evenings through wait
+> master 0
+> set turn 1
+> set day 1
+> set epoch 31
+> resolve_wait
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 293 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> link 9000 1001
+> field 1001 loyal 4
+> routes 9000 9001 0 0 0
+> npc begin 9000
+> npc probe 1001
+behavior zero 1
+behavior one 1
+behavior wait 14
+behavior wide 57686
+> npc undead 1001
+> who 1001
+> queue wait time 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1001: [move north] [wait time 0]
+> load
+load 1
+> do
+> dump
+cmd 48 who 1001 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> evening
+> dump
+cmd 48 who 1001 state 2 status 1 wait 3 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> set day 2
+> set epoch 32
+> evening
+> dump
+cmd 48 who 1001 state 2 status 1 wait 2 poll 0 pri 2 cond 0 fuzzy 0 days 2 debug 2 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> set day 3
+> set epoch 33
+> evening
+> dump
+cmd 48 who 1001 state 2 status 1 wait 1 poll 0 pri 2 cond 0 fuzzy 0 days 3 debug 3 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> set day 4
+> set epoch 34
+> evening
+> dump
+cmd 94 who 1001 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 4 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> set day 5
+> set epoch 35
+> do
+> dump
+cmd 94 who 1001 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 5 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 2 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> evening
+> dump
+cmd 94 who 1001 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 5 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 2 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1001
+1001 char 0
+LI
+ wh 9001
+CH
+ lo 200
+ lk 4
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+LO
+ pd 9001 0 0 0 
+
+> save 9001
+9001 loc plain
+LI
+ wh 8000
+ hl 1001 
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 1 touched 0 1
+orders 1001:
+> orders_file 200
+orders file 200:
+> readlog 200
+log 200:
+1001:0::0::> move north
+1001:0::0::Travel to Plain~[9001] will take four days.
+1001:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[1001] arrived from the south.
+1001:0::0::> wait time 0
+1001:0::0::Wait finished: zero days have passed.
+> shuffle 1001 9001
+> newitem 1001 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0
+stdout:
+section autonomous unsworn generated city move arrives then executes wait
+> master 0
+> set turn 1
+> set day 1
+> set epoch 31
+> resolve_wait
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> entity 293 4 0
+> entity 9000 3 3
+> entity 9100 3 14
+> link 9000 9100
+> link 9000 1001
+> field 1001 loyal 0
+> inventory 1001 10 3
+> who 1001
+> npc unsworn 1001
+> queue wait time 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1001: [move 9100] [wait time 0]
+> orders_file 200
+orders file 200:
+1001:move 9100
+1001:wait time 0
+> load
+load 1
+> do
+> dump
+cmd 48 who 1001 state 2 status 1 wait 1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9100 7 9100 0 0 1 9000 0; parse [move] [9100]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1001
+> evening
+> dump
+cmd 94 who 1001 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1001
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> set day 2
+> set epoch 32
+> do
+> dump
+cmd 94 who 1001 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 2 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> evening
+> dump
+cmd 94 who 1001 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 2 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1001
+1001 char 0
+il	10 3
+LI
+ wh 9100
+CH
+ lo 200
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+> save 9000
+9000 loc plain
+LI
+ hl 9100 
+
+> save 9100
+9100 loc city
+LI
+ wh 9000
+ hl 1001 
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 1 touched 1 0
+orders 1001:
+> orders_file 200
+orders file 200:
+1001:move 9100
+1001:wait time 0
+> readlog 200
+log 200:
+1001:0::0::> move 9100
+1001:0::0::Travel to City~[9100] will take one day.
+1001:0::0::Arrival at City~[9100].
+9100:0::0::<no subkind>~[1001] arrived from Plain~[9000].
+1001:0::0::> wait time 0
+1001:0::0::Wait finished: zero days have passed.
+> npc probe 1001
+behavior zero 1
+behavior one 1
+behavior wait 14
+behavior wide 57686
+> shuffle 1001 9000
+> newitem 1001 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0
+stdout:
+section autonomous unsworn city lookup filters kind and nesting not hidden safe or barrier
+> master 0
+> set turn 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 9 14
+> entity 9200 3 32
+> entity 9300 3 14
+> link 9000 9100
+> link 9000 9200
+> link 9200 9300
+> link 9000 1001
+> field 1001 loyal 0
+> routes 9000 9001 0 0 0
+> npc unsworn 1001
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1001: [move north]
+> entity 9400 3 14
+> field 9400 loc_hidden 1
+> field 9400 barrier 1
+> link 9000 9400
+> npc unsworn 1001
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 1
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1001: [move north] [move 9400]
+> orders_file 200
+orders file 200:
+1001:move north
+1001:move 9400
+stderr:
+
+exit 0
+stdout:
+section autonomous undead same subloc summoner beneath stack ignores npc prisoner and building filters
+> master 0
+> set turn 1
+> entity 9000 3 3
+> entity 9200 3 32
+> entity 10 4 0
+> link 9000 9200
+> link 9200 1001
+> link 1001 1000
+> field 1000 summoner 1001
+> field 1000 loyal 1
+> field 1000 prisoner 1
+> field 1000 health -1
+> inventory 1000 10 17
+> queue wait time 7
+> npc begin 7777
+> npc undead 1000
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 18
+behavior wide 86351
+> save 1000
+1000 char 0
+il	10 17
+LI
+ wh 1001
+CH
+ lo 200
+ he -1
+ lk 1
+ pr 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9200
+ hl 1000 
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait time 7] [attack 1001]
+> orders_file 200
+orders file 200:
+1000:wait time 7
+1000:attack 1001
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section autonomous unsworn day replay master change and next turn preserve keyed branch order
+> master 0
+> set turn 1
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 8000 9003
+> link 9000 1001
+> routes 9000 9001 9002 0 9003
+> field 1001 npc_dir 2
+> npc unsworn 1001
+> npc probe 1001
+behavior zero 1
+behavior one 1
+behavior wait 14
+behavior wide 57686
+> set day 28
+> npc unsworn 1001
+> npc probe 1001
+behavior zero 1
+behavior one 1
+behavior wait 14
+behavior wide 57686
+> master 19
+> npc unsworn 1001
+> npc probe 1001
+behavior zero 1
+behavior one 1
+behavior wait 14
+behavior wide 84954
+> set turn 2
+> npc unsworn 1001
+> npc probe 1001
+behavior zero 1
+behavior one 2
+behavior wait 15
+behavior wide -63814
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1001: [move east] [move east] [move east] [move east]
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 2
+
+> orders_file 200
+orders file 200:
+1001:move east
+1001:move east
+1001:move east
+1001:move east
+> shuffle 1001 9000
+exitdir 1 9001
+exitdir 2 9002
+exitdir 4 9003
+> newitem 1001 0
+created 66376
+> save_new
+66376 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0

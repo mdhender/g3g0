@@ -6270,3 +6270,539 @@ save 9001
 pstate 205
 orders_file 205
 readlog 205
+
+section autonomous unsworn seeded province city choices append in here order
+master 0
+set turn 1
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 3 14
+entity 9101 3 14
+link 8000 9000
+link 8000 9001
+link 9000 9101
+link 9000 9100
+link 9000 1000
+link 9000 1001
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+field 1002 lord 200
+field 1003 lord 200
+field 1004 lord 200
+field 1005 lord 200
+field 1000 loyal 1
+field 1001 loyal 4
+field 1002 loyal 5
+field 1003 prisoner 1
+field 1004 health -1
+field 1005 subkind 20
+link 9000 1002
+link 9000 1003
+link 9000 1004
+link 9000 1005
+routes 9000 9001 0 0 0
+queue wait time 7
+npc begin 9000
+npc probe 1000
+npc probe 1001
+npc probe 1002
+npc probe 1003
+npc probe 1004
+npc probe 1005
+npc unsworn 1000
+npc unsworn 1001
+npc unsworn 1002
+npc unsworn 1003
+npc unsworn 1004
+npc unsworn 1005
+pstate 200
+orders_file 200
+save 1000
+save 1001
+save 1002
+save 1003
+save 1004
+save 1005
+save 9000
+shuffle 1000 9000
+newitem 1000 0
+save_new
+
+section autonomous unsworn building skip preserves selected stream and queue
+master 0
+set turn 1
+entity 9000 3 3
+entity 9100 3 14
+entity 9200 3 32
+link 9000 9100
+link 9100 9200
+link 9200 1000
+field 1000 loyal 1
+queue wait time 7
+npc begin 7777
+npc probe 1000
+master 19
+npc unsworn 1000
+npc probe 1000
+save 1000
+pstate 200
+orders_file 200
+shuffle 1000 9000
+
+section autonomous unsworn city goes out on seeded movement and ignores recursive cities
+master 0
+set turn 1
+entity 9000 3 3
+entity 9100 3 14
+entity 9200 3 32
+entity 9300 3 14
+link 9000 9100
+link 9100 9200
+link 9200 9300
+link 9100 1000
+link 9100 1001
+npc begin 9100
+npc probe 1000
+npc probe 1001
+npc unsworn 1000
+npc unsworn 1001
+pstate 200
+save 1000
+save 1001
+
+section autonomous unsworn landless no move retains absent misc and queued orders
+master 0
+set turn 1
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+npc unsworn 1000
+npc unsworn 1001
+save 1000
+save 1001
+pstate 200
+npc probe 1000
+
+section autonomous mob missing misc warns without reseeding or clearing work
+master 0
+set turn 10
+entity 9000 3 3
+link 9000 1000
+queue wait time 4
+npc begin 7777
+npc probe 1000
+master 19
+npc mob 1000
+npc probe 1000
+save 1000
+pstate 200
+orders_file 200
+
+section autonomous mob home four turns versus five seeded disperse and stay
+master 0
+set turn 10
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1000 npc_home 9000
+field 1001 npc_home 9000
+field 1000 npc_created 6
+field 1001 npc_created 6
+queue wait time 4
+npc begin 9000
+npc probe 1000
+npc probe 1001
+npc mob 1000
+npc mob 1001
+pstate 200
+field 1000 npc_created 5
+field 1001 npc_created 5
+npc mob 1000
+npc mob 1001
+save 1000
+save 1001
+pstate 200
+orders_file 200
+readlog 200
+
+section autonomous mob away disperses at any age with nonnpc captive and follower
+master 0
+set turn 10
+entity 9000 3 3
+link 9000 1001
+link 1001 1000
+field 1000 npc_home 9001
+field 1000 npc_created 99
+field 1000 loyal 1
+field 1000 prisoner 1
+field 1001 npc_home 0
+field 1001 npc_created 10
+npc begin 9000
+npc probe 1000
+npc probe 1001
+queue wait time 4
+npc mob 1000
+npc mob 1001
+save 1000
+save 1001
+pstate 200
+orders_file 200
+
+section autonomous mob signed turn and created age promotion
+master 0
+entity 9000 3 3
+link 9000 1000
+field 1000 npc_home 9000
+set turn 32768
+field 1000 npc_created 32767
+npc mob 1000
+pstate 200
+field 1000 npc_created -32773
+npc mob 1000
+pstate 200
+set turn 32767
+field 1000 npc_created 32763
+npc mob 1000
+pstate 200
+field 1000 npc_created 32762
+npc mob 1000
+pstate 200
+save 1000
+orders_file 200
+
+section autonomous mob keyed replay day master location and turn reseeding
+master 0
+set turn 10
+entity 9000 3 3
+entity 9001 3 3
+link 9000 1000
+field 1000 npc_home 1
+field 1000 npc_created 10
+npc mob 1000
+npc probe 1000
+set day 28
+npc mob 1000
+npc probe 1000
+master 19
+npc mob 1000
+npc probe 1000
+link 9001 1000
+npc mob 1000
+npc probe 1000
+set turn 11
+npc mob 1000
+npc probe 1000
+pstate 200
+save 1000
+orders_file 200
+newitem 1000 0
+save_new
+
+section autonomous undead same location summoner attack clears before return then normal program
+master 0
+set turn 1
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1000 summoner 1001
+field 1000 loyal 5
+queue wait time 4
+npc begin 7777
+npc probe 1000
+master 19
+npc undead 1000
+npc probe 1000
+save 1000
+pstate 200
+orders_file 200
+npc undead 1000
+npc probe 1000
+save 1000
+pstate 200
+orders_file 200
+
+section autonomous undead other location summoner retains state and province choice
+master 0
+set turn 1
+entity 9000 3 3
+entity 9001 3 3
+link 9000 1000
+link 9001 1001
+field 1000 summoner 1001
+field 1000 npc_dir 1
+routes 9000 9001 0 0 0
+npc begin 9000
+npc probe 1000
+queue wait time 4
+npc undead 1000
+npc probe 1000
+save 1000
+pstate 200
+orders_file 200
+shuffle 1000 9000
+
+section autonomous undead nonsummoned province seeded move pillage no ownership filters
+master 0
+set turn 1
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+link 8000 9000
+link 8000 9001
+link 9000 1000
+link 9000 1001
+field 1000 loyal 1
+field 1001 loyal 4
+field 1001 prisoner 1
+routes 9000 9001 0 0 0
+npc begin 9000
+npc probe 1000
+npc probe 1001
+npc undead 1000
+npc undead 1001
+save 1000
+save 1001
+pstate 200
+orders_file 200
+shuffle 1000 9000
+newitem 1000 0
+save_new
+
+section autonomous undead nested building same physical province is not same subloc
+master 0
+set turn 1
+entity 9000 3 3
+entity 9100 3 14
+entity 9200 3 32
+link 9000 9100
+link 9100 9200
+link 9200 1000
+link 9100 1001
+field 1000 summoner 1001
+field 1000 npc_dir -127
+npc begin 7777
+npc probe 1000
+npc undead 1000
+npc probe 1000
+save 1000
+pstate 200
+orders_file 200
+
+section autonomous undead city and ship short circuit draw but begin their location
+master 0
+set turn 1
+entity 9000 3 3
+entity 9100 3 14
+entity 9200 9 31
+link 9000 9100
+link 9000 9200
+link 9100 1000
+link 9200 1001
+npc begin 7777
+npc undead 1000
+npc probe 1000
+npc undead 1001
+npc probe 1001
+save 1000
+save 1001
+pstate 200
+orders_file 200
+
+section autonomous undead landless move branch versus pillage branch preserves absent misc
+master 0
+set turn 1
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+npc undead 1000
+npc undead 1001
+save 1000
+save 1001
+pstate 200
+orders_file 200
+
+section autonomous undead generated move executes real evenings through wait
+master 0
+set turn 1
+set day 1
+set epoch 31
+resolve_wait
+entity 10 4 0
+field 10 weight 100
+field 10 land_cap 100
+field 10 ride_cap 100
+entity 293 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+link 8000 9000
+link 8000 9001
+link 9000 1001
+field 1001 loyal 4
+routes 9000 9001 0 0 0
+npc begin 9000
+npc probe 1001
+npc undead 1001
+who 1001
+queue wait time 0
+pstate 200
+load
+do
+dump
+evening
+dump
+set day 2
+set epoch 32
+evening
+dump
+set day 3
+set epoch 33
+evening
+dump
+set day 4
+set epoch 34
+evening
+dump
+set day 5
+set epoch 35
+do
+dump
+evening
+dump
+save 1001
+save 9000
+save 9001
+pstate 200
+orders_file 200
+readlog 200
+shuffle 1001 9001
+newitem 1001 0
+save_new
+
+section autonomous unsworn generated city move arrives then executes wait
+master 0
+set turn 1
+set day 1
+set epoch 31
+resolve_wait
+entity 10 4 0
+field 10 weight 100
+field 10 land_cap 100
+entity 293 4 0
+entity 9000 3 3
+entity 9100 3 14
+link 9000 9100
+link 9000 1001
+field 1001 loyal 0
+inventory 1001 10 3
+who 1001
+npc unsworn 1001
+queue wait time 0
+pstate 200
+orders_file 200
+load
+do
+dump
+evening
+dump
+set day 2
+set epoch 32
+do
+dump
+evening
+dump
+save 1001
+save 9000
+save 9100
+pstate 200
+orders_file 200
+readlog 200
+npc probe 1001
+shuffle 1001 9000
+newitem 1001 0
+save_new
+
+section autonomous unsworn city lookup filters kind and nesting not hidden safe or barrier
+master 0
+set turn 1
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 9 14
+entity 9200 3 32
+entity 9300 3 14
+link 9000 9100
+link 9000 9200
+link 9200 9300
+link 9000 1001
+field 1001 loyal 0
+routes 9000 9001 0 0 0
+npc unsworn 1001
+pstate 200
+entity 9400 3 14
+field 9400 loc_hidden 1
+field 9400 barrier 1
+link 9000 9400
+npc unsworn 1001
+save 1001
+pstate 200
+orders_file 200
+
+section autonomous undead same subloc summoner beneath stack ignores npc prisoner and building filters
+master 0
+set turn 1
+entity 9000 3 3
+entity 9200 3 32
+entity 10 4 0
+link 9000 9200
+link 9200 1001
+link 1001 1000
+field 1000 summoner 1001
+field 1000 loyal 1
+field 1000 prisoner 1
+field 1000 health -1
+inventory 1000 10 17
+queue wait time 7
+npc begin 7777
+npc undead 1000
+npc probe 1000
+save 1000
+save 1001
+pstate 200
+orders_file 200
+readlog 200
+
+section autonomous unsworn day replay master change and next turn preserve keyed branch order
+master 0
+set turn 1
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 3
+entity 9003 3 3
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 8000 9003
+link 9000 1001
+routes 9000 9001 9002 0 9003
+field 1001 npc_dir 2
+npc unsworn 1001
+npc probe 1001
+set day 28
+npc unsworn 1001
+npc probe 1001
+master 19
+npc unsworn 1001
+npc probe 1001
+set turn 2
+npc unsworn 1001
+npc probe 1001
+pstate 200
+save 1001
+orders_file 200
+shuffle 1001 9000
+newitem 1001 0
+save_new

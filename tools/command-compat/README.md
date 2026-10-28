@@ -932,3 +932,83 @@ Default checks are small recordings, with full worlds still opt-in. Parent
 review reported the reproduced cap overrun as [G3 #354](https://github.com/playbymail/olympia-g3/issues/354);
 the Go source links it and deliberately preserves C's behavior. It is
 nonblocking; known G3 #309/#352/#353 are unchanged.
+
+## Unsworn, mob and undead autonomous queues (#70)
+
+Sized before implementation: **94 C definition lines**, with the remaining
+closure already accepted. Complete original pinned definitions are extracted
+with original headers/macros and `#line` locations:
+
+| source | definitions and original lines |
+|---|---|
+| npc.c | `auto_unsworn` 149–165; `auto_mob` 168–199 |
+| necro.c | `auto_undead` 363–387 |
+| loc.c | `subloc_here` 332–351, used by original loc.h:22 `city_here` macro |
+
+**necro.c is a new input**, tracked in tools/README.md and affected.sh.
+The existing original npc.c prefix supplies its static stream, exact tags,
+`begin_npc` and keyed leaves. Go reuses persistent `w.streams`, shared mint
+and sequential exdr, real topology/movement, saved-order append, serialization,
+logging and output bits. No new stream/reset or successful gameplay stub.
+
+20 appended real-C cases cover:
+
+- Seeded unsworn skip, first direct city in saved here order (9101 before
+  9100), second-coin route fallback, absent-city/landless paths and nested-city
+  exclusion. Master 0/turn 1/location 9000 gives actor 1000 first coin **2**,
+  actor 1001 coins **1,1** and actor 1004 **1,2**. Building skip preserves a
+  previously selected location stream even after master reload. City movement
+  goes out; city lookup filters kind, not hidden/barrier status. Raw wrong-kind
+  city and negative-health/subkind constructions are helper-contract controls,
+  not claims about public-engine defects.
+- Exact missing-misc mob warning with no allocation/reseed; age **4** no-op
+  versus age **5** stay/disperse (actors 1000/1001, turn 10). Away-from-home
+  disperses regardless of future creation age, follower/prisoner/ordinary
+  loyalty. Signed-short turn promotion is tested around 32767/-32768 without
+  narrowing the age difference. WAIT precedes literal `reclaim "disperses."`,
+  appended after existing work. Day replay, master/location/turn changes and
+  wide keyed probes distinguish persistent stream selection from reseeding.
+- Undead without misc/summoner, summoner elsewhere, same province but distinct
+  sublocations, and same-sublocation stacked/captive summoner cases. ATTACK
+  appends before `summoned_by` clears; an immediate second call runs normal
+  behavior, proving clearing happened before return. The attack branch leaves
+  the previously selected NPC stream untouched. Other branches seed by actual
+  sublocation, including building/city/ship short circuits; province coins
+  distinguish MOVE from `pillage 1`. No extra loyalty, health or prisoner filter
+  is introduced. Inventories and loyalty serialize unchanged.
+- Actually generated undead cardinal MOVE runs all four real evenings, arrives
+  and executes its following WAIT; actually generated unsworn numeric city MOVE
+  runs the real one-day callback and following WAIT. Ready/run queues, command
+  arrays, location/here order, knowledge/touch state, real faction logs, output
+  bits and exact order files are compared. Subsequent shuffle and unique-item
+  allocation observe shared exdr/mint state. Asymmetric multi-exit/day/master/
+  turn cases retain existing guarded exdr behavior, not a test reset.
+
+Repeated direct `orders_file` calls can retain an earlier file when the queue
+becomes empty: real `save_player_orders` opens the file lazily. This is a
+harness-only call sequence, not evidence of an engine save defect: production
+`save_orders` (order.c:355–367, called by save_db) removes/recreates the orders
+directory before calling the per-player helper. The raw helper output is kept.
+
+Two fresh bounded deterministic C runs produce **344 sections / 19994 lines /
+344574 bytes**, matched exactly by Go's raw stdout/stderr/status and observed
+state. All 20 new sections require status 0. The complete previous command
+input **6272 lines / 106631 bytes** and output **324 sections / 18602 lines /
+320880 bytes** are exact prefixes: zero old bytes changed. The entire move
+input **3150 lines / 53589 bytes** and recording **135 sections / 7150 lines /
+142755 bytes** are unchanged. Literal C whitespace remains untouched.
+
+An ephemeral expected-134 probe executes real undead queue → load → PILLAGE
+dispatch. Normal and `--update` runs both reject its missing-C-dependency marker
+with status 2, before abort acceptance/recording. The recording hash stays
+`541ad99deb0b9f29a2ef7a6be4bd5235147da9986a536ca85efc5c19b1a1ea52`.
+An ephemeral Go probe follows generated PILLAGE, ATTACK, and mob WAIT → RECLAIM
+to their actual explicit NYI stops. Both probes are removed; no permanent test
+depends on private temporary NYI names. Marker rejection remains specific to
+unfinished C dependencies, not ordinary game text.
+
+NPC dispatcher wiring remains #71. ATTACK/PILLAGE/RECLAIM are queued, not
+accepted as successful execution. Default checks use small recordings; whole
+worlds remain opt-in and no full-turn/stage success is claimed. No new upstream
+defect was identified; known intentionally reproduced G3 #309/#352/#353/#354
+remain unchanged and nonblocking.

@@ -117,6 +117,25 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "npc":
+			action, n := args.word(), args.num(t)
+			switch action {
+			case "unsworn":
+				w.autoUnsworn(n)
+			case "mob":
+				w.autoMob(n)
+			case "undead":
+				w.autoUndead(n)
+			case "begin":
+				w.streams.BeginNPC(n)
+			case "probe":
+				fmt.Fprintf(&stdout, "behavior zero %d\n", w.streams.NPCBehavior(n, 0, 1, 2))
+				fmt.Fprintf(&stdout, "behavior one %d\n", w.streams.NPCBehavior(n, 1, 1, 2))
+				fmt.Fprintf(&stdout, "behavior wait %d\n", w.streams.NPCBehavior(n, 1, 10, 20))
+				fmt.Fprintf(&stdout, "behavior wide %d\n", w.streams.NPCBehavior(n, 99, -100000, 100000))
+			default:
+				t.Fatalf("unknown npc %s", action)
+			}
 		case "savage":
 			switch action := args.word(); action {
 			case "init":
@@ -627,6 +646,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pMagic(n).knowsWeather = int8(a)
 			case "summoner":
 				w.pMisc(n).summonedBy = int32(a)
+			case "npc_home":
+				w.pMisc(n).npcHome = int32(a)
+			case "npc_created":
+				w.pMisc(n).npcCreated = int32(a)
 			case "capturable":
 				w.pItem(n).capturable = int8(a)
 			case "release":

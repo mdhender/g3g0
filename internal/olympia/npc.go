@@ -3,6 +3,40 @@
 
 package olympia
 
+import "fmt"
+
+// Complete npc.c:149–165. Building occupants do not even seed the stream.
+func (w *world) autoUnsworn(who int) {
+	where := w.subloc(who)
+	if w.locDepth(where) == locBuild {
+		return
+	}
+	w.streams.BeginNPC(where)
+	if w.streams.NPCBehavior(who, 0, 1, 2) == 1 {
+		if n := w.sublocHere(where, subCity); n != 0 && w.streams.NPCBehavior(who, 1, 1, 2) == 1 {
+			w.queue(who, "move %s", boxCodeLess(n))
+		} else {
+			w.npcMove(who)
+		}
+	}
+}
+
+// Complete npc.c:168–199. Queued reclamation is not execution.
+func (w *world) autoMob(who int) {
+	p := w.rpMisc(who)
+	if p == nil {
+		fmt.Fprintf(w.stderr, "warning: mob's rp_misc is NULL, who=%d\n", who)
+		return
+	}
+	w.streams.BeginNPC(w.subloc(who))
+	if w.subloc(who) != int(p.npcHome) ||
+		(int32(w.sysclock.turn)-p.npcCreated >= 5 && w.streams.NPCBehavior(who, 0, 1, 2) == 1) {
+		w.queue(who, "wait time %d", w.streams.NPCBehavior(who, 1, 10, 20))
+		w.queue(who, "reclaim \"disperses.\"")
+		return
+	}
+}
+
 // Complete npc.c:65–84. This is recursive all_here, not direct occupants;
 // regular subkind and non-unsworn loyalty are the only human predicates.
 func (w *world) controlledHumansHere(where int) bool {

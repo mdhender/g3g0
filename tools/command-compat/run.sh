@@ -61,6 +61,7 @@ functions = {
               'exits_from_loc_nsew_select', 'has_ocean_access'],
     'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits', 'find_wield', 'wield_s'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
+              'subloc_here',
               'in_safe_now', 'province', 'building_owner', 'viewloc', 'all_char_here',
               'in_here_list', 'add_to_here_list', 'remove_from_here_list', 'set_where',
               'region', 'mark_loc_stack_known', 'add_here', 'all_here'],
@@ -79,7 +80,9 @@ functions = {
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
             'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units'],
     'npc.c': ['controlled_humans_here', 'get_exit_dir', 'choose_npc_direction', 'npc_move',
+              'auto_unsworn', 'auto_mob',
               'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
+    'necro.c': ['auto_undead'],
     'savage.c': ['create_savage', 'call_savage', 'savage_hates', 'savage_hate_here',
                  'auto_savage', 'init_savage_attacks'],
     'lore.c': ['queue_lore', 'scan_char_item_lore'],
@@ -191,6 +194,8 @@ int drv_market(int who) { return market_here(who); }
 int drv_savage_count(void) { return num_savages; }
 int drv_savage_hates(int where) { return savage_hates(where); }
 int drv_savage_here(int where) { return savage_hate_here(where); }
+void drv_unsworn(int who) { auto_unsworn(who); }
+void drv_mob(int who) { auto_mob(who); }
 void drv_ocean(int who) { ilist_append(&ocean_chars, who); }
 ilist drv_oceans(void) { return ocean_chars; }
 void drv_entity_rolls(int who, int sub, int where) {
@@ -280,6 +285,9 @@ for run in run1 run2; do
   fi
   if [[ "${section_names[$i]}" == 'section savage '* ]]; then
    [ "$status" = 0 ] || die "unexpected savage status $status in section $i"
+  fi
+  if [[ "${section_names[$i]}" == 'section autonomous '* ]]; then
+   [ "$status" = 0 ] || die "unexpected autonomous NPC status $status in section $i"
   fi
   if [[ "${section_names[$i]}" == 'section move '* ]]; then
    [ "$status" = 0 ] || die "unexpected movement status $status in section $i"
