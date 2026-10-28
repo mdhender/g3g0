@@ -321,6 +321,90 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	return 0
 }
 
+// The main.c:50–290 post writers retain real fopen("w")/fclose decisions
+// and nonfatal diagnostics. Artifact bodies alone belong to stage 2. In
+// particular, forward ownership validation must happen AFTER a successful
+// open, not as a projection run before (or instead of) the real IO.
+func (w *world) openPostWriter(name string) *clib.File {
+	fnam := sout("%s/%s", w.libdir, name)
+	fp, err := clib.Fopen(fnam)
+	if err != nil {
+		fmt.Fprintf(w.stderr, "can't write %s", fnam)
+		clib.Perror(w.stderr, "", err)
+		return nil
+	}
+	return fp
+}
+
+// writeTotimesState and writeEmailState have no persistent body effects:
+// their rp_player/email/compuserve reads only select deferred artifact text.
+func (w *world) writeTotimesState() {
+	if fp := w.openPostWriter("totimes"); fp != nil {
+		fp.Close()
+	}
+}
+
+func (w *world) writeEmailState() {
+	if fp := w.openPostWriter("email"); fp != nil {
+		fp.Close()
+	}
+}
+
+func (w *world) writePlayerListState() {
+	w.stage("write_player_list()")
+	fp := w.openPostWriter("players")
+	if fp == nil {
+		return
+	}
+	for pl := range w.loopKind(tPlayer) {
+		if p := w.rpPlayer(pl); p != nil && p.email != nil && w.subkind(pl) == subPlRegular {
+			// list_a_player's allocation and name access, not its text.
+			w.pPlayer(pl)
+			w.justName(pl)
+		}
+	}
+	fp.Close()
+}
+
+// writeForwardSupState covers both write_forward_sup and write_faction_sup:
+// player() follows/validates ownership even if no email will be rendered.
+func (w *world) writeForwardSupState(whoFor int) {
+	pl := w.player(whoFor)
+	w.rpPlayer(pl) // player_email: preserve its raw box access, including 0.
+}
+
+func (w *world) writeForwardsState() {
+	fp := w.openPostWriter("forward")
+	if fp == nil {
+		return
+	}
+	for i := range w.loopKind(tPlayer) {
+		w.writeForwardSupState(i)
+	}
+	for i := range w.loopKind(tChar) {
+		w.writeForwardSupState(i)
+	}
+	for i := range w.loopSubkind(subGarrison) {
+		for _, pl := range w.playersWhoRuleHere(i) {
+			if pl != 0 {
+				w.writeForwardSupState(pl)
+			}
+		}
+	}
+	fp.Close()
+}
+
+func (w *world) writeFactionsState() {
+	fp := w.openPostWriter("factions")
+	if fp == nil {
+		return
+	}
+	for i := range w.loopKind(tPlayer) {
+		w.writeForwardSupState(i)
+	}
+	fp.Close()
+}
+
 // notImplemented stops the engine at a step of a mode it runs that is not
 // ported yet; runEngine recovers it.
 type notImplemented string

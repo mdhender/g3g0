@@ -957,6 +957,57 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			if err := os.WriteFile(path, []byte(strings.ReplaceAll(args.ctext(), "|", "\n")), 0o644); err != nil {
 				t.Fatal(err)
 			}
+		case "post":
+			switch action := args.word(); action {
+			case "players":
+				w.writePlayerListState()
+			case "email":
+				w.writeEmailState()
+			case "totimes":
+				w.writeTotimesState()
+			case "forward":
+				w.writeForwardsState()
+			case "factions":
+				w.writeFactionsState()
+			case "all":
+				w.writePlayerListState()
+				w.writeEmailState()
+				w.writeTotimesState()
+				w.writeForwardsState()
+				w.writeFactionsState()
+			case "file":
+				path := args.word()
+				st, err := os.Stat(path)
+				if err != nil {
+					fmt.Fprintf(&stdout, "file %s missing\n", path)
+				} else if st.Mode().IsRegular() {
+					fmt.Fprintf(&stdout, "file %s regular\n", path)
+				} else {
+					fmt.Fprintf(&stdout, "file %s directory\n", path)
+				}
+			case "empty_player":
+				w.bx[args.num(t)].xPlayer = nil
+			case "new":
+				w.newPlayers.Append(args.num(t))
+			case "mail":
+				p := w.pPlayer(args.num(t))
+				switch kind := args.word(); kind {
+				case "null":
+					p.email = nil
+				case "empty":
+					s := ""
+					p.email = &s
+				case "visible":
+					s := "public@example.test"
+					p.visEmail = &s
+				case "cis":
+					p.compuserve = 1
+				default:
+					t.Fatalf("unknown mail %s", kind)
+				}
+			default:
+				t.Fatalf("unknown post %s", action)
+			}
 		case "admission":
 			switch action := args.word(); action {
 			case "run":

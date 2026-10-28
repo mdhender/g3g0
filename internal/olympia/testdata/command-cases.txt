@@ -18242,3 +18242,181 @@ lore_dir act
 lore_dir act/!
 lore_file act/!/Join-g3 faction|character|city|name|email
 admission run
+
+section post writer asymmetric successful composition preserves records and creates files
+lore_root
+identity 200 First first@example.test
+identity 201 Second second@example.test
+post mail 201 visible
+post mail 201 cis
+post new 201
+entity 202 1 62
+identity 202 Silent silent@example.test
+entity 203 1 48
+post empty_player 203
+entity 3000 3 32
+link 3000 1000
+entity 1100 2 64
+field 1100 lord 201
+field 1100 castle 3000
+field 1000 pledge 1001
+post all
+post file players
+post file email
+post file totimes
+post file forward
+post file factions
+admission state
+save 1000
+save 1001
+save 1100
+save 3000
+
+section post writer empty null missing player records and repeated real opens
+lore_root
+post mail 200 empty
+post empty_player 201
+entity 202 1 49
+post all
+post all
+post file players
+post file email
+post file totimes
+post file forward
+post file factions
+admission state
+
+section post writer ENOENT all five nonfatal failures preserve order and records
+lore_root
+admission lib absent
+entity 202 1 49
+post all
+post file absent/players
+post file absent/email
+post file absent/totimes
+post file absent/forward
+post file absent/factions
+admission state
+
+section post writer ENOTDIR all five nonfatal failures preserve order and records
+lore_root
+lore_file blocked not-a-directory
+admission lib blocked
+entity 202 1 49
+post all
+post file blocked/players
+post file blocked/email
+post file blocked/totimes
+post file blocked/forward
+post file blocked/factions
+admission state
+
+section post writer EISDIR players failure does not suppress later successful opens
+lore_root
+lore_dir players
+entity 202 1 49
+post all
+post file players
+post file email
+post file totimes
+post file forward
+post file factions
+admission state
+
+section post writer EISDIR email failure does not suppress later successful opens
+lore_root
+lore_dir email
+post all
+post file players
+post file email
+post file totimes
+post file forward
+post file factions
+admission state
+
+section post writer EISDIR totimes failure does not suppress later successful opens
+lore_root
+lore_dir totimes
+post all
+post file players
+post file email
+post file totimes
+post file forward
+post file factions
+admission state
+
+section post writer EISDIR forward failure does not suppress later successful opens
+lore_root
+lore_dir forward
+post all
+post file players
+post file email
+post file totimes
+post file forward
+post file factions
+admission state
+
+section post writer EISDIR factions failure keeps earlier successful opens
+lore_root
+lore_dir factions
+post all
+post file players
+post file email
+post file totimes
+post file forward
+post file factions
+admission state
+
+section post writer failed forward open skips ownership cycle validation
+lore_root
+lore_dir forward
+field 1000 lord 1001
+field 1001 lord 1000
+post all
+post file forward
+post file factions
+save 1000
+save 1001
+
+section post writer invalid successful forward open reaches ownership cycle validation
+lore_root
+field 1000 lord 1001
+field 1001 lord 1000
+post all
+
+section post writer failed forward open skips garrison castle validation
+lore_root
+lore_dir forward
+entity 3000 3 3
+entity 1100 2 64
+field 1100 lord 200
+field 1100 castle 3000
+post all
+post file forward
+post file factions
+save 1100
+save 3000
+
+section post writer invalid successful forward open reaches garrison castle validation
+lore_root
+entity 3000 3 3
+entity 1100 2 64
+field 1100 lord 200
+field 1100 castle 3000
+post all
+
+section post writer successful individual writers leave nonallocated player records alone
+lore_root
+post empty_player 201
+entity 202 1 49
+post players
+post email
+post totimes
+post factions
+post forward
+post file players
+post file email
+post file totimes
+post file factions
+post file forward
+admission state

@@ -163,6 +163,8 @@ functions = {
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts'],
+    'main.c': ['write_totimes', 'write_email', 'list_a_player', 'write_player_list',
+               'write_forward_sup', 'write_forwards', 'write_faction_sup', 'write_factions'],
     'add.c': ['fetch_inp', 'get_city_id', 'pick_starting_city', 'add_new_player',
               'make_new_players_sup', 'make_new_players', 'new_player_banners',
               'show_new_char_locs', 'new_player_report', 'new_char_report',
@@ -291,6 +293,8 @@ int immed_see_all, month_done, show_combat_flag;
         matches = []
         for name in names:
             pattern = rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n'
+            if file == 'main.c' and name != 'list_a_player':
+                pattern = rf'^void {name}\(.*?^\}}\n'
             if name == 'queue':
                 pattern = r'^void queue\(.*?^\}\n'
             if name == 'rank_comp':
@@ -513,6 +517,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section post writer '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section post writer invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected post writer status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section admission '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

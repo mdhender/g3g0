@@ -3306,3 +3306,72 @@ Validation at **0.73.0-alpha**, left **uncommitted**:
 No new bug found. Post writers (#128), cached ownership/Times (#129),
 stage-2 rendering and main integration remain untouched, including main's
 explicit postMonth stop. No whole-world/stage-exit success is claimed.
+
+## Post-turn writer opens and state (#128)
+
+Pin remains `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`, read only through
+the bare `tmp/upstream.git` archive. The existing extractor adds complete
+unchanged main.c:50–290 definitions: `write_totimes`, `write_email`,
+`list_a_player`, `write_player_list`, `write_forward_sup`, `write_forwards`,
+`write_faction_sup` and `write_factions`. Original ownership/garrison helpers,
+code.c, sout.c, IO and save_box writers supply actual dependencies; there is
+no replacement expected-state algorithm or successful unported dependency.
+main.c is newly tracked in tools/README.md and affected.sh.
+The issue's 55–314 reference is approximate: complete definitions at this
+pin occupy 50–290; 314 is inside unrelated send_rep, which is not extracted.
+
+Go extends the existing olympia.go owner with explicit stage-1 projections.
+Every writer actually opens with the existing clib fopen("w") and closes on
+normal completion. Only artifact bodies are deferred, not file decisions,
+write_player_list's stage or the exact nonfatal can't-write/perror streams.
+The original order is players, email, totimes, forward, factions. Ownership
+and garrison validation occur only after forward opens successfully. There
+is no suppression option or main call-site change.
+
+Allocation audit: list_a_player calls p_player only after its caller has
+already required a nonnull player record and email. Thus these writers do
+not allocate missing player records on valid input. Forward/faction helpers
+use raw player_email accesses after player(); garrison traversal uses real
+players_who_rule_here. Save bytes plus explicit record flags prove missing
+records remain missing, including a regular player with no record, rather
+than introducing an unconditional allocation while deferring artifact text.
+
+Fourteen appended sections cover asymmetric identities, visible/CIS mail,
+new/silent/system players, missing and empty records, repeated calls and
+individual writers, garrison castle/pledge traversal, all-five ENOENT and
+ENOTDIR failures, each individual EISDIR failure with the other four opens
+successful, and paired failed/successful forward opens with ownership-cycle
+and invalid-castle validation. Only successful opens reach swear.c:32 and
+loc.c:395 assertions (status 134); failed opens remain nonfatal (status 0).
+Actual file presence/type and raw stdout/stderr/status are compared along
+with real saved records. Report artifact bytes are deliberately not compared.
+
+Validation at **0.74.0-alpha**, left **uncommitted**:
+
+- Two actual C recordings and Go match **822 sections / 59134 lines /
+  1024033 output bytes**. All prior **808 sections / 58660 output lines /
+  1015265 output bytes** and **18244 input lines / 332405 input bytes** are
+  exact unchanged byte prefixes. New input: **18422 lines / 336093 bytes**.
+  Output SHA-256:
+  `a15056a752433ffcf5bc43a074bb5edd9ffb560c2aade1ea1581a3e3fb095de9`.
+- Temporary negative linker probes wrapped only write_forwards at the
+  expected-abort ownership-cycle section, emitting the rejected dependency
+  marker and either returning 0 or aborting 134. Both ordinary and --update
+  runs rejected **section 818** with harness status **2**, before expected
+  status or recording replacement. The recording hash was unchanged in all
+  four runs. Probe source/compiler wrapper were deleted before the real run.
+- Eight tools passed **sequentially**, with `G3_REPO=$PWD/tmp/upstream.git`:
+  command **822/59134**, move **135/7150**, helper **37/1487**, RNG **321**,
+  code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase **5/484**,
+  calendar **2/119**, schedule **4/1801**, then default turn (identical status,
+  raw stdout/stderr and one state file). All engines use shared run_limited.
+- Bounded vet and fresh bounded default tests passed; Olympia **1.752s**.
+  Source-only diff whitespace check passes; the added literal C recording
+  retains one trailing-space line from the unchanged save_box writer.
+
+All open local issues were inspected, including unlabeled issues: none is
+bug/follow-c work. No new verified bug/blocker was found. Existing intentional
+source-linked C defects are untouched. Main's explicit postMonth stop, cached
+output/Times lifecycle (#129), valid admissions/-A, stage-2 rendering and
+whole-world/stage-exit acceptance remain outside this task. No commit, push,
+issue closure or checklist tick.

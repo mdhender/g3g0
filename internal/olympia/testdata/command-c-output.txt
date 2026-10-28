@@ -58658,3 +58658,477 @@ add_new_players()
 assertion failure: olympia/add.c (325): pl > 0 && pl < MAX_BOXES
 
 exit 134
+stdout:
+section post writer asymmetric successful composition preserves records and creates files
+> lore_root
+> identity 200 First first@example.test
+> identity 201 Second second@example.test
+> post mail 201 visible
+> post mail 201 cis
+> post new 201
+> entity 202 1 62
+> identity 202 Silent silent@example.test
+> entity 203 1 48
+> post empty_player 203
+> entity 3000 3 32
+> link 3000 1000
+> entity 1100 2 64
+> field 1100 lord 201
+> field 1100 castle 3000
+> field 1000 pledge 1001
+> post all
+> post file players
+file players regular
+> post file email
+file email regular
+> post file totimes
+file totimes regular
+> post file forward
+file forward regular
+> post file factions
+file factions regular
+> admission state
+new players: 201
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+ fn First
+ em first@example.test
+
+admission player 201 record 1
+201 player pl_regular
+PL
+ fn Second
+ em second@example.test
+ ve public@example.test
+ ci 1
+
+admission player 202 record 1
+202 player pl_silent
+PL
+ fn Silent
+ em silent@example.test
+
+admission player 203 record 0
+203 player pl_system
+
+> save 1000
+1000 char 0
+LI
+ wh 3000
+CH
+ lo 200
+CM
+ pl 1001
+
+> save 1001
+1001 char 0
+CH
+ lo 200
+
+> save 1100
+1100 char garrison
+CH
+ lo 201
+MI
+ gc 3000
+
+> save 3000
+3000 loc castle
+LI
+ hl 1000 
+
+stderr:
+write_player_list()
+
+exit 0
+stdout:
+section post writer empty null missing player records and repeated real opens
+> lore_root
+> post mail 200 empty
+> post empty_player 201
+> entity 202 1 49
+> post all
+> post all
+> post file players
+file players regular
+> post file email
+file email regular
+> post file totimes
+file totimes regular
+> post file forward
+file forward regular
+> post file factions
+file factions regular
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 0
+201 player pl_regular
+
+admission player 202 record 0
+202 player pl_regular
+
+stderr:
+write_player_list()
+write_player_list()
+
+exit 0
+stdout:
+section post writer ENOENT all five nonfatal failures preserve order and records
+> lore_root
+> admission lib absent
+> entity 202 1 49
+> post all
+> post file absent/players
+file absent/players missing
+> post file absent/email
+file absent/email missing
+> post file absent/totimes
+file absent/totimes missing
+> post file absent/forward
+file absent/forward missing
+> post file absent/factions
+file absent/factions missing
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+admission player 202 record 0
+202 player pl_regular
+
+stderr:
+write_player_list()
+can't write absent/playersNo such file or directory
+can't write absent/emailNo such file or directory
+can't write absent/totimesNo such file or directory
+can't write absent/forwardNo such file or directory
+can't write absent/factionsNo such file or directory
+
+exit 0
+stdout:
+section post writer ENOTDIR all five nonfatal failures preserve order and records
+> lore_root
+> lore_file blocked not-a-directory
+> admission lib blocked
+> entity 202 1 49
+> post all
+> post file blocked/players
+file blocked/players missing
+> post file blocked/email
+file blocked/email missing
+> post file blocked/totimes
+file blocked/totimes missing
+> post file blocked/forward
+file blocked/forward missing
+> post file blocked/factions
+file blocked/factions missing
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+admission player 202 record 0
+202 player pl_regular
+
+stderr:
+write_player_list()
+can't write blocked/playersNot a directory
+can't write blocked/emailNot a directory
+can't write blocked/totimesNot a directory
+can't write blocked/forwardNot a directory
+can't write blocked/factionsNot a directory
+
+exit 0
+stdout:
+section post writer EISDIR players failure does not suppress later successful opens
+> lore_root
+> lore_dir players
+> entity 202 1 49
+> post all
+> post file players
+file players directory
+> post file email
+file email regular
+> post file totimes
+file totimes regular
+> post file forward
+file forward regular
+> post file factions
+file factions regular
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+admission player 202 record 0
+202 player pl_regular
+
+stderr:
+write_player_list()
+can't write ./playersIs a directory
+
+exit 0
+stdout:
+section post writer EISDIR email failure does not suppress later successful opens
+> lore_root
+> lore_dir email
+> post all
+> post file players
+file players regular
+> post file email
+file email directory
+> post file totimes
+file totimes regular
+> post file forward
+file forward regular
+> post file factions
+file factions regular
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+write_player_list()
+can't write ./emailIs a directory
+
+exit 0
+stdout:
+section post writer EISDIR totimes failure does not suppress later successful opens
+> lore_root
+> lore_dir totimes
+> post all
+> post file players
+file players regular
+> post file email
+file email regular
+> post file totimes
+file totimes directory
+> post file forward
+file forward regular
+> post file factions
+file factions regular
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+write_player_list()
+can't write ./totimesIs a directory
+
+exit 0
+stdout:
+section post writer EISDIR forward failure does not suppress later successful opens
+> lore_root
+> lore_dir forward
+> post all
+> post file players
+file players regular
+> post file email
+file email regular
+> post file totimes
+file totimes regular
+> post file forward
+file forward directory
+> post file factions
+file factions regular
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+write_player_list()
+can't write ./forwardIs a directory
+
+exit 0
+stdout:
+section post writer EISDIR factions failure keeps earlier successful opens
+> lore_root
+> lore_dir factions
+> post all
+> post file players
+file players regular
+> post file email
+file email regular
+> post file totimes
+file totimes regular
+> post file forward
+file forward regular
+> post file factions
+file factions directory
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 1
+201 player pl_regular
+PL
+
+stderr:
+write_player_list()
+can't write ./factionsIs a directory
+
+exit 0
+stdout:
+section post writer failed forward open skips ownership cycle validation
+> lore_root
+> lore_dir forward
+> field 1000 lord 1001
+> field 1001 lord 1000
+> post all
+> post file forward
+file forward directory
+> post file factions
+file factions regular
+> save 1000
+1000 char 0
+CH
+ lo 1001
+
+> save 1001
+1001 char 0
+CH
+ lo 1000
+
+stderr:
+write_player_list()
+can't write ./forwardIs a directory
+
+exit 0
+stdout:
+section post writer invalid successful forward open reaches ownership cycle validation
+> lore_root
+> field 1000 lord 1001
+> field 1001 lord 1000
+> post all
+stderr:
+write_player_list()
+assertion failure: olympia/swear.c (32): loop_check-- > 0
+
+exit 134
+stdout:
+section post writer failed forward open skips garrison castle validation
+> lore_root
+> lore_dir forward
+> entity 3000 3 3
+> entity 1100 2 64
+> field 1100 lord 200
+> field 1100 castle 3000
+> post all
+> post file forward
+file forward directory
+> post file factions
+file factions regular
+> save 1100
+1100 char garrison
+CH
+ lo 200
+MI
+ gc 3000
+
+> save 3000
+3000 loc plain
+
+stderr:
+write_player_list()
+can't write ./forwardIs a directory
+
+exit 0
+stdout:
+section post writer invalid successful forward open reaches garrison castle validation
+> lore_root
+> entity 3000 3 3
+> entity 1100 2 64
+> field 1100 lord 200
+> field 1100 castle 3000
+> post all
+stderr:
+write_player_list()
+assertion failure: olympia/loc.c (395): loc_depth(where) == LOC_build
+
+exit 134
+stdout:
+section post writer successful individual writers leave nonallocated player records alone
+> lore_root
+> post empty_player 201
+> entity 202 1 49
+> post players
+> post email
+> post totimes
+> post factions
+> post forward
+> post file players
+file players regular
+> post file email
+file email regular
+> post file totimes
+file totimes regular
+> post file factions
+file factions regular
+> post file forward
+file forward regular
+> admission state
+new players:
+vector:
+admission player 200 record 1
+200 player pl_regular
+PL
+
+admission player 201 record 0
+201 player pl_regular
+
+admission player 202 record 0
+202 player pl_regular
+
+stderr:
+write_player_list()
+
+exit 0

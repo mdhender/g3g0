@@ -727,6 +727,38 @@ int main(int argc, char **argv)
    for(p=text;*p;p++) fputc(*p=='|' ? '\n' : *p,log);
    fclose(log);
   }
+  else if (!strcmp(op, "post")) {
+   char path[8192]; struct stat st;
+   sscanf(line,"%*s %8191s",text);
+   if(!strcmp(text,"players")) write_player_list();
+   else if(!strcmp(text,"email")) write_email();
+   else if(!strcmp(text,"totimes")) write_totimes();
+   else if(!strcmp(text,"forward")) write_forwards();
+   else if(!strcmp(text,"factions")) write_factions();
+   else if(!strcmp(text,"all")) {
+    write_player_list(); write_email(); write_totimes(); write_forwards(); write_factions();
+   }
+   else if(!strcmp(text,"file")) {
+    sscanf(line,"%*s %*s %8191s",path);
+    if(stat(path,&st)) printf("file %s missing\n",path);
+    else printf("file %s %s\n",path,S_ISREG(st.st_mode) ? "regular" : "directory");
+   }
+   else if(!strcmp(text,"empty_player")) {
+    sscanf(line,"%*s %*s %d",&n); bx[n]->x_player=NULL;
+   }
+   else if(!strcmp(text,"new")) {
+    sscanf(line,"%*s %*s %d",&n); ilist_append(&new_players,n);
+   }
+   else if(!strcmp(text,"mail")) {
+    sscanf(line,"%*s %*s %d %8191s",&n,text);
+    if(!strcmp(text,"null")) p_player(n)->email=NULL;
+    else if(!strcmp(text,"empty")) p_player(n)->email=str_save("");
+    else if(!strcmp(text,"visible")) p_player(n)->vis_email=str_save("public@example.test");
+    else if(!strcmp(text,"cis")) p_player(n)->compuserve=1;
+    else return 2;
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "admission")) {
    char path[8192];
    sscanf(line,"%*s %8191s",text);
