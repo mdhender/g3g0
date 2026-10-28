@@ -1706,6 +1706,22 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.unitSummary(args.num(t))
 			case "unit_summary_sup":
 				w.unitSummarySup(args.num(t), args.num(t))
+			case "loc_stack":
+				w.locStackReport(args.num(t))
+			case "stack_capacity":
+				w.stackCapacityReport(args.num(t))
+			case "loc_ind":
+				fmt.Fprintf(&stdout, "loc ind [%s]\n", w.locIndS(args.num(t)))
+			case "loc_catchup":
+				w.locStackCatchup(args.num(t), args.num(t))
+			case "loc_stack_sup":
+				w.locStackRepSup(args.num(t), args.num(t), args.num(t))
+			case "stack_scratch":
+				for _, k := range []int{tLoc, tShip, tChar, tItem} {
+					for n := range w.loopKind(k) {
+						fmt.Fprintf(&stdout, "stack temp %d %d\n", n, w.bx[n].temp)
+					}
+				}
 			case "trunc_name":
 				fmt.Fprintf(&stdout, "trunc name [%s]\n", w.summaryTruncName(args.num(t)))
 			case "sum_fighters":

@@ -3,6 +3,95 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Location stack and capacity tables (#155)
+
+Existing report.go implements complete unchanged report.c `loc_ind_s`
+**1062–1073**, `loc_stack_catchup` **1076–1086**, `loc_stack_rep_sup`
+**1092–1115**, `loc_stack_report` **1118–1185** and `stack_capacity_report`
+**1215–1320**, retaining the original foreign-faction explanation scratch.
+All five C definitions and their real dependencies were already extracted;
+the existing adapter adds only direct calls, trivial static-helper wrappers
+and raw temp observers. Complete-definition equality against the immutable
+bare-repository source is verified in `tmp/issue155-evidence.log`. No new C
+source dependency/pin, rewritten definition, successful missing dependency,
+second output owner, later player-report root or main wiring is introduced.
+Actual `determineStackWeights`, names/codes, unit loops, output sorting and
+cached FILE routing are reused, as is accepted #154 `unitSummary`.
+
+Eighteen appended sections (fourteen status **0**, four **134**) compare full
+raw logs/streams/status, real saved records, original lists and scratch:
+
+- Empty/missing-PL and prisoner-only roots clear location, ship and character
+  temps before returning without output/allocation; item temp **61** survives.
+  Capacity does not clear temps or exclude prisoners. Direct system/silent
+  output allocates through the existing output owner; immediate output leaves
+  the absent PL absent. Neither root sorts the stored faction units.
+- Region/plain/city/castle and nested ship paths retain exact **0/2/4/6**-space
+  indentation, ancestor-first catch-up and **-1** markers. Nonzero ancestor
+  temp stops recursion, including a positive unit-link marker. Reverse list
+  building leaves **9200 -> 1000 -> 1001 -> 1002 -> 0**; prisoners and unlisted
+  descendants remain zero. Unit and location output-order ties use IDs.
+  Foreign listed descendants have the star/footnote; unlisted descendants do
+  not gain rows. Relocation/repeats rebuild links and reset explanation state.
+- Capacity follows stored roots including duplicates and recursively weighs
+  own, foreign and prisoner descendants. Distinct weights/caps actually print
+  walking/riding/flying **33/78/55%**, then **186/365/311%** overloaded; the
+  recursive leader totals **158**, with **32/98/131%** ratios. Zero capacity
+  emits blank cells, including after nonblank rows. Exact fullness prints
+  **0 100%** in all three columns, negative load prints **241 -141%**, and
+  negative caps retain the real self-carry/no-extra-capacity semantics.
+- All three **999%** cells print `(899) 999%`; weight **1000** over capacity
+  **100** reaches all three greater-than-999 branches and prints `(900)  -- `.
+  A raw negative quantity stays stored but is skipped by the real inventory
+  iterator. Custom noble items and native C signed product/ratio overflow
+  retain original comma formatting; no independent arithmetic fix is made.
+- Accepted summary plus both new roots share a renamed cached inode:
+  **892 bytes** reach `log/original`, with `log/200` still absent. The new
+  renderers do not flush, close or reset the cache. Original assertions remain
+  at **sout.c:158** before linked-list/weight work, **u.c:1480** for an invalid
+  weight root, and **u.c:388** for invalid ancestor depth after the header.
+
+Pinned constants and actually reached bytes are checked in the evidence log:
+player/char/loc/item/ship **1/2/3/4/9**, plain/city/galley/roundship/castle/region
+**3/14/30/31/32/50**, system/silent **48/62**, CHAR_FIELD **6**. No new defect,
+prerequisite or oversized closure was found; the all-open local audit includes
+all fourteen issues, including unlabeled ones, with no bug/follow-C work.
+
+At **0.95.0-alpha**, complete unchanged real C runs twice deterministically
+and Go matches **1113 sections / 74785 lines / 1445511 output bytes**. The
+entire inherited **1095 sections / 73930 lines / 1423874 output bytes** and
+**23766 input lines / 449169 input bytes** remain exact HEAD prefixes.
+New input: **24146 lines / 457547 bytes**. Output SHA-256:
+`d0a1306d9a95ac8fc458e197e035936bbe74dc8b4e6c095c760aacc450a31559`.
+Input SHA-256:
+`508d320c7627f422d5749da882623b7bd01b47484f6e108cd17b02ce4832c907`.
+Live native traversal also matches C/C/Go with shared input unchanged. Logs:
+`tmp/issue155-command{,-update}.log` and `tmp/issue155-evidence.log`.
+
+Four temporary linker probes wrap only `loc_stack_report` at expected-failure
+section **1108**, emitting the rejected dependency marker and returning **0**
+or aborting **134**. Both default and update modes reject with harness status
+**2**, before expected-status acceptance or recording replacement. Each log
+records unchanged before/after SHA-256
+`80cbf285bd16513b363bb94c708e704a054d221c5f7d2a0de6cd960a9924c040`
+(the initial 1112-section recording, before appending the exact-full control).
+Logs: `tmp/issue155-negative-{0,134}-{default,update}.log`. Temporary source
+and compiler wrapper were removed before the final real-C refresh/default.
+
+Sequential command refresh/default, move/helper/RNG/code/loadsave/turn-driver/
+default-turn, bounded vet and fresh bounded default tests pass with explicit
+isolated G3_REPO and run_limited for engine/test executables. Logs:
+`tmp/issue155-{move,helper,rng,code,loadsave,turn-driver,turn,vet,test}.log`.
+Fresh Olympia defaults: **1.846s**. Matching captures removed; literal C
+whitespace retained. Independent parent review verifies all five complete C
+definitions unchanged exactly once; the same eight-tool/vet/fresh-test tier
+passes (Olympia **1.586s**), logs `tmp/parent155-*.log`. No whole-world/lifecycle or
+stage-exit acceptance; latest strict evidence remains the post-#153 eight
+report-byte differences, exit **1** before lifecycle. Parent strict captures
+are untouched. G3 #358 stays nonblocking/unchanged: original division/Go panic,
+malformed **C136/Go2**, is not passing parity. G3 #359's observed fifteen-byte
+truncation and existing source-linked comment remain unchanged.
+
 ## Complete faction unit summaries (#154)
 
 Existing report.go adds complete unchanged report.c `sum_fighters`

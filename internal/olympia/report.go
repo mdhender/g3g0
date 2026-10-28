@@ -3,7 +3,142 @@
 
 package olympia
 
-import "github.com/mdhender/g3g0/internal/lists"
+import (
+	"strings"
+
+	"github.com/mdhender/g3g0/internal/lists"
+)
+
+// Complete report.c:1062–1185. temp is the original reverse-built linked
+// list, shared with the ancestor catch-up markers; it is not saved state.
+func (w *world) locIndS(where int) string {
+	ld := w.locDepth(where) - 1
+	if ld <= 0 {
+		return w.justName(where)
+	}
+	return strings.Repeat(" ", ld*2) + w.boxName(where)
+}
+
+func (w *world) locStackCatchup(pl, where int) {
+	if where == 0 || w.bx[where].temp != 0 {
+		return
+	}
+	w.locStackCatchup(pl, w.loc(where))
+	w.commandOut(pl, "%s", w.locIndS(where))
+	w.bx[where].temp = -1
+}
+
+func (w *world) locStackRepSup(pl, where, who int) {
+	whereS, star, ind := "", "", ""
+	if where != 0 {
+		w.locStackCatchup(pl, w.loc(where))
+		whereS = w.locIndS(where)
+	}
+	if w.player(who) != pl {
+		star = " *"
+		w.locStackExplain = true
+	}
+	if w.kind(w.loc(who)) == tChar {
+		ind = "  "
+	}
+	w.commandOut(pl, "%-34s %s%s%s", whereS, ind, w.boxName(who), star)
+}
+
+func (w *world) locStackReport(pl int) {
+	var l, locs lists.IList
+	w.clearTemps(tLoc)
+	w.clearTemps(tShip)
+	w.clearTemps(tChar)
+	w.locStackExplain = false
+	for i := range w.loopUnits(pl) {
+		if w.isPrisoner(i) {
+			continue
+		}
+		l.Append(i)
+	}
+	if len(l) < 1 {
+		return
+	}
+	w.commandOut(pl, "")
+	w.commandOut(pl, "{<b>}%-34s %s{</b>}", "Location", "Stack")
+	w.commandOut(pl, "%-34s %s", "--------", "-----")
+	w.sortForOutput(l)
+	for i := len(l) - 1; i >= 0; i-- {
+		where := w.subloc(l[i])
+		if w.bx[where].temp == 0 {
+			locs.Append(where)
+		}
+		w.bx[l[i]].temp = w.bx[where].temp
+		w.bx[where].temp = int32(l[i])
+	}
+	w.sortForOutput(locs)
+	for _, where := range locs {
+		j := int(w.bx[where].temp)
+		assert(w.validBox(j), "olympia/report.c", 1168, "valid_box(j)")
+		w.locStackRepSup(pl, where, j)
+		for j = int(w.bx[j].temp); j != 0; j = int(w.bx[j].temp) {
+			assert(w.validBox(j), "olympia/report.c", 1174, "valid_box(j)")
+			w.locStackRepSup(pl, 0, j)
+		}
+	}
+	if w.locStackExplain {
+		w.commandOut(pl, "")
+		w.commandOut(pl, "%-34s    %s", "", "* -- unit belongs to another faction")
+	}
+}
+
+// Complete report.c:1215–1320, using the actual recursive weight owner.
+// Ratios multiply as C int before division, including overflow behavior.
+func (w *world) stackCapacityReport(pl int) {
+	first := true
+	for who := range w.loopUnits(pl) {
+		if first {
+			w.commandOut(pl, "")
+			w.commandOut(pl, "{<b>}%*s  %10s %15s %15s %15s{</b>}", charField, "stack", "total wt", "   walk   ", "   ride   ", "   fly    ")
+			w.commandOut(pl, "%*s  %10s %15s %15s %15s", charField, "-----", "--------", "-----------", "-----------", "-----------")
+			first = false
+		}
+		v := w.determineStackWeights(who)
+		walkS, rideS, flyS := "", "", ""
+		if v.landCap > 0 {
+			n := v.landWeight * 100 / v.landCap
+			s := " -- "
+			if n <= 999 {
+				s = sout("%3d%%", n)
+			}
+			if v.landWeight > v.landCap {
+				walkS = sout("(%s) %s", commaNum(int(v.landWeight-v.landCap)), s)
+			} else {
+				walkS = sout("%s %s", commaNum(int(v.landCap-v.landWeight)), s)
+			}
+		}
+		if v.rideCap > 0 {
+			n := v.rideWeight * 100 / v.rideCap
+			s := " -- "
+			if n <= 999 {
+				s = sout("%3d%%", n)
+			}
+			if v.rideWeight > v.rideCap {
+				rideS = sout("(%s) %s", commaNum(int(v.rideWeight-v.rideCap)), s)
+			} else {
+				rideS = sout("%s %s", commaNum(int(v.rideCap-v.rideWeight)), s)
+			}
+		}
+		if v.flyCap > 0 {
+			n := v.flyWeight * 100 / v.flyCap
+			s := " -- "
+			if n <= 999 {
+				s = sout("%3d%%", n)
+			}
+			if v.flyWeight > v.flyCap {
+				flyS = sout("(%s) %s", commaNum(int(v.flyWeight-v.flyCap)), s)
+			} else {
+				flyS = sout("%s %s", commaNum(int(v.flyCap-v.flyWeight)), s)
+			}
+		}
+		w.commandOut(pl, "%*s  %10s %15s %15s %15s", charField, boxCodeLess(who), commaNum(int(v.totalWeight)), walkS, rideS, flyS)
+	}
+}
 
 // Complete report.c:801–1059. These are the original byte-oriented name
 // operations, not a word-splitting abbreviation algorithm.

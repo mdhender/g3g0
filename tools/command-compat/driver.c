@@ -66,6 +66,8 @@ int drv_rank_threshold(int n), drv_rank_lower(int n), drv_rank_sup(int n);
 char *drv_summary_trunc_name(int who);
 int drv_sum_fighters(int who);
 void drv_unit_summary_sup(int pl, int who), drv_summary_totals(void);
+char *drv_loc_ind(int where);
+void drv_loc_catchup(int pl, int where), drv_loc_stack_sup(int pl, int where, int who);
 extern int gold_inn, gold_temple;
 void drv_city_gold(void), drv_replenish(int where, int item, int qty);
 void drv_taxes(void), drv_claim(void), drv_np(void), drv_unformed(void);
@@ -1235,6 +1237,23 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"unit_summary_sup")) {
     if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
     drv_unit_summary_sup(n,a);
+   }
+   else if(!strcmp(text,"loc_stack")) loc_stack_report(n);
+   else if(!strcmp(text,"stack_capacity")) stack_capacity_report(n);
+   else if(!strcmp(text,"loc_ind")) printf("loc ind [%s]\n",drv_loc_ind(n));
+   else if(!strcmp(text,"loc_catchup")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    drv_loc_catchup(n,a);
+   }
+   else if(!strcmp(text,"loc_stack_sup")) {
+    if(sscanf(line,"%*s %*s %d %d %d",&n,&a,&b)!=3) return 2;
+    drv_loc_stack_sup(n,a,b);
+   }
+   else if(!strcmp(text,"stack_scratch")) {
+    int k, kinds[]={T_loc,T_ship,T_char,T_item};
+    for(k=0;k<4;k++) {
+     loop_kind(kinds[k],n) { printf("stack temp %d %d\n",n,bx[n]->temp); } next_kind;
+    }
    }
    else if(!strcmp(text,"trunc_name")) printf("trunc name [%s]\n",drv_summary_trunc_name(n));
    else if(!strcmp(text,"sum_fighters")) printf("fighters %d\n",drv_sum_fighters(n));

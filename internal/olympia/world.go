@@ -56,6 +56,7 @@ type world struct {
 	pledgeBacklinks bool
 	// report.c's sum_gold/peas/work/sail/fight, reset by unit_summary.
 	unitSummaryTotals [5]int32
+	locStackExplain   bool // report.c's foreign-faction footnote scratch
 
 	// libdir is libdir, the data directory (-l), which load_box()'s
 	// diagnostic names. C starts it "lib".

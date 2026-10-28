@@ -6,6 +6,42 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Location stack and capacity tables (#155)
+
+Existing report.go implements complete pinned report.c loc_ind_s/catchup/
+rep_sup/loc_stack_report **1062–1185** and stack_capacity_report **1215–1320**.
+It preserves temp-linked lists, ancestor markers, explanation reset, output
+and assertion order, using actual recursive weights, loops, names/codes,
+output sorting and cached FILE owners. Accepted #154 unitSummary is reused
+in composition. No new source dependency/pin, successful stub, parallel
+output layer, later player root or main wiring.
+
+At **0.95.0-alpha**, eighteen appended sections match complete unchanged real
+C twice and Go: **1113 sections / 74785 lines / 1445511 output bytes**.
+Inherited **1095 sections / 73930 lines / 1423874 output bytes** and **449169
+input bytes** remain exact prefixes. Actual nested location/ship cases cover
+scratch links/ancestor suppression, prisoners, own/foreign descendants,
+unit/location sort ties, empty/missing records, repeat/relocation and original
+stored order. Real capacities cover zero, under/equal/overloaded, **999%** and
+all three **>999%** branches, negative/custom noble weights and native C int
+overflow. **892-byte** renamed cached composition and original failures are
+observed. Constants and reached bytes are checked. Four missing-dependency
+controls (0/134, default/update) reject before status/update with unchanged
+hashes; probes and matching captures removed. No new defect/prerequisite or
+oversized closure found; all fourteen open issues audited, none bug/follow-C.
+See [complete closure, hashes and evidence](command-compat#location-stack-and-capacity-tables-155).
+
+Sequential command refresh/default, move/helper/RNG/code/loadsave/turn-driver/
+default-turn, bounded vet and fresh bounded defaults pass with explicit
+isolated G3_REPO and run_limited. Logs: `tmp/issue155-*.log`. Literal C
+whitespace retained. Independent parent review and the same tool/vet/fresh-test
+tier pass; logs `tmp/parent155-*.log`. No full-world/lifecycle or
+stage-exit acceptance. Latest strict gate remains post-#153's eight report-byte
+differences, exit **1** before lifecycle; parent strict captures untouched.
+G3 #358 remains nonblocking/unchanged (original division/Go panic, malformed
+**C136/Go2**, not passing parity); G3 #359's existing source-linked comment
+and observed fifteen-byte truncation are unchanged.
+
 ## Complete faction unit summaries (#154)
 
 Existing report.go adds complete pinned report.c sum_fighters **801–822**,
