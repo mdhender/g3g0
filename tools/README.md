@@ -40,8 +40,8 @@ without loyalty mutation, exactly as the unchanged day.c branch does.
 The turn C-only recordings are refreshed with `--full --record`; only the
 pin/binary provenance changes, not captured world/diagnostic bytes or tree
 hashes. The comparator still has stage-1 report exclusions until #134.
-The expected-abort `release-swear-np+turn` corpus prerequisite is #133;
-roundtrip case construction is deliberately unchanged here.
+At #131, roundtrip case construction was deliberately unchanged; #133 below
+resolves its expected-abort prerequisite without changing engine behavior.
 
 #131 validation (Linux amd64, GCC 12.2.0, Go 1.26.4): all affected small
 tools plus unchanged-pin code pass sequentially. Command is 859 sections /
@@ -57,6 +57,41 @@ fresh bounded default tests pass (Olympia 1.508s). Logs: `tmp/issue131-*.log`.
 Full 202-world checks are the parent's accepted inherited baseline, not
 rerun here. One changed raw C save line (`hl 110158 `) deliberately retains
 its trailing space; all non-recording diff whitespace checks pass.
+
+## Expected-abort corpus contract (#133)
+
+At the same immutable `e733acb` pin, roundtrip has **201 meaningful saved-game
+cases**, not 202 successful snapshots: all 196 inherited cases, `savage-cap`
+and `token-vanish` before/after a turn, and ordinary `release-swear-np`.
+The missing `release-swear-np+turn` is explicitly unavailable. Its unchanged
+upstream check requires C status 134 and a `swear.c` FALSE assertion (G3 #357).
+The harness validates the precise pinned line 180 twice under `run_limited`,
+rejects dependency markers, sanitizer reports, wrong status/assertion and
+timeouts, and requires identical raw streams/status/partial trees. It reports
+one separate `EXPECTED_ABORT`, not a load/save pass or a manufactured game.
+Other C turn failures remain errors. Other `G3_REV` overrides retain ordinary
+`+turn` enumeration/status-0 preparation; no valid older snapshots are dropped.
+
+`--list` lists available cases without building/running engines; an exclusively
+unavailable selection errors explicitly. Successful cached inputs/C results
+and format 1 remain unchanged, reusing `tmp/stage2-roundtrip`; controls always
+rerun. Matching Go captures are removed per case. Full-game tools still see
+202 worlds (their separate `world.tgz` plus these 201 cached inputs), exactly
+the input corpus already accepted by the parent in `tmp/stage2-baseline-*.log`.
+The four full-world tools were not rerun for this harness-only accounting
+change. This does not accept Go turn parity for later unported commands,
+full report artifacts, or stage-2 exit.
+
+#133 validation: full `--determinism-all` gives 201 PASS / 0 FAIL / 0 ERROR
+and one separate deterministic expected abort (153s); all 196 inherited names
+are retained and PASS. The 201 existing C/C checks remain valid, every Go
+load/save reruns freshly, and both C abort runs are fresh. Negative controls
+reject wrong statuses/assertions, sanitizer/dependency markers and a real
+unexpected C status-134 turn on ordinary snapshot preparation. Fresh `--list`
+builds/runs no engines; the old `6a25f2d` override retains exactly 196 names.
+Vet, fresh bounded default tests, default turn and command comparisons pass
+(command 859 sections / 59841 lines, deterministic). Logs and enumeration:
+`tmp/issue133-*.log`, full TSV `tmp/issue133-roundtrip-results.tsv`.
 
 ## Check tiers
 

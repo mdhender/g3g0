@@ -8,7 +8,8 @@
 # Each case is a saved game: G3's shared base world (world.tgz), every
 # regress fixture's saved game (scenario.patch over world.tgz, unpacked with
 # G3's own scenario_unpack, or the fixture's scenario.tgz), and each of those
-# after one C turn (-r -S). Both engines run
+# after one successful C turn (-r -S). Pinned expected-abort turns are
+# checked separately; they cannot supply saved post-turn games. Both engines run
 #
 #     olympia-g3 -l ./lib -S test-use-const-report-date
 #
@@ -36,7 +37,7 @@
 #             check that C gives the same result twice on every selected
 #             case, not just on DETERMINISM_SAMPLE, including cases already
 #             cached without that check
-#   --list    print the case names and exit
+#   --list    print available case names and exit (no builds or engine runs)
 #
 # Environment:
 #   G3_REPO      G3 clone that contains G3_REV
@@ -45,10 +46,11 @@
 #   WORK         scratch directory (default tmp/olympia-roundtrip)
 #   RUN_TIMEOUT  seconds allowed per program run (default 120)
 #
-# Exits 0 only if every selected case passes, 1 if any fails or could not be
-# prepared, and 2 if the harness itself fails. Per case, the inputs, both
-# engines' outputs and a full diff are kept under $WORK/cases/<case>; the
-# summary is written to $WORK/results.tsv.
+# Exits 0 only if every selected case/control passes, 1 if any fails or could
+# not be prepared, and 2 if the harness itself fails. Inputs, C outputs and
+# diffs are kept under $WORK/cases/<case>, with Go outputs only on failure.
+# Expected-abort captures are under $WORK/expected-aborts; the summary is
+# written to $WORK/results.tsv.
 
 set -euo pipefail
 
@@ -138,7 +140,18 @@ for d in "${REGRESS}"/*/; do
 	if [ -f "${d}scenario.patch" ] || [ -f "${d}scenario.tgz" ]; then games+=("${n}"); fi
 done
 all=()
-for g in "${games[@]}"; do all+=("${g}" "${g}+turn"); done
+# Exact-pin contract, not a general allowance for failed turns. Source:
+# e733acb tests/olympia/regress/release-swear-np/{check.sh,README.md}
+# (G3 #357): status 134, swear.c assertion, no sanitizer report. At older
+# or override pins keep the ordinary +turn path, requiring status 0.
+unavailable=""
+if [ "${G3_REV}" = e733acb63bacb21167a1f2589d8dcdc023364896 ]; then
+	unavailable=release-swear-np+turn
+fi
+for g in "${games[@]}"; do
+	all+=("${g}")
+	[ "${g}+turn" = "${unavailable}" ] || all+=("${g}+turn")
+done
 
 selected=()
 for c in "${all[@]}"; do
@@ -148,11 +161,23 @@ for c in "${all[@]}"; do
 		if [[ "${c}" == ${p} ]]; then selected+=("${c}"); break; fi
 	done
 done
+# Selecting its ordinary game also validates the absent snapshot's contract.
+abort_selected=0
+if [ -n "${unavailable}" ]; then
+	if [ ${#patterns[@]} -eq 0 ]; then abort_selected=1; fi
+	for p in "${patterns[@]}"; do
+		# shellcheck disable=SC2053
+		if [[ "${unavailable}" == ${p} ]] || [[ release-swear-np == ${p} ]]; then abort_selected=1; fi
+	done
+	if [ "${abort_selected}" -eq 1 ]; then
+		echo "unavailable: ${unavailable}: pinned C intentionally aborts; no saved post-turn game" >&2
+	fi
+fi
+[ ${#selected[@]} -gt 0 ] || die "no available case matches: ${patterns[*]} (see --list)"
 if [ "${list}" -eq 1 ]; then
 	printf '%s\n' "${selected[@]+"${selected[@]}"}"
 	exit 0
 fi
-[ ${#selected[@]} -gt 0 ] || die "no case matches: ${patterns[*]} (see --list)"
 
 echo "G3 revision: ${G3_REV}"
 [ "${G3_REV}" = "${PINNED_REV}" ] || echo "             (not the pinned ${PINNED_REV})"
@@ -222,6 +247,38 @@ run_engine() {
 same_run() {
 	cmp -s "$1/status" "$2/status" && cmp -s "$1/stdout" "$2/stdout" &&
 		cmp -s "$1/stderr" "$2/stderr" && diff -r "$1/cwd" "$2/cwd" >/dev/null 2>&1
+}
+
+# Require the precise pinned assertion, not just SIGABRT. Reject missing
+# dependency markers before accepting a failure, even alongside the assertion.
+expected_abort() {
+	[ "$(cat "$1/status")" = 134 ] &&
+		grep -q 'assertion failure: .*/swear\.c (180): FALSE$' "$1/stderr" &&
+		! grep -Ei 'AddressSanitizer|runtime error|out-of-scope|not yet implemented|missing.*dependency|C stub' "$1/stdout" "$1/stderr" >/dev/null
+}
+
+# Always execute twice: failed turns are controls, never cached saved games.
+# Keep raw diagnostics but remove the matching partial working directories.
+check_expected_abort() {
+	local dir="${WORK}/expected-aborts/release-swear-np+turn"
+	mkdir -p "${dir}"
+	rm -f "${dir}/error" "${dir}/deterministic"
+	if ! prepare release-swear-np; then
+		echo "the saved game release-swear-np could not be prepared" >"${dir}/error"
+		return 1
+	fi
+	run_engine "${C_BIN}" "${CASES}/release-swear-np/input" "${dir}/turn" "${TURN_ARGS[@]}"
+	if ! expected_abort "${dir}/turn"; then
+		echo "expected C status 134 and swear.c (180): FALSE without dependency/sanitizer errors; got $(cat "${dir}/turn/status"); see ${dir}/turn" >"${dir}/error"
+		return 1
+	fi
+	run_engine "${C_BIN}" "${CASES}/release-swear-np/input" "${dir}/turn-again" "${TURN_ARGS[@]}"
+	if ! expected_abort "${dir}/turn-again" || ! same_run "${dir}/turn" "${dir}/turn-again"; then
+		echo "the expected C abort is not deterministic; compare ${dir}/turn and ${dir}/turn-again" >"${dir}/error"
+		return 1
+	fi
+	rm -rf "${dir}/turn/cwd" "${dir}/turn-again/cwd"
+	touch "${dir}/deterministic"
 }
 
 # check_determinism CASE says whether CASE's C round trip should run twice.
@@ -300,8 +357,21 @@ prepare() {
 RESULTS="${WORK}/results.tsv"
 printf 'case\tresult\tc_status\tgo_status\tstdout\tstderr\tfiles_differing\tfirst_files\n' >"${RESULTS}"
 
-npass=0 nfail=0 nerror=0
+npass=0 nfail=0 nerror=0 nabort=0
 start=${SECONDS}
+if [ "${abort_selected}" -eq 1 ]; then
+	if check_expected_abort; then
+		nabort=1
+		echo "  EXPECTED_ABORT ${unavailable}: C status 134, swear.c (180): FALSE; deterministic; no snapshot"
+		printf '%s\tEXPECTED_ABORT\t134\t\t\t\t\tno saved snapshot\n' "${unavailable}" >>"${RESULTS}"
+	else
+		nerror=$((nerror + 1))
+		reason="$(head -1 "${WORK}/expected-aborts/${unavailable}/error")"
+		echo "  ERROR ${unavailable}: ${reason}"
+		abort_status="$(cat "${WORK}/expected-aborts/${unavailable}/turn/status" 2>/dev/null || true)"
+		printf '%s\tERROR\t%s\t\t\t\t\t%s\n' "${unavailable}" "${abort_status}" "${reason}" >>"${RESULTS}"
+	fi
+fi
 echo
 echo "round trip: olympia-g3 ${RT_ARGS[*]}  (${#selected[@]} cases)"
 for c in "${selected[@]}"; do
@@ -349,6 +419,7 @@ for c in "${selected[@]}"; do
 		result=PASS
 		npass=$((npass + 1))
 		printf '  PASS  %s\n' "${c}"
+		rm -rf "${dir}/go"
 	else
 		result=FAIL
 		nfail=$((nfail + 1))
@@ -360,7 +431,7 @@ for c in "${selected[@]}"; do
 done
 
 echo
-echo "pass ${npass}  fail ${nfail}  error ${nerror}  ($((SECONDS - start))s)"
+echo "pass ${npass}  fail ${nfail}  error ${nerror}  expected-abort ${nabort}  ($((SECONDS - start))s)"
 echo "results: ${RESULTS}"
 echo "per case: ${CASES}/<case>/{input,c,go,diff.txt}"
 [ "${nfail}" -eq 0 ] && [ "${nerror}" -eq 0 ]
