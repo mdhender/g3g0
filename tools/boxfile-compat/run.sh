@@ -99,9 +99,10 @@ done
 
 die() { echo "error: $*" >&2; exit 2; }
 
-for tool in git go perl python3 tar cmp diff find stat sort "${CC}"; do
+for tool in git go perl python3 tar cmp diff find sort "${CC}"; do
 	command -v "${tool}" >/dev/null || die "missing required tool: ${tool}"
 done
+python3 -I "${HERE}/../lib/tree-modes-test.py"
 git -C "${G3_REPO}" cat-file -e "${G3_REV}^{commit}" 2>/dev/null ||
 	die "${G3_REPO} does not contain ${G3_REV}; clone https://github.com/playbymail/olympia-g3 and set G3_REPO"
 
@@ -662,11 +663,6 @@ copy() {
 	cp -cR "$1" "$2/lib" 2>/dev/null || { rm -rf "$2/lib"; cp -R "$1" "$2/lib"; }
 }
 
-# listing DIR: every path under DIR with its mode, sorted
-listing() {
-	(cd "$1" && find . -exec stat -f '%Sp %N' {} + | LC_ALL=C sort)
-}
-
 umask 022
 fail=0 boxes=0 total=0
 for variant in fast fast-pretty slow; do
@@ -705,8 +701,8 @@ for variant in fast fast-pretty slow; do
 			head -20 "${dir}/${k}.diff.txt"
 			ok=0
 		fi
-		if ! diff <(listing "${dir}/c/${k}/lib") <(listing "${dir}/go/${k}/lib") >"${dir}/${k}.modes.txt"; then
-			echo "FAIL: ${lib} (${variant}): lib's files or modes differ"
+		if ! python3 -I "${HERE}/../lib/tree-modes.py" "${dir}/c/${k}/lib" "${dir}/go/${k}/lib" >"${dir}/${k}.modes.txt" 2>&1; then
+			echo "FAIL: ${lib} (${variant}): lib's paths/types/modes differ or listing failed"
 			head -20 "${dir}/${k}.modes.txt"
 			ok=0
 		fi
