@@ -1034,20 +1034,20 @@ Vet, fresh bounded default tests, default turn and command comparisons pass
 (command 859 sections / 59841 lines, deterministic). Logs and enumeration:
 `tmp/issue133-*.log`, full TSV `tmp/issue133-roundtrip-results.tsv`.
 
-## Strict whole-tree turn gate (#134)
+## Strict whole-tree turn gate (#134, historical red baseline)
 
 `turn-compat` now excludes no artifacts: C/C and C/Go compare every cwd
 entry, including empty directories, types, all-entry permission/special bits
 (the unchanged `lib/tree-modes.py` policy), regular bytes and raw streams/status.
 Nonregular entries and failed listings/captures are errors, not omissions or
 ordinary mismatches. Defaults remain tiny recorded cases with no world turn.
-Two fresh unchanged pinned C turns match all 233 cwd entries. The strict
-C/Go gate honestly exits 1 on eight `lib/save/1` report-byte differences;
-both engines exit 0, raw streams match and no paths/types/modes differ.
-Lifecycle controls now use the same strict comparator but are not reached
+At #134 two fresh unchanged pinned C turns matched all 233 cwd entries. The strict
+C/Go gate then exited 1 on eight `lib/save/1` report-byte differences;
+both engines exited 0, raw streams matched and no paths/types/modes differed.
+Lifecycle controls use the same strict comparator but were not reached
 past this ordinary-turn failure. See `turn-compat/README.md` and
 `tmp/issue134-turn-full{,-record}.log`; prior stage-1 artifact-excluding
-acceptance below remains historical, not strict stage-2 acceptance.
+acceptance below remains historical. Current strict evidence is under Stage exit.
 
 ## Output primitives (#136)
 
@@ -1577,23 +1577,114 @@ determinism metadata; review those bytes. The full Go turn succeeds after
 #123; no NYI failure is accepted as a successful turn baseline.
 
 **Stage exit.**
-Everything, with the whole-game comparisons:
+Everything, sequentially, with the whole-game comparisons. Use the isolated
+bare source, never a shared upstream checkout. Keep each tool's own pin.
 
 ```sh
-go vet ./...
-G3G0_FULL=1 go test ./...
-tools/<tool>/run.sh                  # every tool pinned to the olympia revision
-tools/olympia-roundtrip/run.sh --determinism-all
-tools/box-compat/run.sh --full       # after olympia-roundtrip, whose games it reads
-tools/boxfile-compat/run.sh --full
-tools/check-compat/run.sh --full
-tools/loadsave-compat/run.sh --full
-tools/turn-compat/run.sh --full      # strict stage-2 whole-tree gate; reports included
+. tools/lib/timeout.sh
+run_limited 120 go go vet ./...
+G3G0_FULL=1 go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in rng lists entity code helper io box boxfile check loadsave \
+    olympia-cli turn-driver move command turn genesis island mapgen scanf; do
+    G3_REPO="$PWD/tmp/upstream.git" \
+      GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+      bash "tools/$tool-compat/run.sh"
+    # Inspect each exit status: island/scanf have disclosed Linux exceptions.
+done
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/stage2-roundtrip" \
+  tools/olympia-roundtrip/run.sh --determinism-all
+for tool in box boxfile check loadsave; do
+    G3_REPO="$PWD/tmp/upstream.git" GAMES="$PWD/tmp/stage2-roundtrip/cases" \
+      "tools/$tool-compat/run.sh" --full
+done
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/stage2-roundtrip" \
+  WORK="$PWD/tmp/issue166-turn" tools/turn-compat/run.sh --full
+G3_REPO="$PWD/tmp/upstream.git" tools/olympia-spec/run.sh
 ```
 
 Run these one at a time: `box-compat`, `boxfile-compat`, `check-compat` and `loadsave-compat` read the games `olympia-roundtrip` caches, so do not run them while `olympia-roundtrip --fresh` rebuilds that cache.
 
-**Current acceptance evidence (#90, 2026-10-28).** Linux amd64, GCC 12.2.0,
+**Accepted stage-2 integration (#166, 2026-10-28).**
+Linux amd64, GCC 12.2.0, Go 1.26.4; immutable stage pin
+`e733acb63bacb21167a1f2589d8dcdc023364896`, other tool pins unchanged.
+Version **0.105.1-alpha** is a patch for integration cleanup and bounded-tool
+safety, not a new renderer. Obsolete projection comments and the uncalled
+reportOutputState helper are removed; actual main.c call order is unchanged.
+
+- Bounded vet and fresh bounded `G3G0_FULL=1` tests pass, **11 packages**,
+  **10 explicit opt-in/child-entry skips** (Olympia **2.101s** on final rerun).
+  The four corpus tests actually execute through the full tools below.
+- All **15 engine/library default tools** pass; command remains **1234
+  sections / 82688 lines / 1635428 output bytes**, with unchanged recordings.
+  Genesis passes **131 cases / 84 mapgen cross-checks / 13 gates** and mapgen
+  **126 comparisons / 11 gates**, at their separate existing pins.
+- Roundtrip rebuilds the absent cache from pristine pinned source/fixtures:
+  **201 PASS / 0 FAIL / 0 ERROR**, all **196 inherited** names retained,
+  all **201 fresh C/C determinism checks**, plus **1 separate EXPECTED_ABORT**
+  in **619s**. The real release-swear-np turn exits **134** twice at exact
+  `swear.c (180): FALSE`, without dependency/sanitizer markers. There is no
+  successful `release-swear-np+turn` input. See `olympia-roundtrip/README.md`.
+- Full box/boxfile/check/loadsave each cover **202 games** (201 actual cached
+  inputs plus the tool's own base world). Box plain/pretty, boxfile all three
+  variants and check compare **8,146,800 boxes**; loadsave saves **8,146,791**.
+  Check and loadsave report **zero check_db messages**. All required raw
+  streams/status and mode-aware tree/byte comparisons match.
+- Strict whole-world C/C and C/Go pass: status **0**, identical raw streams
+  and all **233 cwd entries**, reports/Times/auxiliary files included, no
+  path/type/mode/empty-directory/byte exclusions. All **13 lifecycle controls**
+  pass the same artifact-inclusive contract. Matching captures are removed;
+  the independent parent repeat passes too. See `turn-compat/README.md`.
+- Spec: **21 pass / 102 fail / 0 error**, retaining every baseline **19**
+  pass and adding `mint-top-id`/`token-vanish` through unchanged upstream
+  checks. Only those progress-list names are added, not expected bytes.
+  Golden initialization still exits **2** at unsupported `-i`; golden is
+  **NO**, not passing whole-spec parity. See `olympia-spec/README.md`.
+
+Logs: `tmp/issue166-{vet,tests}{,-final}.log`,
+`tmp/issue166-*-{default,full}.log`, `tmp/issue166-roundtrip-all.log`,
+`tmp/issue166-roundtrip-results.tsv`, `tmp/issue166-spec.log`; corpus/provenance
+audits and digest index are `tmp/issue166-{corpus-audit,provenance,export-bytes}.log`
+and `tmp/issue166-evidence.sha256`. The reusable fresh C cache is
+`tmp/stage2-roundtrip`; engines never run on its inputs or symlink-copy sources.
+
+Independent parent complete-diff/source review and final-tier rerun pass:
+bounded vet, fresh bounded full-enabled tests (Olympia **2.623s**), all fifteen
+engine/library defaults, genesis/mapgen, **201** roundtrips plus the freshly
+repeated expected-abort control, all four **202-world** full tools, strict turn
+and all **13** lifecycle controls, and the unchanged **21/102/0** spec result.
+The roundtrip repeat reuses the verified fresh exact-pin C cache and its
+determinism markers, runs every Go load/save freshly, and completes in **144s**.
+Parent logs: `tmp/parent166-{vet,tests,roundtrip,spec}.log`,
+`tmp/parent166-*-{default,full}.log`; strict manifest/control summary:
+`tmp/parent-stage2-turn/{c-determinism,lifecycle}.txt`. Parent launcher controls
+also preserve argv[0] and **134/139/124/127**; complete island result/gate TSVs
+remain byte-identical to the pre-change run. No expected output is rewritten.
+
+Known exceptions remain red, not rewritten expectations: scanf has **78**
+deterministic glibc probes, **11** macOS numeric-width differences (exit **1**).
+Island has **114/119** matching cases, five differences / seven failed checks
+(exit **1**); all **17 upstream gates** pass for both engines. Its genesis
+input generation and upstream gate calls now also use shared run_limited via
+an argv[0]-preserving native launcher, following genesis-compat's existing
+pattern. Full before/after result/gate TSVs are byte-identical; controls verify
+statuses **134/139/124/127** and argv[0]. No engine behavior or oracle changes.
+
+Pre-delivery all-open audit: local issues are only **#166/#132/#19**, no bug/follow-C.
+Current upstream bugs are **G3 #309** (invalid RNG ranges, won't fix),
+**G3 #358** (malformed positive-quantity zero-price BUY: **C136/Go2 is NOT
+passing parity**, nonblocking by owner decision), and **G3 #359** (NULL
+pointer comparison in long-name truncation; observed C truncation preserved).
+G3 #352–#356 are now closed and their pinned follow-C work was accepted in #131;
+the earlier open-bug list below is historical. G3 #114 is an open enhancement,
+not an output-stage prerequisite. No missing renderer or new blocking
+prerequisite was found for the accepted pin/platform/scope. Reassess #358
+before claiming malformed-input parity and #359 for other compilers/sanitizers.
+Stage 2 is accepted; stop here without planning or implementing stage 3.
+Later commands, initialization, valid admissions, external -A charging,
+-M mail sending and separate -h HTML generation remain explicitly deferred;
+ordinary inline HTML/style bytes are included above. No next-stage work is started.
+
+**Historical stage-1 acceptance (#90, 2026-10-28).** Linux amd64, GCC 12.2.0,
 Go 1.26.4, stage pin `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
 Roundtrip `--determinism-all` passes 196/196 cases with C/C determinism,
 identical raw streams/status and every file; full box comparison passes
@@ -1648,7 +1739,7 @@ stage 2. No unresolved stage-1 blocker is currently known.
 |---|---|
 | `G3G0_FULL=1` | lets the whole-game Go tests (`TestBoxWorlds`, `TestBoxfileWorlds`, `TestCheckWorlds`, `TestLoadSaveWorlds`) run; `-short` always skips them. They compare nothing on their own: they need the game list that `box-compat`, `boxfile-compat`, `check-compat` or `loadsave-compat` hands them, and skip without it. |
 | `--full` | `box-compat`, `boxfile-compat`, `check-compat`, `loadsave-compat`: also compare every saved game (`world.tgz` and each game cached by `olympia-roundtrip`). |
-| `--full` | `turn-compat`: repeat pinned C world turns, then compare Go's complete cwd (paths/types/modes/empty directories/regular bytes, reports included) and raw stdout/stderr/status. Currently red until pending report tasks land. |
+| `--full` | `turn-compat`: repeat pinned C world turns, then compare Go's complete cwd (paths/types/modes/empty directories/regular bytes, reports included) and raw stdout/stderr/status; then all 13 artifact-inclusive lifecycle controls. |
 | `--games N` | `box-compat`, `boxfile-compat`, `check-compat`, `loadsave-compat`: compare `N` saved games, always the same ones: `world.tgz` and cached games spread evenly over the sorted list. |
 | `--determinism-all` | `olympia-roundtrip`: check that C gives the same result twice on every selected case, not just the fixed sample. |
 

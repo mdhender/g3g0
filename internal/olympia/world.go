@@ -52,7 +52,7 @@ type world struct {
 	garrisonMagic  int32
 	mountOlympus   int32
 
-	// report.c cache validity; transfers invalidate it even before stage 2.
+	// report.c cache validity; transfers invalidate pledge backlinks.
 	pledgeBacklinks bool
 	// report.c's sum_gold/peas/work/sail/fight, reset by unit_summary.
 	unitSummaryTotals [5]int32

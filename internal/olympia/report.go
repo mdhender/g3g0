@@ -539,7 +539,7 @@ func (w *world) showItemSkillsSup(who, item int, p *itemMagic) {
 }
 
 // showItemSkills is report.c:196–210. Do not sort the inventory here or
-// allocate missing magic records. Later roots retain their projections.
+// allocate missing magic records.
 func (w *world) showItemSkills(who, num int) {
 	for e := range w.loopInv(num) {
 		if p := w.rpItemMagic(int(e.item)); p != nil {
@@ -590,8 +590,7 @@ func (w *world) extraItemInfo(who, item, qty int) string {
 	return s
 }
 
-// showCharInventory is complete report.c:294–344. Later report roots retain
-// their projections until their own tasks; callers must use one path only.
+// showCharInventory is complete report.c:294–344, sorting the original list.
 func (w *world) showCharInventory(who, num int) {
 	safeQsort(w.bx[num].items, invItemComp)
 	first := true
@@ -832,18 +831,6 @@ func (w *world) playerBanner() {
 	w.outAltWho = 0
 }
 
-// reportOutputState preserves a MASTER out()'s open-before-allocation path
-// (sout.c:295–306,465–467), not its stage-2 body or transient output bits.
-// No blank/successful rendering substitute is emitted. Like ordinary output,
-// this uses openPlayerOutput, so an inaccessible log is still a real failure.
-func (w *world) reportOutputState(pl int) {
-	if w.immediate || pl == 0 || w.isPrisoner(pl) {
-		return
-	}
-	w.openPlayerOutput(pl)
-	w.pPlayer(pl)
-}
-
 // reportAccountSup is complete active report.c:1725–1791. The external
 // account command and file read are #if 0; only the footer is active.
 func (w *world) reportAccountSup(pl int) {
@@ -1040,8 +1027,7 @@ func (w *world) genIncludeSection() {
 	w.outAltWho = 0
 }
 
-// charRepLocation is report.c:357–407. Death logging needs this helper;
-// report-body assembly remains separate stage-2 work.
+// charRepLocation is report.c:357–407, shared by reports and death logging.
 func (w *world) charRepLocation(who int) string {
 	where := w.subloc(who)
 	if where == 0 {

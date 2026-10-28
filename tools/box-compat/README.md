@@ -64,10 +64,20 @@ The driver's load loop is `read_boxes()`'s, except that a line that is not a box
 
 ## Results
 
-Last run: 2026-10-27, Linux amd64, GCC 12.2.0, Go 1.26.4.
+Final #166 run: 2026-10-28, Linux amd64, GCC 12.2.0, Go 1.26.4,
+at the unchanged pinned revision above.
 
 - Check 1: 20 sections, 3625 lines. The C driver is deterministic, its output matches `box-c-output.txt`, and `TestBoxMatchesC` passes.
-- Check 2 was not rerun at this pin. Historical macOS `--full`: 197 games (`world.tgz` and the 196 cached round-trip inputs), 7,947,575 saved boxes (36,999 in `world.tgz`), plain and pretty: C and Go output identical.
+- Check 2 (`--full`): **202 games / 8,146,800 saved boxes**, plain and
+  pretty, identical C/Go stdout/stderr (36,999 boxes in the separate base
+  `world.tgz`). All 201 pristine roundtrip inputs are included; the unavailable
+  expected-abort snapshot is not invented or counted.
+
+Command: `G3_REPO="$PWD/tmp/upstream.git"
+GAMES="$PWD/tmp/stage2-roundtrip/cases" tools/box-compat/run.sh --full`.
+Evidence: `tmp/issue166-box-{default,full}.log`. Engine/test processes use
+shared `run_limited`; matching whole-game outputs are deleted as they pass.
+Recorded expectations and tool pin are unchanged.
 
 ## Upstream defects reproduced on purpose
 

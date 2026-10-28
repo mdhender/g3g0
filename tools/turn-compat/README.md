@@ -7,7 +7,7 @@ No turn engine code is implemented here. The reference is real C, never Go.
 There are no artifact exclusions. Both C/C determinism and C/Go comparison
 cover every cwd entry, including empty directories, types, permission/special
 bits and regular-file bytes, plus unfiltered stdout/stderr/status. The strict
-full gate is intentionally red until the report implementation tasks land;
+world gate and all thirteen artifact-inclusive lifecycle controls pass at #166;
 historical stage-1 acceptance below had a narrower contract.
 
 ```sh
@@ -137,6 +137,34 @@ evidence and `diff.txt` lists all cwd path/type/mode/byte differences and unfilt
 stdout/stderr diffs. `c-determinism.txt` retains repeat metadata. The redundant
 matching C repeat is deleted immediately; matching Go/C game outputs are
 deleted after success. The input and C build remain reusable.
+
+### #166 final strict integration evidence (2026-10-28)
+
+Linux amd64, GCC 12.2.0, Go 1.26.4, unchanged exact stage pin above:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/stage2-roundtrip" \
+  WORK="$PWD/tmp/issue166-turn" tools/turn-compat/run.sh --full
+```
+
+Two fresh pinned C turns match, then Go matches status **0**, raw streams and
+all **233 cwd entries**, including saved reports, Times, auxiliary files,
+empty directories and all-entry types/permission/special bits/regular bytes.
+All **13** controls repeat C and match Go under the identical strict contract:
+no-save **230** entries; empty-act/act-file **234**; dot-act/partial-act **236**;
+press failure **219**, rumor failure **220**, and the other six controls **233**.
+Press/rumor/masthead failures have status **1**; the other controls status **0**.
+No report exclusion, normalization, source pin or recording changed.
+
+Evidence: `tmp/issue166-turn-full.log` and
+`tmp/issue166-turn/{c-determinism,lifecycle}.txt`; the manifest records fresh
+binary/world digests. Matching whole-world/repeat/control captures and input
+are removed. The parent's independent repeat also passes the whole-world
+comparison and all thirteen controls: `tmp/parent166-turn-full.log` and
+`tmp/parent-stage2-turn/{c-determinism,lifecycle}.txt`.
+The exit world has no regular players, posts or email rows: the unchanged
+**1234-section** command oracle supplies asymmetric real-C/C/Go coverage for
+those branches, rather than inferring them from this world.
 
 ### #134 strict-gate evidence (2026-10-28)
 

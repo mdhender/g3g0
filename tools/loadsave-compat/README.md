@@ -75,6 +75,22 @@ None of the routines of #51 draws from an RNG: `create_a_relic()` allocates fixe
 
 ## Results
 
+Final #166 run, 2026-10-28, Linux amd64, GCC 12.2.0, Go 1.26.4,
+at the unchanged pin above: default **61 sections / 3411 lines** match
+deterministic C and the unchanged recording. `--full` passes **202 games /
+8,146,791 saved boxes**, with **zero check_db messages**. C/Go `lib` trees
+(types/modes/bytes), raw stdout/stderr and statuses match. This count is after
+the real load/save lifecycle, not the box-only 8,146,800 count.
+
+Command: `G3_REPO="$PWD/tmp/upstream.git"
+GAMES="$PWD/tmp/stage2-roundtrip/cases" tools/loadsave-compat/run.sh --full`.
+The corpus is the fresh #166 roundtrip's 201 actual saved inputs plus the
+tool's separate base world; no unavailable abort snapshot is included.
+Evidence: `tmp/issue166-loadsave-{default,full}.log`. Shared `run_limited`
+bounds all engine/test processes; matching per-game copies are removed.
+
+Historical foundation evidence:
+
 2026-10-27, Linux amd64 at the current pin: all 61 sections (3411 lines)
 match deterministic C byte for byte after C `--update`. The trade-route
 numeric cases now follow G3 #341; no generic Scanner behavior changed.

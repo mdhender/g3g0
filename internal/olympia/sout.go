@@ -245,7 +245,7 @@ func maxPlayerOutput() int {
 }
 
 // openPlayerOutput owns sout.c's bounded move-to-front cache (131–214).
-// Both ordinary output and report projections borrow, never close, its FILE.
+// Ordinary output and report renderers borrow, never close, its FILE.
 // A hit must not reopen a renamed/unlinked path or change buffering mode.
 func (w *world) openPlayerOutput(pl int) *clib.File {
 	for i, p := range w.playerOutput {

@@ -77,13 +77,21 @@ In the engine, `load_db()` runs more between the box-file passes and `check_db()
 
 ## Results
 
-Current pin: 2026-10-27, Linux amd64, GCC 12.2.0, Go 1.26.4:
-31 recorded sections, 2347 lines, deterministic C and matching Go.
-Whole-game checks were not rerun at this pin. Historical full run:
-2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, Go 1.26.4.
+Final #166 run: 2026-10-28, Linux amd64, GCC 12.2.0, Go 1.26.4,
+at the unchanged pinned revision above.
 
-- Check 1: 30 sections, 2071 lines. The C driver is deterministic, its output matches `check-c-output.txt`, and `TestCheckMatchesC` passes.
-- Check 2 (`--full`): 197 games (`world.tgz` and the 196 cached round-trip inputs; 7,947,575 boxes in their written `master` files, 36,999 in `world.tgz`): C and Go `lib` trees (files, modes and contents), stdout, stderr and exit status identical. No game gives any message but `check_db()`'s stage line: no repair branch, warning or assertion is reached by a real saved game.
+- Check 1: **31 sections / 2347 lines**, deterministic C, unchanged
+  recording and matching Go.
+- Check 2 (`--full`): **202 games / 8,146,800 boxes**, including the
+  separate 36,999-box base world and all 201 pristine cached roundtrip inputs.
+  C/Go `lib` trees (types/modes/bytes), raw stdout/stderr and status match.
+  **Zero check_db messages** beyond its stage line; the corpus does not
+  exercise repair branches merely by loading these consistent worlds.
+
+Command: `G3_REPO="$PWD/tmp/upstream.git"
+GAMES="$PWD/tmp/stage2-roundtrip/cases" tools/check-compat/run.sh --full`.
+Evidence: `tmp/issue166-check-{default,full}.log`. All engine/test processes
+use shared `run_limited`; matching per-game captures are deleted promptly.
 
 ## Upstream fixes followed
 

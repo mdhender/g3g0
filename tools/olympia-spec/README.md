@@ -22,7 +22,7 @@ Change the pin only on purpose, and rerun this and [`tools/olympia-roundtrip`](.
 At #131, the exact recorded 19-pass set is retained: 19 pass / 104 fail /
 0 error at the new pin. The generated passing.txt changes provenance only.
 Golden initialization still stops at explicitly unsupported `-i`; this
-no-loss progress check does not claim all commands or reports are ported.
+no-loss progress check does not claim later commands/modes or whole-spec parity.
 
 ## Prerequisites
 
@@ -60,24 +60,23 @@ The gates also run inside the export, so they cannot write to the clone.
 
 ## Results
 
-Current run: 2026-10-28, Linux amd64, Go 1.26.4, pinned revision above.
+Final #166 run: 2026-10-28, Linux amd64, Go 1.26.4, pinned revision above.
 `G3_REPO="$PWD/tmp/upstream.git" tools/olympia-spec/run.sh`:
 
-- Regress: **pass 19, fail 101, error 0** (64 seconds, 120 fixtures).
-  All 15 previously recorded passes remain; the tool adds `load-nowhere-unit`,
-  `save-libdir-space`, `save-seed-unwritable` and `wait-ferry-range` to
-  `passing.txt`. No expected bytes or upstream fixtures were changed.
-- `-r` itself is now implemented and the separate full-world state/raw-stream
-  comparison passes. Remaining spec failures are not a baseline that accepts
-  an unimplemented turn: fixtures still request unsupported coverage/state
-  exports and command/mode branches. Actual logs show explicit combat/SAIL
-  stops; `mint-top-id` reaches manifest comparison and differs in deferred
-  report artifacts. These are not an all-spec-green claim or a stage-1 exit gate.
+- Regress: **pass 21, fail 102, error 0** (70 seconds, 123 fixtures).
+  All **19** baseline passes remain. The unchanged upstream checks now also
+  pass `mint-top-id` and `token-vanish`; the tool records just those two new
+  names in `passing.txt`. No fixture, manifest or expected bytes changed.
+- The separate strict whole-world C/C/Go comparison and all 13 lifecycle
+  controls pass, including report artifacts. Remaining spec failures still
+  request unsupported coverage/state exports, commands and modes; they are
+  not accepted successful gameplay or a claim of whole-spec parity.
 - Golden initialization still exits 2 at `load_db (-i): not yet implemented`;
   golden_check reports `NO`. The spec tool exits 0 because no recorded pass was
   lost, **not** because all regressions or the golden flow pass.
-- Logs: `tmp/issue90-evidence/spec.log`, plus
+- Logs: `tmp/issue166-spec.log`, `tmp/issue166-spec-audit.log`, plus
   `tmp/olympia-spec/{run-all,olympia-g3,golden}.log`. Full C spec was not rerun.
+  Every Go engine invocation uses the existing native `run_limited` launcher.
 
 Historical foundation run (before stage-1 turn integration): 2026-10-27,
 Linux amd64, Go 1.26.4. About 54 seconds. The limitations below describe that

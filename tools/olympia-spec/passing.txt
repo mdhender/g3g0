@@ -16,9 +16,11 @@ load-number-width
 load-orphan-unit
 load-short-entries
 load-stray-orders
+mint-top-id
 rng-selftest
 save-fly-cap
 save-libdir-space
 save-seed-unwritable
+token-vanish
 trade-route-seed-parse
 wait-ferry-range

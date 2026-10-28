@@ -11,7 +11,7 @@ import (
 )
 
 // Minimal command handlers, ported whole from c2.c. In particular these
-// report settings mutate the player even though report assembly is stage 2.
+// report settings persist on the player and control report formatting.
 func (w *world) vFormat(c *command) int {
 	pl := w.player(int(c.who))
 	w.pPlayer(pl).format = int8(c.a)

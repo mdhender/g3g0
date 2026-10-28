@@ -87,6 +87,36 @@ echo "building the Go port"
 ) >>"${LOG}" 2>&1 || die "Go build failed; see ${LOG}"
 GO_BIN="${WORK}/bin/island-g3"
 
+# Preserve the gates' exec -a argv[0] through the shared supervisor, as in
+# genesis-compat. A shell-script ISLAND_BIN would discard that name.
+cat >"${WORK}/engine.go" <<'EOF'
+package main
+
+import (
+	"fmt"
+	"os"
+	"os/exec"
+	"syscall"
+)
+
+func main() {
+	bash, err := exec.LookPath("bash")
+	if err == nil {
+		args := []string{"bash", "-c", `. "$1"; shift; run_limited "$@"`,
+			"fixture-engine", os.Getenv("G3G0_TIMEOUT_SH"), os.Getenv("RUN_TIMEOUT"),
+			os.Args[0], os.Getenv("G3G0_ENGINE_BIN")}
+		err = syscall.Exec(bash, append(args, os.Args[1:]...), os.Environ())
+	}
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(127)
+}
+EOF
+go build -o "${WORK}/bin/engine" "${WORK}/engine.go" >>"${LOG}" 2>&1 ||
+	die "fixture launcher build failed; see ${LOG}"
+rm "${WORK}/engine.go"
+export G3G0_TIMEOUT_SH="${HERE}/../lib/timeout.sh"
+export RUN_TIMEOUT
+
 # ---------------------------------------------------------------------------
 # Inputs.
 # ---------------------------------------------------------------------------
@@ -113,7 +143,7 @@ make_map() {
 			local args="${spec#genesis:}" dir="${out}.genesis"
 			mkdir -p "${dir}"
 			# shellcheck disable=SC2086
-			(cd "${dir}" && "${C_GENESIS}" ${args//,/ } >/dev/null 2>&1) ||
+			(cd "${dir}" && run_limited "${RUN_TIMEOUT}" genesis-g3 "${C_GENESIS}" ${args//,/ } >/dev/null 2>&1) ||
 				die "genesis-g3 ${args//,/ } failed"
 			cp "${dir}/Map" "${out}"
 			;;
@@ -272,8 +302,8 @@ done
 
 # ---------------------------------------------------------------------------
 # G3's island regression gates, unchanged. They run the C reference by
-# default and another island generator when ISLAND_BIN names it
-# (tests/island/island.sh).
+# default; ISLAND_BIN selects the same bounded native launcher for either
+# engine (tests/island/island.sh).
 # ---------------------------------------------------------------------------
 echo
 echo "G3 island regression gates"
@@ -282,11 +312,9 @@ printf 'gate\timpl\tresult\n' >"${GATES}"
 for check in "${WORK}"/g3/tests/island/regress/*/check.sh; do
 	name="$(basename "$(dirname "${check}")")"
 	for impl in c go; do
-		if [ "${impl}" = go ]; then
-			out="$(ISLAND_BIN="${GO_BIN}" bash "${check}" 2>&1)" || true
-		else
-			out="$(env -u ISLAND_BIN OLYMPIA_PRESET=debug bash "${check}" 2>&1)" || true
-		fi
+		bin="${C_BIN}"
+		[ "${impl}" != go ] || bin="${GO_BIN}"
+		out="$(G3G0_ENGINE_BIN="${bin}" ISLAND_BIN="${WORK}/bin/engine" bash "${check}" 2>&1)" || true
 		printf '  %-20s %-3s %s\n' "${name}" "${impl}" "$(head -1 <<<"${out}")"
 		printf '%s\t%s\t%s\n' "${name}" "${impl}" "$(head -1 <<<"${out}")" >>"${GATES}"
 		[ "$(head -1 <<<"${out}")" = YES ] || fail "gate ${name} (${impl}): ${out}"

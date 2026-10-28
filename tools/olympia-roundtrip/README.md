@@ -129,7 +129,29 @@ case passes and every selected control meets its contract.
 
 ## Results
 
-Current pin (`e733acb`), #133, 2026-10-28, Linux amd64, GCC 12.2.0,
+Final #166 run, 2026-10-28, Linux amd64, GCC 12.2.0, Go 1.26.4,
+unchanged pin `e733acb63bacb21167a1f2589d8dcdc023364896`:
+**201 PASS / 0 FAIL / 0 ERROR / 1 separate EXPECTED_ABORT**, in **619s**.
+The old cache was absent: source, build, all pristine inputs, all C results
+and all 201 C/C determinism checks were rebuilt, not inherited from old
+markers. Go ran on fresh directory copies. All 196 inherited case names pass;
+the five new saved cases pass too. The actual unavailable
+`release-swear-np+turn` C control ran twice with status **134**, exact
+`swear.c (180): FALSE`, identical raw captures and partial trees, and no
+dependency/sanitizer marker. No successful snapshot or Go turn is invented.
+Matching Go/repeat/abort cwd captures were deleted by the harness.
+
+Command: `G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/stage2-roundtrip"
+tools/olympia-roundtrip/run.sh --determinism-all`. Logs/TSV:
+`tmp/issue166-roundtrip-{all.log,results.tsv}`. Provenance:
+`tmp/issue166-{provenance,export-bytes}.log`; all **1208** exported regular
+source files equal the pinned archive bytes. `g3.rev` and format-1 `c.stamp`
+agree with the fresh binary SHA-256
+`0e3dee47344b8e66abc0ef91691cc27366adfa87a52b4b4d83ee14aa9dda1002`.
+Inputs/results remain in `tmp/stage2-roundtrip`; full tools enumerate its
+201 actual `input/lib` directories plus their own base world = **202 worlds**.
+
+Historical #133 run at this pin, 2026-10-28, Linux amd64, GCC 12.2.0,
 Go 1.26.4: `--determinism-all` passes **201**, fail 0, error 0, with **1
 separate expected abort**, in 153 seconds. Exact-pin format-1 inputs/C
 results and their 201 determinism checks were reused; every Go load/save

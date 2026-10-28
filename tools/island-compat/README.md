@@ -55,8 +55,14 @@ The script:
 7. Requires that cases in the same group, which differ only in their seed, give different reference output.
    A port that ignored the seed would fail this check.
 8. Runs G3's own island regression gates (`tests/island/regress/*/check.sh`) from the export, unchanged, against the C build and against Go.
-   They run the C build by default, and the Go binary through their `ISLAND_BIN` setting (`tests/island/island.sh`).
+   `ISLAND_BIN` selects a native launcher for either binary, preserving the
+   gate's `exec -a island-g3` name through the shared `run_limited` supervisor.
    Each must print `YES`.
+
+All engine calls, including genesis input generation and both engines in the
+upstream gates, use `tools/lib/timeout.sh` (`RUN_TIMEOUT`, default 60 seconds).
+Timeout is status 124; ordinary signal exits are unchanged. No upstream source,
+fixture or expected byte is modified by the launcher.
 
 The script exits 0 only when every check passes.
 Each run's outputs are left under `tmp/island-compat/runs/<case>/{c1,c2,go1,go2}`, and the summaries are written to `tmp/island-compat/results.tsv` (cases) and `tmp/island-compat/gates.tsv` (G3 gates).
@@ -81,7 +87,27 @@ Each run's outputs are left under `tmp/island-compat/runs/<case>/{c1,c2,go1,go2}
 
 ## Results
 
-Last run: 2026-10-26, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
+Final #166 Linux run, 2026-10-28, GCC 12.2.0, Go 1.26.4, unchanged pin:
+**114/119 matching cases**, five case differences / seven failed checks,
+exit **1**, not passing parity. `size-saturate` and `size-int-max-1` expose
+the disclosed huge-allocation policy; `opt-operand-first`, `opt-lone-dash`
+and `opt-empty-arg` expose glibc/BSD option permutation. All **17 upstream
+gates pass for both engines**. Expectations are unchanged.
+
+The #166 bounded-launch integration covers the previously direct genesis
+input generation and gate launches. Repeating the complete tool with that
+launcher gives byte-identical before/after `results.tsv` and `gates.tsv`,
+including all five known differences. Independent launcher controls preserve
+`argv[0] = island-g3`, statuses **134/139**, timeout **124**, and missing-target
+failure **127**, without fabricated successful output.
+Command: `G3_REPO="$PWD/tmp/upstream.git" tools/island-compat/run.sh`.
+Evidence: `tmp/issue166-island-{before,default}.log`,
+`tmp/island-compat/{results,gates}.tsv` and
+`tmp/issue166-launcher-controls.log`. Matching captures were removed;
+the five failing cases remain for inspection.
+
+Historical reference-platform run: 2026-10-26, macOS 26.6.2 arm64,
+Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4.
 
 - 119 cases: 87 `ok` and 32 `fail`.
   All 119 PASS: Go matches C byte for byte on every stage's stdout, stderr and exit status and on the final `randseed`, and both programs are deterministic.
