@@ -38,7 +38,7 @@ functions = {
                 'daily_command_loop', 'process_player_orders', 'interrupt_order', 'process_interrupted_units'],
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'queue', 'save_player_orders'],
     'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord'],
-    'move.c': ['restore_stack_actions'],
+    'move.c': ['restore_stack_actions', 'touch_loc_after_move', 'move_stack'],
     'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched'],
     'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
@@ -46,7 +46,8 @@ functions = {
     'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
               'in_safe_now', 'province', 'building_owner', 'viewloc', 'all_char_here',
-              'in_here_list', 'add_to_here_list', 'remove_from_here_list', 'set_where'],
+              'in_here_list', 'add_to_here_list', 'remove_from_here_list', 'set_where',
+              'region', 'mark_loc_stack_known'],
     'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here'],
     'u.c': ['min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
@@ -57,16 +58,18 @@ functions = {
             'stack_sub_item', 'autocharge'],
     'npc.c': ['create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'lore.c': ['queue_lore', 'scan_char_item_lore'],
-    'buy.c': ['investigate_possible_trade'],
+    'buy.c': ['investigate_possible_trade', 'market_here', 'seller_comp',
+              'seller_list', 'buyer_list', 'scan_trades', 'match_trades'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait'],
     'produce.c': ['init_collect_list'],
     'perm.c': ['is_hostile', 'clear_all_att'],
-    'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views'],
+    'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
+                'update_weather_view_locs'],
     'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total'],
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
-    'stealth.c': ['v_hide', 'd_hide'],
+    'stealth.c': ['v_hide', 'd_hide', 'clear_contacts'],
 }
 real = {n for names in functions.values() for n in names}
 with open(f'{dst}/helpers.c', 'w') as out:
@@ -100,6 +103,11 @@ int pledge_backlinks;
             out.write(source[start:end])
         if file == 'produce.c':
             out.write(re.search(r'^static ilist collectors = NULL;\n', source, re.M).group(0))
+        if file == 'move.c':
+            out.write('#line 8 "olympia/move.c"\n')
+            out.write(re.search(r'^static ilist ocean_chars = NULL;\n', source, re.M).group(0))
+        if file == 'buy.c':
+            out.write('static void attempt_trade(struct trade *b, struct trade *s) { fprintf(stderr, "out-of-scope C dependency: attempt_trade\\n"); fflush(NULL); abort(); }\n')
         matches = []
         for name in names:
             pattern = rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n'
@@ -128,6 +136,12 @@ ilist drv_collectors(void) { return collectors; }
 int drv_fort_covers(int n) { return fort_covers(n); }
 int drv_bandit(int faery, int who, int where) {
  return faery ? create_faery_bandit(who, where) : create_hades_bandit(who, where);
+}
+int drv_market(int who) { return market_here(who); }
+void drv_ocean(int who) { ilist_append(&ocean_chars, who); }
+ilist drv_oceans(void) { return ocean_chars; }
+trades_list drv_offers(int seller, int where, int except) {
+ return seller ? seller_list(where, except) : buyer_list(where, except);
 }
 char *drv_wait_check(struct command *c) { return check_wait_conditions(c); }
 void drv_signal(int who, char *flag) {
@@ -188,6 +202,16 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section arrival '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section arrival mismatched trade owner retains exact assertion'|\
+    'section arrival move rejects noncharacter root'|\
+    'section arrival city matching includes captive descendants'|\
+    'section arrival unowned weather mage retains exact assertion') expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected arrival status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section combat boundary '* ]]; then
    [ "$status" = 134 ] && grep -qx 'combat boundary: regular_combat' "${WORK}/${run}/stderr" \
     || die "section $i did not reach actual combat"

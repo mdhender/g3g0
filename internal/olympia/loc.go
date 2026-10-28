@@ -154,6 +154,19 @@ func (w *world) setWhere(who, newLoc int) {
 	w.pLocInfo(who).where = int32(newLoc)
 }
 
+// markLocStackKnown is loc.c:281–295. The character root is included even
+// when a prisoner; captive descendants are excluded, not their children.
+func (w *world) markLocStackKnown(stack, where int) {
+	if w.kind(stack) == tChar {
+		w.setKnown(stack, where)
+	}
+	for _, i := range w.allCharHere(stack) {
+		if !w.isPrisoner(i) {
+			w.setKnown(i, where)
+		}
+	}
+}
+
 // inHereList is in_here_list(): whether who is in the here list of loc.
 func (w *world) inHereList(loc, who int) bool {
 	return w.rpLocInfo(loc).hereList.Lookup(who) != -1

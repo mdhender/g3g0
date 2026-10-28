@@ -525,3 +525,79 @@ input are exact prefixes. Movement's full **135 sections / 7150 lines /
 whitespace remains raw C output. Default tests read only recordings; world
 turns remain opt-in. Every reached unfinished C dependency marker still
 fails before recording, even for expected-abort cases and `--update`.
+
+## Stack arrival state (#112)
+
+Added complete pinned definitions, with original headers/macros and `#line`
+locations: loc.c `mark_loc_stack_known` (281–295), move.c
+`touch_loc_after_move` (692–707) and `move_stack` (710–773), storm.c
+`update_weather_view_locs` (1628–1644), stealth.c `clear_contacts`
+(285–299), buy.c `market_here` (342–355), `seller_comp` (373–383),
+`seller_list` (386–427), `buyer_list` (430–464), `scan_trades`
+(635–653), and `match_trades` (656–695). These are **288 C lines** across
+11 complete definitions, plus original move.c `ocean_chars` storage (8).
+All source files were already tracked by tools/README.md and affected.sh;
+there are no new upstream source dependencies or pin changes.
+
+The real accepted `set_where`, recursive stack walks, knowledge/touch/bit
+helpers, sout routing/logging, io serializer and #111 Hades/Faery hooks are
+reused. Go uses the existing persistent `w.streams`, including the shared
+mint cursor, with no modeled RNG, reset or success-specific behavior. The
+city closure executes real matching, including actual offer scans and seller
+sort-key mutation, for empty, filtered and unmatched paths. Candidate pairs
+stop explicitly at **unported `attempt_trade` (#81)**, not at an invented
+successful settlement. Its C boundary aborts with the rejected unfinished
+marker; it cannot enter an accepted recording, including `--update`.
+
+22 appended cases discriminate:
+
+- Hidden leaders, captive roots, captive descendants and their noncaptive
+  children; different factions; ship passengers and noncharacter-pruned
+  branches. Knowledge/weather/touch exclude captive descendants, while
+  root characters are included even when captive. Contacts clear the entire
+  character stack, including captives, but not ship roots or unrelated units.
+- Actual location touching versus the unused destination parameter, nested
+  city/building views and outer touched bits; weather's province versus
+  destination; absent-player allocation, signed mage flags, nonmages,
+  duplicate calls, preserved bits and province zero. Contact allocation and
+  retained allocated-empty lists are separately observable.
+- Ocean entry/exit, repeated same-ocean arrival, nonzero preserved timers,
+  signed-char extremes, unrelated/follower timers, duplicate ocean entries,
+  inconsistent preexisting timer/list state, and a city inside an ocean.
+  Here-list order and all saved versus unsaved state are observed separately.
+- City/noncity/ship market walks, actual ship-subkind rather than kind,
+  filtered and repeated BUY/SELL/PRODUCE entries, captive matching, unmatched
+  items, self exclusion, offer traversal/cost/tie order, moving/captive seller
+  exclusions and city offers last. Raw mismatched-owner fixtures assert at
+  the original C line; these are helper contracts, not public-command bugs.
+- Real successful Faery entry (master 0/day 17) and Hades entry (master
+  13/day 7), and a deliberately shared region wrapper with **both** successful
+  hooks (master 13/day 7): actual Faery unit 136063 precedes Hades unit 93970
+  in the arrival here list, priority queue and appearance log. The real keyed
+  C leaves selected these inputs, never a modeled RNG. Touching occurs before
+  appearances; Faery's special GM log occurs before relocation, only on region
+  entry, while repeated same-day arrival still runs the real ambush hook.
+  Ocean/city/building/outside-region, failed-draw, hidden-lone and NPC controls
+  do not ambush. Master reload observations preserve the existing stream root.
+
+Temporary BUY and SELL candidate-pair probes exercised the real Go arrival
+path to its NYI settlement dependency: location, knowledge, touch, weather
+and contacts had changed; trade quantities and ocean-exit state had not.
+They were removed rather than coupling permanent tests to a temporary NYI
+name. A temporary actual-C candidate-pair case was rejected in both normal
+and `--update` modes, with the expected recording unchanged, then removed.
+No C settlement success or Go settlement equivalence is claimed.
+
+Two fresh bounded deterministic actual C runs produce **250 sections /
+10405 lines / 186888 bytes**, compared exactly with Go's raw stdout,
+stderr, status, real serialized boxes, faction logs, output bits and unsaved
+state. The complete prior **228-section input (57628 bytes)** and **8574
+lines / 156526 output bytes** are exact prefixes. Movement's complete input
+and **135 sections / 7150 lines / 142755 bytes** are unchanged. Literal C
+serialization whitespace is retained. New arrival cases require status 0
+except four explicit assertion contracts (134); a crashing fixture cannot
+be silently accepted as an ordinary arrival.
+
+Full MOVE callbacks remain #67, prisoner escapes #113, settlement #81 and
+report assembly stage 2. Report-path state is included here, not silently
+excluded. This is helper/state acceptance, not whole-turn acceptance.

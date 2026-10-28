@@ -117,6 +117,65 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "arrival":
+			action, n, a := args.word(), args.num(t), args.num(t)
+			switch action {
+			case "move":
+				w.moveStack(n, a)
+			case "known":
+				w.markLocStackKnown(n, a)
+			case "touch":
+				w.touchLocAfterMove(n, a)
+			case "weather":
+				w.updateWeatherViewLocs(n, a)
+			case "clear":
+				w.clearContacts(n)
+			case "match":
+				w.matchTrades(n)
+			case "market":
+				fmt.Fprintf(&stdout, "market %d\n", w.marketHere(n))
+			default:
+				t.Fatalf("unknown arrival %s", action)
+			}
+		case "ocean_add":
+			w.oceanChars.Append(args.num(t))
+		case "arrival_state":
+			helperList(&stdout, "ocean", w.oceanChars)
+			for n := range w.loopKind(tChar) {
+				p := w.rpChar(n)
+				time, allocated := 0, false
+				if p != nil {
+					time, allocated = int(p.timeFlying), p.contact != nil
+				}
+				fmt.Fprintf(&stdout, "arrival char %d allocated %d time %d contacts_alloc %d\n", n, b2i(p != nil), time, b2i(allocated))
+				if p != nil {
+					helperList(&stdout, "contacts", p.contact)
+				}
+			}
+			for n := range w.loopKind(tPlayer) {
+				p := w.rpPlayer(n)
+				fmt.Fprintf(&stdout, "arrival player %d allocated %d\n", n, b2i(p != nil))
+				if p != nil {
+					helperList(&stdout, "known", p.known)
+					helperList(&stdout, "touched", p.locs)
+					helperList(&stdout, "weather", p.weatherSeen)
+					helperList(&stdout, "output", p.output)
+				}
+			}
+		case "trade":
+			n := args.num(t)
+			w.bx[n].trades.Append(&trade{kind: int32(args.num(t)), item: int32(args.num(t)), qty: int32(args.num(t)), cost: int32(args.num(t)), who: int32(args.num(t)), sort: int32(args.num(t))})
+		case "offers":
+			seller, where, except := args.num(t), args.num(t), args.num(t)
+			var l tradesList
+			if seller != 0 {
+				l = w.sellerList(where, except)
+			} else {
+				l = w.buyerList(where, except)
+			}
+			for _, p := range l {
+				fmt.Fprintf(&stdout, "offer %d %d %d %d %d\n", p.who, p.item, p.qty, p.cost, p.sort)
+			}
 		case "master":
 			n := args.num(t)
 			seed := make([]byte, 16)
@@ -433,6 +492,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pChar(n).loyKind = int8(a)
 			case "moving":
 				w.pChar(n).moving = int32(a)
+			case "time_flying":
+				w.pChar(n).timeFlying = int8(a)
 			case "hidden":
 				w.pMagic(n).hideSelf = int8(a)
 			case "horn":
@@ -582,6 +643,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.indepPlayer = int32(n)
 			case "gm":
 				w.gmPlayer = int32(n)
+			case "faery_region":
+				w.faeryRegion = int32(n)
+			case "hades_region":
+				w.hadesRegion = int32(n)
 			case "backlinks":
 				w.pledgeBacklinks = n != 0
 			case "show_day":

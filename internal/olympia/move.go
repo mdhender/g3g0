@@ -8,6 +8,67 @@ import (
 	"strings"
 )
 
+// touchLocAfterMove is move.c:692–707. where is deliberately unused by C:
+// touching observes each character's actual sublocation after set_where.
+func (w *world) touchLocAfterMove(who, where int) {
+	if w.kind(who) == tChar {
+		w.touchLoc(who)
+	}
+	for _, i := range w.allCharHere(who) {
+		if !w.isPrisoner(i) {
+			w.touchLoc(i)
+		}
+	}
+}
+
+// clearContacts is stealth.c:285–299: unlike the other arrival walks this
+// includes prisoners, but does nothing for a container root.
+func (w *world) clearContacts(stack int) {
+	if w.kind(stack) == tChar {
+		for _, i := range w.allStack(stack) {
+			w.pChar(i).contact.Clear()
+		}
+	}
+}
+
+// moveStack is the complete move.c:710–773 arrival state transition. MOVE
+// callbacks and their messages remain separate; do not reorder these hooks.
+func (w *world) moveStack(who, where int) {
+	assert(w.kind(who) == tChar, "olympia/move.c", 714, "kind(who) == T_char")
+	if w.region(w.subloc(who)) != int(w.faeryRegion) && w.region(where) == int(w.faeryRegion) {
+		w.logWrite(11, "%s enters Faery at %s.", w.boxName(who), w.boxName(where))
+	}
+	w.setWhere(who, where)
+	w.markLocStackKnown(who, where)
+	w.touchLocAfterMove(who, where)
+	w.updateWeatherViewLocs(who, where)
+	w.clearContacts(who)
+	if w.subkind(where) == subCity {
+		for _, i := range w.allStack(who) {
+			w.matchTrades(i)
+		}
+	}
+	if w.subkind(where) == subOcean {
+		p := w.pChar(who)
+		if p.timeFlying == 0 {
+			p.timeFlying++
+			w.oceanChars.Append(who)
+		}
+	}
+	if w.subkind(where) != subOcean {
+		if p := w.rpChar(who); p != nil && p.timeFlying != 0 {
+			p.timeFlying = 0
+			w.oceanChars.RemValue(who)
+		}
+	}
+	if w.locDepth(where) == locProvince && w.subkind(where) != subOcean && w.region(where) == int(w.faeryRegion) {
+		w.faeryAttackCheck(who, where)
+	}
+	if w.locDepth(where) == locProvince && w.subkind(where) != subOcean && w.region(where) == int(w.hadesRegion) {
+		w.hadesAttackCheck(who, where)
+	}
+}
+
 // departureMessage is the complete move.c:11–73 departure_message. Early
 // returns preserve showToGarrison; a completed message resets it to false.
 func (w *world) departureMessage(who int, v *exitView) {

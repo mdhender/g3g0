@@ -26,6 +26,23 @@ func (w *world) updateWeatherViewLocSup(who, where int) {
 	setBit(&w.pPlayer(pl).weatherSeen, where)
 }
 
+// updateWeatherViewLocs is storm.c:1628–1644, including container roots.
+func (w *world) updateWeatherViewLocs(stack, where int) {
+	where = w.province(where)
+	mage := func(who int) bool {
+		p := w.rpMagic(who)
+		return p != nil && p.knowsWeather != 0
+	}
+	if w.kind(stack) == tChar && mage(stack) {
+		w.updateWeatherViewLocSup(stack, where)
+	}
+	for _, i := range w.allCharHere(stack) {
+		if !w.isPrisoner(i) && mage(i) {
+			w.updateWeatherViewLocSup(i, where)
+		}
+	}
+}
+
 func (w *world) initWeatherViews() {
 	for who := range w.loopKind(tChar) {
 		if p := w.rpMagic(who); p != nil && p.knowsWeather != 0 {

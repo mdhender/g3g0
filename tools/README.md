@@ -21,6 +21,11 @@ contracts and a byte-identical diagnostic run, never a whole-world turn by defau
 For clock/calendar or progress output work, also run `tools/turn-driver-compat/run.sh`.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
+Stack-arrival knowledge, contacts, weather views, ocean bookkeeping and city
+matching also use command-compat, reusing its actual Hades/Faery hooks, keyed
+streams, entity creation, order queues and real database writer. Candidate
+settlement stops explicitly at `attempt_trade` pending #81; empty and
+unmatched city paths execute real `match_trades`, not a skipped callback.
 For exit topology, distances, randomized exit selection, weights or travel
 calculations, movement parsing/admission or movement bookkeeping, and character
 descriptions/stack display (including rank/aura/equipment), departure/arrival

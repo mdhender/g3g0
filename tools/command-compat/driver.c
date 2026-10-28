@@ -28,6 +28,10 @@ void drv_interrupted(void);
 int drv_sub_item(int who, int item, int qty);
 void drv_add_item(int who, int item, int qty);
 int drv_bandit(int faery, int who, int where);
+int drv_market(int who);
+void drv_ocean(int who);
+ilist drv_oceans(void);
+trades_list drv_offers(int seller, int where, int except);
 
 static void wait_dump(struct command *c)
 {
@@ -105,6 +109,41 @@ int main(int argc, char **argv)
    for (i=0;i<16;i++) seed[i]=n+i;
    s=fopen(sout("%s/randseed",libdir),"wb"); if(!s) return 2;
    fwrite(seed,1,16,s); fclose(s); load_seed(sout("%s/randseed",libdir));
+  }
+  else if (!strcmp(op, "arrival")) {
+   sscanf(line,"%*s %31s %d %d",text,&n,&a);
+   if (!strcmp(text,"move")) move_stack(n,a);
+   else if (!strcmp(text,"known")) mark_loc_stack_known(n,a);
+   else if (!strcmp(text,"touch")) touch_loc_after_move(n,a);
+   else if (!strcmp(text,"weather")) update_weather_view_locs(n,a);
+   else if (!strcmp(text,"clear")) clear_contacts(n);
+   else if (!strcmp(text,"match")) match_trades(n);
+   else if (!strcmp(text,"market")) printf("market %d\n",drv_market(n));
+   else return 2;
+  }
+  else if (!strcmp(op, "ocean_add")) { sscanf(line,"%*s %d",&n); drv_ocean(n); }
+  else if (!strcmp(op, "arrival_state")) {
+   list("ocean",drv_oceans());
+   loop_char(n) {
+    struct entity_char *p=rp_char(n);
+    printf("arrival char %d allocated %d time %d contacts_alloc %d\n",n,p!=NULL,p ? p->time_flying : 0,p && p->contact!=NULL);
+    if(p) list("contacts",p->contact);
+   } next_char;
+   loop_player(n) {
+    struct entity_player *p=rp_player(n);
+    printf("arrival player %d allocated %d\n",n,p!=NULL);
+    if(p) { list("known",p->known); list("touched",p->locs); list("weather",p->weather_seen); list("output",p->output); }
+   } next_player;
+  }
+  else if (!strcmp(op, "trade")) {
+   struct trade *t=my_malloc(sizeof(*t));
+   sscanf(line,"%*s %d %d %d %d %d %d %d",&n,&t->kind,&t->item,&t->qty,&t->cost,&t->who,&t->sort);
+   trades_append(&bx[n]->trades,t);
+  }
+  else if (!strcmp(op, "offers")) {
+   trades_list l;
+   sscanf(line,"%*s %d %d %d",&n,&a,&b); l=drv_offers(n,a,b);
+   for(i=0;i<trades_len(l);i++) printf("offer %d %d %d %d %d\n",l[i]->who,l[i]->item,l[i]->qty,l[i]->cost,l[i]->sort);
   }
   else if (!strcmp(op, "ambush") || !strcmp(op, "bandit")) {
    sscanf(line,"%*s %d %d %d",&n,&a,&b);
@@ -333,6 +372,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"npc")) p_char(n)->npc_prog = (schar)a;
    else if (!strcmp(text,"loyal")) p_char(n)->loy_kind = (schar)a;
    else if (!strcmp(text,"moving")) p_char(n)->moving = a;
+   else if (!strcmp(text,"time_flying")) p_char(n)->time_flying = (schar)a;
    else if (!strcmp(text,"hidden")) p_magic(n)->hide_self = (schar)a;
    else if (!strcmp(text,"horn")) p_magic(n)->ferry_flag = (schar)a;
    else if (!strcmp(text,"subkind")) bx[n]->skind = a;
@@ -434,6 +474,8 @@ int main(int argc, char **argv)
    if (!strcmp(text, "immediate")) immediate = n;
    else if (!strcmp(text, "indep")) indep_player = n;
    else if (!strcmp(text, "gm")) gm_player = n;
+   else if (!strcmp(text, "faery_region")) faery_region = n;
+   else if (!strcmp(text, "hades_region")) hades_region = n;
    else if (!strcmp(text, "backlinks")) pledge_backlinks = n;
    else if (!strcmp(text, "show_day")) show_day = n;
    else if (!strcmp(text, "day")) sysclock.day = (short)n;

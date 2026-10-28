@@ -5,6 +5,7 @@ package olympia
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/mdhender/g3g0/internal/clib"
 )
@@ -12,8 +13,9 @@ import (
 // Ported from olympia/buy.c: the per-game trade-route buyer secret (G3
 // issue #46), which load_db() sets up with init_trade_routes() and
 // save_db() keeps with save_trade_routes(), and
-// investigate_possible_trade(), which add_item() calls. The rest of buy.c
-// is left for later stages.
+// investigate_possible_trade(), which add_item() calls. City-arrival matching
+// below stops at the unported settlement dependency; the remaining economy
+// work belongs to #81 and later tasks.
 //
 // The FIND BUY buyer test picks which cities buy a tradegood with
 // md5_int(city_sold, where, item, SECRET) & 1. The secret is 0xb05c0e
@@ -165,5 +167,117 @@ func (w *world) investigatePossibleTrade(who, item, oldHas int) {
 
 	if check {
 		w.tradesToCheck.Append(who)
+	}
+}
+
+// marketHere is buy.c:342–355. A ship cuts off the walk even in a city.
+func (w *world) marketHere(who int) int {
+	for who > 0 && w.subkind(who) != subCity {
+		if w.isShip(who) {
+			return 0
+		}
+		who = w.loc(who)
+	}
+	return who
+}
+
+// sellerList and buyerList are buy.c:386–464. Seller sort keys mutate the
+// actual trades; city offers follow all sorted character offers.
+func (w *world) sellerList(where, except int) tradesList {
+	var l tradesList
+	var count int32
+	for _, i := range w.allCharHere(where) {
+		if i == except || w.isPrisoner(i) || w.charMoving(i) != 0 {
+			continue
+		}
+		for t := range w.loopTrade(i) {
+			if t.kind == tradeSell {
+				t.sort = count
+				count++
+				l.Append(t)
+			}
+		}
+	}
+	slices.SortFunc(l, func(a, b *trade) int {
+		if a.cost == b.cost {
+			return int(a.sort - b.sort)
+		}
+		return int(a.cost - b.cost)
+	})
+	for t := range w.loopTrade(where) {
+		if t.kind == tradeSell {
+			l.Append(t)
+		}
+	}
+	return l
+}
+
+func (w *world) buyerList(where, except int) tradesList {
+	var l tradesList
+	for _, i := range w.allCharHere(where) {
+		if i == except || w.isPrisoner(i) || w.charMoving(i) != 0 {
+			continue
+		}
+		for t := range w.loopTrade(i) {
+			if t.kind == tradeBuy {
+				l.Append(t)
+			}
+		}
+	}
+	for t := range w.loopTrade(where) {
+		if t.kind == tradeBuy {
+			l.Append(t)
+		}
+	}
+	return l
+}
+
+// scanTrades is buy.c:635–653. Reaching a candidate pair is a real
+// settlement dependency, not permission to silently skip matching (#81).
+func (w *world) scanTrades(t *trade, l tradesList) {
+	for _, other := range l {
+		if t.qty <= 0 {
+			break
+		}
+		if other.item != t.item || other.who == t.who {
+			continue
+		}
+		if t.kind == tradeBuy {
+			w.attemptTrade(t, other)
+		} else if t.kind == tradeSell {
+			w.attemptTrade(other, t)
+		}
+	}
+}
+
+// Settlement (buy.c:506–632) is stage task #81, not a successful stub.
+func (w *world) attemptTrade(buyer, seller *trade) {
+	panic(notImplemented("attempt_trade"))
+}
+
+// matchTrades is the complete buy.c:656–695 city-arrival dispatcher.
+func (w *world) matchTrades(who int) {
+	where := w.subloc(who)
+	firstBuy, firstSell := true, true
+	var sellers, buyers tradesList
+	if w.marketHere(who) == 0 {
+		return
+	}
+	assert(w.validBox(who), "olympia/buy.c", 669, "valid_box(who)")
+	for t := range w.loopTrade(who) {
+		assert(int(t.who) == who, "olympia/buy.c", 671, "t->who == who")
+		if t.kind == tradeBuy {
+			if firstBuy {
+				firstBuy = false
+				sellers = w.sellerList(where, who)
+			}
+			w.scanTrades(t, sellers)
+		} else if t.kind == tradeSell {
+			if firstSell {
+				firstSell = false
+				buyers = w.buyerList(where, who)
+			}
+			w.scanTrades(t, buyers)
+		}
 	}
 }
