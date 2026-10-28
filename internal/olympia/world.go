@@ -111,6 +111,15 @@ type world struct {
 	goldInn    int32
 	goldTemple int32
 
+	// Remaining pinned gm.c scalars, retained for rendering until their
+	// gameplay producers are ported. Do not manufacture income for reports.
+	goldCommonMagic int32
+	goldLeadToGold  int32
+	goldTimes       int32
+	goldPettyThief  int32
+	goldPillage     int32
+	goldFerry       int32
+
 	// maxMapRow, maxMapCol and maxMapInit are max_map_row, max_map_col and
 	// max_map_init in dir.c, which determine_map_edges() sets.
 	maxMapRow  int32

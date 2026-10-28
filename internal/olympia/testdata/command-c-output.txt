@@ -78076,3 +78076,691 @@ stderr:
 show_lore_sheets()
 
 exit 0
+stdout:
+section GM economy empty categories and route reset
+> lore_root
+> death subkind 200 48
+> death subkind 201 62
+> sout route -1 99
+> gm_economy attributes 200
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> gm_economy animate 200
+> gm_economy gold 200
+> gm_economy control 200
+> gm_economy structures 200
+> gm_economy items 200
+> readfile log/200
+file bytes log/200 1236:
+2:0::0::Interesting attribute counts
+2:0::0::----------------------------
+2:0::0::
+2:0::0::char ability shroud:    0
+2:0::0::char hinder meditate:   0
+2:0::0::char project cast:      0
+2:0::0::char quick cast:        0
+2:0::0::loc shroud:             0
+2:0::0::loc barrier:            0
+2:0::0::loc opium:              0
+2:0::0::format one:             0/0
+2:0::0::
+2:0::0::
+2:0::0::Animate items list
+2:0::0::------------------
+2:0::0::
+2:0::0::                     name    swamp man-like    beast  fighter
+2:0::0::                     ----    ----- --------    -----  -------
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::
+2:0::0::Captured control artifacts
+2:0::0::--------------------------
+2:0::0::
+2:0::0::
+2:0::0::             finished  unfinished
+2:0::0::           +----------------------
+2:0::0::    galley |        0         0
+2:0::0:: roundship |        0         0
+2:0::0::     tower |        0         0
+2:0::0::    castle |        0         0
+2:0::0::      mine |        0         0
+2:0::0::       inn |        0         0
+2:0::0::    temple |        0         0
+2:0::0::
+2:0::0::item name                     weight land ride  fly
+2:0::0::---- ----                     ------ ---- ----  ---
+2:0::0::
+
+end file bytes
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_system
+PL
+
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+201 player pl_silent
+PL
+
+stderr:
+
+exit 0
+stdout:
+section GM economy percentage truncation zero denominator and signed values
+> gm_pct 0 0
+pct 0
+> gm_pct 17 0
+pct 0
+> gm_pct 1 3
+pct 33
+> gm_pct 2 3
+pct 66
+> gm_pct -2 3
+pct -66
+> gm_pct 2 -3
+pct -66
+> gm_pct -2 -3
+pct 66
+> gm_pct 12345 12345
+pct 100
+stderr:
+
+exit 0
+stdout:
+section GM economy asymmetric attributes missing records negative flags and galley filter
+> lore_root
+> entity 202 1 49
+> entity 203 1 52
+> field 200 format -1
+> field 203 format 1
+> entity 1002 2 0
+> entity 1003 2 0
+> field 1000 ability_shroud 3
+> field 1000 hinder -1
+> field 1000 project_cast 7
+> field 1000 quick_cast -2
+> field 1001 ability_shroud -3
+> field 1001 project_cast -7
+> field 1002 project_cast 2
+> entity 3000 3 0
+> entity 3001 3 0
+> entity 3002 3 0
+> entity 3003 3 0
+> field 3000 shroud -1
+> field 3000 barrier 3
+> field 3000 opium -2
+> field 3001 shroud 2
+> field 3001 opium 10
+> entity 4000 9 30
+> entity 4001 9 30
+> entity 4002 9 30
+> entity 4003 9 31
+> entity 4004 9 33
+> field 4000 ram -1
+> field 4003 ram 1
+> field 4004 ram 1
+> field 4000 shroud 9
+> field 4000 barrier 9
+> field 4000 opium 9
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> gm_economy attributes 200
+> readfile log/200
+file bytes log/200 406:
+2:0::0::Interesting attribute counts
+2:0::0::----------------------------
+2:0::0::
+2:0::0::char ability shroud:    2
+2:0::0::char hinder meditate:   1
+2:0::0::char project cast:      3
+2:0::0::char quick cast:        1
+2:0::0::loc shroud:             2
+2:0::0::loc barrier:            1
+2:0::0::loc opium:              2
+2:0::0::format one:             1/3
+2:0::0::
+2:0::0::galleys with rams:      1 (33%)
+
+end file bytes
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> save 1003
+1003 char 0
+
+> save 3003
+3003 loc 0
+
+> save 4001
+4001 ship galley
+
+> gm_economy attributes 200
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> readfile log/200
+file bytes log/200 812:
+2:0::0::Interesting attribute counts
+2:0::0::----------------------------
+2:0::0::
+2:0::0::char ability shroud:    2
+2:0::0::char hinder meditate:   1
+2:0::0::char project cast:      3
+2:0::0::char quick cast:        1
+2:0::0::loc shroud:             2
+2:0::0::loc barrier:            1
+2:0::0::loc opium:              2
+2:0::0::format one:             1/3
+2:0::0::
+2:0::0::galleys with rams:      1 (33%)
+2:0::0::Interesting attribute counts
+2:0::0::----------------------------
+2:0::0::
+2:0::0::char ability shroud:    2
+2:0::0::char hinder meditate:   1
+2:0::0::char project cast:      3
+2:0::0::char quick cast:        1
+2:0::0::loc shroud:             2
+2:0::0::loc barrier:            1
+2:0::0::loc opium:              2
+2:0::0::format one:             1/3
+2:0::0::
+2:0::0::galleys with rams:      1 (33%)
+
+end file bytes
+stderr:
+
+exit 0
+stdout:
+section GM economy animate OR predicates ghost exception and capturable alone excluded
+> lore_root
+> entity 18 4 0
+> entity 501 4 0
+> name 501 Only attack
+> field 501 attack -2
+> entity 502 4 0
+> name 502 Only defense
+> field 502 defense 3
+> entity 503 4 0
+> name 503 Only missile
+> field 503 missile 4
+> entity 504 4 0
+> name 504 Only man
+> field 504 man -1
+> entity 505 4 0
+> name 505 Only animal
+> field 505 animal -1
+> entity 506 4 0
+> name 506 Capturable alone excluded
+> field 506 capturable 1
+> entity 507 4 0
+> name 507 Absent record excluded
+> entity 508 4 0
+> name 508 All flags
+> field 508 attack 7
+> field 508 defense 8
+> field 508 missile 9
+> field 508 man 1
+> field 508 animal 1
+> field 508 capturable -1
+> entity 509 4 54
+> name 509 Beast predicate through noble item
+> field 509 noble_item 510
+> entity 510 4 0
+> name 510 Capturable source alone excluded
+> field 510 capturable 1
+> entity 511 4 54
+> name 511 Beast predicate noncapturable excluded
+> field 511 noble_item 512
+> entity 512 4 0
+> field 512 capturable 0
+> gm_economy animate 200
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> readfile log/200
+file bytes log/200 773:
+2:0::0::
+2:0::0::Animate items list
+2:0::0::------------------
+2:0::0::
+2:0::0::                     name    swamp man-like    beast  fighter
+2:0::0::                     ----    ----- --------    -----  -------
+2:0::0::        <no subkind>~[18]     no       no       no    (0,0,0)
+2:0::0::        Only attack~[501]     no       no       no    (-2,0,0)
+2:0::0::       Only defense~[502]     no       no       no    (0,3,0)
+2:0::0::       Only missile~[503]     no       no       no    (0,0,4)
+2:0::0::           Only man~[504]     no       yes      no     -
+2:0::0::        Only animal~[505]     yes      no       no     -
+2:0::0::          All flags~[508]     yes      yes      yes   (7,8,9)
+2:0::0::Beast predicate through noble item~[509]     no       no       no     -
+
+end file bytes
+> save 18
+18 item 0
+
+> save 507
+507 item 0
+na Absent record excluded
+
+stderr:
+
+exit 0
+stdout:
+section GM economy all gold counters asymmetric generated sum excludes player combat
+> lore_root
+> gm_gold 101 203 307 409 503 601 709 809 999999 907 1009 1103 1201 1301 1409 1511
+> gm_economy gold 200
+> readfile log/200
+file bytes log/200 894:
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::Common magic:                101   0%
+2:0::0::Lead to gold:                203   1%
+2:0::0::Pots and baskets:            307   2%
+2:0::0::Opium:                     1,409  11%
+2:0::0::Trade to cities:             409   3%
+2:0::0::Inn income:                  503   4%
+2:0::0::Taxes:                       601   4%
+2:0::0::Provinces:                   709   5%
+2:0::0::Times press:                 809   6%
+2:0::0::Combat with indeps:          907   7%
+2:0::0::Petty thievery:            1,009   8%
+2:0::0::Temple income:             1,103   9%
+2:0::0::Pillaging:                 1,201   9%
+2:0::0::Ferry boarding:            1,301  10%
+2:0::0::Garrison Pay:              1,511  12%
+2:0::0::                                 ----
+2:0::0::Total:                    12,083
+2:0::0::
+2:0::0::Player combat:           999,999
+2:0::0::
+
+end file bytes
+> gm_gold 101 203 307 409 503 601 709 809 -111111 907 1009 1103 1201 1301 1409 1511
+> gm_economy gold 200
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> readfile log/200
+file bytes log/200 1788:
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::Common magic:                101   0%
+2:0::0::Lead to gold:                203   1%
+2:0::0::Pots and baskets:            307   2%
+2:0::0::Opium:                     1,409  11%
+2:0::0::Trade to cities:             409   3%
+2:0::0::Inn income:                  503   4%
+2:0::0::Taxes:                       601   4%
+2:0::0::Provinces:                   709   5%
+2:0::0::Times press:                 809   6%
+2:0::0::Combat with indeps:          907   7%
+2:0::0::Petty thievery:            1,009   8%
+2:0::0::Temple income:             1,103   9%
+2:0::0::Pillaging:                 1,201   9%
+2:0::0::Ferry boarding:            1,301  10%
+2:0::0::Garrison Pay:              1,511  12%
+2:0::0::                                 ----
+2:0::0::Total:                    12,083
+2:0::0::
+2:0::0::Player combat:           999,999
+2:0::0::
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::Common magic:                101   0%
+2:0::0::Lead to gold:                203   1%
+2:0::0::Pots and baskets:            307   2%
+2:0::0::Opium:                     1,409  11%
+2:0::0::Trade to cities:             409   3%
+2:0::0::Inn income:                  503   4%
+2:0::0::Taxes:                       601   4%
+2:0::0::Provinces:                   709   5%
+2:0::0::Times press:                 809   6%
+2:0::0::Combat with indeps:          907   7%
+2:0::0::Petty thievery:            1,009   8%
+2:0::0::Temple income:             1,103   9%
+2:0::0::Pillaging:                 1,201   9%
+2:0::0::Ferry boarding:            1,301  10%
+2:0::0::Garrison Pay:              1,511  12%
+2:0::0::                                 ----
+2:0::0::Total:                    12,083
+2:0::0::
+2:0::0::Player combat:         -111,-111
+2:0::0::
+
+end file bytes
+stderr:
+
+exit 0
+stdout:
+section GM economy zero negative and offset gold sums suppress rows not headers
+> lore_root
+> gm_gold 0 0 0 0 0 0 0 0 987654 0 0 0 0 0 0 0
+> gm_economy gold 200
+> gm_gold -3 0 0 0 0 0 0 0 987654 0 0 0 0 0 0 0
+> gm_economy gold 200
+> gm_gold -3 3 0 0 0 0 0 0 987654 0 0 0 0 0 0 0
+> gm_economy gold 200
+> gm_gold -3 4 0 0 0 0 0 0 987654 0 0 0 0 0 0 0
+> gm_economy gold 200
+> readfile log/200
+file bytes log/200 1069:
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::Common magic:                 -3 -300%
+2:0::0::Lead to gold:                  4 400%
+2:0::0::Pots and baskets:              0   0%
+2:0::0::Opium:                         0   0%
+2:0::0::Trade to cities:               0   0%
+2:0::0::Inn income:                    0   0%
+2:0::0::Taxes:                         0   0%
+2:0::0::Provinces:                     0   0%
+2:0::0::Times press:                   0   0%
+2:0::0::Combat with indeps:            0   0%
+2:0::0::Petty thievery:                0   0%
+2:0::0::Temple income:                 0   0%
+2:0::0::Pillaging:                     0   0%
+2:0::0::Ferry boarding:                0   0%
+2:0::0::Garrison Pay:                  0   0%
+2:0::0::                                 ----
+2:0::0::Total:                         1
+2:0::0::
+2:0::0::Player combat:           987,654
+2:0::0::
+
+end file bytes
+stderr:
+
+exit 0
+stdout:
+section GM economy control tokens regular NPC silent location and absent owners
+> lore_root
+> set indep 203
+> entity 202 1 52
+> entity 203 1 52
+> entity 204 1 62
+> name 200 First owner
+> name 201 Other owner
+> entity 1002 2 0
+> entity 1003 2 0
+> field 1001 lord 201
+> field 1002 lord 202
+> field 1003 lord 204
+> entity 3000 3 0
+> entity 501 4 63
+> name 501 First token
+> field 501 unique 1000
+> entity 502 4 63
+> name 502 Other token
+> field 502 unique 1001
+> entity 503 4 63
+> name 503 NPC token excluded
+> field 503 unique 1002
+> entity 504 4 63
+> name 504 Silent token excluded
+> field 504 unique 1003
+> entity 505 4 63
+> name 505 Location token excluded
+> field 505 unique 3000
+> entity 506 4 63
+> name 506 No owner excluded
+> entity 507 4 0
+> name 507 Not a token excluded
+> field 507 unique 1000
+> gm_economy control 200
+> field 501 unique 1001
+> gm_economy control 200
+> readfile log/200
+file bytes log/200 438:
+2:0::0::
+2:0::0::Captured control artifacts
+2:0::0::--------------------------
+2:0::0::
+2:0::0::First token~[501]                  First owner~[200]
+2:0::0::Other token~[502]                  Other owner~[201]
+2:0::0::
+2:0::0::
+2:0::0::Captured control artifacts
+2:0::0::--------------------------
+2:0::0::
+2:0::0::First token~[501]                  Other owner~[201]
+2:0::0::Other token~[502]                  Other owner~[201]
+2:0::0::
+
+end file bytes
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+
+exit 0
+stdout:
+section GM economy finished unfinished structures asymmetric and irrelevant kinds
+> lore_root
+> entity 3000 3 32
+> entity 3001 3 32
+> entity 3002 3 39
+> entity 3003 3 46
+> entity 3004 3 47
+> entity 3005 3 47
+> entity 3006 3 40
+> entity 3007 3 41
+> entity 3008 3 29
+> entity 3009 3 36
+> entity 3010 3 37
+> entity 3011 3 38
+> entity 3012 3 38
+> entity 3013 3 53
+> entity 3014 3 0
+> entity 4000 9 30
+> entity 4001 9 33
+> entity 4002 9 33
+> entity 4003 9 31
+> entity 4004 9 31
+> entity 4005 9 31
+> entity 4006 9 34
+> entity 501 4 32
+> entity 1002 2 46
+> gm_economy structures 200
+> death subkind 3002 32
+> death subkind 4001 30
+> gm_economy structures 200
+> readfile log/200
+file bytes log/200 748:
+2:0::0::             finished  unfinished
+2:0::0::           +----------------------
+2:0::0::    galley |        1         2
+2:0::0:: roundship |        3         1
+2:0::0::     tower |        1         2
+2:0::0::    castle |        2         1
+2:0::0::      mine |        1         1
+2:0::0::       inn |        1         2
+2:0::0::    temple |        1         1
+2:0::0::
+2:0::0::             finished  unfinished
+2:0::0::           +----------------------
+2:0::0::    galley |        2         1
+2:0::0:: roundship |        3         1
+2:0::0::     tower |        1         2
+2:0::0::    castle |        3         0
+2:0::0::      mine |        1         1
+2:0::0::       inn |        1         2
+2:0::0::    temple |        1         1
+2:0::0::
+
+end file bytes
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+
+exit 0
+stdout:
+section GM economy item chain listing missing records long names signed and nonzero capacities
+> lore_root
+> entity 601 4 0
+> name 601 Long item name beyond the column width
+> field 601 weight 12345
+> field 601 land_cap 23456
+> field 601 ride_cap -3
+> field 601 fly_cap 4567
+> entity 501 4 0
+> name 501 Smaller id later in chain
+> field 501 weight -12
+> field 501 land_cap 5
+> field 501 ride_cap 67
+> field 501 fly_cap 890
+> entity 502 4 0
+> gm_economy items 201
+> readfile log/201
+file bytes log/201 327:
+2:0::0::item name                     weight land ride  fly
+2:0::0::---- ----                     ------ ---- ----  ---
+2:0::0:: 501 Smaller id later in chain    -12    5   67  890
+2:0::0:: 502 <no subkind>                  0    0    0    0
+2:0::0:: 601 Long item name beyond the column width 12,345 23,456   -3 4,567
+2:0::0::
+
+end file bytes
+> save 502
+502 item 0
+
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+
+exit 0
+stdout:
+section GM economy cached renamed output repeated sections borrow original inode
+> lore_root
+> set flush 0
+> gm_economy gold 200
+> life flush
+> life rename log/200 log/gm-original
+> gm_economy structures 200
+> gm_economy attributes 200
+> gm_economy items 200
+> life flush
+> readfile log/gm-original
+file bytes log/gm-original 927:
+2:0::0::
+2:0::0::Gold report
+2:0::0::-----------
+2:0::0::
+2:0::0::             finished  unfinished
+2:0::0::           +----------------------
+2:0::0::    galley |        0         0
+2:0::0:: roundship |        0         0
+2:0::0::     tower |        0         0
+2:0::0::    castle |        0         0
+2:0::0::      mine |        0         0
+2:0::0::       inn |        0         0
+2:0::0::    temple |        0         0
+2:0::0::
+2:0::0::Interesting attribute counts
+2:0::0::----------------------------
+2:0::0::
+2:0::0::char ability shroud:    0
+2:0::0::char hinder meditate:   0
+2:0::0::char project cast:      0
+2:0::0::char quick cast:        0
+2:0::0::loc shroud:             0
+2:0::0::loc barrier:            0
+2:0::0::loc opium:              0
+2:0::0::format one:             0/2
+2:0::0::
+2:0::0::item name                     weight land ride  fly
+2:0::0::---- ----                     ------ ---- ----  ---
+2:0::0::
+
+end file bytes
+> life path log/200
+path log/200 missing
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+
+exit 0
+stdout:
+section GM economy silent recipient still opens allocates and records output
+> lore_root
+> entity 202 1 62
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_silent
+
+> gm_economy items 202
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_silent
+PL
+
+> readfile log/202
+file bytes log/202 129:
+2:0::0::item name                     weight land ride  fly
+2:0::0::---- ----                     ------ ---- ----  ---
+2:0::0::
+
+end file bytes
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+
+exit 0
+stdout:
+section GM economy invalid output open precedes player allocation
+> lore_root
+> entity 202 1 49
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report block 202
+> gm_economy gold 202
+stderr:
+alloc_fp: can't open ./log/202: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134

@@ -3,6 +3,108 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## GM item economy and attributes (#161)
+
+New source-corresponding gm.go completes these unchanged pinned gm.c
+definitions, each verified byte-identical exactly once in the existing
+extraction (original `#line` attribution retained):
+
+| Definition | Inclusive lines |
+|---|---|
+| `pct` | 31–37 |
+| `gm_show_interesting_attributes` | 183–280 |
+| `gm_list_animate_items` | 283–329 |
+| `gm_show_gold` | 332–377 |
+| `gm_show_control_arts` | 380–406 |
+| `gm_count_stuff` | 409–473 |
+| `list_all_items` | 995–1022 |
+
+The oracle exposes those complete real definitions, not rewritten C models.
+It reuses complete original `beast_capturable` (u.c **2547–2561**),
+`token_player` (art.c **1019–1032**), `player` (swear.c **21–37**), names,
+codes, loops, output/cache and real save writers. No new C source dependency,
+pin, successful stub or second output layer is introduced. All 16 original
+C gold declarations are retained unchanged. Go reuses the ten existing actual
+accounting fields and adds only the six missing pinned scalars: common magic,
+lead to gold, Times, petty thief, pillage and ferry. No gameplay is added to
+populate them. Existing gmReportState and main's call sites are unchanged;
+the later skills/geography/loyalty and complete GM root remain #162/#163.
+
+Twelve appended cases (**11 status 0 / 1 status 134**) reach and compare:
+
+- Empty categories, zero regular-player denominator, no galley line, and
+  signed/truncating `pct`, including zero denominators.
+- Attribute counts **2/1/3/1**, location counts **2/1/2**, format **1/3**,
+  and ram **1/3 (33%)**. Negative nonzero flags count once; ship location
+  attributes, nongalley rams and nonregular format flags are excluded.
+  Missing player/character/location/sublocation records stay missing.
+- Every animate OR predicate, separate attack/defense/missile selection,
+  man-only/animal-only rows, all flags, and ghost **18**'s zero-stat exception.
+  Capturability alone does not select an item. Raw fixtures with actual
+  noble-item records exercise both outcomes of the original character-based
+  beast predicate even on the item chain; no substituted animal predicate.
+- All 16 unequal gold counters. Generated gold stays **12,083** when player
+  combat changes **999,999 → -111111**; the latter's original comma formatting
+  is retained. Zero/negative/cancelling generated sums suppress rows, not
+  headers; a positive sum of one reaches **-300% / 400%**.
+- Two captured regular-owner tokens, ownership changes and independent,
+  NPC/silent/noncharacter/absent-owner exclusions; unrelated items are skipped.
+- Every finished/unfinished structure category, unequal totals, real subtype
+  chain transitions, collapsed/other subtypes and wrong-kind exclusions.
+- Item listing with missing records, long names, unequal signed/nonzero
+  weights and all capacities; real item-chain order and zero defaults.
+- Route reset, a **927-byte** renamed cached inode across repeated sections,
+  silent-recipient allocation/output, and the original output-open assertion
+  at **sout.c:158**, before recipient allocation.
+
+At **0.101.0-alpha**, two deterministic real C runs and Go match **1180
+sections / 78766 lines / 1540387 output bytes**. The inherited **1168
+sections / 78078 lines / 1522550 output bytes** are an exact prefix (SHA-256
+`dbe620447bec3e071112f3e342ba0fbe70d309f4489265f24a0d36a4fcc6a52d`).
+The inherited **25396 lines / 483251 input bytes** also remain an exact
+prefix (SHA-256
+`73b6858bc1bb9182873f3ed9fdb5c8a81f806eafb4ec2d5bd9e9096e1067a62b`).
+New input totals **25661 lines / 488967 bytes**, SHA-256
+`35e452b48a6a3580e30b2334d978781712a6320c37a07a12d6de7f7829f37f36`;
+new output SHA-256
+`3956cf60d3cb631b65c5e3b362b978e1b686d8bc3d26cee815698d5a0a2c91f6`.
+Constants (kinds, every structure subtype, token/NI/regular subtypes, ghost,
+MASTER **-2**, OUT_LORE **2**) and the rendered branches above are verified
+in `tmp/issue161-evidence.log`, which also records complete-definition hashes.
+
+Four temporary linker controls wrap only the oracle entry at expected-abort
+section **1179**: a missing-dependency marker followed by return **0** or
+abort **134**, in default and update modes. All reject with harness **2**
+at the marker check, before expected-status/update acceptance; both recording
+hashes stay unchanged. Probe source/compiler wrapper and matching captures
+are removed. Logs: `tmp/issue161-negative-{return,abort}-{default,update}.log`.
+
+Sequential command refresh/default (and post-probe default), move
+**135/7158**, helper **37/1487**, RNG **321**, code **43/969**, loadsave
+**61/3411**, turn-driver **7/152**, phase **5/484**, calendar **2/119**,
+schedule **4/1801**, and default turn (raw streams/status and **2 cwd entries**)
+pass. Bounded `go vet ./...` and fresh bounded default tests pass; Olympia
+**2.302s**. Every compatibility call explicitly uses isolated
+`G3_REPO=$PWD/tmp/upstream.git`; engines/tests use shared run_limited.
+Full source/recording whitespace checks pass. Logs: `tmp/issue161-*.log`.
+
+No new verified defect, prerequisite or oversized closure. A development-only
+raw beast fixture lacked its noble-item record and C exited 139; the fixture
+was corrected before recording, not accepted as malformed-input parity.
+The supplied parent audit of all eight open issues found only #161–166 and
+#19/#132, no bug/follow-C. No strict whole-world/lifecycle rerun or stage
+acceptance is claimed: parent post-#160 remains red on eight report-byte
+differences, engines **0**, deterministic C repeats and equal raw streams,
+paths/types/modes, exit **1** before 13 lifecycle controls. G3 #358/#359 remain
+unchanged/nonblocking; malformed **C136/Go2** is not parity.
+No later GM root, includes, writers, commands, issue/checklist edits,
+commit or push; all changes are left uncommitted for parent review.
+
+Independent parent complete-C/diff review verifies the seven definitions
+unchanged exactly once and both inherited prefixes byte-exact. The eight
+routine tools, bounded vet and fresh bounded tests pass (Olympia **2.586s**);
+logs `tmp/parent161-*.log`. Strict evidence remains post-#160, not acceptance.
+
 ## Skill lore queues and GM skill listing (#160)
 
 Existing lore.go completes unchanged lore.c `out_skill_line` **137–146**,

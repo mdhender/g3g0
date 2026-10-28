@@ -6,6 +6,55 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## GM item economy and attributes (#161)
+
+Source-corresponding gm.go completes pinned gm.c `pct` **31–37**,
+attributes **183–280**, animate items **283–329**, gold **332–377**,
+control artifacts **380–406**, structures **409–473**, and item listing
+**995–1022**. The existing oracle exposes complete unchanged real C, reusing
+its original dependencies, names, output/cache, loops and writers. Go reuses
+the ten actual accounting scalars and adds only the six missing pinned gold
+globals; no gameplay is invented to populate them. gmReportState and main
+remain unchanged pending the root task. No render/projection double pass,
+later GM sections/root, includes, writers, commands, new dependency or pin.
+
+At **0.101.0-alpha**, twelve appended cases match real C twice and Go:
+**1180 sections / 78766 lines / 1540387 output bytes**. Inherited **1168
+sections / 78078 lines / 1522550 output bytes** and **483251 input bytes**
+are exact prefixes. New input: **25661 lines / 488967 bytes**. Output SHA-256:
+`3956cf60d3cb631b65c5e3b362b978e1b686d8bc3d26cee815698d5a0a2c91f6`.
+Asymmetric attributes, empty categories, actual animate predicates, ghost
+exception, controlled/independent tokens, every structure pair, item defaults
+and capacities, generated gold **12,083** excluding player combat, route reset,
+silent allocation and **927-byte** renamed cached output reach their branches.
+Complete definitions and constants are verified. See
+[closure, hashes and evidence](command-compat#gm-item-economy-and-attributes-161).
+
+Four temporary missing-dependency controls (return **0** / abort **134**,
+default/update) reject section **1179** with harness **2**, before expected
+status/update, preserving both recording hashes. Probes and matching captures
+are removed. Sequential command refresh/default and post-probe default,
+move/helper/RNG/code/loadsave/turn-driver/default turn, bounded vet and fresh
+bounded defaults pass (Olympia **2.302s**). Every compatibility invocation
+explicitly uses isolated `G3_REPO=$PWD/tmp/upstream.git`; engines/tests use
+shared run_limited. Full whitespace checks pass. Logs: `tmp/issue161-*.log`.
+
+The supplied parent audit covers all eight open issues including unlabeled:
+only #161–166 and trackers #19/#132, no bug/follow-C. No new verified defect,
+prerequisite or oversized closure. A development-only malformed beast fixture
+was corrected before recording, not accepted as parity. Latest strict evidence
+remains the parent's post-#160 red gate: deterministic C repeats, engines **0**,
+same eight report-byte differences, equal raw streams/paths/types/modes, exit
+**1** before 13 lifecycle controls. No fresh full-world or stage acceptance;
+G3 #358/#359 unchanged/nonblocking, malformed **C136/Go2** is not parity.
+No changes to `tmp/parent-stage2-turn`, issues/checklists, commits or pushes.
+Changes remain uncommitted for parent review/integration.
+
+Independent parent complete-C/diff review verifies all seven definitions
+unchanged exactly once and inherited prefixes byte-exact. All eight routine
+tools, bounded vet and fresh bounded tests pass (Olympia **2.586s**);
+logs `tmp/parent161-*.log`. Strict evidence remains post-#160, not acceptance.
+
 ## Skill lore queues and GM skill listing (#160)
 
 Existing lore.go completes pinned lore.c skill line/delivery **137–199**,

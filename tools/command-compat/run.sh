@@ -326,6 +326,16 @@ int immed_see_all, month_done, show_combat_flag;
         for _, text in sorted(matches):
             out.write(text)
     out.write('''
+void drv_gm_economy(char *part, int pl) {
+ if (!strcmp(part,"attributes")) gm_show_interesting_attributes(pl);
+ else if (!strcmp(part,"animate")) gm_list_animate_items(pl);
+ else if (!strcmp(part,"gold")) gm_show_gold(pl);
+ else if (!strcmp(part,"control")) gm_show_control_arts(pl);
+ else if (!strcmp(part,"structures")) gm_count_stuff(pl);
+ else if (!strcmp(part,"items")) list_all_items(pl);
+ else abort();
+}
+int drv_gm_pct(int n, int d) { return pct(n,d); }
 void drv_lore_sheet(int who, int num, int display_num) { deliver_lore_sheet(who, num, display_num); }
 char *drv_summary_trunc_name(int who) { return summary_trunc_name(who); }
 int drv_sum_fighters(int who) { return sum_fighters(who); }
@@ -597,6 +607,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section GM economy '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section GM economy invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected GM economy status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section lore render '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

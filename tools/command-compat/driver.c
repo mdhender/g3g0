@@ -15,6 +15,9 @@
 void glob_init(void);
 void init_lower(void);
 void drv_read_boxes(char *path);
+void drv_gm_economy(char *part, int pl);
+int drv_gm_pct(int n, int d);
+extern int gold_common_magic, gold_lead_to_gold, gold_times, gold_petty_thief, gold_pillage, gold_ferry;
 void drv_lore_sheet(int who, int num, int display_num);
 int drv_load(struct command *c);
 int find_command(char *s);
@@ -796,6 +799,20 @@ int main(int argc, char **argv)
   }
   else if (!strcmp(op, "gm_lore")) {
    sscanf(line,"%*s %d",&n); gm_show_all_skills(n);
+  }
+  else if (!strcmp(op, "gm_economy")) {
+   if(sscanf(line,"%*s %31s %d",text,&n)!=2) return 2;
+   drv_gm_economy(text,n);
+  }
+  else if (!strcmp(op, "gm_pct")) {
+   if(sscanf(line,"%*s %d %d",&n,&a)!=2) return 2;
+   printf("pct %d\n",drv_gm_pct(n,a));
+  }
+  else if (!strcmp(op, "gm_gold")) {
+   if(sscanf(line,"%*s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+    &gold_common_magic,&gold_lead_to_gold,&gold_pot_basket,&gold_trade,&gold_inn,&gold_taxes,
+    &gold_provinces,&gold_times,&gold_combat,&gold_combat_indep,&gold_petty_thief,&gold_temple,
+    &gold_pillage,&gold_ferry,&gold_opium,&gold_garrison)!=16) return 2;
   }
   /* Relative libdir keeps the actual perror paths identical in both engines
    * and both runs; no diagnostic filtering. Only fixture setup below. */

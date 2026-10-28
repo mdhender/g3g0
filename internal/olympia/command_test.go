@@ -1067,6 +1067,31 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			w.deliverLore(args.num(t), args.num(t))
 		case "gm_lore":
 			w.gmShowAllSkills(args.num(t))
+		case "gm_economy":
+			action, pl := args.word(), args.num(t)
+			switch action {
+			case "attributes":
+				w.gmShowInterestingAttributes(pl)
+			case "animate":
+				w.gmListAnimateItems(pl)
+			case "gold":
+				w.gmShowGold(pl)
+			case "control":
+				w.gmShowControlArts(pl)
+			case "structures":
+				w.gmCountStuff(pl)
+			case "items":
+				w.listAllItems(pl)
+			default:
+				t.Fatalf("unknown GM economy action %s", action)
+			}
+		case "gm_pct":
+			n, d := int32(args.num(t)), int32(args.num(t))
+			fmt.Fprintf(&stdout, "pct %d\n", pct(n, d))
+		case "gm_gold":
+			for _, p := range []*int32{&w.goldCommonMagic, &w.goldLeadToGold, &w.goldPotBasket, &w.goldTrade, &w.goldInn, &w.goldTaxes, &w.goldProvinces, &w.goldTimes, &w.goldCombat, &w.goldCombatIndep, &w.goldPettyThief, &w.goldTemple, &w.goldPillage, &w.goldFerry, &w.goldOpium, &w.goldGarrison} {
+				*p = int32(args.num(t))
+			}
 		case "lore_root":
 			t.Chdir(w.libdir)
 			w.libdir = "."
