@@ -45,6 +45,9 @@ int drv_coast(int where);
 void drv_coastal(void), drv_mine(int mine), drv_inn(int inn), drv_loc_damage(void);
 void drv_heal(void);
 int drv_heal_roll(int who, int sub, int low, int high);
+void drv_dogs(void), drv_ring(void), drv_curse(void);
+int drv_bark_roll(int who, int hound);
+void drv_event_days(void);
 extern int gold_garrison;
 extern int gold_combat, gold_combat_indep;
 void drv_inherit_rolls(int from, int item, int qty);
@@ -356,6 +359,19 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "ocean_init")) init_ocean_chars();
   else if (!strcmp(op, "ocean_check")) check_ocean_chars();
   else if (!strcmp(op, "heal")) drv_heal();
+  else if (!strcmp(op, "weekly")) weekly_prisoner_escape_check();
+  else if (!strcmp(op, "dogs")) drv_dogs();
+  else if (!strcmp(op, "bark")) { sscanf(line,"%*s %d",&n); bark_dogs(n); }
+  else if (!strcmp(op, "ring")) drv_ring();
+  else if (!strcmp(op, "curse")) drv_curse();
+  else if (!strcmp(op, "events")) daily_events();
+  else if (!strcmp(op, "event_days")) drv_event_days();
+  else if (!strcmp(op, "bark_roll")) {
+   sscanf(line,"%*s %d %d",&n,&a); printf("bark roll %d\n",drv_bark_roll(n,a));
+  }
+  else if (!strcmp(op, "prison_roll")) {
+   sscanf(line,"%*s %d",&n); printf("weekly roll %d\n",ent_prisoner(n,ESC_WEEKLY));
+  }
   else if (!strcmp(op, "heal_roll")) {
    sscanf(line,"%*s %d %d %d %d",&n,&a,&b,&d);
    printf("heal roll %d\n",drv_heal_roll(n,a,b,d));
@@ -689,6 +705,10 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"max_aura")) p_magic(n)->max_aura = a;
    else if (!strcmp(text,"cur_aura")) p_magic(n)->cur_aura = a;
    else if (!strcmp(text,"aura_bonus")) p_item_magic(n)->aura_bonus = (short)a;
+   else if (!strcmp(text,"auraculum")) p_magic(n)->auraculum = a;
+   else if (!strcmp(text,"item_aura")) p_item_magic(n)->aura = (short)a;
+   else if (!strcmp(text,"creator")) p_item_magic(n)->creator = a;
+   else if (!strcmp(text,"curse")) p_item_magic(n)->curse_loyalty = (schar)a;
    else if (!strcmp(text,"token")) p_magic(n)->token = a;
    else if (!strcmp(text,"required")) p_skill(n)->required_skill = a;
    else if (!strcmp(text,"noble_item")) p_char(n)->unit_item = a;

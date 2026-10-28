@@ -2047,3 +2047,93 @@ claimed. No newly verified public-engine bug or blocker was found; arrival
 checks still show only enhancements, no local bug/follow-c. Known nonblocking
 G3 #309/#352/#353/#354/#355 remain unchanged. Version **0.57.0-alpha**; changes
 remain uncommitted, unstaged and unaccepted for parent review.
+
+## Daily prisoner, ring-aura, curse and dog closure (#80)
+
+This extends the existing command/lifecycle harness, rather than introducing
+the duplicate `upkeep-compat` named in the original issue acceptance wording.
+The pin remains `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`. No new source file
+is read, so the dependency table/affected.sh metadata is unchanged.
+
+| source | complete definition | exact lines | count |
+|---|---|---|---|
+| stack.c | weekly_prisoner_escape_check | 345–375 | 31 |
+| day.c | dogs_bark_at_hidden_chars | 489–516 | 28 |
+| day.c | increment_stone_ring_aura | 777–803 | 27 |
+| day.c | noncreator_curse_erode | 901–963 | 63 |
+| u.c | bark_dogs | 2633–2665 | 33 |
+
+These **182 C lines** are extracted unchanged, including disabled preprocessor
+branches; only phase instrumentation is omitted. The production port implements
+the active branch, not disabled design alternatives. The real **daily_events
+2206–2271 (66 lines)** and original **day.c 189–235** calendar prefix are also
+extracted. No scheduler model or successful gameplay stub replaces a callback.
+The existing persistent world Streams supplies EntPrisoner/EntBark/CalDay;
+the original C entity prefix, tags, guarded turn/day streams and leaf keys
+remain intact. No production RNG wrapper or adapter was introduced.
+
+**16 appended small sections** compare actual C and Go raw stdout, stderr,
+status, saveBox bytes and real logs/knowledge/touched/output/VECT state:
+
+- Outdoor weekly roll **12** escapes at chance 2, but fails in an inn at
+  chance 1; roll **1** escapes from that inn through real outward movement.
+  Captive captors, ocean flyers and release-sworn prisoners skip. Direct
+  sibling snapshot ordering and nested prisoners retain the real live outer
+  character chain. Same-owner follower hounds halve the threshold and bark
+  plurally; changing their owner permits the identical prisoner roll to escape.
+- A ship prisoner over ocean is not mistaken for a flying prisoner: it really
+  swims to the first island, clears moving/contact/ocean state, marks knowledge
+  and weather/touched state, and emits both captor and captive messages/logs.
+- Ring aura uses the existing max_eff_aura contract: below/at/above maximum,
+  nonmagicians, nested buildings, innate negative clamp, quantity-independent
+  artifact bonuses, auraculum, zero-quantity and deleted-item skips. Repeated
+  calls stop exactly at the effective cap; missing magic stays unallocated.
+- Curse skips missing item magic, zero strength, creator, oath, zero quantity
+  and deleted items. Contract/fear/unsworn holders log once per qualifying
+  inventory entry, not per quantity, on repeated calls. Loyalty rate **37**
+  stays unchanged. The active C `#if 1` is literally log-only NOTYET.
+- Dogs require a direct really-hidden character, not merely hide_self or a
+  nested hidden descendant. Real stack item sums include same-owner nested
+  hounds; every direct character supplies its own `(who, hound ordinal)` key.
+  Seeded zero/one/multiple barks distinguish no output, **The hound**, **A
+  hound**, and **The hounds**; VECT includes descendants and the location.
+  Day changes, guarded same-turn master reload, next turn and returning to
+  the old turn retain the actual entity-stream contract.
+- Real daily_events on a small map observes actual calendar picks **curse 8,
+  dog 15, faery 25**. Calls on days **6, 7, 8, 14, 15, 16** demonstrate
+  nonfiring days, weekly escape, log-only curse, then ring aura before dog
+  output. This is actual gameplay composition, NOT phase-trace acceptance.
+  Day 25/faery and full-world integration are not claimed by this case.
+- Paired no-call controls preserve both weather shuffles and unique-item
+  mint IDs **65748 / 68643** after real dog/weekly draws.
+
+The C driver runs twice deterministically: **580 sections / 41331 lines /
+705663 bytes**, matched exactly by Go. Previous input **12580 lines / 224361
+bytes** and output **564 sections / 40140 lines / 684313 bytes** remain exact
+prefixes, zero old bytes changed. New input: **13058 lines / 232235 bytes**.
+Move cases/recordings remain byte-identical (**3150 / 7150 lines**, **53589 /
+142755 bytes**). Literal C trailing whitespace in saves is retained.
+
+A removed temporary expected-134 case queued/loaded/dispatched ATTACK.
+Normal and `--update` both rejected `out-of-scope C dependency: v_attack`
+with **status 2**, before expected-status handling or recording. Output hash
+remained `ea769dd8b92f50ae7a8b47bc93b2a219ed2f78c1657f3fdd3d29f8c68d823d4a`.
+All permanent new sections require status zero; every engine invocation still
+uses shared run_limited supervision. Only the four owned production NYIs and
+the harness daily_events stub are removed; command/combat boundaries remain.
+
+**Upstream evidence:** closed G3 #233 (under #227) explicitly tracks coverage
+of the historical log-only curse path, not implementation of its public effect.
+Pinned use.c:134 exposes USE 886; art.c:664–722 validates/casts the curse,
+charges aura and advertises strength. day.c:948–958 logs NOTYET with the actual
+loyalty effect disabled. Filed nonblocking [G3 #356](https://github.com/playbymail/olympia-g3/issues/356),
+assigned to @me, for that source-verified supported-command limitation, not a
+new regression claim or malformed-state crash. Production links the intentional
+reproduction. No full public-command turn reproduction is claimed. Existing
+G3 #309/#352/#353/#354/#355 remain deliberately unchanged and source-linked.
+
+The eight comparison tools pass sequentially. Full-world/stage-exit checks
+are opt-in and not run here; the actual turn still stops at day-1
+match_all_trades (#81). Production dailyEvents order/weekly gates are unchanged.
+Version **0.58.0-alpha**. Changes remain uncommitted, unstaged and unaccepted
+for parent review; no issue closure, push or stage tick is implied.

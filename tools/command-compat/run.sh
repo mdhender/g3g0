@@ -53,11 +53,14 @@ functions = {
     'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched',
               'default_garrison_pay', 'maint_cost', 'storm_decay', 'storm_move',
               'near_rocky_coast', 'ship_coastal_damage', 'mine_calamity',
-              'inn_calamity', 'random_loc_damage', 'heal_char_sup', 'heal_characters'],
+              'inn_calamity', 'random_loc_damage', 'heal_char_sup', 'heal_characters',
+              'dogs_bark_at_hidden_chars', 'increment_stone_ring_aura',
+              'noncreator_curse_erode', 'daily_events'],
     'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
                 'check_prisoner_escape', 'prisoner_escapes', 'prisoner_movement_escape_check',
+                'weekly_prisoner_escape_check',
                 'drop_stack', 'extract_stacked_unit', 'move_prisoner'],
     'dir.c': ['location_direction', 'exit_distance', 'is_port_city',
               'province_has_port_city', 'summer_uldim_open_now', 'add_province_exit',
@@ -92,7 +95,7 @@ functions = {
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
-            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units'],
+            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units', 'bark_dogs'],
     'npc.c': ['controlled_humans_here', 'get_exit_dir', 'choose_npc_direction', 'npc_move',
               'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'necro.c': ['auto_undead'],
@@ -193,6 +196,9 @@ int immed_see_all, month_done, show_combat_flag;
             start, end = source.index('static rng_stream upkeep_rng;'), source.index('/* Loyalty-decay desertion check:')
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/day.c"\n')
             out.write(source[start:end])
+            start, end = source.index('static rng_stream calendar_rng;'), source.index('static int\nnear_rocky_coast(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/day.c"\n')
+            out.write(source[start:end])
         if file == 'move.c':
             out.write('#line 8 "olympia/move.c"\n')
             out.write(re.search(r'^static ilist ocean_chars = NULL;\n', source, re.M).group(0))
@@ -226,6 +232,15 @@ void drv_mine(int mine) { mine_calamity(mine); }
 void drv_inn(int inn) { inn_calamity(inn); }
 void drv_loc_damage(void) { random_loc_damage(); }
 void drv_heal(void) { heal_characters(); }
+void drv_dogs(void) { dogs_bark_at_hidden_chars(); }
+void drv_ring(void) { increment_stone_ring_aura(); }
+void drv_curse(void) { noncreator_curse_erode(); }
+int drv_bark_roll(int who, int hound) { return ent_bark(who, hound); }
+void drv_event_days(void) {
+ printf("curse day %d\\n", cal_day(0, 1, MONTH_DAYS));
+ printf("faery day %d\\n", cal_day(1, MONTH_DAYS/2, MONTH_DAYS));
+ printf("dog day %d\\n", cal_day(2, 1, MONTH_DAYS));
+}
 int drv_heal_roll(int who, int sub, int low, int high) { return up_heal(who, sub, low, high); }
 void drv_state(struct command *c, int s) { set_state(c, s, c->pri); }
 struct order_list *drv_orders(int pl, int who) { return p_order_head(pl, who); }
@@ -337,7 +352,6 @@ with open(f'{dst}/stubs.c', 'w') as out:
 void check_validated_trades(void) STUB("check_validated_trades")
 /* Later turn phases are explicit failures, never successful substitutes. */
 void match_all_trades(void) STUB("match_all_trades")
-void daily_events(void) STUB("daily_events")
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1, pretty_data_files, time_self;
@@ -366,6 +380,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section entities '* ]]; then
+   [ "$status" = 0 ] || die "unexpected daily entity status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section healing '* || "${section_names[$i]}" == 'section ocean '* ]]; then
    [ "$status" = 0 ] || die "unexpected healing/ocean status $status in section $i"
   fi

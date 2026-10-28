@@ -12578,3 +12578,481 @@ newitem 1000 0
 heal
 weather probe 9000 257
 newitem 1000 0
+
+section entities weekly outdoor twelve escapes with movement and knowledge
+master 0
+set turn 1
+set day 7
+entity 295 4 0
+entity 9000 3 3
+entity 1163 2 0
+link 9000 1000
+link 9000 1001
+link 1000 1163
+field 1163 lord 201
+field 1163 prisoner 1
+field 1163 moving 8
+field 1163 contact 1001
+prison_roll 1163
+weekly
+escape_state
+arrival_state
+save 9000
+save 1163
+readlog 200
+readlog 201
+
+section entities weekly building twelve fails then one escapes outward
+master 0
+set turn 1
+set day 7
+entity 295 4 0
+entity 9000 3 3
+entity 9100 3 37
+entity 1163 2 0
+entity 1026 2 0
+link 9000 9100
+link 9100 1000
+link 9000 1001
+link 1000 1163
+link 1000 1026
+field 1163 lord 201
+field 1026 lord 201
+field 1163 prisoner 1
+field 1026 prisoner 1
+field 1026 moving 8
+prison_roll 1163
+prison_roll 1026
+weekly
+escape_state
+arrival_state
+save 9100
+save 9000
+save 1026
+readlog 200
+readlog 201
+
+section entities weekly ocean captor captive and release sworn skips
+master 0
+set turn 1
+set day 7
+entity 295 4 0
+entity 9000 3 1
+entity 1026 2 0
+link 9000 1000
+link 9000 1001
+link 1000 1026
+field 1026 lord 201
+field 1026 prisoner 1
+prison_roll 1026
+weekly
+escape_state
+field 9000 subkind 3
+field 1000 prisoner 1
+weekly
+escape_state
+field 1000 prisoner 0
+field 1026 release 1
+weekly
+escape_state
+field 1026 release 0
+weekly
+escape_state
+save 1026
+readlog 200
+readlog 201
+
+section entities weekly direct snapshot and nested prisoner entity ordering
+master 0
+set turn 1
+set day 7
+entity 295 4 0
+entity 9000 3 3
+entity 1026 2 0
+entity 1125 2 0
+entity 1154 2 0
+link 9000 1000
+link 9000 1001
+link 1000 1125
+link 1125 1026
+link 1000 1154
+field 1026 lord 201
+field 1125 lord 201
+field 1154 lord 201
+field 1026 prisoner 1
+field 1125 prisoner 1
+field 1154 prisoner 1
+weekly
+escape_state
+weekly
+escape_state
+arrival_state
+save 1026
+save 1125
+save 1154
+readlog 200
+readlog 201
+
+section entities weekly shared owner hounds halve twelve and plural bark
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+entity 295 4 0
+entity 1163 2 0
+link 9000 1000
+link 1000 1001
+link 1000 1163
+field 1163 lord 200
+field 1163 prisoner 1
+inventory 1001 295 2
+weekly
+escape_state
+readlog 200
+field 1001 lord 201
+weekly
+escape_state
+arrival_state
+save 1163
+readlog 200
+readlog 201
+
+section entities ring bounds magician gate nested building and artifact entry bonus
+entity 9000 3 3
+entity 9100 3 10
+entity 9200 3 37
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 6000 4 0
+link 9000 9100
+link 9100 9200
+link 9100 1000
+link 9100 1001
+link 9200 1002
+link 9100 1003
+link 9100 1004
+field 1002 lord 200
+field 1003 lord 200
+field 1004 lord 200
+field 1000 magician 1
+field 1000 max_aura 4
+field 1000 cur_aura 6
+inventory 1000 6000 9
+field 6000 aura_bonus 3
+field 1001 magician 1
+field 1001 max_aura 7
+field 1001 cur_aura 7
+field 1002 magician 1
+field 1002 max_aura 7
+field 1003 max_aura 7
+field 1004 magician 1
+field 1004 max_aura 7
+field 1004 cur_aura 8
+ring
+ring
+save 1000
+save 1001
+save 1002
+save 1003
+save 1004
+readlog 200
+
+section entities ring innate negative clamp auraculum positive zero deleted quantities
+entity 9000 3 10
+entity 6000 4 0
+entity 6001 4 0
+entity 6002 4 0
+link 9000 1000
+link 9000 1001
+field 1000 magician 1
+field 1000 max_aura -4
+field 1000 auraculum 6000
+field 6000 item_aura 5
+field 6000 aura_bonus 2
+field 6001 aura_bonus 100
+field 6002 aura_bonus 100
+inventory 1000 6000 3
+inventory 1000 6001 0
+inventory 1000 6002 1
+delete_box 6002
+field 1000 cur_aura 6
+ring
+ring
+save 1000
+subitem 1000 6000 3
+field 1000 cur_aura 0
+ring
+save 1000
+save 1001
+readlog 200
+
+section entities curse active log only repeated holders and inventory gates G3 356
+entity 6000 4 0
+entity 6001 4 0
+entity 6002 4 0
+entity 6003 4 0
+entity 6004 4 0
+entity 6005 4 0
+field 6001 curse 0
+field 6002 curse 5
+field 6002 creator 1000
+field 6003 curse 3
+field 6003 creator 1001
+field 6004 curse 7
+field 6005 curse 9
+inventory 1000 6000 1
+inventory 1000 6001 1
+inventory 1000 6002 1
+inventory 1000 6003 4
+inventory 1000 6004 0
+inventory 1000 6005 1
+delete_box 6005
+field 1000 loyal 1
+field 1000 rate 37
+field 1001 loyal 2
+field 1001 rate 12
+inventory 1001 6002 1
+curse
+save 1000
+save 1001
+save 6003
+curse
+field 1000 loyal 3
+curse
+field 1000 loyal 0
+curse
+field 1000 loyal 2
+curse
+save 1000
+readlog 0
+readlog 200
+
+section entities dogs direct hidden alone nested does not trigger
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+entity 295 4 0
+entity 1002 2 0
+link 9000 1000
+link 9000 1001
+link 1001 1002
+field 1002 lord 200
+field 1002 hidden 1
+inventory 1000 295 1
+dogs
+escape_state
+field 1001 hidden 1
+dogs
+escape_state
+field 1001 hidden 0
+link 9000 1002
+dogs
+escape_state
+save 200
+save 9000
+readlog 200
+
+section entities dogs singular indefinite plural and per hound seeded controls
+master 0
+set turn 1
+set day 6
+entity 9000 3 3
+entity 295 4 0
+link 9000 1000
+link 9000 1001
+field 1001 hidden 1
+inventory 1000 295 1
+bark_roll 1000 1
+dogs
+escape_state
+readlog 200
+set day 7
+bark_roll 1000 1
+bark_roll 1000 2
+bark_roll 1000 3
+dogs
+additem 1000 295 1
+dogs
+additem 1000 295 1
+dogs
+escape_state
+set day 8
+bark_roll 1000 1
+bark_roll 1000 2
+bark_roll 1000 3
+dogs
+master 100
+bark_roll 1000 1
+bark_roll 1000 2
+bark_roll 1000 3
+dogs
+set turn 2
+bark_roll 1000 1
+bark_roll 1000 2
+bark_roll 1000 3
+dogs
+set turn 1
+bark_roll 1000 1
+bark_roll 1000 2
+bark_roll 1000 3
+dogs
+readlog 200
+
+section entities dogs stack owners hounds are summed for each direct character
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+entity 295 4 0
+entity 1002 2 0
+entity 1003 2 0
+link 9000 1000
+link 1000 1002
+link 9000 1001
+link 9000 1003
+field 1002 lord 200
+field 1003 lord 201
+field 1003 hidden 1
+inventory 1002 295 1
+inventory 1000 295 1
+bark_roll 1000 1
+bark_roll 1000 2
+bark_roll 1001 1
+bark_roll 1001 2
+dogs
+escape_state
+field 1001 lord 201
+dogs
+escape_state
+readlog 200
+readlog 201
+
+section entities daily real callbacks small ring weekly curse dog firing and nonfiring
+master 0
+set turn 1
+event_days
+entity 8000 3 50
+entity 9000 3 3
+entity 9100 3 10
+entity 1026 2 0
+entity 295 4 0
+entity 6000 4 0
+link 8000 9000
+link 9000 9100
+link 9100 1000
+link 9100 1001
+link 1000 1026
+field 1000 health 100
+field 1001 health 100
+field 1026 health 100
+field 1026 lord 201
+field 1026 prisoner 1
+field 1000 magician 1
+field 1000 max_aura 4
+field 1000 cur_aura 2
+field 1001 hidden 1
+field 1000 loyal 1
+field 1000 rate 37
+field 6000 curse 5
+field 6000 creator 1001
+inventory 1000 6000 1
+inventory 1000 295 2
+set day 6
+events
+save 1000
+save 1026
+set day 7
+events
+save 1000
+save 1026
+set day 8
+events
+save 1000
+set day 14
+events
+set day 15
+events
+save 1000
+set day 16
+events
+save 1000
+escape_state
+arrival_state
+readlog 0
+readlog 200
+readlog 201
+
+section entities weekly ship escape swims through real landing and arrival
+master 0
+set turn 1
+set day 7
+entity 295 4 0
+entity 1026 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9100 9 30
+entity 9003 3 9
+link 8000 9000
+link 9000 9100
+link 9000 9003
+link 9100 1000
+link 9003 1001
+link 1000 1026
+field 1026 lord 201
+field 1026 prisoner 1
+field 1026 moving 12
+field 1026 contact 1000
+field 1026 weather_mage 1
+field 1026 time_flying 4
+ocean_add 1026
+weekly
+escape_state
+arrival_state
+save 1026
+save 9000
+save 9100
+save 9003
+readlog 200
+readlog 201
+
+section entities bark no characters replaces vector without output
+entity 9000 3 3
+bark 9000
+escape_state
+readlog 200
+
+section entities independent weather and mint control
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+entity 295 4 0
+link 9000 1000
+link 9000 1001
+field 1001 hidden 1
+inventory 1000 295 3
+weather probe 9000 257
+newitem 1000 0
+weather probe 9000 257
+newitem 1000 0
+
+section entities independent weather and mint with real bark and weekly checks
+master 0
+set turn 1
+set day 7
+entity 9000 3 3
+entity 295 4 0
+link 9000 1000
+link 9000 1001
+field 1001 hidden 1
+inventory 1000 295 3
+weather probe 9000 257
+newitem 1000 0
+dogs
+field 1001 prisoner 1
+link 1000 1001
+weekly
+weather probe 9000 257
+newitem 1000 0

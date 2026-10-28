@@ -83,6 +83,18 @@ order only, not healing gameplay. Run the same eight tools sequentially
 before bounded vet/default tests. No new source dependency/pin or RNG adapter.
 The older broad boundary notes do not add add_char_damage to #79: that
 unrelated helper is not required by these functions and remains unported.
+Daily prisoner, ring-aura, curse and dog events (#80) extend command-compat,
+not a duplicate upkeep-compat: complete stack.c weekly_prisoner_escape_check,
+day.c dogs_bark_at_hidden_chars/increment_stone_ring_aura/noncreator_curse_erode
+and u.c bark_dogs reuse the accepted escape/movement/death, VECT/logging,
+inventory, knowledge and effective-aura closure. The active C curse branch
+only logs NOTYET; its public USE 886 limitation is tracked as G3 #356 and is
+intentionally reproduced without loyalty mutation. The harness also extracts
+real daily_events and its original calendar prefix for small-map composition
+through actual gameplay callbacks, distinct from schedule-only traces.
+Run command/move/helper/rng/code/loadsave/turn-driver/default turn sequentially
+before bounded vet/default tests. No new source dependency/pin or RNG adapter;
+production dailyEvents order/gating and full-turn day-1 #81 boundary stay intact.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks

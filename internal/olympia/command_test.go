@@ -430,6 +430,26 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.checkOceanChars()
 		case "heal":
 			w.healCharacters()
+		case "weekly":
+			w.weeklyPrisonerEscapeCheck()
+		case "dogs":
+			w.dogsBarkAtHiddenChars()
+		case "bark":
+			w.barkDogs(args.num(t))
+		case "ring":
+			w.incrementStoneRingAura()
+		case "curse":
+			w.noncreatorCurseErode()
+		case "events":
+			w.dailyEvents()
+		case "event_days":
+			fmt.Fprintf(&stdout, "curse day %d\n", w.streams.CalDay(0, 1, monthDays))
+			fmt.Fprintf(&stdout, "faery day %d\n", w.streams.CalDay(1, monthDays/2, monthDays))
+			fmt.Fprintf(&stdout, "dog day %d\n", w.streams.CalDay(2, 1, monthDays))
+		case "bark_roll":
+			fmt.Fprintf(&stdout, "bark roll %d\n", w.streams.EntBark(args.num(t), args.num(t)))
+		case "prison_roll":
+			fmt.Fprintf(&stdout, "weekly roll %d\n", w.streams.EntPrisoner(args.num(t), 0))
 		case "heal_roll":
 			fmt.Fprintf(&stdout, "heal roll %d\n", w.streams.UpHeal(args.num(t), args.num(t), args.num(t), args.num(t)))
 		case "arrival_state":
@@ -908,6 +928,14 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pMagic(n).curAura = int32(a)
 			case "aura_bonus":
 				w.pItemMagic(n).auraBonus = int16(a)
+			case "auraculum":
+				w.pMagic(n).auraculum = int32(a)
+			case "item_aura":
+				w.pItemMagic(n).aura = int16(a)
+			case "creator":
+				w.pItemMagic(n).creator = int32(a)
+			case "curse":
+				w.pItemMagic(n).curseLoyalty = int8(a)
 			case "token":
 				w.pMagic(n).token = int32(a)
 			case "required":

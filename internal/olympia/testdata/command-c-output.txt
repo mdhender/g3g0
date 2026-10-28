@@ -40138,3 +40138,1194 @@ created 68643
 stderr:
 
 exit 0
+stdout:
+section entities weekly outdoor twelve escapes with movement and knowledge
+> master 0
+> set turn 1
+> set day 7
+> entity 295 4 0
+> entity 9000 3 3
+> entity 1163 2 0
+> link 9000 1000
+> link 9000 1001
+> link 1000 1163
+> field 1163 lord 201
+> field 1163 prisoner 1
+> field 1163 moving 8
+> field 1163 contact 1001
+> prison_roll 1163
+weekly roll 12
+> weekly
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1163 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1163 allocated 1 time 0 contacts_alloc 1
+contacts: 1001
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched: 9000
+weather:
+output: 1163
+> save 9000
+9000 loc plain
+LI
+ hl 1000 1163 1001 
+
+> save 1163
+1163 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ ct 1001 
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1163] escaped!
+> readlog 201
+log 201:
+1163:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section entities weekly building twelve fails then one escapes outward
+> master 0
+> set turn 1
+> set day 7
+> entity 295 4 0
+> entity 9000 3 3
+> entity 9100 3 37
+> entity 1163 2 0
+> entity 1026 2 0
+> link 9000 9100
+> link 9100 1000
+> link 9000 1001
+> link 1000 1163
+> link 1000 1026
+> field 1163 lord 201
+> field 1026 lord 201
+> field 1163 prisoner 1
+> field 1026 prisoner 1
+> field 1026 moving 8
+> prison_roll 1163
+weekly roll 12
+> prison_roll 1026
+weekly roll 1
+> weekly
+> escape_state
+vector:
+escape char 1000 where 9100 prisoner 0 moving 0 magic 0 release 0
+here: 1163
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1026 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1163 where 1000 prisoner 1 moving 0 magic 0 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1026 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1163 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known: 9000
+touched: 9000
+weather:
+output: 1026
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+ hl 1000 
+
+> save 9000
+9000 loc plain
+LI
+ hl 9100 1001 1026 
+
+> save 1026
+1026 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1026] escaped!
+> readlog 201
+log 201:
+1026:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section entities weekly ocean captor captive and release sworn skips
+> master 0
+> set turn 1
+> set day 7
+> entity 295 4 0
+> entity 9000 3 1
+> entity 1026 2 0
+> link 9000 1000
+> link 9000 1001
+> link 1000 1026
+> field 1026 lord 201
+> field 1026 prisoner 1
+> prison_roll 1026
+weekly roll 1
+> weekly
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1026
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1026 where 1000 prisoner 1 moving 0 magic 0 release 0
+here:
+> field 9000 subkind 3
+> field 1000 prisoner 1
+> weekly
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 1 moving 0 magic 0 release 0
+here: 1026
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1026 where 1000 prisoner 1 moving 0 magic 0 release 0
+here:
+> field 1000 prisoner 0
+> field 1026 release 1
+> weekly
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1026
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1026 where 1000 prisoner 1 moving 0 magic 1 release 1
+here:
+> field 1026 release 0
+> weekly
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1026 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> save 1026
+1026 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1026] escaped!
+> readlog 201
+log 201:
+1026:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section entities weekly direct snapshot and nested prisoner entity ordering
+> master 0
+> set turn 1
+> set day 7
+> entity 295 4 0
+> entity 9000 3 3
+> entity 1026 2 0
+> entity 1125 2 0
+> entity 1154 2 0
+> link 9000 1000
+> link 9000 1001
+> link 1000 1125
+> link 1125 1026
+> link 1000 1154
+> field 1026 lord 201
+> field 1125 lord 201
+> field 1154 lord 201
+> field 1026 prisoner 1
+> field 1125 prisoner 1
+> field 1154 prisoner 1
+> weekly
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1026 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1125 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1154 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> weekly
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1026 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1125 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1154 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1026 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1125 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1154 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched: 9000
+weather:
+output: 1125 1154 1026
+> save 1026
+1026 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> save 1125
+1125 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> save 1154
+1154 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1125] escaped!
+1000:0::0::Prisoner <no subkind>~[1154] escaped!
+> readlog 201
+log 201:
+1125:0::0::We escaped!
+1154:0::0::We escaped!
+1125:0::0::Prisoner <no subkind>~[1026] escaped!
+1026:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section entities weekly shared owner hounds halve twelve and plural bark
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> entity 295 4 0
+> entity 1163 2 0
+> link 9000 1000
+> link 1000 1001
+> link 1000 1163
+> field 1163 lord 200
+> field 1163 prisoner 1
+> inventory 1001 295 2
+> weekly
+> escape_state
+vector: 1000 1001 1163
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1001 1163
+escape char 1001 where 1000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1163 where 1000 prisoner 1 moving 0 magic 0 release 0
+here:
+> readlog 200
+log 200:
+1000:0::0::The hounds are barking.
+1001:0::0::The hounds are barking.
+> field 1001 lord 201
+> weekly
+> escape_state
+vector: 1000 1001 1163
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1001
+escape char 1001 where 1000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1163 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1163 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched: 9000
+weather:
+output: 1000 1001 1163
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1163
+1163 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::The hounds are barking.
+1001:0::0::The hounds are barking.
+1000:0::0::Prisoner <no subkind>~[1163] escaped!
+1163:0::0::We escaped!
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section entities ring bounds magician gate nested building and artifact entry bonus
+> entity 9000 3 3
+> entity 9100 3 10
+> entity 9200 3 37
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 6000 4 0
+> link 9000 9100
+> link 9100 9200
+> link 9100 1000
+> link 9100 1001
+> link 9200 1002
+> link 9100 1003
+> link 9100 1004
+> field 1002 lord 200
+> field 1003 lord 200
+> field 1004 lord 200
+> field 1000 magician 1
+> field 1000 max_aura 4
+> field 1000 cur_aura 6
+> inventory 1000 6000 9
+> field 6000 aura_bonus 3
+> field 1001 magician 1
+> field 1001 max_aura 7
+> field 1001 cur_aura 7
+> field 1002 magician 1
+> field 1002 max_aura 7
+> field 1003 max_aura 7
+> field 1004 magician 1
+> field 1004 max_aura 7
+> field 1004 cur_aura 8
+> ring
+> ring
+> save 1000
+1000 char 0
+il	6000 9
+LI
+ wh 9100
+CH
+ lo 200
+CM
+ im 1
+ ma 4
+ ca 7
+
+> save 1001
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CM
+ im 1
+ ma 7
+ ca 7
+
+> save 1002
+1002 char 0
+LI
+ wh 9200
+CH
+ lo 200
+CM
+ im 1
+ ma 7
+
+> save 1003
+1003 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CM
+ ma 7
+
+> save 1004
+1004 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CM
+ im 1
+ ma 7
+ ca 8
+
+> readlog 200
+log 200:
+1000:0::0::Current aura is now 7.
+stderr:
+
+exit 0
+stdout:
+section entities ring innate negative clamp auraculum positive zero deleted quantities
+> entity 9000 3 10
+> entity 6000 4 0
+> entity 6001 4 0
+> entity 6002 4 0
+> link 9000 1000
+> link 9000 1001
+> field 1000 magician 1
+> field 1000 max_aura -4
+> field 1000 auraculum 6000
+> field 6000 item_aura 5
+> field 6000 aura_bonus 2
+> field 6001 aura_bonus 100
+> field 6002 aura_bonus 100
+> inventory 1000 6000 3
+> inventory 1000 6001 0
+> inventory 1000 6002 1
+> delete_box 6002
+> field 1000 cur_aura 6
+> ring
+> ring
+> save 1000
+1000 char 0
+il	6000 3
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ im 1
+ ma -4
+ ca 7
+ ar 6000
+
+> subitem 1000 6000 3
+subitem 1
+> field 1000 cur_aura 0
+> ring
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ im 1
+ ma -4
+ ar 6000
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Current aura is now 7.
+stderr:
+
+exit 0
+stdout:
+section entities curse active log only repeated holders and inventory gates G3 356
+> entity 6000 4 0
+> entity 6001 4 0
+> entity 6002 4 0
+> entity 6003 4 0
+> entity 6004 4 0
+> entity 6005 4 0
+> field 6001 curse 0
+> field 6002 curse 5
+> field 6002 creator 1000
+> field 6003 curse 3
+> field 6003 creator 1001
+> field 6004 curse 7
+> field 6005 curse 9
+> inventory 1000 6000 1
+> inventory 1000 6001 1
+> inventory 1000 6002 1
+> inventory 1000 6003 4
+> inventory 1000 6004 0
+> inventory 1000 6005 1
+> delete_box 6005
+> field 1000 loyal 1
+> field 1000 rate 37
+> field 1001 loyal 2
+> field 1001 rate 12
+> inventory 1001 6002 1
+> curse
+> save 1000
+1000 char 0
+il	6000 1 \
+	6001 1 \
+	6002 1 \
+	6003 4
+CH
+ lo 200
+ lk 1
+ lr 37
+
+> save 1001
+1001 char 0
+il	6002 1
+CH
+ lo 200
+ lk 2
+ lr 12
+
+> save 6003
+6003 item 0
+IT
+IM
+ cl 3
+ ct 1001
+
+> curse
+> field 1000 loyal 3
+> curse
+> field 1000 loyal 0
+> curse
+> field 1000 loyal 2
+> curse
+> save 1000
+1000 char 0
+il	6000 1 \
+	6001 1 \
+	6002 1 \
+	6003 4
+CH
+ lo 200
+ lk 2
+ lr 37
+
+> readlog 0
+log 0:
+> readlog 200
+log 200:
+10:0::0::noncreator_curse_erode: NOTYET!
+10:0::0::noncreator_curse_erode: NOTYET!
+10:0::0::noncreator_curse_erode: NOTYET!
+10:0::0::noncreator_curse_erode: NOTYET!
+stderr:
+
+exit 0
+stdout:
+section entities dogs direct hidden alone nested does not trigger
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> entity 295 4 0
+> entity 1002 2 0
+> link 9000 1000
+> link 9000 1001
+> link 1001 1002
+> field 1002 lord 200
+> field 1002 hidden 1
+> inventory 1000 295 1
+> dogs
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1002
+escape char 1002 where 1001 prisoner 0 moving 0 magic 1 release 0
+here:
+> field 1001 hidden 1
+> dogs
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 1 release 0
+here: 1002
+escape char 1002 where 1001 prisoner 0 moving 0 magic 1 release 0
+here:
+> field 1001 hidden 0
+> link 9000 1002
+> dogs
+> escape_state
+vector: 1000 1001 1002 9000
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1002 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> save 200
+200 player pl_regular
+PL
+
+> save 9000
+9000 loc plain
+LI
+ hl 1000 1001 1002 
+
+> readlog 200
+log 200:
+1000:0::0::The hound is barking.
+1001:0::0::The hound is barking.
+1002:0::0::The hound is barking.
+stderr:
+
+exit 0
+stdout:
+section entities dogs singular indefinite plural and per hound seeded controls
+> master 0
+> set turn 1
+> set day 6
+> entity 9000 3 3
+> entity 295 4 0
+> link 9000 1000
+> link 9000 1001
+> field 1001 hidden 1
+> inventory 1000 295 1
+> bark_roll 1000 1
+bark roll 2
+> dogs
+> escape_state
+vector: 1000 1001 9000
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> readlog 200
+log 200:
+> set day 7
+> bark_roll 1000 1
+bark roll 1
+> bark_roll 1000 2
+bark roll 2
+> bark_roll 1000 3
+bark roll 1
+> dogs
+> additem 1000 295 1
+> dogs
+> additem 1000 295 1
+> dogs
+> escape_state
+vector: 1000 1001 9000
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> set day 8
+> bark_roll 1000 1
+bark roll 2
+> bark_roll 1000 2
+bark roll 1
+> bark_roll 1000 3
+bark roll 1
+> dogs
+> master 100
+> bark_roll 1000 1
+bark roll 2
+> bark_roll 1000 2
+bark roll 1
+> bark_roll 1000 3
+bark roll 1
+> dogs
+> set turn 2
+> bark_roll 1000 1
+bark roll 2
+> bark_roll 1000 2
+bark roll 2
+> bark_roll 1000 3
+bark roll 2
+> dogs
+> set turn 1
+> bark_roll 1000 1
+bark roll 2
+> bark_roll 1000 2
+bark roll 2
+> bark_roll 1000 3
+bark roll 2
+> dogs
+> readlog 200
+log 200:
+1000:0::0::The hound is barking.
+1001:0::0::The hound is barking.
+1000:0::0::A hound is barking.
+1001:0::0::A hound is barking.
+1000:0::0::The hounds are barking.
+1001:0::0::The hounds are barking.
+1000:0::0::The hounds are barking.
+1001:0::0::The hounds are barking.
+1000:0::0::The hounds are barking.
+1001:0::0::The hounds are barking.
+stderr:
+
+exit 0
+stdout:
+section entities dogs stack owners hounds are summed for each direct character
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> entity 295 4 0
+> entity 1002 2 0
+> entity 1003 2 0
+> link 9000 1000
+> link 1000 1002
+> link 9000 1001
+> link 9000 1003
+> field 1002 lord 200
+> field 1003 lord 201
+> field 1003 hidden 1
+> inventory 1002 295 1
+> inventory 1000 295 1
+> bark_roll 1000 1
+bark roll 1
+> bark_roll 1000 2
+bark roll 2
+> bark_roll 1001 1
+bark roll 1
+> bark_roll 1001 2
+bark roll 2
+> dogs
+> escape_state
+vector: 1000 1002 1001 1003 9000
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1002
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1002 where 1000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1003 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> field 1001 lord 201
+> dogs
+> escape_state
+vector: 1000 1002 1001 1003 9000
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here: 1002
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1002 where 1000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1003 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> readlog 200
+log 200:
+1000:0::0::A hound is barking.
+1002:0::0::A hound is barking.
+1001:0::0::A hound is barking.
+1000:0::0::A hound is barking.
+1002:0::0::A hound is barking.
+> readlog 201
+log 201:
+1003:0::0::A hound is barking.
+1001:0::0::A hound is barking.
+1003:0::0::A hound is barking.
+stderr:
+
+exit 0
+stdout:
+section entities daily real callbacks small ring weekly curse dog firing and nonfiring
+> master 0
+> set turn 1
+> event_days
+curse day 8
+faery day 25
+dog day 15
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 3 10
+> entity 1026 2 0
+> entity 295 4 0
+> entity 6000 4 0
+> link 8000 9000
+> link 9000 9100
+> link 9100 1000
+> link 9100 1001
+> link 1000 1026
+> field 1000 health 100
+> field 1001 health 100
+> field 1026 health 100
+> field 1026 lord 201
+> field 1026 prisoner 1
+> field 1000 magician 1
+> field 1000 max_aura 4
+> field 1000 cur_aura 2
+> field 1001 hidden 1
+> field 1000 loyal 1
+> field 1000 rate 37
+> field 6000 curse 5
+> field 6000 creator 1001
+> inventory 1000 6000 1
+> inventory 1000 295 2
+> set day 6
+> events
+> save 1000
+1000 char 0
+il	6000 1 \
+	295 2
+LI
+ wh 9100
+ hl 1026 
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 37
+CM
+ im 1
+ ma 4
+ ca 2
+
+> save 1026
+1026 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ he 100
+ pr 1
+
+> set day 7
+> events
+> save 1000
+1000 char 0
+il	6000 1 \
+	295 2
+LI
+ wh 9100
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 37
+CM
+ im 1
+ ma 4
+ ca 2
+
+> save 1026
+1026 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ he 100
+
+> set day 8
+> events
+> save 1000
+1000 char 0
+il	6000 1 \
+	295 2
+LI
+ wh 9100
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 37
+CM
+ im 1
+ ma 4
+ ca 2
+
+> set day 14
+> events
+> set day 15
+> events
+> save 1000
+1000 char 0
+il	6000 1 \
+	295 2
+LI
+ wh 9100
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 37
+CM
+ im 1
+ ma 4
+ ca 3
+
+> set day 16
+> events
+> save 1000
+1000 char 0
+il	6000 1 \
+	295 2
+LI
+ wh 9100
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 37
+CM
+ im 1
+ ma 4
+ ca 3
+
+> escape_state
+vector: 1000 1001 9100
+escape char 1000 where 9100 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1001 where 9100 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1026 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1026 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000 10 1001
+arrival player 201 allocated 1
+known: 9000
+touched: 9000
+weather:
+output: 1026 9000
+> readlog 0
+log 0:
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1026] escaped!
+10:0::0::noncreator_curse_erode: NOTYET!
+1000:0::0::Current aura is now 3.
+1000:0::0::A hound is barking.
+1001:0::0::A hound is barking.
+> readlog 201
+log 201:
+1026:0::0::We escaped!
+9000:0::0::A hound is barking.
+stderr:
+
+exit 0
+stdout:
+section entities weekly ship escape swims through real landing and arrival
+> master 0
+> set turn 1
+> set day 7
+> entity 295 4 0
+> entity 1026 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9100 9 30
+> entity 9003 3 9
+> link 8000 9000
+> link 9000 9100
+> link 9000 9003
+> link 9100 1000
+> link 9003 1001
+> link 1000 1026
+> field 1026 lord 201
+> field 1026 prisoner 1
+> field 1026 moving 12
+> field 1026 contact 1000
+> field 1026 weather_mage 1
+> field 1026 time_flying 4
+> ocean_add 1026
+> weekly
+> escape_state
+vector:
+escape char 1000 where 9100 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9003 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1026 where 9003 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1026 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000 11
+arrival player 201 allocated 1
+known: 9003
+touched: 9000
+weather: 9000
+output: 1026
+> save 1026
+1026 char 0
+LI
+ wh 9003
+CH
+ lo 201
+CM
+ kw 1
+
+> save 9000
+9000 loc ocean
+LI
+ wh 8000
+ hl 9100 9003 
+
+> save 9100
+9100 ship galley
+LI
+ wh 9000
+ hl 1000 
+
+> save 9003
+9003 loc island
+LI
+ wh 9000
+ hl 1001 1026 
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1026] escaped!
+1000:0::0::<no subkind> jumped overboard and presumably drowned.
+11:0::0::!! Someone swam ashore, who=1026
+> readlog 201
+log 201:
+1026:0::0::We escaped!
+1026:0::0::After jumping over the side of the boat and enduring a long, grueling, swim, we finally washed ashore at Island~[9003].
+stderr:
+
+exit 0
+stdout:
+section entities bark no characters replaces vector without output
+> entity 9000 3 3
+> bark 9000
+> escape_state
+vector: 9000
+escape char 1000 where 0 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 0 prisoner 0 moving 0 magic 0 release 0
+here:
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section entities independent weather and mint control
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> entity 295 4 0
+> link 9000 1000
+> link 9000 1001
+> field 1001 hidden 1
+> inventory 1000 295 3
+> weather probe 9000 257
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> newitem 1000 0
+created 65748
+> weather probe 9000 257
+weather shuffle: 321 342 356 328 314 363 300 370 335 307 349
+weather strength 2
+> newitem 1000 0
+created 68643
+stderr:
+
+exit 0
+stdout:
+section entities independent weather and mint with real bark and weekly checks
+> master 0
+> set turn 1
+> set day 7
+> entity 9000 3 3
+> entity 295 4 0
+> link 9000 1000
+> link 9000 1001
+> field 1001 hidden 1
+> inventory 1000 295 3
+> weather probe 9000 257
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> newitem 1000 0
+created 65748
+> dogs
+> field 1001 prisoner 1
+> link 1000 1001
+> weekly
+> weather probe 9000 257
+weather shuffle: 321 342 356 328 314 363 300 370 335 307 349
+weather strength 2
+> newitem 1000 0
+created 68643
+stderr:
+
+exit 0
