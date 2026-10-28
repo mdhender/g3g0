@@ -6,6 +6,37 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Complete character-report root (#151)
+
+Existing report.go replaces characterReportState with complete pinned
+report.c char_rep_sup **681–710** / character_report **713–743**, wired once
+in main; copied projection logic and reportAttitudeState are removed.
+Existing buy.go adds already-extracted buy.c list_pending_trades
+**1123–1158**. All accepted detail/inventory/capacity/permissions/skills and
+cached output owners are reused in actual C order, not callback traces or
+parallel state/render paths. No new dependency/pin, later root or command.
+
+At **0.91.0-alpha**, eleven appended sections match complete unchanged real
+C twice and Go: **1061 sections / 71543 lines / 1368616 output bytes**.
+Accepted **1050 sections / 70245 lines / 1339950 output bytes** and **426753
+input bytes** remain exact prefixes. Full asymmetric faction report bytes,
+silent/prisoner-only lazy controls, temporary prisoner toggle, missing owner
+records/CH, retained CM, repeat backlinks, garrison routing, stored trades
+and renamed cached inode are actually observed. Numeric fixtures and reached
+branches were checked against pinned C. #168 native traversal still matches
+over unchanged input. Four temporary marker probes (0/134, ordinary/update)
+reject before expected-failure acceptance or recording update; probes removed.
+See [closure, hashes and evidence](command-compat#complete-character-report-root-151).
+
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded defaults pass with explicit isolated G3_REPO
+and run_limited engine supervision; logs `tmp/issue151-*.log`. Independent
+parent acceptance passes the same tier. The fresh post-#151 strict run has identical C
+repeats, C/Go 0, equal streams and paths/types/modes, eight report-byte
+differences, exit 1 before lifecycle. No full-world/stage-exit acceptance;
+logs `tmp/parent151-strict.log`. G3 #358 remains nonblocking; original
+division/Go panic unchanged, malformed C136/Go2 NOT passing parity.
+
 ## Character detail sections (#150)
 
 Existing report.go implements complete report.c stack **410–433**, pledged

@@ -458,3 +458,33 @@ func (w *world) checkValidatedTrades() {
 	}
 	w.tradesToCheck.Clear()
 }
+
+// listPendingTrades is complete buy.c:1123–1158. Unlike market_report,
+// this displays the stored positive-quantity offers without affordability
+// calculations, sorting, or updating the original trade records.
+func (w *world) listPendingTrades(who, num int) {
+	first := true
+	assert(w.validBox(num), "olympia/buy.c", 1129, "valid_box(num)")
+	for t := range w.loopTrade(num) {
+		if t.kind != tradeBuy && t.kind != tradeSell {
+			continue
+		}
+		if first {
+			w.commandOut(who, "")
+			w.commandOut(who, "Pending trades:")
+			w.commandOut(who, "")
+			w.indent += 3
+			first = false
+			w.commandOut(who, "%5s  %7s  %5s   %s", "trade", "price", "qty", "item")
+			w.commandOut(who, "%5s  %7s  %5s   %s", "-----", "-----", "---", "----")
+		}
+		kind := "sell"
+		if t.kind == tradeBuy {
+			kind = "buy"
+		}
+		w.commandOut(who, "%5s  %7s  %5s   %s", kind, commaNum(int(t.cost)), commaNum(int(t.qty)), w.boxName(int(t.item)))
+	}
+	if !first {
+		w.indent -= 3
+	}
+}

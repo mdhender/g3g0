@@ -1667,7 +1667,11 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				n, target := args.num(t), args.num(t)
 				w.printAtt(n, target)
 			case "characters":
-				w.characterReportState()
+				w.characterReport()
+			case "character":
+				w.charRepSup(args.num(t), args.num(t))
+			case "pending_trades":
+				w.listPendingTrades(args.num(t), args.num(t))
 			case "locations":
 				w.turnEndLocReports()
 			case "location":

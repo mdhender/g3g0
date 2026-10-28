@@ -5,8 +5,7 @@ package olympia
 
 import "github.com/mdhender/g3g0/internal/lists"
 
-// Character detail sections are complete report.c:410–678. They deliberately
-// remain separate from characterReportState until the root is ported (#151).
+// Character detail sections are complete report.c:410–678.
 func (w *world) charRepStackInfo(who, num int) {
 	if n := w.stackParent(num); n != 0 {
 		w.wiout(who, 16, "Stacked under:  %s", w.boxName(n))
@@ -396,17 +395,6 @@ func (w *world) playerEntInfo() {
 	}
 }
 
-// reportAttitudeState is the persistent part of perm.c:426–488. A missing
-// attitude record is not allocated, and invalid entries are not removed.
-// Only the still-deferred character root uses this projection (until #151).
-func (w *world) reportAttitudeState(n int) {
-	if p := w.rpDisp(n); p != nil {
-		safeQsort(p.hostile, intComp)
-		safeQsort(p.neutral, intComp)
-		safeQsort(p.defend, intComp)
-	}
-}
-
 // collectPledgeBacklinks is report.c:438–463. The two passes are deliberate:
 // p_magic allocates CH records even for silent/prisoner characters. Clearing
 // a previously allocated list retains its pointer, so print_magic can emit a
@@ -423,94 +411,54 @@ func (w *world) collectPledgeBacklinks() {
 	}
 }
 
-// characterReportState preserves character_report/char_rep_sup's persistent
-// effects (report.c:681–743), not their stage-2 report text. show_pledged is
-// lazy: an all-silent/all-prisoner world must not collect backlinks. Prisoner
-// output temporarily toggles prisoner off and on, leaving saved state alone.
-func (w *world) characterReportState() {
+// charRepSup is complete report.c:681–710. Each accepted subordinate owns
+// its output and side effects; in particular showPledged collects lazily.
+func (w *world) charRepSup(who, num int) {
+	w.wiout(who, 16, "Location:       %s", w.charRepLocation(num))
+	w.commandOut(who, "Loyalty:        %s", capitalize(w.loyalS(num)))
+	w.charRepStackInfo(who, num)
+	w.charRepHealth(who, num)
+	w.charRepCombat(who, num)
+	w.charRepMisc(who, num)
+	if p := w.rpMisc(num); p != nil && p.display != nil {
+		w.commandOut(who, "Banner:         %s", *p.display)
+	}
+	w.showPledged(who, num)
+	if p := w.rpMagic(num); p != nil && p.magician != 0 {
+		w.charRepMagic(who, num)
+	}
+	w.charRepPrisoners(who, num)
+	w.printAtt(who, num)
+	w.listSkills(who, num)
+	w.listPartialSkills(who, num)
+	w.showCharInventory(who, num)
+	w.showCarryCapacity(who, num)
+	w.showItemSkills(who, num)
+	w.listPendingTrades(who, num)
+	w.commandOut(who, "")
+}
+
+// characterReport is complete report.c:713–743. Silent/prisoner-only worlds
+// never reach showPledged. The temporary prisoner toggle enables only the
+// two original lines, using normal output routing and allocation timing.
+func (w *world) characterReport() {
 	w.stage("character_report()")
+	w.indent += 3
 	for who := range w.loopKind(tChar) {
-		pl := w.player(who)
-		if w.subkind(pl) == subPlSilent {
+		if w.subkind(w.player(who)) == subPlSilent {
 			continue
-		}
-		// The initial out() (also with the prisoner's temporary toggle)
-		// reaches sout.c:306's p_player before char_rep_sup does anything.
-		if !w.immediate {
-			if w.subkind(who) == subGarrison {
-				for _, ruler := range w.playersWhoRuleHere(who) {
-					if ruler != 0 && w.subkind(ruler) != subPlSilent {
-						w.pPlayer(ruler)
-					}
-				}
-			} else if pl != 0 {
-				w.pPlayer(pl)
-			}
 		}
 		if w.isPrisoner(who) {
-			continue
-		}
-		w.charRepLocation(who)
-		w.loyalS(who)
-		if !w.pledgeBacklinks {
-			w.collectPledgeBacklinks()
-		}
-		for _, n := range w.rpLocInfo(who).hereList {
-			if w.kind(n) == tChar && w.isPrisoner(n) {
-				assert(w.rpChar(n).health != 0, "olympia/report.c", 504, "health != 0")
-			}
-		}
-		w.reportAttitudeState(who)
-		// list_skills and list_partial_skills sort COPIES. Preserve their
-		// assertion/diagnostic path, but never reorder the stored skills.
-		if p := w.rpChar(who); p != nil {
-			l := p.skills.Copy()
-			safeQsort(l, func(a, b *skillEnt) int {
-				if a.know != skillKnow && b.know == skillKnow {
-					return -1
-				}
-				if b.know != skillKnow && a.know == skillKnow {
-					return 1
-				}
-				pa, pb := w.skillSchool(int(a.skill)), w.skillSchool(int(b.skill))
-				if pa != pb {
-					return intComp(pa, pb)
-				}
-				return int(a.skill - b.skill)
-			})
-			for _, e := range l {
-				if e.know == skillKnow {
-					if s := w.rpSkill(int(e.skill)); s == nil || s.noExp == 0 {
-						w.skillSchool(int(e.skill))
-					}
-				}
-			}
-			l = p.skills.Copy()
-			safeQsort(l, func(a, b *skillEnt) int { return int(a.skill - b.skill) })
-			for _, e := range l {
-				if e.know != skillKnow && e.know != skillDont {
-					assert(e.know == skillLearning, "olympia/use.c", 1358, "p->know == SKILL_learning")
-				}
-			}
-		}
-		safeQsort(w.bx[who].items, invItemComp)
-		for e := range w.loopInv(who) {
-			w.pluralItemBox(int(e.item), int(e.qty))
-		}
-		w.determineUnitWeights(who)
-		for e := range w.loopInv(who) {
-			if p := w.rpItemMagic(int(e.item)); p != nil {
-				for _, sk := range p.mayStudy {
-					assert(w.validBox(sk), "olympia/report.c", 126, "valid_box(sk)")
-					w.skillSchool(sk)
-				}
-				for _, sk := range p.mayUse {
-					assert(w.validBox(sk), "olympia/report.c", 162, "valid_box(sk)")
-					w.skillSchool(sk)
-				}
-			}
+			w.pChar(who).prisoner = 0
+			w.commandOut(who, "%s is being held prisoner.", w.boxName(who))
+			w.commandOut(who, "")
+			w.pChar(who).prisoner = 1
+		} else {
+			w.commandOut(who, "")
+			w.charRepSup(who, who)
 		}
 	}
+	w.indent -= 3
 }
 
 // turnEndLocReports is complete report.c:1589–1642, including the original

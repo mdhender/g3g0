@@ -305,7 +305,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 		w.turnEndLocReports()
 		w.listOrderTemplatesState()
 		w.playerEntInfo()
-		w.characterReportState()
+		w.characterReport()
 		w.playerBannerState()
 		if o.acctFlag {
 			panic(notImplemented("charge_account"))

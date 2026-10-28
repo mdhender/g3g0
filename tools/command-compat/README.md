@@ -3,6 +3,93 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Complete character-report root (#151)
+
+Existing report.go implements complete unchanged report.c `char_rep_sup`
+**681–710** and `character_report` **713–743**. Main and the command oracle
+call the renderer instead of characterReportState. The copied projection
+and now-unused reportAttitudeState are removed; no double effect pass.
+Existing buy.go adds complete `list_pending_trades`, buy.c **1123–1158**,
+already extracted unchanged in the real-C oracle. No new C dependency or pin.
+
+The root retains the actual subordinate order: location/loyalty, stack,
+health/combat/misc, optional banner, lazy pledges, optional magic, prisoners,
+attitudes, known/partial skills, inventory, capacity, item skills, pending
+trades, final blank. Every subordinate reuses its accepted owner and normal
+out/wiout/cache routing. Silent owners skip before any output or collection.
+Prisoners temporarily clear their flag only for the original two output
+lines, then restore it; they never run char_rep_sup. Only show_pledged's first
+eligible call collects backlinks across all characters. CH allocations,
+retained allocated-empty CM, original inventory/attitude sorts, copied skill
+sorts, owner record allocation and repeats remain owned by those routines.
+
+Eleven appended sections compare complete actual C twice with Go: eight
+status **0**, three **134**. The asymmetric root prints every subordinate,
+including aura **11 (9+2)**, prisoner health **42**, Oath-17, shroud/vision,
+concealment, banner, all three attitudes, partial **0/3**, inventory total
+**71**, distinct land/ride/fly ratios **15/20/11%**, item study/use and stored
+SELL-before-BUY offers. It observes actual faction logs, raw lists, skill
+rows and save_box bytes before/after repeated roots; changing a forward
+pledge does not recollect the existing **1001/1002/1003** backlinks. Separate
+silent and prisoner-only controls verify ready **0**, unsorted inventory and
+attitudes, untouched missing owner records for silent players, original
+prisoner flags, then ready **1** only after the first eligible root.
+
+Garrison output actually reaches both castle owner and pledge ruler logs
+using OUT_GARR **6** and the garrison unit field. A missing-CH character
+acquires CH at lazy collection, while a preallocated backlink list retains
+bare CM after clearing. The MASTER fixture opens character **1000**'s FILE
+before renaming it; after repeated complete roots the observer reads **1003
+raw bytes**, including the prefix, from that same cached inode. Prisoner
+**1001** is observed separately. A
+different-recipient char_rep_sup control preserves who versus num semantics.
+
+Pending trades preserve stored order and records, skip PRODUCE/CONSUME,
+nonpositive quantities and invalid items, and print **2147483647** quantity,
+**-123456789** price and positive-quantity zero price without market_report's
+affordability division. This is the unchanged pending renderer, NOT a fix
+or claimed parity for malformed market data. Invalid owner asserts at
+buy.c **1129** before output; complete-root controls preserve report.c
+**504** and use.c **1358** assertions in original call order. Constants were
+verified against pinned oly.h: player/character/location/item/skill **1–5**,
+plain **3**, castle **32**, magic **43**, regular **49**, region **50**,
+silent **62**, garrison **64**, BUY/SELL **1/2**, hide_self **638**.
+
+At **0.91.0-alpha**, final unchanged-C refresh/default comparison passes
+**1061 sections / 71543 lines / 1368616 output bytes**. Accepted **1050
+sections / 70245 lines / 1339950 output bytes** and **426753 input bytes**
+remain exact unchanged prefixes against HEAD. New input: **23007 lines /
+432470 bytes**. Output SHA-256:
+`cb7ee86183cc0070d30a6fbd7c2fc9c4e9fc5474a858003d4149482c9c6f9cee`.
+Input SHA-256:
+`b2da676cbdbd92c6129887b35629ab48f7b8159b1a1baf743ca239d384bc9d2c`.
+#168 live native traversal still matches raw C/C/Go over unchanged shared
+input. Logs: `tmp/issue151-command{,-update}.log`.
+
+Four temporary linker probes wrap only the direct list_pending_trades call
+with invalid num **9999**, new section **1058**: marker plus return **0** or
+abort **134**, ordinary and update mode. All reject with harness status **2**
+at the missing-dependency guard BEFORE expected-failure acceptance/update;
+the recording hash remains unchanged. Probe source/compiler wrapper removed;
+the final default run rebuilds unchanged C. Logs:
+`tmp/issue151-negative-{0,134}-{default,update}.log`.
+
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded defaults pass with explicit isolated G3_REPO
+and run_limited engine supervision. Logs: `tmp/issue151-*.log`.
+The final fresh Olympia suite took **1.444s**. `git diff --check` reports
+32 added literal trailing spaces, all unchanged real-C saved-list/report
+bytes; the rest of the diff passes. Those bytes must not be stripped.
+No later root/command, full-world/full-corpus/strict-lifecycle or stage-exit
+acceptance. Independent parent acceptance passes the same tool tier, vet
+and fresh tests (Olympia **1.380s**); logs `tmp/parent151-*.log`.
+The parent's fresh post-#151 strict run has identical C repeats, C/Go 0,
+matching streams/paths/types/modes, and eight report-byte differences,
+exit **1** before lifecycle; log `tmp/parent151-strict.log`, captures in
+`tmp/parent-stage2-turn`. G3 #358
+remains nonblocking, with the original division/Go panic unchanged;
+malformed C136/Go2 is NOT parity.
+
 ## Character detail sections (#150)
 
 Existing report.go adds complete pinned report.c `char_rep_stack_info`

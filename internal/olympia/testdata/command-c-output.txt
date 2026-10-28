@@ -70243,3 +70243,1301 @@ stderr:
 assertion failure: olympia/report.c (519): valid_box(num)
 
 exit 134
+stdout:
+section report character root full asymmetric composition and repeated original state
+> lore_root
+> entity 10 4 0
+> entity 8000 3 50
+> entity 5000 3 3
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 202 1 62
+> entity 501 4 0
+> entity 502 4 0
+> entity 701 5 0
+> entity 702 5 0
+> entity 703 5 43
+> name 5000 Unequal plain
+> name 1000 Mage leader
+> name 1001 Captive follower
+> name 1002 Silent pledger
+> name 1003 Subordinate
+> name 501 travel scroll
+> plural 501 travel scrolls
+> name 502 pack beast
+> plural 502 pack beasts
+> name 701 Craft
+> name 702 Practice
+> name 703 Magic
+> field 702 required 701
+> field 702 skill_time 3
+> field 501 weight 7
+> field 501 aura_bonus 2
+> field 501 may_study 702
+> field 501 may_use 701
+> field 502 weight 19
+> field 502 land_cap 31
+> field 502 ride_cap 23
+> field 502 fly_cap 41
+> inventory 1000 502 3
+> inventory 1000 501 2
+> field 1000 hostile 1003
+> field 1000 hostile 201
+> field 1000 neutral 1001
+> field 1000 defend 1002
+> field 1000 magician 1
+> field 1000 cur_aura 5
+> field 1000 max_aura 9
+> field 1000 ability_shroud 4
+> field 1000 project_cast 5000
+> field 1000 quick_cast 3
+> field 1000 hide_mage 2
+> field 1000 vision_protect 6
+> field 1000 loyal 2
+> field 1000 rate 17
+> field 1000 health 61
+> field 1000 sick 1
+> field 1000 char_attack 27
+> field 1000 char_defense 16
+> field 1000 char_missile 8
+> field 1000 behind 2
+> field 1000 break 57
+> report set_banner 1000 An asymmetric banner
+> field 1001 prisoner 1
+> field 1001 health 42
+> field 1001 pledge 1000
+> field 1002 lord 202
+> field 1002 pledge 1000
+> field 1003 lord 201
+> field 1003 pledge 1000
+> link 8000 5000
+> link 5000 1000
+> link 1000 1003
+> link 1000 1001
+> learn 1000 703 2 12
+> learn 1000 702 1 3
+> learn 1000 701 2 5
+> learn 1000 638 2 0
+> field 1000 hidden 1
+> trade 1000 2 502 12001 29 1000 21
+> trade 1000 1 501 17 13001 1000 22
+> trade 1000 3 501 9 11 1000 23
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 1
+raw item 502 3
+raw item 501 2
+raw hostile: 1003 201
+raw neutral: 1001
+raw defend: 1002
+1000 char 0
+na Mage leader
+il	502 3 \
+	501 2
+tl	2 502 12001 29 0 0 0 0 \
+	1 501 17 13001 0 0 0 0 \
+	3 501 9 11 0 0 0 0
+an 1001 
+ad 1002 
+ah 1003 201 
+LI
+ wh 5000
+ hl 1003 1001 
+CH
+ lo 200
+ he 61
+ si 1
+ lk 2
+ lr 17
+ sl	703 2 0 12 0 \
+	702 1 0 3 0 \
+	701 2 0 5 0 \
+	638 2 0 0 0
+ bh 2
+ bp 57
+ at 27
+ df 16
+ mi 8
+CM
+ im 1
+ ma 9
+ ca 5
+ as 4
+ qc 3
+ hs 1
+ cm 2
+ vp 6
+ pc 5000
+MI
+ ds An asymmetric banner
+
+> report skill_rows 1000
+skill record 1000 1
+skill row 703 2 0 12
+skill row 702 1 0 3
+skill row 701 2 0 5
+skill row 638 2 0 0
+1000 char 0
+na Mage leader
+il	502 3 \
+	501 2
+tl	2 502 12001 29 0 0 0 0 \
+	1 501 17 13001 0 0 0 0 \
+	3 501 9 11 0 0 0 0
+an 1001 
+ad 1002 
+ah 1003 201 
+LI
+ wh 5000
+ hl 1003 1001 
+CH
+ lo 200
+ he 61
+ si 1
+ lk 2
+ lr 17
+ sl	703 2 0 12 0 \
+	702 1 0 3 0 \
+	701 2 0 5 0 \
+	638 2 0 0 0
+ bh 2
+ bp 57
+ at 27
+ df 16
+ mi 8
+CM
+ im 1
+ ma 9
+ ca 5
+ as 4
+ qc 3
+ hs 1
+ cm 2
+ vp 6
+ pc 5000
+MI
+ ds An asymmetric banner
+
+> report characters
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 1
+raw item 501 2
+raw item 502 3
+raw hostile: 201 1003
+raw neutral: 1001
+raw defend: 1002
+1000 char 0
+na Mage leader
+il	501 2 \
+	502 3
+tl	2 502 12001 29 0 0 0 0 \
+	1 501 17 13001 0 0 0 0 \
+	3 501 9 11 0 0 0 0
+an 1001 
+ad 1002 
+ah 201 1003 
+LI
+ wh 5000
+ hl 1003 1001 
+CH
+ lo 200
+ he 61
+ si 1
+ lk 2
+ lr 17
+ sl	703 2 0 12 0 \
+	702 1 0 3 0 \
+	701 2 0 5 0 \
+	638 2 0 0 0
+ bh 2
+ bp 57
+ at 27
+ df 16
+ mi 8
+CM
+ im 1
+ ma 9
+ ca 5
+ as 4
+ qc 3
+ hs 1
+ cm 2
+ vp 6
+ pc 5000
+MI
+ ds An asymmetric banner
+
+> report state 1001
+report entity 1001 order 0 player 0 attitudes 0 char 1 magic 1
+1001 char 0
+na Captive follower
+LI
+ wh 1000
+CH
+ lo 200
+ he 42
+ pr 1
+CM
+ pl 1000
+
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 1 magic 1
+1002 char 0
+na Silent pledger
+CH
+ lo 202
+CM
+ pl 1000
+
+> report state 1003
+report entity 1003 order 0 player 0 attitudes 0 char 1 magic 1
+1003 char 0
+na Subordinate
+LI
+ wh 1000
+CH
+ lo 201
+CM
+ pl 1000
+
+> report skill_rows 1000
+skill record 1000 1
+skill row 703 2 0 12
+skill row 702 1 0 3
+skill row 701 2 0 5
+skill row 638 2 0 0
+1000 char 0
+na Mage leader
+il	501 2 \
+	502 3
+tl	2 502 12001 29 0 0 0 0 \
+	1 501 17 13001 0 0 0 0 \
+	3 501 9 11 0 0 0 0
+an 1001 
+ad 1002 
+ah 201 1003 
+LI
+ wh 5000
+ hl 1003 1001 
+CH
+ lo 200
+ he 61
+ si 1
+ lk 2
+ lr 17
+ sl	703 2 0 12 0 \
+	702 1 0 3 0 \
+	701 2 0 5 0 \
+	638 2 0 0 0
+ bh 2
+ bp 57
+ at 27
+ df 16
+ mi 8
+CM
+ im 1
+ ma 9
+ ca 5
+ as 4
+ qc 3
+ hs 1
+ cm 2
+ vp 6
+ pc 5000
+MI
+ ds An asymmetric banner
+
+> report backlinks 1000
+backlinks ready 1 allocated 1
+pledged: 1001 1002 1003
+1000 char 0
+na Mage leader
+il	501 2 \
+	502 3
+tl	2 502 12001 29 0 0 0 0 \
+	1 501 17 13001 0 0 0 0 \
+	3 501 9 11 0 0 0 0
+an 1001 
+ad 1002 
+ah 201 1003 
+LI
+ wh 5000
+ hl 1003 1001 
+CH
+ lo 200
+ he 61
+ si 1
+ lk 2
+ lr 17
+ sl	703 2 0 12 0 \
+	702 1 0 3 0 \
+	701 2 0 5 0 \
+	638 2 0 0 0
+ bh 2
+ bp 57
+ at 27
+ df 16
+ mi 8
+CM
+ im 1
+ ma 9
+ ca 5
+ as 4
+ qc 3
+ hs 1
+ cm 2
+ vp 6
+ pc 5000
+MI
+ ds An asymmetric banner
+
+> field 1002 pledge 1003
+> report characters
+> report backlinks 1000
+backlinks ready 1 allocated 1
+pledged: 1001 1002 1003
+1000 char 0
+na Mage leader
+il	501 2 \
+	502 3
+tl	2 502 12001 29 0 0 0 0 \
+	1 501 17 13001 0 0 0 0 \
+	3 501 9 11 0 0 0 0
+an 1001 
+ad 1002 
+ah 201 1003 
+LI
+ wh 5000
+ hl 1003 1001 
+CH
+ lo 200
+ he 61
+ si 1
+ lk 2
+ lr 17
+ sl	703 2 0 12 0 \
+	702 1 0 3 0 \
+	701 2 0 5 0 \
+	638 2 0 0 0
+ bh 2
+ bp 57
+ at 27
+ df 16
+ mi 8
+CM
+ im 1
+ ma 9
+ ca 5
+ as 4
+ qc 3
+ hs 1
+ cm 2
+ vp 6
+ pc 5000
+MI
+ ds An asymmetric banner
+
+> report backlinks 1003
+backlinks ready 1 allocated 0
+pledged:
+1003 char 0
+na Subordinate
+LI
+ wh 1000
+CH
+ lo 201
+CM
+ pl 1000
+
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 1
+raw item 501 2
+raw item 502 3
+raw hostile: 201 1003
+raw neutral: 1001
+raw defend: 1002
+1000 char 0
+na Mage leader
+il	501 2 \
+	502 3
+tl	2 502 12001 29 0 0 0 0 \
+	1 501 17 13001 0 0 0 0 \
+	3 501 9 11 0 0 0 0
+an 1001 
+ad 1002 
+ah 201 1003 
+LI
+ wh 5000
+ hl 1003 1001 
+CH
+ lo 200
+ he 61
+ si 1
+ lk 2
+ lr 17
+ sl	703 2 0 12 0 \
+	702 1 0 3 0 \
+	701 2 0 5 0 \
+	638 2 0 0 0
+ bh 2
+ bp 57
+ at 27
+ df 16
+ mi 8
+CM
+ im 1
+ ma 9
+ ca 5
+ as 4
+ qc 3
+ hs 1
+ cm 2
+ vp 6
+ pc 5000
+MI
+ ds An asymmetric banner
+
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> readlog 200
+log 200:
+1000:0::3::
+1000:0::3/16::Location:       Unequal plain~[5000]
+1000:0::3::Loyalty:        Oath-17
+1000:0::3::Stacked over:   Subordinate~[1003]
+1000:0::3::Health:         61% (getting worse)
+1000:0::3::Combat:         attack 27, defense 16, missile 8
+1000:0::3::                behind 2  (stay behind in combat)
+1000:0::3::Break point:    57%
+1000:0::3::Ability shroud: 4 aura
+1000:0::3::use  638 1      (concealing self, but not alone)
+1000:0::3::Receive Vision: 6 protection
+1000:0::3::Banner:         An asymmetric banner
+1000:0::3::Pledged to us:  Captive follower~[1001]
+1000:0::3::                Silent pledger~[1002]
+1000:0::3::                Subordinate~[1003]
+1000:0::3::
+1000:0::3::Current aura:   5
+1000:0::3::Maximum aura:   11 (9+2)
+1000:0::3::Ability shroud: 4 aura
+1000:0::3::Project cast:   Unequal plain~[5000]
+1000:0::3::Quicken cast:   3
+1000:0::3::Appear common:  turn 2
+1000:0::3::Prisoners:      Captive follower~[1001], health 42
+1000:0::3::
+1000:0::3::Declared attitudes:
+1000:0::6::hostile  201 1003
+1000:0::6::neutral 1001
+1000:0::6::defend  1002
+1000:0::3::
+1000:0::3::Skills known:
+1000:0::6::<no subkind>~[638]
+1000:0::6::Craft~[701]
+1000:0::6::Magic~[703]
+1000:0::3::
+1000:0::3::Partially known skills:
+1000:0::6/6::Practice~[702], 0/3
+1000:0::3::
+1000:0::3::Inventory:
+1000:0::3::{<b>}      qty  name                              weight{</b>}
+1000:0::3::      ---  ----                              ------
+1000:0::3::        2  travel scrolls~[501]                  14  +2 aura
+1000:0::3::        3  pack beasts~[502]                     57  fly 123
+1000:0::3::                                             ======
+1000:0::3::                                                 71
+1000:0::3::
+1000:0::3/11::Capacity:  14/93 land (15%), 14/69 ride (20%), 14/123 fly (11%)
+1000:0::3::
+1000:0::3::travel scroll~[501] permits study of the following skills:
+1000:0::6/3::Practice~[702] (requires Craft)
+1000:0::3::
+1000:0::3::travel scroll~[501] permits use of the following skills:
+1000:0::6/3::Craft~[701]
+1000:0::3::
+1000:0::3::Pending trades:
+1000:0::3::
+1000:0::6::trade    price    qty   item
+1000:0::6::-----    -----    ---   ----
+1000:0::6:: sell       29  12,001   pack beast~[502]
+1000:0::6::  buy   13,001     17   travel scroll~[501]
+1000:0::3::
+1001:0::3::Captive follower~[1001] is being held prisoner.
+1001:0::3::
+1000:0::3::
+1000:0::3/16::Location:       Unequal plain~[5000]
+1000:0::3::Loyalty:        Oath-17
+1000:0::3::Stacked over:   Subordinate~[1003]
+1000:0::3::Health:         61% (getting worse)
+1000:0::3::Combat:         attack 27, defense 16, missile 8
+1000:0::3::                behind 2  (stay behind in combat)
+1000:0::3::Break point:    57%
+1000:0::3::Ability shroud: 4 aura
+1000:0::3::use  638 1      (concealing self, but not alone)
+1000:0::3::Receive Vision: 6 protection
+1000:0::3::Banner:         An asymmetric banner
+1000:0::3::Pledged to us:  Captive follower~[1001]
+1000:0::3::                Silent pledger~[1002]
+1000:0::3::                Subordinate~[1003]
+1000:0::3::
+1000:0::3::Current aura:   5
+1000:0::3::Maximum aura:   11 (9+2)
+1000:0::3::Ability shroud: 4 aura
+1000:0::3::Project cast:   Unequal plain~[5000]
+1000:0::3::Quicken cast:   3
+1000:0::3::Appear common:  turn 2
+1000:0::3::Prisoners:      Captive follower~[1001], health 42
+1000:0::3::
+1000:0::3::Declared attitudes:
+1000:0::6::hostile  201 1003
+1000:0::6::neutral 1001
+1000:0::6::defend  1002
+1000:0::3::
+1000:0::3::Skills known:
+1000:0::6::<no subkind>~[638]
+1000:0::6::Craft~[701]
+1000:0::6::Magic~[703]
+1000:0::3::
+1000:0::3::Partially known skills:
+1000:0::6/6::Practice~[702], 0/3
+1000:0::3::
+1000:0::3::Inventory:
+1000:0::3::{<b>}      qty  name                              weight{</b>}
+1000:0::3::      ---  ----                              ------
+1000:0::3::        2  travel scrolls~[501]                  14  +2 aura
+1000:0::3::        3  pack beasts~[502]                     57  fly 123
+1000:0::3::                                             ======
+1000:0::3::                                                 71
+1000:0::3::
+1000:0::3/11::Capacity:  14/93 land (15%), 14/69 ride (20%), 14/123 fly (11%)
+1000:0::3::
+1000:0::3::travel scroll~[501] permits study of the following skills:
+1000:0::6/3::Practice~[702] (requires Craft)
+1000:0::3::
+1000:0::3::travel scroll~[501] permits use of the following skills:
+1000:0::6/3::Craft~[701]
+1000:0::3::
+1000:0::3::Pending trades:
+1000:0::3::
+1000:0::6::trade    price    qty   item
+1000:0::6::-----    -----    ---   ----
+1000:0::6:: sell       29  12,001   pack beast~[502]
+1000:0::6::  buy   13,001     17   travel scroll~[501]
+1000:0::3::
+1001:0::3::Captive follower~[1001] is being held prisoner.
+1001:0::3::
+> readlog 201
+log 201:
+1003:0::3::
+1003:0::3/16::Location:       Unequal plain~[5000]
+1003:0::3::Loyalty:        Unsworn-0
+1003:0::3/16::Stacked under:  Mage leader~[1000]
+1003:0::3::Health:         0%
+1003:0::3::Combat:         attack 0, defense 0, missile 0
+1003:0::3::                behind 0  (front line in combat)
+1003:0::3::Break point:    0% (fight to the death)
+1003:0::3/16::Pledged to:     Mage leader~[1000]
+1003:0::3::
+1003:0::3::Skills known:
+1003:0::6::none
+1003:0::3::
+1003:0::3::Subordinate~[1003] has no possessions.
+1003:0::3::
+1003:0::3/11::Capacity:  0/0 land
+1003:0::3::
+1003:0::3::
+1003:0::3/16::Location:       Unequal plain~[5000]
+1003:0::3::Loyalty:        Unsworn-0
+1003:0::3/16::Stacked under:  Mage leader~[1000]
+1003:0::3::Health:         0%
+1003:0::3::Combat:         attack 0, defense 0, missile 0
+1003:0::3::                behind 0  (front line in combat)
+1003:0::3::Break point:    0% (fight to the death)
+1003:0::3/16::Pledged to:     Mage leader~[1000]
+1003:0::3::
+1003:0::3::Skills known:
+1003:0::6::none
+1003:0::3::
+1003:0::3::Subordinate~[1003] has no possessions.
+1003:0::3::
+1003:0::3/11::Capacity:  0/0 land
+1003:0::3::
+> readlog 202
+log 202:
+stderr:
+character_report()
+character_report()
+
+exit 0
+stdout:
+section report character root all silent leaves CH lists and outputs untouched
+> lore_root
+> field 200 subkind 62
+> entity 1002 2 0
+> field 1002 lord 200
+> field 1001 prisoner 1
+> field 1000 pledge 1002
+> report backlink 1002 1001
+> report characters
+> report characters
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 1 magic 1
+1002 char 0
+CH
+ lo 200
+CM
+
+> report backlinks 1002
+backlinks ready 0 allocated 1
+pledged: 1001
+1002 char 0
+CH
+ lo 200
+CM
+
+> report files
+report file 200 0
+report file 201 0
+> readlog 200
+log 200:
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+character_report()
+character_report()
+
+exit 0
+stdout:
+section report character root prisoner only allocates owner but no lazy backlinks or sorts
+> lore_root
+> entity 202 1 49
+> entity 203 1 49
+> entity 204 1 62
+> entity 1002 2 0
+> entity 501 4 0
+> entity 502 4 0
+> field 1000 lord 202
+> field 1001 lord 203
+> field 1002 lord 204
+> field 1000 prisoner 1
+> field 1001 prisoner 1
+> field 1000 pledge 1002
+> field 1000 hostile 1001
+> field 1000 hostile 200
+> inventory 1000 502 2
+> inventory 1000 501 1
+> report backlink 1002 1001
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_regular
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_silent
+
+> sout frame 4 7 1 13
+> report characters
+> report characters
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 1
+raw item 502 2
+raw item 501 1
+raw hostile: 1001 200
+raw neutral:
+raw defend:
+1000 char 0
+il	502 2 \
+	501 1
+ah 1001 200 
+CH
+ lo 202
+ pr 1
+CM
+ pl 1002
+
+> report state 1001
+report entity 1001 order 0 player 0 attitudes 0 char 1 magic 0
+1001 char 0
+CH
+ lo 203
+ pr 1
+
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 1 magic 1
+1002 char 0
+CH
+ lo 204
+CM
+
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_regular
+PL
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_silent
+
+> report backlinks 1002
+backlinks ready 0 allocated 1
+pledged: 1001
+1002 char 0
+CH
+ lo 204
+CM
+
+> sout state
+route 0 0 frame 4 7 1 13
+vector:
+saved vector:
+> readlog 202
+log 202:
+1000:0::7/7:13:<no subkind>~[1000] is being held prisoner.
+1000:0::7/7:13:
+1000:0::7/7:13:<no subkind>~[1000] is being held prisoner.
+1000:0::7/7:13:
+> readlog 203
+log 203:
+1001:0::7/7:13:<no subkind>~[1001] is being held prisoner.
+1001:0::7/7:13:
+1001:0::7/7:13:<no subkind>~[1001] is being held prisoner.
+1001:0::7/7:13:
+> readlog 204
+log 204:
+> field 1000 prisoner 0
+> entity 10 4 0
+> report characters
+> report backlinks 1002
+backlinks ready 1 allocated 1
+pledged: 1000
+1002 char 0
+CH
+ lo 204
+CM
+
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 1 magic 1
+1002 char 0
+CH
+ lo 204
+CM
+
+> readlog 202
+log 202:
+1000:0::7/7:13:<no subkind>~[1000] is being held prisoner.
+1000:0::7/7:13:
+1000:0::7/7:13:<no subkind>~[1000] is being held prisoner.
+1000:0::7/7:13:
+1000:0::7/7:13:
+1000:0::7/16:13:Location:       nowhere
+1000:0::7:13:Loyalty:        Unsworn-0
+1000:0::7:13:Health:         0%
+1000:0::7:13:Combat:         attack 0, defense 0, missile 0
+1000:0::7:13:                behind 0  (front line in combat)
+1000:0::7:13:Break point:    0% (fight to the death)
+1000:0::7/16:13:Pledged to:     <no subkind>~[1002]
+1000:0::7:13:
+1000:0::7:13:Declared attitudes:
+1000:0::10:13:hostile  200 1001
+1000:0::7:13:
+1000:0::7:13:Skills known:
+1000:0::10:13:none
+1000:0::7:13:
+1000:0::7:13:Inventory:
+1000:0::7:13:{<b>}      qty  name                              weight{</b>}
+1000:0::7:13:      ---  ----                              ------
+1000:0::7:13:        1  <no subkind>~[501]                     0  
+1000:0::7:13:        2  <no subkind>~[502]                     0  
+1000:0::7:13:                                             ======
+1000:0::7:13:                                                  0
+1000:0::7:13:
+1000:0::7/11:13:Capacity:  0/0 land
+1000:0::7:13:
+stderr:
+character_report()
+character_report()
+character_report()
+warning: plural name not set for item [502]
+
+exit 0
+stdout:
+section report character root garrison routes through castle and pledge rulers
+> lore_root
+> entity 10 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 32
+> entity 1002 2 64
+> name 1002 Routed garrison
+> link 8000 9000
+> link 9000 9001
+> link 9001 1001
+> link 9000 1002
+> field 1001 lord 201
+> field 1001 pledge 1000
+> field 1002 castle 9001
+> field 1002 health -1
+> report characters
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 1 magic 1
+1002 char garrison
+na Routed garrison
+LI
+ wh 9000
+CH
+ he -1
+MI
+ gc 9001
+
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+201 player pl_regular
+PL
+
+> readlog 200
+log 200:
+1000:0::3::
+1000:0::3/16::Location:       nowhere
+1000:0::3::Loyalty:        Unsworn-0
+1000:0::3::Health:         0%
+1000:0::3::Combat:         attack 0, defense 0, missile 0
+1000:0::3::                behind 0  (front line in combat)
+1000:0::3::Break point:    0% (fight to the death)
+1000:0::3::Pledged to us:  <no subkind>~[1001]
+1000:0::3::
+1000:0::3::Skills known:
+1000:0::6::none
+1000:0::3::
+1000:0::3::<no subkind>~[1000] has no possessions.
+1000:0::3::
+1000:0::3/11::Capacity:  0/0 land
+1000:0::3::
+6:0:1002:3::
+6:0:1002:3/16::Location:       Plain~[9000]
+6:0:1002:3::Loyalty:        Unsworn-0
+6:0:1002:3::Health:         n/a
+6:0:1002:3::Combat:         attack 0, defense 0, missile 0
+6:0:1002:3::                behind 0  (front line in combat)
+6:0:1002:3::Break point:    0% (fight to the death)
+6:0:1002:3::
+6:0:1002:3::Skills known:
+6:0:1002:6::none
+6:0:1002:3::
+6:0:1002:3::Routed garrison~[1002] has no possessions.
+6:0:1002:3::
+6:0:1002:3/11::Capacity:  0/0 land
+6:0:1002:3::
+> readlog 201
+log 201:
+1001:0::3::
+1001:0::3/16::Location:       Castle~[9001], in province Plain~[9000]
+1001:0::3::Loyalty:        Unsworn-0
+1001:0::3::Health:         0%
+1001:0::3::Combat:         attack 0, defense 0, missile 0
+1001:0::3::                behind 0  (front line in combat)
+1001:0::3::Break point:    0% (fight to the death)
+1001:0::3/16::Pledged to:     <no subkind>~[1000]
+1001:0::3::
+1001:0::3::Skills known:
+1001:0::6::none
+1001:0::3::
+1001:0::3::<no subkind>~[1001] has no possessions.
+1001:0::3::
+1001:0::3/11::Capacity:  0/0 land
+1001:0::3::
+6:0:1002:3::
+6:0:1002:3/16::Location:       Plain~[9000]
+6:0:1002:3::Loyalty:        Unsworn-0
+6:0:1002:3::Health:         n/a
+6:0:1002:3::Combat:         attack 0, defense 0, missile 0
+6:0:1002:3::                behind 0  (front line in combat)
+6:0:1002:3::Break point:    0% (fight to the death)
+6:0:1002:3::
+6:0:1002:3::Skills known:
+6:0:1002:6::none
+6:0:1002:3::
+6:0:1002:3::Routed garrison~[1002] has no possessions.
+6:0:1002:3::
+6:0:1002:3/11::Capacity:  0/0 land
+6:0:1002:3::
+stderr:
+character_report()
+
+exit 0
+stdout:
+section report character root missing CH nonprisoner allocated by first lazy pledge
+> lore_root
+> entity 10 4 0
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 202 1 49
+> field 1000 lord 202
+> field 1001 lord 202
+> report backlink 1002 1001
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 1 magic 1
+1002 char 0
+CH
+CM
+
+> report state 1003
+report entity 1003 order 0 player 0 attitudes 0 char 0 magic 0
+1003 char 0
+
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report characters
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 1 magic 1
+1002 char 0
+CH
+CM
+
+> report state 1003
+report entity 1003 order 0 player 0 attitudes 0 char 1 magic 1
+1003 char 0
+CH
+
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report backlinks 1002
+backlinks ready 1 allocated 1
+pledged:
+1002 char 0
+CH
+CM
+
+> report characters
+> readlog 202
+log 202:
+1000:0::3::
+1000:0::3/16::Location:       nowhere
+1000:0::3::Loyalty:        Unsworn-0
+1000:0::3::Health:         0%
+1000:0::3::Combat:         attack 0, defense 0, missile 0
+1000:0::3::                behind 0  (front line in combat)
+1000:0::3::Break point:    0% (fight to the death)
+1000:0::3::
+1000:0::3::Skills known:
+1000:0::6::none
+1000:0::3::
+1000:0::3::<no subkind>~[1000] has no possessions.
+1000:0::3::
+1000:0::3/11::Capacity:  0/0 land
+1000:0::3::
+1001:0::3::
+1001:0::3/16::Location:       nowhere
+1001:0::3::Loyalty:        Unsworn-0
+1001:0::3::Health:         0%
+1001:0::3::Combat:         attack 0, defense 0, missile 0
+1001:0::3::                behind 0  (front line in combat)
+1001:0::3::Break point:    0% (fight to the death)
+1001:0::3::
+1001:0::3::Skills known:
+1001:0::6::none
+1001:0::3::
+1001:0::3::<no subkind>~[1001] has no possessions.
+1001:0::3::
+1001:0::3/11::Capacity:  0/0 land
+1001:0::3::
+1000:0::3::
+1000:0::3/16::Location:       nowhere
+1000:0::3::Loyalty:        Unsworn-0
+1000:0::3::Health:         0%
+1000:0::3::Combat:         attack 0, defense 0, missile 0
+1000:0::3::                behind 0  (front line in combat)
+1000:0::3::Break point:    0% (fight to the death)
+1000:0::3::
+1000:0::3::Skills known:
+1000:0::6::none
+1000:0::3::
+1000:0::3::<no subkind>~[1000] has no possessions.
+1000:0::3::
+1000:0::3/11::Capacity:  0/0 land
+1000:0::3::
+1001:0::3::
+1001:0::3/16::Location:       nowhere
+1001:0::3::Loyalty:        Unsworn-0
+1001:0::3::Health:         0%
+1001:0::3::Combat:         attack 0, defense 0, missile 0
+1001:0::3::                behind 0  (front line in combat)
+1001:0::3::Break point:    0% (fight to the death)
+1001:0::3::
+1001:0::3::Skills known:
+1001:0::6::none
+1001:0::3::
+1001:0::3::<no subkind>~[1001] has no possessions.
+1001:0::3::
+1001:0::3/11::Capacity:  0/0 land
+1001:0::3::
+stderr:
+character_report()
+character_report()
+
+exit 0
+stdout:
+section report character root reuses renamed cache inode and MASTER frame
+> lore_root
+> entity 10 4 0
+> field 1001 prisoner 1
+> sout route -2 1000
+> sout text 1000 out 0 1 prefix
+> life rename log/1000 log/original
+> sout frame 5 11 1 23
+> report characters
+> report characters
+> sout state
+route -2 1000 frame 5 0 1 23
+vector:
+saved vector:
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> report state 1001
+report entity 1001 order 0 player 1 attitudes 0 char 1 magic 1
+raw units:
+1001 char 0
+CH
+ lo 200
+ pr 1
+PL
+
+> life flush
+> readfile log/original
+file bytes log/original 1003:
+1000:0::0::prefix
+1000:0::8/11:23:
+1000:0::8/16:23:Location:       nowhere
+1000:0::8:23:Loyalty:        Unsworn-0
+1000:0::8:23:Health:         0%
+1000:0::8:23:Combat:         attack 0, defense 0, missile 0
+1000:0::8:23:                behind 0  (front line in combat)
+1000:0::8:23:Break point:    0% (fight to the death)
+1000:0::8:23:
+1000:0::8:23:Skills known:
+1000:0::11:23:none
+1000:0::8:23:
+1000:0::8:23:<no subkind>~[1000] has no possessions.
+1000:0::8:23:
+1000:0::8/11:23:Capacity:  0/0 land
+1000:0::8:23:
+1000:0::8:23:
+1000:0::8/16:23:Location:       nowhere
+1000:0::8:23:Loyalty:        Unsworn-0
+1000:0::8:23:Health:         0%
+1000:0::8:23:Combat:         attack 0, defense 0, missile 0
+1000:0::8:23:                behind 0  (front line in combat)
+1000:0::8:23:Break point:    0% (fight to the death)
+1000:0::8:23:
+1000:0::8:23:Skills known:
+1000:0::11:23:none
+1000:0::8:23:
+1000:0::8:23:<no subkind>~[1000] has no possessions.
+1000:0::8:23:
+1000:0::8/11:23:Capacity:  0/0 land
+1000:0::8:23:
+
+end file bytes
+> readlog 1001
+log 1001:
+1000:0::8:23:<no subkind>~[1001] is being held prisoner.
+1000:0::8:23:
+1000:0::8:23:<no subkind>~[1001] is being held prisoner.
+1000:0::8:23:
+> report files
+report file 200 0
+report file 201 0
+stderr:
+character_report()
+character_report()
+
+exit 0
+stdout:
+section report pending trades raw ordered filters zeros invalid item and nonoffers
+> entity 501 4 0
+> entity 502 4 0
+> name 501 Alpha goods
+> name 502 Beta goods
+> trade 1000 3 501 7 11 1000 1
+> trade 1000 4 502 7 11 1000 2
+> trade 1000 2 502 2147483647 -123456789 1000 3
+> trade 1000 1 501 12001 0 1000 4
+> trade 1000 2 501 0 99 1000 5
+> trade 1000 1 502 -3 99 1000 6
+> trade 1000 2 9999 3 99 1000 7
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+1000 char 0
+tl	3 501 7 11 0 0 0 0 \
+	4 502 7 11 0 0 0 0 \
+	2 502 2147483647 -123456789 0 0 0 0 \
+	1 501 12001 0 0 0 0 0
+CH
+ lo 200
+
+> report pending_trades 200 1000
+> report pending_trades 200 1000
+> report pending_trades 200 1001
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+1000 char 0
+tl	3 501 7 11 0 0 0 0 \
+	4 502 7 11 0 0 0 0 \
+	2 502 2147483647 -123456789 0 0 0 0 \
+	1 501 12001 0 0 0 0 0
+CH
+ lo 200
+
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Pending trades:
+200:0::0::
+200:0::3::trade    price    qty   item
+200:0::3::-----    -----    ---   ----
+200:0::3:: sell  -123,-456,-789  2,147,483,647   Beta goods~[502]
+200:0::3::  buy        0  12,001   Alpha goods~[501]
+200:0::0::
+200:0::0::Pending trades:
+200:0::0::
+200:0::3::trade    price    qty   item
+200:0::3::-----    -----    ---   ----
+200:0::3:: sell  -123,-456,-789  2,147,483,647   Beta goods~[502]
+200:0::3::  buy        0  12,001   Alpha goods~[501]
+stderr:
+
+exit 0
+stdout:
+section report character subordinate different recipient preserves num ownership
+> entity 10 4 0
+> entity 501 4 0
+> field 1000 magician 1
+> field 501 aura_bonus 7
+> inventory 1000 501 2
+> report set_banner 1000 Recipient separate
+> report character 1001 1000
+> report character 1000 1001
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 1
+raw item 501 2
+1000 char 0
+il	501 2
+CH
+ lo 200
+CM
+ im 1
+MI
+ ds Recipient separate
+
+> report state 1001
+report entity 1001 order 0 player 0 attitudes 0 char 1 magic 1
+1001 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1001:0::0/16::Location:       nowhere
+1001:0::0::Loyalty:        Unsworn-0
+1001:0::0::Health:         0%
+1001:0::0::Combat:         attack 0, defense 0, missile 0
+1001:0::0::                behind 0  (front line in combat)
+1001:0::0::Break point:    0% (fight to the death)
+1001:0::0::Banner:         Recipient separate
+1001:0::0::
+1001:0::0::Current aura:   0
+1001:0::0::Maximum aura:   7 (0+7)
+1001:0::0::
+1001:0::0::Skills known:
+1001:0::3::none
+1001:0::0::
+1001:0::0::Inventory:
+1001:0::0::{<b>}      qty  name                              weight{</b>}
+1001:0::0::      ---  ----                              ------
+1001:0::0::        2  <no subkind>~[501]                     0  
+1001:0::0::                                             ======
+1001:0::0::                                                  0
+1001:0::0::
+1001:0::0/11::Capacity:  0/0 land
+1001:0::0::
+1000:0::0/16::Location:       nowhere
+1000:0::0::Loyalty:        Unsworn-0
+1000:0::0::Health:         0%
+1000:0::0::Combat:         attack 0, defense 0, missile 0
+1000:0::0::                behind 0  (front line in combat)
+1000:0::0::Break point:    0% (fight to the death)
+1000:0::0::
+1000:0::0::Skills known:
+1000:0::3::none
+1000:0::0::
+1000:0::0::<no subkind>~[1001] has no possessions.
+1000:0::0::
+1000:0::0/11::Capacity:  0/0 land
+1000:0::0::
+stderr:
+warning: plural name not set for item [501]
+
+exit 0
+stdout:
+section report invalid pending trades absent owner asserts before output
+> report block 200
+> report pending_trades 200 9999
+stderr:
+assertion failure: olympia/buy.c (1129): valid_box(num)
+
+exit 134
+stdout:
+section report invalid character root prisoner health preserves earlier output and pledge timing
+> entity 10 4 0
+> field 1001 prisoner 1
+> link 1000 1001
+> report characters
+stderr:
+character_report()
+assertion failure: olympia/report.c (504): health != 0
+
+exit 134
+stdout:
+section report invalid character root partial skill before inventory capacity and trades
+> entity 10 4 0
+> entity 701 5 0
+> report skill 1000 701 3 4
+> report characters
+stderr:
+character_report()
+assertion failure: olympia/use.c (1358): p->know == SKILL_learning
+
+exit 134

@@ -22739,3 +22739,269 @@ report prisoners 200 1000
 section report invalid prisoners absent owner loop assertion before output
 report block 200
 report prisoners 200 9999
+
+section report character root full asymmetric composition and repeated original state
+lore_root
+entity 10 4 0
+entity 8000 3 50
+entity 5000 3 3
+entity 1002 2 0
+entity 1003 2 0
+entity 202 1 62
+entity 501 4 0
+entity 502 4 0
+entity 701 5 0
+entity 702 5 0
+entity 703 5 43
+name 5000 Unequal plain
+name 1000 Mage leader
+name 1001 Captive follower
+name 1002 Silent pledger
+name 1003 Subordinate
+name 501 travel scroll
+plural 501 travel scrolls
+name 502 pack beast
+plural 502 pack beasts
+name 701 Craft
+name 702 Practice
+name 703 Magic
+field 702 required 701
+field 702 skill_time 3
+field 501 weight 7
+field 501 aura_bonus 2
+field 501 may_study 702
+field 501 may_use 701
+field 502 weight 19
+field 502 land_cap 31
+field 502 ride_cap 23
+field 502 fly_cap 41
+inventory 1000 502 3
+inventory 1000 501 2
+field 1000 hostile 1003
+field 1000 hostile 201
+field 1000 neutral 1001
+field 1000 defend 1002
+field 1000 magician 1
+field 1000 cur_aura 5
+field 1000 max_aura 9
+field 1000 ability_shroud 4
+field 1000 project_cast 5000
+field 1000 quick_cast 3
+field 1000 hide_mage 2
+field 1000 vision_protect 6
+field 1000 loyal 2
+field 1000 rate 17
+field 1000 health 61
+field 1000 sick 1
+field 1000 char_attack 27
+field 1000 char_defense 16
+field 1000 char_missile 8
+field 1000 behind 2
+field 1000 break 57
+report set_banner 1000 An asymmetric banner
+field 1001 prisoner 1
+field 1001 health 42
+field 1001 pledge 1000
+field 1002 lord 202
+field 1002 pledge 1000
+field 1003 lord 201
+field 1003 pledge 1000
+link 8000 5000
+link 5000 1000
+link 1000 1003
+link 1000 1001
+learn 1000 703 2 12
+learn 1000 702 1 3
+learn 1000 701 2 5
+learn 1000 638 2 0
+field 1000 hidden 1
+trade 1000 2 502 12001 29 1000 21
+trade 1000 1 501 17 13001 1000 22
+trade 1000 3 501 9 11 1000 23
+report state 1000
+report skill_rows 1000
+report characters
+report state 1000
+report state 1001
+report state 1002
+report state 1003
+report skill_rows 1000
+report backlinks 1000
+field 1002 pledge 1003
+report characters
+report backlinks 1000
+report backlinks 1003
+report state 1000
+sout state
+readlog 200
+readlog 201
+readlog 202
+
+section report character root all silent leaves CH lists and outputs untouched
+lore_root
+field 200 subkind 62
+entity 1002 2 0
+field 1002 lord 200
+field 1001 prisoner 1
+field 1000 pledge 1002
+report backlink 1002 1001
+report characters
+report characters
+report state 1002
+report backlinks 1002
+report files
+readlog 200
+sout state
+
+section report character root prisoner only allocates owner but no lazy backlinks or sorts
+lore_root
+entity 202 1 49
+entity 203 1 49
+entity 204 1 62
+entity 1002 2 0
+entity 501 4 0
+entity 502 4 0
+field 1000 lord 202
+field 1001 lord 203
+field 1002 lord 204
+field 1000 prisoner 1
+field 1001 prisoner 1
+field 1000 pledge 1002
+field 1000 hostile 1001
+field 1000 hostile 200
+inventory 1000 502 2
+inventory 1000 501 1
+report backlink 1002 1001
+report state 202
+report state 203
+report state 204
+sout frame 4 7 1 13
+report characters
+report characters
+report state 1000
+report state 1001
+report state 1002
+report state 202
+report state 203
+report state 204
+report backlinks 1002
+sout state
+readlog 202
+readlog 203
+readlog 204
+field 1000 prisoner 0
+entity 10 4 0
+report characters
+report backlinks 1002
+report state 1002
+readlog 202
+
+section report character root garrison routes through castle and pledge rulers
+lore_root
+entity 10 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 32
+entity 1002 2 64
+name 1002 Routed garrison
+link 8000 9000
+link 9000 9001
+link 9001 1001
+link 9000 1002
+field 1001 lord 201
+field 1001 pledge 1000
+field 1002 castle 9001
+field 1002 health -1
+report characters
+report state 1002
+report state 200
+report state 201
+readlog 200
+readlog 201
+
+section report character root missing CH nonprisoner allocated by first lazy pledge
+lore_root
+entity 10 4 0
+entity 1002 2 0
+entity 1003 2 0
+entity 202 1 49
+field 1000 lord 202
+field 1001 lord 202
+report backlink 1002 1001
+report state 1002
+report state 1003
+report state 202
+report characters
+report state 1002
+report state 1003
+report state 202
+report backlinks 1002
+report characters
+readlog 202
+
+section report character root reuses renamed cache inode and MASTER frame
+lore_root
+entity 10 4 0
+field 1001 prisoner 1
+sout route -2 1000
+sout text 1000 out 0 1 prefix
+life rename log/1000 log/original
+sout frame 5 11 1 23
+report characters
+report characters
+sout state
+report state 200
+report state 1001
+life flush
+readfile log/original
+readlog 1001
+report files
+
+section report pending trades raw ordered filters zeros invalid item and nonoffers
+entity 501 4 0
+entity 502 4 0
+name 501 Alpha goods
+name 502 Beta goods
+trade 1000 3 501 7 11 1000 1
+trade 1000 4 502 7 11 1000 2
+trade 1000 2 502 2147483647 -123456789 1000 3
+trade 1000 1 501 12001 0 1000 4
+trade 1000 2 501 0 99 1000 5
+trade 1000 1 502 -3 99 1000 6
+trade 1000 2 9999 3 99 1000 7
+report state 1000
+report pending_trades 200 1000
+report pending_trades 200 1000
+report pending_trades 200 1001
+report state 1000
+sout state
+readlog 200
+
+section report character subordinate different recipient preserves num ownership
+entity 10 4 0
+entity 501 4 0
+field 1000 magician 1
+field 501 aura_bonus 7
+inventory 1000 501 2
+report set_banner 1000 Recipient separate
+report character 1001 1000
+report character 1000 1001
+report state 1000
+report state 1001
+readlog 200
+
+section report invalid pending trades absent owner asserts before output
+report block 200
+report pending_trades 200 9999
+
+section report invalid character root prisoner health preserves earlier output and pledge timing
+entity 10 4 0
+field 1001 prisoner 1
+link 1000 1001
+report characters
+
+section report invalid character root partial skill before inventory capacity and trades
+entity 10 4 0
+entity 701 5 0
+report skill 1000 701 3 4
+report characters

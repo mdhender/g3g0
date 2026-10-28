@@ -1200,6 +1200,10 @@ int main(int argc, char **argv)
     print_att(n,a);
    }
    else if(!strcmp(text,"characters")) character_report();
+   else if(!strcmp(text,"character") || !strcmp(text,"pending_trades")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    if(!strcmp(text,"character")) char_rep_sup(n,a); else list_pending_trades(n,a);
+   }
    else if(!strcmp(text,"locations")) turn_end_loc_reports();
    else if(!strcmp(text,"location")) out(n,"%s",char_rep_location(n));
    else if(!strcmp(text,"banner")) player_banner();
