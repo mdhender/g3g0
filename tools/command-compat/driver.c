@@ -1011,6 +1011,25 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "kindname")) {
    sscanf(line,"%*s %d",&n); printf("kind [%s] name [%s]\n",display_kind(n),box_name_kind(n));
   }
+  else if (!strcmp(op, "names")) {
+   if(sscanf(line,"%*s %31s %d %d",label,&n,&a)!=3) return 2;
+   if(!strcmp(label,"repeat")) {
+    if(a<0 || a>4096) return 2;
+    memset(text,'a',(size_t)a); text[a]=0; set_name(n,text);
+   }
+   else if(!strcmp(label,"show")) {
+    printf("display [%s]\n",display_name(n));
+    printf("code [%s]\n",box_code(n));
+    printf("code less [%s]\n",box_code_less(n));
+    printf("box [%s]\n",box_name(n));
+    printf("just [%s]\n",just_name(n));
+    printf("plural [%s]\n",plural_item_name(n,a));
+    printf("plural box [%s]\n",plural_item_box(n,a));
+    printf("just qty [%s]\n",just_name_qty(n,a));
+    printf("box qty [%s]\n",box_name_qty(n,a));
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "reconcile")) check_token_units();
   else if (!strcmp(op, "process")) process_orders();
   else if (!strcmp(op, "token_owner")) {

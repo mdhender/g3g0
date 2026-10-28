@@ -20,7 +20,13 @@ Also ported: `begin_mint`, `rnd_alloc_num` and `new_ent` (code.c:706–903).
 The existing `internal/rng.Streams` implements the mint tag, turn guard and
 shared sequential/keyed APIs; each world owns one persistent instance,
 constructed before load with live clock/master callbacks. Loading the seed
-does not reset an already-seeded turn. `display_name` and the name helpers built on it that `check_db` uses (`box_name`, `just_name`, `plural_item_name`) are checked by [`helper-compat`](../helper-compat); `display_kind` and the rest are left for later tasks.
+does not reset an already-seeded turn. `display_name` and the name helpers built on it that `check_db` uses (`box_name`, `just_name`, `plural_item_name`) are checked by [`helper-compat`](../helper-compat). `display_kind`, `box_name_kind` and the quantity helpers also run in [`command-compat`](../command-compat#bounded-namescodes-audit-137); #137 audits their remaining fallback/composition paths without adding another naming implementation.
+
+For #137, all upstream inputs read by this tool (including headers and linked
+lib files) are unchanged between this retained pin and stage-2's
+`e733acb63bacb21167a1f2589d8dcdc023364896`; code.c has identical blob
+`1a9996f1c7ea3da603a35a3c534a00549c4375a7`. The independent code-tool pin
+and its 43-section / 969-line recording deliberately remain unchanged.
 
 ## Prerequisites
 

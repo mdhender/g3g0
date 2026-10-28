@@ -1317,6 +1317,27 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		case "kindname":
 			n := args.num(t)
 			fmt.Fprintf(&stdout, "kind [%s] name [%s]\n", w.displayKind(n), w.boxNameKind(n))
+		case "names":
+			action, n, qty := args.word(), args.num(t), args.num(t)
+			switch action {
+			case "repeat":
+				if qty < 0 || qty > 4096 {
+					t.Fatal("oversized repeated name")
+				}
+				w.setName(n, strings.Repeat("a", qty))
+			case "show":
+				fmt.Fprintf(&stdout, "display [%s]\n", w.displayName(n))
+				fmt.Fprintf(&stdout, "code [%s]\n", w.boxCode(n))
+				fmt.Fprintf(&stdout, "code less [%s]\n", boxCodeLess(n))
+				fmt.Fprintf(&stdout, "box [%s]\n", w.boxName(n))
+				fmt.Fprintf(&stdout, "just [%s]\n", w.justName(n))
+				fmt.Fprintf(&stdout, "plural [%s]\n", w.pluralItemName(n, qty))
+				fmt.Fprintf(&stdout, "plural box [%s]\n", w.pluralItemBox(n, qty))
+				fmt.Fprintf(&stdout, "just qty [%s]\n", w.justNameQty(n, qty))
+				fmt.Fprintf(&stdout, "box qty [%s]\n", w.boxNameQty(n, qty))
+			default:
+				t.Fatalf("unknown names %s", action)
+			}
 		case "reconcile":
 			w.checkTokenUnits()
 		case "process":

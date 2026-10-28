@@ -71,6 +71,66 @@ fresh bounded `go test -count=1 ./...` pass. Logs:
 `tmp/issue167-prefix-check.log`, `tmp/issue167-turn-default.log`,
 `tmp/issue167-vet.log` and `tmp/issue167-go-test.log`.
 
+## Bounded names/codes audit (#137)
+
+Audited complete unchanged pinned `code.c` definitions at **47–174,
+212–343 and 350–466** against the existing `code.go` owner. No engine gap
+was demonstrated; no naming layer, engine implementation or source dependency
+was added. The parser prerequisite is separately accepted #167 above.
+
+Existing oracles already cover the following, so their inputs and recordings
+are retained rather than duplicated:
+
+| oracle | retained discriminating coverage |
+|---|---|
+| code | Every numeric code-range transition, signed-int extremes, zero and invalid shapes, scode's single opening-bracket removal, exhaustive box-space conversion checksum and designated string/shape checksums; missing/deleted name assertions; bracket substitutions and replacement; absent/empty/replaced banners and 50/51/60-byte truncation. |
+| helper | Kind/subkind fallback, invalid/deleted/unnamed/empty names, noble-item recursion and missing items, capitalization/high bytes/long names, absent/null/empty plural names and warning bytes. |
+| move | Real port topology; character noble/item fallback and warnings; banner absent/empty/truncation and display flags. |
+| command | Ordinary city versus port city and mountain suppression, all three storm kinds, default subkinds and quantity helpers through real inheritance. |
+
+Six appended sections fill the remaining direct-observation/composition gaps:
+
+1. Zero, negative/out-of-range codes and the garrison sentinel, both missing
+   and explicitly named. `box_code`, `box_name` and `just_name` return
+   `Garrison`; `box_code_less` still returns `999`, and `display_name` is
+   independent of that sentinel shortcut.
+2. An unnamed, named, then explicitly emptied port city. Display fallback is
+   `City`, never `Port city`; kind remains `port city` independent of name.
+3. Noble-item singular fallback and capitalization, explicit noble-name
+   priority, empty item-name fallback and missing-item code-only fallback.
+4. Absent item record, null plural pointer and explicit empty plural: all
+   four plural/quantity primitives emit their real warning bytes for each
+   nonsingular call (12 new warnings). Singular calls stay silent. set_name
+   substitutes brackets; directly stored plural names preserve brackets.
+5. Exact tilde separators and quantity formatting at 0/1/10/11/1001/-2 and
+   both signed-int extremes; negative formatting is not normalized.
+6. 2040/2048/2049-byte names through nested formatting. At 2049 bytes the
+   direct display/just/singular-plural names remain 2049 bytes; formatted
+   box/quantity results truncate to 2048. Noble-item capitalization itself
+   truncates the fallback to 2048 bytes before outer formatting.
+
+`names show N Q` observes each actual primitive separately; `names repeat N
+LENGTH` constructs a bounded raw input and calls real set_name. Neither
+models a C naming routine. Whole unchanged code.c remains linked, with real
+cap, nice_num and port dependencies. Names sections require status 0;
+dependency markers are rejected before recording updates.
+
+Actual C/C/Go passes at **883 sections / 61012 lines**. The entire accepted
+877-section input prefix (**351278 bytes / 19225 lines**) and output prefix
+(**1075000 bytes / 60622 lines**) are unchanged. C alone generated the new
+**65518 bytes / 390 lines** after two deterministic runs. Recording SHA-256:
+`57aa1797f37841a3c4d46aa31a0cd398f95cba7e457bdfac9ff95b4875661566`.
+
+Sequential code **43/969**, helper **37/1487**, move **135/7158**, command
+**883/61012**, default turn, bounded vet and fresh bounded default Go tests
+pass. The code tool retains its independent `6a25f2d` pin: all its upstream
+dependencies are unchanged at the stage pin, including code.c blob
+`1a9996f1c7ea3da603a35a3c534a00549c4375a7`. No full-world/stage-exit or
+later report task acceptance is implied. Evidence:
+`tmp/issue137-source-audit.log`, `tmp/issue137-prefix-and-byte-audit.log`,
+`tmp/issue137-command-audit-{update,default}.log`,
+`tmp/issue137-{code,helper,move,turn-default,vet,go-test}.log`.
+
 ## Bounded raw file observations (#135)
 
 `readfile PATH` observes a whitespace-free cwd-relative (or absolute) path,

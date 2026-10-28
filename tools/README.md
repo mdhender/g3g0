@@ -6,6 +6,21 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Bounded names/codes audit (#137)
+
+Complete unchanged stage-pin code.c 47–174, 212–343 and 350–466 already
+match the existing code.go owner; no engine changes or replacement naming
+layer were needed. Existing code/helper/move coverage is retained. Six new
+command cases directly observe garrison/raw-code distinctions, named/empty
+port cities, noble fallback, absent/null/empty plural warnings, raw brackets,
+quantity separators and nested 2048-byte truncation. See
+[command-compat's source audit and byte evidence](command-compat#bounded-namescodes-audit-137).
+After the separately accepted #167 parser fix, C/C/Go is **883/61012**;
+the accepted **877/60622** prefix remains byte-exact. Sequential code/helper/
+move/command/default-turn, bounded vet and fresh bounded tests pass. All
+code-tool upstream dependencies are unchanged by G3 #357, so its own pin
+stays `6a25f2d`. No full-world or stage-exit acceptance is claimed.
+
 ## Stage-2 pin move and follow-C (#131)
 
 Current affected-tool pin: `e733acb63bacb21167a1f2589d8dcdc023364896`

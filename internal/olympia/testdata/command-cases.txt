@@ -19223,3 +19223,83 @@ field 310 weight 17
 plural 310
 inherit name 310 0
 save 310
+
+# #137: bounded audit of complete unchanged code.c naming definitions.
+# names show N Q observes each primitive separately (including warning bytes).
+# names repeat N LEN constructs a raw long input, then calls real set_name.
+section names zero invalid and garrison bypass versus raw display and code less
+names show 0 1
+names show -1 1
+names show 150000 1
+names show 999 1
+entity 999 4 0
+name 999 named [sentinel]
+names show 999 1
+kindname 999
+
+section names named and empty port city retain kind independent of display name
+entity 9000 3 3
+entity 9001 3 1
+entity 9100 3 14
+link 9000 9100
+routes 9000 9001 0 0 0
+names show 9100 1
+kindname 9100
+name 9100 Port [Amber]
+names show 9100 1
+kindname 9100
+name 9100
+names show 9100 1
+kindname 9100
+
+section names noble fallback singular item capitalization and explicit name priority
+entity 310 4 0
+name 310 amber [wolf]
+plural 310 amber wolves
+field 1000 noble_item 310
+names show 1000 1
+name 1000 Named [noble]
+names show 1000 1
+name 1000
+names show 1000 1
+name 310
+names show 1000 1
+field 1000 noble_item 311
+names show 1000 1
+
+section names plural missing record null empty warning bytes and raw plural brackets
+entity 310 4 0
+names show 310 1
+names show 310 0
+field 310 weight 0
+names show 310 -1
+plural 310
+name 310 singular [amber]
+names show 310 2
+plural 310 plural [amber]
+names show 310 1
+names show 310 2
+
+section names quantity tildes zero one ten eleven signed and comma boundaries
+entity 310 4 0
+name 310 one ox
+plural 310 many oxen
+names show 310 0
+names show 310 1
+names show 310 10
+names show 310 11
+names show 310 1001
+names show 310 -2
+names show 310 2147483647
+names show 310 -2147483648
+
+section names nested sout truncation preserves raw display and just names
+entity 310 4 0
+names repeat 310 2040
+names show 310 1
+names repeat 310 2048
+names show 310 1
+names repeat 310 2049
+names show 310 1
+field 1000 noble_item 310
+names show 1000 1
