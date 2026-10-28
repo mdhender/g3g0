@@ -1843,3 +1843,111 @@ the known day-1 full-turn boundary remains match_all_trades (#81). No newly
 verified public-engine bug or blocker was found; known nonblocking
 G3 #309/#352/#353/#354/#355 remain unchanged. Version **0.55.0-alpha**; changes
 are left uncommitted for parent review, not accepted/closed by this task.
+
+## Daily coastal and location damage (#78)
+
+The bounded daily closure reuses accepted #120 rather than introducing a
+successful destruction substitute or duplicate weather tool. Six complete
+definitions, **255 C lines**, are extracted at the unchanged pin
+`6a25f2d252ce45bd5adbe3baaccb3be3eed56279`:
+
+| source | definition | original lines (including return type and closing brace) |
+|---|---|---|
+| day.c | near_rocky_coast | 237–258 (22) |
+| day.c | ship_coastal_damage | 261–327 (67) |
+| day.c | mine_calamity | 330–399 (70) |
+| day.c | inn_calamity | 403–451 (49) |
+| day.c | random_loc_damage | 454–486 (33) |
+| u.c | count_loc_char_item | 1336–1349 (14) |
+
+The original `mine_depth` macro is oly.h:1102 (`shaft_depth / 3`, with a
+signed-short shaft). Some issue endpoints included adjacent blank/body lines;
+the table above identifies the actual complete definitions. Original headers,
+macros and assertion locations are preserved; only phase counters are omitted.
+No new upstream source dependency or pin change is needed. Go calls the
+world's `streams.WthrWreck` directly: tag `wthr`, keyed `wreck` leaves,
+`(entity, day*16+slot)`, without advancing the shared weather shuffle counter.
+Ship slots are 0/1 for reef, 2/3 for rocks and 4 for omens; mine uses 0/1/2,
+inn 0/1/2/3; their random-event gates use slots 8 and 9. The real turn guard,
+shared master and mint stream remain untouched. Production dailyEvents order
+is unchanged; only the two former NYI definitions were removed.
+
+**17 appended sections** use small actual-C-selected cases, not a retained
+random search or Go-derived expected output:
+
+- Land/ocean/coast/rocky/open topology, rocky precedence in either exit order,
+  all three unfinished ship subtype skips with otherwise actual reef-hit
+  keys, and completed galley/roundship/raft handling. Real reef hits for IDs
+  **9203/9124/9422** yield **3/4/5**; rock hits **9133/9135/9344/9518** yield
+  **6/7/8/9**. Independent C probes verify gate 1, adjacent false gate 2 and
+  maximum false gates 75/50. Damage **99** survives, exact **100** really sinks;
+  adjacent deletion preserves kind-chain traversal. A real fatal-survival
+  skill is consumed and its occupant washes ashore at 9001. Logs retain actual
+  reef/rocks text, sinking, survival and output bits.
+- Open-sea keys **9473/9230/9143** give **1/2/3**, reaching both birds arms
+  and sharks; ID 9100 gives **92**, with no omen. Ship messages route through
+  real touched-location output, not an invented per-occupant route.
+- All four mine messages, zero workers, clamping to one worker, independent
+  one/five victim draws, damage endpoints **1/15**, and uneven nested worker
+  allocation. Saved depth-first order is **1001,1003,1002,1004,1000**, not ID
+  order; losses **1,2,2** preserve later inventories. Hidden/captive/safe-haven
+  characters are not independently excluded; captive output is suppressed by
+  real output routing but its workers still die. The branch under a direct
+  noncharacter is pruned. Count **27 → 22** excludes its 100 workers.
+- Mine gate 9 with depths **8/9/10** proves `<`, equality and `>`; signed
+  shaft **-4 / 3 → -1**, absent optional state and zero depth do not trigger.
+  Independent C endpoint gates **1/90** pair shafts **2/3** and **269/270**.
+  Two adjacent actual collapses retain subtype 53, damage 100, delay 8 and
+  evacuate occupants in exact order; later random passes skip both mines.
+- All **6 subjects / 5 actions / 7 consequences** of inn wording and damage
+  **5/15** are emitted by actual C. Rare gate **9128 → 1** really damages
+  an ownerless inn without output, then **88 + 12 → 100** collapses it with
+  an owner and real messages. False gates **2/100**, unfinished inn/mine
+  subtypes and ordinary nontrigger controls do nothing. Owner selection
+  skips a direct noncharacter but does not skip a captive first character:
+  damage still occurs, without incorrectly notifying the next character.
+- Per-day replay for ships, mines and inns distinguishes subslot aliasing.
+  Already-seeded weather plus master reload during the same guarded turn
+  retains ship damage **3 → 6**, day 2 does not hit, and replaying day 1
+  yields **9**. Next turn and return to the old turn reseed correctly. Paired
+  no-call controls preserve all four shuffle observations and real shared
+  unique allocations **77018 / 60845**.
+- Two malformed helper-contract controls retain real loc.c:92
+  `valid_box(who)` and loc.c:395 `loc_depth(where) == LOC_build`, with flushed
+  status 134. All other new sections require status 0. These assertions, a
+  corrected initially missing worker item, and a corrected duplicate raw
+  inventory construction are not reproduced public-engine defects. The
+  existing `loopHere` intentionally has no internal assertion; callers keep
+  their original macro call-site assertions. No iteration helper was changed.
+
+Two fresh bounded deterministic C runs produce **553 sections / 39215 lines /
+669382 bytes**, exactly matched by Go's raw stdout/stderr/status and real
+serialized state, inventories, ownership, topology/here order, output bits,
+logs and RNG/mint observations. The complete previous input **11650 lines /
+207996 bytes** and output **536 sections / 37892 lines / 644189 bytes** remain
+exact byte prefixes: **zero old bytes changed**. New input is **12248 lines /
+218785 bytes**. Entire move input **3150 lines / 53589 bytes** and output
+**135 sections / 7150 lines / 142755 bytes** remain identical. Literal C
+trailing whitespace is deliberately retained, including save_box here lists;
+`git diff --check` consequently reports those recording bytes, not source
+whitespace errors.
+
+A removed ephemeral expected-134 section queued/loaded/dispatched actual
+ATTACK. Both normal and `--update` rejected
+`out-of-scope C dependency: v_attack` with status 2 **before** expected-status
+acceptance or recording. Output SHA-256 stayed
+`19bc0cfdeb87f5ff1c2c09294cb830caf88c1e84ef029f0a12574a8b248de7ba`.
+No permanent case binds a temporary private missing-dependency name.
+
+Command (update and normal), move, helper, rng, code, loadsave, turn-driver and
+default turn checks pass sequentially before bounded vet and fresh default
+all-tests. Every C/Go engine process uses the shared timeout supervisor.
+World turns remain opt-in and were not run; the known day-1 full-world
+boundary remains match_all_trades (#81). No full-turn or stage-exit acceptance
+is claimed. Character damage/healing/ocean polling (#79), monthly mine decay
+(#88), reports and unrelated commands/combat remain explicit boundaries.
+No newly verified public-engine bug or upstream blocker was found; both
+open-issue arrival checks found only enhancements, no local bug/follow-c.
+Known nonblocking G3 #309/#352/#353/#354/#355 remain deliberately unchanged.
+Version **0.56.0-alpha**, left uncommitted for parent review, not accepted,
+closed, staged, committed or pushed by this task.

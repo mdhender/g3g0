@@ -37890,3 +37890,1326 @@ log 200:
 stderr:
 
 exit 0
+stdout:
+section damage topology land ocean coast rocky precedence and unfinished skips
+> master 0
+> set turn 1
+> set day 1
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 9002 3 4
+> entity 9003 3 1
+> link 10000 9000
+> link 10000 9001
+> link 10000 9002
+> link 10000 9003
+> routes 9000 9003 9001 0 0
+> routes 9003 0 0 9000 0
+> damage coast 9001
+coast 0
+> damage coast 9003
+coast 3
+> damage coast 9000
+coast 1
+> routes 9000 9003 9001 9002 0
+> damage coast 9000
+coast 2
+> routes 9000 9002 9001 0 0
+> damage coast 9000
+coast 2
+> routes 9000 9003 9001 0 0
+> entity 9203 9 33
+> entity 9124 9 34
+> entity 9422 9 67
+> entity 9133 9 30
+> entity 9135 9 31
+> entity 9344 9 66
+> link 9000 9203
+> link 9000 9124
+> link 9000 9422
+> link 9001 9133
+> link 9001 9135
+> link 9001 9344
+> weather probe 9000 257
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> damage ships
+> structure state 9203
+structure 9203 kind 9 sub 33 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9124
+structure 9124 kind 9 sub 34 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9422
+structure 9422 kind 9 sub 67 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9133
+structure 9133 kind 9 sub 30 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9135
+structure 9135 kind 9 sub 31 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9344
+structure 9344 kind 9 sub 66 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> weather probe 9000 257
+weather shuffle: 321 342 356 328 314 363 300 370 335 307 349
+weather strength 2
+> newitem 9001 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 9001
+
+stderr:
+
+exit 0
+stdout:
+section damage reefs actual three four five and exact hundred real survival
+> set gm 200
+> master 0
+> set turn 1
+> set day 1
+> field 200 touched 9000
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> link 10000 9000
+> link 10000 9001
+> routes 9000 0 9001 0 0
+> entity 9203 9 30
+> entity 9124 9 31
+> entity 9422 9 66
+> entity 9100 9 30
+> link 9000 9203
+> link 9000 9124
+> link 9000 9422
+> link 9000 9100
+> link 9124 1000
+> entity 611 5 43
+> learn 1000 611 2 21
+> field 9203 damage 96
+> field 9124 damage 96
+> field 9422 damage 94
+> field 9100 damage 99
+> damage roll 9203 16 1 75
+wreck 1
+> damage roll 9203 17 3 5
+wreck 3
+> damage roll 9124 16 1 75
+wreck 1
+> damage roll 9124 17 3 5
+wreck 4
+> damage roll 9422 16 1 75
+wreck 1
+> damage roll 9422 17 3 5
+wreck 5
+> damage roll 9100 16 1 75
+wreck 6
+> damage ships
+> structure state 9203
+structure 9203 kind 9 sub 30 damage 99 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9124
+structure 9124 kind 0 sub 31 damage 100 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9422
+structure 9422 kind 9 sub 66 damage 99 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9100
+structure 9100 kind 9 sub 30 damage 99 delay 0 castle 0 bind 0
+bound:
+here:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+ hl 9203 9422 9100 
+LO
+ pd 0 9001 0 0 
+
+> save 9001
+9001 loc plain
+LI
+ wh 10000
+ hl 1000 
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 9000 11 1000
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+9000:0::0::Roundship~[9124] struck a coastal reef.  There is minor damage to the ship.
+11:0::0::Roundship~[9124] has sunk in Ocean~[9000].
+9000:0::0::Roundship~[9124] has sunk!
+9000:0::0::Roundship~[9124] has sunk!
+1000:0::0::<no subkind>~[1000] would have died, but survived a fatal wound!
+1000:0::0::Forgot [611].
+1000:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1000] washed ashore at Plain~[9001].
+11:0::0::kill_stack_ocean, swam ashore, who=1000
+9000:0::0::Galley~[9203] struck a coastal reef.  There is minor damage to the ship.
+9000:0::0::Raft~[9422] struck a coastal reef.  There is minor damage to the ship.
+stderr:
+
+exit 0
+stdout:
+section damage rocks all four amount bounds and adjacent destruction without skips
+> set gm 200
+> master 0
+> set turn 1
+> set day 1
+> field 200 touched 9000
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 4
+> link 10000 9000
+> link 10000 9001
+> routes 9000 0 9001 0 0
+> entity 9133 9 30
+> entity 9135 9 31
+> entity 9344 9 66
+> entity 9518 9 30
+> link 9000 9133
+> link 9000 9135
+> link 9000 9344
+> link 9000 9518
+> field 9133 damage 93
+> field 9135 damage 93
+> field 9344 damage 92
+> field 9518 damage 91
+> damage roll 9133 18 1 50
+wreck 1
+> damage roll 9133 19 6 9
+wreck 6
+> damage roll 9135 18 1 50
+wreck 1
+> damage roll 9135 19 6 9
+wreck 7
+> damage roll 9344 18 1 50
+wreck 1
+> damage roll 9344 19 6 9
+wreck 8
+> damage roll 9518 18 1 50
+wreck 1
+> damage roll 9518 19 6 9
+wreck 9
+> damage ships
+> structure state 9133
+structure 9133 kind 9 sub 30 damage 99 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9135
+structure 9135 kind 0 sub 31 damage 100 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9344
+structure 9344 kind 0 sub 66 damage 100 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9518
+structure 9518 kind 0 sub 30 damage 100 delay 0 castle 0 bind 0
+bound:
+here:
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+ hl 9133 
+LO
+ pd 0 9001 0 0 
+
+> readlog 200
+log 200:
+9000:0::0::Galley~[9133] struck some submerged rocks.  There is minor damage to the ship.
+9000:0::0::Roundship~[9135] struck some submerged rocks.  There is minor damage to the ship.
+11:0::0::Roundship~[9135] has sunk in Ocean~[9000].
+9000:0::0::Roundship~[9135] has sunk!
+9000:0::0::Roundship~[9135] has sunk!
+9000:0::0::Raft~[9344] struck some submerged rocks.  There is minor damage to the ship.
+11:0::0::Raft~[9344] has sunk in Ocean~[9000].
+9000:0::0::Raft~[9344] has sunk!
+9000:0::0::Raft~[9344] has sunk!
+9000:0::0::Galley~[9518] struck some submerged rocks.  There is minor damage to the ship.
+11:0::0::Galley~[9518] has sunk in Ocean~[9000].
+9000:0::0::Galley~[9518] has sunk!
+9000:0::0::Galley~[9518] has sunk!
+stderr:
+
+exit 0
+stdout:
+section damage open sea omens one two three and no omen control
+> master 0
+> set turn 1
+> set day 1
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> link 10000 9000
+> link 10000 9001
+> routes 9000 0 9001 0 0
+> entity 9473 9 30
+> entity 9230 9 31
+> entity 9143 9 66
+> entity 9100 9 30
+> link 9000 9473
+> link 9000 9230
+> link 9000 9143
+> link 9000 9100
+> link 9473 1000
+> link 9230 1001
+> entity 1002 2 0
+> field 1002 lord 201
+> link 9143 1002
+> field 200 touched 9000
+> damage roll 9473 20 1 200
+wreck 1
+> damage roll 9230 20 1 200
+wreck 2
+> damage roll 9143 20 1 200
+wreck 3
+> damage roll 9100 20 1 200
+wreck 92
+> damage ships
+> structure state 9473
+structure 9473 kind 9 sub 30 damage -1 delay 0 castle 0 bind 0
+bound:
+here: 1000
+> structure state 9230
+structure 9230 kind 9 sub 31 damage -1 delay 0 castle 0 bind 0
+bound:
+here: 1001
+> structure state 9143
+structure 9143 kind 9 sub 66 damage -1 delay 0 castle 0 bind 0
+bound:
+here: 1002
+> structure state 9100
+structure 9100 kind 9 sub 30 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> readlog 200
+log 200:
+9000:0::0::Sharks circle in the water a short distance from the ship.
+9000:0::0::Hungry looking birds circle overhead.
+9000:0::0::Hungry looking birds circle overhead.
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section damage mine five victims depth first uneven hidden captive and noncharacter pruning
+> set gm 200
+> master 0
+> set turn 1
+> set day 1
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9106 3 40
+> link 9000 9106
+> entity 11 4 0
+> name 11 worker
+> entity 1003 2 0
+> entity 1002 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> field 1003 lord 201
+> field 1002 lord 201
+> field 1004 lord 200
+> field 1005 lord 201
+> entity 9200 3 37
+> link 9106 1001
+> link 1001 1003
+> link 1001 1002
+> link 9106 9200
+> link 9200 1005
+> link 9106 1004
+> link 9106 1000
+> inventory 1001 11 1
+> inventory 1003 11 2
+> inventory 1002 11 6
+> inventory 1004 11 7
+> inventory 1000 11 11
+> inventory 1005 11 100
+> field 1001 hidden 1
+> field 1003 prisoner 1
+> field 9106 safe 1
+> field 9106 shaft_depth 269
+> field 200 touched 9000
+> damage count 9106
+workers 27 depth 89
+> damage roll 9106 16 1 4
+wreck 1
+> damage roll 9106 17 1 5
+wreck 5
+> damage roll 9106 18 1 15
+wreck 4
+> damage mine 9106
+> damage count 9106
+workers 22 depth 89
+> save 9106
+9106 loc mine
+LI
+ wh 9000
+ hl 1001 9200 1004 1000 
+SL
+ da 4
+ sd 269
+ sh 1
+
+> save 1000
+1000 char 0
+il	11 11
+LI
+ wh 9106
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9106
+ hl 1003 1002 
+CH
+ lo 200
+CM
+ hs 1
+
+> save 1002
+1002 char 0
+il	11 4
+LI
+ wh 1001
+CH
+ lo 201
+
+> save 1003
+1003 char 0
+LI
+ wh 1001
+CH
+ lo 201
+ pr 1
+
+> save 1004
+1004 char 0
+il	11 7
+LI
+ wh 9106
+CH
+ lo 200
+
+> save 1005
+1005 char 0
+il	11 100
+LI
+ wh 9200
+CH
+ lo 201
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1001 1004 1000 9000
+inherit player 201
+bits: 1002
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1001:0::0::A tunnel in Mine~[9106] has caved in!
+1004:0::0::A tunnel in Mine~[9106] has caved in!
+1000:0::0::A tunnel in Mine~[9106] has caved in!
+9000:0::0::A tunnel in Mine~[9106] has caved in!
+1001:0::0::Five miners were killed in the accident.
+1004:0::0::Five miners were killed in the accident.
+1000:0::0::Five miners were killed in the accident.
+9000:0::0::Five miners were killed in the accident.
+1001:0::0::<no subkind>~[1001] lost one worker.
+> readlog 201
+log 201:
+1002:0::0::A tunnel in Mine~[9106] has caved in!
+1002:0::0::Five miners were killed in the accident.
+1002:0::0::<no subkind>~[1002] lost two workers.
+stderr:
+
+exit 0
+stdout:
+section damage mine other three phrases zero one and clamped victim counts
+> master 0
+> set turn 1
+> set day 1
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9100 3 40
+> entity 9101 3 40
+> entity 9104 3 40
+> link 9000 9100
+> link 9000 9101
+> link 9000 9104
+> entity 11 4 0
+> name 11 worker
+> link 9100 1000
+> damage count 9100
+workers 0 depth 0
+> damage mine 9100
+> save 9100
+9100 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 3
+
+> link 9101 1000
+> inventory 1000 11 1
+> damage mine 9101
+> save 1000
+1000 char 0
+LI
+ wh 9101
+CH
+ lo 200
+
+> save 9101
+9101 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 7
+
+> link 9104 1000
+> additem 1000 11 7
+> damage mine 9104
+> save 1000
+1000 char 0
+il	11 6
+LI
+ wh 9104
+CH
+ lo 200
+
+> save 9104
+9104 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 1
+
+> readlog 200
+log 200:
+1000:0::0::A roof has collapsed in a shaft in Mine~[9100]!
+1000:0::0::A new fissure in a shaft wall has allowed poisonous gas to seep into Mine~[9101].
+1000:0::0::One miner was killed in the accident.
+1000:0::0::<no subkind>~[1000] lost one worker.
+1000:0::0::Rock dust has caused an explosion in Mine~[9104]!
+1000:0::0::One miner was killed in the accident.
+1000:0::0::<no subkind>~[1000] lost one worker.
+stderr:
+
+exit 0
+stdout:
+section damage mine threshold below equal above and signed shaft truncation
+> set gm 200
+> master 0
+> set turn 1
+> set day 1
+> entity 11 4 0
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9100 3 40
+> link 9000 9100
+> link 9100 1000
+> damage roll 9100 24 1 90
+wreck 9
+> damage count 9100
+workers 0 depth 0
+> damage locations
+> save 9100
+9100 loc mine
+LI
+ wh 9000
+ hl 1000 
+
+> field 9100 shaft_depth -4
+> damage count 9100
+workers 0 depth -1
+> damage locations
+> save 9100
+9100 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ sd -4
+
+> field 9100 shaft_depth 26
+> damage count 9100
+workers 0 depth 8
+> damage locations
+> save 9100
+9100 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ sd 26
+
+> field 9100 shaft_depth 27
+> damage count 9100
+workers 0 depth 9
+> damage locations
+> save 9100
+9100 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 3
+ sd 27
+
+> field 9100 shaft_depth 30
+> damage count 9100
+workers 0 depth 10
+> damage locations
+> save 9100
+9100 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 6
+ sd 30
+
+> readlog 200
+log 200:
+1000:0::0::A roof has collapsed in a shaft in Mine~[9100]!
+1000:0::0::A roof has collapsed in a shaft in Mine~[9100]!
+stderr:
+
+exit 0
+stdout:
+section damage mine real collapse then collapsed mine skipped on later random pass
+> set gm 200
+> master 0
+> set turn 1
+> set day 1
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9100 3 40
+> entity 9101 3 40
+> entity 11 4 0
+> name 11 worker
+> link 9000 9100
+> link 9000 9101
+> link 9100 1000
+> link 9101 1001
+> inventory 1000 11 5
+> inventory 1001 11 5
+> field 9100 shaft_depth 270
+> field 9101 shaft_depth 270
+> field 9100 damage 97
+> field 9101 damage 93
+> structure state 9100
+structure 9100 kind 3 sub 40 damage 97 delay 0 castle 0 bind 0
+bound:
+here: 1000
+> structure state 9101
+structure 9101 kind 3 sub 40 damage 93 delay 0 castle 0 bind 0
+bound:
+here: 1001
+> damage locations
+> structure state 9100
+structure 9100 kind 3 sub 53 damage 100 delay 8 castle 0 bind 0
+bound:
+here:
+> structure state 9101
+structure 9101 kind 3 sub 53 damage 100 delay 8 castle 0 bind 0
+bound:
+here:
+> save 1000
+1000 char 0
+il	11 2
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+il	11 2
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 9100 9101 1000 1001 
+
+> save 9100
+9100 loc collapsed mine
+LI
+ wh 9000
+SL
+ da 100
+ sd 270
+MI
+ md 8
+
+> save 9101
+9101 loc collapsed mine
+LI
+ wh 9000
+SL
+ da 100
+ sd 270
+MI
+ md 8
+
+> damage locations
+> structure state 9100
+structure 9100 kind 3 sub 53 damage 100 delay 8 castle 0 bind 0
+bound:
+here:
+> structure state 9101
+structure 9101 kind 3 sub 53 damage 100 delay 8 castle 0 bind 0
+bound:
+here:
+> readlog 200
+log 200:
+1000:0::0::A roof has collapsed in a shaft in Mine~[9100]!
+1000:0::0::Three miners were killed in the accident.
+1000:0::0::<no subkind>~[1000] lost three workers.
+11:0::0::Mine~[9100] collapsed in Plain~[9000].
+1000:0::0::Mine~[9100] collapses!
+1001:0::0::A new fissure in a shaft wall has allowed poisonous gas to seep into Mine~[9101].
+9000:0::0::A new fissure in a shaft wall has allowed poisonous gas to seep into Mine~[9101].
+1001:0::0::Three miners were killed in the accident.
+9000:0::0::Three miners were killed in the accident.
+1001:0::0::<no subkind>~[1001] lost three workers.
+11:0::0::Mine~[9101] collapsed in Plain~[9000].
+1001:0::0::Mine~[9101] collapses!
+9000:0::0::Mine~[9101] collapses!
+stderr:
+
+exit 0
+stdout:
+section damage inn phrases all subject action consequence arms and five fifteen damage
+> master 0
+> set turn 1
+> set day 1
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9100 3 37
+> entity 9101 3 37
+> entity 9102 3 37
+> entity 9103 3 37
+> entity 9105 3 37
+> entity 9106 3 37
+> entity 9108 3 37
+> entity 9110 3 37
+> entity 9113 3 37
+> entity 9115 3 37
+> link 9000 9100
+> link 9000 9101
+> link 9000 9102
+> link 9000 9103
+> link 9000 9105
+> link 9000 9106
+> link 9000 9108
+> link 9000 9110
+> link 9000 9113
+> link 9000 9115
+> link 9100 1000
+> damage inn 9100
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 10
+
+> link 9101 1000
+> damage inn 9101
+> save 9101
+9101 loc inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 7
+
+> link 9102 1000
+> damage inn 9102
+> save 9102
+9102 loc inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 14
+
+> link 9103 1000
+> damage inn 9103
+> save 9103
+9103 loc inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 15
+
+> link 9105 1000
+> damage inn 9105
+> save 9105
+9105 loc inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 12
+
+> link 9106 1000
+> damage inn 9106
+> save 9106
+9106 loc inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 13
+
+> link 9108 1000
+> damage inn 9108
+> save 9108
+9108 loc inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 7
+
+> link 9110 1000
+> damage inn 9110
+> save 9110
+9110 loc inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 13
+
+> link 9113 1000
+> damage inn 9113
+> save 9113
+9113 loc inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 12
+
+> link 9115 1000
+> damage inn 9115
+> save 9115
+9115 loc inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 5
+
+> readlog 200
+log 200:
+1000:0::0::Inn~[9100]:  An irate customer got drunk and started a fight, and knocked over the smokehouse, causing 10 points of damage.
+1000:0::0::Inn~[9101]:  An irate customer got drunk and started a fight, and kicked in the door, causing 7 points of damage.
+1000:0::0::Inn~[9102]:  A party of traveling entertainers refused to pay, and knocked over the smokehouse, causing 14 points of damage.
+1000:0::0::Inn~[9103]:  A party of traveling entertainers started a fight, and broke some furniture, causing 15 points of damage.
+1000:0::0::Inn~[9105]:  Some patrons got drunk, and broke some furniture, causing 12 points of damage.
+1000:0::0::Inn~[9106]:  A party of traveling entertainers insulted the chef, and knocked over a keg of beer, causing 13 points of damage.
+1000:0::0::Inn~[9108]:  Some customers got drunk and started a fight, and set a fire in the closet, causing 7 points of damage.
+1000:0::0::Inn~[9110]:  Two large, angry men got drunk, and damaged a wall, causing 13 points of damage.
+1000:0::0::Inn~[9113]:  A surly local insulted the chef, and broke some chairs, causing 12 points of damage.
+1000:0::0::Inn~[9115]:  Two large, angry men got drunk, and broke some furniture, causing 5 points of damage.
+stderr:
+
+exit 0
+stdout:
+section damage inn rare actual trigger nontrigger no owner and unfinished ignores
+> set gm 200
+> master 0
+> set turn 1
+> set day 1
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9128 3 37
+> entity 9100 3 37
+> entity 9101 3 38
+> entity 9102 3 41
+> link 9000 9128
+> link 9000 9100
+> link 9000 9101
+> link 9000 9102
+> link 9100 1000
+> damage roll 9128 25 1 100
+wreck 1
+> damage roll 9100 25 1 100
+wreck 5
+> damage locations
+> structure state 9128
+structure 9128 kind 3 sub 37 damage 12 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9100
+structure 9100 kind 3 sub 37 damage -1 delay 0 castle 0 bind 0
+bound:
+here: 1000
+> structure state 9101
+structure 9101 kind 3 sub 38 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9102
+structure 9102 kind 3 sub 41 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> readlog 200
+log 200:
+> link 9128 1001
+> field 9128 damage 88
+> field 9128 safe 1
+> damage locations
+> structure state 9128
+structure 9128 kind 0 sub 37 damage 100 delay 0 castle 0 bind 0
+bound:
+here:
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 9100 9101 9102 1001 
+
+> readlog 200
+log 200:
+1001:0::0::Inn~[9128]:  A surly local refused to pay, and set a fire in the closet, causing 12 points of damage.
+11:0::0::Inn~[9128] collapsed in Plain~[9000].
+1001:0::0::Inn~[9128] collapses!
+stderr:
+
+exit 0
+stdout:
+section damage guarded stream day replay master reload and minted aftermath
+> set gm 200
+> master 0
+> set turn 1
+> set day 1
+> field 200 touched 9000
+> weather probe 9000 257
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> damage roll 9203 16 1 75
+wreck 1
+> master 9
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> link 10000 9000
+> link 10000 9001
+> routes 9000 0 9001 0 0
+> entity 9203 9 30
+> link 9000 9203
+> link 9203 1000
+> damage ships
+> structure state 9203
+structure 9203 kind 9 sub 30 damage 3 delay 0 castle 0 bind 0
+bound:
+here: 1000
+> damage ships
+> structure state 9203
+structure 9203 kind 9 sub 30 damage 6 delay 0 castle 0 bind 0
+bound:
+here: 1000
+> set day 2
+> damage roll 9203 32 1 75
+wreck 9
+> damage ships
+> structure state 9203
+structure 9203 kind 9 sub 30 damage 6 delay 0 castle 0 bind 0
+bound:
+here: 1000
+> set day 1
+> damage ships
+> structure state 9203
+structure 9203 kind 9 sub 30 damage 9 delay 0 castle 0 bind 0
+bound:
+here: 1000
+> weather probe 9000 257
+weather shuffle: 321 342 356 328 314 363 300 370 335 307 349
+weather strength 2
+> newitem 9001 0
+created 77018
+> save_new
+77018 item 0
+IT
+ un 9001
+
+> set turn 2
+> damage roll 9203 16 1 75
+wreck 25
+> damage ships
+> structure state 9203
+structure 9203 kind 9 sub 30 damage 9 delay 0 castle 0 bind 0
+bound:
+here: 1000
+> weather probe 9000 257
+weather shuffle: 335 321 307 356 328 342 370 349 363 314 300
+weather strength 2
+> set turn 1
+> damage roll 9203 16 1 75
+wreck 36
+> damage ships
+> structure state 9203
+structure 9203 kind 9 sub 30 damage 9 delay 0 castle 0 bind 0
+bound:
+here: 1000
+> weather probe 9000 257
+weather shuffle: 300 335 370 307 349 342 328 321 314 356 363
+weather strength 3
+> newitem 9001 0
+created 60845
+> save_new
+60845 item 0
+IT
+ un 9001
+
+> readlog 200
+log 200:
+9000:0::0::Galley~[9203] struck a coastal reef.  There is minor damage to the ship.
+9000:0::0::Galley~[9203] struck a coastal reef.  There is minor damage to the ship.
+9000:0::0::Galley~[9203] struck a coastal reef.  There is minor damage to the ship.
+stderr:
+
+exit 0
+stdout:
+section damage no call control preserves shared weather and mint aftermath
+> master 0
+> set turn 1
+> set day 1
+> weather probe 9000 257
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> damage roll 9203 16 1 75
+wreck 1
+> master 9
+> entity 9001 3 3
+> weather probe 9000 257
+weather shuffle: 321 342 356 328 314 363 300 370 335 307 349
+weather strength 2
+> newitem 9001 0
+created 77018
+> save_new
+77018 item 0
+IT
+ un 9001
+
+> set turn 2
+> damage roll 9203 16 1 75
+wreck 25
+> weather probe 9000 257
+weather shuffle: 335 321 307 356 328 342 370 349 363 314 300
+weather strength 2
+> set turn 1
+> damage roll 9203 16 1 75
+wreck 36
+> weather probe 9000 257
+weather shuffle: 300 335 370 307 349 342 328 321 314 356 363
+weather strength 3
+> newitem 9001 0
+created 60845
+> save_new
+60845 item 0
+IT
+ un 9001
+
+stderr:
+
+exit 0
+stdout:
+section damage invalid count preserves all char here call site assertion
+> entity 9100 0 0
+> damage count 9100
+stderr:
+assertion failure: olympia/loc.c (92): valid_box(who)
+
+exit 134
+stdout:
+section damage invalid inn owner requires building depth
+> entity 9000 3 3
+> damage inn 9000
+stderr:
+assertion failure: olympia/loc.c (395): loc_depth(where) == LOC_build
+
+exit 134
+stdout:
+section damage adjacent nonhit gates reef two seventyfive rocks two fifty
+> master 0
+> set turn 1
+> set day 1
+> field 200 touched 9000
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 9002 3 4
+> entity 9226 9 30
+> entity 9150 9 30
+> entity 9121 9 30
+> link 9000 9226
+> link 9000 9150
+> link 9000 9121
+> routes 9000 0 9001 0 0
+> damage roll 9226 16 1 75
+wreck 2
+> damage roll 9150 16 1 75
+wreck 75
+> damage ships
+> structure state 9226
+structure 9226 kind 9 sub 30 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9150
+structure 9150 kind 9 sub 30 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> routes 9000 0 9002 0 0
+> damage roll 9150 18 1 50
+wreck 2
+> damage roll 9121 18 1 50
+wreck 50
+> damage ships
+> structure state 9150
+structure 9150 kind 9 sub 30 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9121
+structure 9121 kind 9 sub 30 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section damage mine gate endpoints damage fifteen and day subslot independence
+> set gm 200
+> master 0
+> set turn 1
+> set day 1
+> entity 10000 3 50
+> entity 9000 3 3
+> entity 9138 3 40
+> entity 9116 3 40
+> entity 11 4 0
+> link 10000 9000
+> link 9000 9138
+> link 9000 9116
+> link 9138 1000
+> link 9116 1001
+> damage roll 9138 24 1 90
+wreck 1
+> damage roll 9116 24 1 90
+wreck 90
+> field 9138 shaft_depth 2
+> field 9116 shaft_depth 269
+> damage locations
+> save 9138
+9138 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ sd 2
+
+> save 9116
+9116 loc mine
+LI
+ wh 9000
+ hl 1001 
+SL
+ sd 269
+
+> field 9138 shaft_depth 3
+> field 9116 shaft_depth 270
+> damage locations
+> save 9138
+9138 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 15
+ sd 3
+
+> save 9116
+9116 loc mine
+LI
+ wh 9000
+ hl 1001 
+SL
+ da 4
+ sd 270
+
+> set day 2
+> damage roll 9138 32 1 4
+wreck 2
+> damage roll 9138 33 1 5
+wreck 4
+> damage roll 9138 34 1 15
+wreck 4
+> damage mine 9138
+> save 9138
+9138 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 19
+ sd 3
+
+> set day 1
+> damage mine 9138
+> save 9138
+9138 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 34
+ sd 3
+
+> readlog 200
+log 200:
+1001:0::0::Rock dust has caused an explosion in Mine~[9116]!
+1000:0::0::A tunnel in Mine~[9138] has caved in!
+1000:0::0::A roof has collapsed in a shaft in Mine~[9138]!
+1000:0::0::A tunnel in Mine~[9138] has caved in!
+stderr:
+
+exit 0
+stdout:
+section damage inn adjacent false gates two hundred and first captive owner
+> master 0
+> set turn 1
+> set day 1
+> entity 10000 3 50
+> entity 9000 3 3
+> entity 9182 3 37
+> entity 9206 3 37
+> entity 9128 3 37
+> entity 9200 4 0
+> link 10000 9000
+> link 9000 9182
+> link 9000 9206
+> link 9000 9128
+> link 9128 9200
+> link 9128 1001
+> link 9128 1000
+> field 1001 prisoner 1
+> damage roll 9182 25 1 100
+wreck 2
+> damage roll 9206 25 1 100
+wreck 100
+> damage locations
+> structure state 9182
+structure 9182 kind 3 sub 37 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9206
+structure 9206 kind 3 sub 37 damage -1 delay 0 castle 0 bind 0
+bound:
+here:
+> structure state 9128
+structure 9128 kind 3 sub 37 damage 12 delay 0 castle 0 bind 0
+bound:
+here: 9200 1001 1000
+> readlog 200
+log 200:
+> field 1001 prisoner 0
+> field 1001 lord 201
+> set day 2
+> damage roll 9128 32 5 15
+wreck 13
+> damage roll 9128 33 1 6
+wreck 2
+> damage roll 9128 34 1 5
+wreck 3
+> damage roll 9128 35 1 7
+wreck 2
+> damage inn 9128
+> save 9128
+9128 loc inn
+LI
+ wh 9000
+ hl 9200 1001 1000 
+SL
+ da 25
+
+> readlog 200
+log 200:
+> readlog 201
+log 201:
+1001:0::0::Inn~[9128]:  Some patrons got drunk and started a fight, and damaged a wall, causing 13 points of damage.
+stderr:
+
+exit 0

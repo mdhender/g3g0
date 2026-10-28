@@ -50,7 +50,9 @@ functions = {
                'clear_guard_flag', 'v_move', 'd_move',
                'v_exit', 'v_enter', 'v_north', 'v_south', 'v_east', 'v_west'],
     'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched',
-              'default_garrison_pay', 'maint_cost', 'storm_decay', 'storm_move'],
+              'default_garrison_pay', 'maint_cost', 'storm_decay', 'storm_move',
+              'near_rocky_coast', 'ship_coastal_damage', 'mine_calamity',
+              'inn_calamity', 'random_loc_damage'],
     'seed.c': ['int_comp'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
@@ -85,7 +87,7 @@ functions = {
             'stackmate_inheritor', 'take_unit_items', 'put_back_cookie',
             'survive_fatal', 'char_reclaim', 'dead_char_body', 'kill_char', 'hack_unique_item',
             'kill_stack_ocean', 'sink_ship', 'building_collapses',
-            'get_rid_of_collapsed_mine', 'add_structure_damage',
+            'get_rid_of_collapsed_mine', 'add_structure_damage', 'count_loc_char_item',
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
@@ -213,6 +215,11 @@ int drv_load(struct command *c) { return load_command(c); }
 void drv_garrison_pay(void) { default_garrison_pay(); }
 void drv_sink(int ship) { sink_ship(ship); }
 void drv_collapse(int fort) { building_collapses(fort); }
+int drv_coast(int where) { return near_rocky_coast(where); }
+void drv_coastal(void) { ship_coastal_damage(); }
+void drv_mine(int mine) { mine_calamity(mine); }
+void drv_inn(int inn) { inn_calamity(inn); }
+void drv_loc_damage(void) { random_loc_damage(); }
 void drv_state(struct command *c, int s) { set_state(c, s, c->pri); }
 struct order_list *drv_orders(int pl, int who) { return p_order_head(pl, who); }
 void drv_evening(void) { evening_phase(); }
@@ -352,6 +359,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section damage '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section damage invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected daily damage status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section structure '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

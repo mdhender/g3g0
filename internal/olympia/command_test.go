@@ -571,6 +571,26 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.setKnown(args.num(t), args.num(t))
 		case "additem":
 			w.addItem(args.num(t), args.num(t), args.num(t))
+		case "damage":
+			switch action := args.word(); action {
+			case "coast":
+				fmt.Fprintf(&stdout, "coast %d\n", w.nearRockyCoast(args.num(t)))
+			case "ships":
+				w.shipCoastalDamage()
+			case "locations":
+				w.randomLocDamage()
+			case "mine":
+				w.mineCalamity(args.num(t))
+			case "inn":
+				w.innCalamity(args.num(t))
+			case "count":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "workers %d depth %d\n", w.countLocCharItem(n, itemWorker), w.mineDepth(n))
+			case "roll":
+				fmt.Fprintf(&stdout, "wreck %d\n", w.streams.WthrWreck(args.num(t), args.num(t), args.num(t), args.num(t)))
+			default:
+				t.Fatalf("unknown damage %s", action)
+			}
 		case "structure":
 			switch action := args.word(); action {
 			case "damage":
@@ -962,6 +982,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pSubloc(n).boundStorms.Append(a)
 			case "damage":
 				w.pSubloc(n).damage = uint8(a)
+			case "shaft_depth":
+				w.pSubloc(n).shaftDepth = int16(a)
 			case "loyal":
 				w.pChar(n).loyKind = int8(a)
 			case "moving":

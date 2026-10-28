@@ -11648,3 +11648,601 @@ save 1001
 save 9000
 inherit state
 readlog 200
+
+# #78: IDs selected with actual pinned C wthr_wreck, master bytes 0..15,
+# turn 1/day 1. Only the selected cases are retained, not the search corpus.
+section damage topology land ocean coast rocky precedence and unfinished skips
+master 0
+set turn 1
+set day 1
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 9002 3 4
+entity 9003 3 1
+link 10000 9000
+link 10000 9001
+link 10000 9002
+link 10000 9003
+routes 9000 9003 9001 0 0
+routes 9003 0 0 9000 0
+damage coast 9001
+damage coast 9003
+damage coast 9000
+routes 9000 9003 9001 9002 0
+damage coast 9000
+routes 9000 9002 9001 0 0
+damage coast 9000
+routes 9000 9003 9001 0 0
+entity 9203 9 33
+entity 9124 9 34
+entity 9422 9 67
+entity 9133 9 30
+entity 9135 9 31
+entity 9344 9 66
+link 9000 9203
+link 9000 9124
+link 9000 9422
+link 9001 9133
+link 9001 9135
+link 9001 9344
+weather probe 9000 257
+damage ships
+structure state 9203
+structure state 9124
+structure state 9422
+structure state 9133
+structure state 9135
+structure state 9344
+weather probe 9000 257
+newitem 9001 0
+save_new
+
+section damage reefs actual three four five and exact hundred real survival
+set gm 200
+master 0
+set turn 1
+set day 1
+field 200 touched 9000
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+link 10000 9000
+link 10000 9001
+routes 9000 0 9001 0 0
+entity 9203 9 30
+entity 9124 9 31
+entity 9422 9 66
+entity 9100 9 30
+link 9000 9203
+link 9000 9124
+link 9000 9422
+link 9000 9100
+link 9124 1000
+entity 611 5 43
+learn 1000 611 2 21
+field 9203 damage 96
+field 9124 damage 96
+field 9422 damage 94
+field 9100 damage 99
+damage roll 9203 16 1 75
+damage roll 9203 17 3 5
+damage roll 9124 16 1 75
+damage roll 9124 17 3 5
+damage roll 9422 16 1 75
+damage roll 9422 17 3 5
+damage roll 9100 16 1 75
+damage ships
+structure state 9203
+structure state 9124
+structure state 9422
+structure state 9100
+save 1000
+save 9000
+save 9001
+inherit state
+readlog 200
+
+section damage rocks all four amount bounds and adjacent destruction without skips
+set gm 200
+master 0
+set turn 1
+set day 1
+field 200 touched 9000
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 4
+link 10000 9000
+link 10000 9001
+routes 9000 0 9001 0 0
+entity 9133 9 30
+entity 9135 9 31
+entity 9344 9 66
+entity 9518 9 30
+link 9000 9133
+link 9000 9135
+link 9000 9344
+link 9000 9518
+field 9133 damage 93
+field 9135 damage 93
+field 9344 damage 92
+field 9518 damage 91
+damage roll 9133 18 1 50
+damage roll 9133 19 6 9
+damage roll 9135 18 1 50
+damage roll 9135 19 6 9
+damage roll 9344 18 1 50
+damage roll 9344 19 6 9
+damage roll 9518 18 1 50
+damage roll 9518 19 6 9
+damage ships
+structure state 9133
+structure state 9135
+structure state 9344
+structure state 9518
+save 9000
+readlog 200
+
+section damage open sea omens one two three and no omen control
+master 0
+set turn 1
+set day 1
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 1
+link 10000 9000
+link 10000 9001
+routes 9000 0 9001 0 0
+entity 9473 9 30
+entity 9230 9 31
+entity 9143 9 66
+entity 9100 9 30
+link 9000 9473
+link 9000 9230
+link 9000 9143
+link 9000 9100
+link 9473 1000
+link 9230 1001
+entity 1002 2 0
+field 1002 lord 201
+link 9143 1002
+field 200 touched 9000
+damage roll 9473 20 1 200
+damage roll 9230 20 1 200
+damage roll 9143 20 1 200
+damage roll 9100 20 1 200
+damage ships
+structure state 9473
+structure state 9230
+structure state 9143
+structure state 9100
+readlog 200
+readlog 201
+
+section damage mine five victims depth first uneven hidden captive and noncharacter pruning
+set gm 200
+master 0
+set turn 1
+set day 1
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9106 3 40
+link 9000 9106
+entity 11 4 0
+name 11 worker
+entity 1003 2 0
+entity 1002 2 0
+entity 1004 2 0
+entity 1005 2 0
+field 1003 lord 201
+field 1002 lord 201
+field 1004 lord 200
+field 1005 lord 201
+entity 9200 3 37
+link 9106 1001
+link 1001 1003
+link 1001 1002
+link 9106 9200
+link 9200 1005
+link 9106 1004
+link 9106 1000
+inventory 1001 11 1
+inventory 1003 11 2
+inventory 1002 11 6
+inventory 1004 11 7
+inventory 1000 11 11
+inventory 1005 11 100
+field 1001 hidden 1
+field 1003 prisoner 1
+field 9106 safe 1
+field 9106 shaft_depth 269
+field 200 touched 9000
+damage count 9106
+damage roll 9106 16 1 4
+damage roll 9106 17 1 5
+damage roll 9106 18 1 15
+damage mine 9106
+damage count 9106
+save 9106
+save 1000
+save 1001
+save 1002
+save 1003
+save 1004
+save 1005
+inherit state
+readlog 200
+readlog 201
+
+section damage mine other three phrases zero one and clamped victim counts
+master 0
+set turn 1
+set day 1
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9100 3 40
+entity 9101 3 40
+entity 9104 3 40
+link 9000 9100
+link 9000 9101
+link 9000 9104
+entity 11 4 0
+name 11 worker
+link 9100 1000
+damage count 9100
+damage mine 9100
+save 9100
+link 9101 1000
+inventory 1000 11 1
+damage mine 9101
+save 1000
+save 9101
+link 9104 1000
+additem 1000 11 7
+damage mine 9104
+save 1000
+save 9104
+readlog 200
+
+section damage mine threshold below equal above and signed shaft truncation
+set gm 200
+master 0
+set turn 1
+set day 1
+entity 11 4 0
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9100 3 40
+link 9000 9100
+link 9100 1000
+damage roll 9100 24 1 90
+damage count 9100
+damage locations
+save 9100
+field 9100 shaft_depth -4
+damage count 9100
+damage locations
+save 9100
+field 9100 shaft_depth 26
+damage count 9100
+damage locations
+save 9100
+field 9100 shaft_depth 27
+damage count 9100
+damage locations
+save 9100
+field 9100 shaft_depth 30
+damage count 9100
+damage locations
+save 9100
+readlog 200
+
+section damage mine real collapse then collapsed mine skipped on later random pass
+set gm 200
+master 0
+set turn 1
+set day 1
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9100 3 40
+entity 9101 3 40
+entity 11 4 0
+name 11 worker
+link 9000 9100
+link 9000 9101
+link 9100 1000
+link 9101 1001
+inventory 1000 11 5
+inventory 1001 11 5
+field 9100 shaft_depth 270
+field 9101 shaft_depth 270
+field 9100 damage 97
+field 9101 damage 93
+structure state 9100
+structure state 9101
+damage locations
+structure state 9100
+structure state 9101
+save 1000
+save 1001
+save 9000
+save 9100
+save 9101
+damage locations
+structure state 9100
+structure state 9101
+readlog 200
+
+section damage inn phrases all subject action consequence arms and five fifteen damage
+master 0
+set turn 1
+set day 1
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9100 3 37
+entity 9101 3 37
+entity 9102 3 37
+entity 9103 3 37
+entity 9105 3 37
+entity 9106 3 37
+entity 9108 3 37
+entity 9110 3 37
+entity 9113 3 37
+entity 9115 3 37
+link 9000 9100
+link 9000 9101
+link 9000 9102
+link 9000 9103
+link 9000 9105
+link 9000 9106
+link 9000 9108
+link 9000 9110
+link 9000 9113
+link 9000 9115
+link 9100 1000
+damage inn 9100
+save 9100
+link 9101 1000
+damage inn 9101
+save 9101
+link 9102 1000
+damage inn 9102
+save 9102
+link 9103 1000
+damage inn 9103
+save 9103
+link 9105 1000
+damage inn 9105
+save 9105
+link 9106 1000
+damage inn 9106
+save 9106
+link 9108 1000
+damage inn 9108
+save 9108
+link 9110 1000
+damage inn 9110
+save 9110
+link 9113 1000
+damage inn 9113
+save 9113
+link 9115 1000
+damage inn 9115
+save 9115
+readlog 200
+
+section damage inn rare actual trigger nontrigger no owner and unfinished ignores
+set gm 200
+master 0
+set turn 1
+set day 1
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9128 3 37
+entity 9100 3 37
+entity 9101 3 38
+entity 9102 3 41
+link 9000 9128
+link 9000 9100
+link 9000 9101
+link 9000 9102
+link 9100 1000
+damage roll 9128 25 1 100
+damage roll 9100 25 1 100
+damage locations
+structure state 9128
+structure state 9100
+structure state 9101
+structure state 9102
+readlog 200
+link 9128 1001
+field 9128 damage 88
+field 9128 safe 1
+damage locations
+structure state 9128
+save 1001
+save 9000
+readlog 200
+
+section damage guarded stream day replay master reload and minted aftermath
+set gm 200
+master 0
+set turn 1
+set day 1
+field 200 touched 9000
+weather probe 9000 257
+damage roll 9203 16 1 75
+master 9
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+link 10000 9000
+link 10000 9001
+routes 9000 0 9001 0 0
+entity 9203 9 30
+link 9000 9203
+link 9203 1000
+damage ships
+structure state 9203
+damage ships
+structure state 9203
+set day 2
+damage roll 9203 32 1 75
+damage ships
+structure state 9203
+set day 1
+damage ships
+structure state 9203
+weather probe 9000 257
+newitem 9001 0
+save_new
+set turn 2
+damage roll 9203 16 1 75
+damage ships
+structure state 9203
+weather probe 9000 257
+set turn 1
+damage roll 9203 16 1 75
+damage ships
+structure state 9203
+weather probe 9000 257
+newitem 9001 0
+save_new
+readlog 200
+
+section damage no call control preserves shared weather and mint aftermath
+master 0
+set turn 1
+set day 1
+weather probe 9000 257
+damage roll 9203 16 1 75
+master 9
+entity 9001 3 3
+weather probe 9000 257
+newitem 9001 0
+save_new
+set turn 2
+damage roll 9203 16 1 75
+weather probe 9000 257
+set turn 1
+damage roll 9203 16 1 75
+weather probe 9000 257
+newitem 9001 0
+save_new
+
+section damage invalid count preserves all char here call site assertion
+entity 9100 0 0
+damage count 9100
+
+section damage invalid inn owner requires building depth
+entity 9000 3 3
+damage inn 9000
+
+section damage adjacent nonhit gates reef two seventyfive rocks two fifty
+master 0
+set turn 1
+set day 1
+field 200 touched 9000
+entity 9000 3 1
+entity 9001 3 3
+entity 9002 3 4
+entity 9226 9 30
+entity 9150 9 30
+entity 9121 9 30
+link 9000 9226
+link 9000 9150
+link 9000 9121
+routes 9000 0 9001 0 0
+damage roll 9226 16 1 75
+damage roll 9150 16 1 75
+damage ships
+structure state 9226
+structure state 9150
+routes 9000 0 9002 0 0
+damage roll 9150 18 1 50
+damage roll 9121 18 1 50
+damage ships
+structure state 9150
+structure state 9121
+readlog 200
+
+section damage mine gate endpoints damage fifteen and day subslot independence
+set gm 200
+master 0
+set turn 1
+set day 1
+entity 10000 3 50
+entity 9000 3 3
+entity 9138 3 40
+entity 9116 3 40
+entity 11 4 0
+link 10000 9000
+link 9000 9138
+link 9000 9116
+link 9138 1000
+link 9116 1001
+damage roll 9138 24 1 90
+damage roll 9116 24 1 90
+field 9138 shaft_depth 2
+field 9116 shaft_depth 269
+damage locations
+save 9138
+save 9116
+field 9138 shaft_depth 3
+field 9116 shaft_depth 270
+damage locations
+save 9138
+save 9116
+set day 2
+damage roll 9138 32 1 4
+damage roll 9138 33 1 5
+damage roll 9138 34 1 15
+damage mine 9138
+save 9138
+set day 1
+damage mine 9138
+save 9138
+readlog 200
+
+section damage inn adjacent false gates two hundred and first captive owner
+master 0
+set turn 1
+set day 1
+entity 10000 3 50
+entity 9000 3 3
+entity 9182 3 37
+entity 9206 3 37
+entity 9128 3 37
+entity 9200 4 0
+link 10000 9000
+link 9000 9182
+link 9000 9206
+link 9000 9128
+link 9128 9200
+link 9128 1001
+link 9128 1000
+field 1001 prisoner 1
+damage roll 9182 25 1 100
+damage roll 9206 25 1 100
+damage locations
+structure state 9182
+structure state 9206
+structure state 9128
+readlog 200
+field 1001 prisoner 0
+field 1001 lord 201
+set day 2
+damage roll 9128 32 5 15
+damage roll 9128 33 1 6
+damage roll 9128 34 1 5
+damage roll 9128 35 1 7
+damage inn 9128
+save 9128
+readlog 200
+readlog 201

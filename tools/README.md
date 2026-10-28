@@ -59,6 +59,16 @@ Run the same eight comparisons sequentially before vet/default tests. No new
 source dependency or pin: u.c was already tracked. Daily coastal/mine/inn
 events remain #78, character damage/healing/ocean polling #79, and monthly
 mine decay #88. Full worlds remain opt-in; no stage-exit success is implied.
+Daily coastal and location damage (#78) extends that same command harness
+with complete day.c near_rocky_coast, ship_coastal_damage, mine_calamity,
+inn_calamity and random_loc_damage, plus u.c count_loc_char_item and the
+original mine_depth macro. It uses the real structural destruction above,
+worker consumption, VECT/logging, topology/ownership and shared wthr stream.
+Actual-hit cases, independent C gate/range endpoint controls and paired
+shuffle/mint aftermath distinguish the per-day leaf keys and turn guards.
+Run command/move/helper/rng/code/loadsave/turn-driver/default turn sequentially
+before vet/default tests. No source dependency or pin change; no duplicate
+weather harness, character damage helper, unrelated command or full turn.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks
