@@ -11,6 +11,33 @@ import (
 
 // Ported from olympia/garr.c: the garrison ownership/output closure.
 
+// garrisonNotices is garr.c:764–780. Only the target itself is checked in
+// the watch list here; spotting below separately scans its entire stack.
+func (w *world) garrisonNotices(garr, target int) bool {
+	if w.isNPC(target) || w.countStackUnits(target) >= 5 || w.countStackFigures(target) >= 20 {
+		return true
+	}
+	p := w.rpMisc(garr)
+	return p != nil && p.garrWatch.Lookup(target) >= 0
+}
+
+// garrisonSpotCheck is garr.c:783–810, including its output before the
+// caller prints the spotted stack and the ordinary arrival message.
+func (w *world) garrisonSpotCheck(garr, target int) bool {
+	assert(w.validBox(garr), "olympia/garr.c", 790, "valid_box(garr)")
+	p := w.rpMisc(garr)
+	if p == nil {
+		return false
+	}
+	for i := range w.loopStack(target) {
+		if p.garrWatch.Lookup(i) >= 0 {
+			w.commandOut(garr, "Spotted in %s:", w.boxName(w.province(garr)))
+			return true
+		}
+	}
+	return false
+}
+
 // rankS is garr.c:603–624 rank_s; ranks are the garr.h constants.
 func (w *world) rankS(who int) string {
 	var rank int8

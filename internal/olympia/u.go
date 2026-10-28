@@ -199,6 +199,15 @@ func (w *world) countStackAny(who int) int32 {
 	return sum
 }
 
+// countStackUnits is u.c:1200–1213, including prisoners and NPC descendants.
+func (w *world) countStackUnits(who int) int32 {
+	sum := int32(1)
+	for range w.allCharHere(who) {
+		sum++
+	}
+	return sum
+}
+
 // olytimeIncrement is olytime_increment(): advance the epoch and day,
 // without rolling over the day or changing the turn.
 func olytimeIncrement(p *olytime) {

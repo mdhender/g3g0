@@ -234,3 +234,50 @@ empty-banner fixture and actual log messages, are intentional.
 This accepts only character formatting and stack display. Movement messages
 remain #110; report assembly, monthly rank computation, noncharacter
 descriptions and full MOVE/turn acceptance remain explicitly unfinished.
+
+## Departure, arrival and garrison spotting (#110)
+
+Complete pinned definitions now include u.c `count_stack_units` (1200–1213)
+and `count_stack_any` (1247–1260), garr.c `garrison_notices` (764–780) and
+`garrison_spot_check` (783–810), and move.c `departure_message` (11–73) and
+`arrival_message` (76–133). The latter retains its static linkage and is
+exposed through a driver wrapper. Original oly.h macros supply NPC and
+really-hidden predicates; original glob.c supplies `exit_opposite` and
+direction strings. These files were already tracked source dependencies;
+no additional upstream file or successful dependency stub is introduced.
+The accepted complete descriptions, stack walks, ownership, real sout
+routing/indentation/wiout and actual io.c serializer are reused unchanged.
+
+Nineteen appended sections distinguish four versus five units (including
+NPCs, deeper descendants and prisoners), nineteen versus twenty figures,
+inventory filtering and signed C-int wrap, all NPC predicates, absent/empty/
+unrelated/duplicate watches and the special zero-figure garrison. Watch
+notices check only the leader; spotting traverses the whole character stack,
+including deeper prisoners, while pruning noncharacter branches. Actual
+logs distinguish the spotted header, indented spotted stack and ordinary
+arrival, including cases where only one of notice and spotting succeeds.
+
+Messages cover every cardinal direction and its opposite, zero/negative/
+noncardinal directions, entered/exited and same-view paths, comma grammar,
+accompanied stacks, really hidden alone versus inventory/descendants, origin
+versus destination fog (including negative strength), nonprovince weather,
+hidden origin versus hidden destination, silent factions, touched and
+garrison-only visibility, and existing true `show_to_garrison`. State dumps
+observe early returns preserving that flag versus completion resetting it,
+primary indentation restoration and wiout's secondary-indent reset. Raw
+faction logs, output-bit insertion order, allocated player data, watch lists,
+here lists/inventories and real serialized boxes are compared with Go.
+
+Two fresh bounded deterministic C runs produce **135 sections / 7150 lines /
+142755 bytes**. The complete prior **116-section input** and **5944 lines /
+119914 output bytes** remain exact prefixes. Command input and its **207
+sections / 7193 lines / 137909 output bytes** are unchanged. Literal trailing
+spaces in actual serialized here lists are retained. An appended temporary
+expected-abort noncharacter departure probe was rejected by the unfinished
+dependency marker in both normal and `--update` mode, with the recording
+unchanged; the probe was then removed.
+
+This accepts only the complete message/spotting helpers, not MOVE callbacks
+(#67), other arrival effects (#111–#113), report assembly, noncharacter
+descriptions or a whole-world turn. Defaults remain fast recorded tests;
+full-world checks stay opt-in. These helpers introduce no RNG draws.

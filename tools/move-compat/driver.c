@@ -41,6 +41,7 @@ void drv_restore(struct command *, struct exit_view *);
 void drv_suspend(int);
 void drv_unstack(int);
 int drv_sub_item(int, int, int);
+void drv_arrival(int, struct exit_view *);
 int find_command(char *);
 
 static void weights_dump(struct weights *w)
@@ -180,6 +181,22 @@ int main(int argc, char **argv)
         else if (!strcmp(op, "touched")) set_bit(&p_player(a)->locs, b);
         else if (!strcmp(op, "pledge")) p_magic(a)->pledge = b;
         else if (!strcmp(op, "castle")) p_misc(a)->garr_castle = b;
+        else if (!strcmp(op, "watch")) ilist_append(&p_misc(a)->garr_watch, b);
+        else if (!strcmp(op, "notice")) printf("notice %d units %d figures %d\n", garrison_notices(a, b), count_stack_units(b), count_stack_figures(b));
+        else if (!strcmp(op, "spot")) { int found = garrison_spot_check(a, b); printf("spot %d\n", found); }
+        else if (!strcmp(op, "depart")) departure_message(a, &v);
+        else if (!strcmp(op, "arrive")) drv_arrival(a, &v);
+        else if (!strcmp(op, "message_state")) {
+            int n, i;
+            printf("message %d %d %d\n", show_to_garrison, indent, second_indent);
+            loop_boxes(n) {
+                if (rp_misc(n)) {
+                    printf("watch %d:", n);
+                    for (i = 0; i < ilist_len(rp_misc(n)->garr_watch); i++) printf(" %d", rp_misc(n)->garr_watch[i]);
+                    printf("\n");
+                }
+            } next_box;
+        }
         else if (!strcmp(op, "emit")) out(a, "routing %d  ", b);
         else if (!strcmp(op, "rulers")) {
             ilist l = players_who_rule_here(a); int i;

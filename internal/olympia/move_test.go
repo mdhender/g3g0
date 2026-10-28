@@ -199,6 +199,24 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 			w.pMagic(n).pledge = int32(b)
 		case "castle":
 			w.pMisc(n).garrCastle = int32(b)
+		case "watch":
+			w.pMisc(n).garrWatch.Append(b)
+		case "notice":
+			fmt.Fprintf(&stdout, "notice %d units %d figures %d\n", b2i(w.garrisonNotices(n, b)), w.countStackUnits(b), w.countStackFigures(b))
+		case "spot":
+			found := w.garrisonSpotCheck(n, b)
+			fmt.Fprintf(&stdout, "spot %d\n", b2i(found))
+		case "depart":
+			w.departureMessage(n, v)
+		case "arrive":
+			w.arrivalMessage(n, v)
+		case "message_state":
+			fmt.Fprintf(&stdout, "message %d %d %d\n", b2i(w.showToGarrison), w.indent, w.secondIndent)
+			for n := range w.loopBoxes() {
+				if p := w.rpMisc(n); p != nil {
+					helperList(&stdout, fmt.Sprintf("watch %d", n), p.garrWatch)
+				}
+			}
 		case "emit":
 			w.commandOut(n, "routing %d  ", b)
 		case "rulers":

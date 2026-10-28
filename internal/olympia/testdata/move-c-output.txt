@@ -5942,3 +5942,1209 @@ text 1001 [] [12345678901234567890123456789012345678901234567890] []
 stderr:
 
 exit 0
+stdout:
+section notice small four five units counts prisoners and nested NPCs
+> box 1000 2 64 0
+> box 1001 2 0 0
+> notice 1000 1001
+notice 0 units 1 figures 1
+> box 1007 2 0 1001
+> box 1003 2 0 1007
+> box 1002 2 54 1001
+> unit 1003 0 1 0
+> notice 1000 1001
+notice 0 units 4 figures 4
+> box 1009 2 0 1003
+> unit 1009 0 1 0
+> notice 1000 1001
+notice 1 units 5 figures 5
+> box 219 4 0 1001
+> box 1099 2 0 219
+> notice 1000 1001
+notice 1 units 5 figures 5
+> watch 1000 1099
+> spot 1000 1001
+spot 0
+> message_state
+message 0 0 0
+watch 1000: 1099
+> state
+state factor 20
+box 219 4 0 1001 here 1099
+box 1000 2 64 0 here
+storm 0
+box 1001 2 0 0 here 1007 1002 219
+box 1002 2 54 1001 here
+box 1003 2 0 1007 here 1009
+unit 0 1 0 0
+box 1007 2 0 1001 here 1003
+box 1009 2 0 1003 here
+unit 0 1 0 0
+box 1099 2 0 219 here
+stderr:
+
+exit 0
+stdout:
+section notice nineteen twenty figures inventory filters and wrap
+> box 1000 2 64 0
+> box 1001 2 0 0
+> box 201 4 0 0
+> air 201 0 0 1
+> inv 1001 201 18
+> notice 1000 1001
+notice 0 units 1 figures 19
+> inv 1001 201 19
+> notice 1000 1001
+notice 1 units 1 figures 20
+> inv 1001 201 -1
+> notice 1000 1001
+notice 0 units 1 figures 1
+> inv 1001 201 2147483647
+> notice 1000 1001
+notice 0 units 1 figures -2147483648
+> box 202 4 0 0
+> fighter 202 99 0 0
+> inv 1001 202 71
+> notice 1000 1001
+notice 0 units 1 figures -2147483577
+> state
+state factor 20
+box 201 4 0 0 here
+item 0 0 0 0 0 1 0 0 0
+box 202 4 0 0 here
+item 0 0 0 0 0 0 99 0 0
+box 1000 2 64 0 here
+box 1001 2 0 0 here
+inv 201 2147483647
+inv 202 71
+stderr:
+
+exit 0
+stdout:
+section notice NPC subkind loyalty summon and garrison zero figures
+> box 1000 2 64 0
+> box 1001 2 54 0
+> notice 1000 1001
+notice 1 units 1 figures 1
+> subkind 1001 0
+> unit 1001 0 0 4
+> notice 1000 1001
+notice 1 units 1 figures 1
+> unit 1001 0 0 5
+> notice 1000 1001
+notice 1 units 1 figures 1
+> unit 1001 0 0 0
+> notice 1000 1001
+notice 0 units 1 figures 1
+> notice 1000 1000
+notice 1 units 1 figures 0
+> watch 1000 1001
+> watch 1000 1001
+> notice 1000 1001
+notice 1 units 1 figures 1
+> message_state
+message 0 0 0
+watch 1000: 1001 1001
+stderr:
+
+exit 0
+stdout:
+section spot absent empty unrelated watch and watched root output
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 204 1 49 0
+> box 1000 2 64 10101
+> spot 1000 999
+spot 0
+> box 301 3 32 10101
+> box 1090 2 0 301
+> lord 1090 204
+> castle 1000 301
+> spot 1000 1000
+spot 0
+> box 1001 2 0 10101
+> watch 1000 1002
+> spot 1000 1001
+spot 0
+> notice 1000 1001
+notice 0 units 1 figures 1
+> watch 1000 1001
+> output 1
+> spot 1000 1001
+6:0:1000:0::Spotted in Plain~[ab01]:
+spot 1
+> message_state
+message 0 0 0
+watch 1000: 1002 1001
+> routing_state
+player_data 100 0
+player_data 204 0
+player_data 301 0
+castle 1000 301
+player_data 1000 0
+player_data 1001 0
+player_data 1090 0
+player_data 10101 0
+> serialize 1000
+1000 char garrison
+LI
+ wh 10101
+MI
+ gc 301
+
+stderr:
+
+exit 0
+stdout:
+section departure and arrival cardinal directions comma and no comma
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 4 100
+> box 204 1 49 0
+> touched 204 10101
+> touched 204 10102
+> name 10101 Westland
+> name 10102 Eastland
+> box 1001 2 0 10101
+> name 1001 Scout
+> output 1
+> exit1 1 10102 10101 7
+> depart 1001
+10101:0::0::Scout~[1001] went north.
+> arrive 1001
+10102:0::0::Scout~[1001] arrived from the south.
+> rank 1001 10
+> exit1 2 10102 10101 7
+> depart 1001
+10101:0::0::Scout~[1001], lord, went east.
+> arrive 1001
+10102:0::0::Scout~[1001], lord, arrived from the west.
+> exit1 3 10102 10101 7
+> depart 1001
+10101:0::0::Scout~[1001], lord, went south.
+> arrive 1001
+10102:0::0::Scout~[1001], lord, arrived from the north.
+> exit1 4 10102 10101 7
+> depart 1001
+10101:0::0::Scout~[1001], lord, went west.
+> arrive 1001
+10102:0::0::Scout~[1001], lord, arrived from the east.
+> exit1 5 10102 10101 7
+> depart 1001
+10101:0::0::Scout~[1001], lord, left for Eastland~[ab02].
+> arrive 1001
+10102:0::0::Scout~[1001], lord, arrived from Westland~[ab01].
+> exit1 0 10102 10101 7
+> depart 1001
+10101:0::0::Scout~[1001], lord, left for Eastland~[ab02].
+> arrive 1001
+10102:0::0::Scout~[1001], lord, arrived from Westland~[ab01].
+> exit1 -1 10102 10101 7
+> depart 1001
+10101:0::0::Scout~[1001], lord, left for Eastland~[ab02].
+> arrive 1001
+10102:0::0::Scout~[1001], lord, arrived from Westland~[ab01].
+> message_state
+message 0 0 0
+> format_state
+format 0 0 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 1001 [Scout] [] []
+flags 1001 0 0 0 0
+text 10101 [Westland] [] []
+text 10102 [Eastland] [] []
+stderr:
+
+exit 0
+stdout:
+section entered exited same view no departure but arrival and existing flag
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 301 3 32 10101
+> box 302 3 33 10101
+> box 303 3 33 301
+> box 1001 2 0 10101
+> box 204 1 49 0
+> touched 204 10101
+> name 1001 Alone
+> output 1
+> frame 2 -7
+> exit1 7 301 10101 0
+> garrison_view 1
+> depart 1001
+10101:0::2/-7::Alone~[1001] entered Castle~[301].
+> message_state
+message 0 2 -7
+> arrive 1001
+10101:0::2/-7::Alone~[1001] arrived from Plain~[ab01].
+> exit1 8 10101 301 0
+> depart 1001
+10101:0::2/-7::Alone~[1001] exited Castle~[301].
+> arrive 1001
+10101:0::2/-7::Alone~[1001] arrived from Castle~[301].
+> exit1 2 302 301 0
+> garrison_view 1
+> depart 1001
+> message_state
+message 1 2 -7
+> arrive 1001
+10101:0::2/-7::Alone~[1001] arrived from the west.
+> message_state
+message 0 2 -7
+> exit1 7 303 301 0
+> depart 1001
+10101:0::2/-7::Alone~[1001] entered Galley-in-progress~[303].
+> arrive 1001
+10101:0::2/-7::Alone~[1001] arrived from Castle~[301].
+> format_state
+format 2 -7 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 301 [] [] []
+text 302 [] [] []
+text 303 [] [] []
+text 1001 [Alone] [] []
+text 10101 [] [] []
+stderr:
+
+exit 0
+stdout:
+section hidden destination departure suppresses but arrival does not
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 3 100
+> box 1001 2 0 10101
+> box 204 1 49 0
+> touched 204 10101
+> touched 204 10102
+> output 1
+> garrison_view 1
+> exit1 2 10102 10101 7
+> exit2 0 -2 0 1
+> depart 1001
+> message_state
+message 1 0 0
+> arrive 1001
+10102:0::0::<no subkind>~[1001] arrived from the west.
+> message_state
+message 0 0 0
+> exit2 0 0 -3 1
+> garrison_view 1
+> depart 1001
+10101:0::0::<no subkind>~[1001] went east.
+> message_state
+message 0 0 0
+> arrive 1001
+10102:0::0::<no subkind>~[1001] arrived.
+> message_state
+message 0 0 0
+> exit1 6 10102 10101 7
+> arrive 1001
+10102:0::0::<no subkind>~[1001] arrived.
+> format_state
+format 0 0 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 1001 [] [] []
+text 10101 [] [] []
+text 10102 [] [] []
+stderr:
+
+exit 0
+stdout:
+section really hidden alone early return versus inventory stack and prisoner
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 3 100
+> box 1001 2 0 10101
+> box 204 1 49 0
+> touched 204 10101
+> touched 204 10102
+> magic_flags 1001 0 0 1
+> exit1 1 10102 10101 7
+> output 1
+> garrison_view 1
+> depart 1001
+> arrive 1001
+> message_state
+message 1 0 0
+> box 201 4 0 0
+> air 201 0 0 1
+> inv 1001 201 1
+> depart 1001
+10101:0::0::<no subkind>~[1001] went north.
+> arrive 1001
+10102:0::0::<no subkind>~[1001] arrived from the south.
+> message_state
+message 0 0 0
+> inv 1001 201 0
+> box 1003 2 0 1001
+> unit 1003 0 1 0
+> depart 1001
+10101:0::0::<no subkind>~[1001] went north, accompanied~by:
+10101:0::3/3::<no subkind>~[1003], prisoner
+> arrive 1001
+10102:0::0::<no subkind>~[1001] arrived from the south, accompanied~by:
+10102:0::3/3::<no subkind>~[1003], prisoner
+> message_state
+message 0 0 0
+> format_state
+format 0 0 0 0 [] olympus 0
+text 100 [] [] []
+text 201 [] [] []
+prominent 201 0 unique 0
+text 204 [] [] []
+text 1001 [] [] []
+flags 1001 0 0 1 0
+magician 1001 0
+text 1003 [] [] []
+flags 1003 0 0 0 0
+text 10101 [] [] []
+text 10102 [] [] []
+stderr:
+
+exit 0
+stdout:
+section fog departure origin arrival destination asymmetry and nonprovince weather
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 3 100
+> box 301 3 33 10101
+> box 302 3 33 10102
+> box 1001 2 0 10101
+> box 204 1 49 0
+> touched 204 10101
+> touched 204 10102
+> box 400 11 57 10101
+> strength 400 7
+> exit1 2 10102 10101 7
+> output 1
+> garrison_view 1
+> depart 1001
+> message_state
+message 1 0 0
+watch 400:
+> arrive 1001
+10102:0::0::<no subkind>~[1001] arrived from the west.
+> place 400 10102
+> garrison_view 1
+> depart 1001
+10101:0::0::<no subkind>~[1001] went east.
+> message_state
+message 0 0 0
+watch 400:
+> arrive 1001
+> message_state
+message 0 0 0
+watch 400:
+> strength 400 -2
+> arrive 1001
+> message_state
+message 0 0 0
+watch 400:
+> exit1 2 302 301 7
+> depart 1001
+10101:0::0::<no subkind>~[1001] went east.
+> arrive 1001
+10102:0::0::<no subkind>~[1001] arrived from the west.
+> message_state
+message 0 0 0
+watch 400:
+> format_state
+format 0 0 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 301 [] [] []
+text 302 [] [] []
+text 400 [] [] []
+text 1001 [] [] []
+text 10101 [] [] []
+text 10102 [] [] []
+stderr:
+
+exit 0
+stdout:
+section departure real garrison notice threshold and touched faction logs
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 4 100
+> box 301 3 32 10101
+> box 204 1 49 0
+> box 205 1 49 0
+> box 206 1 49 0
+> box 1000 2 64 10101
+> box 1090 2 0 301
+> lord 1090 204
+> castle 1000 301
+> box 1001 2 0 10101
+> name 1001 Traveler
+> lord 1001 206
+> box 201 4 0 0
+> name 201 soldier
+> plural 201 soldiers
+> air 201 0 0 1
+> touched 205 10101
+> day 17
+> show_day 1
+> frame 2 -9
+> exit1 2 10102 10101 7
+> inv 1001 201 18
+> serialize 1001
+1001 char 0
+na Traveler
+il	201 18
+LI
+ wh 10101
+CH
+ lo 206
+
+> serialize 1000
+1000 char garrison
+LI
+ wh 10101
+MI
+ gc 301
+
+> serialize 204
+204 player pl_regular
+
+> depart 1001
+> message_state
+message 0 2 -9
+watch 1000:
+> inv 1001 201 19
+> depart 1001
+> message_state
+message 0 2 -9
+watch 1000:
+> report 204
+report 204:
+10101:0::2/-9:17:Traveler~[1001] went east.
+> report 205
+report 205:
+10101:0::2/-9:17:Traveler~[1001] went east.
+10101:0::2/-9:17:Traveler~[1001] went east.
+> report 206
+report 206:
+> routing_state
+player_data 100 0
+player_data 201 0
+player_data 204 1
+touched 204:
+known 204:
+output_order 204: 10101
+player_data 205 1
+touched 205: 10101
+known 205:
+output_order 205: 10101
+player_data 206 1
+touched 206:
+known 206:
+output_order 206:
+player_data 301 0
+castle 1000 301
+player_data 1000 0
+player_data 1001 0
+player_data 1090 0
+player_data 10101 0
+player_data 10102 0
+> state
+state factor 20
+box 100 3 50 0 here 10101 10102
+box 201 4 0 0 here
+item 0 0 0 0 0 1 0 0 0
+box 204 1 49 0 here
+output: 10101
+box 205 1 49 0 here
+output: 10101
+box 206 1 49 0 here
+output:
+box 301 3 32 10101 here 1090
+box 1000 2 64 10101 here
+storm 0
+box 1001 2 0 10101 here
+unit 0 0 0 206
+inv 201 19
+box 1090 2 0 301 here
+unit 0 0 0 204
+box 10101 3 3 100 here 301 1000 1001
+box 10102 3 4 100 here
+> serialize 1001
+1001 char 0
+na Traveler
+il	201 19
+LI
+ wh 10101
+CH
+ lo 206
+
+> serialize 1000
+1000 char garrison
+LI
+ wh 10101
+MI
+ gc 301
+
+> serialize 204
+204 player pl_regular
+PL
+
+stderr:
+
+exit 0
+stdout:
+section arrival real garrison four five nested units prisoner output framing
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 4 100
+> box 301 3 32 10102
+> box 204 1 49 0
+> box 205 1 49 0
+> box 1000 2 64 10102
+> box 1090 2 0 301
+> lord 1090 204
+> castle 1000 301
+> box 1001 2 0 10102
+> box 1007 2 0 1001
+> box 1003 2 0 1007
+> box 1002 2 0 1001
+> unit 1003 0 1 0
+> magic_flags 1002 0 0 1
+> name 1001 Leader
+> name 1007 First
+> name 1003 Deep
+> name 1002 Last
+> touched 205 10102
+> day 23
+> show_day 1
+> frame -2 11
+> exit1 4 10102 10101 7
+> arrive 1001
+> message_state
+message 0 -2 0
+watch 1000:
+> box 1009 2 0 1003
+> name 1009 Fifth
+> arrive 1001
+> message_state
+message 0 -2 0
+watch 1000:
+> report 204
+report 204:
+10102:0::-2:23:Leader~[1001] arrived from the east, accompanied~by:
+10102:0::1/3:23:First~[1007]
+10102:0::1/3:23:Deep~[1003], prisoner
+10102:0::1/3:23:Fifth~[1009]
+10102:0::1/3:23:Last~[1002]
+> report 205
+report 205:
+10102:0::-2/11:23:Leader~[1001] arrived from the east, accompanied~by:
+10102:0::1/3:23:First~[1007]
+10102:0::1/3:23:Deep~[1003], prisoner
+10102:0::1/3:23:Last~[1002]
+10102:0::-2:23:Leader~[1001] arrived from the east, accompanied~by:
+10102:0::1/3:23:First~[1007]
+10102:0::1/3:23:Deep~[1003], prisoner
+10102:0::1/3:23:Fifth~[1009]
+10102:0::1/3:23:Last~[1002]
+> routing_state
+player_data 100 0
+player_data 204 1
+touched 204:
+known 204:
+output_order 204: 10102
+player_data 205 1
+touched 205: 10102
+known 205:
+output_order 205: 10102
+player_data 301 0
+castle 1000 301
+player_data 1000 0
+player_data 1001 0
+pledge 1002 0
+player_data 1002 0
+player_data 1003 0
+player_data 1007 0
+player_data 1009 0
+player_data 1090 0
+player_data 10101 0
+player_data 10102 0
+> state
+state factor 20
+box 100 3 50 0 here 10101 10102
+box 204 1 49 0 here
+output: 10102
+box 205 1 49 0 here
+output: 10102
+box 301 3 32 10102 here 1090
+box 1000 2 64 10102 here
+storm 0
+box 1001 2 0 10102 here 1007 1002
+box 1002 2 0 1001 here
+unit 0 0 0 0
+box 1003 2 0 1007 here 1009
+unit 0 1 0 0
+box 1007 2 0 1001 here 1003
+box 1009 2 0 1003 here
+box 1090 2 0 301 here
+unit 0 0 0 204
+box 10101 3 3 100 here
+box 10102 3 4 100 here 301 1000 1001
+> serialize 1001
+1001 char 0
+na Leader
+LI
+ wh 10102
+ hl 1007 1002 
+
+> serialize 1007
+1007 char 0
+na First
+LI
+ wh 1001
+ hl 1003 
+
+> serialize 1003
+1003 char 0
+na Deep
+LI
+ wh 1007
+ hl 1009 
+CH
+ pr 1
+
+> serialize 1002
+1002 char 0
+na Last
+LI
+ wh 1001
+CH
+CM
+ hs 1
+
+> serialize 1009
+1009 char 0
+na Fifth
+LI
+ wh 1003
+
+stderr:
+
+exit 0
+stdout:
+section arrival watched deeper prisoner spots before ordinary location without notice
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 4 100
+> box 301 3 32 10102
+> box 204 1 49 0
+> box 205 1 49 0
+> box 1000 2 64 10102
+> box 1090 2 0 301
+> lord 1090 204
+> castle 1000 301
+> box 1001 2 0 10102
+> box 1007 2 0 1001
+> box 1003 2 0 1007
+> name 1001 Leader
+> name 1007 First
+> name 1003 Captive
+> unit 1003 0 1 0
+> watch 1000 999
+> watch 1000 1003
+> watch 1000 1003
+> touched 205 10102
+> show_day 1
+> day 11
+> frame 4 13
+> exit1 1 10102 10101 7
+> serialize 1000
+1000 char garrison
+LI
+ wh 10102
+MI
+ gc 301
+
+> serialize 1001
+1001 char 0
+na Leader
+LI
+ wh 10102
+ hl 1007 
+
+> serialize 204
+204 player pl_regular
+
+> notice 1000 1001
+notice 0 units 3 figures 3
+> arrive 1001
+> message_state
+message 0 4 0
+watch 1000: 999 1003 1003
+> report 204
+report 204:
+6:0:1000:4/13:11:Spotted in Mountain~[ab02]:
+6:0:1000:7/13:11:Leader~[1001], accompanied~by:
+6:0:1000:10/3:11:First~[1007]
+6:0:1000:10/3:11:Captive~[1003], prisoner
+> report 205
+report 205:
+10102:0::4:11:Leader~[1001] arrived from the south, accompanied~by:
+10102:0::7/3:11:First~[1007]
+10102:0::7/3:11:Captive~[1003], prisoner
+> routing_state
+player_data 100 0
+player_data 204 1
+touched 204:
+known 204:
+output_order 204: 6
+player_data 205 1
+touched 205: 10102
+known 205:
+output_order 205: 10102
+player_data 301 0
+castle 1000 301
+player_data 1000 0
+player_data 1001 0
+player_data 1003 0
+player_data 1007 0
+player_data 1090 0
+player_data 10101 0
+player_data 10102 0
+> serialize 1000
+1000 char garrison
+LI
+ wh 10102
+MI
+ gc 301
+
+> serialize 1001
+1001 char 0
+na Leader
+LI
+ wh 10102
+ hl 1007 
+
+> serialize 204
+204 player pl_regular
+PL
+
+> format_state
+format 4 0 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 205 [] [] []
+text 301 [] [] []
+text 1000 [] [] []
+text 1001 [Leader] [] []
+text 1003 [Captive] [] []
+flags 1003 0 0 0 0
+text 1007 [First] [] []
+text 1090 [] [] []
+flags 1090 0 0 0 0
+text 10101 [] [] []
+text 10102 [] [] []
+stderr:
+
+exit 0
+stdout:
+section watched root notices and spots duplicated faction message order
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 4 100
+> box 301 3 32 10102
+> box 204 1 49 0
+> box 1000 2 64 10102
+> box 1090 2 0 301
+> lord 1090 204
+> castle 1000 301
+> box 1001 2 0 10102
+> name 1001 Marked
+> rank 1001 20
+> watch 1000 1001
+> show_day 1
+> day 7
+> frame 1 -5
+> exit1 3 10102 10101 7
+> arrive 1001
+> message_state
+message 0 1 -5
+watch 1000: 1001
+> report 204
+report 204:
+6:0:1000:1/-5:7:Spotted in Mountain~[ab02]:
+6:0:1000:4/-5:7:Marked~[1001], knight.
+10102:0::1/-5:7:Marked~[1001], knight, arrived from the north.
+> routing_state
+player_data 100 0
+player_data 204 1
+touched 204:
+known 204:
+output_order 204: 6 10102
+player_data 301 0
+castle 1000 301
+player_data 1000 0
+player_data 1001 0
+player_data 1090 0
+player_data 10101 0
+player_data 10102 0
+> format_state
+format 1 -5 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 301 [] [] []
+text 1000 [] [] []
+text 1001 [Marked] [] []
+flags 1001 0 0 0 0
+text 1090 [] [] []
+flags 1090 0 0 0 0
+text 10101 [] [] []
+text 10102 [] [] []
+stderr:
+
+exit 0
+stdout:
+section small preexisting garrison visibility completed resets versus silent recipients
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 4 100
+> box 301 3 32 10101
+> box 302 3 32 10102
+> box 204 1 49 0
+> box 205 1 49 0
+> box 1000 2 64 10101
+> box 1009 2 64 10102
+> box 1090 2 0 301
+> box 1091 2 0 302
+> lord 1090 204
+> lord 1091 205
+> castle 1000 301
+> castle 1009 302
+> box 1001 2 0 10101
+> exit1 2 10102 10101 7
+> garrison_view 1
+> depart 1001
+> message_state
+message 0 0 0
+watch 1000:
+watch 1009:
+> arrive 1001
+> message_state
+message 0 0 0
+watch 1000:
+watch 1009:
+> garrison_view 1
+> arrive 1001
+> message_state
+message 0 0 0
+watch 1000:
+watch 1009:
+> subkind 205 62
+> garrison_view 1
+> arrive 1001
+> message_state
+message 0 0 0
+watch 1000:
+watch 1009:
+> report 204
+report 204:
+10101:0::0::<no subkind>~[1001] went east.
+> report 205
+report 205:
+10102:0::0::<no subkind>~[1001] arrived from the west.
+10102:0::0::<no subkind>~[1001] arrived from the west.
+> routing_state
+player_data 100 0
+player_data 204 1
+touched 204:
+known 204:
+output_order 204: 10101
+player_data 205 1
+touched 205:
+known 205:
+output_order 205: 10102
+player_data 301 0
+player_data 302 0
+castle 1000 301
+player_data 1000 0
+player_data 1001 0
+castle 1009 302
+player_data 1009 0
+player_data 1090 0
+player_data 1091 0
+player_data 10101 0
+player_data 10102 0
+stderr:
+
+exit 0
+stdout:
+section NPC departure arrival and watch blocked by fog before spotting
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 4 100
+> box 301 3 32 10101
+> box 302 3 32 10102
+> box 204 1 49 0
+> box 205 1 49 0
+> box 1000 2 64 10101
+> box 1009 2 64 10102
+> box 1090 2 0 301
+> box 1091 2 0 302
+> lord 1090 204
+> lord 1091 205
+> castle 1000 301
+> castle 1009 302
+> box 1001 2 0 10101
+> unit 1001 0 0 4
+> name 1001 Wanderer
+> watch 1009 1001
+> exit1 2 10102 10101 7
+> depart 1001
+> arrive 1001
+> box 201 4 0 0
+> name 201 wolf
+> plural 201 wolves
+> air 201 0 0 1
+> subkind 1001 54
+> unit 1001 201 0 0
+> inv 1001 201 2
+> depart 1001
+> arrive 1001
+> box 400 11 57 10102
+> strength 400 9
+> garrison_view 1
+> arrive 1001
+> message_state
+message 1 0 0
+watch 400:
+watch 1000:
+watch 1009: 1001
+> report 204
+report 204:
+10101:0::0::Wanderer~[1001] went east.
+10101:0::0::Wanderer~[1001], wolves, number:~3, went east.
+> report 205
+report 205:
+6:0:1009:0::Spotted in Mountain~[ab02]:
+6:0:1009:3::Wanderer~[1001].
+10102:0::0::Wanderer~[1001] arrived from the west.
+6:0:1009:0::Spotted in Mountain~[ab02]:
+6:0:1009:3::Wanderer~[1001], wolves, number:~3.
+10102:0::0::Wanderer~[1001], wolves, number:~3, arrived from the west.
+> routing_state
+player_data 100 0
+player_data 201 0
+player_data 204 1
+touched 204:
+known 204:
+output_order 204: 10101
+player_data 205 1
+touched 205:
+known 205:
+output_order 205: 6 10102
+player_data 301 0
+player_data 302 0
+castle 400 0
+player_data 400 0
+castle 1000 301
+player_data 1000 0
+player_data 1001 0
+castle 1009 302
+player_data 1009 0
+player_data 1090 0
+player_data 1091 0
+player_data 10101 0
+player_data 10102 0
+stderr:
+
+exit 0
+stdout:
+section invalid departure unit assertion
+> depart 999
+stderr:
+assertion failure: olympia/move.c (19): valid_box(who)
+
+exit 134
+stdout:
+section invalid spotting garrison assertion
+> spot 999 1001
+stderr:
+assertion failure: olympia/garr.c (790): valid_box(garr)
+
+exit 134
+stdout:
+section departure watched descendant does not notice then watched root does
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 4 100
+> box 301 3 32 10101
+> box 204 1 49 0
+> box 205 1 49 0
+> box 1000 2 64 10101
+> box 1090 2 0 301
+> lord 1090 204
+> castle 1000 301
+> box 1001 2 0 10101
+> box 1007 2 0 1001
+> unit 1007 0 1 0
+> name 1001 Leader
+> name 1007 Captive
+> watch 1000 1007
+> touched 205 10101
+> show_day 1
+> day 9
+> frame 3 -5
+> exit1 4 10102 10101 7
+> notice 1000 1001
+notice 0 units 2 figures 2
+> depart 1001
+> message_state
+message 0 3 0
+watch 1000: 1007
+> watch 1000 1001
+> notice 1000 1001
+notice 1 units 2 figures 2
+> depart 1001
+> message_state
+message 0 3 0
+watch 1000: 1007 1001
+> report 204
+report 204:
+10101:0::3:9:Leader~[1001] went west, accompanied~by:
+10101:0::6/3:9:Captive~[1007], prisoner
+> report 205
+report 205:
+10101:0::3/-5:9:Leader~[1001] went west, accompanied~by:
+10101:0::6/3:9:Captive~[1007], prisoner
+10101:0::3:9:Leader~[1001] went west, accompanied~by:
+10101:0::6/3:9:Captive~[1007], prisoner
+> routing_state
+player_data 100 0
+player_data 204 1
+touched 204:
+known 204:
+output_order 204: 10101
+player_data 205 1
+touched 205: 10101
+known 205:
+output_order 205: 10101
+player_data 301 0
+castle 1000 301
+player_data 1000 0
+player_data 1001 0
+player_data 1007 0
+player_data 1090 0
+player_data 10101 0
+player_data 10102 0
+> serialize 1000
+1000 char garrison
+LI
+ wh 10101
+MI
+ gc 301
+
+> serialize 1001
+1001 char 0
+na Leader
+LI
+ wh 10101
+ hl 1007 
+
+> serialize 1007
+1007 char 0
+na Captive
+LI
+ wh 1001
+CH
+ pr 1
+
+stderr:
+
+exit 0
+stdout:
+section same view arrival does not spot watched units and hidden subloc departure
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 301 3 32 10101
+> box 302 3 32 10101
+> box 204 1 49 0
+> box 205 1 49 0
+> box 1000 2 64 302
+> box 1090 2 0 301
+> lord 1090 204
+> castle 1000 301
+> box 1001 2 0 302
+> name 1001 Watched
+> watch 1000 1001
+> touched 205 10101
+> exit1 2 302 301 0
+> arrive 1001
+> message_state
+message 0 0 0
+watch 1000: 1001
+> report 204
+report 204:
+> report 205
+report 205:
+10101:0::0::Watched~[1001] arrived from the west.
+> routing_state
+player_data 100 0
+player_data 204 1
+touched 204:
+known 204:
+output_order 204:
+player_data 205 1
+touched 205: 10101
+known 205:
+output_order 205: 10101
+player_data 301 0
+player_data 302 0
+castle 1000 301
+player_data 1000 0
+player_data 1001 0
+player_data 1090 0
+player_data 10101 0
+> hidden 302 1
+> exit1 7 302 10101 0
+> exit2 0 1 0 1
+> garrison_view 1
+> depart 1001
+> message_state
+message 1 0 0
+watch 1000: 1001
+> arrive 1001
+> message_state
+message 0 0 0
+watch 1000: 1001
+> known 205 302
+> arrive 1001
+> message_state
+message 0 0 0
+watch 1000: 1001
+> report 204
+report 204:
+> report 205
+report 205:
+10101:0::0::Watched~[1001] arrived from the west.
+10101:0::0::Watched~[1001] arrived from Plain~[ab01].
+> routing_state
+player_data 100 0
+player_data 204 1
+touched 204:
+known 204:
+output_order 204:
+player_data 205 1
+touched 205: 10101
+known 205: 302
+output_order 205: 10101
+player_data 301 0
+player_data 302 0
+castle 1000 301
+player_data 1000 0
+player_data 1001 0
+player_data 1090 0
+player_data 10101 0
+stderr:
+
+exit 0

@@ -23,9 +23,12 @@ For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 For exit topology, distances, randomized exit selection, weights or travel
 calculations, movement parsing/admission or movement bookkeeping, and character
-descriptions/stack display (including rank/aura/equipment), also run
+descriptions/stack display (including rank/aura/equipment), departure/arrival
+messages or garrison notice/spotting, also run
 `tools/move-compat/run.sh` (small real-C exit-field/order/RNG/weight/travel and
-parsing/admission/stack recordings, no world turn).
+parsing/admission/stack/message recordings, no world turn). Its message helpers
+reuse the already listed `u.c`, `garr.c`, `move.c`, `glob.c`, `display.c` and
+`sout.c` dependencies; output includes real faction logs and serialized state.
 For mint allocation or character/unique-item lifecycle changes, run
 `tools/code-compat/run.sh` and `tools/command-compat/run.sh`: the former checks
 the allocator and shared mint draws, the latter real creation/deletion,

@@ -3,7 +3,102 @@
 
 package olympia
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
+
+// departureMessage is the complete move.c:11–73 departure_message. Early
+// returns preserve showToGarrison; a completed message resets it to false.
+func (w *world) departureMessage(who int, v *exitView) {
+	assert(w.validBox(who), "olympia/move.c", 19, "valid_box(who)")
+	if w.charReallyHidden(who) {
+		return
+	}
+	orig, dest := int(v.orig), int(v.destination)
+	if w.locDepth(orig) == locProvince && w.weatherHere(orig, subFog) != 0 {
+		return
+	}
+	if v.destHidden != 0 {
+		return
+	}
+	desc := w.linerDesc(who)
+	var to string
+	if w.subloc(dest) == orig {
+		to = sout(" entered %s", w.boxName(dest))
+	} else if w.subloc(orig) == dest {
+		to = sout(" exited %s", w.boxName(orig))
+	} else if w.viewloc(orig) != w.viewloc(dest) {
+		if v.direction >= 1 && v.direction <= 4 {
+			to = sout(" went %s", fullDirS[v.direction])
+		} else {
+			to = sout(" left for %s", w.boxName(dest))
+		}
+	} else {
+		return
+	}
+	with := w.displayWith(who)
+	comma := ""
+	if strings.Contains(desc, ",") {
+		comma = ","
+	}
+	if with == "" {
+		with = "."
+	}
+	if w.viewloc(orig) != w.viewloc(dest) {
+		if garr := w.garrisonHere(orig); garr != 0 && w.garrisonNotices(garr, who) {
+			w.showToGarrison = true
+		}
+	}
+	w.commandOut(orig, "%s%s%s%s", desc, comma, to, with)
+	w.showCharsBelow(orig, who)
+	w.showToGarrison = false
+}
+
+// arrivalMessage is the complete move.c:76–133 arrival_message. Unlike
+// departure, hidden origins suppress only the source phrase, not the message.
+func (w *world) arrivalMessage(who int, v *exitView) {
+	if w.charReallyHidden(who) {
+		return
+	}
+	orig, dest := int(v.orig), int(v.destination)
+	if w.locDepth(dest) == locProvince && w.weatherHere(dest, subFog) != 0 {
+		return
+	}
+	desc := w.linerDesc(who)
+	from := ""
+	if v.origHidden == 0 {
+		if v.direction >= 1 && v.direction <= 4 {
+			from = sout(" from the %s", fullDirS[exitOpposite[v.direction]])
+		} else {
+			from = sout(" from %s", w.boxName(orig))
+		}
+	}
+	with := w.displayWith(who)
+	comma := ""
+	if strings.Contains(desc, ",") {
+		comma = ","
+	}
+	if with == "" {
+		with = "."
+	}
+	if w.viewloc(orig) != w.viewloc(dest) {
+		if garr := w.garrisonHere(dest); garr != 0 {
+			if w.garrisonNotices(garr, who) {
+				w.showToGarrison = true
+			}
+			if w.garrisonSpotCheck(garr, who) {
+				w.indent += 3
+				w.commandOut(garr, "%s%s", desc, with)
+				w.showCharsBelow(garr, who)
+				w.indent -= 3
+			}
+		}
+	}
+	w.commandOut(dest, "%s%s arrived%s%s", desc, comma, from, with)
+	w.showCharsBelow(dest, who)
+	w.showToGarrison = false
+}
 
 // parseExitDir is the complete parse_exit_dir from pinned move.c. A nil
 // zeroArg suppresses diagnostics, not exit construction or its side effects.

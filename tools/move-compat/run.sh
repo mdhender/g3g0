@@ -49,19 +49,21 @@ functions = {
     'u.c': ['loc_depth', 'loc_hidden', 'test_known', 'test_bit', 'set_bit',
             'max', 'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
             'count_stack_move_nobles', 'count_stack_figures', 'count_any',
+            'count_stack_units', 'count_stack_any',
             'has_item', 'sub_item', 'comma_num', 'nice_num', 'cap', 'lookup'],
     'swear.c': ['lord', 'player', 'set_loyal'],
     'move.c': ['move_exit_land', 'move_exit_fly', 'move_exit_water',
                'parse_exit_dir', 'save_v_array', 'restore_v_array',
                'suspend_stack_actions', 'restore_stack_actions', 'clear_guard_flag',
                'land_check', 'can_move_here', 'can_move_at_outer_level',
-               'check_captain_loses_sailors'],
+               'check_captain_loses_sailors', 'departure_message', 'arrival_message'],
     'input.c': ['find_command'],
     'perm.c': ['rp_admit', 'will_admit'],
     'stack.c': ['here_pos', 'stack_parent', 'stack_leader', 'promote',
                 'unstack', 'leave_stack'],
     'storm.c': ['weather_here'],
-    'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here', 'rank_s'],
+    'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here', 'rank_s',
+               'garrison_notices', 'garrison_spot_check'],
     'art.c': ['has_auraculum', 'max_eff_aura'],
     'combat.c': ['find_wield', 'wield_s'],
     'day.c': ['touch_loc_pl'],
@@ -109,6 +111,7 @@ void drv_restore(struct command *c, struct exit_view *v) { restore_v_array(c, v)
 void drv_suspend(int who) { suspend_stack_actions(who); }
 void drv_unstack(int who) { unstack(who); }
 int drv_sub_item(int who, int item, int qty) { return sub_item(who, item, qty); }
+void drv_arrival(int who, struct exit_view *v) { arrival_message(who, v); }
 ''')
 # find_command reads the actual glob.c table. Its callbacks are deliberately
 # unreachable here: never make an unfinished SAIL callback a successful stub.

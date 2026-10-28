@@ -2613,3 +2613,538 @@ serialize 1001
 display_flags 0 0
 describe 1001
 format_state
+
+section notice small four five units counts prisoners and nested NPCs
+box 1000 2 64 0
+box 1001 2 0 0
+notice 1000 1001
+box 1007 2 0 1001
+box 1003 2 0 1007
+box 1002 2 54 1001
+unit 1003 0 1 0
+notice 1000 1001
+box 1009 2 0 1003
+unit 1009 0 1 0
+notice 1000 1001
+box 219 4 0 1001
+box 1099 2 0 219
+notice 1000 1001
+watch 1000 1099
+spot 1000 1001
+message_state
+state
+
+section notice nineteen twenty figures inventory filters and wrap
+box 1000 2 64 0
+box 1001 2 0 0
+box 201 4 0 0
+air 201 0 0 1
+inv 1001 201 18
+notice 1000 1001
+inv 1001 201 19
+notice 1000 1001
+inv 1001 201 -1
+notice 1000 1001
+inv 1001 201 2147483647
+notice 1000 1001
+box 202 4 0 0
+fighter 202 99 0 0
+inv 1001 202 71
+notice 1000 1001
+state
+
+section notice NPC subkind loyalty summon and garrison zero figures
+box 1000 2 64 0
+box 1001 2 54 0
+notice 1000 1001
+subkind 1001 0
+unit 1001 0 0 4
+notice 1000 1001
+unit 1001 0 0 5
+notice 1000 1001
+unit 1001 0 0 0
+notice 1000 1001
+notice 1000 1000
+watch 1000 1001
+watch 1000 1001
+notice 1000 1001
+message_state
+
+section spot absent empty unrelated watch and watched root output
+box 100 3 50 0
+box 10101 3 3 100
+box 204 1 49 0
+box 1000 2 64 10101
+spot 1000 999
+box 301 3 32 10101
+box 1090 2 0 301
+lord 1090 204
+castle 1000 301
+spot 1000 1000
+box 1001 2 0 10101
+watch 1000 1002
+spot 1000 1001
+notice 1000 1001
+watch 1000 1001
+output 1
+spot 1000 1001
+message_state
+routing_state
+serialize 1000
+
+section departure and arrival cardinal directions comma and no comma
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 204 1 49 0
+touched 204 10101
+touched 204 10102
+name 10101 Westland
+name 10102 Eastland
+box 1001 2 0 10101
+name 1001 Scout
+output 1
+exit1 1 10102 10101 7
+depart 1001
+arrive 1001
+rank 1001 10
+exit1 2 10102 10101 7
+depart 1001
+arrive 1001
+exit1 3 10102 10101 7
+depart 1001
+arrive 1001
+exit1 4 10102 10101 7
+depart 1001
+arrive 1001
+exit1 5 10102 10101 7
+depart 1001
+arrive 1001
+exit1 0 10102 10101 7
+depart 1001
+arrive 1001
+exit1 -1 10102 10101 7
+depart 1001
+arrive 1001
+message_state
+format_state
+
+section entered exited same view no departure but arrival and existing flag
+box 100 3 50 0
+box 10101 3 3 100
+box 301 3 32 10101
+box 302 3 33 10101
+box 303 3 33 301
+box 1001 2 0 10101
+box 204 1 49 0
+touched 204 10101
+name 1001 Alone
+output 1
+frame 2 -7
+exit1 7 301 10101 0
+garrison_view 1
+depart 1001
+message_state
+arrive 1001
+exit1 8 10101 301 0
+depart 1001
+arrive 1001
+exit1 2 302 301 0
+garrison_view 1
+depart 1001
+message_state
+arrive 1001
+message_state
+exit1 7 303 301 0
+depart 1001
+arrive 1001
+format_state
+
+section hidden destination departure suppresses but arrival does not
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 3 100
+box 1001 2 0 10101
+box 204 1 49 0
+touched 204 10101
+touched 204 10102
+output 1
+garrison_view 1
+exit1 2 10102 10101 7
+exit2 0 -2 0 1
+depart 1001
+message_state
+arrive 1001
+message_state
+exit2 0 0 -3 1
+garrison_view 1
+depart 1001
+message_state
+arrive 1001
+message_state
+exit1 6 10102 10101 7
+arrive 1001
+format_state
+
+section really hidden alone early return versus inventory stack and prisoner
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 3 100
+box 1001 2 0 10101
+box 204 1 49 0
+touched 204 10101
+touched 204 10102
+magic_flags 1001 0 0 1
+exit1 1 10102 10101 7
+output 1
+garrison_view 1
+depart 1001
+arrive 1001
+message_state
+box 201 4 0 0
+air 201 0 0 1
+inv 1001 201 1
+depart 1001
+arrive 1001
+message_state
+inv 1001 201 0
+box 1003 2 0 1001
+unit 1003 0 1 0
+depart 1001
+arrive 1001
+message_state
+format_state
+
+section fog departure origin arrival destination asymmetry and nonprovince weather
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 3 100
+box 301 3 33 10101
+box 302 3 33 10102
+box 1001 2 0 10101
+box 204 1 49 0
+touched 204 10101
+touched 204 10102
+box 400 11 57 10101
+strength 400 7
+exit1 2 10102 10101 7
+output 1
+garrison_view 1
+depart 1001
+message_state
+arrive 1001
+place 400 10102
+garrison_view 1
+depart 1001
+message_state
+arrive 1001
+message_state
+strength 400 -2
+arrive 1001
+message_state
+exit1 2 302 301 7
+depart 1001
+arrive 1001
+message_state
+format_state
+
+section departure real garrison notice threshold and touched faction logs
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 301 3 32 10101
+box 204 1 49 0
+box 205 1 49 0
+box 206 1 49 0
+box 1000 2 64 10101
+box 1090 2 0 301
+lord 1090 204
+castle 1000 301
+box 1001 2 0 10101
+name 1001 Traveler
+lord 1001 206
+box 201 4 0 0
+name 201 soldier
+plural 201 soldiers
+air 201 0 0 1
+touched 205 10101
+day 17
+show_day 1
+frame 2 -9
+exit1 2 10102 10101 7
+inv 1001 201 18
+serialize 1001
+serialize 1000
+serialize 204
+depart 1001
+message_state
+inv 1001 201 19
+depart 1001
+message_state
+report 204
+report 205
+report 206
+routing_state
+state
+serialize 1001
+serialize 1000
+serialize 204
+
+section arrival real garrison four five nested units prisoner output framing
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 301 3 32 10102
+box 204 1 49 0
+box 205 1 49 0
+box 1000 2 64 10102
+box 1090 2 0 301
+lord 1090 204
+castle 1000 301
+box 1001 2 0 10102
+box 1007 2 0 1001
+box 1003 2 0 1007
+box 1002 2 0 1001
+unit 1003 0 1 0
+magic_flags 1002 0 0 1
+name 1001 Leader
+name 1007 First
+name 1003 Deep
+name 1002 Last
+touched 205 10102
+day 23
+show_day 1
+frame -2 11
+exit1 4 10102 10101 7
+arrive 1001
+message_state
+box 1009 2 0 1003
+name 1009 Fifth
+arrive 1001
+message_state
+report 204
+report 205
+routing_state
+state
+serialize 1001
+serialize 1007
+serialize 1003
+serialize 1002
+serialize 1009
+
+section arrival watched deeper prisoner spots before ordinary location without notice
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 301 3 32 10102
+box 204 1 49 0
+box 205 1 49 0
+box 1000 2 64 10102
+box 1090 2 0 301
+lord 1090 204
+castle 1000 301
+box 1001 2 0 10102
+box 1007 2 0 1001
+box 1003 2 0 1007
+name 1001 Leader
+name 1007 First
+name 1003 Captive
+unit 1003 0 1 0
+watch 1000 999
+watch 1000 1003
+watch 1000 1003
+touched 205 10102
+show_day 1
+day 11
+frame 4 13
+exit1 1 10102 10101 7
+serialize 1000
+serialize 1001
+serialize 204
+notice 1000 1001
+arrive 1001
+message_state
+report 204
+report 205
+routing_state
+serialize 1000
+serialize 1001
+serialize 204
+format_state
+
+section watched root notices and spots duplicated faction message order
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 301 3 32 10102
+box 204 1 49 0
+box 1000 2 64 10102
+box 1090 2 0 301
+lord 1090 204
+castle 1000 301
+box 1001 2 0 10102
+name 1001 Marked
+rank 1001 20
+watch 1000 1001
+show_day 1
+day 7
+frame 1 -5
+exit1 3 10102 10101 7
+arrive 1001
+message_state
+report 204
+routing_state
+format_state
+
+section small preexisting garrison visibility completed resets versus silent recipients
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 301 3 32 10101
+box 302 3 32 10102
+box 204 1 49 0
+box 205 1 49 0
+box 1000 2 64 10101
+box 1009 2 64 10102
+box 1090 2 0 301
+box 1091 2 0 302
+lord 1090 204
+lord 1091 205
+castle 1000 301
+castle 1009 302
+box 1001 2 0 10101
+exit1 2 10102 10101 7
+garrison_view 1
+depart 1001
+message_state
+arrive 1001
+message_state
+garrison_view 1
+arrive 1001
+message_state
+subkind 205 62
+garrison_view 1
+arrive 1001
+message_state
+report 204
+report 205
+routing_state
+
+section NPC departure arrival and watch blocked by fog before spotting
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 301 3 32 10101
+box 302 3 32 10102
+box 204 1 49 0
+box 205 1 49 0
+box 1000 2 64 10101
+box 1009 2 64 10102
+box 1090 2 0 301
+box 1091 2 0 302
+lord 1090 204
+lord 1091 205
+castle 1000 301
+castle 1009 302
+box 1001 2 0 10101
+unit 1001 0 0 4
+name 1001 Wanderer
+watch 1009 1001
+exit1 2 10102 10101 7
+depart 1001
+arrive 1001
+box 201 4 0 0
+name 201 wolf
+plural 201 wolves
+air 201 0 0 1
+subkind 1001 54
+unit 1001 201 0 0
+inv 1001 201 2
+depart 1001
+arrive 1001
+box 400 11 57 10102
+strength 400 9
+garrison_view 1
+arrive 1001
+message_state
+report 204
+report 205
+routing_state
+
+section invalid departure unit assertion
+depart 999
+
+section invalid spotting garrison assertion
+spot 999 1001
+
+section departure watched descendant does not notice then watched root does
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 4 100
+box 301 3 32 10101
+box 204 1 49 0
+box 205 1 49 0
+box 1000 2 64 10101
+box 1090 2 0 301
+lord 1090 204
+castle 1000 301
+box 1001 2 0 10101
+box 1007 2 0 1001
+unit 1007 0 1 0
+name 1001 Leader
+name 1007 Captive
+watch 1000 1007
+touched 205 10101
+show_day 1
+day 9
+frame 3 -5
+exit1 4 10102 10101 7
+notice 1000 1001
+depart 1001
+message_state
+watch 1000 1001
+notice 1000 1001
+depart 1001
+message_state
+report 204
+report 205
+routing_state
+serialize 1000
+serialize 1001
+serialize 1007
+
+section same view arrival does not spot watched units and hidden subloc departure
+box 100 3 50 0
+box 10101 3 3 100
+box 301 3 32 10101
+box 302 3 32 10101
+box 204 1 49 0
+box 205 1 49 0
+box 1000 2 64 302
+box 1090 2 0 301
+lord 1090 204
+castle 1000 301
+box 1001 2 0 302
+name 1001 Watched
+watch 1000 1001
+touched 205 10101
+exit1 2 302 301 0
+arrive 1001
+message_state
+report 204
+report 205
+routing_state
+hidden 302 1
+exit1 7 302 10101 0
+exit2 0 1 0 1
+garrison_view 1
+depart 1001
+message_state
+arrive 1001
+message_state
+known 205 302
+arrive 1001
+message_state
+report 204
+report 205
+routing_state

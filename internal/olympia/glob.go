@@ -13,13 +13,15 @@ package olympia
 // the NULL; with no terminator that is len(kindS) == tMax and
 // len(subkindS) == subMax.
 //
-// Not ported, because loading and saving do not use them:
-// exit_opposite and loc_depth_s.
+// Not ported, because loading and saving do not use it: loc_depth_s.
 // libdir is options.libdir (olympia.go) and world.libdir; show_day is
 // world.showDay. See cmdTbl for the command-handler boundaries.
 
 var shortDirS = []string{"<no dir>", "n", "e", "s", "w", "u", "d", "i", "o"}
 var fullDirS = []string{"<no dir>", "north", "east", "south", "west", "up", "down", "in", "out"}
+
+// exitOpposite is the original glob.c table, including its non-cardinal order.
+var exitOpposite = []int{0, dirS, dirW, dirN, dirE, dirOut, dirIn, dirDown, dirUp, 0}
 
 // kindS is kind_s, the name of each entity kind, indexed by T_xxx.
 var kindS = []string{
