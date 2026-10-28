@@ -3,6 +3,8 @@
 
 package olympia
 
+import "fmt"
+
 // hasAuraculum is art.c:7–18 has_auraculum.
 func (w *world) hasAuraculum(who int) int {
 	var ac int
@@ -60,6 +62,27 @@ func (w *world) swearTokenUnits(item, target int) {
 			w.logWrite(13, "   swearing %s", w.boxNameKind(i))
 			w.setLord(i, target, loyUnchanged, 0)
 		}
+	}
+}
+
+// meltTokenUnits is the complete art.c:1054–1080 definition. loopUnits
+// copies the list: reclamation removes each dying unit from the live token.
+func (w *world) meltTokenUnits(item int) {
+	first := true
+	assert(w.subkind(item) == subNpcToken, "olympia/art.c", 1060, "subkind(item) == sub_npc_token")
+	for who := range w.loopUnits(item) {
+		if w.kind(who) != tChar {
+			continue
+		}
+		if first {
+			first = false
+			w.logWrite(13, "Melting token units for %s.", w.boxName(item))
+		}
+		w.commandOut(w.subloc(who), "%s melts into the ground and vanishes.", w.boxName(who))
+		w.charReclaim(who)
+	}
+	if p := w.rpItemMagic(item); p != nil && p.tokenNum > 1 {
+		w.pItemMagic(item).tokenNum = 1
 	}
 }
 
@@ -123,6 +146,42 @@ func (w *world) moveToken(item, from, to int) {
 		// The compiled C branch defers independent melting until reconciliation.
 		if toPl != int(w.indepPlayer) {
 			w.addTokenUnits(item)
+		}
+	}
+}
+
+// checkTokenUnits is art.c:1197–1259. Both processOrders and postMonth
+// already call this at their original C positions. Phase counters alone
+// are omitted; all token and ownership effects use the shared real closure.
+func (w *world) checkTokenUnits() {
+	for item := range w.loopSubkind(subNpcToken) {
+		owner := w.itemUnique(item)
+		assert(owner != 0, "olympia/art.c", 1215, "owner")
+		pl := w.tokenPlayer(owner)
+		if pl == int(w.indepPlayer) {
+			w.meltTokenUnits(item)
+		} else {
+			w.addTokenUnits(item)
+		}
+		for unit := range w.loopUnits(item) {
+			if w.kind(unit) != tChar {
+				// Preserve C's apparently mistaken duplicated box_code(unit).
+				w.logWrite(10, "%s holds unit %s which is %s, player(unit) = %s, owner = %s",
+					w.boxCode(unit), w.boxCode(unit), kindS[w.kind(unit)], boxCodeLess(w.player(unit)), boxCodeLess(owner))
+				continue
+			}
+			np := 0
+			if p := w.rpPlayer(pl); p != nil {
+				np = int(p.noblePoints)
+			}
+			if w.player(unit) != pl && np >= w.charNPTotal(unit) {
+				fmt.Fprintf(w.stderr, "fixing token owner for %s (%s to %s)\n", w.boxNameKind(unit), boxCodeLess(w.player(unit)), boxCodeLess(pl))
+				if w.player(unit) > 0 {
+					w.commandOut(w.player(unit), "%s renounces loyalty.", w.boxName(unit))
+				}
+				w.commandOut(pl, "%s swears loyalty.", w.boxName(unit))
+				w.setLord(unit, pl, loyUnchanged, 0)
+			}
 		}
 	}
 }

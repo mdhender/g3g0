@@ -5,8 +5,7 @@ package olympia
 
 // Explicit unfinished world phases in input.c/day.c order. These are entry
 // boundaries for #66–#89, NOT implementations, even on an empty world.
-func (w *world) checkTokenUnits() { panic(notImplemented("check_token_units")) }
-func (w *world) matchAllTrades()  { panic(notImplemented("match_all_trades")) }
+func (w *world) matchAllTrades() { panic(notImplemented("match_all_trades")) }
 
 // #74/#75 own the actual caln/wthr draws. Do not draw from a substitute RNG.
 func (w *world) calDay(pick, low, high int) int { panic(notImplemented("cal_day")) }

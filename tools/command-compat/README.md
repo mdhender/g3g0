@@ -1455,3 +1455,86 @@ Only actual C generated the new expected bytes. Version remains
 
 After this refinement, command `--update` and normal comparisons pass
 sequentially, followed by bounded vet and fresh bounded default all-tests.
+
+## Token melting and reconciliation (#73)
+
+The complete new production definitions are **art.c**, not use.c:
+`melt_token_units` **1054–1080** (27 lines) and `check_token_units`
+**1197–1259** (63 lines), **90 C lines** at the unchanged pin. Original
+headers, macros and `#line` locations are retained. The only omitted effects
+are phase counters; no death, ownership, creation or output dependency is
+replaced with successful behavior. No new upstream source dependency or pin.
+
+Go reuses the existing `loopUnits` snapshot, complete `charReclaim`/`killChar`,
+`addTokenUnits`, `tokenPlayer`, lord/NP/interruption, inventory/prisoner/cookie,
+lore, output/logging, real serialization and persistent `w.streams` closure.
+The existing processOrders and postMonth callback positions are unchanged;
+only the phase NYI definition is removed. G3 #355's player-ID/subtype mix-up
+remains deliberately reproduced and source-linked in killChar.
+
+Seventeen appended real-C sections cover:
+
+- No tokens; regular empty, deficient, full and excess lists; repeated checks;
+  zero/negative capacities; independent, other NPC, player-as-holder and
+  location owners. An absent owner retains **art.c:1215 `owner`**, status 134.
+- Allocated deleted/dead/noncharacter rows count toward regular capacity and
+  retain the exact LOG_CODE diagnostic, including the apparently mistaken
+  **duplicated `box_code(unit)`**, not an independently corrected token ID.
+  Such malformed helper-state controls are not public-engine defect claims.
+- Adjacent **1000 and 1001** both melt while real death removes them from the
+  live list, proving copied traversal. Full running WAIT interruption and
+  queued-order flushing, child extraction/promotion, captive release, discarded
+  inventory, two returned cookies, magician aura zeroing, preserved survival/
+  transcend skills, retained deadchar IDs/death times, all player output bits
+  and raw logs/order files are compared. The positive token ends at capacity
+  **1**, with no live units; a second check does not recreate independent units.
+- Capacity 1 is retained on melting; exhausted zero/negative capacities
+  destroy the actual unique token. Destroying two adjacent subtype entries
+  does not skip the second. A genuine non-melting death decrements capacity
+  **3 → 2** before regular reconciliation actually mints the two replacements.
+- Actual NP requirement **8**: balance **7** preserves the foreign running
+  unit; balance **8** transfers it through real set_lord, interruption,
+  pledge/attitude clearing, dependent re-lording and **8 NP** refund/charge.
+  A subsequent requirement **1**, balance **2** transfer proves the above
+  threshold too. Unowned units omit the old-faction notification. Repeated
+  calls cannot charge twice after ownership matches.
+- Multiple tokens are visited in actual subtype-chain order, not allocation
+  order; exact minted IDs, later real unique-item allocation, turn/day/master
+  replay observe the existing shared mint/turn guards without a private RNG.
+- The complete original **input.c `process_orders` 1057–1102** (46 lines)
+  is additionally extracted with already-ported u.c `olytime_increment`
+  **1365–1371**, `olytime_turn_change` **1379–1385**, `print_dot` **2371–2385**
+  and original dot counter. A malformed-token case runs the actual day-zero
+  NPC initialization and guard setup before its own owner assertion, before
+  interrupted/player orders. Later unported turn callbacks are explicit
+  missing-dependency failures, never accepted as a full successful turn.
+  The separate turn-driver phase trace verifies both callback positions.
+
+Two fresh bounded deterministic C runs produce **461 sections / 29818 lines /
+527434 bytes**, exactly matched by Go raw stdout/stderr/status, serialized
+state, death/kind chains, token counts/lists, logs, output bits, accounting,
+orders/queues and shared mint observations. New sections require status 0
+except the two explicit missing-owner assertions (134). The entire previous
+command input **9377 lines / 166322 bytes** and output **444 sections /
+28020 lines / 500621 bytes** remain exact prefixes: **zero old bytes changed**,
+no newly reachable old-boundary exception. New input is **9861 lines /
+175204 bytes**. Entire move input **3150 lines / 53589 bytes** and output
+**135 sections / 7150 lines / 142755 bytes** remain unchanged. Literal C
+trailing whitespace is retained; only real C generated expected bytes.
+
+An ephemeral expected-134 section queued, loaded and dispatched actual ATTACK.
+Normal and `--update` both rejected `out-of-scope C dependency: v_attack`
+with status 2 before accepting the abort or writing the recording. SHA-256
+remained `ab403e3f469edd5c5c74b5425346b9acd0e781418012001d0cbd628eb6d49753`.
+The probe is removed; no permanent test binds a private temporary NYI name.
+Marker rejection remains specific, not a broad ban on ordinary game text.
+
+Command (normal/update), move, helper, rng, code, loadsave, turn-driver and
+default turn comparisons pass sequentially before bounded vet/default tests.
+The optional real-world diagnostic repeats C successfully/deterministically,
+then honestly fails with Go status 2 at **match_all_trades** (day 1), the
+same 15 DB differences and missing `orders/204`, plus raw streams/status.
+No full-turn/stage-exit success, unrelated RECLAIM/USE/combat handler or token
+artifact generation is claimed. Version **0.50.0-alpha**; defaults remain
+recorded/fast and worlds opt-in. No new verified public-engine bug or blocker
+was found; nonblocking G3 #309/#352/#353/#354/#355 remain unchanged.

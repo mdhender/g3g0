@@ -558,6 +558,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		case "kindname":
 			n := args.num(t)
 			fmt.Fprintf(&stdout, "kind [%s] name [%s]\n", w.displayKind(n), w.boxNameKind(n))
+		case "reconcile":
+			w.checkTokenUnits()
+		case "process":
+			w.processOrders()
 		case "token_owner":
 			fmt.Fprintf(&stdout, "token player %d\n", w.tokenPlayer(args.num(t)))
 		case "token_state":

@@ -73,9 +73,10 @@ all child UNSTACK orders, fallback directions and actual MOVE → WAIT;
 summon/prisoner/command/queued-order skips and every program branch; real
 savage-before-Hades creation and shared RNG/queue/serialization state. The
 existing process_orders callback now invokes this dispatcher. Garrison guard
-setup and daily default-garrison pay are real; token, calendar and later daily
-and monthly phases remain explicit stops. The opt-in full-world diagnostic
-reaches `check_token_units` and still fails; it is not stage acceptance.
+setup, daily default-garrison pay and token reconciliation are real; calendar
+and later daily and monthly phases remain explicit stops. After #73 the
+opt-in full-world diagnostic reaches `match_all_trades` and still fails;
+it is not stage acceptance.
 
 Garrison guard setup and default-garrison payroll extend command-compat, using
 the real inventory/strength/maintenance tariff, subtype iteration, descriptions,
@@ -119,9 +120,21 @@ Run command/move/helper/rng/code/loadsave/turn-driver/default-turn comparisons.
 Actual survival, corpses, transcendence/arrival, token removal/destruction,
 lord/NP, inheritance, extraction and interruption paths are exercised; no
 RECLAIM/FORGET/DIE command, sibling damage/combat/resurrection helper or token
-reconciliation is implied. `check_token_units` remains explicitly unported
-until #73. G3 #355's missing token-vanishing notification is deliberately
+reconciliation is implied by #119 alone (reconciliation follows in #73).
+G3 #355's missing token-vanishing notification is deliberately
 reproduced and source-linked, not independently fixed.
+
+Token melting/reconciliation (#73) extends command-compat with complete
+art.c `melt_token_units` 1054–1080 and `check_token_units` 1197–1259, reusing
+the full accepted death/reclamation, creation, lord/NP, inventory, output,
+orders and shared RNG closure. The real process_orders definition and existing
+clock/progress helpers are also extracted for a day-zero owner assertion
+after actual NPC/guard setup. Only phase instrumentation is omitted; later
+unported turn dependencies fail explicitly and cannot be recorded as success.
+Existing processOrders/postMonth callback positions are unchanged. Run command/
+move/helper/rng/code/loadsave/turn-driver/default-turn comparisons. No new
+source dependency or pin change, unrelated command handlers or artifact
+generation. Full-world turn success and stage exit remain unfinished.
 
 **Pin move.**
 Run `tools/affected.sh OLD NEW` and, for each tool it lists, move the pin in its `run.sh` and README, then rerun it (with `--update` where the tool records C output, and review the diff of the recorded file).
@@ -143,7 +156,7 @@ tools/box-compat/run.sh --full       # after olympia-roundtrip, whose games it r
 tools/boxfile-compat/run.sh --full
 tools/check-compat/run.sh --full
 tools/loadsave-compat/run.sh --full
-tools/turn-compat/run.sh --full      # stage 1 exit; currently fails at check_token_units
+tools/turn-compat/run.sh --full      # stage 1 exit; currently fails at match_all_trades
 ```
 
 Run these one at a time: `box-compat`, `boxfile-compat`, `check-compat` and `loadsave-compat` read the games `olympia-roundtrip` caches, so do not run them while `olympia-roundtrip --fresh` rebuilds that cache.

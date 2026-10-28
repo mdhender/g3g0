@@ -40,7 +40,7 @@ functions = {
                 'finish_command', 'do_command', 'init_load_sup', 'exec_precedence',
                 'exec_comp', 'sort_load_queue', 'sort_run_queue', 'initial_command_load',
                 'min_pri_ready', 'init_wait_list', 'check_all_waits', 'start_phase', 'evening_phase',
-                'daily_command_loop', 'process_player_orders', 'interrupt_order', 'process_interrupted_units'],
+                'daily_command_loop', 'process_player_orders', 'interrupt_order', 'process_interrupted_units', 'process_orders'],
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'prepend_order', 'queue', 'save_player_orders'],
     'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord', 'unit_deserts'],
     'move.c': ['restore_stack_actions', 'touch_loc_after_move', 'move_stack',
@@ -71,10 +71,11 @@ functions = {
                'rank_s', 'garrison_notices', 'garrison_spot_check',
                'garrison_strength', 'ping_garrisons'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'token_player', 'swear_token_units',
-              'add_token_unit_sup', 'add_token_units', 'move_token'],
+              'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units'],
     'display.c': ['with_inventory_string', 'display_with', 'mage_s', 'priest_s',
                   'emperor', 'liner_desc_char', 'liner_desc', 'show_chars_below'],
-    'u.c': ['stage', 'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
+    'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
+            'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np',
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
@@ -160,6 +161,7 @@ int immed_see_all, month_done, show_combat_flag;
             start, end = source.index('static char *wait_tags[]'), source.index('void\nclear_wait_parse(')
             out.write(source[start:end])
         if file == 'u.c':
+            out.write(re.search(r'^static int dot_count = 0;\n', source, re.M).group(0))
             # Whole original RNG prefix: shared persistent entity stream, tags,
             # turn guard and all keyed leaves, not replacement helper draws.
             start = source.index('#define\tETAG_TURN')
@@ -281,6 +283,9 @@ with open(f'{dst}/stubs.c', 'w') as out:
     out.write('''
 /* Only unreachable reporting routes and unrelated code.c dependencies. */
 void check_validated_trades(void) STUB("check_validated_trades")
+/* Later turn phases are explicit failures, never successful substitutes. */
+void match_all_trades(void) STUB("match_all_trades")
+void daily_events(void) STUB("daily_events")
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1, pretty_data_files, time_self;
@@ -355,6 +360,13 @@ for run in run1 run2; do
     'section death invalid '*) expected_status=134 ;;
    esac
    [ "$status" = "$expected_status" ] || die "unexpected death status $status in section $i; expected $expected_status"
+  fi
+  if [[ "${section_names[$i]}" == 'section reconcile '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section reconcile invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected reconciliation status $status in section $i; expected $expected_status"
   fi
   if [[ "${section_names[$i]}" == 'section arrival '* ]]; then
    expected_status=0

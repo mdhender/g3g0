@@ -112,3 +112,13 @@ After #71, the opt-in diagnostic reaches the real NPC dispatcher and stops at
 0 and match including reports; Go exits 2. The raw/state comparison remains
 red (15 changed database files, missing `orders/204`, stdout/stderr/status).
 Garrison/token and later daily/month phases are not skipped or accepted.
+
+After #73 (0.50.0-alpha), real garrison setup and token reconciliation run
+at their existing day-zero positions. The opt-in diagnostic using
+`C_CACHE="$PWD/tmp/issue104-roundtrip"` repeats pinned C with statuses 0/0
+and identical entire captures, including reports. Go exits 2 at
+`olympia-g3: match_all_trades: not yet implemented`, after day-zero interrupted
+and player orders and lore scanning, at day 1 before daily command/events.
+Comparison still honestly fails on the same 15 database paths, missing
+`orders/204`, raw stdout/stderr and status. This is diagnostic progress,
+not full-turn or stage-exit acceptance; default checks remain recorded/fast.

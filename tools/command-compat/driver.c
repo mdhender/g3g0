@@ -457,6 +457,8 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "kindname")) {
    sscanf(line,"%*s %d",&n); printf("kind [%s] name [%s]\n",display_kind(n),box_name_kind(n));
   }
+  else if (!strcmp(op, "reconcile")) check_token_units();
+  else if (!strcmp(op, "process")) process_orders();
   else if (!strcmp(op, "token_owner")) {
    sscanf(line,"%*s %d",&n); printf("token player %d\n",token_player(n));
   }
