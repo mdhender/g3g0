@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "z.h"
 #include "oly.h"
 #include "rng.h"
@@ -698,6 +700,29 @@ int main(int argc, char **argv)
   }
   else if (!strcmp(op, "queue_lore")) {
    sscanf(line,"%*s %d %d %d",&n,&a,&b); queue_lore(n,a,b);
+  }
+  else if (!strcmp(op, "skill_lore")) scan_char_skill_lore();
+  else if (!strcmp(op, "show_lore")) show_lore_sheets();
+  else if (!strcmp(op, "gm_lore")) {
+   sscanf(line,"%*s %d",&n); gm_show_all_skills(n);
+  }
+  /* Relative libdir keeps the actual perror paths identical in both engines
+   * and both runs; no diagnostic filtering. Only fixture setup below. */
+  else if (!strcmp(op, "lore_root")) {
+   if(chdir(libdir)) return 2;
+   libdir=".";
+  }
+  else if (!strcmp(op, "lore_dir")) {
+   sscanf(line,"%*s %8191s",text);
+   if(mkdir(text,0755)) return 2;
+  }
+  else if (!strcmp(op, "lore_file")) {
+   char path[8192], *p;
+   text[0]=0;
+   sscanf(line,"%*s %8191s %8191[^\n]",path,text);
+   log=fopen(path,"w"); if(!log) return 2;
+   for(p=text;*p;p++) fputc(*p=='|' ? '\n' : *p,log);
+   fclose(log);
   }
   else if (!strcmp(op, "set_known")) { sscanf(line,"%*s %d %d",&n,&a); set_known(n,a); }
   else if (!strcmp(op, "additem")) {

@@ -3104,3 +3104,77 @@ Source-only `git diff --check` passes; literal C recording whitespace remains.
 Version **0.70.0-alpha**; all changes left **uncommitted**. No new defect or
 upstream blocker found. No main integration, skill lore, full Go report
 renderer, issue closure/checklist tick, commit or push is included.
+
+## Skill lore state and input diagnostics (#122)
+
+The extraction now includes every complete function in lore.c:10–387:
+`lore_function`, `deliver_lore_sheet`, `np_req_s`, `out_skill_line`,
+`deliver_skill_lore`, `deliver_lore`, `queue_lore`, `lore_comp`,
+`show_lore_sheets`, `gm_show_all_skills` and `scan_char_skill_lore`.
+It keeps the accepted `scan_char_item_lore`, real `test_known`/`set_known`,
+`skill_school`, output library and actual `save_box` writers; u.c's whole
+`weeks` definition completes the small rendering closure. No compared C
+function is altered, no new source dependency/pin or generic IO change.
+
+Go extends **the existing lore.go** with state/input projections only:
+
+- Skill scanning uses every copied skill row, not the known-only iterator.
+  It includes silent/prisoner characters, shares faction knowledge, preserves
+  stored skill order and delegates all assertions and anyway handling to the
+  original `queueLore`. No new RNG calls or independent gameplay fixes.
+- Show-lore sorts the original queue with the C int comparator. Adjacent
+  duplicates suppress only delivery, not queue entries. Repeated calls read
+  again and never clear the queue or change the saved known-bit order.
+- GM lore retains initial player allocation and listing `skill_school`
+  assertions before any sheet read, then schools followed by nonschools in
+  skill-chain order, without granting knowledge or queuing lore.
+- Each sheet is actually opened/read using existing `clib.ReadFile` and
+  `getlin` semantics. Linux directory fopen succeeds; its subsequent read
+  failure yields no missing-file diagnostic. ENOENT and ENOTDIR remain
+  nonfatal exact perror diagnostics. Unknown `$` names (including empty or
+  whitespace-suffixed names) print stderr then assert at **lore.c:43**.
+  Only `capturable_animals` and `animal_fighters` are allowed. Comment, @ and
+  legal expansion report text remains stage 2, not a file-existence shortcut.
+
+Nineteen appended sections cover all skill states (including an unexpected
+state that scanning does not inspect), shared/different factions, prisoners,
+silent players, missing records, unowned/invalid skill assertions, known and
+queue order, anyway duplicates, sorted retention/repeat reads, missing and
+existing sheets, both legal functions with real animals, comments and @ runs,
+item-to-skill/etc remapping, GM read ordering/allocation, directory/read-error
+and ENOTDIR controls, modified-sheet rereads, unknown/empty/whitespace function
+assertions, and skill-cycle assertions before reads. Real C executes all
+rendering closure, but report artifact text is not a Go acceptance target.
+
+The fixture-only `lore_root` action changes to each isolated section directory
+and sets libdir to `.` on both engines, preserving **raw** diagnostic paths
+without filtering. Go sections run as sequential subtests so cwd cleanup is
+complete before reading the recording or starting the next section. The
+`lore_dir`/`lore_file` setup actions create actual files; `|` encodes newline,
+with no implied final newline. C runs twice, comparing raw streams/status and
+actual saved state before any recording update. New lore sections have exact
+expected statuses; the existing dependency-marker rejection runs first.
+
+Validation at **0.71.0-alpha**, with all changes left **uncommitted**:
+
+- Two actual pinned C runs and Go match **770 sections / 57313 lines /
+  989824 output bytes**. The prior **751 sections / 56776 lines / 979131
+  output bytes** and **17487 input lines / 316195 input bytes** remain exact
+  byte prefixes. New input: **17728 lines / 321249 bytes**. Output SHA-256:
+  `08da580438e0ae135eac7766106e2db7632cf20147c41cd3506cf3dc058899fc`.
+- Negative linker probes wrapped only `gm_show_all_skills`, emitting the
+  rejected dependency marker and either returning 0 or aborting 134. Normal
+  and `--update` runs rejected section **754**, harness status **2**, before
+  expected-status/update acceptance. Recording hash was unchanged. Both
+  temporary probe source/wrapper files were deleted before the real rerun.
+- Eight tools passed **sequentially**, `G3_REPO=$PWD/tmp/upstream.git`:
+  command **770/57313**, move **135/7150**, helper **37/1487**, RNG **321**,
+  code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase **5/484**,
+  calendar **2/119**, schedule **4/1801**, then default turn (identical status,
+  raw stdout/stderr and one state file).
+- Bounded `go vet ./...` and fresh bounded `go test -count=1 ./...` passed;
+  Olympia defaults took **1.635s**. Engine binaries used shared run_limited.
+  Source-only `git diff --check` passes; raw C recording whitespace is kept.
+
+No new defect/blocker found. No main integration, Go report text renderer,
+whole-world/stage-exit acceptance, issue closure/tick, commit or push.

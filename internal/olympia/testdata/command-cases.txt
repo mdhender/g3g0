@@ -17485,3 +17485,244 @@ report state 202
 report state 203
 report state 204
 report backlinks 1002
+
+section skill lore scans all states and shared factions preserving skill and known order
+entity 700 5 0
+entity 701 5 0
+entity 702 5 0
+entity 703 5 0
+entity 704 5 0
+entity 202 1 62
+entity 203 1 49
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+field 1002 lord 201
+field 1003 lord 202
+field 1004 lord 203
+field 1001 prisoner 1
+learn 1000 703 0 0
+learn 1000 701 1 0
+learn 1000 702 2 0
+learn 1000 700 3 0
+learn 1001 701 2 0
+learn 1001 704 0 0
+learn 1002 702 0 0
+learn 1003 701 1 0
+learn 1004 703 0 0
+set_known 200 702
+skill_lore
+lore_state 200
+lore_state 201
+lore_state 202
+lore_state 203
+save 200
+save 201
+save 202
+save 203
+save 1000
+save 1001
+skill_lore
+lore_state 200
+queue_lore 1001 701 0
+queue_lore 1001 701 1
+queue_lore 200 703 1
+lore_state 200
+save 200
+
+section skill lore sorted queue skips duplicate delivery but retains duplicates and repeats
+lore_root
+entity 700 5 0
+entity 701 5 0
+entity 702 5 0
+queue_lore 1000 702 0
+queue_lore 1001 700 0
+queue_lore 1000 701 0
+queue_lore 1001 702 1
+queue_lore 200 700 1
+lore_state 200
+save 200
+show_lore
+lore_state 200
+save 200
+show_lore
+lore_state 200
+save 200
+queue_lore 1000 701 0
+queue_lore 1000 700 1
+lore_state 200
+show_lore
+lore_state 200
+save 200
+
+section skill lore delivery includes silent missing player records remain absent
+lore_root
+entity 202 1 62
+entity 203 1 49
+entity 700 5 0
+queue_lore 202 700 0
+report state 203
+show_lore
+report state 203
+lore_state 202
+save 202
+
+section skill lore real input comments substitutions legal functions and empty final lines
+lore_root
+lore_dir lore
+lore_dir lore/700
+entity 700 5 0
+entity 701 5 0
+field 701 required 700
+entity 300 3 0
+entity 301 3 0
+field 300 animal 1
+field 300 capturable 1
+field 301 animal 1
+field 301 attack 12
+lore_file lore/700/700 #$not_a_function|@ and @@@ plus @@ twice||$capturable_animals|$animal_fighters|  $ordinary text| #ordinary text|
+lore_file lore/700/701 #comment without newline
+queue_lore 200 701 0
+queue_lore 200 700 0
+show_lore
+lore_state 200
+save 200
+gm_lore 201
+lore_state 201
+save 201
+
+section skill lore item lore remaps skill and etc paths including absent magic
+lore_root
+lore_dir lore
+lore_dir lore/etc
+lore_dir lore/700
+entity 700 5 0
+entity 300 3 0
+entity 301 3 0
+entity 302 3 0
+field 300 lore 700
+field 301 lore 777
+lore_file lore/700/700 @@@ item display code|$animal_fighters
+lore_file lore/etc/777 @@@|#$ignored
+queue_lore 200 302 0
+queue_lore 200 301 0
+queue_lore 200 300 0
+show_lore
+lore_state 200
+save 200
+
+section skill lore gm reads schools then nonschools without granting knowledge or queues
+lore_root
+entity 700 5 0
+entity 500 5 0
+entity 900 5 0
+entity 600 5 0
+field 500 required 900
+field 600 required 700
+field 638 required 700
+entity 202 1 62
+report state 202
+gm_lore 202
+report state 202
+lore_state 202
+gm_lore 201
+lore_state 201
+save 201
+
+section skill lore directory fopen succeeds read error is not missing sheet
+lore_root
+lore_dir lore
+lore_dir lore/638
+lore_dir lore/638/638
+queue_lore 200 638 0
+show_lore
+gm_lore 201
+lore_state 200
+save 200
+
+section skill lore invalid unknown function after comment and substitution is read not stat
+lore_root
+lore_dir lore
+lore_dir lore/638
+lore_file lore/638/638 #$ignored|@ @@|$capturable_animals|$unknown_function
+queue_lore 200 638 0
+show_lore
+
+section skill lore invalid gm unknown function is validated
+lore_root
+lore_dir lore
+lore_dir lore/638
+lore_file lore/638/638 $animal_fighters|$unknown_gm
+gm_lore 201
+
+section skill lore invalid legal function trailing whitespace is not trimmed
+lore_root
+lore_dir lore
+lore_dir lore/638
+lore_file lore/638/638 $animal_fighters |
+queue_lore 200 638 0
+show_lore
+
+section skill lore invalid file modified between deliveries is read again
+lore_root
+lore_dir lore
+lore_dir lore/638
+lore_file lore/638/638 $animal_fighters
+queue_lore 200 638 0
+show_lore
+lore_state 200
+lore_file lore/638/638 $not_legal
+show_lore
+
+section skill lore invalid unowned character assertion precedes test known
+field 1000 lord 0
+learn 1000 638 0 0
+skill_lore
+
+section skill lore invalid missing skill preserves test known assertion
+learn 1000 999 1 0
+skill_lore
+
+section skill lore invalid anyway still asserts unowned faction
+field 1000 lord 0
+queue_lore 1000 638 1
+
+section skill lore empty characters and no queue do not allocate records
+entity 202 1 62
+entity 1002 2 0
+report state 202
+report state 1002
+skill_lore
+show_lore
+report state 202
+report state 1002
+
+section skill lore invalid gm school cycle asserts during listing before any sheet reads
+lore_root
+entity 700 5 0
+field 700 required 700
+gm_lore 201
+
+section skill lore invalid queued school cycle asserts before file open
+lore_root
+field 638 required 638
+queue_lore 200 638 0
+show_lore
+
+section skill lore missing path component is a file emits nonfatal not directory diagnostic
+lore_root
+lore_dir lore
+lore_file lore/638 not a directory
+queue_lore 200 638 0
+show_lore
+gm_lore 201
+lore_state 200
+save 200
+
+section skill lore invalid empty dollar function is not accepted
+lore_root
+lore_dir lore
+lore_dir lore/638
+lore_file lore/638/638 $
+queue_lore 200 638 0
+show_lore

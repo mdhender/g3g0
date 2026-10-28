@@ -359,6 +359,23 @@ Run command/move/helper/rng/code/loadsave/turn-driver/default-turn sequentially
 before bounded vet/fresh defaults. No main integration, lore or full Go
 report rendering, new tool/pin or full-world/stage-exit claim is implied.
 
+Skill-lore state and input diagnostics (#122) extend command-compat with
+complete original lore.c:10–387 functions and u.c weeks, reusing the real
+queue_lore/test_known/set_known, skill_school and save writers. Go extends
+the existing lore.go, not a duplicate knowledge implementation. ALL character
+skill rows queue, regardless of learning state, prisoner or silent owner.
+Delivery sorts the original queue, skips adjacent duplicate reads and retains
+the queue, including duplicates. GM lore reads schools before nonschools;
+listing assertions still precede reads. Sheets are actually read with getlin
+semantics; missing opens are nonfatal, read errors after successful open are
+not open failures, and only the two original $ functions are legal. Stage-2
+text is deferred, not knowledge, queue mutation, allocation or raw diagnostics.
+Small recorded cases include real legal expansion/substitution execution in
+C, modified files, directories, ENOENT/ENOTDIR and source-located assertions.
+No new upstream source dependency or pin: lore.c, u.c and use.c were tracked.
+Run the same eight comparisons sequentially before bounded vet/fresh defaults.
+No main integration, full Go renderer or whole-world/stage-exit claim.
+
 Inventory transfer and token acquisition (#117) extend command-compat with
 the complete real `consume_item`, mutually recursive `move_item`/`drop_item`,
 and compiled `move_token` acquisition closure. Real lord interruption/NP,

@@ -28,7 +28,9 @@ func TestCommandMatchesC(t *testing.T) {
 	}
 	var out strings.Builder
 	for _, section := range sections {
-		out.WriteString(runCommandSection(t, section))
+		t.Run(strings.TrimPrefix(section[0], "section "), func(t *testing.T) {
+			out.WriteString(runCommandSection(t, section))
+		})
 	}
 	want := strings.Split(readTestdata(t, "command-c-output.txt"), "\n")
 	got := strings.Split(out.String(), "\n")
@@ -935,6 +937,24 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			helperList(&stdout, "weather", p.weatherSeen)
 		case "queue_lore":
 			w.queueLore(args.num(t), args.num(t), args.num(t) != 0)
+		case "skill_lore":
+			w.scanCharSkillLore()
+		case "show_lore":
+			w.showLoreSheetsState()
+		case "gm_lore":
+			w.gmShowAllSkillsState(args.num(t))
+		case "lore_root":
+			t.Chdir(w.libdir)
+			w.libdir = "."
+		case "lore_dir":
+			if err := os.Mkdir(args.word(), 0o755); err != nil {
+				t.Fatal(err)
+			}
+		case "lore_file":
+			path := args.word()
+			if err := os.WriteFile(path, []byte(strings.ReplaceAll(args.ctext(), "|", "\n")), 0o644); err != nil {
+				t.Fatal(err)
+			}
 		case "set_known":
 			w.setKnown(args.num(t), args.num(t))
 		case "additem":

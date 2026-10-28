@@ -108,13 +108,15 @@ functions = {
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
-            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units', 'bark_dogs', 'clear_temps', 'ordinal'],
+            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units', 'bark_dogs', 'clear_temps', 'ordinal', 'weeks'],
     'npc.c': ['controlled_humans_here', 'get_exit_dir', 'choose_npc_direction', 'npc_move',
               'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'necro.c': ['auto_undead'],
     'savage.c': ['create_savage', 'call_savage', 'savage_hates', 'savage_hate_here',
                  'auto_savage', 'init_savage_attacks'],
-    'lore.c': ['queue_lore', 'scan_char_item_lore', 'np_req_s'],
+    'lore.c': ['lore_function', 'deliver_lore_sheet', 'np_req_s', 'out_skill_line',
+               'deliver_skill_lore', 'deliver_lore', 'queue_lore', 'lore_comp',
+               'show_lore_sheets', 'gm_show_all_skills', 'scan_char_skill_lore', 'scan_char_item_lore'],
     'buy.c': ['investigate_possible_trade', 'market_here', 'seller_comp',
               'seller_list', 'buyer_list', 'reduce_qty', 'attempt_trade',
               'scan_trades', 'match_trades', 'match_all_trades', 'check_validated_trades',
@@ -471,6 +473,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section skill lore '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section skill lore invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected lore status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section report '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in
