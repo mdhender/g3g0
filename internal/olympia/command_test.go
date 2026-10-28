@@ -1702,6 +1702,19 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.reportAccount()
 			case "account_sup":
 				w.reportAccountSup(args.num(t))
+			case "unit_summary":
+				w.unitSummary(args.num(t))
+			case "unit_summary_sup":
+				w.unitSummarySup(args.num(t), args.num(t))
+			case "trunc_name":
+				fmt.Fprintf(&stdout, "trunc name [%s]\n", w.summaryTruncName(args.num(t)))
+			case "sum_fighters":
+				fmt.Fprintf(&stdout, "fighters %d\n", w.sumFighters(args.num(t)))
+			case "summary_scratch":
+				for n := range w.loopKind(tChar) {
+					fmt.Fprintf(&stdout, "summary temp %d %d\n", n, w.bx[n].temp)
+				}
+				fmt.Fprintf(&stdout, "summary totals %d %d %d %d %d\n", w.unitSummaryTotals[0], w.unitSummaryTotals[1], w.unitSummaryTotals[2], w.unitSummaryTotals[3], w.unitSummaryTotals[4])
 			case "summary":
 				w.summaryReportState()
 			case "factions":

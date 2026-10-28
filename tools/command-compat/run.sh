@@ -326,6 +326,10 @@ int immed_see_all, month_done, show_combat_flag;
         for _, text in sorted(matches):
             out.write(text)
     out.write('''
+char *drv_summary_trunc_name(int who) { return summary_trunc_name(who); }
+int drv_sum_fighters(int who) { return sum_fighters(who); }
+void drv_unit_summary_sup(int pl, int who) { unit_summary_sup(pl, who); }
+void drv_summary_totals(void) { printf("summary totals %d %d %d %d %d\\n", sum_gold, sum_peas, sum_work, sum_sail, sum_fight); }
 int drv_loc_barrier(int who, int where) { return show_loc_barrier(who, where); }
 void drv_chars_here(int who, int where) { show_chars_here(who, where); }
 void drv_inner_locs(int who, int where) { show_inner_locs(who, where); }

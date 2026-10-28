@@ -63,6 +63,9 @@ int drv_corpse_roll(int who);
 void drv_auto_drop(void), drv_link_decay(void), drv_quest_decay(void), drv_kings(void);
 void drv_summary_provinces(void);
 int drv_rank_threshold(int n), drv_rank_lower(int n), drv_rank_sup(int n);
+char *drv_summary_trunc_name(int who);
+int drv_sum_fighters(int who);
+void drv_unit_summary_sup(int pl, int who), drv_summary_totals(void);
 extern int gold_inn, gold_temple;
 void drv_city_gold(void), drv_replenish(int where, int item, int qty);
 void drv_taxes(void), drv_claim(void), drv_np(void), drv_unformed(void);
@@ -1228,6 +1231,17 @@ int main(int argc, char **argv)
    }
    else if(!strcmp(text,"account")) report_account();
    else if(!strcmp(text,"account_sup")) report_account_sup(n);
+   else if(!strcmp(text,"unit_summary")) unit_summary(n);
+   else if(!strcmp(text,"unit_summary_sup")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    drv_unit_summary_sup(n,a);
+   }
+   else if(!strcmp(text,"trunc_name")) printf("trunc name [%s]\n",drv_summary_trunc_name(n));
+   else if(!strcmp(text,"sum_fighters")) printf("fighters %d\n",drv_sum_fighters(n));
+   else if(!strcmp(text,"summary_scratch")) {
+    loop_char(n) { printf("summary temp %d %d\n",n,bx[n]->temp); } next_char;
+    drv_summary_totals();
+   }
    else if(!strcmp(text,"summary")) summary_report();
    else if(!strcmp(text,"factions")) player_report();
    else if(!strcmp(text,"gm")) gm_report(n);

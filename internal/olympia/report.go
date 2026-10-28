@@ -5,6 +5,164 @@ package olympia
 
 import "github.com/mdhender/g3g0/internal/lists"
 
+// Complete report.c:801–1059. These are the original byte-oriented name
+// operations, not a word-splitting abbreviation algorithm.
+const truncName = 15
+
+var stupidWords = [...]string{"a", "the", "of", "de", "des", "la", "and", "du", "aux", "et", "ses", "avec", "un", "van", "von", "-", "--"}
+
+func stripLeadingStupidWord(s string) string {
+	for _, word := range stupidWords {
+		if len(s) > len(word) && iStrcmp(s[:len(word)], word) == 0 && s[len(word)] == ' ' {
+			t := len(word)
+			for t < len(s) && s[t] == ' ' {
+				t++
+			}
+			if t < len(s) {
+				return s[t:]
+			}
+			return s
+		}
+	}
+	return s
+}
+
+func stupidWord(s string) bool {
+	for _, word := range stupidWords {
+		if iStrcmp(s, word) == 0 {
+			return true
+		}
+	}
+	return false
+}
+
+// -1 represents C's NULL. Start at t itself, including a previously written
+// NUL, and walk backwards over bytes; only a literal space is a separator.
+// Preserve native C's empty backward traversal when t is NULL; its relational
+// pointer comparison is nonportable: https://github.com/playbymail/olympia-g3/issues/359.
+func prevWord(s []byte, t int) int {
+	for t > 0 && s[t] != ' ' {
+		t--
+	}
+	if t > 0 {
+		return t
+	}
+	return -1
+}
+
+func (w *world) summaryTruncName(who int) string {
+	s := sout("%s", w.justName(who))
+	if len(s) <= truncName {
+		return s
+	}
+	s = stripLeadingStupidWord(s)
+	if len(s) <= truncName {
+		return s
+	}
+	b := append([]byte(s), 0)
+	t := prevWord(b, truncName)
+	if t >= 0 {
+		b[t] = 0
+	}
+	for {
+		t = prevWord(b, t)
+		if t < 0 || b[t] != ' ' {
+			break
+		}
+		end := t + 1
+		for b[end] != 0 {
+			end++
+		}
+		if !stupidWord(string(b[t+1 : end])) {
+			break
+		}
+		b[t] = 0
+	}
+	b[truncName] = 0
+	end := 0
+	for b[end] != 0 {
+		end++
+	}
+	return string(b[:end])
+}
+
+func (w *world) sumFighters(who int) int32 {
+	var sum int32
+	for e := range w.loopInv(who) {
+		p := w.rpItem(int(e.item))
+		if p != nil && p.isManItem != 0 && (p.attack != 0 || p.defense != 0 || p.missile != 0 || int(e.item) == itemGhostWarrior) {
+			if max(p.attack, max(p.defense, p.missile)) > 1 {
+				sum += e.qty
+			}
+		}
+	}
+	return sum
+}
+
+func (w *world) unitSummarySup(pl, who int) {
+	pr := w.isPrisoner(who)
+	nam := w.summaryTruncName(who)
+	var health, sick, behind, loyalty int8
+	var rate int32
+	if p := w.rpChar(who); p != nil {
+		health, sick, behind, loyalty, rate = p.health, p.sick, p.behind, p.loyKind, p.loyRate
+	}
+	healthS := ""
+	switch {
+	case health == 100:
+		healthS = "100 "
+	case health == -1:
+		healthS = "n/a "
+	case sick != 0:
+		healthS = sout("%d-", health)
+	default:
+		healthS = sout("%d+", health)
+	}
+	under := ""
+	if pr {
+		under = " ?? "
+	} else if n := w.stackParent(who); n != 0 {
+		under = boxCodeLess(n)
+	}
+	aura := ""
+	if p := w.rpMagic(who); p != nil && p.magician != 0 {
+		aura = sout("%d", p.curAura)
+	}
+	gold, peas := w.hasItem(who, itemGold), w.hasItem(who, itemPeasant)
+	work, sail, fight := w.hasItem(who, itemWorker), w.hasItem(who, itemSailor), w.sumFighters(who)
+	loyal := sout("%c%s", "ucofns"[loyalty], knum(rate, false))
+	where := " ?? "
+	if !pr {
+		where = boxCodeLess(w.subloc(who))
+	}
+	w.commandOut(pl, "%-*s %-*s %-5s %4s%2d%3s %4s %4s %4s %4s %4s %-*s %s",
+		charField, boxCodeLess(who), charField, where, loyal, healthS, behind, aura,
+		knum(gold, true), knum(peas, true), knum(work, true), knum(sail, true), knum(fight, true), charField, under, nam)
+	for i, n := range [...]int32{gold, peas, work, sail, fight} {
+		w.unitSummaryTotals[i] += n
+	}
+}
+
+func (w *world) unitSummary(pl int) {
+	w.clearTemps(tChar)
+	w.unitSummaryTotals = [5]int32{}
+	w.commandOut(pl, "")
+	count := len(w.pPlayer(pl).units)
+	if count <= 0 {
+		return
+	}
+	w.commandOut(pl, "{<b>}%-*s %-*s loyal heal B CA gold peas work sail figh %-*s name{</b>}", charField, "unit", charField, "where", charField, "under")
+	w.commandOut(pl, "%-*s %-*s ----- ---- - -- ---- ---- ---- ---- ---- %-*s ----", charField, "----", charField, "-----", charField, "-----")
+	for who := range w.loopUnits(pl) {
+		w.unitSummarySup(pl, who)
+	}
+	if count > 1 {
+		w.commandOut(pl, "%*s %-*s                 ==== ==== ==== ==== ====", charField, "", charField, "")
+		s := w.unitSummaryTotals
+		w.commandOut(pl, "%*s %-*s                 %4s %4s %4s %4s %4s", charField, "", charField, "", knum(s[0], true), knum(s[1], true), knum(s[2], true), knum(s[3], true), knum(s[4], true))
+	}
+}
+
 // Character detail sections are complete report.c:410–678.
 func (w *world) charRepStackInfo(who, num int) {
 	if n := w.stackParent(num); n != 0 {

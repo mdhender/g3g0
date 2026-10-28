@@ -54,6 +54,8 @@ type world struct {
 
 	// report.c cache validity; transfers invalidate it even before stage 2.
 	pledgeBacklinks bool
+	// report.c's sum_gold/peas/work/sail/fight, reset by unit_summary.
+	unitSummaryTotals [5]int32
 
 	// libdir is libdir, the data directory (-l), which load_box()'s
 	// diagnostic names. C starts it "lib".

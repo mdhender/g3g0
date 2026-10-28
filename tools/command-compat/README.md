@@ -3,6 +3,107 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Complete faction unit summaries (#154)
+
+Existing report.go adds complete unchanged report.c `sum_fighters`
+**801–822**, TRUNC_NAME and the original seventeen-entry `stupid_words`
+table **825–848**, `strip_leading_stupid_word`, `stupid_word`, `prev_word`,
+`summary_trunc_name` **851–925**, and `unit_summary_sup` / `unit_summary`
+**937–1059**. Required u.c `knum` **1694–1708** is ported in existing u.go.
+All these complete C definitions, tables and statics were already extracted;
+only trivial direct-call wrappers and raw scratch observers are added to the
+existing adapter. No C definitions are rewritten and no successful missing
+dependency substitute is added. Existing inventory/unit loops, names/codes,
+items/skills, stack/subloc, output/cache and allocation owners are reused.
+The later player-report root and its projection are deliberately unchanged;
+this task does not wire an additional effect pass into main.
+
+Twelve appended sections (ten status **0**, two **134**) compare real raw
+logs/streams/status, stored records/lists, scratch totals and allocation flags:
+
+- Empty roots clear **all character temps** before output and allocate PL
+  after the first blank, even for system/silent players and immediate output.
+  One unit emits no totals; a missing CH/CM remains missing. Multiple units
+  follow the original stored list, including duplicates, without sorting or
+  filtering prisoners. Repeated roots reset totals; direct helpers accumulate.
+- All six loyalties produce original `ucofns` prefixes. Health **100/-1**
+  overrides sick; **37** healthy/sick, **0/-2**, behind **127/-128**, magician
+  **1/-1**, nonmagician with stored aura and aura **12345/-99** exercise
+  minimum-width (not truncation) columns. Captives show both ` ?? ` fields;
+  stacked noncaptives show their real parent and enclosing sublocation.
+- Original knum boundaries **0/9998/9999/999999/1000000/2147483647** and
+  negative values are reached through real loyalty/inventory/totals. The
+  **9999 -> 9k** discontinuity and signed 32-bit totals are preserved. Seven
+  ordered rows, including a duplicate, total **29959/1000000/999999/10000/0**.
+  Overflow controls yield gold **-2147473650**, fighters **-2146473651**.
+- Real fighter predicates distinguish man/nonman, all-zero, all-one,
+  attack-only/defense-only/missile-only **2**, negative stats, missing item
+  record, duplicate quantities, invalid item IDs and zero/negative quantities.
+  Fighters total **102**, then **139** after giving the man-marked ghost
+  warrior missile **2**; its ghost identity alone does not pass max-stat >1.
+  Inventory order, invalid/raw entries and records are unchanged.
+- Names of **14/15/16** bytes and spaces immediately before/at width **15**,
+  all seventeen leading and trailing table entries, case-insensitive matching,
+  a nonword prefix and multiple spaces execute the original pointer/byte
+  algorithm. Short `The Short Name` stays untouched. Only one leading word
+  is stripped: `The the Extraordinary Warrior` becomes **the**. Trailing
+  words strip repeatedly, but `Alpha  of Extraordinary` retains **Alpha **,
+  including its space; an all-space tail is not normalized. No convenient
+  split/join/trim algorithm replaces these quirks.
+- Borrowed cached output survives rename: **181** bytes reach `log/original`,
+  `log/200` remains absent, and the renderer does not flush/close/reset it.
+  Open failure asserts at original **sout.c:158** before explicit PL access;
+  a deliberately absent gold entity asserts at **u.c:1832**, not a missing
+  C-definition marker. The guard still rejects dependency markers first.
+
+Numeric fixture constants were checked in pinned oly.h: player/char/loc/item
+**1/2/3/4**, plain **3**, system/silent **48/62**, gold/peasant/worker/sailor
+**1/10/11/19**, ghost warrior **18**, loyalties **0–5**, CHAR_FIELD **6** and
+TRUNC_NAME **15**. Above branches and bytes were inspected in actual C output.
+Source portability caveat retained rather than fixed: the original truncator
+can call `prev_word(s, NULL)` for an unbroken long first word, whose `t > s`
+pointer comparison is not portable C. Native pinned C repeats deterministically
+and returns the first fifteen bytes in these cases; Go preserves that observed
+result. Likewise the signed-overflow probes record this native C build's
+behavior, not a claim about every optimizing C compiler. No observed blocking
+defect or new prerequisite was found. Parent confirmed the NULL comparison in
+current upstream and filed [G3 #359](https://github.com/playbymail/olympia-g3/issues/359),
+assigned to the owner; the port links it without changing observed behavior.
+No upstream code was changed.
+
+At **0.94.0-alpha**, complete unchanged real C runs twice deterministically
+and Go matches **1095 sections / 73930 lines / 1423874 output bytes**. Entire
+inherited **1083 sections / 73273 lines / 1406675 output bytes** and **23438
+input lines / 441216 input bytes** are exact HEAD prefixes. New input totals
+**23766 lines / 449169 bytes**. Output SHA-256:
+`cd3e5c556e5a2e71d5f8a6eb051e149a266e96e6007001e54c8513b708614b5f`.
+Input SHA-256:
+`a003ba328dfdd2b7ab5718a1eeed84b5c07e3ae6f2930e27419983b0c81d4edd`.
+Live native traversal also matches C/C/Go with shared input unchanged. Logs:
+`tmp/issue154-command{,-update}.log`.
+
+Four temporary linker probes wrap unit_summary only when player **200**
+has no PL and its log path is a directory, at new expected-failure section
+**1093**. Marker plus return **0** or abort **134**, default and update modes,
+all reject with harness status **2** before expected-status acceptance or
+recording replacement. Each log records the identical before/after output
+hash above: `tmp/issue154-negative-{0,134}-{default,update}.log`. Probe source,
+object and compiler wrapper are removed before the final normal comparison.
+
+Sequential command refresh/default, move/helper/RNG/code/loadsave/turn-driver/
+default-turn, bounded vet and fresh bounded default tests pass with explicit
+isolated G3_REPO and run_limited for engine/test executables. Logs:
+`tmp/issue154-{move,helper,rng,code,loadsave,turn-driver,turn,vet,test}.log`.
+Olympia fresh defaults: **1.896s**. Matching captures are removed. Source-only
+whitespace validation passes; literal raw C recording and the all-space-tail
+input control intentionally retain trailing spaces. Independent parent review
+and the same eight-tool/vet/fresh-test tier pass (Olympia **1.559s**); logs
+`tmp/parent154-*.log`. No full-world, lifecycle, later report-root or stage-exit
+acceptance is claimed. Latest strict evidence remains the post-#153 eight
+report-byte differences, exit **1** before lifecycle; the deferred root is not
+wired by this task. `tmp/parent-stage2-turn` is untouched. G3 #358
+remains unchanged/nonblocking; malformed **C136/Go2** is not passing parity.
+
 ## Complete player banner and account footer (#153)
 
 Existing report.go implements complete unchanged report.c `player_banner`

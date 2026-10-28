@@ -663,6 +663,21 @@ func (w *world) clearTemps(k int) {
 	}
 }
 
+// knum is complete u.c:1694–1708, including the original 9999 threshold
+// and asymmetric negative-number formatting.
+func knum(n int32, nozero bool) string {
+	if n == 0 && nozero {
+		return ""
+	}
+	if n < 9999 {
+		return sout("%d", n)
+	}
+	if n < 1000000 {
+		return sout("%dk", n/1000)
+	}
+	return sout("%dM", n/1000000)
+}
+
 // capitalize is cap(): s with its first byte made upper case, by C's
 // toupper() in the "C" locale (the engine never calls setlocale()), which
 // changes only 'a' to 'z'. "" is returned as is. C copies s into a sout()

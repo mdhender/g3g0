@@ -6,6 +6,43 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Complete faction unit summaries (#154)
+
+Existing report.go adds complete pinned report.c sum_fighters **801–822**,
+original TRUNC_NAME/word table **825–848**, truncation helpers **851–925**
+and unit_summary_sup/unit_summary **937–1059**. Required complete u.c knum
+**1694–1708** lives in existing u.go. Original byte/pointer steps and word
+table are preserved, not replaced by a convenient name algorithm. Real unit/
+inventory loops, names/codes, stack/subloc, item predicates, allocations and
+cached FILE/output owners are reused. Later player-report root/projection and
+main wiring stay unchanged; there is no second effect pass or new dependency/pin.
+
+At **0.94.0-alpha**, twelve appended sections match complete unchanged real
+C twice and Go: **1095 sections / 73930 lines / 1423874 output bytes**.
+Inherited **1083 sections / 73273 lines / 1406675 output bytes** and **441216
+input bytes** remain exact prefixes. Actual cases cover zero/one/multiple
+units, duplicates/order, prisoner/stack fields, all loyalties, health/sick/
+aura widths, actual fighter predicates and **102/139** counts, signed totals,
+name boundaries/all seventeen leading/trailing words, unchanged records,
+temps/allocations and **181-byte** renamed cached output. Constants/reached
+branches are verified. Native C's NULL-pointer-comparison portability concern
+([G3 #359](https://github.com/playbymail/olympia-g3/issues/359), filed by parent)
+and signed-overflow behavior are disclosed, not independently fixed. No
+observed blocker or new prerequisite was found. Four temporary dependency-marker
+controls (0/134, default/update) reject before expected status/update and leave
+the recording hash unchanged; probes removed. See
+[complete closure, hashes and evidence](command-compat#complete-faction-unit-summaries-154).
+
+Sequential command refresh/default, move/helper/RNG/code/loadsave/turn-driver/
+default-turn, bounded vet and fresh bounded defaults pass with explicit
+isolated G3_REPO and run_limited. Logs: `tmp/issue154-*.log`. Matching captures
+removed; literal C whitespace retained. Independent parent review and the
+same tool/vet/fresh-test tier pass; logs `tmp/parent154-*.log`.
+No full-world/lifecycle/stage-exit acceptance. Latest strict gate remains the
+post-#153 eight report-byte differences; later root wiring is deferred.
+Parent strict captures are untouched. G3 #358 remains unchanged:
+the original division/Go panic, malformed **C136/Go2**, is not passing parity.
+
 ## Complete player banner and account footer (#153)
 
 Existing report.go implements complete pinned report.c player_banner

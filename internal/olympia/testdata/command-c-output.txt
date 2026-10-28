@@ -73271,3 +73271,660 @@ end file bytes
 stderr:
 
 exit 0
+stdout:
+section report unit summary empty still clears all character temps and allocates after output
+> post empty_player 200
+> field 1000 temp 71
+> field 1001 temp -9
+> report state 200
+report entity 200 order 0 player 0 attitudes 0 char 0 magic 0
+200 player pl_regular
+
+> report unit_summary 200
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary totals 0 0 0 0 0
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> readlog 200
+log 200:
+200:0::0::
+stderr:
+
+exit 0
+stdout:
+section report unit summary immediate empty system and silent players still allocate
+> post empty_player 200
+> post empty_player 201
+> field 200 subkind 48
+> field 201 subkind 62
+> set immediate 1
+> report unit_summary 200
+200:0::0::
+> report unit_summary 201
+201:0::0::
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_system
+PL
+
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+201 player pl_silent
+PL
+
+> report files
+report file 200 0
+report file 201 0
+stderr:
+
+exit 0
+stdout:
+section report unit summary one absent character record no totals and no record allocations
+> entity 1 4 0
+> entity 10 4 0
+> entity 11 4 0
+> entity 19 4 0
+> entity 1002 2 0
+> name 1002 The Short Name
+> field 200 unit 1002
+> field 1001 temp 81
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 0 magic 0
+1002 char 0
+na The Short Name
+
+> report unit_summary 200
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary temp 1002 0
+summary totals 0 0 0 0 0
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 0 magic 0
+1002 char 0
+na The Short Name
+
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1002
+200 player pl_regular
+PL
+ un 1002 
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+200:0::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+200:0::0::1002   0      u0      0+ 0                                    The Short Name
+stderr:
+
+exit 0
+stdout:
+section report unit summary original list order duplicates prisoners loyalty health aura totals and repeats
+> entity 1 4 0
+> entity 10 4 0
+> entity 11 4 0
+> entity 19 4 0
+> entity 10000 3 3
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> link 10000 1000
+> link 1000 1001
+> link 1001 1002
+> link 10000 1003
+> link 10000 1004
+> link 10000 1005
+> field 200 unit 1005
+> field 200 unit 1002
+> field 200 unit 1000
+> field 200 unit 1004
+> field 200 unit 1001
+> field 200 unit 1003
+> field 200 unit 1005
+> field 1000 loyal 0
+> field 1001 loyal 1
+> field 1002 loyal 2
+> field 1003 loyal 3
+> field 1004 loyal 4
+> field 1005 loyal 5
+> field 1001 rate 9999
+> field 1002 rate -10000
+> field 1003 rate 9998
+> field 1004 rate 999999
+> field 1005 rate 1000000
+> field 1000 health 100
+> field 1000 sick 1
+> field 1001 health -1
+> field 1001 sick 1
+> field 1002 health 37
+> field 1002 sick 1
+> field 1003 health 37
+> field 1004 health 0
+> field 1005 health -2
+> field 1002 prisoner 1
+> field 1001 behind 127
+> field 1002 behind -128
+> field 1003 magician 1
+> field 1003 cur_aura 12345
+> field 1004 cur_aura 987
+> field 1005 magician -1
+> field 1005 cur_aura -99
+> name 1000 The Captain of the Northern Host
+> name 1001 Alpha and the Extraordinary
+> name 1002 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+> name 1003 The Short Name
+> inventory 1005 1 9999
+> inventory 1002 1 9998
+> inventory 1000 10 1000000
+> inventory 1001 11 999999
+> inventory 1003 19 10000
+> inventory 1004 1 -37
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1005 1002 1000 1004 1001 1003 1005
+200 player pl_regular
+PL
+ un 1005 1002 1000 1004 1001 1003 1005 
+
+> report unit_summary 200
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary temp 1002 0
+summary temp 1003 0
+summary temp 1004 0
+summary temp 1005 0
+summary totals 29959 1000000 999999 10000 0
+> report unit_summary 200
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary temp 1002 0
+summary temp 1003 0
+summary temp 1004 0
+summary temp 1005 0
+summary totals 29959 1000000 999999 10000 0
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1005 1002 1000 1004 1001 1003 1005
+200 player pl_regular
+PL
+ un 1005 1002 1000 1004 1001 1003 1005 
+
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 1 9998
+1002 char 0
+na ABCDEFGHIJKLMNOPQRSTUVWXYZ
+il	1 9998
+LI
+ wh 1001
+CH
+ he 37
+ si 1
+ lk 2
+ lr -10000
+ pr 1
+ bh -128
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+200:0::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+200:0::0::1005   aa00   s1M    -2+ 0-99   9k                            <no subkind>
+200:0::0::1002    ??    o-10000  37--128    9998                      ??    ABCDEFGHIJKLMNO
+200:0::0::1000   aa00   u0    100  0           1M                       Captain
+200:0::0::1004   aa00   n999k   0+ 0     -37                            <no subkind>
+200:0::0::1001   aa00   c9k   n/a 127              999k           1000   Alpha
+200:0::0::1003   aa00   f9998  37+ 012345                 10k             The Short Name
+200:0::0::1005   aa00   s1M    -2+ 0-99   9k                            <no subkind>
+200:0::0::                              ==== ==== ==== ==== ====
+200:0::0::                               29k   1M 999k  10k     
+200:0::0::
+200:0::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+200:0::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+200:0::0::1005   aa00   s1M    -2+ 0-99   9k                            <no subkind>
+200:0::0::1002    ??    o-10000  37--128    9998                      ??    ABCDEFGHIJKLMNO
+200:0::0::1000   aa00   u0    100  0           1M                       Captain
+200:0::0::1004   aa00   n999k   0+ 0     -37                            <no subkind>
+200:0::0::1001   aa00   c9k   n/a 127              999k           1000   Alpha
+200:0::0::1003   aa00   f9998  37+ 012345                 10k             The Short Name
+200:0::0::1005   aa00   s1M    -2+ 0-99   9k                            <no subkind>
+200:0::0::                              ==== ==== ==== ==== ====
+200:0::0::                               29k   1M 999k  10k     
+> report unit_summary 201
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary temp 1002 0
+summary temp 1003 0
+summary temp 1004 0
+summary temp 1005 0
+summary totals 0 0 0 0 0
+> readlog 201
+log 201:
+201:0::0::
+stderr:
+
+exit 0
+stdout:
+section report unit summary actual fighter predicates inventory filters and duplicate quantities
+> entity 1 4 0
+> entity 10 4 0
+> entity 11 4 0
+> entity 19 4 0
+> entity 18 4 0
+> entity 300 4 0
+> entity 301 4 0
+> entity 302 4 0
+> entity 303 4 0
+> entity 304 4 0
+> entity 305 4 0
+> entity 306 4 0
+> entity 307 4 0
+> field 300 man 1
+> field 301 man 1
+> field 301 attack 1
+> field 301 defense 1
+> field 301 missile 1
+> field 302 man 1
+> field 302 attack 2
+> field 303 man 1
+> field 303 defense 2
+> field 304 man 1
+> field 304 missile 2
+> field 305 attack 99
+> field 306 man 1
+> field 306 attack -5
+> field 306 defense -3
+> field 306 missile -1
+> field 18 man 1
+> inventory 1000 300 11
+> inventory 1000 301 13
+> inventory 1000 302 17
+> inventory 1000 303 19
+> inventory 1000 304 23
+> inventory 1000 305 29
+> inventory 1000 306 31
+> inventory 1000 18 37
+> inventory 1000 307 41
+> inventory 1000 302 43
+> inventory 1000 302 0
+> inventory 1000 302 -47
+> inventory 1000 399 53
+> report sum_fighters 1000
+fighters 102
+> field 200 unit 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 300 11
+raw item 301 13
+raw item 302 17
+raw item 303 19
+raw item 304 23
+raw item 305 29
+raw item 306 31
+raw item 18 37
+raw item 307 41
+raw item 302 43
+raw item 302 0
+raw item 302 -47
+raw item 399 53
+1000 char 0
+il	300 11 \
+	301 13 \
+	302 17 \
+	303 19 \
+	304 23 \
+	305 29 \
+	306 31 \
+	18 37 \
+	307 41 \
+	302 43
+CH
+ lo 200
+
+> report unit_summary 200
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary totals 0 0 0 0 102
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 300 11
+raw item 301 13
+raw item 302 17
+raw item 303 19
+raw item 304 23
+raw item 305 29
+raw item 306 31
+raw item 18 37
+raw item 307 41
+raw item 302 43
+raw item 302 0
+raw item 302 -47
+raw item 399 53
+1000 char 0
+il	300 11 \
+	301 13 \
+	302 17 \
+	303 19 \
+	304 23 \
+	305 29 \
+	306 31 \
+	18 37 \
+	307 41 \
+	302 43
+CH
+ lo 200
+
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+200:0::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+200:0::0::1000   0      u0      0+ 0                         102        <no subkind>
+> field 18 missile 2
+> report sum_fighters 1000
+fighters 139
+> report unit_summary 200
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary totals 0 0 0 0 139
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+200:0::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+200:0::0::1000   0      u0      0+ 0                         102        <no subkind>
+200:0::0::
+200:0::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+200:0::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+200:0::0::1000   0      u0      0+ 0                         139        <no subkind>
+stderr:
+
+exit 0
+stdout:
+section report unit summary C int overflow totals remain signed
+> entity 1 4 0
+> entity 10 4 0
+> entity 11 4 0
+> entity 19 4 0
+> entity 300 4 0
+> field 300 man 1
+> field 300 attack 2
+> field 200 unit 1001
+> field 200 unit 1000
+> inventory 1001 1 2147483647
+> inventory 1000 1 9999
+> inventory 1001 300 2147483647
+> inventory 1001 300 1000000
+> inventory 1000 300 9998
+> report sum_fighters 1001
+fighters -2146483649
+> report unit_summary 200
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary totals -2147473650 0 0 0 -2146473651
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+200:0::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+200:0::0::1001   0      u0      0+ 0    2147M                -2146483649        <no subkind>
+200:0::0::1000   0      u0      0+ 0      9k                9998        <no subkind>
+200:0::0::                              ==== ==== ==== ==== ====
+200:0::0::                              -2147473650                -2146473651
+stderr:
+
+exit 0
+stdout:
+section report unit summary truncation boundaries single leading word only and trailing word removal
+> name 1000 12345678901234
+> report trunc_name 1000
+trunc name [12345678901234]
+> name 1000 123456789012345
+> report trunc_name 1000
+trunc name [123456789012345]
+> name 1000 1234567890123456
+> report trunc_name 1000
+trunc name [123456789012345]
+> name 1000 ABCDEFGHIJKLMNO tail
+> report trunc_name 1000
+trunc name [ABCDEFGHIJKLMNO]
+> name 1000 ABCDEFGHIJKLMN tail
+> report trunc_name 1000
+trunc name [ABCDEFGHIJKLMN]
+> name 1000 ABCDEFGHIJKLM tail
+> report trunc_name 1000
+trunc name [ABCDEFGHIJKLM]
+> name 1000 The Short Name
+> report trunc_name 1000
+trunc name [The Short Name]
+> name 1000 tHe    LongerNamed Warrior
+> report trunc_name 1000
+trunc name [LongerNamed]
+> name 1000 The the Extraordinary Warrior
+> report trunc_name 1000
+trunc name [the]
+> name 1000 Alpha and the Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha of Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha OF Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha  of Extraordinary
+> report trunc_name 1000
+trunc name [Alpha ]
+> name 1000 Alpha - -- Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 a                
+> report trunc_name 1000
+trunc name [a              ]
+stderr:
+
+exit 0
+stdout:
+section report unit summary every original leading stupid word preserves table and case matching
+> name 1000 A ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 THE ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 OF ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 DE ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 DES ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 LA ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 AND ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 DU ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 AUX ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 ET ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 SES ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 AVEC ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 UN ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 VAN ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 VON ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 - ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 -- ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [ExtraordinaryWa]
+> name 1000 THEATRE ExtraordinaryWarrior
+> report trunc_name 1000
+trunc name [THEATRE]
+stderr:
+
+exit 0
+stdout:
+section report unit summary every original trailing stupid word stripped not whitespace normalized
+> name 1000 Alpha a Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha the Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha of Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha de Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha des Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha la Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha and Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha du Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha aux Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha et Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha ses Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha avec Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha un Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha van Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha von Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha - Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha -- Extraordinary
+> report trunc_name 1000
+trunc name [Alpha]
+> name 1000 Alpha THEATRE Extraordinary
+> report trunc_name 1000
+trunc name [Alpha THEATRE]
+stderr:
+
+exit 0
+stdout:
+section report unit summary direct helper accumulates then empty root resets borrowed cached inode
+> lore_root
+> entity 1 4 0
+> entity 10 4 0
+> entity 11 4 0
+> entity 19 4 0
+> inventory 1000 1 9999
+> report unit_summary_sup 200 1000
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary totals 9999 0 0 0 0
+> set flush 0
+> life rename log/200 log/original
+> report unit_summary_sup 200 1000
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary totals 19998 0 0 0 0
+> report unit_summary 200
+> report summary_scratch
+summary temp 1000 0
+summary temp 1001 0
+summary totals 0 0 0 0 0
+> life path log/200
+path log/200 missing
+> life flush
+> readfile log/original
+file bytes log/original 181:
+200:0::0::1000   0      u0      0+ 0      9k                            <no subkind>
+200:0::0::1000   0      u0      0+ 0      9k                            <no subkind>
+200:0::0::
+
+end file bytes
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+
+exit 0
+stdout:
+section report invalid unit summary first blank output fails before explicit missing player allocation
+> lore_root
+> post empty_player 200
+> report block 200
+> report unit_summary 200
+stderr:
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section report invalid unit summary missing gold dependency is not silently skipped
+> lore_root
+> field 200 unit 1000
+> report unit_summary 200
+stderr:
+assertion failure: olympia/u.c (1832): valid_box(item)
+
+exit 134
