@@ -58259,17 +58259,25 @@ new_player_list()
 
 exit 0
 stdout:
-section admission zero through four nonblank fields all produce partial reads in native order
+section admission zero through four nonblank fields each produce a partial read with one candidate
 > lore_root
 > lore_dir act
 > lore_dir act/z0
 > lore_file act/z0/Join-g3
+> admission run
+> life remove act/z0
 > lore_dir act/a1
 > lore_file act/a1/Join-g3 faction
+> admission run
+> life remove act/a1
 > lore_dir act/q2
 > lore_file act/q2/Join-g3 faction||character|
+> admission run
+> life remove act/q2
 > lore_dir act/b3
 > lore_file act/b3/Join-g3 |faction| |character||city
+> admission run
+> life remove act/b3
 > lore_dir act/p4
 > lore_file act/p4/Join-g3 faction|character|city|name| |
 > admission run
@@ -58291,11 +58299,19 @@ CH
 
 stderr:
 add_new_players()
-error: partial read for 'b3'
 error: partial read for 'z0'
-error: partial read for 'p4'
+new_player_list()
+add_new_players()
 error: partial read for 'a1'
+new_player_list()
+add_new_players()
 error: partial read for 'q2'
+new_player_list()
+add_new_players()
+error: partial read for 'b3'
+new_player_list()
+add_new_players()
+error: partial read for 'p4'
 new_player_list()
 
 exit 0

@@ -18122,17 +18122,25 @@ lore_file act/plain-file ignored
 admission run
 admission state
 
-section admission zero through four nonblank fields all produce partial reads in native order
+section admission zero through four nonblank fields each produce a partial read with one candidate
 lore_root
 lore_dir act
 lore_dir act/z0
 lore_file act/z0/Join-g3
+admission run
+life remove act/z0
 lore_dir act/a1
 lore_file act/a1/Join-g3 faction
+admission run
+life remove act/a1
 lore_dir act/q2
 lore_file act/q2/Join-g3 faction||character|
+admission run
+life remove act/q2
 lore_dir act/b3
 lore_file act/b3/Join-g3 |faction| |character||city
+admission run
+life remove act/b3
 lore_dir act/p4
 lore_file act/p4/Join-g3 faction|character|city|name| |
 admission run

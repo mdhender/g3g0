@@ -6,6 +6,27 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Portable admission oracle (#168)
+
+The inherited multi-account admission recording encoded filesystem-specific
+readdir order, not a port defect. Only its one section is replaced by five
+single-candidate traversal probes for zero through four nonblank fields;
+all other **902 saved sections** and input sections remain byte-identical.
+Native traversal stays unsorted and is checked separately by a small live
+real-C/C/Go raw comparison over one unchanged shared directory. It uses the
+existing actual pinned `make_new_players` closure and rejects dependency
+markers, mutations and unexpected status; no modeled expected output or
+diagnostic normalization is used, and any native filesystem order is valid.
+Plain Go tests explicitly skip only this live case without the tool's C
+expectation; portable recordings always run. See
+[exact byte and negative-control evidence](command-compat#portable-admission-recording-and-live-native-order-168).
+Command `--update` and default comparison pass **903 sections / 62047 lines /
+1160604 bytes**, plus a **28-line / 426-byte** live comparison; sorted and
+reversed traversal overlays both fail. Bounded vet and fresh bounded tests
+pass at **0.79.1-alpha**. Pin/dependencies and engine/report behavior are
+unchanged. This local harness prerequisite does not include #140, full-world
+or stage-exit acceptance.
+
 ## Noncharacter descriptions (#139)
 
 display.go extends its accepted headers/character owner with complete unchanged

@@ -3,6 +3,65 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Portable admission recording and live native order (#168)
+
+This is a local harness correction, prerequisite to #140, not an engine or
+upstream game regression change. On this Linux filesystem, unchanged pinned
+C twice and Go traverse `q2,p4,z0,b3,a1`; the inherited recording baked in
+`b3,z0,p4,a1,q2`. Native readdir order is correct and must not be sorted or
+normalized into portable saved expectations.
+
+Only section **793** (zero-based, the 794th section) changes. Its five
+zero-through-four-nonblank-field inputs are unchanged. It now calls real
+admission traversal with one candidate at a time, using the existing
+`life remove` fixture operation between candidates. All five partial reads,
+blank-line cleaning, saved records, and the no-admission tail still execute.
+The other **902 sections** are byte-identical in both input and output:
+the **329029-byte input prefix / 32759-byte suffix** and **1007603-byte
+recording prefix / 151856-byte suffix** are unchanged. No other saved byte
+is replaced, including diagnostics, whitespace and source assertions.
+
+`run.sh` also creates one small five-account live fixture, then runs two
+fresh C processes and Go over that **same unchanged input directory**.
+The existing driver invokes the complete unchanged extracted pinned
+`make_new_players` through `admission probe`; no new C source closure or
+driver action is needed. C/C compares stdout, stderr and status separately
+and byte-for-byte. The Go test compares the existing raw stream/status
+envelope solely against those real C bytes, never modeled expected output.
+All engines use `run_limited`; relative paths after the same `lore_root`
+give both C processes and Go identical actual cwd paths. Recursive snapshots
+check file bytes, modes, paths, directory membership and native entry order
+after each engine; neither admissions nor fixture setup may mutate the
+shared tree between engines. Dependency markers on either live C stream
+are rejected before recording updates; C must exit zero.
+
+`TestCommandAdmissionNativeOrder` compares raw C/Go output regardless of
+the filesystem's native order; even naturally alphabetical order is valid.
+On this filesystem the observed order differs from alphabetical controls
+`a1,b3,p4,q2,z0` and `z0,q2,p4,b3,a1`.
+Temporary Go build overlays that alphabetized traversal or reversed native
+traversal both failed at the raw C/Go comparison (test exit 1); overlays were
+removed and the unchanged engine passed again. No production engine file
+was edited. Plain `go test` explicitly skips only this live test when
+`COMMAND_NATIVE_DIR` is absent; all portable recorded probes always run.
+The tool sets that variable to its generated `WORK/native` directory.
+
+Validation at **0.79.1-alpha**:
+
+- `G3_REPO="$PWD/tmp/upstream.git"` explicitly for both `--update` and
+  ordinary command comparison; pin remains `e733acb63bacb21167a1f2589d8dcdc023364896`.
+  Each passed **903 recorded sections / 62047 lines / 1160604 bytes**, plus
+  the **28-line / 426-byte** live C/C/Go comparison with unchanged input.
+  New input is **19745 lines / 362373 bytes**. Recording SHA-256:
+  `e8fedf667b0a699da4bc9d0d1bb542fe7f9f23f8ddc9a4ae005d63faa2cafb5a`.
+- Bounded `go vet ./...` and fresh bounded `go test -count=1 ./...` passed,
+  as did shell syntax and `git diff --check`. Update/default/native logs and
+  intentional sorted/reversed failure logs are under `tmp/issue168-*.log`.
+
+No engine/report behavior, upstream harness, source pin/dependency set or
+shared upstream clone is changed. Route rendering remains separate in #140.
+This does not claim Darwin/native Windows, full-world or stage-exit parity.
+
 ## Noncharacter descriptions (#139)
 
 display.go now implements complete stage-pin display.c `ship_cap_s` **77–89**,

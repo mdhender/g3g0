@@ -51,18 +51,49 @@ func TestCommandMatchesC(t *testing.T) {
 	}
 }
 
-func runCommandSection(t *testing.T, lines []string) (output string) {
+// Native directory order is not portable recording data. The tool supplies
+// two fresh real-C runs over this same unchanged directory before Go reads it.
+func TestCommandAdmissionNativeOrder(t *testing.T) {
+	dir := os.Getenv("COMMAND_NATIVE_DIR")
+	if dir == "" {
+		t.Skip("live C expectation absent; run tools/command-compat/run.sh")
+	}
+	cases, err := os.ReadFile(filepath.Join(dir, "cases.txt"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	want, err := os.ReadFile(filepath.Join(dir, "out.txt"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(want), "out-of-scope C dependency:") {
+		t.Fatal("live C expectation reached a dependency marker")
+	}
+	got := runCommandSectionInDir(t, strings.Split(strings.TrimSuffix(string(cases), "\n"), "\n"), filepath.Join(dir, "input"))
+	if got != string(want) {
+		t.Fatalf("live raw C/Go mismatch:\n got %q\nwant %q", got, want)
+	}
+}
+
+func runCommandSection(t *testing.T, lines []string) string {
+	return runCommandSectionInDir(t, lines, "")
+}
+
+func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output string) {
 	var stdout, stderr strings.Builder
 	w := newWorld()
 	w.flushAlways = true // command C driver opens streams with flush_always=1.
 	t.Cleanup(func() { w.immediate = false; w.closeLogfile(); w.closeTimes() })
 	w.stdout, w.stderr = &stdout, &stderr
-	w.libdir = t.TempDir()
-	if err := os.Mkdir(filepath.Join(w.libdir, "log"), 0o755); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.Mkdir(filepath.Join(w.libdir, "orders"), 0o755); err != nil {
-		t.Fatal(err)
+	w.libdir = dir
+	if dir == "" {
+		w.libdir = t.TempDir()
+		if err := os.Mkdir(filepath.Join(w.libdir, "log"), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.Mkdir(filepath.Join(w.libdir, "orders"), 0o755); err != nil {
+			t.Fatal(err)
+		}
 	}
 	w.allocBox(200, tPlayer, subPlRegular)
 	w.allocBox(201, tPlayer, subPlRegular)

@@ -760,11 +760,68 @@ for run in run1 run2; do
 done
 cmp "${WORK}/run1/out.txt" "${WORK}/run2/out.txt" || die "C is not deterministic"
 echo "C driver: ${sections} sections, $(wc -l <"${WORK}/run1/out.txt") lines, deterministic"
+
+# A saved multi-candidate diagnostic order would encode this filesystem's
+# readdir order. Instead, reuse ONE untouched input tree for C, C, then Go.
+# The real make_new_players definition above is unchanged, not a model oracle.
+native="${WORK}/native"
+mkdir -p "${native}/input/act" "${native}/input/log" "${native}/input/orders"
+for acct in z0 a1 q2 b3 p4; do mkdir "${native}/input/act/${acct}"; done
+printf '' >"${native}/input/act/z0/Join-g3"
+printf 'faction' >"${native}/input/act/a1/Join-g3"
+printf 'faction\n\ncharacter\n' >"${native}/input/act/q2/Join-g3"
+printf '\nfaction\n \ncharacter\n\ncity' >"${native}/input/act/b3/Join-g3"
+printf 'faction\ncharacter\ncity\nname\n \n' >"${native}/input/act/p4/Join-g3"
+cat >"${native}/cases.txt" <<'EOF'
+section admission live native traversal
+lore_root
+admission probe
+admission state
+save 1000
+EOF
+native_snapshot() {
+ python3 -I - "${native}/input" <<'PY'
+import json, os, pathlib, stat, sys
+root = pathlib.Path(sys.argv[1])
+def snapshot(path):
+    mode = path.lstat().st_mode
+    if stat.S_ISDIR(mode):
+        # Keep native entry order too: even an unnoticed remove/recreate can
+        # invalidate a traversal oracle despite preserving all file contents.
+        return [mode, [[name, snapshot(path / name)] for name in os.listdir(path)]]
+    if not stat.S_ISREG(mode):
+        sys.exit(f'unexpected native fixture file type: {path}')
+    return [mode, path.read_bytes().hex()]
+print(json.dumps(snapshot(root)))
+PY
+}
+native_snapshot >"${native}/before.json"
+for run in run1 run2; do
+ status=0
+ run_limited "${RUN_TIMEOUT}" command-driver "${WORK}/driver" "${native}/cases.txt" 0 "${native}/input" \
+  >"${native}/${run}.stdout" 2>"${native}/${run}.stderr" || status=$?
+ ! grep -q 'out-of-scope C dependency:' "${native}/${run}.stdout" "${native}/${run}.stderr" || die "native traversal reached a C stub"
+ [ "$status" = 0 ] || die "unexpected native traversal C status $status"
+ printf '%d\n' "$status" >"${native}/${run}.status"
+ native_snapshot >"${native}/after.json"
+ cmp "${native}/before.json" "${native}/after.json" || die "C mutated native traversal input"
+done
+for stream in stdout stderr status; do
+ cmp "${native}/run1.${stream}" "${native}/run2.${stream}" || die "native traversal C ${stream} is not deterministic"
+done
+{
+ printf 'stdout:\n'; cat "${native}/run1.stdout"
+ printf 'stderr:\n'; cat "${native}/run1.stderr"
+ printf '\nexit %s\n' "$(cat "${native}/run1.status")"
+} >"${native}/out.txt"
 if [ "$update" = 1 ]; then
  cp "${WORK}/run1/out.txt" "${EXPECT}"
 else
  diff -u "${EXPECT}" "${WORK}/run1/out.txt"
 fi
-(cd "${ROOT}" && RUN_TIMEOUT="${RUN_TIMEOUT}" go test -exec "bash ${HERE}/../lib/run-limited.sh" \
+(cd "${ROOT}" && COMMAND_NATIVE_DIR="${native}" RUN_TIMEOUT="${RUN_TIMEOUT}" go test -exec "bash ${HERE}/../lib/run-limited.sh" \
  -count=1 -run '^TestCommand' ./internal/olympia)
+native_snapshot >"${native}/after.json"
+cmp "${native}/before.json" "${native}/after.json" || die "Go mutated native traversal input"
+echo "Live native traversal: raw C/C/Go match, shared input unchanged"
 echo PASS
