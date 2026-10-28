@@ -1067,9 +1067,21 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			w.deliverLore(args.num(t), args.num(t))
 		case "gm_lore":
 			w.gmShowAllSkills(args.num(t))
-		case "gm_economy":
+		case "gm_economy", "gm_stats":
 			action, pl := args.word(), args.num(t)
 			switch action {
+			case "use":
+				w.gmShowSkillUseCounts(pl)
+			case "skills":
+				w.gmShowSkillsKnown(pl)
+			case "gates":
+				w.gmShowGateStats(pl)
+			case "locations":
+				w.gmShowLocsVisited(pl)
+			case "loyalty":
+				w.gmLoyaltyStats(pl)
+			case "regions":
+				w.gmLandStats(pl)
 			case "attributes":
 				w.gmShowInterestingAttributes(pl)
 			case "animate":
@@ -2103,6 +2115,16 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pItemMagic(n).mayUse.Append(a)
 			case "required":
 				w.pSkill(n).requiredSkill = int32(a)
+			case "use_count":
+				w.pSkill(n).useCount = int32(a)
+			case "last_use":
+				w.pSkill(n).lastUseWho = int32(a)
+			case "seal_key":
+				w.pGate(n).sealKey = int16(a)
+			case "notify_jumps":
+				w.pGate(n).notifyJumps = int32(a)
+			case "notify_unseal":
+				w.pGate(n).notifyUnseal = int32(a)
 			case "offered":
 				w.pSkill(n).offered.Append(a)
 			case "research":

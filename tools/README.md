@@ -6,6 +6,57 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## GM skills geography and loyalty (#162)
+
+Existing gm.go completes pinned gm.c skill comparators/reports **40–179**,
+gate/location/loyalty sections **476–678**, and region comparator/report
+**681–736**. Nine complete original C definitions are verified unchanged
+exactly once. Go reuses real loops/known-skill copies/record access/topology,
+in-place knowledge sorting and the accepted output cache. The three static
+scratch lists have world-owned counterparts; real entity temps retain their
+reset/count effects. gmReportState and main are unchanged until #163. No
+double render/projection pass, later root/include/writer/command, new source
+dependency, pin change, successful stub or independent behavior fix.
+
+At **0.102.0-alpha**, thirteen appended cases match real C twice and Go:
+**1193 sections / 79511 lines / 1556344 output bytes**. The inherited **1180
+sections / 78766 lines / 1540387 output bytes** and **488967 input bytes**
+remain exact prefixes. New input: **25968 lines / 495251 bytes**. Output SHA-256:
+`1ce0bf7f4c6aaf6772cc23a8e857cd8f17ab972805b79474ad5bbb7bb873d1a0`.
+Actually reached branches include use/known-count ID ties, all-character
+skills, zero gates retaining **MASTER/OUT_LORE**, **2/3** gate discoveries,
+nonzero/empty denominators, **1/2** provinces and **3/5** hidden/visible
+sublocations visited, all-player allocation/knowledge sorts, loyalty NPC
+denominator and exact invalid-loyalty assertion, region **2/1/1** counts/ties,
+and an **838-byte** renamed cached inode. Constants/complete definitions and
+exact prefixes are checked; see [closure, hashes and evidence](command-compat#gm-skills-geography-and-loyalty-162).
+
+Four temporary missing-dependency probes (return **0** / abort **134**,
+default/update) reject **section 1192** with harness **2** before expected
+status/update acceptance, preserving both recording hashes. Probes and
+matching captures are removed. Sequential command refresh/default and
+post-probe default, move/helper/RNG/code/loadsave/turn-driver/default turn,
+bounded vet and fresh bounded defaults pass. Every compatibility invocation
+explicitly uses isolated `G3_REPO=$PWD/tmp/upstream.git`; engines/tests use
+shared run_limited. Source-only whitespace/gofmt checks pass; four literal
+trailing-space C region-total/separator recording lines are retained, not
+normalized. Logs: `tmp/issue162-*.log`.
+
+The supplied parent audit covers all seven open issues, including unlabeled:
+only #162–166 and trackers #19/#132, no bug/follow-C. No new verified defect,
+prerequisite or oversized closure. No issue/checklist edits, commit or push.
+Changes remain uncommitted for independent parent review/integration. Latest
+strict evidence is still parent's post-#160 red gate: deterministic C,
+engines **0**, equal raw streams/paths/types/modes, eight report-byte
+differences, exit **1** before 13 lifecycle controls. No fresh strict run or
+stage acceptance; `tmp/parent-stage2-turn` untouched. G3 #358/#359 remain
+nonblocking, and malformed **C136/Go2** is not parity.
+
+Independent parent complete-C/diff review verifies all nine definitions
+unchanged exactly once and both inherited prefixes byte-exact. All eight
+routine tools, bounded vet and fresh bounded tests pass (Olympia **1.828s**);
+logs `tmp/parent162-*.log`. Strict evidence remains post-#160, not acceptance.
+
 ## GM item economy and attributes (#161)
 
 Source-corresponding gm.go completes pinned gm.c `pct` **31–37**,

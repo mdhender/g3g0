@@ -3,6 +3,255 @@
 
 package olympia
 
+import "fmt"
+
+// skillUseComp is gm.c:40–54, including the pinned ID tie-break.
+func (w *world) skillUseComp(a, b int) int {
+	pa, pb := w.rpSkill(a), w.rpSkill(b)
+	if pa.useCount != pb.useCount {
+		return int(pb.useCount - pa.useCount)
+	}
+	return a - b
+}
+
+// gmShowSkillUseCounts is complete gm.c:57–104.
+func (w *world) gmShowSkillUseCounts(pl int) {
+	w.gmSkillUseList.Clear()
+	for sk := range w.loopKind(tSkill) {
+		if w.skillSchool(sk) == sk {
+			continue
+		}
+		if p := w.rpSkill(sk); p != nil && p.useCount != 0 {
+			w.gmSkillUseList.Append(sk)
+		}
+	}
+	safeQsort(w.gmSkillUseList, w.skillUseComp)
+	w.outPath, w.outAltWho = master, 2
+	w.commandOut(pl, "")
+	w.commandOut(pl, "Skill use counts:")
+	w.commandOut(pl, "-----------------")
+	w.commandOut(pl, "")
+	w.commandOut(pl, "%5s  %4s  %5s  %s", "count", "who", "skill", "name")
+	w.commandOut(pl, "%5s  %4s  %5s  %s", "-----", "---", "-----", "----")
+	for _, sk := range w.gmSkillUseList {
+		p := w.rpSkill(sk)
+		w.commandOut(pl, "%4d   %4s  %5s  %s", p.useCount, boxCodeLess(w.player(int(p.lastUseWho))), boxCodeLess(sk), w.justName(sk))
+	}
+	w.commandOut(pl, "")
+	w.outPath, w.outAltWho = 0, 0
+}
+
+// skillsKnownComp is gm.c:107–116. Region occupancy uses the same total order.
+func (w *world) skillsKnownComp(a, b int) int {
+	if w.bx[a].temp != w.bx[b].temp {
+		return int(w.bx[b].temp - w.bx[a].temp)
+	}
+	return a - b
+}
+
+// gmShowSkillsKnown is complete gm.c:118–179, including zero-count skills.
+func (w *world) gmShowSkillsKnown(pl int) {
+	w.gmSkillsKnownList.Clear()
+	w.clearTemps(tSkill)
+	for i := range w.loopKind(tChar) {
+		if p := w.rpChar(i); p != nil {
+			for _, e := range p.skills.Copy() {
+				if e.know == skillKnow {
+					w.bx[e.skill].temp++
+				}
+			}
+		}
+	}
+	for sk := range w.loopKind(tSkill) {
+		if w.skillSchool(sk) != sk {
+			w.gmSkillsKnownList.Append(sk)
+		}
+	}
+	safeQsort(w.gmSkillsKnownList, w.skillsKnownComp)
+	w.outPath, w.outAltWho = master, 2
+	w.commandOut(pl, "")
+	w.commandOut(pl, "Skills known by players:")
+	w.commandOut(pl, "------------------------")
+	w.commandOut(pl, "")
+	w.commandOut(pl, "%5s  %5s  %4s  %s", "count", "skill", "use", "name")
+	w.commandOut(pl, "%5s  %5s  %4s  %s", "-----", "-----", "---", "----")
+	for _, sk := range w.gmSkillsKnownList {
+		p := w.rpSkill(sk)
+		use := ""
+		if p.useCount != 0 {
+			use = commaNum(int(p.useCount))
+		}
+		w.commandOut(pl, "%4d   %5s  %4s  %s", w.bx[sk].temp, boxCodeLess(sk), use, w.justName(sk))
+	}
+	w.commandOut(pl, "")
+	w.outPath, w.outAltWho = 0, 0
+}
+
+// gmShowGateStats is complete gm.c:476–536.
+func (w *world) gmShowGateStats(pl int) {
+	w.clearTemps(tGate)
+	for i := range w.loopKind(tPlayer) {
+		known := w.pPlayer(i).known
+		sortKnown(known)
+		for _, j := range known {
+			if w.kind(j) == tGate {
+				w.bx[j].temp++
+			}
+		}
+	}
+	var gates, found, sealed, jump, unseal int32
+	for i := range w.loopKind(tGate) {
+		gates++
+		if w.bx[i].temp != 0 {
+			found++
+		}
+		if p := w.rpGate(i); p != nil {
+			if p.sealKey != 0 {
+				sealed++
+			}
+			if p.notifyJumps != 0 {
+				jump++
+			}
+			if p.notifyUnseal != 0 {
+				unseal++
+			}
+		}
+	}
+	w.outPath, w.outAltWho = master, 2
+	// The pinned zero-gate return deliberately leaves both routing globals set.
+	if gates == 0 {
+		return
+	}
+	w.commandOut(pl, "%d/%d gates found (%d%%)", found, gates, found*100/gates)
+	w.commandOut(pl, "    %d sealed (%d%%), %d notify jump (%d%%), %d notify unseal (%d%%)", sealed, sealed*100/gates, jump, jump*100/gates, unseal, unseal*100/gates)
+	w.commandOut(pl, "")
+	w.outPath, w.outAltWho = 0, 0
+}
+
+// gmShowLocsVisited is complete gm.c:539–634.
+func (w *world) gmShowLocsVisited(pl int) {
+	w.clearTemps(tLoc)
+	for i := range w.loopKind(tPlayer) {
+		known := w.pPlayer(i).known
+		sortKnown(known)
+		for _, j := range known {
+			if w.kind(j) == tLoc {
+				w.bx[j].temp++
+			}
+		}
+	}
+	var prov, pv, sub, sv, hid, vis int32
+	for i := range w.loopKind(tLoc) {
+		switch w.locDepth(i) {
+		case locProvince:
+			prov++
+			if w.bx[i].temp != 0 {
+				pv++
+			}
+		case locSubloc:
+			sub++
+			if w.bx[i].temp != 0 {
+				sv++
+				if w.locHidden(i) != 0 {
+					hid++
+				} else {
+					vis++
+				}
+			}
+		}
+	}
+	w.outPath, w.outAltWho = master, 2
+	w.commandOut(pl, "%d/%d provinces visited (%d%%)", pv, prov, pct(pv, prov))
+	w.commandOut(pl, "%d/%d sublocs visited (%d%%)", sv, sub, pct(sv, sub))
+	w.commandOut(pl, "    %d%% visible, %d%% hidden", pct(vis, sv), pct(hid, sv))
+	var nf, nt, fv, fh int32
+	for i := range w.loopKind(tLoc) {
+		if w.locDepth(i) != locProvince || w.bx[i].temp == 0 {
+			continue
+		}
+		for j := range w.loopHere(i) {
+			if w.kind(j) != tLoc || w.locDepth(j) != locSubloc {
+				continue
+			}
+			nt++
+			if w.bx[j].temp != 0 {
+				nf++
+				if w.locHidden(j) != 0 {
+					fh++
+				} else {
+					fv++
+				}
+			}
+		}
+	}
+	w.commandOut(pl, "    %d%% of visisted province's sublocs found", pct(nf, nt))
+	w.commandOut(pl, "    %d%% visible, %d%% hidden", pct(fv, nf), pct(fh, nf))
+	w.commandOut(pl, "")
+	w.outPath, w.outAltWho = 0, 0
+}
+
+// gmLoyaltyStats is complete gm.c:637–678; NPC loyalty is in the denominator.
+func (w *world) gmLoyaltyStats(pl int) {
+	var tot, oath, fear, cont, unsw int32
+	for i := range w.loopKind(tChar) {
+		if w.subkind(i) != 0 {
+			continue
+		}
+		tot++
+		var loy int8
+		if p := w.rpChar(i); p != nil {
+			loy = p.loyKind
+		}
+		switch loy {
+		case loyOath:
+			oath++
+		case loyFear:
+			fear++
+		case loyContract:
+			cont++
+		case loyUnsworn:
+			unsw++
+		case loyNpc:
+		default:
+			fmt.Fprintf(w.stderr, "loy_kind = %d\n", loy)
+			assert(false, "olympia/gm.c", 659, "FALSE")
+		}
+	}
+	w.outPath, w.outAltWho = master, 2
+	w.commandOut(pl, "%d chars: %d oath (%d%%), %d fear (%d%%), %d contract (%d%%), %d unsworn (%d%%)", tot, oath, pct(oath, tot), fear, pct(fear, tot), cont, pct(cont, tot), unsw, pct(unsw, tot))
+	w.commandOut(pl, "")
+	w.outPath, w.outAltWho = 0, 0
+}
+
+// regionOccupyComp and gmLandStats are complete gm.c:681–736.
+func (w *world) regionOccupyComp(a, b int) int { return w.skillsKnownComp(a, b) }
+
+func (w *world) gmLandStats(pl int) {
+	w.gmRegionList.Clear()
+	w.clearTemps(tLoc)
+	var n int32
+	for i := range w.loopKind(tChar) {
+		w.bx[w.region(i)].temp++
+		n++
+	}
+	for i := range w.loopKind(tLoc) {
+		if w.bx[i].temp != 0 {
+			w.gmRegionList.Append(i)
+		}
+	}
+	safeQsort(w.gmRegionList, w.regionOccupyComp)
+	w.outPath, w.outAltWho = master, 2
+	w.commandOut(pl, "%10s  %s", "nobles", "region")
+	w.commandOut(pl, "%10s  %s", "------", "------")
+	for _, i := range w.gmRegionList {
+		w.commandOut(pl, "%10s  %s", commaNum(int(w.bx[i].temp)), w.justName(i))
+	}
+	w.commandOut(pl, "%10s  %s", "======", "")
+	w.commandOut(pl, "%10s  %s", commaNum(int(n)), "")
+	w.commandOut(pl, "")
+	w.outPath, w.outAltWho = 0, 0
+}
+
 // pct is gm.c:31–37. Keep C's signed-int multiplication and truncation.
 func pct(n, d int32) int32 {
 	if d == 0 {

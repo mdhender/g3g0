@@ -64,6 +64,11 @@ type world struct {
 	summaryNControlled int32
 	summaryNOther      int32
 
+	// gm.c's three static report lists retain their allocation across calls.
+	gmSkillUseList    lists.IList
+	gmSkillsKnownList lists.IList
+	gmRegionList      lists.IList
+
 	// libdir is libdir, the data directory (-l), which load_box()'s
 	// diagnostic names. C starts it "lib".
 	libdir string

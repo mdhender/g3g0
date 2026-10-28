@@ -800,7 +800,7 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "gm_lore")) {
    sscanf(line,"%*s %d",&n); gm_show_all_skills(n);
   }
-  else if (!strcmp(op, "gm_economy")) {
+  else if (!strcmp(op, "gm_economy") || !strcmp(op, "gm_stats")) {
    if(sscanf(line,"%*s %31s %d",text,&n)!=2) return 2;
    drv_gm_economy(text,n);
   }
@@ -1556,6 +1556,11 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"may_study")) ilist_append(&p_item_magic(n)->may_study,a);
    else if (!strcmp(text,"may_use")) ilist_append(&p_item_magic(n)->may_use,a);
    else if (!strcmp(text,"required")) p_skill(n)->required_skill = a;
+   else if (!strcmp(text,"use_count")) p_skill(n)->use_count = a;
+   else if (!strcmp(text,"last_use")) p_skill(n)->last_use_who = a;
+   else if (!strcmp(text,"seal_key")) p_gate(n)->seal_key = (short)a;
+   else if (!strcmp(text,"notify_jumps")) p_gate(n)->notify_jumps = a;
+   else if (!strcmp(text,"notify_unseal")) p_gate(n)->notify_unseal = a;
    else if (!strcmp(text,"offered")) ilist_append(&p_skill(n)->offered,a);
    else if (!strcmp(text,"research")) ilist_append(&p_skill(n)->research,a);
    else if (!strcmp(text,"noble_item")) p_char(n)->unit_item = a;

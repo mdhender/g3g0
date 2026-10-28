@@ -333,6 +333,12 @@ void drv_gm_economy(char *part, int pl) {
  else if (!strcmp(part,"control")) gm_show_control_arts(pl);
  else if (!strcmp(part,"structures")) gm_count_stuff(pl);
  else if (!strcmp(part,"items")) list_all_items(pl);
+ else if (!strcmp(part,"use")) gm_show_skill_use_counts(pl);
+ else if (!strcmp(part,"skills")) gm_show_skills_known(pl);
+ else if (!strcmp(part,"gates")) gm_show_gate_stats(pl);
+ else if (!strcmp(part,"locations")) gm_show_locs_visited(pl);
+ else if (!strcmp(part,"loyalty")) gm_loyalty_stats(pl);
+ else if (!strcmp(part,"regions")) gm_land_stats(pl);
  else abort();
 }
 int drv_gm_pct(int n, int d) { return pct(n,d); }
@@ -607,10 +613,10 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" || die "section $i reached a C stub"
-  if [[ "${section_names[$i]}" == 'section GM economy '* ]]; then
+  if [[ "${section_names[$i]}" == 'section GM economy '* || "${section_names[$i]}" == 'section GM stats '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in
-    'section GM economy invalid '*) expected_status=134 ;;
+    'section GM economy invalid '*|'section GM stats invalid '*) expected_status=134 ;;
    esac
    [ "$status" = "$expected_status" ] || die "unexpected GM economy status $status in section $i; expected $expected_status"
   fi

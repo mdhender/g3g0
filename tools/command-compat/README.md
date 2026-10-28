@@ -3,6 +3,109 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## GM skills geography and loyalty (#162)
+
+Existing gm.go completes nine pinned gm.c definitions, verified unchanged
+exactly once in the existing real-C extraction with original `#line` locations:
+
+| Definition | Inclusive lines |
+|---|---|
+| `skill_use_comp` | 40–54 |
+| `gm_show_skill_use_counts` | 57–104 |
+| `skills_known_comp` | 107–116 |
+| `gm_show_skills_known` | 118–179 |
+| `gm_show_gate_stats` | 476–536 |
+| `gm_show_locs_visited` | 539–634 |
+| `gm_loyalty_stats` | 637–678 |
+| `region_occupy_comp` | 681–690 |
+| `gm_land_stats` | 693–736 |
+
+Go reuses actual entity loops, copied known-skill rows, player/skill/gate
+record access, in-place knowledge sorting, location topology, region lookup,
+names/codes and the existing cached output owner. The three original static
+scratch lists have world-owned counterparts, cleared without discarding
+their allocation; entity temps retain the original reset/count side effects.
+There is no new C dependency or pin, rewritten C model, successful stub,
+second render/projection pass, later root/include/writer or command. Existing
+gmReportState and main remain unchanged until #163.
+
+Thirteen appended cases (**12 status 0 / 1 status 134**) actually reach:
+
+- Use-count descending order, **1,234** ties with lower ID first despite
+  reversed allocation order, category/zero exclusion, negative counts, owner
+  lookup and list clearing after a formerly used skill becomes unused.
+- Known counts **3 / 2 / 2 / 0**, lower-ID ties, duplicate known rows,
+  learning/don't-know/unexpected states excluded, zero-use blank versus
+  comma-formatted use counts, school exclusion, all characters including
+  silent-owned prisoners/garrisons/unowned units, and absent character records
+  remaining absent. Original skill rows/order are unchanged on repeats.
+- Zero gates: all fixture players still allocate and knowledge still sorts,
+  but routing deliberately remains **MASTER (-2) / OUT_LORE (2)**. The next
+  ordinary output demonstrates that retained route, not just an observer.
+  Nonzero controls report **2/3 (66%)** found, **1/3** sealed, **2/3** notify
+  jump and **1/3** notify unseal; a separate control reports **0/2** found.
+  Missing gate records stay absent and stale gate temps are cleared.
+- Empty and nonempty location denominators; **1/2** provinces and **3/5**
+  sublocations visited, **33% visible / 66% hidden**, and **50%** of the
+  visited province's immediate sublocations found, split **50% / 50%**.
+  Buildings/ships/nonlocations and sublocations in unvisited provinces do not
+  contaminate the immediate-sublocation denominator. All-player allocation,
+  stored knowledge sorting and location scratch resets remain observable.
+- Loyalty **6** total: **2** oath, **1** fear, **1** contract, **1** unsworn,
+  plus **1** NPC in the denominator; silent owners/prisoners count, nonzero
+  character subtypes skip invalid loyalty, missing records read as unsworn,
+  and the empty ordinary-character denominator is safe. Invalid loyalty **5**
+  emits `loy_kind = 5` then the exact **gm.c:659** assertion before output.
+- Region counts **2 / 1 / 1**, ID-ordered ties despite reversed allocation,
+  all-character inclusion, empty-region exclusion, stale-temp clearing and
+  changed counts after relocation; total remains **4** on both reports.
+- An **838-byte** renamed cached inode across repeated reports and a
+  zero-gate/ordinary-output transition; the original path remains missing.
+  Silent output recipients allocate and record output through the real owner.
+
+At **0.102.0-alpha**, complete unchanged C twice and Go match **1193
+sections / 79511 lines / 1556344 output bytes**. Inherited **1180 sections /
+78766 lines / 1540387 output bytes** remain an exact prefix, SHA-256
+`3956cf60d3cb631b65c5e3b362b978e1b686d8bc3d26cee815698d5a0a2c91f6`.
+Inherited **25661 lines / 488967 input bytes** also remain exact, SHA-256
+`35e452b48a6a3580e30b2334d978781712a6320c37a07a12d6de7f7829f37f36`.
+New input: **25968 lines / 495251 bytes**, SHA-256
+`68727937f0b5f22793da9651202a84d5f945f9e442409ad75c6b222d37a9ec6b`.
+New output SHA-256:
+`1ce0bf7f4c6aaf6772cc23a8e857cd8f17ab972805b79474ad5bbb7bb873d1a0`.
+Constants, complete definitions, prefix bytes and reached output are checked
+in `tmp/issue162-evidence.log`.
+
+Four temporary linker probes wrap only the adapter's invalid-loyalty call,
+emitting the rejected dependency marker and returning **0** or aborting
+**134**. Default/update runs all reject **section 1192**, harness **2**,
+before expected-status or update acceptance; both recording hashes stay
+unchanged. Probe source/compiler wrapper and matching captures are removed.
+Logs: `tmp/issue162-negative-{return,abort}-{default,update}.log`,
+`tmp/issue162-probe-evidence.log` and `tmp/issue162-probe-before.sha256`.
+
+Command refresh/default and post-probe default, then move/helper/RNG/code/
+loadsave/turn-driver/default turn pass sequentially, followed by bounded vet
+and fresh bounded default tests (Olympia **1.737s**). Every compatibility invocation explicitly
+uses `G3_REPO=$PWD/tmp/upstream.git`; engines/tests use shared run_limited.
+Logs: `tmp/issue162-*.log`. Source-only whitespace/gofmt checks pass; full
+`git diff --check` flags exactly four intentional trailing-space C-recording
+lines from the region totals/separators. These bytes are not normalized.
+
+The supplied parent audit covers all seven open issues, including unlabeled:
+only #162–166 and trackers #19/#132, no bug/follow-C. No new verified defect,
+prerequisite or oversized closure was found. No issue/checklist changes,
+commit/push, full-world/lifecycle or stage-exit claim. Latest strict evidence
+remains parent's post-#160 red gate: deterministic C, both engines **0**, equal
+raw streams/paths/types/modes, eight report-byte differences, exit **1**
+before 13 lifecycle controls. `tmp/parent-stage2-turn` is untouched.
+G3 #358/#359 remain nonblocking; malformed **C136/Go2** is not parity.
+
+Independent parent complete-C/diff review verifies all nine definitions
+unchanged exactly once and both inherited prefixes byte-exact. All eight
+routine tools, bounded vet and fresh bounded tests pass (Olympia **1.828s**);
+logs `tmp/parent162-*.log`. Strict evidence remains post-#160, not acceptance.
+
 ## GM item economy and attributes (#161)
 
 New source-corresponding gm.go completes these unchanged pinned gm.c

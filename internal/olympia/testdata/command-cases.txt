@@ -25659,3 +25659,310 @@ entity 202 1 49
 report state 202
 report block 202
 gm_economy gold 202
+
+section GM stats empty skills gates and location denominators preserve zero gate routing
+lore_root
+entity 202 1 62
+entity 203 1 48
+entity 204 1 49
+entity 205 1 52
+sout route -1 99
+gm_stats gates 200
+sout state
+report state 202
+report state 203
+report state 204
+report state 205
+gm_stats locations 200
+sout state
+gm_stats use 200
+gm_stats skills 200
+gm_stats loyalty 200
+readfile log/200
+
+section GM stats skill use ties ID order category skip zero negative and owner lookup
+lore_root
+entity 700 5 0
+name 700 Category not counted
+field 700 use_count 999
+entity 705 5 0
+name 705 Larger tie first allocated
+field 705 required 700
+field 705 use_count 1234
+field 705 last_use 1000
+entity 701 5 0
+name 701 Smaller tie later allocated
+field 701 required 700
+field 701 use_count 1234
+field 701 last_use 1001
+field 1001 lord 201
+entity 702 5 0
+name 702 Zero usage
+field 702 required 700
+entity 703 5 0
+name 703 Negative usage
+field 703 required 700
+field 703 use_count -12
+field 703 last_use 201
+entity 704 5 0
+name 704 Highest usage
+field 704 required 700
+field 704 use_count 2000
+gm_stats use 200
+sout state
+field 705 use_count 0
+field 701 use_count -12
+gm_stats use 200
+readfile log/200
+save 700
+save 701
+save 705
+
+section GM stats all character known skills count duplicate rows exclude partial states
+lore_root
+entity 700 5 43
+entity 705 5 0
+name 705 Larger tie
+field 705 required 700
+field 705 use_count 1234
+entity 701 5 0
+name 701 Smaller tie
+field 701 required 700
+entity 702 5 0
+name 702 No known rows
+field 702 required 700
+field 702 use_count -9
+entity 703 5 0
+name 703 Most known
+field 703 required 700
+entity 202 1 62
+entity 1100 2 64
+field 1100 lord 202
+field 1100 prisoner 1
+entity 1101 2 0
+entity 1102 2 0
+field 701 temp 900
+field 703 temp -44
+report skill 1000 705 2 0
+report skill 1000 701 2 0
+report skill 1000 703 2 0
+report skill 1000 703 2 9
+report skill 1000 702 0 0
+report skill 1000 702 1 0
+report skill 1000 702 3 0
+report skill 1001 703 2 0
+report skill 1100 705 2 0
+report skill 1100 701 2 0
+report skill 1101 700 2 0
+gm_stats skills 200
+gm_stats skills 200
+gm_stats use 200
+report skill_rows 1000
+report skill_rows 1100
+report state 202
+save 1102
+readfile log/200
+
+section GM stats gate fractions flags all player knowledge sorted and allocated
+lore_root
+entity 202 1 62
+entity 203 1 48
+entity 204 1 49
+entity 205 1 52
+entity 6003 6 0
+entity 6001 6 0
+entity 6002 6 0
+field 6003 seal_key -7
+field 6003 notify_jumps 1000
+field 6001 notify_unseal 1001
+field 6001 notify_jumps -1
+entity 9000 3 3
+field 200 known 9000
+field 200 known 6003
+field 200 known 6001
+field 202 known 6001
+field 202 known 1000
+field 202 known 200
+field 6002 temp 55
+report known 200
+report known 202
+gm_stats gates 200
+report known 200
+report known 202
+report state 203
+report state 204
+report state 205
+save 6002
+sout state
+gm_stats gates 200
+readfile log/200
+
+section GM stats nonzero gates no discoveries
+lore_root
+entity 6000 6 0
+entity 6001 6 0
+field 6000 seal_key 77
+gm_stats gates 200
+readfile log/200
+
+section GM stats visible hidden visits and visited province immediate sublocation denominators
+lore_root
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9010 3 14
+entity 9011 3 15
+entity 9012 3 15
+entity 9013 3 15
+entity 9020 3 15
+entity 9030 3 32
+entity 9100 9 30
+link 8000 9000
+link 8000 9001
+link 9000 9010
+link 9000 9011
+link 9000 9012
+link 9000 9013
+link 9001 9020
+link 9010 9030
+link 9000 9100
+field 9011 loc_hidden 1
+field 9013 loc_hidden 1
+field 9020 loc_hidden 1
+field 200 known 9020
+field 200 known 9011
+field 200 known 9010
+field 200 known 9000
+field 200 known 9030
+field 200 known 9100
+field 200 known 1000
+field 9001 temp 88
+field 9012 temp 99
+entity 202 1 62
+entity 203 1 48
+entity 204 1 49
+entity 205 1 52
+report known 200
+gm_stats locations 200
+report known 200
+report stack_scratch
+report state 202
+report state 203
+report state 204
+report state 205
+gm_stats locations 200
+readfile log/200
+
+section GM stats nonzero location categories no discoveries
+lore_root
+entity 9000 3 3
+entity 9010 3 15
+link 9000 9010
+gm_stats locations 200
+field 200 known 9000
+gm_stats locations 200
+readfile log/200
+
+section GM stats loyalty denominator includes NPC silent prisoners missing records skips subtypes
+lore_root
+field 1000 loyal 2
+field 1001 loyal 3
+entity 1100 2 0
+field 1100 loyal 1
+entity 1101 2 0
+field 1101 loyal 4
+entity 1102 2 0
+entity 1103 2 0
+entity 202 1 62
+field 1103 lord 202
+field 1103 loyal 2
+field 1103 prisoner 1
+entity 1104 2 64
+field 1104 loyal 127
+gm_stats loyalty 200
+save 1102
+readfile log/200
+sout state
+
+section GM stats loyalty empty ordinary character denominator
+lore_root
+death subkind 1000 64
+death subkind 1001 64
+field 1000 loyal 5
+gm_stats loyalty 200
+readfile log/200
+
+section GM stats regions all characters counts ties ID order and retained scratch clear on repeat
+lore_root
+entity 8005 3 50
+name 8005 Larger tied region
+entity 8001 3 50
+name 8001 Smaller tied region
+entity 8002 3 50
+name 8002 Populous region
+entity 8003 3 50
+name 8003 Empty region
+entity 9005 3 3
+entity 9001 3 3
+entity 9002 3 3
+link 8005 9005
+link 8001 9001
+link 8002 9002
+link 9005 1000
+link 9001 1001
+entity 1100 2 64
+link 9002 1100
+entity 1101 2 0
+link 9002 1101
+entity 202 1 62
+field 1100 lord 202
+field 1100 prisoner 1
+field 8003 temp 99
+gm_stats regions 200
+report stack_scratch
+link 9005 1101
+gm_stats regions 200
+report stack_scratch
+readfile log/200
+sout state
+
+section GM stats cached renamed output skill lists clear and zero gate routing reaches next output
+lore_root
+set flush 0
+entity 700 5 0
+entity 701 5 0
+field 701 required 700
+field 701 use_count 5
+gm_stats use 200
+life flush
+life rename log/200 log/gm-geography-original
+field 701 use_count 0
+gm_stats use 200
+gm_stats skills 200
+gm_stats gates 200
+sout state
+sout text 200 out 0 1 after zero gate
+gm_stats locations 200
+gm_stats loyalty 200
+life flush
+readfile log/gm-geography-original
+life path log/200
+sout state
+
+section GM stats silent output recipient allocation and reset
+lore_root
+entity 202 1 62
+report state 202
+gm_stats use 202
+report state 202
+gm_stats skills 202
+gm_stats loyalty 202
+readfile log/202
+sout state
+
+section GM stats invalid loyalty preserves diagnostic and assertion before output
+lore_root
+entity 209 1 49
+field 1000 loyal 5
+sout route -1 99
+gm_stats loyalty 209
