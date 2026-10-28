@@ -5,10 +5,11 @@
 //
 // So far it ports main() in olympia/main.c: the command line, what main()
 // prints before it dispatches, the -R self-test, the -t ilist test, and a
-// run that loads an existing game (load_db), checks it, saves it with -S
-// (save_db) and writes the Times masthead. Every other mode stops with a
-// "not yet implemented" message until a later task ports it, and so does
-// a load that has to build a new world.
+// run that loads an existing game (load_db), runs a turn with -r, checks it,
+// saves it with -S (save_db) and writes the Times masthead. Report paths
+// preserve state and diagnostics; report artifacts remain stage 2. Other
+// modes and unported gameplay stop with "not yet implemented", as does a
+// load that has to build a new world.
 //
 // The entity model of olympia/oly.h and olympia/glob.c is in entity.go
 // (the structures), oly.go (the constants), glob.go (the constant tables)
@@ -297,9 +298,32 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 		w.processOrders()
 		w.postMonth()
 		w.showDay = false
-		// #90 must integrate the remaining main.c report paths in order.
-		// Their DB mutations are NOT deferred along with report rendering.
-		panic(notImplemented("determine_output_order and main turn report paths"))
+		// main.c:981–1008, in C order. These projections defer report
+		// artifacts only, not persistent state, input reads or diagnostics.
+		w.determineOutputOrder()
+		w.turnEndLocReportsState()
+		w.listOrderTemplatesState()
+		w.playerEntInfoState()
+		w.characterReportState()
+		w.playerBannerState()
+		if o.acctFlag {
+			panic(notImplemented("charge_account"))
+		}
+		w.reportAccountState()
+		w.summaryReportState()
+		w.playerReportState()
+		w.scanCharSkillLore()
+		w.showLoreSheetsState()
+		w.gmReportState(int(w.gmPlayer))
+		w.gmShowAllSkillsState(int(w.skillPlayer))
+		w.addNewPlayers()
+		w.genIncludeSectionState() // must be last, before closing output
+		w.closeLogfile()
+		w.writePlayerListState()
+		w.writeEmailState()
+		w.writeTotimesState()
+		w.writeForwardsState()
+		w.writeFactionsState()
 	}
 
 	w.checkDb() // check database integrity
@@ -307,11 +331,14 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	if o.saveFlag {
 		w.saveDb()
 	}
+	if o.saveFlag && o.runFlag {
+		w.saveLogdir(o.winFlag)
+	}
 
 	// write_state_export() and -M and -h stop before load_db() (unported).
 
 	w.timesMasthead()
-	// close_times(): open_times() runs only for -r, so nothing is open.
+	w.closeTimes()
 	w.stageSup(nil)
 
 	// malloc_size and realloc_size in z.c are never counted.

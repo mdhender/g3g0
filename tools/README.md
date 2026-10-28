@@ -442,6 +442,22 @@ turn-driver/default-turn sequentially, then bounded vet/fresh defaults.
 Main's explicit postMonth stop is unchanged: main wiring, final save_db/-n
 integration, admissions/-A, stage-2 rendering and stage exit remain separate.
 
+Main tail integration (#123) wires the accepted projections in actual main.c
+order after post_month, including lore reads and cwd-relative admissions,
+gen_include_section last, close_logfile and the post writers. check_db follows
+reports; save_db precedes save_logdir, which runs only with both -S and -r.
+Times masthead/close, final stage and stdout follow. Valid admissions and -A's
+external charging remain explicit unsupported branches; only report artifacts
+are deferred. Routine command/move/helper/rng/code/loadsave/turn-driver/default
+turn comparisons, bounded vet and fresh defaults pass. Actual turn --full
+matches raw streams/status and all 190 state files, with entire-capture C/C
+determinism. Thirteen opt-in main lifecycle controls add no-save, act probing
+and fatal Times versus nonfatal post-writer failures, repeating actual C and
+comparing unfiltered streams/status and state. Matching captures are removed
+per case; defaults stay fast. See turn-compat/README.md for exact evidence.
+No recordings, pins, dependencies or comparator exclusions change. #90 still
+owns final all-tools/all-world stage acceptance; stage 2 is not implemented.
+
 Inventory transfer and token acquisition (#117) extend command-compat with
 the complete real `consume_item`, mutually recursive `move_item`/`drop_item`,
 and compiled `move_token` acquisition closure. Real lord interruption/NP,

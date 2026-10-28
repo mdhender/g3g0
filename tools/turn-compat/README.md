@@ -6,7 +6,7 @@ No turn engine code is implemented here. The reference is real C, never Go.
 
 ```sh
 tools/turn-compat/run.sh                 # fast recorded checks; no world turn or C build
-tools/turn-compat/run.sh --full          # real C/C/Go world turns; currently exits 1
+tools/turn-compat/run.sh --full          # real C/C/Go world turns and lifecycle controls
 tools/turn-compat/run.sh --full --record # explicitly refresh C-only recordings, then compare Go
 ```
 
@@ -29,7 +29,7 @@ arguments, successful repeat check, and a state/output digest manifest. Tests
 check each small snapshot against that manifest. This is recorded provenance,
 not a claim to have rerun C during default tests. The recordings total about
 20 KB; `--record` writes them only after real pinned C repeats match, before
-looking at Go. It does not accept Go's current NYI as an expectation.
+looking at Go. It never accepts NYI as a successful turn expectation.
 
 ## Full comparison
 
@@ -49,6 +49,21 @@ The C turn runs twice on every `--full` invocation. Both statuses must be zero
 and the *entire* captures must match, including deferred report files. A failed
 or nondeterministic C reference stops the harness with exit 2 and retained
 evidence, rather than blessing a Go comparison. Only then is Go compared to C.
+
+After the ordinary turn matches, full mode checks thirteen lifecycle controls
+on copies of that same input: no `-S`; empty, dot-only, partial and non-directory
+cwd-relative `act`; and EISDIR at `times_press`, `times_rumor`, `times_0`,
+`players`, `email`, `totimes`, `forward` and `factions`. Missing `act` is covered
+by the ordinary world. Each control repeats C (entire captures, artifacts
+included), then compares Go's raw streams/status and every non-artifact file.
+Times failures require C status 1, while writer errors and no-admission paths
+require C status 0. The masthead failure occurs after saving; press/rumor
+failures precede the turn. Valid admissions and external account charging are
+explicit unsupported branches, not successful lifecycle controls.
+Only one control's captures are retained at a time; matching captures are
+deleted immediately. A mismatch exits 1 with evidence under
+`$WORK/lifecycle/CASE`; a C failure/nondeterminism exits 2. The concise passing
+summary is `$WORK/lifecycle.txt`. Defaults still run no whole-world turn.
 
 ### Database ownership and report boundary
 
@@ -129,3 +144,14 @@ implemented`. Two pinned C turns still exit 0 and match in their entire
 captures, including reports; Go exits 2. The comparison remains red on
 15 changed database paths, missing `orders/204`, raw stdout/stderr and status.
 This establishes the next real integration boundary, not stage-exit acceptance.
+
+After #123 (0.76.0-alpha), the actual main tail is wired in pinned C order.
+With `G3_REPO="$PWD/tmp/upstream.git"` and
+`C_CACHE="$PWD/tmp/issue104-roundtrip"`, full comparison exits 0: C statuses
+0/0 with identical entire captures, then Go status 0 with identical raw
+stdout/stderr and all 190 compared state paths/bytes (no missing/extra files).
+All thirteen lifecycle controls also match, with deterministic C repeats:
+no-save compares 189 files; dot/partial/non-directory act compare 191;
+press/rumor failures compare 189; the remaining controls compare 190.
+No output filtering, expectation re-recording or comparator exclusions changed.
+Reports/artifact bytes remain deferred; #90 retains final stage-exit acceptance.

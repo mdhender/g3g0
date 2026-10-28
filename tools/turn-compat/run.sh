@@ -124,9 +124,60 @@ status=0
 } >>"${WORK}/diff.txt"
 cat "${WORK}/diff.txt"
 if [ "$status" = 0 ]; then
-	rm -rf "${WORK}/c" "${WORK}/go" "${WORK}/input"
+	rm -rf "${WORK}/c" "${WORK}/go"
 else
 	echo "FAIL: raw captures and state retained in ${WORK}/{c,go}; ${WORK}/diff.txt"
 	[ "$(cat "${WORK}/go/status")" != "$TIMEOUT_STATUS" ] || echo "Go timed out after ${RUN_TIMEOUT}s"
 fi
-exit "$status"
+[ "$status" = 0 ] || exit "$status"
+
+# Exercise main's actual composition as well as the component recordings in
+# command-compat. These opt-in controls change only lifecycle inputs on the
+# same pinned bare world; expected bytes always come from two real C runs.
+# Keep at most one case's captures, deleting matching outputs immediately.
+: >"${WORK}/lifecycle.txt"
+for case_name in no-save empty-act dot-act partial-act act-file \
+	times_press times_rumor times_0 players email totimes forward factions; do
+	base="${WORK}/lifecycle/${case_name}"
+	rm -rf "${base}"
+	mkdir -p "${base}/input"
+	cp -a "${WORK}/input/." "${base}/input/"
+	ARGS=(-r -l ./lib -S test-use-const-report-date)
+	expected_status=0
+	case "$case_name" in
+	no-save) ARGS=(-r -l ./lib test-use-const-report-date) ;;
+	empty-act) mkdir "${base}/input/act" ;;
+	dot-act)
+		mkdir -p "${base}/input/act/.ignored"
+		printf 'faction\ncharacter\ncity\nname\nemail\n' >"${base}/input/act/.ignored/Join-g3"
+		;;
+	partial-act)
+		mkdir -p "${base}/input/act/aa0"
+		printf 'faction\ncharacter\ncity\nname\n' >"${base}/input/act/aa0/Join-g3"
+		;;
+	act-file) printf 'not a directory\n' >"${base}/input/act" ;;
+	*)
+		rm -f "${base}/input/lib/${case_name}"
+		mkdir "${base}/input/lib/${case_name}"
+		case "$case_name" in times_*) expected_status=1 ;; esac
+		;;
+	esac
+	run_engine "${C_BIN}" "${base}/input" "${base}/c"
+	run_engine "${C_BIN}" "${base}/input" "${base}/c-again"
+	[ "$(cat "${base}/c/status")" = "$expected_status" ] || die "${case_name}: unexpected C status; see ${base}"
+	diff -rq "${base}/c" "${base}/c-again" >"${base}/determinism.diff" ||
+		die "${case_name}: C is nondeterministic; see ${base}"
+	rm -rf "${base}/c-again"
+	run_engine "${GO_BIN}" "${base}/input" "${base}/go"
+	if ! "${COMPARE}" "${base}/c" "${base}/go" >"${base}/diff.txt"; then
+		cat "${base}/diff.txt"
+		diff -u "${base}/c/stdout" "${base}/go/stdout" || true
+		diff -u "${base}/c/stderr" "${base}/go/stderr" || true
+		echo "FAIL: ${case_name}; raw captures retained in ${base}"
+		exit 1
+	fi
+	printf '%s: C/C deterministic, C/Go status %s; ' "$case_name" "$expected_status" | tee -a "${WORK}/lifecycle.txt"
+	cat "${base}/diff.txt" | tee -a "${WORK}/lifecycle.txt"
+	rm -rf "${base}"
+done
+rm -rf "${WORK}/lifecycle" "${WORK}/input"
