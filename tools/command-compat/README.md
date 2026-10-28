@@ -2917,3 +2917,89 @@ NYIs are implemented, so `turn_phases.go` is deleted. `postMonth` order,
 tokens and final flag positions are unchanged. No full-world run, stage-exit
 acceptance, unrelated command, report-body/stage-2 work, commit, push, issue
 closure or checklist tick.
+
+## Output ordering and player entity state (#121)
+
+Pinned C remains `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`. Extract complete
+original definitions with their original `#line` locations:
+
+| source | definitions and inclusive lines |
+|---|---|
+| report.c | `output_order_comp` **10–20**, `sort_for_output` **23–27**, `determine_output_order` **30–70**, `inv_item_comp` **213–220**, `extra_item_info` **246–290**, `show_unclaimed` **746–780**, `player_ent_info` **783–798** |
+| perm.c | `admit_comp` **141–148**, `print_admit_sup` **151–187**, `print_admit` **190–223**, `print_att_sup` **426–466**, `print_att` **469–488** |
+
+The C oracle calls actual `determine_output_order` and the entire actual
+`player_ent_info` rendering closure; no expected-state calculation is
+rewritten. Existing code.c, sout.c, location traversal, inventory/admission
+lists and save_box supply their real dependencies. The driver now calls
+real `init_spaces`, as main's initialization does: original `print_att_sup`
+uses it when a rendered attitude line wraps. An initial development run
+exposed this missing harness initialization, not an upstream failure.
+No new source dependency/pin or affected.sh change is needed.
+
+Go adds `determineOutputOrder`/`sortForOutput` and `playerEntInfoState`.
+These are stage-1 database/diagnostic projections, not stage-2 report
+rendering or successful gameplay substitutes. They are not wired into main
+in this task. Rendering's `plural_item_box` warnings on stderr remain real
+and observable, using the existing Go formatter after the inventory sort.
+Faction log/report artifacts alone are outside this comparison; stdout,
+stderr and status are compared without normalization. No character-report
+or summary function is called on either side.
+
+Eight small added sections cover:
+
+- Opposing region/entity IDs; region traversal followed by depth-first
+  here-list order through provinces, ships, buildings and stacked characters.
+  Established player units sort in place, including silent factions, while
+  missing player records stay missing. Repeated calls and relocation change
+  only the appropriate scratch positions and persisted unit ordering.
+- Unlocated equal positions use entity IDs, also when mixed with located
+  units; unvisited boxes retain stale positions rather than being reset.
+- Descending inventories, admissions and hostile/neutral/defend lists.
+  Raw observers show retained invalid references and nonpositive quantities
+  that save_box filters out; the actual saved `un`, `il`, `am`, `an`, `ad`,
+  `ah` and `kn` bytes are also compared. Admission members retain their
+  original order, and equal target keys gain no sense/member secondary key.
+- Silent players skip all player_ent_info state, including absent-record
+  allocation. Switching one to regular enables those effects. Missing
+  regular/system/NPC/savage records allocate; missing silent records do not.
+  Missing attitude/character/magic records stay missing. Character inventory
+  and attitudes are unchanged; existing knowledge is unchanged.
+- Repeats, all-invalid attitude lists, actual rendered admission/attitude
+  continuation lines and ordered missing-plural warnings. The latter are
+  emitted once per eligible inventory entry on every call, not suppressed.
+
+The original loop macros retain their caller locations through extraction.
+The new Go callers walk valid player/region chains, so their inventory/here
+valid-box assertions and print_admit's player-kind assertion cannot fail
+independently on these paths; no replacement assertion location is invented.
+
+Negative linker probes temporarily wrapped only `player_ent_info` with an
+explicit missing-dependency marker and abort. Normal and `--update` modes
+both rejected section **734** with status **2**, specifically at the marker
+check before expected-status acceptance or recording replacement. The
+recording SHA-256 was unchanged after each probe. Removed the probe sources
+and compiler wrapper, then reran the ordinary command comparison successfully.
+
+Two real C recordings and Go match **740 sections / 55920 lines / 963859
+bytes**. Prior **732 sections / 55172 lines / 948492 output bytes** and
+**16979 lines / 305393 input bytes** remain exact byte prefixes. New input:
+**17227 lines / 310599 bytes**. Output SHA-256:
+`108b291e86341fcf5acdd4c855e14ce7a872487f3865f72ed203e2ce79c71f8a`.
+Unfiltered C trailing whitespace is retained: full `git diff --check` flags
+only recorded bytes; the check excluding that recording passes.
+
+Sequential checks passed: command **740/55920**, move **135/7150**, helper
+**37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+default turn (status, raw stdout/stderr and one state file identical), then
+bounded vet and fresh bounded default tests. All engine runs use shared
+`run_limited`; all eight tools used `G3_REPO=$PWD/tmp/upstream.git`.
+Before broad checks, confirmed the parent's roundtrip shell **2896569** had
+exited; its log reported **196 pass / 0 fail / 0 error**, not a run restarted
+or claimed as this task's own verification.
+
+Version **0.69.0-alpha**, left **uncommitted**. No new bug/blocker was found.
+No main integration, character/summary state (#124), lore (#122), stage-2
+rendering, whole-world/stage-exit acceptance, commit, push, issue closure or
+checklist tick is included.

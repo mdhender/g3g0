@@ -123,13 +123,16 @@ functions = {
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait', 'next_np_turn'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
-    'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit'],
+    'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit',
+               'admit_comp', 'print_admit_sup', 'print_admit', 'print_att_sup', 'print_att'],
     'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
                 'update_weather_view_locs', 'new_storm', 'create_some_storms',
                 'natural_weather', 'v_bind_storm', 'd_bind_storm',
                 'move_storm', 'move_bound_storms', 'dissipate_storm'],
     'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school'],
-    'report.c': ['char_rep_location'],
+    'report.c': ['char_rep_location', 'output_order_comp', 'sort_for_output',
+                 'determine_output_order', 'inv_item_comp', 'extra_item_info',
+                 'show_unclaimed', 'player_ent_info'],
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts'],
@@ -445,6 +448,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section report '* ]]; then
+   [ "$status" = 0 ] || die "unexpected player report state status $status in section $i; expected 0"
+  fi
   if [[ "${section_names[$i]}" == 'section closure '* ]]; then
    [ "$status" = 0 ] || die "unexpected monthly closure status $status in section $i; expected 0"
   fi

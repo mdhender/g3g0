@@ -123,6 +123,7 @@ int main(int argc, char **argv)
  libdir = argv[3];
  glob_init();
  init_lower();
+ init_spaces(); /* main.c call_init_routines: print_att's continuation padding */
  alloc_box(200, T_player, sub_pl_regular);
  alloc_box(201, T_player, sub_pl_regular);
  p_player(200);
@@ -824,6 +825,40 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "subitem")) {
    sscanf(line,"%*s %d %d %d",&n,&a,&b); printf("subitem %d\n",drv_sub_item(n,a,b));
   }
+  else if (!strcmp(op, "report")) {
+   sscanf(line,"%*s %31s %d",text,&n);
+   if(!strcmp(text,"order")) determine_output_order();
+   else if(!strcmp(text,"players")) player_ent_info();
+   else if(!strcmp(text,"admit")) {
+    struct admit *p=my_malloc(sizeof(*p));
+    sscanf(line,"%*s %*s %d %d %d %d",&n,&a,&b,&d);
+    p->targ=a; p->sense=b;
+    if(d) ilist_append(&p->l,d);
+    admits_append(&p_player(n)->admits,p);
+   }
+   else if(!strcmp(text,"member")) {
+    sscanf(line,"%*s %*s %d %d",&n,&a);
+    ilist_append(&p_player(n)->admits[admits_len(p_player(n)->admits)-1]->l,a);
+   }
+   else if(!strcmp(text,"state")) {
+    struct entity_player *p=rp_player(n);
+    struct att_ent *att=rp_disp(n);
+    printf("report entity %d order %d player %d attitudes %d char %d magic %d\n",
+     n,bx[n]->output_order,p!=NULL,att!=NULL,rp_char(n)!=NULL,rp_magic(n)!=NULL);
+    for(i=0;i<item_ents_len(bx[n]->items);i++)
+     printf("raw item %d %d\n",bx[n]->items[i]->item,bx[n]->items[i]->qty);
+    if(p) {
+     list("raw units",p->units);
+     for(i=0;i<admits_len(p->admits);i++) {
+      printf("raw admit %d %d\n",p->admits[i]->targ,p->admits[i]->sense);
+      list("members",p->admits[i]->l);
+     }
+    }
+    if(att) { list("raw hostile",att->hostile); list("raw neutral",att->neutral); list("raw defend",att->defend); }
+    save_box(stdout,n);
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "join")) { sscanf(line,"%*s %d %d",&n,&a); join_stack(n,a); }
   else if (!strcmp(op, "leave")) { sscanf(line,"%*s %d",&n); leave_stack(n); }
   else if (!strcmp(op, "queue"))
@@ -1019,6 +1054,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"opium")) p_subloc(n)->opium_econ = a;
    else if (!strcmp(text,"double")) p_misc(n)->opium_double = (schar)a;
    else if (!strcmp(text,"temp")) bx[n]->temp = a;
+   else if (!strcmp(text,"output_order")) bx[n]->output_order = a;
    else if (!strcmp(text,"garr_tax")) p_misc(n)->garr_tax = a;
    else if (!strcmp(text,"garr_forward")) p_misc(n)->garr_forward = a;
    else if (!strcmp(text,"safe")) p_subloc(n)->safe = (schar)a;

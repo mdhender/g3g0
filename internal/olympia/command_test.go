@@ -1154,6 +1154,49 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			fmt.Fprintf(&stdout, "np %d\n", w.charNPTotal(args.num(t)))
 		case "save":
 			w.saveBox(&stdout, args.num(t))
+		case "report":
+			switch action := args.word(); action {
+			case "order":
+				w.determineOutputOrder()
+			case "players":
+				// C executes the complete original player_ent_info closure.
+				// Only report artifacts are deferred, never the compared state.
+				w.playerEntInfoState()
+			case "admit":
+				n, a, b, d := args.num(t), args.num(t), args.num(t), args.num(t)
+				p := &admit{targ: int32(a), sense: int32(b)}
+				if d != 0 {
+					p.l.Append(d)
+				}
+				w.pPlayer(n).admits.Append(p)
+			case "member":
+				n, a := args.num(t), args.num(t)
+				l := w.pPlayer(n).admits
+				l[len(l)-1].l.Append(a)
+			case "state":
+				n := args.num(t)
+				p, att := w.rpPlayer(n), w.rpDisp(n)
+				fmt.Fprintf(&stdout, "report entity %d order %d player %d attitudes %d char %d magic %d\n",
+					n, w.bx[n].outputOrder, b2i(p != nil), b2i(att != nil), b2i(w.rpChar(n) != nil), b2i(w.rpMagic(n) != nil))
+				for _, e := range w.bx[n].items {
+					fmt.Fprintf(&stdout, "raw item %d %d\n", e.item, e.qty)
+				}
+				if p != nil {
+					helperList(&stdout, "raw units", p.units)
+					for _, a := range p.admits {
+						fmt.Fprintf(&stdout, "raw admit %d %d\n", a.targ, a.sense)
+						helperList(&stdout, "members", a.l)
+					}
+				}
+				if att != nil {
+					helperList(&stdout, "raw hostile", att.hostile)
+					helperList(&stdout, "raw neutral", att.neutral)
+					helperList(&stdout, "raw defend", att.defend)
+				}
+				w.saveBox(&stdout, n)
+			default:
+				t.Fatalf("unknown report action %s", action)
+			}
 		case "pstate":
 			n := args.num(t)
 			p := w.pPlayer(n)
@@ -1437,6 +1480,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pMisc(n).opiumDouble = int8(a)
 			case "temp":
 				w.bx[n].temp = int32(a)
+			case "output_order":
+				w.bx[n].outputOrder = int32(a)
 			case "garr_tax":
 				w.pMisc(n).garrTax = int32(a)
 			case "garr_forward":

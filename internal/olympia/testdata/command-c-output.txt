@@ -55170,3 +55170,751 @@ stderr:
 determine_noble_ranks()
 
 exit 0
+stdout:
+section report output order follows region and depth first here lists not entity IDs
+> entity 8100 3 50
+> entity 8000 3 50
+> entity 9200 3 3
+> entity 9100 3 3
+> entity 9000 3 3
+> entity 9300 3 32
+> entity 9400 9 30
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 202 1 49
+> entity 203 1 62
+> link 8000 9200
+> link 8000 9100
+> link 8100 9000
+> link 9200 9400
+> link 9400 1003
+> link 9200 9300
+> link 9300 1002
+> link 1002 1001
+> link 9100 1000
+> link 9000 1004
+> field 200 unit 1004
+> field 200 unit 1000
+> field 200 unit 1001
+> field 200 unit 1002
+> field 200 unit 1003
+> field 201 unit 1000
+> field 201 unit 1003
+> field 203 unit 1000
+> field 203 unit 1003
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report order
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1003 1002 1001 1000 1004
+200 player pl_regular
+PL
+ un 1003 1002 1001 1000 1004 
+
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1003 1000
+201 player pl_regular
+PL
+ un 1003 1000 
+
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1003 1000
+203 player pl_silent
+PL
+ un 1003 1000 
+
+> report state 8100
+report entity 8100 order 9 player 0 attitudes 0 char 0 magic 0
+8100 loc region
+LI
+ hl 9000 
+
+> report state 8000
+report entity 8000 order 0 player 0 attitudes 0 char 0 magic 0
+8000 loc region
+LI
+ hl 9200 9100 
+
+> report state 9200
+report entity 9200 order 1 player 0 attitudes 0 char 0 magic 0
+9200 loc plain
+LI
+ wh 8000
+ hl 9400 9300 
+
+> report state 9100
+report entity 9100 order 7 player 0 attitudes 0 char 0 magic 0
+9100 loc plain
+LI
+ wh 8000
+ hl 1000 
+
+> report state 9000
+report entity 9000 order 10 player 0 attitudes 0 char 0 magic 0
+9000 loc plain
+LI
+ wh 8100
+ hl 1004 
+
+> report state 9300
+report entity 9300 order 4 player 0 attitudes 0 char 0 magic 0
+9300 loc castle
+LI
+ wh 9200
+ hl 1002 
+
+> report state 9400
+report entity 9400 order 2 player 0 attitudes 0 char 0 magic 0
+9400 ship galley
+LI
+ wh 9200
+ hl 1003 
+
+> report state 1000
+report entity 1000 order 8 player 0 attitudes 0 char 1 magic 0
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+> report state 1001
+report entity 1001 order 6 player 0 attitudes 0 char 1 magic 0
+1001 char 0
+LI
+ wh 1002
+CH
+ lo 200
+
+> report state 1002
+report entity 1002 order 5 player 0 attitudes 0 char 0 magic 0
+1002 char 0
+LI
+ wh 9300
+ hl 1001 
+
+> report state 1003
+report entity 1003 order 3 player 0 attitudes 0 char 0 magic 0
+1003 char 0
+LI
+ wh 9400
+
+> report state 1004
+report entity 1004 order 11 player 0 attitudes 0 char 0 magic 0
+1004 char 0
+LI
+ wh 9000
+
+> report order
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1003 1002 1001 1000 1004
+200 player pl_regular
+PL
+ un 1003 1002 1001 1000 1004 
+
+> link 9400 1000
+> report order
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1003 1000 1002 1001 1004
+200 player pl_regular
+PL
+ un 1003 1000 1002 1001 1004 
+
+stderr:
+
+exit 0
+stdout:
+section report unlocated unit ties use IDs without clearing stale output order or allocating players
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 202 1 49
+> field 200 unit 1003
+> field 200 unit 1001
+> field 200 unit 1002
+> field 200 unit 1000
+> field 1003 output_order -7
+> field 1001 output_order 8
+> report order
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1003 1000 1002 1001
+200 player pl_regular
+PL
+ un 1003 1000 1002 1001 
+
+> report state 1003
+report entity 1003 order -7 player 0 attitudes 0 char 0 magic 0
+1003 char 0
+
+> report state 1001
+report entity 1001 order 8 player 0 attitudes 0 char 1 magic 0
+1001 char 0
+CH
+ lo 200
+
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> field 1003 output_order 0
+> field 1001 output_order 0
+> report order
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1000 1001 1002 1003
+200 player pl_regular
+PL
+ un 1000 1001 1002 1003 
+
+stderr:
+
+exit 0
+stdout:
+section report player entity info sorts original inventory admissions and all attitudes retaining invalid entries
+> entity 70 4 0
+> entity 60 4 0
+> entity 50 4 0
+> entity 202 1 49
+> name 70 Seventy
+> name 60 Sixty
+> name 50 Fifty
+> field 70 weight 3
+> field 60 land_cap 7
+> field 50 attack 2
+> inventory 200 70 3
+> inventory 200 99999 4
+> inventory 200 60 0
+> inventory 200 50 2
+> inventory 200 0 -1
+> report admit 200 1001 1 201
+> report member 200 200
+> report member 200 99999
+> report admit 200 99999 1 1001
+> report admit 200 1000 0 1001
+> report member 200 201
+> report member 200 200
+> report admit 200 0 0 0
+> field 200 hostile 1001
+> field 200 hostile 99999
+> field 200 hostile 201
+> field 200 hostile 1000
+> field 200 hostile 0
+> field 200 neutral 1001
+> field 200 neutral 1000
+> field 200 neutral 201
+> field 200 neutral 99999
+> field 200 defend 1001
+> field 200 defend 99999
+> field 200 defend 201
+> field 200 defend 1000
+> field 200 known 1001
+> field 200 known 70
+> inventory 1000 70 1
+> inventory 1000 50 1
+> field 1000 hostile 1001
+> field 1000 hostile 201
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 70 3
+raw item 99999 4
+raw item 60 0
+raw item 50 2
+raw item 0 -1
+raw units:
+raw admit 1001 1
+members: 201 200 99999
+raw admit 99999 1
+members: 1001
+raw admit 1000 0
+members: 1001 201 200
+raw admit 0 0
+members:
+raw hostile: 1001 99999 201 1000 0
+raw neutral: 1001 1000 201 99999
+raw defend: 1001 99999 201 1000
+200 player pl_regular
+il	70 3 \
+	50 2
+an 1001 1000 201 
+ad 1001 201 1000 
+ah 1001 201 1000 
+PL
+ kn 70 1001 
+ am 1001 1 201 200 
+ am 1000 0 1001 201 200 
+
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report players
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 0 -1
+raw item 50 2
+raw item 60 0
+raw item 70 3
+raw item 99999 4
+raw units:
+raw admit 0 0
+members:
+raw admit 1000 0
+members: 1001 201 200
+raw admit 1001 1
+members: 201 200 99999
+raw admit 99999 1
+members: 1001
+raw hostile: 0 201 1000 1001 99999
+raw neutral: 201 1000 1001 99999
+raw defend: 201 1000 1001 99999
+200 player pl_regular
+il	50 2 \
+	70 3
+an 201 1000 1001 
+ad 201 1000 1001 
+ah 201 1000 1001 
+PL
+ kn 70 1001 
+ am 1000 0 1001 201 200 
+ am 1001 1 201 200 
+
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw item 70 1
+raw item 50 1
+raw hostile: 1001 201
+raw neutral:
+raw defend:
+1000 char 0
+il	70 1 \
+	50 1
+ah 1001 201 
+CH
+ lo 200
+
+> report state 1001
+report entity 1001 order 0 player 0 attitudes 0 char 1 magic 0
+1001 char 0
+CH
+ lo 200
+
+> report players
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 0 -1
+raw item 50 2
+raw item 60 0
+raw item 70 3
+raw item 99999 4
+raw units:
+raw admit 0 0
+members:
+raw admit 1000 0
+members: 1001 201 200
+raw admit 1001 1
+members: 201 200 99999
+raw admit 99999 1
+members: 1001
+raw hostile: 0 201 1000 1001 99999
+raw neutral: 201 1000 1001 99999
+raw defend: 201 1000 1001 99999
+200 player pl_regular
+il	50 2 \
+	70 3
+an 201 1000 1001 
+ad 201 1000 1001 
+ah 201 1000 1001 
+PL
+ kn 70 1001 
+ am 1000 0 1001 201 200 
+ am 1001 1 201 200 
+
+stderr:
+warning: plural name not set for item [50]
+warning: plural name not set for item [70]
+warning: plural name not set for item [50]
+warning: plural name not set for item [70]
+
+exit 0
+stdout:
+section report silent skips player state but output ordering still sorts its established units
+> entity 70 4 0
+> entity 50 4 0
+> entity 202 1 62
+> entity 203 1 62
+> field 202 unit 1001
+> field 202 unit 1000
+> inventory 202 70 1
+> inventory 202 50 1
+> report admit 202 1001 1 201
+> report admit 202 1000 0 200
+> field 202 hostile 1001
+> field 202 hostile 1000
+> field 202 neutral 1001
+> field 202 neutral 201
+> field 202 defend 1001
+> field 202 defend 200
+> report order
+> report state 202
+report entity 202 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 70 1
+raw item 50 1
+raw units: 1000 1001
+raw admit 1001 1
+members: 201
+raw admit 1000 0
+members: 200
+raw hostile: 1001 1000
+raw neutral: 1001 201
+raw defend: 1001 200
+202 player pl_silent
+il	70 1 \
+	50 1
+an 1001 201 
+ad 1001 200 
+ah 1001 1000 
+PL
+ un 1000 1001 
+ am 1001 1 201 
+ am 1000 0 200 
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_silent
+
+> report players
+> report state 202
+report entity 202 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 70 1
+raw item 50 1
+raw units: 1000 1001
+raw admit 1001 1
+members: 201
+raw admit 1000 0
+members: 200
+raw hostile: 1001 1000
+raw neutral: 1001 201
+raw defend: 1001 200
+202 player pl_silent
+il	70 1 \
+	50 1
+an 1001 201 
+ad 1001 200 
+ah 1001 1000 
+PL
+ un 1000 1001 
+ am 1001 1 201 
+ am 1000 0 200 
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_silent
+
+> field 202 subkind 49
+> report players
+> report state 202
+report entity 202 order 0 player 1 attitudes 1 char 0 magic 0
+raw item 50 1
+raw item 70 1
+raw units: 1000 1001
+raw admit 1000 0
+members: 200
+raw admit 1001 1
+members: 201
+raw hostile: 1000 1001
+raw neutral: 201 1001
+raw defend: 200 1001
+202 player pl_regular
+il	50 1 \
+	70 1
+an 201 1001 
+ad 200 1001 
+ah 1000 1001 
+PL
+ un 1000 1001 
+ am 1000 0 200 
+ am 1001 1 201 
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_silent
+
+stderr:
+
+exit 0
+stdout:
+section report player allocation includes nonsilent system npc savage and regular but not silent
+> entity 202 1 49
+> entity 203 1 48
+> entity 204 1 52
+> entity 205 1 51
+> entity 206 1 62
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_system
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_npc
+
+> report state 205
+report entity 205 order 0 player 0 attitudes 0 char 0 magic 0
+205 player pl_savage
+
+> report state 206
+report entity 206 order 0 player 0 attitudes 0 char 0 magic 0
+206 player pl_silent
+
+> report order
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report state 206
+report entity 206 order 0 player 0 attitudes 0 char 0 magic 0
+206 player pl_silent
+
+> report players
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_system
+PL
+
+> report state 204
+report entity 204 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+204 player pl_npc
+PL
+
+> report state 205
+report entity 205 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+205 player pl_savage
+PL
+
+> report state 206
+report entity 206 order 0 player 0 attitudes 0 char 0 magic 0
+206 player pl_silent
+
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+1000 char 0
+CH
+ lo 200
+
+> report state 1001
+report entity 1001 order 0 player 0 attitudes 0 char 1 magic 0
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section report equal admission targets have no secondary key and member order stays original
+> report admit 200 1001 1 201
+> report member 200 1001
+> report member 200 200
+> report admit 200 1000 0 1001
+> report admit 200 1001 0 200
+> report member 200 201
+> report admit 200 99999 0 1001
+> field 200 hostile 1001
+> field 200 hostile 201
+> field 200 hostile 1001
+> field 200 neutral 99999
+> field 200 neutral 0
+> field 200 defend 99999
+> field 200 defend 0
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw units:
+raw admit 1001 1
+members: 201 1001 200
+raw admit 1000 0
+members: 1001
+raw admit 1001 0
+members: 200 201
+raw admit 99999 0
+members: 1001
+raw hostile: 1001 201 1001
+raw neutral: 99999 0
+raw defend: 99999 0
+200 player pl_regular
+ah 1001 201 1001 
+PL
+ am 1001 1 201 1001 200 
+ am 1000 0 1001 
+ am 1001 0 200 201 
+
+> report players
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw units:
+raw admit 1000 0
+members: 1001
+raw admit 1001 1
+members: 201 1001 200
+raw admit 1001 0
+members: 200 201
+raw admit 99999 0
+members: 1001
+raw hostile: 201 1001 1001
+raw neutral: 0 99999
+raw defend: 0 99999
+200 player pl_regular
+ah 201 1001 1001 
+PL
+ am 1000 0 1001 
+ am 1001 1 201 1001 200 
+ am 1001 0 200 201 
+
+> report players
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw units:
+raw admit 1000 0
+members: 1001
+raw admit 1001 1
+members: 201 1001 200
+raw admit 1001 0
+members: 200 201
+raw admit 99999 0
+members: 1001
+raw hostile: 201 1001 1001
+raw neutral: 0 99999
+raw defend: 0 99999
+200 player pl_regular
+ah 201 1001 1001 
+PL
+ am 1000 0 1001 
+ am 1001 1 201 1001 200 
+ am 1001 0 200 201 
+
+stderr:
+
+exit 0
+stdout:
+section report full player closure retains state with wrapping rendered admission and attitude lines
+> report admit 200 1001 1 1001
+> report member 200 1000
+> report member 200 201
+> report member 200 200
+> report member 200 1001
+> report member 200 1000
+> report member 200 201
+> report member 200 200
+> report member 200 1001
+> report member 200 1000
+> report member 200 201
+> report member 200 200
+> report member 200 1001
+> field 200 hostile 1001
+> field 200 hostile 1000
+> field 200 hostile 201
+> field 200 hostile 200
+> field 200 hostile 1001
+> field 200 hostile 1000
+> field 200 hostile 201
+> field 200 hostile 200
+> field 200 hostile 1001
+> field 200 hostile 1000
+> field 200 hostile 201
+> field 200 hostile 200
+> field 200 hostile 1001
+> report players
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw units:
+raw admit 1001 1
+members: 1001 1000 201 200 1001 1000 201 200 1001 1000 201 200 1001
+raw hostile: 200 200 200 201 201 201 1000 1000 1000 1001 1001 1001 1001
+raw neutral:
+raw defend:
+200 player pl_regular
+ah 200 200 200 201 201 201 1000 1000 1000 \
+	1001 1001 1001 1001 
+PL
+ am 1001 1 1001 1000 201 200 1001 1000 201 \
+	200 1001 1000 201 200 1001 
+
+stderr:
+
+exit 0
+stdout:
+section report mixed located units follow unlocated zero position and its entity ID ties
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 1002 2 0
+> link 8000 9000
+> link 9000 1001
+> field 200 unit 1002
+> field 200 unit 1001
+> field 200 unit 1000
+> report order
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1000 1002 1001
+200 player pl_regular
+PL
+ un 1000 1002 1001 
+
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+1000 char 0
+CH
+ lo 200
+
+> report state 1001
+report entity 1001 order 2 player 0 attitudes 0 char 1 magic 0
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 0 magic 0
+1002 char 0
+
+> report order
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1000 1002 1001
+200 player pl_regular
+PL
+ un 1000 1002 1001 
+
+stderr:
+
+exit 0

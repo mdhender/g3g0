@@ -321,6 +321,27 @@ before bounded vet/fresh defaults. No new tool, source dependency, pin or RNG
 adapter; no full-world/stage-exit acceptance, unrelated command or stage-2
 report-body work is implied.
 
+Output ordering and player entity state (#121) extend command-compat with
+complete report.c determine_output_order/sort_for_output and player_ent_info,
+including original show_unclaimed/extra_item_info and perm.c print_admit/
+print_att rendering dependencies. C executes those definitions unchanged;
+Go preserves their persistent state and observable plural-name warnings,
+not deferred report artifacts. Region traversal and depth-first here order
+sort established faction unit lists (including silent players) without
+allocating absent player records. player_ent_info instead allocates every
+nonsilent player record, sorts inventory, admissions and all three attitude
+lists in place, and retains invalid entries and unsorted admission members.
+Raw observers supplement actual save_box bytes where the writer filters
+invalid references. Cases include opposing IDs/nested stacks/ships, stale
+unlocated order and ID ties, repeats/relocation, silent and missing-record
+controls, all player subtypes, equal admission targets, continuation lines,
+and unchanged character state/knowledge. The C driver initializes spaces
+as main does, needed by original attitude continuation padding. report.c,
+perm.c and sout.c were already tracked: no new source dependency or pin.
+Run the same eight comparisons sequentially before bounded vet/fresh defaults.
+Main integration, character/summary closure (#124), lore (#122) and stage-2
+rendering remain separate; no full-world/stage-exit acceptance is implied.
+
 Inventory transfer and token acquisition (#117) extend command-compat with
 the complete real `consume_item`, mutually recursive `move_item`/`drop_item`,
 and compiled `move_token` acquisition closure. Real lord interruption/NP,
