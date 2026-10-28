@@ -6,8 +6,6 @@ package olympia
 // Explicit unfinished world phases in input.c/day.c order. These are entry
 // boundaries for #66–#89, NOT implementations, even on an empty world.
 func (w *world) garrisonGold()        { panic(notImplemented("garrison_gold")) }
-func (w *world) chargeMaintCosts()    { panic(notImplemented("charge_maint_costs")) }
-func (w *world) animalDeaths()        { panic(notImplemented("animal_deaths")) }
 func (w *world) ghostWarriorDecay()   { panic(notImplemented("ghost_warrior_decay")) }
 func (w *world) corpseDecay()         { panic(notImplemented("corpse_decay")) }
 func (w *world) deadBodyRot()         { panic(notImplemented("dead_body_rot")) }

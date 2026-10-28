@@ -52,6 +52,8 @@ void drv_barrier(void), drv_loyalty(void), drv_pillage(void), drv_relic(void), d
 int drv_loyal_roll(int who, int sub);
 void drv_income_inn(void), drv_income_temple(void);
 int drv_income_roll(int inn, int sub, int low, int high);
+void drv_maint(void), drv_starve(int who, int have), drv_animal(void);
+int drv_starve_roll(int who, int item), drv_animal_roll(int who, int item, int idx);
 extern int gold_inn, gold_temple;
 void drv_city_gold(void), drv_replenish(int where, int item, int qty);
 void drv_taxes(void), drv_claim(void), drv_np(void), drv_unformed(void);
@@ -378,6 +380,18 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "bark")) { sscanf(line,"%*s %d",&n); bark_dogs(n); }
   else if (!strcmp(op, "ring")) drv_ring();
   else if (!strcmp(op, "curse")) drv_curse();
+  else if (!strcmp(op, "upkeep")) {
+   n=a=b=0;
+   sscanf(line,"%*s %31s %d %d %d",text,&n,&a,&b);
+   if (!strcmp(text,"cost")) printf("unit maintenance %d\n",unit_maint_cost(n));
+   else if (!strcmp(text,"charge")) printf("maintenance result %d\n",charge_maint_sup(n));
+   else if (!strcmp(text,"all")) drv_maint();
+   else if (!strcmp(text,"starve")) drv_starve(n,a);
+   else if (!strcmp(text,"animals")) drv_animal();
+   else if (!strcmp(text,"animal")) printf("animal roll %d %d %d %d\n",n,a,b,drv_animal_roll(n,a,b));
+   else if (!strcmp(text,"flavor")) printf("starve roll %d %d %d\n",n,a,drv_starve_roll(n,a));
+   else return 2;
+  }
   else if (!strcmp(op, "income")) {
    sscanf(line,"%*s %31s %d %d %d %d",text,&n,&a,&b,&d);
    if (!strcmp(text,"inn")) drv_income_inn();
@@ -880,6 +894,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"lore")) p_item_magic(n)->lore = a;
    else if (!strcmp(text,"use_key")) p_item_magic(n)->use_key = a;
    else if (!strcmp(text,"man")) p_item(n)->is_man_item = (schar)a;
+   else if (!strcmp(text,"animal")) p_item(n)->animal = (schar)a;
    else if (!strcmp(text,"attack")) p_item(n)->attack = (short)a;
    else if (!strcmp(text,"defense")) p_item(n)->defense = (short)a;
    else if (!strcmp(text,"default_garrison")) p_magic(n)->default_garr = (schar)a;

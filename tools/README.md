@@ -186,6 +186,21 @@ Post-month order and the #116 garrison stop are unchanged. Run command/move/
 helper/rng/code/loadsave/turn-driver/default-turn sequentially, then bounded
 vet and fresh default tests. No new source dependency/pin, duplicate upkeep
 tool, full-world success, report-body or stage-2 acceptance is implied.
+Monthly maintenance/starvation/animal deaths (#87) extends command-compat,
+not a duplicate upkeep tool. Complete day.c men_starve, unit_maint_cost,
+charge_maint_sup, charge_maint_costs and animal_deaths reuse the accepted
+maint_cost tariff, real stack funds/autocharge, inventory consumption,
+formatters and persistent UpStarve/UpAnimal leaves. The harness extracts
+complete move.c check_captain_loses_sailors for actual moving-captain crew
+loss and wait penalties, not a successful SAIL substitute. Cases distinguish
+per-item round-robin payment/casualties from cheaper-first allocation, stack
+funds and prisoners, noble-item exclusion only in the cost calculation,
+ceiling-one-third losses, both starvation flavors, one-based animal indices
+and exact 9/10 threshold, faction filtering and same/next-turn guards.
+Macro assertions keep their source file/line. Run the same eight comparisons
+sequentially before bounded vet/fresh defaults. Post-month call positions and
+the preceding #116 garrison stop remain unchanged; no new source dependency,
+pin, report-body, full-world or stage-exit acceptance is implied.
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks
 through dispatch/evenings, including queued multi-day NPC MOVE → WAIT. Also run
 move-compat for the shared travel, message and raft crew-loss contracts; full

@@ -49622,3 +49622,951 @@ stderr:
 assertion failure: olympia/loc.c (358): valid_box(where)
 
 exit 134
+stdout:
+section upkeep asymmetric expensive first round robin payment and casualties
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 10 4 0
+> name 10 peasant
+> plural 10 peasants
+> entity 15 4 0
+> name 15 elite guard
+> plural 15 elite guards
+> inventory 1000 15 4
+> inventory 1000 10 4
+> inventory 1000 1 5
+> upkeep cost 1000
+unit maintenance 24
+> upkeep charge 1000
+maintenance result 2
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	15 2 \
+	10 3
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Maintenance costs are 24~gold, can afford 5~gold.
+1000:0::0::Two~elite guards deserted.
+1000:0::0::One~peasant starved.
+stderr:
+
+exit 0
+stdout:
+section upkeep asymmetric cheaper first differs from expensive first
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 10 4 0
+> name 10 peasant
+> plural 10 peasants
+> entity 15 4 0
+> name 15 elite guard
+> plural 15 elite guards
+> inventory 1000 10 4
+> inventory 1000 15 4
+> inventory 1000 1 5
+> upkeep charge 1000
+maintenance result 2
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	10 4 \
+	15 2 \
+	1 1
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Maintenance costs are 24~gold, can afford 5~gold.
+1000:0::0::Two~elite guards deserted.
+stderr:
+
+exit 0
+stdout:
+section upkeep exactly affordable then no troops owes nothing
+> master 0
+> entity 1 4 0
+> entity 10 4 0
+> entity 11 4 0
+> inventory 1000 11 3
+> inventory 1000 10 2
+> inventory 1000 1 8
+> upkeep cost 1000
+unit maintenance 8
+> upkeep charge 1000
+maintenance result 1
+> upkeep charge 1001
+maintenance result 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	11 3 \
+	10 2
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Paid maintenance of 8~gold.
+stderr:
+
+exit 0
+stdout:
+section upkeep one short payment continues past unaffordable expensive men
+> master 0
+> entity 1 4 0
+> entity 15 4 0
+> name 15 elite guard
+> plural 15 elite guards
+> entity 10 4 0
+> name 10 peasant
+> plural 10 peasants
+> inventory 1000 15 1
+> inventory 1000 10 4
+> inventory 1000 1 8
+> upkeep charge 1000
+maintenance result 2
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	15 1 \
+	10 3
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Maintenance costs are 9~gold, can afford 8~gold.
+1000:0::0::One~peasant starved.
+stderr:
+
+exit 0
+stdout:
+section upkeep no funds ceiling one third cycles inventory not cheapest tariff
+> master 0
+> entity 1 4 0
+> entity 15 4 0
+> name 15 elite guard
+> plural 15 elite guards
+> entity 10 4 0
+> name 10 peasant
+> plural 10 peasants
+> inventory 1000 15 4
+> inventory 1000 10 3
+> upkeep charge 1000
+maintenance result 2
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	15 2 \
+	10 2
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Maintenance costs are 23~gold, can afford 0~gold.
+1000:0::0::Two~elite guards deserted.
+1000:0::0::One~peasant starved.
+stderr:
+
+exit 0
+stdout:
+section upkeep partly affordable cheap troops leave unusable gold
+> master 0
+> entity 1 4 0
+> entity 15 4 0
+> name 15 elite guard
+> plural 15 elite guards
+> entity 11 4 0
+> name 11 worker
+> plural 11 workers
+> inventory 1000 15 3
+> inventory 1000 11 2
+> inventory 1000 1 3
+> upkeep charge 1000
+maintenance result 2
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	15 2 \
+	11 1 \
+	1 1
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Maintenance costs are 19~gold, can afford 3~gold.
+1000:0::0::One~elite guard deserted.
+1000:0::0::One~worker deserted.
+stderr:
+
+exit 0
+stdout:
+section upkeep friendly stack funds actor first and foreign prisoner excluded
+> master 0
+> entity 1 4 0
+> entity 10 4 0
+> entity 1002 2 0
+> field 1002 lord 201
+> link 1000 1001
+> link 1000 1002
+> field 1002 prisoner 1
+> inventory 1000 10 7
+> inventory 1000 1 2
+> inventory 1001 1 5
+> inventory 1002 1 100
+> upkeep charge 1000
+maintenance result 1
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	10 7
+LI
+ hl 1001 1002 
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+monthly char 1002 char 1 magic 0 fresh 0 new 0
+1002 char 0
+il	1 100
+LI
+ wh 1000
+CH
+ lo 201
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::Paid maintenance of 7~gold.
+stderr:
+
+exit 0
+stdout:
+section upkeep noble item excluded only from cost not starvation pool
+> master 0
+> entity 1 4 0
+> entity 10 4 0
+> name 10 peasant
+> plural 10 peasants
+> entity 15 4 0
+> name 15 elite guard
+> plural 15 elite guards
+> field 1000 noble_item 15
+> inventory 1000 15 5
+> inventory 1000 10 2
+> upkeep cost 1000
+unit maintenance 2
+> upkeep charge 1000
+maintenance result 2
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	15 3 \
+	10 1
+CH
+ ni 15
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Maintenance costs are 2~gold, can afford 0~gold.
+1000:0::0::Two~elite guards deserted.
+1000:0::0::One~peasant starved.
+stderr:
+
+exit 0
+stdout:
+section upkeep noble item alone free unsupported invalid zero negative inventory ignored
+> entity 15 4 0
+> entity 80 4 0
+> field 1000 noble_item 15
+> inventory 1000 15 3
+> inventory 1000 80 20
+> inventory 1000 9999 100
+> inventory 1000 10 4
+> inventory 1000 15 0
+> inventory 1000 15 -9
+> upkeep cost 1000
+unit maintenance 0
+> upkeep charge 1000
+maintenance result 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	15 3 \
+	80 20
+CH
+ ni 15
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section upkeep all filters factions but charges regular unsworn and prisoners in kind order
+> master 0
+> entity 1 4 0
+> entity 10 4 0
+> name 10 peasant
+> plural 10 peasants
+> entity 202 1 54
+> entity 1002 2 0
+> entity 1003 2 0
+> field 1002 lord 202
+> field 1003 lord 201
+> field 1000 loyal 0
+> field 1001 prisoner 1
+> link 1000 1001
+> inventory 1000 10 1
+> inventory 1001 10 2
+> inventory 1002 10 3
+> inventory 1003 10 4
+> upkeep all
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ hl 1001 
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	10 1
+LI
+ wh 1000
+CH
+ lo 200
+ pr 1
+
+monthly char 1002 char 1 magic 0 fresh 0 new 0
+1002 char 0
+il	10 3
+CH
+ lo 202
+
+monthly char 1003 char 1 magic 0 fresh 0 new 0
+1003 char 0
+il	10 2
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Maintenance costs are 1~gold, can afford 0~gold.
+1000:0::0::One~peasant starved.
+> readlog 201
+log 201:
+1003:0::0::Maintenance costs are 4~gold, can afford 0~gold.
+1003:0::0::Two~peasants starved.
+stderr:
+
+exit 0
+stdout:
+section upkeep live moving roundship captain loses sailors and pirates real penalty
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 19 4 0
+> name 19 sailor
+> plural 19 sailors
+> entity 24 4 0
+> name 24 pirate
+> plural 24 pirates
+> entity 9000 3 2
+> entity 9100 9 31
+> link 9000 9100
+> link 9100 1000
+> inventory 1000 19 5
+> inventory 1000 24 3
+> parse sail east
+parse 1
+> set state 2
+> set wait 4
+> set moving 1
+> field 9100 moving 1
+> upkeep charge 1000
+maintenance result 2
+> dump
+cmd 74 who 1000 state 2 status 0 wait 7 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [sail] [east]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	19 3 \
+	24 2
+LI
+ wh 9100
+CH
+ lo 200
+ mo 1
+CO
+ li sail east
+ ar 0 0 0 0 0 0 0 0
+ cs 2
+ wa 7
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc forest
+LI
+ hl 9100 
+
+> readlog 200
+log 200:
+1000:0::0::Maintenance costs are 19~gold, can afford 0~gold.
+1000:0::0::Two~sailors deserted.
+1000:0::0::Loss of crew will cause travel to take two extra days.
+11:0::0::Loss of sailors incurs penalty for [200].
+1000:0::0::One~pirate deserted.
+1000:0::0::Loss of crew will cause travel to take an extra day.
+11:0::0::Loss of sailors incurs penalty for [200].
+> readlog 11
+log 11:
+stderr:
+
+exit 0
+stdout:
+section upkeep starvation flavors item keyed repeated same turn and new turn
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 11 4 0
+> name 11 worker
+> plural 11 workers
+> entity 12 4 0
+> name 12 soldier
+> plural 12 soldiers
+> inventory 1000 11 20
+> inventory 1000 12 20
+> upkeep flavor 1000 11
+starve roll 1000 11 1
+> upkeep flavor 1000 12
+starve roll 1000 12 1
+> upkeep charge 1000
+maintenance result 2
+> master 9
+> set day 30
+> upkeep flavor 1000 11
+starve roll 1000 11 1
+> upkeep flavor 1000 12
+starve roll 1000 12 1
+> upkeep charge 1000
+maintenance result 2
+> set turn 10
+> upkeep flavor 1000 11
+starve roll 1000 11 2
+> upkeep flavor 1000 12
+starve roll 1000 12 2
+> upkeep charge 1000
+maintenance result 2
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	11 5 \
+	12 6
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Maintenance costs are 80~gold, can afford 0~gold.
+1000:0::0::Seven~workers left service.
+1000:0::0::Seven~soldiers left service.
+1000:0::0::Maintenance costs are 52~gold, can afford 0~gold.
+1000:0::0::Five~workers left service.
+1000:0::0::Four~soldiers left service.
+1000:0::0::Maintenance costs are 34~gold, can afford 0~gold.
+1000:0::0::Three~workers deserted.
+1000:0::0::Three~soldiers deserted.
+stderr:
+
+exit 0
+stdout:
+section upkeep animals seeded hit miss repeated day master and turn guards
+> master 0
+> set turn 9
+> entity 51 4 0
+> name 51 horse
+> plural 51 horses
+> field 51 animal 1
+> entity 52 4 0
+> name 52 ox
+> plural 52 oxen
+> field 52 animal 1
+> inventory 1000 51 400
+> inventory 1000 52 400
+> inventory 1001 51 1
+> upkeep animal 1000 51 0
+animal roll 1000 51 0 502
+> upkeep animal 1000 51 1
+animal roll 1000 51 1 152
+> upkeep animal 1000 52 1
+animal roll 1000 52 1 792
+> upkeep animals
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	51 398 \
+	52 395
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	51 1
+CH
+ lo 200
+
+> set day 30
+> master 9
+> upkeep animals
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	51 396 \
+	52 390
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	51 1
+CH
+ lo 200
+
+> set turn 10
+> upkeep animals
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	51 395 \
+	52 386
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+il	51 1
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Two horses died.
+1000:0::0::Five oxen died.
+1000:0::0::Two horses died.
+1000:0::0::Five oxen died.
+1000:0::0::One horse died.
+1000:0::0::Four oxen died.
+stderr:
+animal_deaths()
+animal_deaths()
+animal_deaths()
+
+exit 0
+stdout:
+section upkeep animals faction prisoner noble item and inventory filtering
+> master 0
+> set turn 9
+> entity 51 4 0
+> name 51 horse
+> plural 51 horses
+> field 51 animal 1
+> entity 52 4 0
+> name 52 inert ox
+> plural 52 inert oxen
+> entity 202 1 54
+> entity 1002 2 0
+> field 1002 lord 202
+> field 1000 noble_item 51
+> field 1000 prisoner 1
+> inventory 1000 51 400
+> inventory 1000 52 400
+> inventory 1001 51 0
+> inventory 1001 51 -10
+> inventory 1001 9999 400
+> inventory 1002 51 400
+> upkeep animals
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	51 398 \
+	52 400
+CH
+ ni 51
+ lo 200
+ pr 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly char 1002 char 1 magic 0 fresh 0 new 0
+1002 char 0
+il	51 400
+CH
+ lo 202
+
+> readlog 200
+log 200:
+stderr:
+animal_deaths()
+
+exit 0
+stdout:
+section upkeep invalid unit inventory preserves macro assertion
+> upkeep cost 9999
+stderr:
+assertion failure: olympia/day.c (1310): valid_box(who)
+
+exit 134
+stdout:
+section upkeep invalid starvation inventory preserves macro assertion
+> upkeep starve 9999 0
+stderr:
+assertion failure: olympia/day.c (1223): valid_box(who)
+
+exit 134
+stdout:
+section upkeep invalid no starving men retains source assertion
+> entity 1 4 0
+> entity 10 4 0
+> inventory 1000 10 1
+> inventory 1000 1 1
+> upkeep starve 1000 1
+stderr:
+assertion failure: olympia/day.c (1259): nstarve > 0
+
+exit 134
+stdout:
+section upkeep animals nine dies ten survives and zero index must not be tested
+> master 0
+> set turn 9
+> entity 51 4 0
+> name 51 horse
+> plural 51 horses
+> field 51 animal 1
+> entity 1698 2 0
+> field 1698 lord 200
+> inventory 1698 51 1
+> entity 4403 2 0
+> field 4403 lord 200
+> inventory 4403 51 1
+> entity 1094 2 0
+> field 1094 lord 200
+> inventory 1094 51 1
+> upkeep animal 1698 51 0
+animal roll 1698 51 0 348
+> upkeep animal 1698 51 1
+animal roll 1698 51 1 9
+> upkeep animal 4403 51 0
+animal roll 4403 51 0 475
+> upkeep animal 4403 51 1
+animal roll 4403 51 1 10
+> upkeep animal 1094 51 0
+animal roll 1094 51 0 5
+> upkeep animal 1094 51 1
+animal roll 1094 51 1 614
+> upkeep animals
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly char 1094 char 1 magic 0 fresh 0 new 0
+1094 char 0
+il	51 1
+CH
+ lo 200
+
+monthly char 1698 char 1 magic 0 fresh 0 new 0
+1698 char 0
+CH
+ lo 200
+
+monthly char 4403 char 1 magic 0 fresh 0 new 0
+4403 char 0
+il	51 1
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1698:0::0::One horse died.
+stderr:
+animal_deaths()
+
+exit 0
+stdout:
+section upkeep foreign rich stack cannot rescue friendly one short but friendly prisoner can pay
+> master 0
+> entity 1 4 0
+> entity 10 4 0
+> name 10 peasant
+> plural 10 peasants
+> entity 1002 2 0
+> field 1002 lord 201
+> link 1000 1001
+> link 1000 1002
+> field 1001 prisoner 1
+> inventory 1000 10 7
+> inventory 1000 1 2
+> inventory 1001 1 4
+> inventory 1002 1 100
+> upkeep charge 1000
+maintenance result 2
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	10 6
+LI
+ hl 1001 1002 
+CH
+ lo 200
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pr 1
+
+monthly char 1002 char 1 magic 0 fresh 0 new 0
+1002 char 0
+il	1 100
+LI
+ wh 1000
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Maintenance costs are 7~gold, can afford 6~gold.
+1000:0::0::One~peasant starved.
+stderr:
+
+exit 0
+stdout:
+section upkeep unit costs preserve large signed int products and totals
+> entity 15 4 0
+> entity 10 4 0
+> inventory 1000 15 429496728
+> inventory 1000 10 7
+> upkeep cost 1000
+unit maintenance 2147483647
+> field 1000 noble_item 15
+> upkeep cost 1000
+unit maintenance 7
+stderr:
+
+exit 0
+stdout:
+section upkeep real leaves preserve sibling rng mint and shuffle
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 11 4 0
+> name 11 worker
+> plural 11 workers
+> entity 51 4 0
+> name 51 horse
+> plural 51 horses
+> field 51 animal 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> routes 9000 9001 9002 9003 0
+> inventory 1000 11 10
+> inventory 1000 51 400
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> weather probe 9000 257
+weather shuffle: 307 349 335 314 300 370 328 342 356 363 321
+weather strength 2
+> upkeep charge 1000
+maintenance result 2
+> upkeep animals
+> master 9
+> weather probe 9000 257
+weather shuffle: 321 370 349 300 356 328 307 314 335 342 363
+weather strength 2
+> shuffle 0 9000
+exitdir 3 9003
+exitdir 1 9001
+exitdir 2 9002
+> newitem 9001 0
+created 66288
+> save_new
+66288 item 0
+IT
+ un 9001
+
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> set turn 10
+> upkeep charge 1000
+maintenance result 2
+> upkeep animals
+> weather probe 9000 257
+weather shuffle: 363 300 370 321 342 356 335 349 328 314 307
+weather strength 2
+> shuffle 0 9000
+exitdir 1 9001
+exitdir 2 9002
+exitdir 3 9003
+> newitem 9001 0
+created 61234
+> save_new
+61234 item 0
+IT
+ un 9001
+
+> income roll 9102 0 50 75
+income roll 9102 0 61
+stderr:
+animal_deaths()
+animal_deaths()
+
+exit 0
+stdout:
+section upkeep no call control sibling rng mint and shuffle
+> master 0
+> set turn 9
+> entity 1 4 0
+> entity 11 4 0
+> name 11 worker
+> plural 11 workers
+> entity 51 4 0
+> name 51 horse
+> plural 51 horses
+> field 51 animal 1
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> routes 9000 9001 9002 9003 0
+> inventory 1000 11 10
+> inventory 1000 51 400
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> weather probe 9000 257
+weather shuffle: 307 349 335 314 300 370 328 342 356 363 321
+weather strength 2
+> master 9
+> weather probe 9000 257
+weather shuffle: 321 370 349 300 356 328 307 314 335 342 363
+weather strength 2
+> shuffle 0 9000
+exitdir 3 9003
+exitdir 1 9001
+exitdir 2 9002
+> newitem 9001 0
+created 66288
+> save_new
+66288 item 0
+IT
+ un 9001
+
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> set turn 10
+> weather probe 9000 257
+weather shuffle: 363 300 370 321 342 356 335 349 328 314 307
+weather strength 2
+> shuffle 0 9000
+exitdir 1 9001
+exitdir 2 9002
+exitdir 3 9003
+> newitem 9001 0
+created 61234
+> save_new
+61234 item 0
+IT
+ un 9001
+
+> income roll 9102 0 50 75
+income roll 9102 0 61
+stderr:
+
+exit 0

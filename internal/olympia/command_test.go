@@ -440,6 +440,27 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.incrementStoneRingAura()
 		case "curse":
 			w.noncreatorCurseErode()
+		case "upkeep":
+			switch action := args.word(); action {
+			case "cost":
+				fmt.Fprintf(&stdout, "unit maintenance %d\n", w.unitMaintCost(args.num(t)))
+			case "charge":
+				fmt.Fprintf(&stdout, "maintenance result %d\n", w.chargeMaintSup(args.num(t)))
+			case "all":
+				w.chargeMaintCosts()
+			case "starve":
+				w.menStarve(args.num(t), int32(args.num(t)))
+			case "animals":
+				w.animalDeaths()
+			case "animal":
+				n, item, idx := args.num(t), args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "animal roll %d %d %d %d\n", n, item, idx, w.streams.UpAnimal(n, item, idx, 1, 1000))
+			case "flavor":
+				n, item := args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "starve roll %d %d %d\n", n, item, w.streams.UpStarve(n, item, 1, 2))
+			default:
+				t.Fatalf("unknown upkeep %s", action)
+			}
 		case "income":
 			switch action := args.word(); action {
 			case "inn":
@@ -1199,6 +1220,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pItemMagic(n).useKey = int8(a)
 			case "man":
 				w.pItem(n).isManItem = int8(a)
+			case "animal":
+				w.pItem(n).animal = int8(a)
 			case "attack":
 				w.pItem(n).attack = int16(a)
 			case "defense":

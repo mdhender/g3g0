@@ -43,7 +43,7 @@ functions = {
                 'daily_command_loop', 'process_player_orders', 'interrupt_order', 'process_interrupted_units', 'process_orders'],
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'prepend_order', 'queue', 'save_player_orders'],
     'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord', 'unit_deserts'],
-    'move.c': ['restore_stack_actions', 'touch_loc_after_move', 'move_stack',
+    'move.c': ['check_captain_loses_sailors', 'restore_stack_actions', 'touch_loc_after_move', 'move_stack',
                'departure_message', 'arrival_message', 'discover_road', 'parse_exit_dir',
                'save_v_array', 'restore_v_array', 'move_exit_land', 'land_check',
                'can_move_here', 'can_move_at_outer_level', 'suspend_stack_actions',
@@ -61,7 +61,8 @@ functions = {
               'special_locs_open', 'special_locs_close', 'clear_orders_sent',
               'increment_current_aura', 'decrement_ability_shroud', 'decrement_region_shroud',
               'decrement_meditation_hinder', 'decrement_loc_barrier', 'loyalty_decay',
-              'pillage_decay', 'relic_decay', 'hide_mage_decay', 'inn_income', 'temple_income'],
+              'pillage_decay', 'relic_decay', 'hide_mage_decay', 'inn_income', 'temple_income',
+              'men_starve', 'unit_maint_cost', 'charge_maint_sup', 'charge_maint_costs', 'animal_deaths'],
     'scry.c': ['notify_loc_shroud'],
     'seed.c': ['int_comp', 'seed_taxes'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
@@ -269,6 +270,11 @@ void drv_hide_mage(void) { hide_mage_decay(); }
 void drv_income_inn(void) { inn_income(); }
 void drv_income_temple(void) { temple_income(); }
 int drv_income_roll(int inn, int sub, int low, int high) { return up_income(inn, sub, low, high); }
+void drv_maint(void) { charge_maint_costs(); }
+void drv_starve(int who, int have) { men_starve(who, have); }
+void drv_animal(void) { animal_deaths(); }
+int drv_starve_roll(int who, int item) { return up_starve(who, item, 1, 2); }
+int drv_animal_roll(int who, int item, int idx) { return up_animal(who, item, idx, 1, 1000); }
 int drv_loyal_roll(int who, int sub) { return up_loyal(who, sub, 1, 2); }
 void drv_city_gold(void) { move_city_gold(); }
 void drv_taxes(void) { collect_taxes(); }
@@ -422,6 +428,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section upkeep '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section upkeep invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected upkeep status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section income '* ]]; then
    expected_status=0
    if [[ "${section_names[$i]}" == 'section income invalid count preserves loop_here valid box assertion' ]]; then

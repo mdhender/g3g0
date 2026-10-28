@@ -83,8 +83,7 @@ func (w *world) defaultGarrisonPay() {
 	}
 }
 
-// maintCost is the complete day.c:1171–1199 item upkeep tariff. Charging
-// maintenance and starvation remain separate unfinished month-end phases.
+// maintCost is the complete day.c:1171–1199 item upkeep tariff.
 func maintCost(item int) int {
 	switch item {
 	case itemPeasant:
@@ -99,6 +98,143 @@ func maintCost(item int) int {
 		return 5
 	}
 	return 0
+}
+
+// menStarve is day.c:1200–1301. Payment and casualties both cycle through
+// inventory order, not tariff order. Unlike unitMaintCost, this includes the
+// noble item. All arithmetic that is C int remains signed 32-bit.
+func (w *world) menStarve(who int, have int32) {
+	var items []int
+	var qty, cost, starve []int32
+	var nmen, npaid int32
+	assert(w.validBox(who), "olympia/day.c", 1223, "valid_box(who)")
+	for e := range w.loopInv(who) {
+		if n := maintCost(int(e.item)); n != 0 {
+			items = append(items, int(e.item))
+			qty = append(qty, e.qty)
+			cost = append(cost, int32(n))
+			starve = append(starve, 0)
+			nmen += e.qty
+		}
+	}
+	gold := have
+	for {
+		hitOne := false
+		for i := range items {
+			if qty[i] > 0 && have >= cost[i] {
+				have -= cost[i]
+				qty[i]--
+				npaid++
+				hitOne = true
+			}
+		}
+		if !hitOne || have <= 0 {
+			break
+		}
+	}
+	gold -= have
+	nstarve := nmen - npaid
+	nstarve = (nstarve + 2) / 3
+	assert(nstarve > 0, "olympia/day.c", 1259, "nstarve > 0")
+	var failcheck int32
+	for i := 0; nstarve > 0; {
+		assert(failcheck < 10000, "olympia/day.c", 1264, "failcheck++ < 10000")
+		failcheck++
+		if qty[i] != 0 {
+			nstarve--
+			starve[i]++
+			qty[i]--
+		}
+		i++
+		if i >= len(items) {
+			i = 0
+		}
+	}
+	w.autocharge(who, int(gold))
+	for i, item := range items {
+		if starve[i] == 0 {
+			continue
+		}
+		s := "starved"
+		if item != itemPeasant {
+			if w.streams.UpStarve(who, item, 1, 2) == 1 {
+				s = "left service"
+			} else {
+				s = "deserted"
+			}
+		}
+		w.commandOut(who, "%s %s.", capitalize(w.justNameQty(item, int(starve[i]))), s)
+		w.consumeItem(who, item, int(starve[i]))
+		if item == itemSailor || item == itemPirate {
+			w.checkCaptainLosesSailors(starve[i], who, 0)
+		}
+	}
+}
+
+// unitMaintCost is day.c:1304–1318, including noble-item exclusion.
+func (w *world) unitMaintCost(who int) int32 {
+	var cost int32
+	assert(w.validBox(who), "olympia/day.c", 1310, "valid_box(who)")
+	for e := range w.loopInv(who) {
+		if int(e.item) != w.nobleItem(who) {
+			cost += int32(maintCost(int(e.item))) * e.qty
+		}
+	}
+	return cost
+}
+
+// chargeMaintSup is day.c:1325–1349: 0 owes nothing, 1 paid, 2 starved.
+func (w *world) chargeMaintSup(who int) int {
+	cost := w.unitMaintCost(who)
+	if cost < 1 {
+		return 0
+	}
+	if w.autocharge(who, int(cost)) {
+		w.commandOut(who, "Paid maintenance of %s.", goldS(int(cost)))
+		return 1
+	}
+	have := w.stackHasItem(who, itemGold)
+	w.commandOut(who, "Maintenance costs are %s, can afford %s.", goldS(int(cost)), goldS(int(have)))
+	w.menStarve(who, have)
+	return 2
+}
+
+// chargeMaintCosts is day.c:1352–1376. Prisoners and unsworn regular
+// faction characters are not excluded by the active C source.
+func (w *world) chargeMaintCosts() {
+	for who := range w.loopKind(tChar) {
+		if w.subkind(w.player(who)) == subPlRegular {
+			w.chargeMaintSup(who)
+		}
+	}
+}
+
+// animalDeaths is day.c:1379–1418, using the original per-individual,
+// one-based leaf keys and strict <10 threshold (nine chances per thousand).
+func (w *world) animalDeaths() {
+	w.stage("animal_deaths()")
+	for who := range w.loopKind(tChar) {
+		if w.subkind(w.player(who)) != subPlRegular {
+			continue
+		}
+		assert(w.validBox(who), "olympia/day.c", 1394, "valid_box(who)")
+		for e := range w.loopInv(who) {
+			p := w.rpItem(int(e.item))
+			if e.qty <= 0 || p == nil || p.animal == 0 {
+				continue
+			}
+			var dead int32
+			for i := int32(1); i <= e.qty; i++ {
+				if w.streams.UpAnimal(who, int(e.item), int(i), 1, 1000) < 10 {
+					dead++
+				}
+			}
+			if dead > 0 {
+				w.consumeItem(who, int(e.item), int(dead))
+				w.commandOut(who, "%s %s died.", capitalize(niceNum(int(dead))), w.pluralItemName(int(e.item), int(dead)))
+			}
+		}
+	}
 }
 
 // touchLocPl is touch_loc_pl(): it marks where's viewing location, and the

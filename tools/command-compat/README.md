@@ -2609,3 +2609,78 @@ Every compat call used `G3_REPO=$PWD/tmp/upstream.git`. No full-world run,
 independent fix, commit, push, issue closure/tick or stage-2 work.
 
 Version **0.64.0-alpha**; changes remain **uncommitted** for parent acceptance.
+
+## Monthly maintenance, starvation and animal deaths (#87)
+
+This extends command-compat rather than duplicating its stack/inventory,
+command, output and save closure in upkeep-compat; scope clarification is on
+[#87](https://github.com/mdhender/g3g0/issues/87#issuecomment-6462462502).
+Pin remains `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
+Complete original definitions are extracted, with original `#line` locations:
+
+| source | definitions / inclusive ranges |
+|---|---|
+| `day.c` | accepted `maint_cost` **1171–1199**; `men_starve` **1200–1301**; `unit_maint_cost` **1304–1318** |
+| `day.c` | `charge_maint_sup` **1325–1349**; `charge_maint_costs` **1352–1376**; `animal_deaths` **1379–1418** |
+| `day.c` | existing original guarded upkeep prefix **50–157**, including `up_starve` **117–122** and `up_animal` **129–135** |
+| `move.c` | complete `check_captain_loses_sailors` **1175–1247**, reusing the accepted Go helper |
+
+Only phase instrumentation is omitted, as before. No source dependency or
+pin change is needed. Production reuses `maintCost`, `stackHasItem`, actor-first
+`autocharge`, `consumeItem`, formatters and persistent `w.streams.UpStarve` /
+`UpAnimal`; no successful command/captain or RNG replacement is supplied.
+Existing postMonth call positions remain unchanged, with the earlier
+`garrisonGold` stop still #116. Full SAIL and later decay remain unported.
+
+The **22 new sections** cover:
+
+- Asymmetric expensive-first versus cheap-first inventory: five gold funds
+  one elite guard in the former but four peasants in the latter. Payment
+  repeatedly cycles items and skips unaffordable tariffs; casualties likewise
+  cycle inventory, not cost order. Seven unfunded men lose three, not two.
+- Exact affordability, one short, no funds, partially affordable cheap troops
+  with unusable gold left, empty/free units and the full signed-int maximum
+  cost **2147483647**, without an overflowing C expression.
+- Actor-first friendly stack borrowing, foreign rich stack exclusion, friendly
+  prisoner funds, regular-prisoner/unsworn charging and nonregular filtering.
+  Noble items are excluded by unit cost only: starvation and animal mortality
+  still include them. Invalid/nonpositive inventory is filtered by loop_inv.
+- Real moving roundship captain, parsed SAIL in STATE_RUN with positive wait:
+  loss of two sailors and one pirate changes wait **4 → 7**, emits both real
+  crew-loss messages and LOG_SPECIAL lines, and saves real command state.
+  No SAIL callback is invoked or substituted.
+- Peasant `starved`, both keyed nonpeasant flavors, same-turn master/day
+  changes, repetition and next-turn reseeding; real repeated herd losses,
+  item-specific leaves, hit/miss, noble/prisoner animals and faction filtering.
+- Independent original-C leaf probes: `(1698,51,1)` is **9** and dies;
+  `(4403,51,1)` is **10** and survives; `(1094,51,0)` is **5**, but its actual
+  first individual uses index **1**, rolls **614** and survives. Thus neither
+  zero-based indexing nor a `<=10` comparison can match the recording.
+- Paired call/no-call controls prime the same upkeep guard, preserving sibling
+  income leaves and downstream weather, exit shuffle and mint bytes.
+- Raw invalid helper calls reproduce loop_inv assertions at day.c **1310**
+  and **1223**, and fully paid direct starvation asserts at **1259**.
+
+All ordinary upkeep sections require status **0**; named invalid sections
+require **134**. A temporary harness wrapper emitted an out-of-scope dependency
+marker and aborted at section **676**, which otherwise expects 134. Both normal
+and `--update` runs rejected it with status **2**, before assertion acceptance
+or recording replacement; the recording hash stayed unchanged. The probe was
+removed. No new verified upstream defect or blocker was discovered.
+
+Two real C runs and Go match **683 sections / 50572 lines / 853708 bytes**.
+The accepted **661-section / 49624-line / 836364-byte** output and
+**15301-line / 274174-byte** input remain exact byte prefixes. New input is
+**15712 lines / 281967 bytes**. Recording SHA-256:
+`ac0900cfbee0f46d55a0b88053e29457429354c090ec55c5cc0281f7045c05c7`.
+Expected bytes come only from actual pinned C, including trailing whitespace.
+
+Sequential checks passed: command **683/50572**, move **135/7150**, helper
+**37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+default turn (identical raw status/stdout/stderr and one state file), then
+bounded vet and fresh bounded default tests using shared `run_limited`.
+Every compat call used `G3_REPO=$PWD/tmp/upstream.git`. No full-world run,
+independent fix, commit, push, issue closure/tick or stage-2 work.
+
+Version **0.65.0-alpha**; changes remain **uncommitted** for parent acceptance.
