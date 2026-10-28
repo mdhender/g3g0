@@ -24695,3 +24695,273 @@ entity 1 4 0
 report block 200
 sout route -2 0
 report summary_gold
+
+section report summary complete asymmetric factions duplicates school partition and original section order
+entity 1 4 0
+entity 12 4 0
+field 12 man 1
+entity 202 1 48
+entity 203 1 52
+entity 204 1 62
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+field 1001 lord 201
+field 1002 lord 200
+field 1003 lord 202
+field 1004 lord 203
+field 1005 lord 204
+field 1002 prisoner 1
+field 200 unit 1000
+field 200 unit 1002
+field 200 unit 1000
+field 201 unit 1001
+field 202 unit 1003
+field 203 unit 1004
+field 204 unit 1005
+entity 700 5 43
+entity 701 5 0
+entity 702 5 43
+entity 703 5 0
+entity 704 5 0
+field 701 required 700
+field 702 required 704
+report skill 1000 703 2 0
+report skill 1000 701 2 0
+report skill 1000 701 2 8
+report skill 1000 704 1 9
+report skill 1000 638 3 9
+report skill 1002 702 2 0
+report skill 1002 700 2 0
+report skill 1001 701 2 0
+report skill 1001 704 0 3
+report skill 1003 704 2 0
+report skill 1004 638 2 0
+report skill 1005 703 2 0
+inventory 1000 1 1111
+inventory 1001 1 222
+inventory 1002 1 33
+inventory 1000 12 13
+inventory 1001 12 9
+inventory 1003 12 9999
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 3
+entity 9010 3 15
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 9000 9010
+field 200 known 9002
+field 200 known 9010
+field 200 known 9000
+field 201 known 9001
+field 202 known 9002
+field 203 known 9001
+field 204 known 9000
+report skill_rows 1000
+report known 200
+sout route -2 17
+sout frame 2 7 0 0
+report summary
+sout state
+report rank_state
+report known 200
+report skill_rows 1000
+save 200
+save 201
+save 202
+save 203
+save 204
+readlog 200
+readlog 201
+readlog 202
+readlog 203
+readlog 204
+
+section report summary skills and spells deduplicate unit rows and change only copied lists
+entity 700 5 43
+entity 701 5 0
+entity 702 5 0
+entity 703 5 0
+field 701 required 700
+field 703 required 702
+field 1001 lord 201
+field 200 unit 1000
+field 200 unit 1000
+field 201 unit 1001
+report skill 1000 701 2 0
+report skill 1000 703 2 0
+report skill 1000 700 2 0
+report skill 1000 701 2 9
+report skill 1001 700 2 0
+report skill 1001 702 2 0
+report skill 1001 638 2 0
+sout route -2 0
+report summary_skills
+report rank_state
+report summary_spells
+report rank_state
+report skill_rows 1000
+report skill_rows 1001
+field 700 subkind 0
+report summary_skills
+report rank_state
+report summary_spells
+report rank_state
+field 638 subkind 43
+field 700 subkind 43
+field 702 subkind 43
+report summary_skills
+report rank_state
+report summary_spells
+report rank_state
+readlog 200
+readlog 201
+
+section report summary provinces all subtypes allocate and sort stored nonlocation knowledge
+entity 202 1 48
+entity 203 1 52
+entity 204 1 62
+entity 205 1 49
+post empty_player 202
+post empty_player 203
+post empty_player 204
+post empty_player 205
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 3
+entity 9010 3 15
+entity 99 4 0
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 9000 9010
+field 200 known 9002
+field 200 known 9010
+field 200 known 99
+field 200 known 9000
+field 201 known 9001
+field 9000 temp 99
+field 9001 temp 88
+report known 200
+report state 202
+report state 203
+report state 204
+report state 205
+sout route -2 0
+report provinces
+report rank_state
+report known 200
+report state 202
+report state 203
+report state 204
+report state 205
+report provinces
+report rank_state
+save 200
+save 201
+save 204
+readlog 200
+readlog 201
+readlog 205
+
+section report summary root allocates absent records for every subtype without extra roots
+entity 1 4 0
+entity 202 1 48
+entity 203 1 52
+entity 204 1 62
+post empty_player 200
+post empty_player 201
+post empty_player 202
+post empty_player 203
+post empty_player 204
+report state 200
+report state 201
+report state 202
+report state 203
+report state 204
+report summary
+report state 200
+report state 201
+report state 202
+report state 203
+report state 204
+report rank_state
+sout state
+readlog 200
+readlog 201
+readlog 202
+readlog 203
+readlog 204
+
+section report summary root zero regular factions still sorts knowledge and resets route
+entity 1 4 0
+field 200 subkind 48
+field 201 subkind 52
+entity 202 1 62
+post empty_player 202
+entity 9000 3 3
+entity 9001 3 3
+field 200 known 9001
+field 200 known 9000
+sout route -2 19
+sout frame 4 9 0 0
+report summary
+report rank_state
+report known 200
+report state 202
+sout state
+life path log/200
+life path log/201
+life path log/202
+
+section report summary empty denominators and missing character or skill records remain absent
+entity 1 4 0
+entity 1002 4 0
+field 200 unit 1002
+field 638 subkind 43
+report state 1002
+report summary_skills
+report summary_spells
+report state 1002
+save 638
+report summary
+report state 1002
+save 638
+readlog 200
+readlog 201
+
+section report summary complete repeat borrows cached inode and preserves initial indent style
+lore_root
+entity 1 4 0
+set flush 0
+sout frame 3 8 0 0
+report style 5
+report summary
+life rename log/200 log/summary-original
+entity 9000 3 3
+field 200 known 9000
+report summary
+life path log/200
+life flush
+readfile log/summary-original
+readfile log/201
+sout state
+report known 200
+
+section report invalid summary root output opens before all player record allocation
+lore_root
+entity 1 4 0
+entity 202 1 62
+post empty_player 202
+report block 200
+report summary
+
+section report invalid summary skill school cycle preserves actual source assertion
+entity 700 5 0
+field 700 required 700
+report summary_skills

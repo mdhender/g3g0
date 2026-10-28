@@ -832,15 +832,6 @@ func (w *world) playerBanner() {
 	w.outAltWho = 0
 }
 
-// summaryProvincesState is the persistent projection of summary.c:348–389.
-// Unlike other report loops it allocates records for ALL player subtypes,
-// including silent players. Province counts and ranking lists are scratch.
-func (w *world) summaryProvincesState() {
-	for pl := range w.loopKind(tPlayer) {
-		sortKnown(w.pPlayer(pl).known) // loop_known sorts the original list.
-	}
-}
-
 // reportOutputState preserves a MASTER out()'s open-before-allocation path
 // (sout.c:295–306,465–467), not its stage-2 body or transient output bits.
 // No blank/successful rendering substitute is emitted. Like ordinary output,
@@ -875,20 +866,6 @@ func (w *world) reportAccount() {
 	}
 	w.outPath = 0
 	w.outAltWho = 0
-}
-
-// summaryReportState projects summary.c:140–389,438–502. Totals, rankings,
-// skill/spell/land counters and their render-only traversal are scratch and
-// deferred with report text. Regular output opens BEFORE summary_provinces
-// allocates every player and sorts their original knowledge lists.
-func (w *world) summaryReportState() {
-	w.stage("summary_report()")
-	for pl := range w.loopKind(tPlayer) {
-		if w.subkind(pl) == subPlRegular {
-			w.reportOutputState(pl)
-		}
-	}
-	w.summaryProvincesState()
 }
 
 // playerReportSup is complete report.c:1188–1212.

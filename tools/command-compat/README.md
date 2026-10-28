@@ -3,6 +3,102 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Complete skills, provinces and summary root (#158)
+
+Existing summary.go adds complete unchanged summary.c `summary_skills`
+**179–228**, `summary_spells` **231–280**, `summary_provinces` **348–389**
+and `summary_report` **438–502**. Main and the existing oracle replace
+summaryReportState/summaryProvincesState with the actual renderers; both
+copied report.go projections are removed. The root calls the accepted #157
+totals, units, men, gold and land helpers exactly once in original order,
+then skills, spells and provinces. Original copied unit/skill traversal,
+stored knowledge sorting, accounting, ranking and cached FILE/output owners
+are reused. SHOW_TOP remains FALSE and `summary_sublocs` remains excluded
+by `#if 0`. No later root, new game command, second output layer, source
+dependency/pin change, or successful C substitute is introduced. The existing
+C extraction already contains every complete definition and its dependencies;
+only direct skills/spells adapter dispatch is added.
+
+Nine appended sections (seven **0**, two **134**) compare full raw report
+bytes, streams/status, saved records and scratch observations:
+
+- Two unequal regular factions plus system/NPC/silent owners: totals
+  **2 players / 4 controlled rows / 3 other characters**, actual characters
+  **2/1**, men **13/9**, gold **1144/222**, skills **2/4 versus 0/4**, spells
+  **2/2 versus 1/2**, provinces **2/3 versus 1/3**. A prisoner is included;
+  duplicate unit and skill rows count only once per distinct skill. Partial,
+  don't-know and malformed-known rows do not qualify. Full header, underline,
+  all seven rows and trailing blanks retain exact order and inline markup.
+- Magic follows the prerequisite school's subtype, not the leaf subtype.
+  Direct skills/spells passes reverse the two factions' rankings, then switch
+  to all nonmagic and all magic, exercising both zero denominators without
+  a slash. Stored descending/duplicate skill rows remain byte-exact.
+- All player subtypes allocate in the province pass, including absent regular,
+  system, NPC and silent records. Original stored knowledge sorts from
+  **9002,9010,99,9000** to **99,9000,9002,9010**; lair/item knowledge is
+  retained but not counted as provinces. Repeats clear location scratch.
+  Separate root cases cover absent records, zero regular factions, no output
+  files, route reset and retained initial indent. A valid noncharacter unit
+  row with no CH and a skill with no SK stay unallocated through direct
+  skills/spells and the root; this is a raw-list control, not a normal unit.
+- Two complete roots borrow the renamed cached inode; `log/200` stays absent
+  and the original contains **1400** exact bytes, including changed province
+  totals, retained style and the original one-shot second-indent consumption.
+  Output-open failure remains **sout.c:158**, and a skill-school cycle remains
+  **use.c:1182**, both status **134**. No independent guards/fixes are added.
+
+At **0.98.0-alpha**, complete unchanged real C repeats deterministically and
+Go matches **1142 sections / 77030 lines / 1499775 output bytes**. Inherited
+**1133 sections / 76217 lines / 1479826 output bytes** and **24697 input
+lines / 468406 input bytes** remain exact unchanged HEAD prefixes.
+New input: **24967 lines / 473763 bytes**. Output SHA-256:
+`3815d51f0ed58c53301d31813b12f749d7fc1d770bc49a140b6e6b08ca79c89d`.
+Input SHA-256:
+`cc04ab6923b598184344e221572b1e6aede1c139916fe15a048b913a77e83960`.
+Complete-definition equality, fixture constants and actually reached bytes
+are checked in `tmp/issue158-evidence.log`.
+
+Four temporary linker probes wrap only the direct summary-parts adapter at
+the new expected-cycle failure, section **1141**. Emitting a missing-dependency
+marker and either returning **0** or aborting **134** makes both default and
+update modes reject with harness status **2** before expected-failure
+acceptance or recording replacement. Every before/after hash is unchanged.
+Logs: `tmp/issue158-negative-{0,134}-{default,update}.log`. An initial probe
+attempt itself read req_skill(700) when that box was absent in an earlier
+control, and was rejected at section **1138**, status **139** (harness **2**),
+without changing the recording. The probe was corrected to check valid_box
+first, then all four intended controls reached the marker. This is a
+temporary probe error, not an engine defect or accepted negative result;
+log `tmp/issue158-probe-initial-invalid-read.log`. Both probe files were
+removed before the final real-C refresh/default passes.
+
+Sequential command refresh/default **1142/77030**, move **135/7158**, helper
+**37/1487**, RNG **321**, code **43/969** (unchanged older pin), loadsave
+**61/3411**, turn-driver **7/152**, phase **5/484**, calendar **2/119**,
+schedule **4/1801** and default turn (**2 cwd entries**, raw streams/status)
+all pass. Bounded `go vet ./...` and fresh bounded
+`go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...` pass
+(Olympia **1.727s**). Every compat invocation uses explicit isolated G3_REPO;
+engines use the existing run_limited owner. Logs:
+`tmp/issue158-command{,-update}.log`,
+`tmp/issue158-{move,helper,rng,code,loadsave,turn-driver,turn,vet,test}.log`.
+Matching captures and temporary probes are removed. Source-only whitespace
+checks pass; literal C recording trailing spaces remain unnormalized.
+All eleven open local issues, including unlabeled ones, are only #158–166
+and the two trackers, with no bug/follow-C. No new defect, prerequisite or
+oversized closure was found. No commit, push, issue edit or checklist tick.
+
+Independent parent review verifies all fourteen extracted summary definitions
+unchanged exactly once; the same eight-tool/vet/fresh-test tier passes
+(Olympia **1.601s**), logs `tmp/parent158-*.log`.
+These are routine task checks, not strict whole-world/lifecycle or stage-exit
+acceptance. Fresh parent post-#158 strict result has eight saved-report byte differences,
+exit **1** before lifecycle, with identical C repeats, both engines **0** and
+equal raw streams/paths/types/modes; log `tmp/parent158-strict.log`, captures
+`tmp/parent-stage2-turn`. G3 #358 remains nonblocking/unchanged
+(malformed **C136/Go2 is not parity**); G3 #359's source-linked native
+truncation comment and behavior remain unchanged.
+
 ## Summary rankings and totals (#157)
 
 Source-corresponding summary.go implements the active complete summary.c

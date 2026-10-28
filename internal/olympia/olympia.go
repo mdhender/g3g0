@@ -312,7 +312,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 			panic(notImplemented("charge_account"))
 		}
 		w.reportAccount()
-		w.summaryReportState()
+		w.summaryReport()
 		w.playerReport()
 		w.scanCharSkillLore()
 		w.showLoreSheetsState()

@@ -384,6 +384,8 @@ void drv_summary_parts(int mode, int total) {
  case 3: summary_men(); break;
  case 4: summary_gold(); break;
  case 5: summary_land_owned(); break;
+ case 6: summary_skills(); break;
+ case 7: summary_spells(); break;
  }
 }
 void drv_summary_state(void) {

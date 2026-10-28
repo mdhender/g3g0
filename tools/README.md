@@ -6,6 +6,44 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Complete skills, provinces and summary root (#158)
+
+Existing summary.go completes summary.c skills/spells **179–280**, provinces
+**348–389** and root **438–502**. Main/oracle replace the two copied state
+projections, removed from report.go, with the real rendering pass. Accepted
+#157 helpers execute once in original order with actual loops, accounting,
+knowledge sorting and cached output. SHOW_TOP stays FALSE; disabled
+summary_sublocs stays excluded. No later root, command, second output layer,
+new C dependency/pin or successful substitute.
+
+At **0.98.0-alpha**, nine appended cases match unchanged complete real C
+twice and Go: **1142 sections / 77030 lines / 1499775 output bytes**.
+Inherited **1133 sections / 76217 lines / 1479826 output bytes** and
+**468406 input bytes** remain exact prefixes. Unequal regular factions plus
+system/NPC/silent, duplicate unit/skill rows, prerequisite-school magic
+partition, zero denominators, unequal visited provinces, all-subtype absent
+records, stored knowledge sorting, full section order and **1400-byte** renamed
+cached output reach their actual branches. Original open/cycle assertions
+remain status **134**. See [closure, hashes and evidence](command-compat#complete-skills-provinces-and-summary-root-158).
+
+Four corrected dependency-marker controls reject with harness status **2**
+at the expected cycle failure before status/update acceptance, preserving
+the recording hash. Probe files and matching captures are removed. Command
+refresh/default, move/helper/RNG/code/loadsave/turn-driver/default turn pass
+sequentially, followed by bounded vet and fresh bounded default tests
+(Olympia **1.727s**). Logs: `tmp/issue158-*.log`. Source-only whitespace
+checks pass; raw C trailing spaces are retained. All eleven open issues,
+including unlabeled ones, are only #158–166 and the trackers; no bug/follow-C,
+new defect, prerequisite or oversized closure. Independent parent complete-C
+review and the same tool/vet/fresh-test tier pass (Olympia **1.601s**);
+logs `tmp/parent158-*.log`.
+
+Fresh parent strict post-#158 diagnostic remains a red whole-world gate:
+identical C repeats, both engines **0**, equal raw streams/paths/types/modes,
+eight saved-report byte differences, exit **1** before lifecycle. No strict
+stage-exit acceptance; log `tmp/parent158-strict.log`. G3 #358/#359 remain
+unchanged/nonblocking; malformed **C136/Go2** is not passing parity.
+
 ## Summary rankings and totals (#157)
 
 Source-corresponding summary.go adds active summary.c rank comparator/ranking/

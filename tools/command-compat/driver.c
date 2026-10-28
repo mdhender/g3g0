@@ -1268,6 +1268,8 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"summary_men")) drv_summary_parts(3,0);
    else if(!strcmp(text,"summary_gold")) drv_summary_parts(4,0);
    else if(!strcmp(text,"summary_land")) drv_summary_parts(5,0);
+   else if(!strcmp(text,"summary_skills")) drv_summary_parts(6,0);
+   else if(!strcmp(text,"summary_spells")) drv_summary_parts(7,0);
    else if(!strcmp(text,"rank_state")) drv_summary_state();
    else if(!strcmp(text,"ordinal")) printf("ordinal %d [%s]\n",n,ordinal(n));
    else if(!strcmp(text,"summary")) summary_report();

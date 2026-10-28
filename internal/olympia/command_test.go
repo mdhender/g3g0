@@ -1690,7 +1690,7 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "times_url":
 				w.timesURL = args.ctext()
 			case "provinces":
-				w.summaryProvincesState()
+				w.summaryProvinces()
 			case "templates":
 				w.listOrderTemplates()
 			case "template":
@@ -1743,6 +1743,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.summaryGold()
 			case "summary_land":
 				w.summaryLandOwned()
+			case "summary_skills":
+				w.summarySkills()
+			case "summary_spells":
+				w.summarySpells()
 			case "rank_state":
 				fmt.Fprintf(&stdout, "game totals %d %d %d\n", w.summaryNPlayers, w.summaryNControlled, w.summaryNOther)
 				fmt.Fprintf(&stdout, "ranks allocated %d count %d\n", b2i(w.summaryRanks != nil), len(w.summaryRanks))
@@ -1756,7 +1760,7 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				n := args.num(t)
 				fmt.Fprintf(&stdout, "ordinal %d [%s]\n", n, ordinal(n))
 			case "summary":
-				w.summaryReportState()
+				w.summaryReport()
 			case "factions":
 				w.playerReport()
 			case "faction_sup":
