@@ -78,7 +78,8 @@ functions = {
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
             'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units'],
-    'npc.c': ['create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
+    'npc.c': ['get_exit_dir', 'choose_npc_direction', 'npc_move',
+              'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'lore.c': ['queue_lore', 'scan_char_item_lore'],
     'buy.c': ['investigate_possible_trade', 'market_here', 'seller_comp',
               'seller_list', 'buyer_list', 'scan_trades', 'match_trades'],
@@ -204,6 +205,21 @@ for region in ['hades', 'faery']:
     with open(f'{dst}/{region}-rng.c', 'w') as out:
         out.write(f'#line 1 "olympia/{region}.c"\n')
         out.write(source[:source.index(f'void\ncreate_{region}(void)')])
+        if region == 'hades':
+            out.write('#define phase_ran(x) ((void)0)\n#define phase_acted(x) ((void)0)\n')
+            for name in ['create_hades_nasty', 'auto_hades_sup', 'auto_hades']:
+                m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
+                if not m:
+                    sys.exit(f'no definition of {name} in hades.c')
+                line = source.count('\n', 0, m.start()) + 1
+                out.write(f'#line {line} "olympia/hades.c"\n{m.group(0)}\n')
+            out.write('void drv_nasty(int slot) { create_hades_nasty(slot); }\n')
+            out.write('void drv_hades_unit(int who) { auto_hades_sup(who); }\n')
+            out.write('int drv_nasty_roll(int slot, int sub, int low, int high) { return hads_nasty(slot, sub, low, high); }\n')
+source = open(f'{src}/npc.c').read()
+with open(f'{dst}/npc-rng.c', 'w') as out:
+    out.write('#line 1 "olympia/npc.c"\n')
+    out.write(source[:source.index('int\ncontrolled_humans_here(')])
 glob = open(f'{src}/glob.c').read()
 table = glob[glob.index('struct cmd_tbl_ent cmd_tbl[]'):glob.index('char *kind_s[]')]
 routines = set()
@@ -234,7 +250,7 @@ case "$(uname -s)" in
 esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -w -ffunction-sections -fdata-sections "${ldflags[@]}" \
  -I olympia -I lib -I "${WORK}" \
- "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" "${WORK}/hades-rng.c" "${WORK}/faery-rng.c" \
+ "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" "${WORK}/hades-rng.c" "${WORK}/faery-rng.c" "${WORK}/npc-rng.c" \
  olympia/{code,glob,z,sout,io}.c \
  lib/{checked_alloc,ilist,exit_views,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents,admits,trades,req_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
@@ -249,6 +265,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section hades '* || "${section_names[$i]}" == 'section npc route '* ]]; then
+   [ "$status" = 0 ] || die "unexpected Hades/NPC status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section move '* ]]; then
    [ "$status" = 0 ] || die "unexpected movement status $status in section $i"
   fi

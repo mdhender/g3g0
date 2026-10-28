@@ -14135,3 +14135,3122 @@ log 201:
 stderr:
 
 exit 0
+stdout:
+section hades zero population fills actual slots and queues shuffled routes
+> master 0
+> set turn 7
+> set day 0
+> set epoch 210
+> resolve_wait
+> entity 205 1 52
+> set hades_player 205
+> entity 26 4 0
+> name 26 spirit
+> field 26 man 1
+> entity 8000 3 50
+> set hades_region 8000
+> entity 9000 3 7
+> entity 9001 3 7
+> entity 9002 3 7
+> link 8000 9002
+> link 8000 9000
+> link 8000 9001
+> link 9001 1001
+> routes 9000 9001 9002 0 0
+> routes 9001 0 0 9000 9002
+> routes 9002 9000 0 9001 0
+> hades auto
+> hades_state
+hades unit 1179
+1179 char 0
+na Ghostly presence
+LI
+ wh 9002
+CH
+ lo 205
+ he 100
+ lk 4
+ at 100
+ df 100
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 2242
+2242 char 0
+na Greater Demon
+il	26 168
+LI
+ wh 9002
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 2818
+2818 char 0
+na Greater Demon
+il	26 154
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 2882
+2882 char 0
+na Ghostly presence
+LI
+ wh 9002
+CH
+ lo 205
+ he 100
+ lk 4
+ at 100
+ df 100
+MI
+ di 3
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 3309
+3309 char 0
+na Greater Demon
+il	26 160
+LI
+ wh 9002
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+MI
+ di 3
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 3556
+3556 char 0
+na Ghostly presence
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 3850
+3850 char 0
+na Greater Demon
+il	26 214
+LI
+ wh 9002
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+MI
+ di 3
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 4116
+4116 char 0
+na Greater Demon
+il	26 117
+LI
+ wh 9002
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+MI
+ di 3
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 7087
+7087 char 0
+na Greater Demon
+il	26 178
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 7578
+7578 char 0
+na Greater Demon
+il	26 238
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+MI
+ di 2
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 7742
+7742 char 0
+na Greater Demon
+il	26 238
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 7941
+7941 char 0
+na Lesser Demon
+il	26 57
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 8061
+8061 char 0
+na Ghostly presence
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 8122
+8122 char 0
+na Ghostly presence
+LI
+ wh 9002
+CH
+ lo 205
+ he 100
+ lk 4
+ at 100
+ df 100
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 8940
+8940 char 0
+na Lesser Demon
+il	26 132
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ lk 4
+ at 250
+ df 250
+MI
+ di 2
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 9330
+9330 char 0
+na Greater Demon
+il	26 240
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+MI
+ di 2
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 9350
+9350 char 0
+na Ghostly presence
+LI
+ wh 9002
+CH
+ lo 205
+ he 100
+ lk 4
+ at 100
+ df 100
+MI
+ di 3
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 9445
+9445 char 0
+na Greater Demon
+il	26 219
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 81056
+81056 char ni
+na Tortured spirits
+il	26 28
+LI
+ wh 9000
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 87851
+87851 char ni
+na Tortured spirits
+il	26 69
+LI
+ wh 9002
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 100961
+100961 char ni
+na Tortured spirits
+il	26 56
+LI
+ wh 9000
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 108008
+108008 char ni
+na Tortured spirits
+il	26 57
+LI
+ wh 9001
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 110741
+110741 char ni
+na Tortured spirits
+il	26 61
+LI
+ wh 9002
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 133192
+133192 char ni
+na Tortured spirits
+il	26 63
+LI
+ wh 9000
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 2
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 133827
+133827 char ni
+na Tortured spirits
+il	26 45
+LI
+ wh 9000
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+load_q 0:
+load_q 1: 9330 133827 2818 7578 7087 4116 2882 9350 8061 3850 7742 100961 81056 133192 110741 9445 8940 3556 7941 2242 8122 108008 3309 1179 87851
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 1179 2242 2818 2882 3309 3556 3850 4116 7087 7578 7742 7941 8061 8122 8940 9330 9350 9445 81056 87851 100961 108008 110741 133192 133827
+output 0 0 0 0 0 touched 1 1
+orders 9330: [move east]
+orders 133827: [move north]
+orders 2818: [attack 1001]
+orders 7578: [move east]
+orders 7087: [attack 1001]
+orders 4116: [move south]
+orders 2882: [move south]
+orders 9350: [move south]
+orders 8061: [attack 1001]
+orders 3850: [move south]
+orders 7742: [attack 1001]
+orders 100961: [move north]
+orders 81056: [move north]
+orders 133192: [move east]
+orders 110741: [move north]
+orders 9445: [attack 1001]
+orders 8940: [move east]
+orders 3556: [attack 1001]
+orders 7941: [attack 1001]
+orders 2242: [move north]
+orders 8122: [move north]
+orders 108008: [attack 1001]
+orders 3309: [move south]
+orders 1179: [move north]
+orders 87851: [move north]
+> orders_file 205
+orders file 205:
+9330:move east
+133827:move north
+2818:attack 1001
+7578:move east
+7087:attack 1001
+4116:move south
+2882:move south
+9350:move south
+8061:attack 1001
+3850:move south
+7742:attack 1001
+100961:move north
+81056:move north
+133192:move east
+110741:move north
+9445:attack 1001
+8940:move east
+3556:attack 1001
+7941:attack 1001
+2242:move north
+8122:move north
+108008:attack 1001
+3309:move south
+1179:move north
+87851:move north
+> save 205
+205 player pl_npc
+PL
+ lt 7
+ un 1179 2242 2818 2882 3309 3556 3850 4116 7087 \
+	7578 7742 7941 8061 8122 8940 9330 9350 9445 81056 87851 \
+	100961 108008 110741 133192 133827 
+
+> save 9000
+9000 loc underground
+LI
+ wh 8000
+ hl 9330 133827 7578 100961 81056 133192 8940 
+LO
+ pd 9001 9002 0 0 
+
+> save 9001
+9001 loc underground
+LI
+ wh 8000
+ hl 1001 2818 7087 8061 7742 9445 3556 7941 108008 
+LO
+ pd 0 0 9000 9002 
+
+> save 9002
+9002 loc underground
+LI
+ wh 8000
+ hl 4116 2882 9350 3850 110741 2242 8122 3309 1179 \
+	87851 
+LO
+ pd 9000 0 9001 0 
+
+> lore_state 205
+known:
+lore:
+touched: 9000 9001 9002
+weather:
+> readlog 205
+log 205:
+> nasty_rolls 0 3
+nasty where 1
+nasty kind 4
+nasty spirits 37
+nasty lesser 62
+nasty greater 240
+> nasty_rolls 24 3
+nasty where 0
+nasty kind 1
+nasty spirits 69
+nasty lesser 124
+nasty greater 174
+> shuffle 1000 9000
+exitdir 1 9001
+exitdir 2 9002
+> newitem 9000 0
+created 65273
+> save_new
+65273 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section hades existing twenty four count all faction units even outside region and captive
+> master 19
+> set turn 3
+> resolve_wait
+> entity 205 1 52
+> set hades_player 205
+> entity 26 4 0
+> entity 8000 3 50
+> entity 8001 3 50
+> set hades_region 8000
+> entity 9000 3 7
+> entity 9001 3 7
+> entity 9002 3 3
+> link 8000 9001
+> link 8000 9000
+> link 8001 9002
+> routes 9000 9001 0 0 0
+> routes 9001 0 0 9000 0
+> link 9002 1000
+> link 1000 1001
+> field 1000 lord 205
+> field 1000 health -1
+> field 1001 lord 205
+> field 1001 prisoner 1
+> field 205 unit 1001
+> field 205 unit 1000
+> newchar 0 0 9000 100 205 0 0 existing01
+created 4328
+> newchar 0 0 9001 100 205 0 0 existing02
+created 4036
+> newchar 0 0 9000 100 205 0 0 existing03
+created 4408
+> newchar 0 0 9001 100 205 0 0 existing04
+created 4522
+> newchar 0 0 9000 100 205 0 0 existing05
+created 6959
+> newchar 0 0 9001 100 205 0 0 existing06
+created 7654
+> newchar 0 0 9000 100 205 0 0 existing07
+created 5784
+> newchar 0 0 9001 100 205 0 0 existing08
+created 5171
+> newchar 0 0 9000 100 205 0 0 existing09
+created 7272
+> newchar 0 0 9001 100 205 0 0 existing10
+created 6522
+> newchar 0 0 9000 100 205 0 0 existing11
+created 1508
+> newchar 0 0 9001 100 205 0 0 existing12
+created 6414
+> newchar 0 0 9000 100 205 0 0 existing13
+created 4834
+> newchar 0 0 9001 100 205 0 0 existing14
+created 8478
+> newchar 0 0 9000 100 205 0 0 existing15
+created 1337
+> newchar 0 0 9001 100 205 0 0 existing16
+created 3389
+> newchar 0 0 9000 100 205 0 0 existing17
+created 6639
+> newchar 0 0 9001 100 205 0 0 existing18
+created 4412
+> newchar 0 0 9000 100 205 0 0 existing19
+created 7894
+> newchar 0 0 9001 100 205 0 0 existing20
+created 5953
+> newchar 0 0 9000 100 205 0 0 existing21
+created 3654
+> newchar 0 0 9001 100 205 0 0 existing22
+created 2678
+> orders 205 1000 wait time 2
+> hades auto
+> hades_state
+hades unit 1000
+1000 char 0
+LI
+ wh 9002
+ hl 1001 
+CH
+ lo 205
+ he -1
+
+hades output 0
+hades unit 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 205
+ pr 1
+
+hades output 0
+hades unit 1337
+1337 char 0
+na existing15
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 1508
+1508 char 0
+na existing11
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 2678
+2678 char 0
+na existing22
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 3389
+3389 char 0
+na existing16
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 3654
+3654 char 0
+na existing21
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 4036
+4036 char 0
+na existing02
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 4328
+4328 char 0
+na existing01
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 4408
+4408 char 0
+na existing03
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 4412
+4412 char 0
+na existing18
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 4522
+4522 char 0
+na existing04
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 4834
+4834 char 0
+na existing13
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 5171
+5171 char 0
+na existing08
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 5784
+5784 char 0
+na existing07
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 5953
+5953 char 0
+na existing20
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 6414
+6414 char 0
+na existing12
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 6522
+6522 char 0
+na existing10
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 6639
+6639 char 0
+na existing17
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 6959
+6959 char 0
+na existing05
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 7272
+7272 char 0
+na existing09
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 7654
+7654 char 0
+na existing06
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 7894
+7894 char 0
+na existing19
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 1
+
+hades output 0
+hades unit 8478
+8478 char 0
+na existing14
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+MI
+ di 3
+
+hades output 0
+hades unit 90729
+90729 char ni
+na Tortured spirits
+il	26 71
+LI
+ wh 9000
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+load_q 0:
+load_q 1: 90729
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 1000 1001 1337 1508 2678 3389 3654 4036 4328 4408 4412 4522 4834 5171 5784 5953 6414 6522 6639 6959 7272 7654 7894 8478 90729
+output 0 0 0 0 0 touched 1 1
+orders 1000: [wait time 2]
+orders 90729: [move north]
+orders 1337: [move north]
+orders 1508: [move north]
+orders 2678: [move south]
+orders 3389: [move south]
+orders 3654: [move north]
+orders 4036: [move south]
+orders 4328: [move north]
+orders 4408: [move north]
+orders 4412: [move south]
+orders 4522: [move south]
+orders 4834: [move north]
+orders 5171: [move south]
+orders 5784: [move north]
+orders 5953: [move south]
+orders 6414: [move south]
+orders 6522: [move south]
+orders 6639: [move north]
+orders 6959: [move north]
+orders 7272: [move north]
+orders 7654: [move south]
+orders 7894: [move north]
+orders 8478: [move south]
+> orders_file 205
+orders file 205:
+1000:wait time 2
+90729:move north
+1337:move north
+1508:move north
+2678:move south
+3389:move south
+3654:move north
+4036:move south
+4328:move north
+4408:move north
+4412:move south
+4522:move south
+4834:move north
+5171:move south
+5784:move north
+5953:move south
+6414:move south
+6522:move south
+6639:move north
+6959:move north
+7272:move north
+7654:move south
+7894:move north
+8478:move south
+> save 205
+205 player pl_npc
+PL
+ lt 3
+ un 1000 1001 1337 1508 2678 3389 3654 4036 4328 \
+	4408 4412 4522 4834 5171 5784 5953 6414 6522 6639 6959 \
+	7272 7654 7894 8478 90729 
+
+> save 9000
+9000 loc underground
+LI
+ wh 8000
+ hl 4328 4408 6959 5784 7272 1508 4834 1337 6639 \
+	7894 3654 90729 
+LO
+ pd 9001 0 0 0 
+
+> save 9001
+9001 loc underground
+LI
+ wh 8000
+ hl 4036 4522 7654 5171 6522 6414 8478 3389 4412 \
+	5953 2678 
+LO
+ pd 0 0 9000 0 
+
+> save 9002
+9002 loc plain
+LI
+ wh 8001
+ hl 1000 
+
+> readlog 205
+log 205:
+> nasty_rolls 24 2
+nasty where 1
+nasty kind 1
+nasty spirits 71
+nasty lesser 96
+nasty greater 212
+> newitem 9000 0
+created 63616
+> save_new
+63616 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section hades capped twenty five then over cap does not allocate or delete
+> master 5
+> set turn 9
+> resolve_wait
+> entity 205 1 52
+> set hades_player 205
+> entity 26 4 0
+> entity 8000 3 50
+> set hades_region 8000
+> entity 9000 3 7
+> link 8000 9000
+> newchar 0 0 9000 100 205 0 0 existing01
+created 6603
+> newchar 0 0 9000 100 205 0 0 existing02
+created 7755
+> newchar 0 0 9000 100 205 0 0 existing03
+created 7306
+> newchar 0 0 9000 100 205 0 0 existing04
+created 2827
+> newchar 0 0 9000 100 205 0 0 existing05
+created 2955
+> newchar 0 0 9000 100 205 0 0 existing06
+created 7875
+> newchar 0 0 9000 100 205 0 0 existing07
+created 6195
+> newchar 0 0 9000 100 205 0 0 existing08
+created 3689
+> newchar 0 0 9000 100 205 0 0 existing09
+created 7384
+> newchar 0 0 9000 100 205 0 0 existing10
+created 7550
+> newchar 0 0 9000 100 205 0 0 existing11
+created 2107
+> newchar 0 0 9000 100 205 0 0 existing12
+created 5048
+> newchar 0 0 9000 100 205 0 0 existing13
+created 4625
+> newchar 0 0 9000 100 205 0 0 existing14
+created 1676
+> newchar 0 0 9000 100 205 0 0 existing15
+created 3756
+> newchar 0 0 9000 100 205 0 0 existing16
+created 5302
+> newchar 0 0 9000 100 205 0 0 existing17
+created 9078
+> newchar 0 0 9000 100 205 0 0 existing18
+created 9610
+> newchar 0 0 9000 100 205 0 0 existing19
+created 7068
+> newchar 0 0 9000 100 205 0 0 existing20
+created 4236
+> newchar 0 0 9000 100 205 0 0 existing21
+created 6308
+> newchar 0 0 9000 100 205 0 0 existing22
+created 8045
+> newchar 0 0 9000 100 205 0 0 existing23
+created 2240
+> newchar 0 0 9000 100 205 0 0 existing24
+created 7625
+> newchar 0 0 9000 100 205 0 0 existing25
+created 3149
+> hades auto
+> hades_state
+hades unit 1676
+1676 char 0
+na existing14
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 2107
+2107 char 0
+na existing11
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 2240
+2240 char 0
+na existing23
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 2827
+2827 char 0
+na existing04
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 2955
+2955 char 0
+na existing05
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 3149
+3149 char 0
+na existing25
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 3689
+3689 char 0
+na existing08
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 3756
+3756 char 0
+na existing15
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 4236
+4236 char 0
+na existing20
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 4625
+4625 char 0
+na existing13
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 5048
+5048 char 0
+na existing12
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 5302
+5302 char 0
+na existing16
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 6195
+6195 char 0
+na existing07
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 6308
+6308 char 0
+na existing21
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 6603
+6603 char 0
+na existing01
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7068
+7068 char 0
+na existing19
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7306
+7306 char 0
+na existing03
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7384
+7384 char 0
+na existing09
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7550
+7550 char 0
+na existing10
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7625
+7625 char 0
+na existing24
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7755
+7755 char 0
+na existing02
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7875
+7875 char 0
+na existing06
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 8045
+8045 char 0
+na existing22
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 9078
+9078 char 0
+na existing17
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 9610
+9610 char 0
+na existing18
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 1676 2107 2240 2827 2955 3149 3689 3756 4236 4625 5048 5302 6195 6308 6603 7068 7306 7384 7550 7625 7755 7875 8045 9078 9610
+output 0 0 0 0 0 touched 1 0
+> newchar 0 0 9000 100 205 0 0 existing26
+created 5190
+> hades auto
+> hades_state
+hades unit 1676
+1676 char 0
+na existing14
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 2107
+2107 char 0
+na existing11
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 2240
+2240 char 0
+na existing23
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 2827
+2827 char 0
+na existing04
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 2955
+2955 char 0
+na existing05
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 3149
+3149 char 0
+na existing25
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 3689
+3689 char 0
+na existing08
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 3756
+3756 char 0
+na existing15
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 4236
+4236 char 0
+na existing20
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 4625
+4625 char 0
+na existing13
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 5048
+5048 char 0
+na existing12
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 5190
+5190 char 0
+na existing26
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 5302
+5302 char 0
+na existing16
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 6195
+6195 char 0
+na existing07
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 6308
+6308 char 0
+na existing21
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 6603
+6603 char 0
+na existing01
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7068
+7068 char 0
+na existing19
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7306
+7306 char 0
+na existing03
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7384
+7384 char 0
+na existing09
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7550
+7550 char 0
+na existing10
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7625
+7625 char 0
+na existing24
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7755
+7755 char 0
+na existing02
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 7875
+7875 char 0
+na existing06
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 8045
+8045 char 0
+na existing22
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 9078
+9078 char 0
+na existing17
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+hades unit 9610
+9610 char 0
+na existing18
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ bp 50
+ at 60
+ df 60
+
+hades output 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 1676 2107 2240 2827 2955 3149 3689 3756 4236 4625 5048 5190 5302 6195 6308 6603 7068 7306 7384 7550 7625 7755 7875 8045 9078 9610
+output 0 0 0 0 0 touched 1 0
+> orders_file 205
+orders file 205:
+> save 205
+205 player pl_npc
+PL
+ un 1676 2107 2240 2827 2955 3149 3689 3756 4236 \
+	4625 5048 5190 5302 6195 6308 6603 7068 7306 7384 7550 \
+	7625 7755 7875 8045 9078 9610 
+
+> save 9000
+9000 loc underground
+LI
+ wh 8000
+ hl 6603 7755 7306 2827 2955 7875 6195 3689 7384 \
+	7550 2107 5048 4625 1676 3756 5302 9078 9610 7068 4236 \
+	6308 8045 2240 7625 3149 5190 
+
+> newitem 9000 0
+created 68782
+> save_new
+68782 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section hades spawn uses every region child in here order without terrain filtering
+> master 0
+> set turn 1
+> resolve_wait
+> entity 205 1 52
+> set hades_player 205
+> entity 26 4 0
+> entity 8000 3 50
+> set hades_region 8000
+> entity 9000 3 7
+> entity 9001 3 14
+> entity 9002 3 3
+> link 8000 9001
+> link 8000 9002
+> link 8000 9000
+> field 9000 loc_hidden 1
+> field 26 lore 777
+> nasty_rolls 0 3
+nasty where 2
+nasty kind 4
+nasty spirits 52
+nasty lesser 77
+nasty greater 119
+> nasty_rolls 1 3
+nasty where 1
+nasty kind 3
+nasty spirits 65
+nasty lesser 105
+nasty greater 205
+> nasty_rolls 2 3
+nasty where 0
+nasty kind 4
+nasty spirits 50
+nasty lesser 139
+nasty greater 189
+> nasty_rolls 3 3
+nasty where 0
+nasty kind 1
+nasty spirits 30
+nasty lesser 119
+nasty greater 169
+> nasty_rolls 4 3
+nasty where 0
+nasty kind 1
+nasty spirits 54
+nasty lesser 79
+nasty greater 211
+> nasty_rolls 5 3
+nasty where 2
+nasty kind 3
+nasty spirits 71
+nasty lesser 96
+nasty greater 146
+> hades spawn 0
+> hades spawn 1
+> hades spawn 2
+> hades spawn 3
+> hades spawn 4
+> hades spawn 5
+> hades_state
+hades unit 1681
+1681 char 0
+na Lesser Demon
+il	26 96
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 4857
+4857 char 0
+na Lesser Demon
+il	26 105
+LI
+ wh 9002
+CH
+ lo 205
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 6258
+6258 char 0
+na Greater Demon
+il	26 189
+LI
+ wh 9001
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 7748
+7748 char 0
+na Greater Demon
+il	26 119
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 79711
+79711 char ni
+na Tortured spirits
+il	26 30
+LI
+ wh 9001
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 121151
+121151 char ni
+na Tortured spirits
+il	26 54
+LI
+ wh 9001
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+load_q 0:
+load_q 1: 7748 4857 6258 79711 121151 1681
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 1681 4857 6258 7748 79711 121151
+output 0 0 0 0 0 touched 1 1
+orders 7748:
+orders 4857:
+orders 6258:
+orders 79711:
+orders 121151:
+orders 1681:
+> orders_file 205
+orders file 205:
+> save 205
+205 player pl_npc
+PL
+ lt 1
+ kn 26 
+ un 1681 4857 6258 7748 79711 121151 
+
+> save 9000
+9000 loc underground
+LI
+ wh 8000
+ hl 7748 1681 
+LO
+ hi 1
+
+> save 9001
+9001 loc city
+LI
+ wh 8000
+ hl 6258 79711 121151 
+
+> save 9002
+9002 loc plain
+LI
+ wh 8000
+ hl 4857 
+
+> lore_state 205
+known: 26
+lore: 26
+touched: 9000 9002 9001 8000
+weather:
+> newitem 9000 0
+created 61853
+> save_new
+61853 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section hades keyed slot leaves replay within turn and ignore day and master reload
+> master 0
+> set turn 1
+> resolve_wait
+> entity 205 1 52
+> set hades_player 205
+> entity 26 4 0
+> entity 8000 3 50
+> set hades_region 8000
+> entity 9000 3 7
+> entity 9001 3 7
+> link 8000 9001
+> link 8000 9000
+> hades spawn 3
+> nasty_rolls 3 2
+nasty where 0
+nasty kind 1
+nasty spirits 30
+nasty lesser 119
+nasty greater 169
+> master 91
+> set day 28
+> hades spawn 3
+> nasty_rolls 3 2
+nasty where 0
+nasty kind 1
+nasty spirits 30
+nasty lesser 119
+nasty greater 169
+> set turn 2
+> hades spawn 3
+> nasty_rolls 3 2
+nasty where 1
+nasty kind 4
+nasty spirits 47
+nasty lesser 101
+nasty greater 186
+> hades_state
+hades unit 8960
+8960 char 0
+na Greater Demon
+il	26 186
+LI
+ wh 9000
+CH
+ lo 205
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 110158
+110158 char ni
+na Tortured spirits
+il	26 30
+LI
+ wh 9001
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 140449
+140449 char ni
+na Tortured spirits
+il	26 30
+LI
+ wh 9001
+CH
+ ni 26
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+load_q 0:
+load_q 1: 110158 140449 8960
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 8960 110158 140449
+output 0 0 0 0 0 touched 1 1
+orders 110158:
+orders 140449:
+orders 8960:
+> orders_file 205
+orders file 205:
+> newitem 9000 0
+created 75807
+> save_new
+75807 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section hades direct targets preserve order and only filter nonregular and transcend alone
+> master 0
+> entity 205 1 52
+> set hades_player 205
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> entity 1006 2 0
+> entity 1007 2 0
+> entity 26 4 0
+> field 26 man 1
+> entity 9000 3 7
+> entity 9001 3 7
+> entity 9002 3 15
+> routes 9000 9001 0 0 0
+> field 1000 hidden 1
+> field 1000 loyal 4
+> field 1001 prisoner 1
+> field 1001 health -1
+> field 1001 lord 201
+> field 1002 lord 200
+> field 1003 lord 201
+> field 1004 lord 200
+> field 1005 lord 200
+> field 1006 lord 205
+> field 1007 lord 205
+> field 205 unit 1006
+> field 205 unit 1007
+> learn 1002 911 2 0
+> learn 1003 911 2 0
+> learn 1004 911 2 0
+> inventory 1003 26 2
+> link 9000 9002
+> link 9000 1001
+> link 9000 1002
+> link 9000 1000
+> link 9000 1003
+> link 9000 1004
+> link 1004 1005
+> link 9000 1006
+> link 9000 1007
+> orders 205 1006 wait time 8
+> hades unit 1006
+> hades_state
+hades unit 1006
+1006 char 0
+LI
+ wh 9000
+CH
+ lo 205
+
+hades output 0
+hades unit 1007
+1007 char 0
+LI
+ wh 9000
+CH
+ lo 205
+
+hades output 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 1006 1007
+output 0 0 0 0 0 touched 0 0
+orders 1006: [wait time 8] [attack 1001] [attack 1000] [attack 1003] [attack 1004]
+> orders_file 205
+orders file 205:
+1006:wait time 8
+1006:attack 1001
+1006:attack 1000
+1006:attack 1003
+1006:attack 1004
+> save 9000
+9000 loc underground
+LI
+ hl 9002 1001 1002 1000 1003 1004 1006 1007 
+LO
+ pd 9001 0 0 0 
+
+> readlog 205
+log 205:
+stderr:
+
+exit 0
+stdout:
+section hades no eligible direct target queues movement not nested victim attack
+> master 17
+> entity 205 1 52
+> set hades_player 205
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> field 1002 lord 200
+> field 1003 lord 205
+> field 1004 lord 205
+> learn 1000 911 2 0
+> entity 9000 3 7
+> entity 9001 3 7
+> routes 9000 0 9001 0 0
+> link 9000 1000
+> link 9000 1003
+> link 1003 1002
+> link 9000 1004
+> field 205 unit 1004
+> hades unit 1004
+> hades_state
+hades unit 1004
+1004 char 0
+LI
+ wh 9000
+CH
+ lo 205
+MI
+ di 2
+
+hades output 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 1004
+output 0 0 0 0 0 touched 0 0
+orders 1004: [move east]
+> orders_file 205
+orders file 205:
+1004:move east
+stderr:
+
+exit 0
+stdout:
+section npc route nested building city and ship queue out without changing last direction
+> master 0
+> entity 9000 3 3
+> entity 9001 3 14
+> entity 9002 3 29
+> entity 9003 9 30
+> link 9000 9001
+> link 9001 9002
+> link 9000 9003
+> link 9002 1000
+> field 1000 npc_dir 260
+> npc_move 1000
+> save 1000
+1000 char 0
+LI
+ wh 9002
+CH
+ lo 200
+MI
+ di 4
+
+> link 9001 1000
+> npc_move 1000
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+MI
+ di 4
+
+> link 9003 1000
+> npc_move 1000
+> save 1000
+1000 char 0
+LI
+ wh 9003
+CH
+ lo 200
+MI
+ di 4
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [move out] [move out] [move out]
+> orders_file 200
+orders file 200:
+1000:move out
+1000:move out
+1000:move out
+stderr:
+
+exit 0
+stdout:
+section npc route no exits and water only preserve missing misc and negative direction
+> master 0
+> entity 9000 3 3
+> entity 9001 3 1
+> link 9000 1000
+> npc_move 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> field 1000 npc_dir -129
+> npc_move 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 127
+
+> routes 9000 9001 9001 0 0
+> npc_move 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 127
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> orders_file 200
+orders file 200:
+> npc_choose 1000 9000 1
+chosen none
+stderr:
+
+exit 0
+stdout:
+section npc route asymmetric hidden land and water selection remembers direction after shuffle
+> master 0
+> set turn 1
+> entity 9000 3 3
+> entity 9001 3 4
+> entity 9002 3 1
+> entity 9003 3 5
+> entity 9004 3 2
+> link 9000 1000
+> routes 9000 9001 9002 9003 9004
+> field 9003 loc_hidden 1
+> field 9003 barrier 1
+> npc_rolls 1000 9000
+npc direction 1 roll 9
+npc direction 2 roll 5
+npc direction 3 roll 1
+npc direction 4 roll 2
+> npc_choose 1000 9000 1
+chosen 1 9001
+> npc_choose 1000 9000 2
+chosen 3 9003
+> npc_choose 1000 9000 3
+chosen 3 9003
+> npc_choose 1000 9000 4
+chosen 4 9004
+> npc_choose 1000 9000 0
+chosen 3 9003
+> npc_choose 1000 9000 -1
+chosen 4 9004
+> npc_choose 1000 9000 8
+chosen 4 9004
+> npc_move 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 4
+
+> npc_move 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 4
+
+> shuffle 1001 9000
+exitdir 3 9003
+exitdir 1 9001
+exitdir 4 9004
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [move west] [move west]
+> orders_file 200
+orders file 200:
+1000:move west
+1000:move west
+stderr:
+
+exit 0
+stdout:
+section npc route direction threshold and persistent shared exit shuffle across actors day master and turn
+> master 0
+> set turn 1
+> entity 1003 2 0
+> field 1003 lord 200
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> entity 9004 3 3
+> routes 9000 9001 9002 9003 9004
+> link 9000 1000
+> link 9000 1001
+> link 9000 1003
+> npc_rolls 1000 9000
+npc direction 1 roll 9
+npc direction 2 roll 5
+npc direction 3 roll 1
+npc direction 4 roll 2
+> npc_rolls 1001 9000
+npc direction 1 roll 5
+npc direction 2 roll 3
+npc direction 3 roll 1
+npc direction 4 roll 2
+> npc_rolls 1003 9000
+npc direction 1 roll 10
+npc direction 2 roll 9
+npc direction 3 roll 5
+npc direction 4 roll 10
+> npc_choose 1000 9000 1
+chosen 1 9001
+> npc_choose 1000 9000 2
+chosen 2 9002
+> npc_choose 1000 9000 3
+chosen 3 9003
+> npc_choose 1000 9000 4
+chosen 4 9004
+> npc_choose 1001 9000 1
+chosen 1 9001
+> npc_choose 1001 9000 2
+chosen 2 9002
+> npc_choose 1001 9000 3
+chosen 3 9003
+> npc_choose 1001 9000 4
+chosen 4 9004
+> npc_choose 1003 9000 1
+chosen 2 9002
+> npc_choose 1003 9000 2
+chosen 2 9002
+> npc_choose 1003 9000 4
+chosen 1 9001
+> field 1003 npc_dir 1
+> npc_move 1003
+> save 1003
+1003 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 2
+
+> set day 29
+> npc_move 1001
+> master 91
+> npc_rolls 1001 9000
+npc direction 1 roll 5
+npc direction 2 roll 5
+npc direction 3 roll 7
+npc direction 4 roll 6
+> npc_move 1000
+> shuffle 1001 9000
+exitdir 1 9001
+exitdir 4 9004
+exitdir 3 9003
+exitdir 2 9002
+> set turn 2
+> npc_rolls 1001 9000
+npc direction 1 roll 6
+npc direction 2 roll 6
+npc direction 3 roll 9
+npc direction 4 roll 3
+> npc_move 1001
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 2
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 4
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1003: [move east]
+orders 1001: [move west] [move west]
+orders 1000: [move east]
+> orders_file 200
+orders file 200:
+1003:move east
+1001:move west
+1001:move west
+1000:move east
+stderr:
+
+exit 0
+stdout:
+section npc route generated move goes through actual dispatcher and evenings to wait
+> master 0
+> set turn 1
+> set day 1
+> set epoch 31
+> resolve_wait
+> entity 10 4 0
+> field 10 weight 100
+> field 10 land_cap 100
+> field 10 ride_cap 100
+> entity 293 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> routes 9000 9001 0 0 0
+> field 1000 loyal 4
+> npc_move 1000
+> queue wait time 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [move north] [wait time 0]
+> load
+load 1
+> do
+> dump
+cmd 48 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> evening
+> dump
+cmd 48 who 1000 state 2 status 1 wait 3 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 2
+> set epoch 32
+> evening
+> dump
+cmd 48 who 1000 state 2 status 1 wait 2 poll 0 pri 2 cond 0 fuzzy 0 days 2 debug 2 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 3
+> set epoch 33
+> evening
+> dump
+cmd 48 who 1000 state 2 status 1 wait 1 poll 0 pri 2 cond 0 fuzzy 0 days 3 debug 3 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [move] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 4
+> set epoch 34
+> evening
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 4 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> set day 5
+> set epoch 35
+> do
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 5 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 2 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> evening
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 5 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 200 count 2 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+ lk 4
+MI
+ di 1
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+LO
+ pd 9001 0 0 0 
+
+> save 9001
+9001 loc plain
+LI
+ wh 8000
+ hl 1000 
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 1
+orders 1000:
+> orders_file 200
+orders file 200:
+> readlog 200
+log 200:
+1000:0::0::> move north
+1000:0::0::Travel to Plain~[9001] will take four days.
+1000:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[1000] arrived from the south.
+1000:0::0::> wait time 0
+1000:0::0::Wait finished: zero days have passed.
+> shuffle 1000 9001
+> newitem 1000 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section npc route vertical land links retain impassable cloud exits but ignore roads and sublocations
+> master 31
+> set turn 6
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 9000 3 4
+> entity 9001 3 65
+> entity 9002 3 7
+> entity 9003 3 14
+> entity 9004 3 3
+> entity 9005 7 0
+> link 8000 9000
+> link 8001 9001
+> link 8000 9002
+> link 9000 9003
+> link 8000 9004
+> link 9000 9005
+> link 9000 1000
+> road 9005 9004 0
+> routes 9000 0 0 0 0 9001 9002
+> npc_choose 1000 9000 5
+chosen 5 9001
+> npc_choose 1000 9000 6
+chosen 6 9002
+> field 1000 npc_dir 5
+> npc_move 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 5
+
+> field 1000 npc_dir 6
+> npc_move 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ di 6
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [move up] [move down]
+> orders_file 200
+orders file 200:
+1000:move up
+1000:move down
+> shuffle 1000 9000
+exitdir 5 9001
+exitdir 6 9002
+stderr:
+
+exit 0
+stdout:
+section npc route roads and inner city alone do not form autonomous exits
+> master 31
+> entity 9000 3 3
+> entity 9001 3 14
+> entity 9002 3 3
+> entity 9003 7 0
+> link 9000 9001
+> link 9000 9003
+> link 9000 1000
+> road 9003 9002 0
+> npc_move 1000
+> npc_choose 1000 9000 7
+chosen none
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> orders_file 200
+orders file 200:
+stderr:
+
+exit 0

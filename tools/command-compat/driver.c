@@ -33,6 +33,9 @@ void drv_ocean(int who);
 ilist drv_oceans(void);
 trades_list drv_offers(int seller, int where, int except);
 void drv_entity_rolls(int who, int sub, int where);
+void drv_nasty(int slot), drv_hades_unit(int who);
+int drv_nasty_roll(int slot, int sub, int low, int high);
+struct exit_view *choose_npc_direction(int who, int where, int dir);
 
 static void wait_dump(struct command *c)
 {
@@ -111,6 +114,42 @@ int main(int argc, char **argv)
    s=fopen(sout("%s/randseed",libdir),"wb"); if(!s) return 2;
    fwrite(seed,1,16,s); fclose(s); load_seed(sout("%s/randseed",libdir));
   }
+  else if (!strcmp(op, "hades")) {
+   sscanf(line,"%*s %31s %d",text,&n);
+   if(!strcmp(text,"auto")) auto_hades();
+   else if(!strcmp(text,"unit")) drv_hades_unit(n);
+   else if(!strcmp(text,"spawn")) drv_nasty(n);
+   else return 2;
+  }
+  else if (!strcmp(op, "hades_state")) {
+   loop_units(hades_player,n) {
+    printf("hades unit %d\n",n); save_box(stdout,n);
+    printf("hades output %d\n",test_bit(p_player(player(n))->output,n));
+   } next_unit;
+   for(i=0;i<5;i++) list(sout("load_q %d",i),load_q[i]);
+   list("run_q",run_q);
+  }
+  else if (!strcmp(op, "nasty_rolls")) {
+   sscanf(line,"%*s %d %d",&n,&a);
+   printf("nasty where %d\n",drv_nasty_roll(n,0,0,a-1));
+   printf("nasty kind %d\n",drv_nasty_roll(n,1,1,4));
+   printf("nasty spirits %d\n",drv_nasty_roll(n,2,25,75));
+   printf("nasty lesser %d\n",drv_nasty_roll(n,2,50,150));
+   printf("nasty greater %d\n",drv_nasty_roll(n,2,100,250));
+  }
+  else if (!strcmp(op, "npc_move")) {
+   sscanf(line,"%*s %d",&n); npc_move(n);
+  }
+  else if (!strcmp(op, "npc_choose")) {
+   struct exit_view *e;
+   sscanf(line,"%*s %d %d %d",&n,&a,&b); e=choose_npc_direction(n,a,b);
+   if(e) printf("chosen %d %d\n",e->direction,e->destination);
+   else printf("chosen none\n");
+  }
+  else if (!strcmp(op, "npc_rolls")) {
+   sscanf(line,"%*s %d %d",&n,&a); begin_npc(a);
+   for(i=1;i<=4;i++) printf("npc direction %d roll %d\n",i,npc_behavior(n,i,1,10));
+  }
   else if (!strcmp(op, "arrival")) {
    sscanf(line,"%*s %31s %d %d",text,&n,&a);
    if (!strcmp(text,"move")) move_stack(n,a);
@@ -133,11 +172,13 @@ int main(int argc, char **argv)
    sscanf(line,"%*s %d",&n); printf("land %d\n",find_nearest_land(n));
   }
   else if (!strcmp(op, "routes")) {
-   int west;
-   sscanf(line,"%*s %d %d %d %d %d",&n,&a,&b,&d,&west);
+   int west, up, down, fields;
+   fields=sscanf(line,"%*s %d %d %d %d %d %d %d",&n,&a,&b,&d,&west,&up,&down);
    ilist_clear(&p_loc(n)->prov_dest);
    ilist_append(&p_loc(n)->prov_dest,a); ilist_append(&p_loc(n)->prov_dest,b);
    ilist_append(&p_loc(n)->prov_dest,d); ilist_append(&p_loc(n)->prov_dest,west);
+   if(fields>5) ilist_append(&p_loc(n)->prov_dest,up);
+   if(fields>6) ilist_append(&p_loc(n)->prov_dest,down);
   }
   else if (!strcmp(op, "road")) {
    sscanf(line,"%*s %d %d %d",&n,&a,&b);
@@ -425,6 +466,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"health")) p_char(n)->health = (schar)a;
    else if (!strcmp(text,"prisoner")) p_char(n)->prisoner = (schar)a;
    else if (!strcmp(text,"npc")) p_char(n)->npc_prog = (schar)a;
+   else if (!strcmp(text,"npc_dir")) p_misc(n)->npc_dir = (schar)a;
    else if (!strcmp(text,"loyal")) p_char(n)->loy_kind = (schar)a;
    else if (!strcmp(text,"moving")) p_char(n)->moving = a;
    else if (!strcmp(text,"time_flying")) p_char(n)->time_flying = (schar)a;
@@ -435,6 +477,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"strength")) p_misc(n)->storm_str = (short)a;
    else if (!strcmp(text,"safe")) p_subloc(n)->safe = (schar)a;
    else if (!strcmp(text,"loc_hidden")) p_loc(n)->hidden = (schar)a;
+   else if (!strcmp(text,"barrier")) p_loc(n)->barrier = (short)a;
    else if (!strcmp(text,"hostile")) ilist_append(&p_disp(n)->hostile,a);
    else if (!strcmp(text,"neutral")) ilist_append(&p_disp(n)->neutral,a);
    else if (!strcmp(text,"defend")) ilist_append(&p_disp(n)->defend,a);
@@ -531,6 +574,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "gm")) gm_player = n;
    else if (!strcmp(text, "faery_region")) faery_region = n;
    else if (!strcmp(text, "hades_region")) hades_region = n;
+   else if (!strcmp(text, "hades_player")) hades_player = n;
    else if (!strcmp(text, "backlinks")) pledge_backlinks = n;
    else if (!strcmp(text, "show_day")) show_day = n;
    else if (!strcmp(text, "day")) sysclock.day = (short)n;

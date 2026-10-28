@@ -5230,3 +5230,510 @@ move_state
 save 9001
 readlog 200
 readlog 201
+
+section hades zero population fills actual slots and queues shuffled routes
+master 0
+set turn 7
+set day 0
+set epoch 210
+resolve_wait
+entity 205 1 52
+set hades_player 205
+entity 26 4 0
+name 26 spirit
+field 26 man 1
+entity 8000 3 50
+set hades_region 8000
+entity 9000 3 7
+entity 9001 3 7
+entity 9002 3 7
+link 8000 9002
+link 8000 9000
+link 8000 9001
+link 9001 1001
+routes 9000 9001 9002 0 0
+routes 9001 0 0 9000 9002
+routes 9002 9000 0 9001 0
+hades auto
+hades_state
+pstate 205
+orders_file 205
+save 205
+save 9000
+save 9001
+save 9002
+lore_state 205
+readlog 205
+nasty_rolls 0 3
+nasty_rolls 24 3
+shuffle 1000 9000
+newitem 9000 0
+save_new
+
+section hades existing twenty four count all faction units even outside region and captive
+master 19
+set turn 3
+resolve_wait
+entity 205 1 52
+set hades_player 205
+entity 26 4 0
+entity 8000 3 50
+entity 8001 3 50
+set hades_region 8000
+entity 9000 3 7
+entity 9001 3 7
+entity 9002 3 3
+link 8000 9001
+link 8000 9000
+link 8001 9002
+routes 9000 9001 0 0 0
+routes 9001 0 0 9000 0
+link 9002 1000
+link 1000 1001
+field 1000 lord 205
+field 1000 health -1
+field 1001 lord 205
+field 1001 prisoner 1
+field 205 unit 1001
+field 205 unit 1000
+newchar 0 0 9000 100 205 0 0 existing01
+newchar 0 0 9001 100 205 0 0 existing02
+newchar 0 0 9000 100 205 0 0 existing03
+newchar 0 0 9001 100 205 0 0 existing04
+newchar 0 0 9000 100 205 0 0 existing05
+newchar 0 0 9001 100 205 0 0 existing06
+newchar 0 0 9000 100 205 0 0 existing07
+newchar 0 0 9001 100 205 0 0 existing08
+newchar 0 0 9000 100 205 0 0 existing09
+newchar 0 0 9001 100 205 0 0 existing10
+newchar 0 0 9000 100 205 0 0 existing11
+newchar 0 0 9001 100 205 0 0 existing12
+newchar 0 0 9000 100 205 0 0 existing13
+newchar 0 0 9001 100 205 0 0 existing14
+newchar 0 0 9000 100 205 0 0 existing15
+newchar 0 0 9001 100 205 0 0 existing16
+newchar 0 0 9000 100 205 0 0 existing17
+newchar 0 0 9001 100 205 0 0 existing18
+newchar 0 0 9000 100 205 0 0 existing19
+newchar 0 0 9001 100 205 0 0 existing20
+newchar 0 0 9000 100 205 0 0 existing21
+newchar 0 0 9001 100 205 0 0 existing22
+orders 205 1000 wait time 2
+hades auto
+hades_state
+pstate 205
+orders_file 205
+save 205
+save 9000
+save 9001
+save 9002
+readlog 205
+nasty_rolls 24 2
+newitem 9000 0
+save_new
+
+section hades capped twenty five then over cap does not allocate or delete
+master 5
+set turn 9
+resolve_wait
+entity 205 1 52
+set hades_player 205
+entity 26 4 0
+entity 8000 3 50
+set hades_region 8000
+entity 9000 3 7
+link 8000 9000
+newchar 0 0 9000 100 205 0 0 existing01
+newchar 0 0 9000 100 205 0 0 existing02
+newchar 0 0 9000 100 205 0 0 existing03
+newchar 0 0 9000 100 205 0 0 existing04
+newchar 0 0 9000 100 205 0 0 existing05
+newchar 0 0 9000 100 205 0 0 existing06
+newchar 0 0 9000 100 205 0 0 existing07
+newchar 0 0 9000 100 205 0 0 existing08
+newchar 0 0 9000 100 205 0 0 existing09
+newchar 0 0 9000 100 205 0 0 existing10
+newchar 0 0 9000 100 205 0 0 existing11
+newchar 0 0 9000 100 205 0 0 existing12
+newchar 0 0 9000 100 205 0 0 existing13
+newchar 0 0 9000 100 205 0 0 existing14
+newchar 0 0 9000 100 205 0 0 existing15
+newchar 0 0 9000 100 205 0 0 existing16
+newchar 0 0 9000 100 205 0 0 existing17
+newchar 0 0 9000 100 205 0 0 existing18
+newchar 0 0 9000 100 205 0 0 existing19
+newchar 0 0 9000 100 205 0 0 existing20
+newchar 0 0 9000 100 205 0 0 existing21
+newchar 0 0 9000 100 205 0 0 existing22
+newchar 0 0 9000 100 205 0 0 existing23
+newchar 0 0 9000 100 205 0 0 existing24
+newchar 0 0 9000 100 205 0 0 existing25
+hades auto
+hades_state
+pstate 205
+newchar 0 0 9000 100 205 0 0 existing26
+hades auto
+hades_state
+pstate 205
+orders_file 205
+save 205
+save 9000
+newitem 9000 0
+save_new
+
+section hades spawn uses every region child in here order without terrain filtering
+master 0
+set turn 1
+resolve_wait
+entity 205 1 52
+set hades_player 205
+entity 26 4 0
+entity 8000 3 50
+set hades_region 8000
+entity 9000 3 7
+entity 9001 3 14
+entity 9002 3 3
+link 8000 9001
+link 8000 9002
+link 8000 9000
+field 9000 loc_hidden 1
+field 26 lore 777
+nasty_rolls 0 3
+nasty_rolls 1 3
+nasty_rolls 2 3
+nasty_rolls 3 3
+nasty_rolls 4 3
+nasty_rolls 5 3
+hades spawn 0
+hades spawn 1
+hades spawn 2
+hades spawn 3
+hades spawn 4
+hades spawn 5
+hades_state
+pstate 205
+orders_file 205
+save 205
+save 9000
+save 9001
+save 9002
+lore_state 205
+newitem 9000 0
+save_new
+
+section hades keyed slot leaves replay within turn and ignore day and master reload
+master 0
+set turn 1
+resolve_wait
+entity 205 1 52
+set hades_player 205
+entity 26 4 0
+entity 8000 3 50
+set hades_region 8000
+entity 9000 3 7
+entity 9001 3 7
+link 8000 9001
+link 8000 9000
+hades spawn 3
+nasty_rolls 3 2
+master 91
+set day 28
+hades spawn 3
+nasty_rolls 3 2
+set turn 2
+hades spawn 3
+nasty_rolls 3 2
+hades_state
+pstate 205
+orders_file 205
+newitem 9000 0
+save_new
+
+section hades direct targets preserve order and only filter nonregular and transcend alone
+master 0
+entity 205 1 52
+set hades_player 205
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 1006 2 0
+entity 1007 2 0
+entity 26 4 0
+field 26 man 1
+entity 9000 3 7
+entity 9001 3 7
+entity 9002 3 15
+routes 9000 9001 0 0 0
+field 1000 hidden 1
+field 1000 loyal 4
+field 1001 prisoner 1
+field 1001 health -1
+field 1001 lord 201
+field 1002 lord 200
+field 1003 lord 201
+field 1004 lord 200
+field 1005 lord 200
+field 1006 lord 205
+field 1007 lord 205
+field 205 unit 1006
+field 205 unit 1007
+learn 1002 911 2 0
+learn 1003 911 2 0
+learn 1004 911 2 0
+inventory 1003 26 2
+link 9000 9002
+link 9000 1001
+link 9000 1002
+link 9000 1000
+link 9000 1003
+link 9000 1004
+link 1004 1005
+link 9000 1006
+link 9000 1007
+orders 205 1006 wait time 8
+hades unit 1006
+hades_state
+pstate 205
+orders_file 205
+save 9000
+readlog 205
+
+section hades no eligible direct target queues movement not nested victim attack
+master 17
+entity 205 1 52
+set hades_player 205
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+field 1002 lord 200
+field 1003 lord 205
+field 1004 lord 205
+learn 1000 911 2 0
+entity 9000 3 7
+entity 9001 3 7
+routes 9000 0 9001 0 0
+link 9000 1000
+link 9000 1003
+link 1003 1002
+link 9000 1004
+field 205 unit 1004
+hades unit 1004
+hades_state
+pstate 205
+orders_file 205
+
+section npc route nested building city and ship queue out without changing last direction
+master 0
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 3 29
+entity 9003 9 30
+link 9000 9001
+link 9001 9002
+link 9000 9003
+link 9002 1000
+field 1000 npc_dir 260
+npc_move 1000
+save 1000
+link 9001 1000
+npc_move 1000
+save 1000
+link 9003 1000
+npc_move 1000
+save 1000
+pstate 200
+orders_file 200
+
+section npc route no exits and water only preserve missing misc and negative direction
+master 0
+entity 9000 3 3
+entity 9001 3 1
+link 9000 1000
+npc_move 1000
+save 1000
+field 1000 npc_dir -129
+npc_move 1000
+save 1000
+routes 9000 9001 9001 0 0
+npc_move 1000
+save 1000
+pstate 200
+orders_file 200
+npc_choose 1000 9000 1
+
+section npc route asymmetric hidden land and water selection remembers direction after shuffle
+master 0
+set turn 1
+entity 9000 3 3
+entity 9001 3 4
+entity 9002 3 1
+entity 9003 3 5
+entity 9004 3 2
+link 9000 1000
+routes 9000 9001 9002 9003 9004
+field 9003 loc_hidden 1
+field 9003 barrier 1
+npc_rolls 1000 9000
+npc_choose 1000 9000 1
+npc_choose 1000 9000 2
+npc_choose 1000 9000 3
+npc_choose 1000 9000 4
+npc_choose 1000 9000 0
+npc_choose 1000 9000 -1
+npc_choose 1000 9000 8
+npc_move 1000
+save 1000
+npc_move 1000
+save 1000
+shuffle 1001 9000
+pstate 200
+orders_file 200
+
+section npc route direction threshold and persistent shared exit shuffle across actors day master and turn
+master 0
+set turn 1
+entity 1003 2 0
+field 1003 lord 200
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 3
+entity 9003 3 3
+entity 9004 3 3
+routes 9000 9001 9002 9003 9004
+link 9000 1000
+link 9000 1001
+link 9000 1003
+npc_rolls 1000 9000
+npc_rolls 1001 9000
+npc_rolls 1003 9000
+npc_choose 1000 9000 1
+npc_choose 1000 9000 2
+npc_choose 1000 9000 3
+npc_choose 1000 9000 4
+npc_choose 1001 9000 1
+npc_choose 1001 9000 2
+npc_choose 1001 9000 3
+npc_choose 1001 9000 4
+npc_choose 1003 9000 1
+npc_choose 1003 9000 2
+npc_choose 1003 9000 4
+field 1003 npc_dir 1
+npc_move 1003
+save 1003
+set day 29
+npc_move 1001
+master 91
+npc_rolls 1001 9000
+npc_move 1000
+shuffle 1001 9000
+set turn 2
+npc_rolls 1001 9000
+npc_move 1001
+save 1000
+save 1001
+pstate 200
+orders_file 200
+
+section npc route generated move goes through actual dispatcher and evenings to wait
+master 0
+set turn 1
+set day 1
+set epoch 31
+resolve_wait
+entity 10 4 0
+field 10 weight 100
+field 10 land_cap 100
+field 10 ride_cap 100
+entity 293 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+link 8000 9000
+link 8000 9001
+link 9000 1000
+routes 9000 9001 0 0 0
+field 1000 loyal 4
+npc_move 1000
+queue wait time 0
+pstate 200
+load
+do
+dump
+evening
+dump
+set day 2
+set epoch 32
+evening
+dump
+set day 3
+set epoch 33
+evening
+dump
+set day 4
+set epoch 34
+evening
+dump
+set day 5
+set epoch 35
+do
+dump
+evening
+dump
+save 1000
+save 9000
+save 9001
+pstate 200
+orders_file 200
+readlog 200
+shuffle 1000 9001
+newitem 1000 0
+save_new
+
+section npc route vertical land links retain impassable cloud exits but ignore roads and sublocations
+master 31
+set turn 6
+entity 8000 3 50
+entity 8001 3 50
+entity 9000 3 4
+entity 9001 3 65
+entity 9002 3 7
+entity 9003 3 14
+entity 9004 3 3
+entity 9005 7 0
+link 8000 9000
+link 8001 9001
+link 8000 9002
+link 9000 9003
+link 8000 9004
+link 9000 9005
+link 9000 1000
+road 9005 9004 0
+routes 9000 0 0 0 0 9001 9002
+npc_choose 1000 9000 5
+npc_choose 1000 9000 6
+field 1000 npc_dir 5
+npc_move 1000
+save 1000
+field 1000 npc_dir 6
+npc_move 1000
+save 1000
+pstate 200
+orders_file 200
+shuffle 1000 9000
+
+section npc route roads and inner city alone do not form autonomous exits
+master 31
+entity 9000 3 3
+entity 9001 3 14
+entity 9002 3 3
+entity 9003 7 0
+link 9000 9001
+link 9000 9003
+link 9000 1000
+road 9003 9002 0
+npc_move 1000
+npc_choose 1000 9000 7
+save 1000
+pstate 200
+orders_file 200

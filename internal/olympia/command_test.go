@@ -117,6 +117,49 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "hades":
+			switch action := args.word(); action {
+			case "auto":
+				w.autoHades()
+			case "unit":
+				w.autoHadesSup(args.num(t))
+			case "spawn":
+				w.createHadesNasty(args.num(t))
+			default:
+				t.Fatalf("unknown hades %s", action)
+			}
+		case "hades_state":
+			for n := range w.loopUnits(int(w.hadesPlayer)) {
+				fmt.Fprintf(&stdout, "hades unit %d\n", n)
+				w.saveBox(&stdout, n)
+				fmt.Fprintf(&stdout, "hades output %d\n", b2i(testBit(w.pPlayer(w.player(n)).output, n)))
+			}
+			for i, q := range w.loadQ {
+				helperList(&stdout, fmt.Sprintf("load_q %d", i), q)
+			}
+			helperList(&stdout, "run_q", w.runQ)
+		case "nasty_rolls":
+			n, a := args.num(t), args.num(t)
+			fmt.Fprintf(&stdout, "nasty where %d\n", w.streams.HadsNasty(n, 0, 0, a-1))
+			fmt.Fprintf(&stdout, "nasty kind %d\n", w.streams.HadsNasty(n, 1, 1, 4))
+			fmt.Fprintf(&stdout, "nasty spirits %d\n", w.streams.HadsNasty(n, 2, 25, 75))
+			fmt.Fprintf(&stdout, "nasty lesser %d\n", w.streams.HadsNasty(n, 2, 50, 150))
+			fmt.Fprintf(&stdout, "nasty greater %d\n", w.streams.HadsNasty(n, 2, 100, 250))
+		case "npc_move":
+			w.npcMove(args.num(t))
+		case "npc_choose":
+			e := w.chooseNPCDirection(args.num(t), args.num(t), args.num(t))
+			if e == nil {
+				fmt.Fprintln(&stdout, "chosen none")
+			} else {
+				fmt.Fprintf(&stdout, "chosen %d %d\n", e.direction, e.destination)
+			}
+		case "npc_rolls":
+			n, a := args.num(t), args.num(t)
+			w.streams.BeginNPC(a)
+			for i := 1; i <= 4; i++ {
+				fmt.Fprintf(&stdout, "npc direction %d roll %d\n", i, w.streams.NPCBehavior(n, i, 1, 10))
+			}
 		case "escape":
 			action, n := args.word(), args.num(t)
 			switch action {
@@ -134,7 +177,7 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		case "routes":
 			p := w.pLoc(args.num(t))
 			p.provDest.Clear()
-			for range 4 {
+			for strings.TrimSpace(args.rest) != "" {
 				p.provDest.Append(args.num(t))
 			}
 		case "road":
@@ -557,6 +600,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pChar(n).prisoner = int8(a)
 			case "npc":
 				w.pChar(n).npcProg = int8(a)
+			case "npc_dir":
+				w.pMisc(n).npcDir = int8(a)
 			case "loyal":
 				w.pChar(n).loyKind = int8(a)
 			case "moving":
@@ -577,6 +622,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pSubloc(n).safe = int8(a)
 			case "loc_hidden":
 				w.pLoc(n).hidden = int8(a)
+			case "barrier":
+				w.pLoc(n).barrier = int16(a)
 			case "hostile":
 				w.pDisp(n).hostile.Append(a)
 			case "neutral":
@@ -716,6 +763,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.faeryRegion = int32(n)
 			case "hades_region":
 				w.hadesRegion = int32(n)
+			case "hades_player":
+				w.hadesPlayer = int32(n)
 			case "backlinks":
 				w.pledgeBacklinks = n != 0
 			case "show_day":

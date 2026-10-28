@@ -3,6 +3,47 @@
 
 package olympia
 
+// Complete npc.c:87–145. Selection always shuffles the land exits before
+// considering the previous direction, using the shared sequential exdr stream.
+func getExitDir(l []*exitView, dir int) *exitView {
+	for _, e := range l {
+		if int(e.direction) == dir {
+			return e
+		}
+	}
+	return nil
+}
+
+func (w *world) chooseNPCDirection(who, where, dir int) *exitView {
+	l := w.exitsFromLocNSEWSelect(who, where, exitLand, 1)
+	if len(l) == 0 {
+		return nil
+	}
+	w.streams.BeginNPC(where)
+	if dir != 0 && w.streams.NPCBehavior(who, dir, 1, 10) < 10 {
+		if e := getExitDir(l, dir); e != nil {
+			return e
+		}
+	}
+	return l[0]
+}
+
+func (w *world) npcMove(who int) {
+	where := w.subloc(who)
+	if w.locDepth(where) != locProvince {
+		w.queue(who, "move out")
+		return
+	}
+	dir := 0
+	if p := w.rpMisc(who); p != nil {
+		dir = int(p.npcDir)
+	}
+	if e := w.chooseNPCDirection(who, where, dir); e != nil {
+		w.pMisc(who).npcDir = int8(e.direction)
+		w.queue(who, "move %s", fullDirS[e.direction])
+	}
+}
+
 // Complete npc.c:202–348 entry hooks. Autonomous hunting/programs remain
 // separate work; these hooks create real units and queue real commands.
 func (w *world) createHadesBandit(who, where int) int {

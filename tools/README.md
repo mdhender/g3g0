@@ -45,6 +45,12 @@ stack placement, ownership and serialized state (no full combat or death).
 Movement prisoner escapes and nearest-land routing use command-compat's real
 stack release, entity RNG, arrival, swimming, logging and serialization closure;
 also run move-compat and rng-compat for their shared movement/stream contracts.
+Hades population spawning and NPC route queueing also extend command-compat:
+actual seeded zero/existing/capped populations, direct-target filtering,
+asymmetric topology, direction persistence, shared exit shuffles and generated
+MOVE → WAIT execution. Run move/helper/rng/code comparisons alongside it for
+the shared topology, creation and stream closure. Autonomous NPC dispatch
+remains #71; command-compat does not substitute successful combat.
 
 **Pin move.**
 Run `tools/affected.sh OLD NEW` and, for each tool it lists, move the pin in its `run.sh` and README, then rerun it (with `--update` where the tool records C output, and review the diff of the recorded file).

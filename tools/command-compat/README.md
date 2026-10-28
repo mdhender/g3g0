@@ -777,3 +777,81 @@ or full-turn success is claimed. Full upstream raft-sail fixture execution
 remains an explicit #90 engine-integration obligation; full trade settlement
 is #81 and the stage exit is still unfinished. G3 #309/#352/#353 remain the
 known intentionally reproduced nonblocking upstream concerns.
+
+## Hades population and NPC route generation (#68)
+
+Complete new production definitions at the unchanged pin:
+
+| source | definitions and original lines |
+|---|---|
+| hades.c | `create_hades_nasty` 404–470; `auto_hades_sup` 473–496; `auto_hades` 499–526 |
+| npc.c | `get_exit_dir` 87–97; `choose_npc_direction` 100–122; `npc_move` 125–145 |
+
+These six definitions total **174 C lines**. The real Hades prefix already
+supplies `hads_nasty`, the tags, stream and turn guard. Its translation unit
+now also contains the original complete spawn/auto functions. A separate
+original npc.c prefix retains the per-location stream and `begin_npc`,
+`npc_spawn`, `npc_qty`, `npc_behavior` (34–62; 26 definition lines). All
+headers, macros and function `#line` locations are original. Only phase
+instrumentation is a no-op; no gameplay dependency is replaced by success.
+Both upstream files were already tracked inputs; no new dependency or pin.
+
+Go reuses the persistent **`w.streams`**, existing keyed `HadsNasty`, shared
+sequential mint/exdr, real `newChar`, `genItem`, queue/loading, topology,
+serialization and output closure. The route selector shuffles **before**
+testing direction persistence, including when that direction wins. NPC
+behavior reseeds by location on each nonempty selection, unlike Hades' and
+exdr's once-per-turn guards. NPC day-0 dispatcher wiring remains **#71**;
+the existing unported dispatcher stop is unchanged, not prematurely skipped.
+
+14 appended cases compare actual C state, not a model:
+
+- Zero population creates all 25 slots and every monster kind with its real
+  minted ID, name, health, attack/defense, spirit quantity, loyalty, breakpoint,
+  player membership, location/here order, loaded WAIT and subsequent ATTACK
+  or MOVE. With 24 existing units only slot **24** spawns (actual unit **90729**).
+  Existing units outside Hades, followers, captives and negative-health units
+  still count. Populations 25 and 26 neither allocate replacements nor delete
+  excess units; all faction members still receive the real per-unit handling.
+- Region children are indexed in saved here order, without hidden/terrain
+  filtering: the asymmetric list includes underground, plain and city children.
+  Lore, touched locations, player serialization, exact order files and queue
+  insertion order remain observable. Repeated slot 3 replays its kind/quantity
+  across day/master changes within one turn, while minted IDs advance; the next
+  turn reseeds. A later real unique-item allocation observes the shared mint.
+- Target order is direct here-list order, not recursive/ID order. Hidden,
+  NPC-loyal regular-player characters and captives remain targets; nonregular
+  owners and transcend-alone characters are filtered. Transcend with troops
+  or descendants is not alone. No eligible direct target queues movement even
+  when a nested ordinary-player character exists. Existing orders are retained.
+- Building/city/ship paths queue literal `move out` without changing npc_dir.
+  No exits/all-water exits preserve absent misc and signed-char direction state.
+  Land selection excludes water but **not** hidden/barrier/impassable exits;
+  original NSEW topology includes UP/DOWN but not roads or inner cities.
+  Actual queued strings include all cardinal directions, `move up`, `move down`.
+- Actual NPC roll **9** keeps its direction; roll **10** takes the shuffled first
+  exit (actor 1003 north instead chooses east). Missing/zero/invalid previous
+  directions use the shuffled list. Multiple actors, day/master/turn changes
+  and later explicit shuffles discriminate persistent exdr order from keyed
+  per-location behavior. Generated `npc_move` → four real MOVE evenings → WAIT
+  exercises actual accepted command dispatch, arrival, log and output-bit state.
+
+Two fresh bounded deterministic C runs produce **305 sections / 17256 lines /
+299103 bytes**, exactly matched by Go raw stdout/stderr/status and real
+serialized state, order files, logs, output bits, queues and RNG observations.
+All 14 new sections require status 0. The old command input **5232 lines /
+87733 bytes** and output **291 sections / 14137 lines / 259462 bytes** are exact
+prefixes: **zero old bytes changed**, no newly reachable boundary exception.
+The entire move input **3150 lines / 53589 bytes** and output **135 sections /
+7150 lines / 142755 bytes** remain unchanged. Literal C whitespace is retained.
+
+An ephemeral expected-134 probe runs real Hades targeting → queue/load →
+ATTACK dispatch. Both normal and `--update` reject the reached unfinished
+C dependency marker (status 2) **before** expected-abort handling/recording.
+The recording SHA-256 stays
+`4c0f5a13dcd2ef2d86b13a24a0b63b8d23001be2c8a4843baf2c890cf6a0cd56`.
+The probe is removed; no retained test depends on a temporary private NYI name.
+Marker rejection remains specific, not a broad ban on ordinary game text.
+Combat, full SAIL/FLY, autonomous dispatcher integration and whole-turn/stage
+acceptance are not claimed. Default checks use recordings; full worlds remain
+opt-in. No independent bug fix, second RNG or successful missing-gameplay stub.
