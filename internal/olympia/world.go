@@ -56,7 +56,9 @@ type world struct {
 	pledgeBacklinks bool
 	// report.c's sum_gold/peas/work/sail/fight, reset by unit_summary.
 	unitSummaryTotals [5]int32
-	locStackExplain   bool // report.c's foreign-faction footnote scratch
+	locStackExplain   bool        // report.c's foreign-faction footnote scratch
+	includeChars      lists.IList // gen_include_sup's retained static lists
+	includeLocs       lists.IList
 
 	// summary.c's original ranks/nplayers/ncontrolled/nother scratch globals.
 	summaryRanks       lists.IList

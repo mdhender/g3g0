@@ -26292,3 +26292,278 @@ link 9000 1001
 entity 9100 10 0
 link 9000 9100
 report gm 200
+
+section include assembly every special code from actual output then repeated include
+lore_root
+name 200 Include faction
+sout route -2 25
+sout text 200 out 0 1 players
+sout route -2 24
+sout text 200 out 0 1 okay
+sout route -2 23
+sout text 200 out 0 1 headers
+sout route -2 22
+sout text 200 out 0 1 queues
+sout route -2 21
+sout text 200 out 0 1 warnings
+sout route -2 20
+sout text 200 out 0 1 errors
+sout route -2 14
+sout text 200 out 0 1 drops
+sout route -2 13
+sout text 200 out 0 1 miscellaneous
+sout route -2 12
+sout text 200 out 0 1 deaths
+sout route -2 11
+sout text 200 out 0 1 special
+sout route -2 10
+sout text 200 out 0 1 code
+sout route -2 7
+sout text 200 out 0 1 press
+sout route -2 6
+sout text 200 out 0 1 garrison
+sout route -2 5
+sout text 200 out 0 1 template
+sout route -2 4
+sout text 200 out 0 1 locations
+sout route -2 3
+sout text 200 out 0 1 new players
+sout route -2 2
+sout text 200 out 0 1 lore
+sout route -2 1
+sout text 200 out 0 1 old include
+sout route -2 0
+sout text 200 out 0 1 banner
+sout route -2 200
+sout text 200 out 0 1 player
+report root_state 200
+report include
+sout state
+report root_state 200
+readfile log/200
+report include
+report root_state 200
+readfile log/200
+
+section include assembly empty output allocates nonsilent records only and resets route
+lore_root
+entity 202 1 62
+entity 203 1 48
+entity 204 1 49
+entity 205 1 52
+entity 206 1 51
+report state 202
+report state 203
+report state 204
+report state 205
+report state 206
+sout route -2 77
+report include
+sout state
+report state 202
+report state 203
+report state 204
+report state 205
+report state 206
+report root_state 200
+life path log/202
+readfile log/200
+readfile log/203
+readfile log/204
+readfile log/205
+readfile log/206
+
+section include assembly eat recipient suppresses own player heading but not other sections
+lore_root
+set eat_pl 200
+name 200 Scanner faction
+sout route -2 200
+sout text 200 out 0 1 player
+sout route -2 24
+sout text 200 out 0 1 scanner okay
+sout route -2 23
+sout text 200 out 0 1 scanner headers
+report include
+readfile log/200
+
+section include assembly sorted living dead corpse and location headers retain unit order
+lore_root
+entity 3000 4 56
+entity 3001 4 56
+entity 3002 4 56
+entity 3003 8 0
+name 1000 Later living
+name 1001 Earlier living
+name 3000 Not the saved name
+name 3003 Dead noble
+report corpse_name 3000 Saved noble, the brave
+report corpse_name 3002
+report misc 3001
+entity 8000 3 50
+entity 9001 3 3
+entity 9000 3 3
+entity 9100 3 14
+entity 9200 9 31
+name 8000 Include region
+name 9000 Tied first plain
+name 9001 Tied second plain
+name 9100 First city
+name 9200 Last ship
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9100 9200
+field 9100 hidden 1
+field 1000 output_order 9
+field 1001 output_order 2
+field 3000 output_order 2
+field 3001 output_order -1
+field 3002 output_order 2
+field 3003 output_order 9
+field 9000 output_order 4
+field 9001 output_order 4
+field 9100 output_order 1
+field 9200 output_order 8
+field 200 unit 1000
+field 200 unit 1001
+sout route -2 9200
+sout text 200 out 0 1 ship
+sout route -2 9100
+sout text 200 out 0 1 city
+sout route -2 9001
+sout text 200 out 0 1 second plain
+sout route -2 9000
+sout text 200 out 0 1 first plain
+sout route -2 3003
+sout text 200 out 0 1 dead noble
+sout route -2 3002
+sout text 200 out 0 1 empty saved name
+sout route -2 3001
+sout text 200 out 0 1 absent saved name
+sout route -2 3000
+sout text 200 out 0 1 saved name
+sout route -2 1001
+sout text 200 out 0 1 earlier living
+sout route -2 1000
+sout text 200 out 0 1 later living
+report include
+report misc 3001
+report state 200
+report state 1000
+report state 1001
+save 3000
+save 3001
+save 3002
+readfile log/200
+report include
+readfile log/200
+
+section include assembly stale invalid output IDs and reserved index absent are skipped
+lore_root
+sout route -2 149999
+sout text 200 out 0 1 gone high
+sout route -2 9999
+sout text 200 out 0 1 gone low
+sout route -2 8
+sout text 200 out 0 1 absent html index
+report include
+report root_state 200
+readfile log/200
+
+section include assembly real report roots supply membership without projection bits
+lore_root
+entity 1 4 0
+entity 10 4 0
+entity 8000 3 50
+entity 9000 3 3
+name 9000 Include plain
+link 8000 9000
+link 9000 1000
+link 9000 1001
+field 200 unit 1001
+field 200 unit 1000
+report order
+report players
+report characters
+report banner
+report templates
+report root_state 200
+report include
+report root_state 200
+readfile log/200
+
+section include assembly shared buffered cache renamed inode retained until close
+lore_root
+set flush 0
+sout route -2 200
+sout text 200 out 0 1 initial player
+life flush
+life rename log/200 log/include-original
+report include
+life path log/200
+life flush
+readfile log/include-original
+report include
+life flush
+readfile log/include-original
+life close
+report include
+life flush
+readfile log/200
+readfile log/include-original
+
+section include assembly sequential recipients clear prior character and location scratch
+lore_root
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+sout route -2 1000
+sout text 200 out 0 1 char
+sout route -2 9000
+sout text 200 out 0 1 location
+report include
+readfile log/200
+readfile log/201
+report include
+readfile log/201
+
+section include assembly invalid foreign player assertion precedes headers and corpse allocation
+lore_root
+entity 3000 4 56
+sout route -2 3000
+sout text 200 out 0 1 body
+sout route -2 201
+sout text 200 out 0 1 foreign player
+report misc 3000
+report include
+
+section include assembly invalid ordinary item assertion
+lore_root
+entity 3000 4 0
+sout route -2 3000
+sout text 200 out 0 1 ordinary item
+report include
+
+section include assembly invalid unsupported skill assertion
+lore_root
+sout route -2 638
+sout text 200 out 0 1 skill
+report include
+
+section include assembly invalid present html index is not an include flag
+lore_root
+entity 8 4 0
+sout route -2 8
+sout text 200 out 0 1 html index
+report include
+
+section include assembly invalid output open before corpse misc allocation
+lore_root
+entity 3000 4 56
+sout route -2 3000
+sout text 200 out 0 1 body
+life close
+life unlink log/200
+report block 200
+report misc 3000
+report include

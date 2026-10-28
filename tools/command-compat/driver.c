@@ -1306,6 +1306,12 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"gm")) gm_report(n);
    else if(!strcmp(text,"include")) gen_include_section();
    else if(!strcmp(text,"include_sup")) gen_include_sup(n);
+   else if(!strcmp(text,"corpse_name")) {
+    char *s=line; int j;
+    for(j=0;j<3;j++) { while(*s==' '||*s=='\t') s++; while(*s&&*s!=' '&&*s!='\t') s++; }
+    while(*s==' '||*s=='\t') s++;
+    p_misc(n)->save_name=str_save(s);
+   }
    else if(!strcmp(text,"bit")) {
     sscanf(line,"%*s %*s %d %d",&n,&a);
     set_bit(&p_player(n)->output,a);
@@ -1749,6 +1755,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "post")) post_has_been_run = n;
    else if (!strcmp(text, "indep")) indep_player = n;
    else if (!strcmp(text, "gm")) gm_player = n;
+   else if (!strcmp(text, "eat_pl")) eat_pl = n;
    else if (!strcmp(text, "skill_player")) skill_player = n;
    else if (!strcmp(text, "faery_region")) faery_region = n;
    else if (!strcmp(text, "hades_region")) hades_region = n;

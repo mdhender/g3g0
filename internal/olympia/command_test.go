@@ -1831,9 +1831,11 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "gm":
 				w.gmReport(args.num(t))
 			case "include":
-				w.genIncludeSectionState()
+				w.genIncludeSection()
 			case "include_sup":
-				w.genIncludeSupState(args.num(t))
+				w.genIncludeSup(args.num(t))
+			case "corpse_name":
+				w.pMisc(args.num(t)).saveName = strSave(strings.TrimLeft(args.rest, " \t"))
 			case "bit":
 				n, bit := args.num(t), args.num(t)
 				setBit(&w.pPlayer(n).output, bit)
@@ -2462,6 +2464,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.indepPlayer = int32(n)
 			case "gm":
 				w.gmPlayer = int32(n)
+			case "eat_pl":
+				w.eatPl = int32(n)
 			case "skill_player":
 				w.skillPlayer = int32(n)
 			case "faery_region":

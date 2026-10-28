@@ -3,6 +3,114 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Include section assembly (#164)
+
+Existing report.go completes all six pinned report.c definitions:
+
+| Definition | Inclusive lines |
+|---|---|
+| `rep_player` | 1353–1363 |
+| `rep_char` | 1366–1388 |
+| `rep_loc` | 1391–1410 |
+| `inc` | 1413–1420 |
+| `gen_include_sup` | 1423–1566 |
+| `gen_include_section` | 1569–1586 |
+
+The requested 1568 start includes a blank line before the complete final
+definition. The existing oracle already extracts all six complete unchanged
+definitions, each verified exactly once against the immutable git object,
+with original `#line` attribution. Every OUT/LOG/EAT constant, including
+OUT_SUMMARY's banner alias and the unsupported OUT_HTML_INDEX, is verified.
+No new C dependency, source extraction, pin or successful substitute is added.
+Adapters only set a corpse's saved name and the scanner recipient for fixtures.
+
+Both include projections are removed. Main and oracle call the real root
+directly, once; main still calls it LAST immediately before closeLogfile.
+Real names, lines/style output, showLocHeader, output sorting and the existing
+bounded FILE cache are reused. World-owned character/location scratch lists
+retain their allocation across clear/repeated calls, matching the C statics.
+Output memberships come exclusively from real output, not a projection pass.
+Initial validation precedes output; corpse misc allocation occurs only later
+in repChar. Original output knowledge sorts in place; unit order is unchanged.
+
+Thirteen appended cases (**8 status 0 / 5 status 134**) actually reach:
+
+- Every recognized special-code branch, using actual sout output to populate
+  membership. Exact include order is **0,24,14,10,11,13,12,20,21,7,22,200,6,4,
+  2,3,5,25,23**. EAT_OKAY/OUT_LOC lack headings; banner/include inputs do not
+  recurse. Repeating gives **4,058 → 7,782 bytes**, not a second effects pass.
+- Empty outputs contain only the real include bit **1** and **28 bytes**.
+  Missing regular/system/NPC/savage records allocate; silent records remain
+  absent and produce no file. Routing resets to **0/0**. Scanner recipient
+  suppresses its own player heading but still includes **0,24,23**.
+- Living/dead characters, named/empty/NULL corpse saved names, and real
+  plain/city/ship headers. Output-order and ID ties produce **0,3001,1001,
+  3000,3002,1000,3003,9100,9000,9001,9200**, **3,004 → 5,778 bytes** on repeat.
+  Absent corpse misc becomes allocated **0 → 1**; original units stay
+  **1000,1001**. NULL uses the actual libc `(null)` spelling; the saved name,
+  rather than the body's current name, supplies the heading.
+- Invalid **149999/9999** and absent index **8** skip inclusion. Complete
+  real player/character/banner/template calls produce only actual memberships
+  **1000,1001,0,5**, then include adds **1**; no player bit is manufactured
+  when empty player_ent_info emits nothing. The resulting report is **2,205
+  bytes**. Sequential recipients clear prior character/location scratch.
+- Buffered output keeps a renamed cached inode: **277 → 529 bytes**, with
+  the original path absent. Closing permits a fresh **252-byte** original
+  file, without changing the renamed **529-byte** file.
+- Foreign-player **report.c:1495**, ordinary-item/present-index-8
+  **1503**, unsupported-skill **1507**, and output-open **sout.c:158**
+  assertions. Validation/open failures precede corpse misc allocation.
+
+At **0.104.0-alpha**, unchanged C twice and Go match **1218 sections /
+81791 lines / 1615381 output bytes**. Inherited **1205 sections / 80495 lines /
+1579486 output bytes** remain an exact prefix, SHA-256
+`3e2694726523765da39111b0479262cca4ebe42145f03ee85b316594512b9c90`.
+Inherited **26294 lines / 501764 input bytes** remain an exact prefix,
+SHA-256 `9b6227ece07be605c4abf80cfa8b293910489f64bd4471752b8757a7dc79c2be`.
+New input: **26569 lines / 507858 bytes**, SHA-256
+`03264d856def78a7aca8ed6b2592f63bd9915c83303b5b86c819020f39c07681`.
+New output SHA-256:
+`237f5b00267c9c5fe26739bf7b9ef972b5f651961928423dd35453ef46de30a4`.
+Constants, definitions, prefixes and reached branches are checked in
+`tmp/issue164-{source-evidence,evidence}.log`.
+
+Four temporary linker probes wrap the real include root only on foreign-player
+assertion section **1213**, emit the rejected missing-dependency marker, and
+return **0** or abort **134** (both child statuses separately verified).
+Default/update runs all reject with harness **2** at the marker check before
+expected-status/update acceptance. Both recording hashes remain unchanged.
+Probe source/compiler wrapper and matching captures are deleted. Logs:
+`tmp/issue164-negative-{return,abort}-{default,update}.log`,
+`tmp/issue164-probe-{evidence.log,before.sha256}`.
+
+Sequential command refresh/default/post-probe-default, move **135/7158**,
+helper **37/1487**, RNG **321**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+and default turn (raw streams/status and **2 cwd entries** equal) pass.
+Bounded vet and fresh bounded default tests pass (Olympia **1.854s**).
+Every compat invocation explicitly uses isolated `G3_REPO=$PWD/tmp/upstream.git`;
+engines/tests use shared run_limited supervision. Source-only whitespace and
+gofmt checks pass; the single new trailing-space save_box line is kept raw.
+Logs: `tmp/issue164-*.log`. An initial new composition fixture omitted item
+10 required by real character weights; adding the existing prerequisite box
+fixed that fixture, without a renderer/engine change or recording acceptance
+of its C139 failure.
+
+The parent supplied the all-open-issue audit: only #164–166 and trackers
+#19/#132, no bug/follow-C. No new defect, missing renderer prerequisite or
+oversized closure found. No later writers/commands/HTML conversion, independent
+fix or second effects pass. Independent parent complete-C/diff review verifies
+all six definitions unchanged exactly once and both inherited prefixes
+byte-exact. All eight routine tools, bounded vet and fresh bounded tests pass
+(Olympia **1.805s**); logs `tmp/parent164-*.log`.
+
+Fresh strict post-#164 has only **one** saved-file byte difference:
+`lib/save/1/players`. C repeats deterministically, both engines exit **0**,
+and raw streams/paths/types/modes match. Exit **1** still precedes all 13
+lifecycle controls, NOT stage acceptance. Log `tmp/parent164-strict.log`;
+captures `tmp/parent-stage2-turn`. G3 #358/#359 remain nonblocking;
+malformed **C136/Go2** is not parity.
+
 ## Complete GM report and faction tables (#163)
 
 Existing gm.go completes seven pinned gm.c definitions:

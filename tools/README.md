@@ -6,6 +6,51 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Include section assembly (#164)
+
+Existing report.go completes pinned report.c rep_player **1353–1363**,
+rep_char **1366–1388**, rep_loc **1391–1410**, inc **1413–1420**,
+gen_include_sup **1423–1566** and gen_include_section **1569–1586**.
+Both projections are replaced directly in main/oracle, with no second effects
+pass; include remains LAST before closeLogfile. Real names, location headers,
+styles, output membership, sorts and cached FILE ownership are reused. Static
+scratch lists have retained world-owned counterparts. All six complete C
+definitions are verified unchanged exactly once; OUT/LOG/EAT constants and
+actually reached branches are checked. No C dependency or pin changes.
+
+At **0.104.0-alpha**, thirteen appended cases (**8 success / 5 assertions**)
+match real C twice and Go: **1218 sections / 81791 lines / 1615381 output
+bytes**. Inherited **1205 sections / 80495 lines / 1579486 output bytes** and
+**501764 input bytes** remain exact prefixes. Input is now **26569 lines /
+507858 bytes**. Coverage includes every special flag, real-output-only
+membership, living/dead/corpse names, location/character sorts, scanner
+suppression, silent/missing records, invalid IDs/kinds, assertion/allocation
+order, repeated roots and buffered renamed-cache ownership. See
+[closure and hashes](command-compat#include-section-assembly-164).
+
+Four temporary missing-dependency controls (return **0** / abort **134**,
+default/update) reject section **1213** with harness **2**, before expected
+status/update acceptance, preserving both recording hashes. Probes and
+matching captures are removed. Sequential command refresh/default/post-probe,
+move/helper/RNG/code/loadsave/turn-driver/default-turn, bounded vet and fresh
+bounded tests pass (Olympia **1.854s**). Every compatibility invocation uses
+explicit isolated `G3_REPO=$PWD/tmp/upstream.git`; engines/tests use shared
+run_limited supervision. Source-only whitespace/gofmt checks pass; one raw
+save_box trailing-space recording line is retained. Logs: `tmp/issue164-*.log`.
+
+No new defect,
+renderer prerequisite, oversized closure, independent fix, later writer/command
+or HTML conversion. Independent parent complete-C/diff review verifies all six
+definitions unchanged exactly once and inherited prefixes byte-exact. All eight
+routine tools, bounded vet and fresh bounded tests pass (Olympia **1.805s**);
+logs `tmp/parent164-*.log`.
+Fresh strict post-#164 has only **one** saved-file byte difference:
+`lib/save/1/players`. C repeats deterministically, both engines exit **0**,
+and raw streams/paths/types/modes match. Exit **1** still precedes 13 lifecycle
+controls, NOT stage acceptance. Log `tmp/parent164-strict.log`; captures
+`tmp/parent-stage2-turn`. G3 #358/#359 remain nonblocking;
+malformed **C136/Go2** is not parity.
+
 ## Complete GM report and faction tables (#163)
 
 Existing gm.go completes faction comparators/tables, player details and notices

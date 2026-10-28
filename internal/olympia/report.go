@@ -905,20 +905,63 @@ func (w *world) playerReport() {
 	w.outAltWho = 0
 }
 
-// genIncludeSupState preserves report.c:1423–1566's existing-output input
-// validation. It must not synthesize memberships for omitted report bodies.
-// rep_char (1371–1389) sorts a COPY, then p_misc allocates corpse records;
-// that happens after the initial MASTER output, never before validation.
-// Include body text, lines(), and rep_loc/show_loc_header are stage 2.
-func (w *world) genIncludeSupState(pl int) {
+// repPlayer, repChar, repLoc and inc are report.c:1353–1420. Their lists
+// are include scratch, not the player's original unit or output lists.
+func (w *world) repPlayer(pl int) {
+	w.lines(pl, w.boxName(pl))
+	w.commandOut(pl, "#include %d", pl)
+	w.commandOut(pl, "")
+}
+
+func (w *world) repChar(pl int, l lists.IList) {
+	w.sortForOutput(l)
+	for _, n := range l {
+		var s string
+		if w.subkind(n) == subDeadBody {
+			name := w.pMisc(n).saveName
+			// Preserve libc's %s spelling for an absent saved corpse name.
+			saved := "(null)"
+			if name != nil {
+				saved = *name
+			}
+			s = sout("%s~%s", saved, w.boxCode(n))
+		} else {
+			s = w.boxName(n)
+		}
+		w.commandOut(pl, "")
+		w.lines(pl, s)
+		w.commandOut(pl, "#include %d", n)
+	}
+}
+
+func (w *world) repLoc(pl int, l lists.IList) {
+	w.sortForOutput(l)
+	for _, n := range l {
+		w.lines(pl, w.showLocHeader(n))
+		w.commandOut(pl, "#include %d", n)
+		w.commandOut(pl, "")
+	}
+}
+
+func (w *world) inc(pl, code int, s string) {
+	w.lines(pl, s)
+	w.commandOut(pl, "#include %d", code)
+	w.commandOut(pl, "")
+}
+
+// genIncludeSup is complete report.c:1423–1566. Membership comes only
+// from the existing real-output set, captured before include writes begin.
+func (w *world) genIncludeSup(pl int) {
+	w.includeChars.Clear()
+	w.includeLocs.Clear()
+	var flags [26]bool
+	playerOutput := false
 	p := w.pPlayer(pl)
 	sortKnown(p.output)
-	var chars lists.IList
 	for _, n := range p.output {
 		switch n {
 		case 0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 20, 21, 22, 23, 24, 25:
-			// OUT_BANNER/INCLUDE/LORE/NEW/LOC/TEMPLATE/GARR/SHOW_POSTS,
-			// LOG_CODE/SPECIAL/DEATH/MISC/DROP and EAT_* (sout.h).
+			flags[n] = true
 			continue
 		}
 		if !w.validBox(n) {
@@ -926,14 +969,15 @@ func (w *world) genIncludeSupState(pl int) {
 		}
 		switch w.kind(n) {
 		case tChar, tDeadchar:
-			chars.Append(n)
+			w.includeChars.Append(n)
 		case tLoc, tShip:
-			// Only deferred location-header text.
+			w.includeLocs.Append(n)
 		case tPlayer:
 			assert(n == pl, "olympia/report.c", 1495, "n == pl")
+			playerOutput = true
 		case tItem:
 			if w.subkind(n) == subDeadBody {
-				chars.Append(n)
+				w.includeChars.Append(n)
 			} else {
 				assert(false, "olympia/report.c", 1503, "FALSE")
 			}
@@ -941,23 +985,59 @@ func (w *world) genIncludeSupState(pl int) {
 			assert(false, "olympia/report.c", 1507, "FALSE")
 		}
 	}
-	w.reportOutputState(pl)
-	w.sortForOutput(chars)
-	for _, n := range chars {
-		if w.subkind(n) == subDeadBody {
-			w.pMisc(n)
+	w.commandOut(pl, "#include %d", 0) // OUT_BANNER
+	w.commandOut(pl, "")
+	if flags[24] { // EAT_OKAY has no section heading.
+		w.commandOut(pl, "#include %d", 24)
+		w.commandOut(pl, "")
+	}
+	for _, section := range []struct {
+		code int
+		name string
+	}{
+		{14, "Player drops"}, {10, "Code alerts"}, {11, "Special events"},
+		{13, "Miscellaneous"}, {12, "Character deaths"}, {20, "Errors"},
+		{21, "Warnings"}, {7, "Press and rumors"}, {22, "Current order queues"},
+	} {
+		if flags[section.code] {
+			w.inc(pl, section.code, section.name)
+		}
+	}
+	if pl != int(w.eatPl) && playerOutput {
+		w.repPlayer(pl)
+	}
+	if flags[6] {
+		w.inc(pl, 6, "Garrison log")
+	}
+	if flags[4] {
+		w.commandOut(pl, "#include %d", 4)
+	}
+	w.repChar(pl, w.includeChars)
+	w.repLoc(pl, w.includeLocs)
+	for _, section := range []struct {
+		code int
+		name string
+	}{
+		{2, "Lore sheets"}, {3, "New players"}, {5, "Order template"},
+		{25, "Current player list"}, {23, "Original message"},
+	} {
+		if flags[section.code] {
+			w.inc(pl, section.code, section.name)
 		}
 	}
 }
 
-// genIncludeSectionState is report.c:1568–1586's nonsilent loop. The helper
-// remains a state/input projection, not a successful include renderer.
-func (w *world) genIncludeSectionState() {
+// genIncludeSection is report.c:1568–1586. This must be the last renderer.
+func (w *world) genIncludeSection() {
+	w.outPath = master
+	w.outAltWho = 1 // OUT_INCLUDE
 	for pl := range w.loopKind(tPlayer) {
 		if w.subkind(pl) != subPlSilent {
-			w.genIncludeSupState(pl)
+			w.genIncludeSup(pl)
 		}
 	}
+	w.outPath = 0
+	w.outAltWho = 0
 }
 
 // charRepLocation is report.c:357–407. Death logging needs this helper;

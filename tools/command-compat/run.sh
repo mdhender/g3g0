@@ -623,6 +623,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section include assembly '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section include assembly invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected include status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section GM '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

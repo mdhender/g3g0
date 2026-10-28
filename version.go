@@ -10,7 +10,7 @@ import (
 var (
 	version = semver.Version{
 		Major:      0,
-		Minor:      103,
+		Minor:      104,
 		Patch:      0,
 		PreRelease: "alpha",
 	}
