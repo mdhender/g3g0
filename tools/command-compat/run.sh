@@ -69,7 +69,8 @@ functions = {
     'garr.c': ['garrison_here', 'province_admin', 'players_who_rule_here',
                'rank_s', 'garrison_notices', 'garrison_spot_check',
                'garrison_strength', 'ping_garrisons'],
-    'art.c': ['has_auraculum', 'max_eff_aura'],
+    'art.c': ['has_auraculum', 'max_eff_aura', 'token_player', 'swear_token_units',
+              'add_token_unit_sup', 'add_token_units', 'move_token'],
     'display.c': ['with_inventory_string', 'display_with', 'mage_s', 'priest_s',
                   'emperor', 'liner_desc_char', 'liner_desc', 'show_chars_below'],
     'u.c': ['stage', 'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
@@ -77,6 +78,7 @@ functions = {
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np',
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
+            'consume_item', 'move_item', 'drop_item',
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
@@ -321,6 +323,13 @@ for run in run1 run2; do
     'section garrison invalid '*) expected_status=134 ;;
    esac
    [ "$status" = "$expected_status" ] || die "unexpected garrison status $status in section $i; expected $expected_status"
+  fi
+  if [[ "${section_names[$i]}" == 'section inventory '* || "${section_names[$i]}" == 'section token '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section inventory asserts '*|'section inventory invalid '*|'section token invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected inventory/token status $status in section $i; expected $expected_status"
   fi
   if [[ "${section_names[$i]}" == 'section arrival '* ]]; then
    expected_status=0

@@ -500,6 +500,51 @@ func (w *world) genItem(who, item, qty int) {
 	w.addItem(who, item, qty)
 }
 
+func (w *world) consumeItem(who, item, qty int) bool {
+	assert(w.itemUnique(item) == 0, "olympia/u.c", 1898, "!item_unique(item)")
+	return w.subItem(who, item, qty)
+}
+
+func (w *world) moveItem(from, to, item, qty int) bool {
+	if qty <= 0 {
+		return true
+	}
+	if to == 0 {
+		return w.dropItem(from, item, qty)
+	}
+	if !w.subItem(from, item, qty) {
+		return false
+	}
+	w.addItem(to, item, qty)
+	if w.itemUnique(item) != 0 {
+		assert(qty == 1, "olympia/u.c", 1924, "qty == 1")
+		w.pItem(item).whoHas = int32(to)
+		if w.subkind(item) == subNpcToken {
+			w.moveToken(item, from, to)
+		}
+	}
+	return true
+}
+
+func (w *world) dropItem(who, item, qty int) bool {
+	if w.itemUnique(item) == 0 {
+		return w.consumeItem(who, item, qty)
+	}
+	whoGets := w.province(who)
+	if w.subkind(item) == subDeadBody && whoGets == 0 {
+		w.destroyUniqueItem(who, item)
+		return true
+	}
+	if w.subkind(whoGets) == subOcean {
+		whoGets = w.findNearestLand(whoGets)
+	}
+	if whoGets == 0 {
+		whoGets = w.province(who)
+	}
+	w.logWrite(10, "drop_item: %s from %s to %s", w.boxName(item), w.boxName(w.subloc(who)), w.boxName(whoGets))
+	return w.moveItem(who, whoGets, item, qty)
+}
+
 func (w *world) canPay(who, amount int) bool {
 	return w.hasItem(who, itemGold) >= int32(amount)
 }

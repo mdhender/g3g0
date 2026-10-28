@@ -393,6 +393,7 @@ int main(int argc, char **argv)
   }
   else if (!strcmp(op, "save_new")) save_box(stdout, created);
   else if (!strcmp(op, "delete_new")) { sscanf(line, "%*s %d", &n); destroy_unique_item(n, created); }
+  else if (!strcmp(op, "drop_new")) { sscanf(line,"%*s %d %d",&n,&a); printf("drop new %d\n",drop_item(n,created,a)); }
   else if (!strcmp(op, "created_state"))
    printf("created kind %d sub %d unique %d\n",kind(created),subkind(created),item_unique(created));
   else if (!strcmp(op, "body_new")) {
@@ -402,6 +403,28 @@ int main(int argc, char **argv)
    p_char(created)->prev_lord=a; p_char(created)->loy_kind=b; p_char(created)->loy_rate=d;
   }
   else if (!strcmp(op, "destroy")) { sscanf(line,"%*s %d %d",&n,&a); destroy_unique_item(n,a); }
+  else if (!strcmp(op, "moveitem")) {
+   sscanf(line,"%*s %d %d %d %d",&n,&a,&b,&d);
+   printf("moveitem %d\n",move_item(n,a,b,d));
+  }
+  else if (!strcmp(op, "dropitem") || !strcmp(op, "consume")) {
+   sscanf(line,"%*s %d %d %d",&n,&a,&b);
+   printf("inventory result %d\n",!strcmp(op,"consume") ? consume_item(n,a,b) : drop_item(n,a,b));
+  }
+  else if (!strcmp(op, "kindname")) {
+   sscanf(line,"%*s %d",&n); printf("kind [%s] name [%s]\n",display_kind(n),box_name_kind(n));
+  }
+  else if (!strcmp(op, "token_owner")) {
+   sscanf(line,"%*s %d",&n); printf("token player %d\n",token_player(n));
+  }
+  else if (!strcmp(op, "token_state")) {
+   sscanf(line,"%*s %d",&n); save_box(stdout,n);
+   loop_units(n,a) { printf("token row %d\n",a); save_box(stdout,a); } next_unit;
+   list("pending trades",trades_to_check);
+   for(i=0;i<5;i++) list(sout("load_q %d",i),load_q[i]);
+   list("run_q",run_q);
+   loop_player(a) { printf("token output %d\n",a); list("bits",p_player(a)->output); } next_player;
+  }
   else if (!strcmp(op, "subitem")) {
    sscanf(line,"%*s %d %d %d",&n,&a,&b); printf("subitem %d\n",drv_sub_item(n,a,b));
   }
@@ -515,6 +538,9 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"unit")) ilist_append(&p_player(n)->units,a);
    else if (!strcmp(text,"np")) p_player(n)->noble_points = (short)a;
    else if (!strcmp(text,"skill_np")) p_skill(n)->np_req = a;
+   else if (!strcmp(text,"unique")) p_item(n)->who_has = a;
+   else if (!strcmp(text,"token_num")) p_item_magic(n)->token_num = (schar)a;
+   else if (!strcmp(text,"token_ni")) p_item_magic(n)->token_ni = a;
    else if (!strcmp(text,"lore")) p_item_magic(n)->lore = a;
    else if (!strcmp(text,"use_key")) p_item_magic(n)->use_key = a;
    else if (!strcmp(text,"man")) p_item(n)->is_man_item = (schar)a;

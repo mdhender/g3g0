@@ -85,6 +85,17 @@ balances/pay, zero-pay generation/output and invalid negative-pay assertions.
 Month-end garrison tax forwarding remains #116 after real maintenance #87.
 Run command/move/helper/code/loadsave/turn-driver/default-turn comparisons.
 
+Inventory transfer and token acquisition (#117) extend command-compat with
+the complete real `consume_item`, mutually recursive `move_item`/`drop_item`,
+and compiled `move_token` acquisition closure. Real lord interruption/NP,
+creation/shared mint, inventory/lore/trade, naming and output dependencies
+are reused. Run command/move/helper/rng/code/loadsave/turn-driver/default-turn
+comparisons. No new upstream source dependency or pin change is needed:
+`code.c` is already linked whole and `art.c`/`u.c` are already tracked.
+Independent melting and `check_token_units` remain #73 after #118/#119;
+the acquisition path contains no successful death/reclamation substitute.
+GIVE/DROP/USE handlers and `create_npc_token` are outside this helper task.
+
 **Pin move.**
 Run `tools/affected.sh OLD NEW` and, for each tool it lists, move the pin in its `run.sh` and README, then rerun it (with `--update` where the tool records C output, and review the diff of the recorded file).
 Then run the routine checks.

@@ -1149,3 +1149,84 @@ missing `orders/204`, plus raw streams/status, remain red. No full-turn or
 stage-exit success is claimed; calendar/token and later world work stay
 explicit, and month-end `garrison_gold` remains #116 after maintenance #87.
 No new upstream bug/blocker was found; G3 #309/#352/#353/#354 remain unchanged.
+
+## Inventory transfer and token acquisition (#117)
+
+Ten complete production definitions, **231 C lines**, at the unchanged pin:
+
+| source | definitions and original lines |
+|---|---|
+| u.c | `consume_item` 1894–1900; `move_item` 1908–1935; `drop_item` 2102–2132 |
+| art.c | `token_player` 1016–1029; `swear_token_units` 1032–1051; `add_token_unit_sup` 1083–1120; `add_token_units` 1123–1141; `move_token` 1153–1194 |
+| code.c | `display_kind` 318–343; `box_name_kind` 461–466 |
+
+The comparator extracts complete original u.c/art.c definitions with original
+`#line` locations, headers and macros. code.c is already linked whole, so its
+two newly ported naming helpers require no extraction. No new source input
+or pin change: all three files are already tracked in `affected.sh` and the
+dependency table. The compiled `move_token` branch does **not** melt units;
+the melting calls are in `#if 0`. Go preserves that distinction and reuses
+real `setLord`, interruption/NP/membership, character/unique creation, shared
+persistent mint/entity streams, inventory, lore, pending trades and output.
+There were no existing Go `consumeItem`, `moveItem` or `dropItem` definitions
+to wrap; their source of truth is now u.go.
+
+22 appended actual-C cases discriminate:
+
+- Transfer's nonpositive early return precedes even invalid box/quantity
+  validation, unlike direct consumption/discard. Insufficient stock leaves
+  destination untouched. Ordinary/self/unique moves, zero entries and lore
+  plus pending BUY/SELL queues retain exact inventory order and quantities.
+  Deliberately malformed direct calls retain unique-consumption, negative
+  quantity and excessive-unique assertions (134), not successful transfers.
+- Unique drops choose the province, first island in saved here order, or
+  ocean fallback after real bounded Plan B/C. Subsequent entity leaves and
+  unique allocation observe real stream state. A nowhere body is destroyed
+  even by direct zero-quantity drop and refunds its old/previous player;
+  a located body moves to the province without deletion or NP refund. These
+  helper boundaries do not assert a public DROP command defect.
+- Regular, independent, other NPC, player-as-holder and location holders;
+  same versus different faction; empty-independent reset, absent optional
+  magic, signed/zero capacity and stale noncharacter list rows. Stale rows
+  are skipped by swearing but still count toward creation; they are explicit
+  malformed saved-state probes, not evidence of a public-engine defect.
+- A running real WAIT is interrupted and queued old orders are flushed.
+  The transferred oath noble refunds/charges **8 NP** (20/30 → 28/22),
+  retains loyalty, loses pledge/attitudes and changes membership. Real missing
+  units are minted as **110158**, **140449**, with restricted `r`, token
+  backlinks, health, beast/nonbeast breakpoints, touched locations and output.
+  Land creation is in the province rather than the owner's temple; ocean
+  creation is aboard the owner's ship. Independent transfer defers melting;
+  reacquisition and later unique item **64258** distinguish shared mint order.
+- City, coastal port city, mountain city, all three storm kinds and default
+  names use actual `display_kind` and `box_name_kind` strings. Raw serialized
+  boxes, command/ready queues, order files, faction/GM logs and **all player
+  output bits** are compared, not synthetic success values.
+
+Two fresh bounded deterministic C runs produce **392 sections / 24501 lines /
+415416 bytes**, exactly matched by Go's raw stdout/stderr/status and state.
+The previous entire command input **7677 lines / 130850 bytes** and output
+**370 sections / 23109 lines / 392577 bytes** remain exact prefixes:
+**zero old bytes changed**, no newly reached old-C boundary exception.
+Move input **3150 lines / 53589 bytes** and output **135 sections / 7150 lines /
+142755 bytes** remain wholly unchanged. Literal C trailing whitespace stays.
+
+An ephemeral expected-134 inventory probe queued and dispatched ATTACK.
+Both normal and `--update` rejected the actual unfinished dependency marker
+with status 2 **before** abort handling or recording. SHA-256 stayed
+`9dedf1d276843c1f6f7946dd614ddc5f8dbdbab402ee44dbbff48d90c595cfc3`.
+The probe was removed; no permanent test binds a private temporary NYI name.
+
+The local creation count advances after a failed `add_token_unit_sup`, exactly
+as C does. That return path cannot be driven through the real allocator at
+this pin: `new_ent` calls `alloc_box(n,...)` even after all searches return -1,
+so exhaustion asserts before `new_char` can return a negative ID. No allocator
+replacement or fabricated failed-allocation success was added to reach it.
+
+Defaults remain small recordings and full worlds opt-in. `checkTokenUnits`
+is still explicitly unported; inheritance/release/desertion (#118), full
+death/reclamation (#119), then melting/reconciliation (#73) remain separate.
+No unrelated GIVE/DROP/USE handlers or token-artifact generation were added.
+No whole-turn or stage-exit acceptance is claimed. Known nonblocking
+G3 #309/#352/#353/#354 remain unchanged; no new public-engine defect was
+reproduced by this task's bounded cases.

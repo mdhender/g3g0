@@ -12,11 +12,8 @@ import (
 
 // Ported from olympia/code.c: the entity codes, the names, print_box_usage,
 // and the allocation of boxes and the kind and subkind chains, and of the
-// name helpers built on display_name, those check_db() uses (box_name,
-// just_name and plural_item_name). new_ent and the mint allocator are left
-// for stage 1, along with display_kind (and the is_port_city it calls),
-// plural_item_box, box_name_qty and box_name_kind, which
-// check_db() does not use.
+// name helpers built on display_name, including display_kind and
+// box_name_kind, plus new_ent and the shared mint allocator.
 //
 // G2 entity coding system:
 //
@@ -306,6 +303,24 @@ func (w *world) displayName(n int) string {
 	}
 
 	return capitalize(subkindS[w.subkind(n)])
+}
+
+func (w *world) displayKind(n int) string {
+	switch w.subkind(n) {
+	case subCity:
+		if w.isPortCity(n) {
+			return "port city"
+		}
+		return "city"
+	case subFog, subRain, subWind:
+		return "storm"
+	default:
+		return subkindS[w.subkind(n)]
+	}
+}
+
+func (w *world) boxNameKind(n int) string {
+	return sout("%s, %s", w.boxName(n), w.displayKind(n))
 }
 
 // boxName is box_name(): box n's display name and code, as "Name~[code]",

@@ -478,6 +478,38 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.setKnown(args.num(t), args.num(t))
 		case "additem":
 			w.addItem(args.num(t), args.num(t), args.num(t))
+		case "moveitem":
+			fmt.Fprintf(&stdout, "moveitem %d\n", b2i(w.moveItem(args.num(t), args.num(t), args.num(t), args.num(t))))
+		case "dropitem", "consume":
+			n, a, b := args.num(t), args.num(t), args.num(t)
+			var result bool
+			if op == "consume" {
+				result = w.consumeItem(n, a, b)
+			} else {
+				result = w.dropItem(n, a, b)
+			}
+			fmt.Fprintf(&stdout, "inventory result %d\n", b2i(result))
+		case "kindname":
+			n := args.num(t)
+			fmt.Fprintf(&stdout, "kind [%s] name [%s]\n", w.displayKind(n), w.boxNameKind(n))
+		case "token_owner":
+			fmt.Fprintf(&stdout, "token player %d\n", w.tokenPlayer(args.num(t)))
+		case "token_state":
+			n := args.num(t)
+			w.saveBox(&stdout, n)
+			for a := range w.loopUnits(n) {
+				fmt.Fprintf(&stdout, "token row %d\n", a)
+				w.saveBox(&stdout, a)
+			}
+			helperList(&stdout, "pending trades", w.tradesToCheck)
+			for i, q := range w.loadQ {
+				helperList(&stdout, fmt.Sprintf("load_q %d", i), q)
+			}
+			helperList(&stdout, "run_q", w.runQ)
+			for a := range w.loopKind(tPlayer) {
+				fmt.Fprintf(&stdout, "token output %d\n", a)
+				helperList(&stdout, "bits", w.pPlayer(a).output)
+			}
 		case "scan_lore":
 			w.scanCharItemLore()
 		case "init_touched":
@@ -496,6 +528,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.saveBox(&stdout, created)
 		case "delete_new":
 			w.destroyUniqueItem(args.num(t), created)
+		case "drop_new":
+			fmt.Fprintf(&stdout, "drop new %d\n", b2i(w.dropItem(args.num(t), created, args.num(t))))
 		case "created_state":
 			fmt.Fprintf(&stdout, "created kind %d sub %d unique %d\n", w.kind(created), w.subkind(created), w.itemUnique(created))
 		case "body_new":
@@ -656,6 +690,12 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pPlayer(n).noblePoints = int16(a)
 			case "skill_np":
 				w.pSkill(n).npReq = int32(a)
+			case "unique":
+				w.pItem(n).whoHas = int32(a)
+			case "token_num":
+				w.pItemMagic(n).tokenNum = int8(a)
+			case "token_ni":
+				w.pItemMagic(n).tokenNi = int32(a)
 			case "lore":
 				w.pItemMagic(n).lore = int32(a)
 			case "use_key":
