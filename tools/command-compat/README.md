@@ -2759,3 +2759,78 @@ Every compat call used `G3_REPO=$PWD/tmp/upstream.git`. No full-world run,
 independent fix, commit, push, closure/tick or stage-2 work.
 
 Version **0.66.0-alpha**; changes remain **uncommitted** for parent acceptance.
+
+## Monthly body, ghost and mine decay (#88)
+
+At pin `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`, extract the complete
+original day.c definitions: `collapsed_mine_decay` **1525–1549**,
+`ghost_warrior_decay` **1556–1584**, `corpse_decay` **1591–1619** and
+`dead_body_rot` **1626–1652**. The task's broader 1525–1553, 1556–1588 and
+1591–1623 bands include the comments after the first three definitions.
+The real existing upkeep prefix contains `up_corpse` **138–143**; Go reuses
+persistent `streams.UpCorpse`, not a reset or adapter. No new source file,
+pin or affected.sh dependency is needed. Source-backed clarification:
+[#88 comment](https://github.com/mdhender/g3g0/issues/88#issuecomment-6462926473).
+
+The **17 new sections** compare exact saved boxes, kind/subtype chains,
+inventories, faction output bits, raw logs, status and RNG aftermath:
+
+- Empty passes; ghost quantities **0/1/3** (and negative raw control),
+  loss of exactly one per call, full `is_npc` filtering for nonzero subtype,
+  `LOY_npc` and `LOY_summon`, including regular-subtype NPCs.
+- Seed-0 turn-9 corpse keys **1000 → 2**, **1001 → 1**, **1100 → 0**;
+  a one-corpse stock clamps the two draw to one. Repeats keep the same keyed
+  draws even after day/master changes; next-turn keys change independently.
+  Zero/negative inventory and all three NPC branches skip decay.
+- Body ages **11/12/13** and future timestamps; missing character record
+  becomes an allocated empty `CH` even at age 11, then disappears at 12.
+  Character owners receive the decomposition line; location owners do not.
+  Adjacent current-box deletions retain the remaining subtype chain.
+- Real unique creation/destruction refunds **7 NP** to the old lord and
+  **2 NP** to the independent body's previous lord. Owner inventories and
+  body boxes disappear; another decay call does not refund twice. Signed
+  short clock/death wrapping occurs before promoted integer subtraction.
+- Mine delays **0/1/2**, missing misc, **-128/-127/127**, plus a noncollapsed
+  subtype control: **-128 → 127**, **-127 → 0 → delete**, **127 → 126**.
+  Real `get_rid_of_collapsed_mine` evacuates nested characters, prisoners,
+  loose items and locations, keeps the stack together and marks touched
+  locations. A collapsed mine nested inside the current mine is relocated
+  then deleted later in the same subtype traversal. Saved `here_list` order
+  captures snapshot mutation, not just a mocked deletion result.
+- Paired decay/no-call controls preserve sibling upkeep-income, weather,
+  exit-shuffle and mint output, including same-turn master changes and the
+  next turn. Mint IDs **66288** then **61234** match both controls.
+
+The three malformed raw controls require **134**: owner **day.c:1638**,
+missing owner inventory **u.c:2004**, and unlocated occupied mine reaching
+`loc_depth` **u.c:388**. The last is **not** a `loop_here` assertion. Source
+inspection confirms the actual mine-removal `loop_here` at **u.c:1083**
+expands `valid_box(fort)` there; loop.h **242–252** does not change that
+caller's file/line. loop_subkind **153–161** prefetches next before deletion.
+These raw invalid-state controls alone establish no public-gameplay defect.
+No newly verified C bug or blocker was found; none was independently fixed.
+
+A temporary linker wrapper emitted an out-of-scope dependency marker in
+section **714**, which ordinarily expects the owner assertion/status 134.
+Both normal and `--update` modes rejected it with status **2** before
+assertion/status acceptance or recording replacement; the recording hash
+was unchanged. The temporary probe was removed, then the normal tool passed.
+
+Two real C runs and Go match **723 sections / 53123 lines / 896467 bytes**.
+Prior **706 sections / 52160 lines / 881837 bytes** of output and
+**16225 lines / 291764 bytes** of input are exact byte prefixes. New input:
+**16648 lines / 299004 bytes**. Output SHA-256:
+`bff609ace017f709a32b9649bbe5e995bfd088e875f5f9df7a348f8add3657fc`.
+Original C trailing whitespace is retained, not normalized.
+
+Sequential checks passed: command **723/53123**, move **135/7150**, helper
+**37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+default turn (raw status/stdout/stderr and one state file identical), then
+bounded vet and fresh bounded default tests. All engine runs used shared
+`run_limited`; every compat invocation used `G3_REPO=$PWD/tmp/upstream.git`.
+The normal command comparison also passed again after dependency probes.
+No full-world turn, new tool, successful gameplay substitute, postMonth
+call-position change, report-body/stage-2 work, commit, push, closure or tick.
+
+Version **0.67.0-alpha**, left **uncommitted** for parent acceptance.

@@ -52158,3 +52158,966 @@ log 200:
 stderr:
 
 exit 0
+stdout:
+section decay empty passes allocate no character records
+> empty_chars
+> decay ghosts
+> decay corpses
+> decay bodies
+> decay mines
+> decay chains
+mines:
+bodies:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section decay ghosts zero one multiple and every npc predicate branch
+> entity 18 4 0
+> name 18 ghost warrior
+> plural 18 ghost warriors
+> entity 1100 2 0
+> entity 1101 2 0
+> entity 1102 2 64
+> entity 1103 2 0
+> entity 1104 2 0
+> field 1100 lord 200
+> field 1101 lord 201
+> field 1103 loyal 4
+> field 1104 loyal 5
+> inventory 1000 18 0
+> inventory 1001 18 1
+> inventory 1100 18 3
+> inventory 1101 18 -1
+> inventory 1102 18 3
+> inventory 1103 18 3
+> inventory 1104 18 3
+> decay ghosts
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+CH
+ lo 200
+
+> save 1100
+1100 char 0
+il	18 2
+CH
+ lo 200
+
+> save 1101
+1101 char 0
+CH
+ lo 201
+
+> save 1102
+1102 char garrison
+il	18 3
+
+> save 1103
+1103 char 0
+il	18 3
+CH
+ lk 4
+
+> save 1104
+1104 char 0
+il	18 3
+CH
+ lk 5
+
+> decay ghosts
+> save 1001
+1001 char 0
+CH
+ lo 200
+
+> save 1100
+1100 char 0
+il	18 1
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 1 touched 0 0
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> readlog 200
+log 200:
+1001:0::0::One~ghost warrior~[18] evaporated.
+1100:0::0::One~ghost warrior~[18] evaporated.
+1100:0::0::One~ghost warrior~[18] evaporated.
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section decay corpses keyed leaves zero one two clamp repeat and npc controls
+> master 0
+> set turn 9
+> entity 31 4 0
+> name 31 corpse
+> plural 31 corpses
+> entity 1100 2 0
+> entity 1101 2 0
+> entity 1102 2 0
+> entity 1103 2 0
+> entity 1104 2 64
+> entity 1105 2 0
+> entity 1106 2 0
+> field 1100 lord 200
+> field 1101 lord 200
+> field 1102 lord 201
+> field 1103 lord 201
+> field 1105 loyal 4
+> field 1106 loyal 5
+> inventory 1000 31 6
+> inventory 1001 31 6
+> inventory 1100 31 6
+> inventory 1101 31 1
+> inventory 1102 31 0
+> inventory 1103 31 -1
+> inventory 1104 31 6
+> inventory 1105 31 6
+> inventory 1106 31 6
+> decay roll 1000
+corpse roll 1000 2
+> decay roll 1001
+corpse roll 1001 1
+> decay roll 1100
+corpse roll 1100 0
+> decay roll 1101
+corpse roll 1101 0
+> decay corpses
+> save 1000
+1000 char 0
+il	31 4
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+il	31 5
+CH
+ lo 200
+
+> save 1100
+1100 char 0
+il	31 6
+CH
+ lo 200
+
+> save 1101
+1101 char 0
+il	31 1
+CH
+ lo 200
+
+> save 1102
+1102 char 0
+CH
+ lo 201
+
+> save 1103
+1103 char 0
+CH
+ lo 201
+
+> save 1104
+1104 char garrison
+il	31 6
+
+> save 1105
+1105 char 0
+il	31 6
+CH
+ lk 4
+
+> save 1106
+1106 char 0
+il	31 6
+CH
+ lk 5
+
+> master 9
+> set day 29
+> decay corpses
+> decay roll 1000
+corpse roll 1000 2
+> decay roll 1001
+corpse roll 1001 1
+> decay roll 1100
+corpse roll 1100 0
+> save 1000
+1000 char 0
+il	31 2
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+il	31 4
+CH
+ lo 200
+
+> save 1100
+1100 char 0
+il	31 6
+CH
+ lo 200
+
+> set turn 10
+> decay roll 1000
+corpse roll 1000 2
+> decay roll 1001
+corpse roll 1001 2
+> decay roll 1100
+corpse roll 1100 1
+> decay corpses
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+il	31 2
+CH
+ lo 200
+
+> save 1100
+1100 char 0
+il	31 5
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 1 touched 0 0
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> readlog 200
+log 200:
+1000:0::0::Two~corpses~[31] decomposed.
+1001:0::0::One~corpse~[31] decomposed.
+1000:0::0::Two~corpses~[31] decomposed.
+1001:0::0::One~corpse~[31] decomposed.
+1000:0::0::Two~corpses~[31] decomposed.
+1001:0::0::Two~corpses~[31] decomposed.
+1100:0::0::One~corpse~[31] decomposed.
+1101:0::0::One~corpse~[31] decomposed.
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section decay bodies exact eleven twelve thirteen and future ages delete safely
+> set turn 20
+> entity 9000 3 3
+> entity 9203 4 56
+> entity 9201 4 56
+> entity 9202 4 56
+> entity 9204 4 56
+> name 9201 twelve turn body
+> name 9202 old body
+> field 9203 death_turn 9
+> field 9201 death_turn 8
+> field 9202 death_turn 7
+> field 9204 death_turn 21
+> field 9203 unique 1000
+> field 9201 unique 1000
+> field 9202 unique 9000
+> field 9204 unique 9000
+> inventory 1000 9203 1
+> inventory 1000 9201 1
+> inventory 9000 9202 1
+> inventory 9000 9204 1
+> decay chains
+mines:
+bodies: 9201 9202 9203 9204
+> decay bodies
+> decay chains
+mines:
+bodies: 9203 9204
+> save 9203
+9203 item dead body
+CH
+ dt 9 0 0
+IT
+ un 1000
+
+> save 9201
+> save 9202
+> save 9204
+9204 item dead body
+CH
+ dt 21 0 0
+IT
+ un 9000
+
+> save 1000
+1000 char 0
+il	9203 1
+CH
+ lo 200
+
+> save 9000
+9000 loc plain
+il	9204 1
+
+> set turn 21
+> decay bodies
+> decay chains
+mines:
+bodies: 9204
+> save 9203
+> save 9204
+9204 item dead body
+CH
+ dt 21 0 0
+IT
+ un 9000
+
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> save 9000
+9000 loc plain
+il	9204 1
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+> readlog 200
+log 200:
+1000:0::0::twelve turn body~[9201] decomposed.
+1000:0::0::Dead body~[9203] decomposed.
+stderr:
+
+exit 0
+stdout:
+section decay missing body char allocates before twelve and then rots
+> entity 9200 4 56
+> field 9200 unique 1000
+> inventory 1000 9200 1
+> predicate char_alloc 9200
+predicate 0
+> set turn 11
+> decay bodies
+> predicate char_alloc 9200
+predicate 1
+> save 9200
+9200 item dead body
+CH
+IT
+ un 1000
+
+> set turn 12
+> decay bodies
+> decay chains
+mines:
+bodies:
+> save 9200
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Dead body~[9200] decomposed.
+stderr:
+
+exit 0
+stdout:
+section decay missing body char at twelve location owner receives no decay message
+> entity 9000 3 3
+> entity 9200 4 56
+> field 9200 unique 9000
+> inventory 9000 9200 1
+> set turn 12
+> decay bodies
+> decay chains
+mines:
+bodies:
+> save 9200
+> save 9000
+9000 loc plain
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section decay real body old lord refund and independent previous lord with deletion
+> place 9000
+> set turn 24
+> newitem 1000 56
+created 63435
+> body_new 201 0 2 6 Late Noble
+> field 0 created_death 12
+> save_new
+63435 item dead body
+CH
+ lk 2
+ lr 6
+ dt 12 0 0
+IT
+ un 1000
+MI
+ ol 201
+ sn Late Noble
+
+> decay bodies
+> created_state
+created kind 0 sub 56 unique 1000
+> save_new
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> pstate 201
+player 201 np 7 gained 7 spent 0 backlinks 0
+units:
+output 0 0 1 0 0 touched 0 0
+> readlog 200
+log 200:
+1000:0::0::Dead body~[f435] decomposed.
+> readlog 201
+log 201:
+201:0::0::Late Noble~[f435] has passed on.  Gained 7 NPs.
+> newitem 9000 56
+created 74062
+> body_new 100 200 2 1 Former Noble
+> field 0 created_death 12
+> decay bodies
+> created_state
+created kind 0 sub 56 unique 9000
+> save 9000
+9000 loc plain
+LI
+ hl 1000 
+
+> pstate 200
+player 200 np 2 gained 2 spent 0 backlinks 0
+units:
+output 0 1 0 1 0 touched 0 0
+> readlog 200
+log 200:
+1000:0::0::Dead body~[f435] decomposed.
+200:0::0::Former Noble~[t062] has passed on.  Gained 2 NPs.
+> decay bodies
+> pstate 200
+player 200 np 2 gained 2 spent 0 backlinks 0
+units:
+output 0 1 0 1 0 touched 0 0
+> pstate 201
+player 201 np 7 gained 7 spent 0 backlinks 0
+units:
+output 0 0 1 0 0 touched 0 0
+stderr:
+
+exit 0
+stdout:
+section decay body short death and clock wrapping precedes promoted age subtraction
+> set turn 32768
+> entity 9200 4 56
+> field 9200 unique 1000
+> field 9200 death_turn 32767
+> inventory 1000 9200 1
+> decay bodies
+> save 9200
+9200 item dead body
+CH
+ dt 32767 0 0
+IT
+ un 1000
+
+> set turn 32767
+> field 9200 death_turn 32768
+> decay bodies
+> decay chains
+mines:
+bodies:
+> save 9200
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Dead body~[9200] decomposed.
+stderr:
+
+exit 0
+stdout:
+section decay invalid body owner asserts before pchar allocation
+> entity 9200 4 56
+> decay bodies
+stderr:
+assertion failure: olympia/day.c (1638): owner
+
+exit 134
+stdout:
+section decay invalid body inventory preserves real destroy assertion
+> entity 9200 4 56
+> field 9200 unique 1000
+> set turn 12
+> decay bodies
+stderr:
+assertion failure: olympia/u.c (2004): ret
+
+exit 134
+stdout:
+section decay mines zero one two missing misc and signed bounds wrap before clamp
+> entity 9000 3 3
+> entity 9105 3 53
+> entity 9101 3 53
+> entity 9104 3 53
+> entity 9102 3 53
+> entity 9103 3 53
+> entity 9106 3 53
+> entity 9107 3 53
+> entity 9108 3 40
+> link 9000 9105
+> link 9000 9101
+> link 9000 9104
+> link 9000 9102
+> link 9000 9103
+> link 9000 9106
+> link 9000 9107
+> link 9000 9108
+> field 9101 mine_delay 1
+> field 9104 mine_delay 2
+> field 9102 mine_delay -128
+> field 9103 mine_delay -127
+> field 9106 mine_delay 127
+> field 9107 mine_delay 0
+> field 9108 mine_delay 1
+> decay chains
+mines: 9101 9102 9103 9104 9105 9106 9107
+bodies:
+> decay mines
+> decay chains
+mines: 9102 9104 9106
+bodies:
+> save 9105
+> save 9101
+> save 9104
+9104 loc collapsed mine
+LI
+ wh 9000
+MI
+ md 1
+
+> save 9102
+9102 loc collapsed mine
+LI
+ wh 9000
+MI
+ md 127
+
+> save 9103
+> save 9106
+9106 loc collapsed mine
+LI
+ wh 9000
+MI
+ md 126
+
+> save 9107
+> save 9108
+9108 loc mine
+LI
+ wh 9000
+MI
+ md 1
+
+> save 9000
+9000 loc plain
+LI
+ hl 9104 9102 9106 9108 
+
+> decay mines
+> decay chains
+mines: 9102 9106
+bodies:
+> save 9104
+> save 9102
+9102 loc collapsed mine
+LI
+ wh 9000
+MI
+ md 126
+
+> save 9106
+9106 loc collapsed mine
+LI
+ wh 9000
+MI
+ md 125
+
+> save 9000
+9000 loc plain
+LI
+ hl 9102 9106 9108 
+
+stderr:
+
+exit 0
+stdout:
+section decay mines real nested relocation snapshots and subtype chain deletion
+> set gm 200
+> set day 9
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9102 3 53
+> entity 9100 3 53
+> entity 9101 3 53
+> entity 9200 4 0
+> entity 9201 3 14
+> link 9000 9102
+> link 9000 9100
+> link 9000 9101
+> link 9100 1001
+> link 1001 1000
+> link 9100 9200
+> link 9100 9201
+> field 1001 moving 5
+> field 1000 prisoner 1
+> field 9102 mine_delay 1
+> field 9100 mine_delay 1
+> field 9101 mine_delay 2
+> decay chains
+mines: 9100 9101 9102
+bodies:
+> decay mines
+> decay chains
+mines: 9101
+bodies:
+> save 9102
+> save 9100
+> save 9101
+9101 loc collapsed mine
+LI
+ wh 9000
+MI
+ md 1
+
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 9101 1001 9200 9201 
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+ hl 1000 
+CH
+ lo 200
+ mo 5
+
+> save 1000
+1000 char 0
+LI
+ wh 1001
+CH
+ lo 200
+ pr 1
+
+> save 9200
+9200 item 0
+LI
+ wh 9000
+
+> save 9201
+9201 loc city
+LI
+ wh 9000
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits:
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 1 0
+> readlog 200
+log 200:
+> decay mines
+> decay chains
+mines:
+bodies:
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 1001 9200 9201 
+
+stderr:
+
+exit 0
+stdout:
+section decay invalid unlocated mine with character reaches location depth assertion
+> entity 9100 3 53
+> link 9100 1000
+> decay mines
+stderr:
+subkind is 0
+assertion failure: olympia/u.c (388): FALSE
+
+exit 134
+stdout:
+section decay real leaves preserve sibling upkeep weather shuffle and mint
+> master 0
+> set turn 9
+> entity 31 4 0
+> name 31 corpse
+> plural 31 corpses
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> routes 9000 9001 9002 9003 0
+> inventory 1000 31 6
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> weather probe 9000 257
+weather shuffle: 307 349 335 314 300 370 328 342 356 363 321
+weather strength 2
+> decay corpses
+> decay roll 1000
+corpse roll 1000 2
+> master 9
+> decay corpses
+> decay roll 1000
+corpse roll 1000 2
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> weather probe 9000 257
+weather shuffle: 321 370 349 300 356 328 307 314 335 342 363
+weather strength 2
+> shuffle 0 9000
+exitdir 3 9003
+exitdir 1 9001
+exitdir 2 9002
+> newitem 9001 0
+created 66288
+> save_new
+66288 item 0
+IT
+ un 9001
+
+> set turn 10
+> decay corpses
+> decay roll 1000
+corpse roll 1000 2
+> income roll 9102 0 50 75
+income roll 9102 0 61
+> weather probe 9000 257
+weather shuffle: 363 300 370 321 342 356 335 349 328 314 307
+weather strength 2
+> shuffle 0 9000
+exitdir 1 9001
+exitdir 2 9002
+exitdir 3 9003
+> newitem 9001 0
+created 61234
+> save_new
+61234 item 0
+IT
+ un 9001
+
+stderr:
+
+exit 0
+stdout:
+section decay no call control sibling upkeep weather shuffle and mint
+> master 0
+> set turn 9
+> entity 31 4 0
+> name 31 corpse
+> plural 31 corpses
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> routes 9000 9001 9002 9003 0
+> inventory 1000 31 6
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> weather probe 9000 257
+weather shuffle: 307 349 335 314 300 370 328 342 356 363 321
+weather strength 2
+> master 9
+> income roll 9102 0 50 75
+income roll 9102 0 60
+> weather probe 9000 257
+weather shuffle: 321 370 349 300 356 328 307 314 335 342 363
+weather strength 2
+> shuffle 0 9000
+exitdir 3 9003
+exitdir 1 9001
+exitdir 2 9002
+> newitem 9001 0
+created 66288
+> save_new
+66288 item 0
+IT
+ un 9001
+
+> set turn 10
+> income roll 9102 0 50 75
+income roll 9102 0 61
+> weather probe 9000 257
+weather shuffle: 363 300 370 321 342 356 335 349 328 314 307
+weather strength 2
+> shuffle 0 9000
+exitdir 1 9001
+exitdir 2 9002
+exitdir 3 9003
+> newitem 9001 0
+created 61234
+> save_new
+61234 item 0
+IT
+ un 9001
+
+stderr:
+
+exit 0
+stdout:
+section decay corpse two draw clamps to one and zero stock skips later draws
+> master 0
+> set turn 9
+> entity 31 4 0
+> name 31 corpse
+> plural 31 corpses
+> inventory 1000 31 1
+> decay roll 1000
+corpse roll 1000 2
+> decay corpses
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> decay corpses
+> save 1000
+1000 char 0
+CH
+ lo 200
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+> readlog 200
+log 200:
+1000:0::0::One~corpse~[31] decomposed.
+stderr:
+
+exit 0
+stdout:
+section decay nested mines relocate next subtype before deleting it and keep stack together
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 3
+> entity 9100 3 53
+> entity 9101 3 53
+> entity 9200 4 0
+> link 10000 9000
+> link 9000 9100
+> link 9100 9101
+> link 9101 1001
+> link 1001 1000
+> link 9101 9200
+> field 9100 mine_delay 1
+> field 9101 mine_delay 1
+> decay chains
+mines: 9100 9101
+bodies:
+> decay mines
+> decay chains
+mines:
+bodies:
+> save 9100
+> save 9101
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 1001 9200 
+
+> save 1000
+1000 char 0
+LI
+ wh 1001
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+ hl 1000 
+CH
+ lo 200
+
+> save 9200
+9200 item 0
+LI
+ wh 9000
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 1 0
+> readlog 200
+log 200:
+stderr:
+
+exit 0

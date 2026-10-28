@@ -54,6 +54,8 @@ void drv_income_inn(void), drv_income_temple(void);
 int drv_income_roll(int inn, int sub, int low, int high);
 void drv_maint(void), drv_starve(int who, int have), drv_animal(void);
 int drv_starve_roll(int who, int item), drv_animal_roll(int who, int item, int idx);
+void drv_decay_mines(void), drv_decay_ghosts(void), drv_decay_corpses(void), drv_decay_bodies(void);
+int drv_corpse_roll(int who);
 extern int gold_inn, gold_temple;
 void drv_city_gold(void), drv_replenish(int where, int item, int qty);
 void drv_taxes(void), drv_claim(void), drv_np(void), drv_unformed(void);
@@ -392,6 +394,19 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "bark")) { sscanf(line,"%*s %d",&n); bark_dogs(n); }
   else if (!strcmp(op, "ring")) drv_ring();
   else if (!strcmp(op, "curse")) drv_curse();
+  else if (!strcmp(op, "decay")) {
+   sscanf(line,"%*s %31s %d",text,&n);
+   if (!strcmp(text,"mines")) drv_decay_mines();
+   else if (!strcmp(text,"ghosts")) drv_decay_ghosts();
+   else if (!strcmp(text,"corpses")) drv_decay_corpses();
+   else if (!strcmp(text,"bodies")) drv_decay_bodies();
+   else if (!strcmp(text,"roll")) printf("corpse roll %d %d\n",n,drv_corpse_roll(n));
+   else if (!strcmp(text,"chains")) {
+    printf("mines:"); loop_collapsed_mine(n) { printf(" %d",n); } next_collapsed_mine; printf("\n");
+    printf("bodies:"); loop_dead_body(n) { printf(" %d",n); } next_dead_body; printf("\n");
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "upkeep")) {
    n=a=b=0;
    sscanf(line,"%*s %31s %d %d %d",text,&n,&a,&b);
@@ -868,6 +883,9 @@ int main(int argc, char **argv)
   {
    sscanf(line,"%*s %d %31s %d",&n,text,&a);
    if (!strcmp(text,"lord")) p_char(n)->unit_lord = a;
+   else if (!strcmp(text,"mine_delay")) p_misc(n)->mine_delay = (schar)a;
+   else if (!strcmp(text,"death_turn")) p_char(n)->death_time.turn = (short)a;
+   else if (!strcmp(text,"created_death")) p_char(created)->death_time.turn = (short)a;
    else if (!strcmp(text,"melt")) p_char(n)->melt_me = (schar)a;
    else if (!strcmp(text,"sick")) p_char(n)->sick = (schar)a;
    else if (!strcmp(text,"magician")) p_magic(n)->magician = (schar)a;

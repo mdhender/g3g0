@@ -62,7 +62,8 @@ functions = {
               'increment_current_aura', 'decrement_ability_shroud', 'decrement_region_shroud',
               'decrement_meditation_hinder', 'decrement_loc_barrier', 'loyalty_decay',
               'pillage_decay', 'relic_decay', 'hide_mage_decay', 'inn_income', 'temple_income',
-              'men_starve', 'unit_maint_cost', 'charge_maint_sup', 'charge_maint_costs', 'animal_deaths'],
+              'men_starve', 'unit_maint_cost', 'charge_maint_sup', 'charge_maint_costs', 'animal_deaths',
+              'collapsed_mine_decay', 'ghost_warrior_decay', 'corpse_decay', 'dead_body_rot'],
     'scry.c': ['notify_loc_shroud'],
     'seed.c': ['int_comp', 'seed_taxes'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
@@ -274,6 +275,11 @@ int drv_income_roll(int inn, int sub, int low, int high) { return up_income(inn,
 void drv_maint(void) { charge_maint_costs(); }
 void drv_starve(int who, int have) { men_starve(who, have); }
 void drv_animal(void) { animal_deaths(); }
+void drv_decay_mines(void) { collapsed_mine_decay(); }
+void drv_decay_ghosts(void) { ghost_warrior_decay(); }
+void drv_decay_corpses(void) { corpse_decay(); }
+void drv_decay_bodies(void) { dead_body_rot(); }
+int drv_corpse_roll(int who) { return up_corpse(who, 0, 2); }
 int drv_starve_roll(int who, int item) { return up_starve(who, item, 1, 2); }
 int drv_animal_roll(int who, int item, int idx) { return up_animal(who, item, idx, 1, 1000); }
 int drv_loyal_roll(int who, int sub) { return up_loyal(who, sub, 1, 2); }
@@ -429,6 +435,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section decay '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section decay invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected decay status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section upkeep '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

@@ -460,6 +460,32 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.incrementStoneRingAura()
 		case "curse":
 			w.noncreatorCurseErode()
+		case "decay":
+			switch action := args.word(); action {
+			case "mines":
+				w.collapsedMineDecay()
+			case "ghosts":
+				w.ghostWarriorDecay()
+			case "corpses":
+				w.corpseDecay()
+			case "bodies":
+				w.deadBodyRot()
+			case "roll":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "corpse roll %d %d\n", n, w.streams.UpCorpse(n, 0, 2))
+			case "chains":
+				fmt.Fprint(&stdout, "mines:")
+				for n := range w.loopSubkind(subMineCollapsed) {
+					fmt.Fprintf(&stdout, " %d", n)
+				}
+				fmt.Fprint(&stdout, "\nbodies:")
+				for n := range w.loopSubkind(subDeadBody) {
+					fmt.Fprintf(&stdout, " %d", n)
+				}
+				fmt.Fprintln(&stdout)
+			default:
+				t.Fatalf("unknown decay %s", action)
+			}
 		case "upkeep":
 			switch action := args.word(); action {
 			case "cost":
@@ -1164,6 +1190,12 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch field {
 			case "lord":
 				w.pChar(n).unitLord = int32(a)
+			case "mine_delay":
+				w.pMisc(n).mineDelay = int8(a)
+			case "death_turn":
+				w.pChar(n).deathTime.turn = int16(a)
+			case "created_death":
+				w.pChar(created).deathTime.turn = int16(a)
 			case "melt":
 				w.pChar(n).meltMe = int8(a)
 			case "sick":

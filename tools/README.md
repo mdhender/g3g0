@@ -282,6 +282,23 @@ rng/code/loadsave/turn-driver/default-turn sequentially before bounded vet and
 fresh bounded defaults. No new pin, substitute gameplay, full-world acceptance
 or report-body/stage-2 scope is implied.
 
+Monthly body, ghost and mine decay (#88) extends command-compat, superseding
+the preceding #116 boundary note. Complete day.c collapsed_mine_decay
+1525–1553, ghost_warrior_decay 1556–1588, corpse_decay 1591–1623 and
+dead_body_rot 1626–1652 reuse real collapsed-mine evacuation/deletion,
+unique-body destruction/NP refunds, inventory, output and save writers.
+The original upkeep prefix supplies up_corpse; Go uses persistent UpCorpse.
+Small recordings distinguish signed mine-delay wrapping before clamp,
+full is_npc filtering, exact 12-turn body age, missing p_char allocation,
+old/previous-lord refunds, keyed 0/1/2 corpse draws and repeated/next-turn
+calls. Nested mines and stacks exercise snapshot relocation and deletion-safe
+subtype chains. Macro assertions retain their caller source file and line.
+See the source-backed scope clarification on #88 and command-compat README.
+Run command/move/helper/rng/code/loadsave/turn-driver/default-turn sequentially
+before bounded vet/fresh defaults. No new tool, source dependency, pin, RNG
+adapter or postMonth call-position change. No full-world acceptance, unrelated
+command, report-body or stage-2 scope is implied.
+
 Inventory transfer and token acquisition (#117) extend command-compat with
 the complete real `consume_item`, mutually recursive `move_item`/`drop_item`,
 and compiled `move_token` acquisition closure. Real lord interruption/NP,
