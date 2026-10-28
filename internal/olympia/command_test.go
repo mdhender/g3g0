@@ -505,6 +505,54 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			default:
 				t.Fatalf("unknown production %s", action)
 			}
+		case "market":
+			switch action := args.word(); action {
+			case "add":
+				w.addCityTrade(args.num(t), args.num(t), args.num(t), args.num(t), args.num(t), args.num(t))
+			case "options":
+				n, a, month, expire, cloak := args.num(t), args.num(t), args.num(t), args.num(t), args.num(t)
+				p := w.bx[n].trades[a]
+				p.monthProd, p.expire, p.cloak = int32(month), int32(expire), int32(cloak)
+			case "opium":
+				w.opiumMarketDelta(args.num(t))
+			case "expire":
+				w.expireTrades(args.num(t))
+			case "restock":
+				w.locTradeSup(args.num(t), args.num(t) != 0)
+			case "rings":
+				w.tradeSuffuseRing(args.num(t))
+			case "all":
+				w.locationTrades()
+			case "rolls":
+				n := args.num(t)
+				w.streams.BeginEconomy(n)
+				fmt.Fprintf(&stdout, "ring rolls %d %d %d\n", w.streams.EconStock(subSuffuseRing, n, 1, 3), w.streams.EconRing(subSuffuseRing, n, 1, 5), w.streams.EconCost(subSuffuseRing, n, 0, 12))
+			case "new_ring":
+				n := args.num(t)
+				w.streams.BeginEconomy(n)
+				created = w.newSuffuseRing(n)
+				fmt.Fprintf(&stdout, "created %d\n", created)
+			case "state":
+				n := args.num(t)
+				for i, p := range w.bx[n].trades {
+					fmt.Fprintf(&stdout, "raw trade %d %d %d %d %d %d %d %d %d\n", i, p.who, p.kind, p.item, p.qty, p.cost, p.monthProd, p.expire, p.cloak)
+				}
+				w.saveBox(&stdout, n)
+				for a := range w.loopSubkind(subSuffuseRing) {
+					w.saveBox(&stdout, a)
+				}
+			case "buy_ring":
+				n, a := args.num(t), args.num(t)
+				for b := range w.loopSubkind(subSuffuseRing) {
+					if w.itemUnique(b) == n {
+						w.addCityTrade(a, tradeBuy, b, 1, 2000, 0)
+						w.matchTrades(a)
+						break
+					}
+				}
+			default:
+				t.Fatalf("unknown market %s", action)
+			}
 		case "trade":
 			n := args.num(t)
 			w.bx[n].trades.Append(&trade{kind: int32(args.num(t)), item: int32(args.num(t)), qty: int32(args.num(t)), cost: int32(args.num(t)), who: int32(args.num(t)), sort: int32(args.num(t))})

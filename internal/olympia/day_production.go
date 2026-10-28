@@ -93,8 +93,7 @@ func (w *world) computeCivLevels() {
 	}
 }
 
-// post_production is day.c:1932–1942. Keep the real order: #83 must implement
-// location_trades before the later helpers can execute in this composition.
+// post_production is day.c:1932–1942. Keep the real monthly helper order.
 // loadDb's new-world initialization remains an explicit stage-5 boundary.
 func (w *world) postProduction() {
 	w.computeCivLevels()
@@ -103,8 +102,6 @@ func (w *world) postProduction() {
 	w.seedTaxes()
 	w.postHasBeenRun = 1
 }
-
-func (w *world) locationTrades() { panic(notImplemented("location_trades")) }
 
 // move_city_gold is day.c:2005–2024; use real move_item, including its zero
 // quantity behavior and the city subtype chain (not a province traversal).

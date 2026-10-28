@@ -116,11 +116,29 @@ inventory, traversal, topology, trade queue and save-box closure is reused.
 Small recorded cases check asymmetric civ diffusion, first-of-type buildings,
 crown bonuses, every resource/depth row, stock floors, poppy capping/doubling,
 coastal flotsam and city-tax transfer/opium/pillage rounding. postProduction
-still stops at location_trades (#83), after real civ calculation and BEFORE
-location production/tax reseeding; it cannot claim successful composition.
+now executes real location_trades (#83), location production and tax reseeding
+before setting the post flag; command-compat records successful composition.
 New-world load initialization remains explicitly stage 5. Run the same eight
 comparisons sequentially before vet/fresh bounded defaults; no new source
 dependency/pin, RNG adapter, command handler or full-world success is implied.
+Monthly market restock (#83) extends command-compat with complete buy.c
+find_trade/new_trade/add_city_trade, opium_market_delta, expire_trades,
+loc_trade_sup, trade_suffuse_ring, location_trades and is_tradegood, plus
+art.c new_suffuse_ring. The original economy prefix/macros and opium_data
+are extracted from the pin. It reuses persistent w.streams.BeginEconomy/Econ*
+and real mint, settlement, lore, inventory and serialization, not an adapter.
+Positive-quantity filtered loop_trade remains a snapshot sharing pointers;
+raw opium/expiration loops and the live validated settlement queue are preserved.
+Small recordings cover sold-out/partial/no/absent opium orders and clamps,
+annual seasons and override, surplus floors/metadata, held tradegood expiration,
+asymmetric markets and all five ring kinds, gates/costs, sold-out replacement,
+real purchases/lore and next-turn creation. Successful post_production now
+owns the former temporary NYI test's ordering contract. seed_city_trade is
+INIT-only, and existing route initialization already works: neither FIND/BUY/
+SELL commands nor new-world initialization is added to monthly acceptance.
+See the source-verified scope clarification on #83 and command-compat README.
+Run command/move/helper/rng/code/loadsave/turn-driver/default-turn sequentially
+before bounded vet/fresh defaults. No full-world/stage-exit acceptance implied.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks

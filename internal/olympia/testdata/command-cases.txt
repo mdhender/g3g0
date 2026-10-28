@@ -13837,3 +13837,338 @@ entity 277 4 0
 entity 9000 3 3
 field 9000 opium 10
 production taxes
+
+section market opium sold out partial none absent and both boundaries
+entity 93 4 0
+entity 9100 3 14
+entity 9101 3 14
+entity 9102 3 14
+entity 9103 3 14
+entity 9104 3 14
+entity 9105 3 14
+entity 9106 3 14
+entity 9107 3 14
+field 9100 opium 3
+field 9101 opium 3
+field 9102 opium 3
+field 9103 opium 3
+field 9104 opium 7
+field 9106 opium 1
+field 9107 opium 6
+trade 9100 1 93 0 18 9100 0
+trade 9100 1 93 50 18 9100 0
+trade 9101 1 93 49 18 9101 0
+trade 9102 1 93 50 18 9102 0
+trade 9104 1 93 0 20 9104 0
+trade 9105 1 93 15 17 9105 0
+market opium 9100
+market opium 9101
+market opium 9102
+market opium 9103
+market opium 9104
+market opium 9105
+market opium 9106
+market opium 9107
+market restock 9100 0
+market restock 9101 0
+market restock 9102 0
+market restock 9103 0
+market restock 9104 0
+market restock 9105 0
+market restock 9106 0
+market restock 9107 0
+market state 9100
+market state 9101
+market state 9102
+market state 9103
+market state 9104
+market state 9105
+market state 9106
+market state 9107
+
+section market zero quantity new trade appends rather than reusing old offer
+entity 77 4 0
+entity 9100 3 14
+trade 9100 3 77 0 9 9100 0
+trade 9100 2 77 0 9 9100 0
+market add 9100 3 77 12 17 0
+market restock 9100 0
+market state 9100
+market add 9100 3 77 8 29 0
+market restock 9100 0
+market state 9100
+
+section market seasonal floor surplus overwrite consume ignores season
+entity 77 4 0
+entity 78 4 0
+entity 79 4 0
+entity 80 4 0
+entity 81 4 0
+entity 9100 3 14
+market add 9100 3 77 12 17 1
+market add 9100 3 78 9 27 8
+market add 9100 4 79 11 37 8
+market add 9100 3 80 0 47 0
+market add 9100 2 77 20 1 0
+market add 9100 3 81 7 57 4
+market options 9100 0 1 5 1
+market options 9100 1 8 4 2
+market options 9100 2 8 3 1
+set turn 1
+market restock 9100 0
+market state 9100
+set turn 2
+market restock 9100 0
+market state 9100
+set turn 8
+market restock 9100 0
+market state 9100
+set turn 9
+market restock 9100 0
+market state 9100
+market restock 9100 1
+market state 9100
+set turn 10
+market restock 9100 0
+market state 9100
+
+section market expiration raw zeros deletion shift and inventory holding
+entity 77 4 73
+entity 78 4 73
+entity 79 4 73
+entity 80 4 0
+entity 9100 3 14
+market add 9100 3 77 12 17 0
+market add 9100 2 78 3 27 0
+trade 9100 1 79 0 37 9100 0
+market add 9100 1 79 8 37 0
+market add 9100 4 79 8 37 0
+market add 9100 2 80 9 47 0
+market options 9100 0 0 1 0
+market options 9100 1 0 0 0
+market options 9100 2 0 0 0
+market options 9100 3 0 -2 0
+market options 9100 4 0 2 0
+market options 9100 5 0 1 0
+inventory 1000 79 1
+inventory 9100 77 100
+market expire 9100
+market state 9100
+market restock 9100 0
+market state 9100
+consume 1000 79 1
+market expire 9100
+market state 9100
+
+section market expiration copied lifetime retains all held buys not only last
+entity 77 4 73
+entity 9100 3 14
+market add 9100 3 77 12 17 0
+market add 9100 4 77 14 37 0
+market options 9100 0 0 3 1
+market options 9100 1 0 3 2
+inventory 1001 77 1
+market restock 9100 0
+market state 9100
+market restock 9100 0
+market state 9100
+market restock 9100 0
+market state 9100
+market restock 9100 0
+market state 9100
+consume 1001 77 1
+market expire 9100
+market state 9100
+
+section market asymmetric monthly cities and noncity untouched
+master 7
+set turn 8
+entity 93 4 0
+entity 77 4 0
+entity 78 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 1
+entity 9100 3 14
+entity 9101 3 14
+entity 9102 3 37
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9001 9101
+link 9000 9102
+field 9100 opium 2
+field 9101 opium 5
+market add 9100 3 77 12 17 8
+market add 9101 3 77 3 27 8
+market add 9101 4 78 19 7 0
+market add 9102 3 78 31 33 0
+trade 9100 1 93 0 18 9100 0
+trade 9101 1 93 65 19 9101 0
+market all
+market state 9100
+market state 9101
+market state 9102
+
+section market ring keyed gate kind cost markets and turn controls
+master 7
+set turn 8
+entity 938 4 0
+entity 939 4 0
+entity 940 4 0
+entity 941 4 0
+entity 942 4 0
+entity 9100 3 14
+entity 9101 3 14
+entity 9102 3 14
+entity 9103 3 14
+entity 9104 3 14
+entity 9105 3 14
+entity 9106 3 14
+entity 9107 3 14
+market rolls 9100
+market rings 9100
+market rolls 9101
+market rings 9101
+market rolls 9102
+market rings 9102
+market rolls 9103
+market rings 9103
+market rolls 9104
+market rings 9104
+market rolls 9105
+market rings 9105
+market rolls 9106
+market rings 9106
+market rolls 9107
+market rings 9107
+market state 9100
+market state 9101
+market state 9102
+market state 9103
+market state 9104
+market state 9105
+market state 9106
+market state 9107
+set turn 9
+market rolls 9100
+market rings 9100
+market state 9100
+newitem 1000 68
+save_new
+
+section market ring kinds real mint and inventory serialized
+master 7
+set turn 8
+entity 938 4 0
+entity 939 4 0
+entity 940 4 0
+entity 941 4 0
+entity 942 4 0
+entity 9100 3 14
+entity 9102 3 14
+entity 9103 3 14
+entity 9104 3 14
+market new_ring 9100
+save_new
+market new_ring 9102
+save_new
+market new_ring 9103
+save_new
+market new_ring 9104
+save_new
+set turn 9
+market new_ring 9100
+save_new
+
+section market post production actual composition civilization markets resources taxes flag
+master 7
+set turn 8
+set faery_region 8000
+set cloud_region 8001
+entity 10 4 0
+entity 51 4 0
+entity 59 4 0
+entity 87 4 0
+entity 93 4 0
+entity 77 4 0
+entity 96 4 0
+entity 277 4 0
+entity 294 4 0
+entity 8000 3 50
+entity 8001 3 50
+entity 8002 3 50
+entity 9000 3 3
+entity 9001 3 1
+entity 9002 3 3
+entity 9200 3 28
+entity 9100 3 14
+entity 9101 3 14
+entity 9102 3 14
+link 8000 9000
+link 8001 9001
+link 8002 9002
+link 9000 9100
+link 9001 9101
+link 9002 9102
+link 9002 9200
+routes 9000 0 0 0 0
+routes 9001 0 0 0 0
+routes 9002 0 0 0 0
+market add 9100 3 77 12 17 8
+market add 9101 4 77 19 7 0
+trade 9100 1 93 0 17 9100 0
+field 9100 opium 1
+production post
+production state
+market state 9100
+market state 9101
+market state 9102
+production gold
+set turn 9
+production post
+production state
+market state 9100
+market state 9101
+market state 9102
+
+section market ring actual settlement lore soldout restock repeated and next turn
+master 7
+set turn 8
+entity 1 4 0
+entity 938 4 0
+entity 939 4 0
+entity 940 4 0
+entity 941 4 0
+entity 942 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9100 3 14
+link 8000 9000
+link 9000 9100
+link 9100 1000
+inventory 1000 1 5000
+market rings 9100
+market state 9100
+market rings 9100
+market state 9100
+market buy_ring 9100 1000
+market state 9100
+save 1000
+lore_state 200
+market rings 9100
+market state 9100
+market buy_ring 9100 1000
+lore_state 200
+set turn 9
+market rolls 9100
+market rings 9100
+market state 9100
+set turn 10
+market rolls 9100
+market rings 9100
+market state 9100
+save 1000
+readlog 200
+newitem 1000 68
+save_new

@@ -78,7 +78,7 @@ functions = {
                'rank_s', 'garrison_notices', 'garrison_spot_check',
                'garrison_strength', 'ping_garrisons'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'token_player', 'swear_token_units',
-              'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units'],
+              'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
     'display.c': ['with_inventory_string', 'display_with', 'mage_s', 'priest_s',
                   'emperor', 'liner_desc_char', 'liner_desc', 'show_chars_below'],
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
@@ -105,7 +105,9 @@ functions = {
     'lore.c': ['queue_lore', 'scan_char_item_lore'],
     'buy.c': ['investigate_possible_trade', 'market_here', 'seller_comp',
               'seller_list', 'buyer_list', 'reduce_qty', 'attempt_trade',
-              'scan_trades', 'match_trades', 'match_all_trades', 'check_validated_trades'],
+              'scan_trades', 'match_trades', 'match_all_trades', 'check_validated_trades',
+              'find_trade', 'new_trade', 'add_city_trade', 'opium_market_delta',
+              'expire_trades', 'loc_trade_sup', 'trade_suffuse_ring', 'location_trades', 'is_tradegood'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
@@ -167,6 +169,14 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(source[start:source.index('int max_map_row')])
         if file == 'combat.c':
             out.write('#include "combat-structs.h"\n')
+        if file == 'buy.c':
+            out.write(re.search(r'^static rng_stream economy_rng;\n', source, re.M).group(0))
+            start, end = source.index('#define\tTAG_TURN'), source.index('/*\n *  Explanation of trade->cloak')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/buy.c"\n')
+            out.write(source[start:end])
+            start, end = source.index('struct\n{\n\tint qty;'), source.index('void\nopium_market_delta(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/buy.c"\n')
+            out.write(source[start:end])
         if file == 'savage.c':
             start = source.index('#define\t\tMAX_SAVAGES')
             end = source.index('static int\ncreate_savage(')
@@ -361,7 +371,6 @@ with open(f'{dst}/stubs.c', 'w') as out:
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1, pretty_data_files, time_self;
 ilist trades_to_check;
-void location_trades(void) STUB("location_trades")
 ''')
 PY
 
@@ -386,6 +395,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section market '* ]]; then
+   [ "$status" = 0 ] || die "unexpected market status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section production '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

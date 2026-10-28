@@ -43866,3 +43866,1556 @@ stderr:
 assertion failure: olympia/seed.c (696): base > 0
 
 exit 134
+stdout:
+section market opium sold out partial none absent and both boundaries
+> entity 93 4 0
+> entity 9100 3 14
+> entity 9101 3 14
+> entity 9102 3 14
+> entity 9103 3 14
+> entity 9104 3 14
+> entity 9105 3 14
+> entity 9106 3 14
+> entity 9107 3 14
+> field 9100 opium 3
+> field 9101 opium 3
+> field 9102 opium 3
+> field 9103 opium 3
+> field 9104 opium 7
+> field 9106 opium 1
+> field 9107 opium 6
+> trade 9100 1 93 0 18 9100 0
+> trade 9100 1 93 50 18 9100 0
+> trade 9101 1 93 49 18 9101 0
+> trade 9102 1 93 50 18 9102 0
+> trade 9104 1 93 0 20 9104 0
+> trade 9105 1 93 15 17 9105 0
+> market opium 9100
+> market opium 9101
+> market opium 9102
+> market opium 9103
+> market opium 9104
+> market opium 9105
+> market opium 9106
+> market opium 9107
+> market restock 9100 0
+> market restock 9101 0
+> market restock 9102 0
+> market restock 9103 0
+> market restock 9104 0
+> market restock 9105 0
+> market restock 9106 0
+> market restock 9107 0
+> market state 9100
+raw trade 0 9100 1 93 0 18 0 0 0
+raw trade 1 9100 1 93 55 19 0 0 1
+raw trade 2 9100 4 93 55 19 0 0 1
+9100 loc city
+tl	1 93 55 19 1 0 0 0 \
+	4 93 55 19 1 0 0 0
+SL
+ op 4
+
+> market state 9101
+raw trade 0 9101 1 93 50 18 0 0 1
+raw trade 1 9101 4 93 50 18 0 0 1
+9101 loc city
+tl	1 93 50 18 1 0 0 0 \
+	4 93 50 18 1 0 0 0
+SL
+ op 3
+
+> market state 9102
+raw trade 0 9102 1 93 50 18 0 0 1
+raw trade 1 9102 4 93 37 18 0 0 1
+9102 loc city
+tl	1 93 50 18 1 0 0 0 \
+	4 93 37 18 1 0 0 0
+SL
+ op 2
+
+> market state 9103
+raw trade 0 9103 4 93 50 18 0 0 1
+raw trade 1 9103 1 93 50 18 0 0 1
+9103 loc city
+tl	4 93 50 18 1 0 0 0 \
+	1 93 50 18 1 0 0 0
+SL
+ op 3
+
+> market state 9104
+raw trade 0 9104 1 93 0 20 0 0 0
+raw trade 1 9104 4 93 80 20 0 0 1
+raw trade 2 9104 1 93 80 20 0 0 1
+9104 loc city
+tl	4 93 80 20 1 0 0 0 \
+	1 93 80 20 1 0 0 0
+SL
+ op 7
+
+> market state 9105
+raw trade 0 9105 1 93 15 17 0 0 2
+raw trade 1 9105 4 93 15 17 0 0 2
+9105 loc city
+tl	1 93 15 17 2 0 0 0 \
+	4 93 15 17 2 0 0 0
+SL
+
+> market state 9106
+raw trade 0 9106 4 93 28 17 0 0 1
+raw trade 1 9106 1 93 28 17 0 0 1
+9106 loc city
+tl	4 93 28 17 1 0 0 0 \
+	1 93 28 17 1 0 0 0
+SL
+ op 1
+
+> market state 9107
+raw trade 0 9107 4 93 70 20 0 0 1
+raw trade 1 9107 1 93 70 20 0 0 1
+9107 loc city
+tl	4 93 70 20 1 0 0 0 \
+	1 93 70 20 1 0 0 0
+SL
+ op 6
+
+stderr:
+
+exit 0
+stdout:
+section market zero quantity new trade appends rather than reusing old offer
+> entity 77 4 0
+> entity 9100 3 14
+> trade 9100 3 77 0 9 9100 0
+> trade 9100 2 77 0 9 9100 0
+> market add 9100 3 77 12 17 0
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 3 77 0 9 0 0 0
+raw trade 1 9100 2 77 0 9 0 0 0
+raw trade 2 9100 3 77 12 17 0 0 0
+raw trade 3 9100 2 77 12 17 0 0 0
+9100 loc city
+tl	3 77 0 9 0 0 0 0 \
+	3 77 12 17 0 0 0 0 \
+	2 77 12 17 0 0 0 0
+
+> market add 9100 3 77 8 29 0
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 3 77 0 9 0 0 0
+raw trade 1 9100 2 77 0 9 0 0 0
+raw trade 2 9100 3 77 8 29 0 0 0
+raw trade 3 9100 2 77 12 29 0 0 0
+9100 loc city
+tl	3 77 0 9 0 0 0 0 \
+	3 77 8 29 0 0 0 0 \
+	2 77 12 29 0 0 0 0
+
+stderr:
+
+exit 0
+stdout:
+section market seasonal floor surplus overwrite consume ignores season
+> entity 77 4 0
+> entity 78 4 0
+> entity 79 4 0
+> entity 80 4 0
+> entity 81 4 0
+> entity 9100 3 14
+> market add 9100 3 77 12 17 1
+> market add 9100 3 78 9 27 8
+> market add 9100 4 79 11 37 8
+> market add 9100 3 80 0 47 0
+> market add 9100 2 77 20 1 0
+> market add 9100 3 81 7 57 4
+> market options 9100 0 1 5 1
+> market options 9100 1 8 4 2
+> market options 9100 2 8 3 1
+> set turn 1
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 3 77 12 17 1 4 1
+raw trade 1 9100 3 78 9 27 8 3 2
+raw trade 2 9100 4 79 11 37 8 2 1
+raw trade 3 9100 3 80 0 47 0 0 0
+raw trade 4 9100 2 77 20 17 0 4 1
+raw trade 5 9100 3 81 7 57 4 0 0
+raw trade 6 9100 1 79 11 37 0 2 1
+9100 loc city
+tl	3 77 12 17 1 0 1 4 \
+	3 78 9 27 2 0 8 3 \
+	4 79 11 37 1 0 8 2 \
+	3 80 0 47 0 0 0 0 \
+	2 77 20 17 1 0 0 4 \
+	3 81 7 57 0 0 4 0 \
+	1 79 11 37 1 0 0 2
+
+> set turn 2
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 3 77 12 17 1 3 1
+raw trade 1 9100 3 78 9 27 8 2 2
+raw trade 2 9100 4 79 11 37 8 1 1
+raw trade 3 9100 3 80 0 47 0 0 0
+raw trade 4 9100 2 77 20 17 0 3 1
+raw trade 5 9100 3 81 7 57 4 0 0
+raw trade 6 9100 1 79 11 37 0 1 1
+9100 loc city
+tl	3 77 12 17 1 0 1 3 \
+	3 78 9 27 2 0 8 2 \
+	4 79 11 37 1 0 8 1 \
+	3 80 0 47 0 0 0 0 \
+	2 77 20 17 1 0 0 3 \
+	3 81 7 57 0 0 4 0 \
+	1 79 11 37 1 0 0 1
+
+> set turn 8
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 3 77 12 17 1 2 1
+raw trade 1 9100 3 78 9 27 8 1 2
+raw trade 2 9100 4 79 11 37 8 0 1
+raw trade 3 9100 3 80 0 47 0 0 0
+raw trade 4 9100 2 77 20 17 0 2 1
+raw trade 5 9100 3 81 7 57 4 0 0
+raw trade 6 9100 1 79 11 37 0 0 1
+raw trade 7 9100 2 78 9 27 0 1 2
+9100 loc city
+tl	3 77 12 17 1 0 1 2 \
+	3 78 9 27 2 0 8 1 \
+	4 79 11 37 1 0 8 0 \
+	3 80 0 47 0 0 0 0 \
+	2 77 20 17 1 0 0 2 \
+	3 81 7 57 0 0 4 0 \
+	1 79 11 37 1 0 0 0 \
+	2 78 9 27 2 0 0 1
+
+> set turn 9
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 3 77 12 17 1 1 1
+raw trade 1 9100 3 78 9 27 8 0 2
+raw trade 2 9100 4 79 11 37 8 0 1
+raw trade 3 9100 3 80 0 47 0 0 0
+raw trade 4 9100 2 77 20 17 0 1 1
+raw trade 5 9100 3 81 7 57 4 0 0
+raw trade 6 9100 1 79 11 37 0 0 1
+raw trade 7 9100 2 78 9 27 0 0 2
+9100 loc city
+tl	3 77 12 17 1 0 1 1 \
+	3 78 9 27 2 0 8 0 \
+	4 79 11 37 1 0 8 0 \
+	3 80 0 47 0 0 0 0 \
+	2 77 20 17 1 0 0 1 \
+	3 81 7 57 0 0 4 0 \
+	1 79 11 37 1 0 0 0 \
+	2 78 9 27 2 0 0 0
+
+> market restock 9100 1
+> market state 9100
+raw trade 0 9100 3 77 12 17 1 0 1
+raw trade 1 9100 3 78 9 27 8 0 2
+raw trade 2 9100 4 79 11 37 8 0 1
+raw trade 3 9100 3 80 0 47 0 0 0
+raw trade 4 9100 2 77 20 17 0 0 1
+raw trade 5 9100 3 81 7 57 4 0 0
+raw trade 6 9100 1 79 11 37 0 0 1
+raw trade 7 9100 2 78 9 27 0 0 2
+raw trade 8 9100 2 81 7 57 0 0 0
+9100 loc city
+tl	3 77 12 17 1 0 1 0 \
+	3 78 9 27 2 0 8 0 \
+	4 79 11 37 1 0 8 0 \
+	3 80 0 47 0 0 0 0 \
+	2 77 20 17 1 0 0 0 \
+	3 81 7 57 0 0 4 0 \
+	1 79 11 37 1 0 0 0 \
+	2 78 9 27 2 0 0 0 \
+	2 81 7 57 0 0 0 0
+
+> set turn 10
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 3 77 12 17 1 0 1
+raw trade 1 9100 3 78 9 27 8 0 2
+raw trade 2 9100 4 79 11 37 8 0 1
+raw trade 3 9100 3 80 0 47 0 0 0
+raw trade 4 9100 2 77 20 17 0 0 1
+raw trade 5 9100 3 81 7 57 4 0 0
+raw trade 6 9100 1 79 11 37 0 0 1
+raw trade 7 9100 2 78 9 27 0 0 2
+raw trade 8 9100 2 81 7 57 0 0 0
+9100 loc city
+tl	3 77 12 17 1 0 1 0 \
+	3 78 9 27 2 0 8 0 \
+	4 79 11 37 1 0 8 0 \
+	3 80 0 47 0 0 0 0 \
+	2 77 20 17 1 0 0 0 \
+	3 81 7 57 0 0 4 0 \
+	1 79 11 37 1 0 0 0 \
+	2 78 9 27 2 0 0 0 \
+	2 81 7 57 0 0 0 0
+
+stderr:
+
+exit 0
+stdout:
+section market expiration raw zeros deletion shift and inventory holding
+> entity 77 4 73
+> entity 78 4 73
+> entity 79 4 73
+> entity 80 4 0
+> entity 9100 3 14
+> market add 9100 3 77 12 17 0
+> market add 9100 2 78 3 27 0
+> trade 9100 1 79 0 37 9100 0
+> market add 9100 1 79 8 37 0
+> market add 9100 4 79 8 37 0
+> market add 9100 2 80 9 47 0
+> market options 9100 0 0 1 0
+> market options 9100 1 0 0 0
+> market options 9100 2 0 0 0
+> market options 9100 3 0 -2 0
+> market options 9100 4 0 2 0
+> market options 9100 5 0 1 0
+> inventory 1000 79 1
+> inventory 9100 77 100
+> market expire 9100
+> market state 9100
+raw trade 0 9100 1 79 0 37 0 0 0
+raw trade 1 9100 1 79 8 37 0 -2 0
+raw trade 2 9100 4 79 8 37 0 1 0
+raw trade 3 9100 2 80 9 47 0 0 0
+9100 loc city
+il	77 100
+tl	1 79 8 37 0 0 0 -2 \
+	4 79 8 37 0 0 0 1 \
+	2 80 9 47 0 0 0 0
+
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 1 79 0 37 0 0 0
+raw trade 1 9100 1 79 8 37 0 -2 0
+raw trade 2 9100 2 80 9 47 0 0 0
+9100 loc city
+il	77 100
+tl	1 79 8 37 0 0 0 -2 \
+	2 80 9 47 0 0 0 0
+
+> consume 1000 79 1
+inventory result 1
+> market expire 9100
+> market state 9100
+raw trade 0 9100 2 80 9 47 0 0 0
+9100 loc city
+il	77 100
+tl	2 80 9 47 0 0 0 0
+
+stderr:
+
+exit 0
+stdout:
+section market expiration copied lifetime retains all held buys not only last
+> entity 77 4 73
+> entity 9100 3 14
+> market add 9100 3 77 12 17 0
+> market add 9100 4 77 14 37 0
+> market options 9100 0 0 3 1
+> market options 9100 1 0 3 2
+> inventory 1001 77 1
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 3 77 12 17 0 2 1
+raw trade 1 9100 4 77 14 37 0 2 2
+raw trade 2 9100 2 77 12 17 0 2 1
+raw trade 3 9100 1 77 14 37 0 2 2
+9100 loc city
+tl	3 77 12 17 1 0 0 2 \
+	4 77 14 37 2 0 0 2 \
+	2 77 12 17 1 0 0 2 \
+	1 77 14 37 2 0 0 2
+
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 3 77 12 17 0 1 1
+raw trade 1 9100 4 77 14 37 0 1 2
+raw trade 2 9100 2 77 12 17 0 1 1
+raw trade 3 9100 1 77 14 37 0 1 2
+9100 loc city
+tl	3 77 12 17 1 0 0 1 \
+	4 77 14 37 2 0 0 1 \
+	2 77 12 17 1 0 0 1 \
+	1 77 14 37 2 0 0 1
+
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 1 77 14 37 0 0 2
+9100 loc city
+tl	1 77 14 37 2 0 0 0
+
+> market restock 9100 0
+> market state 9100
+raw trade 0 9100 1 77 14 37 0 0 2
+9100 loc city
+tl	1 77 14 37 2 0 0 0
+
+> consume 1001 77 1
+inventory result 1
+> market expire 9100
+> market state 9100
+9100 loc city
+
+stderr:
+
+exit 0
+stdout:
+section market asymmetric monthly cities and noncity untouched
+> master 7
+> set turn 8
+> entity 93 4 0
+> entity 77 4 0
+> entity 78 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9100 3 14
+> entity 9101 3 14
+> entity 9102 3 37
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9001 9101
+> link 9000 9102
+> field 9100 opium 2
+> field 9101 opium 5
+> market add 9100 3 77 12 17 8
+> market add 9101 3 77 3 27 8
+> market add 9101 4 78 19 7 0
+> market add 9102 3 78 31 33 0
+> trade 9100 1 93 0 18 9100 0
+> trade 9101 1 93 65 19 9101 0
+> market all
+> market state 9100
+raw trade 0 9100 3 77 12 17 8 0 0
+raw trade 1 9100 1 93 0 18 0 0 0
+raw trade 2 9100 4 93 50 18 0 0 1
+raw trade 3 9100 2 77 12 17 0 0 0
+raw trade 4 9100 1 93 50 18 0 0 1
+9100 loc city
+tl	3 77 12 17 0 0 8 0 \
+	4 93 50 18 1 0 0 0 \
+	2 77 12 17 0 0 0 0 \
+	1 93 50 18 1 0 0 0
+LI
+ wh 9000
+SL
+ op 3
+
+> market state 9101
+raw trade 0 9101 3 77 3 27 8 0 0
+raw trade 1 9101 4 78 19 7 0 0 0
+raw trade 2 9101 1 93 66 19 0 0 1
+raw trade 3 9101 4 93 66 19 0 0 1
+raw trade 4 9101 2 77 3 27 0 0 0
+raw trade 5 9101 1 78 19 7 0 0 0
+9101 loc city
+tl	3 77 3 27 0 0 8 0 \
+	4 78 19 7 0 0 0 0 \
+	1 93 66 19 1 0 0 0 \
+	4 93 66 19 1 0 0 0 \
+	2 77 3 27 0 0 0 0 \
+	1 78 19 7 0 0 0 0
+LI
+ wh 9001
+SL
+ op 5
+
+> market state 9102
+raw trade 0 9102 3 78 31 33 0 0 0
+9102 loc inn
+tl	3 78 31 33 0 0 0 0
+LI
+ wh 9000
+
+stderr:
+location_trades()
+
+exit 0
+stdout:
+section market ring keyed gate kind cost markets and turn controls
+> master 7
+> set turn 8
+> entity 938 4 0
+> entity 939 4 0
+> entity 940 4 0
+> entity 941 4 0
+> entity 942 4 0
+> entity 9100 3 14
+> entity 9101 3 14
+> entity 9102 3 14
+> entity 9103 3 14
+> entity 9104 3 14
+> entity 9105 3 14
+> entity 9106 3 14
+> entity 9107 3 14
+> market rolls 9100
+ring rolls 3 2 10
+> market rings 9100
+> market rolls 9101
+ring rolls 2 2 3
+> market rings 9101
+> market rolls 9102
+ring rolls 2 1 5
+> market rings 9102
+> market rolls 9103
+ring rolls 3 3 12
+> market rings 9103
+> market rolls 9104
+ring rolls 3 4 1
+> market rings 9104
+> market rolls 9105
+ring rolls 2 2 8
+> market rings 9105
+> market rolls 9106
+ring rolls 1 1 12
+> market rings 9106
+> market rolls 9107
+ring rolls 2 1 7
+> market rings 9107
+> market state 9100
+raw trade 0 9100 2 60469 1 950 0 0 0
+9100 loc city
+il	60469 1
+tl	2 60469 1 950 0 0 0 0
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9103
+IM
+ uk 12
+ lo 940
+
+71995 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9104
+IM
+ uk 13
+ lo 941
+
+> market state 9101
+9101 loc city
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9103
+IM
+ uk 12
+ lo 940
+
+71995 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9104
+IM
+ uk 13
+ lo 941
+
+> market state 9102
+9102 loc city
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9103
+IM
+ uk 12
+ lo 940
+
+71995 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9104
+IM
+ uk 13
+ lo 941
+
+> market state 9103
+raw trade 0 9103 2 62040 1 1050 0 0 0
+9103 loc city
+il	62040 1
+tl	2 62040 1 1050 0 0 0 0
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9103
+IM
+ uk 12
+ lo 940
+
+71995 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9104
+IM
+ uk 13
+ lo 941
+
+> market state 9104
+raw trade 0 9104 2 71995 1 500 0 0 0
+9104 loc city
+il	71995 1
+tl	2 71995 1 500 0 0 0 0
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9103
+IM
+ uk 12
+ lo 940
+
+71995 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9104
+IM
+ uk 13
+ lo 941
+
+> market state 9105
+9105 loc city
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9103
+IM
+ uk 12
+ lo 940
+
+71995 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9104
+IM
+ uk 13
+ lo 941
+
+> market state 9106
+9106 loc city
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9103
+IM
+ uk 12
+ lo 940
+
+71995 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9104
+IM
+ uk 13
+ lo 941
+
+> market state 9107
+9107 loc city
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9103
+IM
+ uk 12
+ lo 940
+
+71995 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9104
+IM
+ uk 13
+ lo 941
+
+> set turn 9
+> market rolls 9100
+ring rolls 1 5 4
+> market rings 9100
+> market state 9100
+raw trade 0 9100 2 60469 1 950 0 0 0
+9100 loc city
+il	60469 1
+tl	2 60469 1 950 0 0 0 0
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9103
+IM
+ uk 12
+ lo 940
+
+71995 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9104
+IM
+ uk 13
+ lo 941
+
+> newitem 1000 68
+created 59237
+> save_new
+59237 item suffuse_ring
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section market ring kinds real mint and inventory serialized
+> master 7
+> set turn 8
+> entity 938 4 0
+> entity 939 4 0
+> entity 940 4 0
+> entity 941 4 0
+> entity 942 4 0
+> entity 9100 3 14
+> entity 9102 3 14
+> entity 9103 3 14
+> entity 9104 3 14
+> market new_ring 9100
+created 60469
+> save_new
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+> market new_ring 9102
+created 62040
+> save_new
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9102
+IM
+ uk 10
+ lo 938
+
+> market new_ring 9103
+created 71995
+> save_new
+71995 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9103
+IM
+ uk 12
+ lo 940
+
+> market new_ring 9104
+created 72289
+> save_new
+72289 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9104
+IM
+ uk 13
+ lo 941
+
+> set turn 9
+> market new_ring 9100
+created 59237
+> save_new
+59237 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 14
+ lo 942
+
+stderr:
+
+exit 0
+stdout:
+section market post production actual composition civilization markets resources taxes flag
+> master 7
+> set turn 8
+> set faery_region 8000
+> set cloud_region 8001
+> entity 10 4 0
+> entity 51 4 0
+> entity 59 4 0
+> entity 87 4 0
+> entity 93 4 0
+> entity 77 4 0
+> entity 96 4 0
+> entity 277 4 0
+> entity 294 4 0
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 8002 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9002 3 3
+> entity 9200 3 28
+> entity 9100 3 14
+> entity 9101 3 14
+> entity 9102 3 14
+> link 8000 9000
+> link 8001 9001
+> link 8002 9002
+> link 9000 9100
+> link 9001 9101
+> link 9002 9102
+> link 9002 9200
+> routes 9000 0 0 0 0
+> routes 9001 0 0 0 0
+> routes 9002 0 0 0 0
+> market add 9100 3 77 12 17 8
+> market add 9101 4 77 19 7 0
+> trade 9100 1 93 0 17 9100 0
+> field 9100 opium 1
+> production post
+> production state
+production loc 8000 temp 0 double 0
+8000 loc region
+LI
+ hl 9000 
+
+production loc 8001 temp 0 double 0
+8001 loc region
+LI
+ hl 9001 
+
+production loc 8002 temp 0 double 0
+8002 loc region
+LI
+ hl 9002 
+
+production loc 9000 temp 4 double 0
+9000 loc plain
+il	51 5 \
+	10 10 \
+	277 5 \
+	96 100
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 0 0 0 0 
+ lc 1
+
+production loc 9001 temp 4 double 0
+9001 loc ocean
+il	87 50 \
+	59 30
+LI
+ wh 8001
+ hl 9101 
+LO
+ pd 0 0 0 0 
+ lc 1
+
+production loc 9002 temp 4 double 0
+9002 loc plain
+il	51 5 \
+	10 10 \
+	277 5 \
+	96 100
+LI
+ wh 8002
+ hl 9102 9200 
+LO
+ pd 0 0 0 0 
+ lc 1
+
+production loc 9100 temp 0 double 0
+9100 loc city
+il	60469 1 \
+	10 10 \
+	294 1 \
+	277 5 \
+	96 80
+tl	3 77 12 17 0 0 8 0 \
+	4 93 37 18 1 0 0 0 \
+	2 77 12 17 0 0 0 0 \
+	1 93 37 18 1 0 0 0 \
+	2 60469 1 950 0 0 0 0
+LI
+ wh 9000
+SL
+ op 2
+
+production loc 9101 temp 0 double 0
+9101 loc city
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100
+tl	4 77 19 7 0 0 0 0 \
+	4 93 15 17 2 0 0 0 \
+	1 77 19 7 0 0 0 0 \
+	1 93 15 17 2 0 0 0
+LI
+ wh 9001
+SL
+
+production loc 9102 temp 0 double 0
+9102 loc city
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100
+tl	4 93 15 17 2 0 0 0 \
+	1 93 15 17 2 0 0 0
+LI
+ wh 9002
+SL
+
+production loc 9200 temp 0 double 0
+9200 loc poppy field
+il	93 25
+LI
+ wh 9002
+
+post 1
+pending trades:
+> market state 9100
+raw trade 0 9100 3 77 12 17 8 0 0
+raw trade 1 9100 1 93 0 17 0 0 0
+raw trade 2 9100 4 93 37 18 0 0 1
+raw trade 3 9100 2 77 12 17 0 0 0
+raw trade 4 9100 1 93 37 18 0 0 1
+raw trade 5 9100 2 60469 1 950 0 0 0
+9100 loc city
+il	60469 1 \
+	10 10 \
+	294 1 \
+	277 5 \
+	96 80
+tl	3 77 12 17 0 0 8 0 \
+	4 93 37 18 1 0 0 0 \
+	2 77 12 17 0 0 0 0 \
+	1 93 37 18 1 0 0 0 \
+	2 60469 1 950 0 0 0 0
+LI
+ wh 9000
+SL
+ op 2
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+
+> market state 9101
+raw trade 0 9101 4 77 19 7 0 0 0
+raw trade 1 9101 4 93 15 17 0 0 2
+raw trade 2 9101 1 77 19 7 0 0 0
+raw trade 3 9101 1 93 15 17 0 0 2
+9101 loc city
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100
+tl	4 77 19 7 0 0 0 0 \
+	4 93 15 17 2 0 0 0 \
+	1 77 19 7 0 0 0 0 \
+	1 93 15 17 2 0 0 0
+LI
+ wh 9001
+SL
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+
+> market state 9102
+raw trade 0 9102 4 93 15 17 0 0 2
+raw trade 1 9102 1 93 15 17 0 0 2
+9102 loc city
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100
+tl	4 93 15 17 2 0 0 0 \
+	1 93 15 17 2 0 0 0
+LI
+ wh 9002
+SL
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+
+> production gold
+> set turn 9
+> production post
+> production state
+production loc 8000 temp 0 double 0
+8000 loc region
+LI
+ hl 9000 
+
+production loc 8001 temp 0 double 0
+8001 loc region
+LI
+ hl 9001 
+
+production loc 8002 temp 0 double 0
+8002 loc region
+LI
+ hl 9002 
+
+production loc 9000 temp 4 double 0
+9000 loc plain
+il	51 5 \
+	10 10 \
+	277 5 \
+	96 100
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 0 0 0 0 
+ lc 1
+
+production loc 9001 temp 4 double 0
+9001 loc ocean
+il	87 50 \
+	59 30 \
+	96 100
+LI
+ wh 8001
+ hl 9101 
+LO
+ pd 0 0 0 0 
+ lc 1
+
+production loc 9002 temp 4 double 0
+9002 loc plain
+il	51 5 \
+	10 10 \
+	277 5 \
+	96 100
+LI
+ wh 8002
+ hl 9102 9200 
+LO
+ pd 0 0 0 0 
+ lc 1
+
+production loc 9100 temp 0 double 0
+9100 loc city
+il	60469 1 \
+	10 10 \
+	294 1 \
+	277 5 \
+	96 70
+tl	3 77 12 17 0 0 8 0 \
+	4 93 50 18 1 0 0 0 \
+	2 77 12 17 0 0 0 0 \
+	1 93 50 18 1 0 0 0 \
+	2 60469 1 950 0 0 0 0
+LI
+ wh 9000
+SL
+ op 3
+
+production loc 9101 temp 0 double 0
+9101 loc city
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100 \
+	59237 1
+tl	4 77 19 7 0 0 0 0 \
+	4 93 15 17 2 0 0 0 \
+	1 77 19 7 0 0 0 0 \
+	1 93 15 17 2 0 0 0 \
+	2 59237 1 850 0 0 0 0
+LI
+ wh 9001
+SL
+
+production loc 9102 temp 0 double 0
+9102 loc city
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100
+tl	4 93 15 17 2 0 0 0 \
+	1 93 15 17 2 0 0 0
+LI
+ wh 9002
+SL
+
+production loc 9200 temp 0 double 0
+9200 loc poppy field
+il	93 25
+LI
+ wh 9002
+
+post 1
+pending trades:
+> market state 9100
+raw trade 0 9100 3 77 12 17 8 0 0
+raw trade 1 9100 1 93 0 17 0 0 0
+raw trade 2 9100 4 93 50 18 0 0 1
+raw trade 3 9100 2 77 12 17 0 0 0
+raw trade 4 9100 1 93 50 18 0 0 1
+raw trade 5 9100 2 60469 1 950 0 0 0
+9100 loc city
+il	60469 1 \
+	10 10 \
+	294 1 \
+	277 5 \
+	96 70
+tl	3 77 12 17 0 0 8 0 \
+	4 93 50 18 1 0 0 0 \
+	2 77 12 17 0 0 0 0 \
+	1 93 50 18 1 0 0 0 \
+	2 60469 1 950 0 0 0 0
+LI
+ wh 9000
+SL
+ op 3
+
+59237 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9101
+IM
+ uk 11
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+
+> market state 9101
+raw trade 0 9101 4 77 19 7 0 0 0
+raw trade 1 9101 4 93 15 17 0 0 2
+raw trade 2 9101 1 77 19 7 0 0 0
+raw trade 3 9101 1 93 15 17 0 0 2
+raw trade 4 9101 2 59237 1 850 0 0 0
+9101 loc city
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100 \
+	59237 1
+tl	4 77 19 7 0 0 0 0 \
+	4 93 15 17 2 0 0 0 \
+	1 77 19 7 0 0 0 0 \
+	1 93 15 17 2 0 0 0 \
+	2 59237 1 850 0 0 0 0
+LI
+ wh 9001
+SL
+
+59237 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9101
+IM
+ uk 11
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+
+> market state 9102
+raw trade 0 9102 4 93 15 17 0 0 2
+raw trade 1 9102 1 93 15 17 0 0 2
+9102 loc city
+il	10 10 \
+	294 1 \
+	277 5 \
+	96 100
+tl	4 93 15 17 2 0 0 0 \
+	1 93 15 17 2 0 0 0
+LI
+ wh 9002
+SL
+
+59237 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9101
+IM
+ uk 11
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+
+stderr:
+compute_civ_levels()
+location_trades()
+compute_civ_levels()
+location_trades()
+
+exit 0
+stdout:
+section market ring actual settlement lore soldout restock repeated and next turn
+> master 7
+> set turn 8
+> entity 1 4 0
+> entity 938 4 0
+> entity 939 4 0
+> entity 940 4 0
+> entity 941 4 0
+> entity 942 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 3 14
+> link 8000 9000
+> link 9000 9100
+> link 9100 1000
+> inventory 1000 1 5000
+> market rings 9100
+> market state 9100
+raw trade 0 9100 2 60469 1 950 0 0 0
+9100 loc city
+il	60469 1
+tl	2 60469 1 950 0 0 0 0
+LI
+ wh 9000
+ hl 1000 
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+> market rings 9100
+> market state 9100
+raw trade 0 9100 2 60469 1 950 0 0 0
+9100 loc city
+il	60469 1
+tl	2 60469 1 950 0 0 0 0
+LI
+ wh 9000
+ hl 1000 
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+> market buy_ring 9100 1000
+> market state 9100
+raw trade 0 9100 2 60469 0 950 0 0 0
+9100 loc city
+LI
+ wh 9000
+ hl 1000 
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 1000
+IM
+ uk 11
+ lo 939
+
+> save 1000
+1000 char 0
+il	1 4050 \
+	60469 1
+LI
+ wh 9100
+CH
+ lo 200
+
+> lore_state 200
+known: 60469
+lore: 60469
+touched:
+weather:
+> market rings 9100
+> market state 9100
+raw trade 0 9100 2 60469 0 950 0 0 0
+raw trade 1 9100 2 62040 1 950 0 0 0
+9100 loc city
+il	62040 1
+tl	2 62040 1 950 0 0 0 0
+LI
+ wh 9000
+ hl 1000 
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 1000
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 11
+ lo 939
+
+> market buy_ring 9100 1000
+> lore_state 200
+known: 60469 62040
+lore: 60469 62040
+touched:
+weather:
+> set turn 9
+> market rolls 9100
+ring rolls 1 5 4
+> market rings 9100
+> market state 9100
+raw trade 0 9100 2 60469 0 950 0 0 0
+raw trade 1 9100 2 62040 0 950 0 0 0
+9100 loc city
+LI
+ wh 9000
+ hl 1000 
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 1000
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 1000
+IM
+ uk 11
+ lo 939
+
+> set turn 10
+> market rolls 9100
+ring rolls 3 4 3
+> market rings 9100
+> market state 9100
+raw trade 0 9100 2 60469 0 950 0 0 0
+raw trade 1 9100 2 62040 0 950 0 0 0
+raw trade 2 9100 2 70414 1 600 0 0 0
+9100 loc city
+il	70414 1
+tl	2 70414 1 600 0 0 0 0
+LI
+ wh 9000
+ hl 1000 
+
+60469 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 1000
+IM
+ uk 11
+ lo 939
+
+62040 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 1000
+IM
+ uk 11
+ lo 939
+
+70414 item suffuse_ring
+na Golden ring
+IT
+ wt 1
+ un 9100
+IM
+ uk 13
+ lo 941
+
+> save 1000
+1000 char 0
+il	1 3100 \
+	60469 1 \
+	62040 1
+LI
+ wh 9100
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Bought one~Golden ring~[b469] from City~[9100] for 950~gold.
+1000:0::0::Bought one~Golden ring~[d040] from City~[9100] for 950~gold.
+> newitem 1000 68
+created 78970
+> save_new
+78970 item suffuse_ring
+IT
+ un 1000
+
+stderr:
+
+exit 0

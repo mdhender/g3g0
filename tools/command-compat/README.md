@@ -2279,3 +2279,85 @@ bare cache. No new pin/source dependency, local RNG adapter, BUY/SELL or
 new-world command. New-world load initialization remains explicit stage 5;
 postMonth call positions are unchanged. No full-world run or stage-exit
 success is claimed. Version **0.60.0-alpha**, all changes **uncommitted**.
+
+## #83 — real monthly markets and successful post-production composition
+
+Scope clarification: [#83 source-verified comment](https://github.com/mdhender/g3g0/issues/83#issuecomment-6461652386).
+This supersedes #82's temporary `location_trades` boundary above. The task
+fits one bounded closure: no child tasks or duplicate economy tool are needed.
+Pinned C remains `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`; only bare-cache
+`git show`/`git archive` into `tmp/` were used, never an upstream working tree.
+
+| Pinned source | Complete extracted definitions/data (inclusive ranges) |
+| --- | --- |
+| `buy.c` | original `economy_rng` declaration 34; original economy macros and `begin_economy`/all `econ_*` helpers 215–312 |
+| `buy.c` | `find_trade` 809–826; `new_trade` 851–870; `add_city_trade` 1161–1172 |
+| `buy.c` | original `opium_data`/`MAX_OPIUM_ECON` 1195–1212; `opium_market_delta` 1215–1269; `expire_trades` 1271–1309 |
+| `buy.c` | `loc_trade_sup` 1318–1364; `trade_suffuse_ring` 1367–1395; `location_trades` 1398–1414; `is_tradegood` 1500–1516 |
+| `art.c` | `new_suffuse_ring` 1437–1488 |
+
+The Go helpers reuse persistent `w.streams.BeginEconomy/EconStock/EconRing/
+EconCost` exactly, plus the accepted real mint, settlement, inventory/lore
+and save-box lifecycle. No new stream or RNG adapter. `loop_trade` is the
+filtered pointer snapshot at `loop.h:332–345`, **not** a live append loop.
+The separate raw opium scan includes sold-out BUY entries and takes the
+first duplicate; raw expiration ages zero-quantity entries and deletes
+adjacent expired entries without skipping them. The already-live validated
+settlement queue remains unchanged and its earlier recording is preserved.
+
+Ten new recorded sections distinguish:
+
+- Sold-out, partial, no-sale and absent opium orders, bounds **0/7**, first
+  duplicate precedence, both cloaks and actual quantities/prices including
+  levels 1 and 6. Lower demand does not discard excess outstanding BUY stock.
+- Zero-quantity offers are not reused by `new_trade`; annual production,
+  **turns 1/2/8/9/10**, override-only production, consume ignoring seasons,
+  stock floors/surpluses and copied cost/cloak/lifetime metadata.
+- Tradegood aging/deletion, inventory held by either character retaining BUY
+  entries (including zero-quantity/negative-expiry entries), city inventory
+  not retaining them, copied lifetimes and deletion after holders consume
+  their goods. These are exact helper contracts, not new public bug claims.
+- Asymmetric monthly cities, a non-city untouched, gates **1/2/3**, distinct
+  market/turn keys and ring prices **500/600/950/1050**. All five actual
+  `new_suffuse_ring` variants serialize use keys **10–14**, lore **938–942**,
+  Golden ring name, weight and unique owner, with real shared mint IDs.
+- Existing SELL stock prevents a second mint; actual `match_trades` purchases
+  clear SELL quantity, move unique ownership, debit **950** each and queue each
+  unique ring for lore (two rings remain two entries). Same-turn sold-out
+  replacement works; turn 9 rejects restock,
+  turn 10 creates a different ring at **600**, followed by a shared-mint control.
+- Actual `post_production` executes civ → markets → production → taxes → flag,
+  twice across turns 8/9: civ **1**, **25** poppy opium, opium-adjusted city
+  taxes **80 then 70**, `post 1`, Faery/Cloud ring creation and ordinary-market
+  exclusion. The obsolete `TestPostProductionStopsAtLocationTrades` is removed;
+  the successful C composition owns that ordering contract now.
+
+Missing-C-dependency rejection still precedes expected assertion/status
+handling and any `--update`. All new market sections must return **0**;
+malformed fixtures cannot silently become accepted assertion recordings.
+During construction an incomplete tiny map lacked required resource entities
+and province routes; it was corrected, not accepted as gameplay evidence.
+
+Two C runs and Go match **626 sections / 45421 lines / 770256 bytes**.
+Previous **616 sections / 43868 lines / 746528 bytes** and input
+**13839 lines / 247379 bytes** remain exact prefixes, with zero old bytes
+changed. New input: **14174 lines / 253908 bytes**. Recording SHA-256:
+`e3e311370c0273aabce56934ce9ece9e4bdcd5c330c79e13ba01e6ca0273995b`.
+Raw C trailing whitespace remains intentional.
+
+`seed_city_trade` (`seed.c:483–579`) is INIT-only through `seed_city` and
+world/region builders, not called by monthly markets. Trade-route init/save
+already exists. Neither that INIT driver, FIND/BUY/SELL commands nor new-world
+load initialization is included here: `loadDb` retains its explicit stage-5
+boundary. No postMonth ordering change, new source dependency/pin, independent
+fix or full-world success. Version **0.61.0-alpha**; all work **uncommitted**.
+
+Final checks passed in order: command **626/45421**, move **135/7150**,
+helper **37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152** plus phase **5/484**, calendar **2/119**, schedule
+**4/1801**, then default turn (raw status/stdout/stderr and one state file).
+Bounded `go vet ./...` and fresh `go test -count=1 ./...` passed afterward;
+test binaries used the shared `run-limited.sh` executor. Every compat call
+used `G3_REPO=$PWD/tmp/upstream.git`. No full-world run; parent owns it.
+No newly verified upstream defect or blocker was found. `git diff --check`
+reports only literal C recording trailing whitespace, intentionally retained.

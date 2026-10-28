@@ -5,6 +5,32 @@ package olympia
 
 import "fmt"
 
+// new_suffuse_ring, art.c:1437–1488. The caller has begun this market's
+// existing economy stream; allocation and inventory use the real mint/lore path.
+func (w *world) newSuffuseRing(who int) int {
+	n := w.createUniqueItem(who, subSuffuseRing)
+	var ni, lore int
+	switch w.streams.EconRing(subSuffuseRing, who, 1, 5) {
+	case 1:
+		ni, lore = useBarbarianKill, loreBarbarianKill
+	case 2:
+		ni, lore = useSavageKill, loreSavageKill
+	case 3:
+		ni, lore = useCorpseKill, loreUndeadKill
+	case 4:
+		ni, lore = useOrcKill, loreOrcKill
+	case 5:
+		ni, lore = useSkeletonKill, loreSkeletonKill
+	default:
+		assert(false, "olympia/art.c", 1478, "FALSE")
+	}
+	w.setName(n, "Golden ring")
+	w.pItem(n).weight = 1
+	w.pItemMagic(n).useKey = int8(ni)
+	w.pItemMagic(n).lore = int32(lore)
+	return n
+}
+
 // hasAuraculum is art.c:7–18 has_auraculum.
 func (w *world) hasAuraculum(who int) int {
 	var ac int

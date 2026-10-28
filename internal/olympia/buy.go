@@ -14,7 +14,7 @@ import (
 // issue #46), which load_db() sets up with init_trade_routes() and
 // save_db() keeps with save_trade_routes(), and
 // investigate_possible_trade(), which add_item() calls, and complete trade
-// settlement/dispatch. Monthly market restock remains a later task (#83).
+// settlement/dispatch. Monthly market restock is in buy_month.go.
 //
 // The FIND BUY buyer test picks which cities buy a tradegood with
 // md5_int(city_sold, where, item, SECRET) & 1. The secret is 0xb05c0e

@@ -7,6 +7,7 @@
 #include <string.h>
 #include "z.h"
 #include "oly.h"
+#include "rng.h"
 
 void glob_init(void);
 void init_lower(void);
@@ -401,7 +402,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"floor")) drv_replenish(n,a,b);
    else if (!strcmp(text,"taxes")) seed_taxes();
    else if (!strcmp(text,"gold")) drv_city_gold();
-   else if (!strcmp(text,"post")) post_production(); /* rejects missing #83 */
+   else if (!strcmp(text,"post")) post_production();
    else if (!strcmp(text,"state")) {
     loop_loc(n) {
      printf("production loc %d temp %d double %d\n",n,bx[n]->temp,rp_misc(n) ? rp_misc(n)->opium_double : 0);
@@ -409,6 +410,39 @@ int main(int argc, char **argv)
     } next_loc;
     printf("post %d\n",post_has_been_run);
     list("pending trades",trades_to_check);
+   }
+   else return 2;
+  }
+  else if (!strcmp(op, "market")) {
+   int x=0;
+   n=a=b=d=i=0;
+   sscanf(line,"%*s %s %d %d %d %d %d %d",text,&n,&a,&b,&d,&i,&x);
+   if (!strcmp(text,"add")) add_city_trade(n,a,b,d,i,x);
+   else if (!strcmp(text,"options")) {
+    struct trade *t=bx[n]->trades[a]; t->month_prod=b; t->expire=d; t->cloak=i;
+   }
+   else if (!strcmp(text,"opium")) opium_market_delta(n);
+   else if (!strcmp(text,"expire")) expire_trades(n);
+   else if (!strcmp(text,"restock")) loc_trade_sup(n,a);
+   else if (!strcmp(text,"rings")) trade_suffuse_ring(n);
+   else if (!strcmp(text,"all")) location_trades();
+   else if (!strcmp(text,"rolls")) {
+    begin_economy(n);
+    printf("ring rolls %d %d %d\n",econ_stock(sub_suffuse_ring,n,1,3),econ_ring(sub_suffuse_ring,n,1,5),econ_cost(sub_suffuse_ring,n,0,12));
+   }
+   else if (!strcmp(text,"new_ring")) { begin_economy(n); created=new_suffuse_ring(n); printf("created %d\n",created); }
+   else if (!strcmp(text,"state")) {
+    for(i=0;i<trades_len(bx[n]->trades);i++) {
+     struct trade *t=bx[n]->trades[i];
+     printf("raw trade %d %d %d %d %d %d %d %d %d\n",i,t->who,t->kind,t->item,t->qty,t->cost,t->month_prod,t->expire,t->cloak);
+    }
+    save_box(stdout,n);
+    loop_subkind(sub_suffuse_ring,a) { save_box(stdout,a); } next_subkind;
+   }
+   else if (!strcmp(text,"buy_ring")) {
+    loop_subkind(sub_suffuse_ring,b) {
+     if(item_unique(b)==n) { add_city_trade(a,BUY,b,1,2000,0); match_trades(a); break; }
+    } next_subkind;
    }
    else return 2;
   }
