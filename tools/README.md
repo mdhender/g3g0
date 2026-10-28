@@ -3,6 +3,9 @@
 Each directory here holds a `run.sh` that checks part of the Go port against G3's C code at a pinned revision, and a README that says what it checks.
 This page says which checks to run when, and which upstream files each tool reads, so that moving the pin re-records only the tools whose sources changed.
 
+Task notes below retain their original acceptance scope and temporary boundaries;
+the current integration evidence and stage-exit status are under **Stage exit**.
+
 ## Check tiers
 
 **Routine task acceptance.**
@@ -513,8 +516,8 @@ Run `tools/affected.sh OLD NEW` and, for each tool it lists, move the pin in its
 Then run the routine checks.
 `olympia-roundtrip` rebuilds its C cache for the new revision by itself, which takes about 3 minutes.
 `turn-compat` uses `--full --record` to refresh its small C recordings and
-determinism metadata; review those bytes. Its full Go turn remains an honest
-failure until stage 1 integration, not an expected-success NYI baseline.
+determinism metadata; review those bytes. The full Go turn succeeds after
+#123; no NYI failure is accepted as a successful turn baseline.
 
 **Stage exit.**
 Everything, with the whole-game comparisons:
@@ -528,10 +531,59 @@ tools/box-compat/run.sh --full       # after olympia-roundtrip, whose games it r
 tools/boxfile-compat/run.sh --full
 tools/check-compat/run.sh --full
 tools/loadsave-compat/run.sh --full
-tools/turn-compat/run.sh --full      # stage 1 exit; not yet accepted
+tools/turn-compat/run.sh --full      # stage-1 turn/state exit, integrated in #123
 ```
 
 Run these one at a time: `box-compat`, `boxfile-compat`, `check-compat` and `loadsave-compat` read the games `olympia-roundtrip` caches, so do not run them while `olympia-roundtrip --fresh` rebuilds that cache.
+
+**Current acceptance evidence (#90, 2026-10-28).** Linux amd64, GCC 12.2.0,
+Go 1.26.4, stage pin `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
+Roundtrip `--determinism-all` passes 196/196 cases with C/C determinism,
+identical raw streams/status and every file; full box comparison passes
+197 games / 7,947,575 boxes, plain and pretty. Logs are under
+`tmp/issue90-evidence`; the bare source is `tmp/upstream.git`, the reusable C
+cache is `tmp/issue104-roundtrip`, and full tools use
+`GAMES="$PWD/tmp/issue104-roundtrip/cases"`.
+
+Default engine compat checks and vet pass. The actual full turn repeats C
+deterministically, then matches Go status 0, raw stdout/stderr and all 190
+state files; all 13 lifecycle controls pass. Fresh bounded
+`G3G0_FULL=1 go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...`
+passes 11 packages, with nine explicitly opt-in/child-entry skips; the four
+whole-game tests actually run through the full compat tools, not that standalone
+suite. Spec progress is 19 pass / 101 fail / 0 error, no recorded passes lost;
+golden initialization still stops at unsupported `-i`. See the turn/spec READMEs.
+
+The initial run exposed false mode failures from BSD `stat` arguments on Linux;
+local #130 resolved that harness defect and was independently accepted/pushed
+at `686717f70ec3684b8b6b2f6c35fa8dcb3c18d615` (0.76.1-alpha), without changing
+the engine, C oracle or recordings. Parent reruns now pass all required full
+gates: boxfile, 197 games in each of fast/fast-pretty/slow, 7,947,575 boxes;
+check, 197 games / 7,947,575 boxes; loadsave, 197 games / 7,947,567 saved boxes.
+Check/loadsave report zero check_db messages; C/Go trees, raw streams and
+statuses match. Evidence: `tmp/parent130-{boxfile,check,loadsave}-full.log`
+and #130's acceptance comment. The earlier failure logs remain historical
+discovery evidence, not current blockers. Final #90 acceptance passed the
+parent's independent rerun and documentation review: default engine tools,
+196 roundtrips, full box/turn comparisons, vet, full-enabled tests and unchanged
+spec passes. Final logs are `tmp/parent90-*.log`; the three full mode-aware
+comparisons are in the `parent130` logs above.
+
+Separate disclosed platform/peripheral results: scanf's 78 deterministic
+glibc probes differ from the macOS recording on 11 numeric-width cases
+(exit 1; expectations unchanged). Island has 114/119 matching cases, five
+case differences / seven failed checks: two huge-allocation cases and three
+GNU-versus-BSD operand-parsing cases; all 17 upstream island gates pass for
+both engines. These known exceptions are not stage-1 engine blockers and are
+not described as passing tools. Genesis (131 cases, 13 gates) and mapgen
+(126 comparisons, 11 gates) pass at their separate pins.
+
+Open bugs rechecked after #130 closed: no local bug/follow-C issue is open.
+G3 #309 (invalid RNG ranges, won't fix), #352 (unpaid NP transfer),
+#353 (unowned-character knowledge crash), #354 (savage cap overshoot), #355
+(missing token-vanishing notice) and #356 (log-only curse erosion) remain open.
+Their existing C behavior is preserved; none is a known prerequisite fix for
+stage 2. No unresolved stage-1 blocker is currently known.
 
 ## The opt-in switches
 

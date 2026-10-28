@@ -155,3 +155,18 @@ no-save compares 189 files; dot/partial/non-directory act compare 191;
 press/rumor failures compare 189; the remaining controls compare 190.
 No output filtering, expectation re-recording or comparator exclusions changed.
 Reports/artifact bytes remain deferred; #90 retains final stage-exit acceptance.
+
+Final #90 evidence rerun, 2026-10-28 (Linux amd64, GCC 12.2.0, Go 1.26.4):
+`G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue104-roundtrip"
+tools/turn-compat/run.sh --full` exits 0, independently repeating the complete
+C/C and C/Go checks above: all 190 state files, raw streams/status and all
+13 lifecycle controls match. Logs: `tmp/issue90-evidence/turn-full.log`;
+metadata and control summary: `tmp/turn-compat/{c-determinism,lifecycle}.txt`.
+The stage-1 turn/state integration is verified, not pending. The separate
+full boxfile/check/loadsave gates also pass after independently accepted #130
+(0.76.1-alpha): 197 games each, boxfile in all three variants. Evidence is in
+`tmp/parent130-{boxfile,check,loadsave}-full.log`; the initial Linux mode-listing
+failure is resolved, not a turn mismatch or an outstanding blocker. Final #90
+acceptance passed the parent's independent rerun, including the full turn and
+all lifecycle controls (`tmp/parent90-turn-full.log`).
+Report artifact equality remains outside this stage, and no recordings changed.

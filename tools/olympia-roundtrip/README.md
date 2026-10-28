@@ -86,9 +86,14 @@ It exits 0 only when every selected case passes.
 
 ## Results
 
-Current pin: 2026-10-27, Linux amd64, GCC 12.2.0, Go 1.26.4:
-`world` passes, with deterministic C, both statuses 0, identical stdout and
-stderr, and no differing files. Full world/fixture coverage was not rerun.
+Current pin: 2026-10-28, Linux amd64, GCC 12.2.0, Go 1.26.4:
+`--determinism-all` passes all 196 cases (98 games before and after a C turn),
+fail 0, error 0, in 608 seconds. Every case has a C/C determinism check;
+Go matches status, raw stdout/stderr and every run-directory file, with no
+differing files. Command: `G3_REPO="$PWD/tmp/upstream.git"
+WORK="$PWD/tmp/issue104-roundtrip" tools/olympia-roundtrip/run.sh --determinism-all`.
+Evidence: `tmp/issue90-evidence/roundtrip-all.log` and `roundtrip-results.tsv`;
+reusable C results and inputs remain in `tmp/issue104-roundtrip/cases`.
 
 Historical run: 2026-10-27, macOS 26.6.2 arm64, Apple clang 21.0.0, CMake 4.3.3, Go 1.26.4, with `--fresh --determinism-all`.
 

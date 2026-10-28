@@ -11,10 +11,14 @@ load-comment-lines
 load-continuation-blank
 load-continuation-eof
 load-here-duplicate
+load-nowhere-unit
 load-number-width
 load-orphan-unit
 load-short-entries
 load-stray-orders
 rng-selftest
 save-fly-cap
+save-libdir-space
+save-seed-unwritable
 trade-route-seed-parse
+wait-ferry-range

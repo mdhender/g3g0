@@ -55,7 +55,28 @@ The gates also run inside the export, so they cannot write to the clone.
 
 ## Results
 
-Last run: 2026-10-27, Linux amd64, Go 1.26.4. About 54 seconds.
+Current run: 2026-10-28, Linux amd64, Go 1.26.4, pinned revision above.
+`G3_REPO="$PWD/tmp/upstream.git" tools/olympia-spec/run.sh`:
+
+- Regress: **pass 19, fail 101, error 0** (64 seconds, 120 fixtures).
+  All 15 previously recorded passes remain; the tool adds `load-nowhere-unit`,
+  `save-libdir-space`, `save-seed-unwritable` and `wait-ferry-range` to
+  `passing.txt`. No expected bytes or upstream fixtures were changed.
+- `-r` itself is now implemented and the separate full-world state/raw-stream
+  comparison passes. Remaining spec failures are not a baseline that accepts
+  an unimplemented turn: fixtures still request unsupported coverage/state
+  exports and command/mode branches. Actual logs show explicit combat/SAIL
+  stops; `mint-top-id` reaches manifest comparison and differs in deferred
+  report artifacts. These are not an all-spec-green claim or a stage-1 exit gate.
+- Golden initialization still exits 2 at `load_db (-i): not yet implemented`;
+  golden_check reports `NO`. The spec tool exits 0 because no recorded pass was
+  lost, **not** because all regressions or the golden flow pass.
+- Logs: `tmp/issue90-evidence/spec.log`, plus
+  `tmp/olympia-spec/{run-all,olympia-g3,golden}.log`. Full C spec was not rerun.
+
+Historical foundation run (before stage-1 turn integration): 2026-10-27,
+Linux amd64, Go 1.26.4. About 54 seconds. The limitations below describe that
+run, not the current implementation.
 
 - `run-all.sh`: pass 15, fail 100, error 1; no previously passing gate lost.
   - G3 #345's `cli-options` (20 cases) and `load-number-width` (13 cases)
