@@ -1190,6 +1190,54 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.playerBannerState()
 			case "provinces":
 				w.summaryProvincesState()
+			case "templates":
+				w.listOrderTemplatesState()
+			case "account":
+				w.reportAccountState()
+			case "summary":
+				w.summaryReportState()
+			case "factions":
+				w.playerReportState()
+			case "gm":
+				w.gmReportState(args.num(t))
+			case "include":
+				w.genIncludeSectionState()
+			case "include_sup":
+				w.genIncludeSupState(args.num(t))
+			case "bit":
+				n, bit := args.num(t), args.num(t)
+				setBit(&w.pPlayer(n).output, bit)
+			case "block":
+				if err := os.Mkdir(filepath.Join(w.libdir, "log", fmt.Sprint(args.num(t))), 0o755); err != nil {
+					t.Fatal(err)
+				}
+			case "files":
+				for n := range w.loopKind(tPlayer) {
+					_, err := os.Stat(filepath.Join(w.libdir, "log", fmt.Sprint(n)))
+					fmt.Fprintf(&stdout, "report file %d %d\n", n, b2i(err == nil))
+				}
+			case "stored_orders":
+				if p := w.rpPlayer(args.num(t)); p != nil {
+					for _, q := range p.orders {
+						fmt.Fprintf(&stdout, "stored orders %d:", q.unit)
+						for _, s := range q.l {
+							fmt.Fprintf(&stdout, " [%s]", s)
+						}
+						fmt.Fprintln(&stdout)
+					}
+				}
+			case "known":
+				if p := w.rpPlayer(args.num(t)); p != nil {
+					helperList(&stdout, "raw known", p.known)
+				}
+			case "misc":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "report misc %d %d\n", n, b2i(w.rpMisc(n) != nil))
+				w.saveBox(&stdout, n)
+			case "style":
+				w.styleHTML = int32(args.num(t))
+			case "style_probe":
+				w.bottomOut(args.num(t), 0, "style probe")
 			case "skill":
 				n, a, b, d := args.num(t), args.num(t), args.num(t), args.num(t)
 				w.pChar(n).skills.Append(&skillEnt{skill: int32(a), know: int8(b), daysStudied: int32(d)})
@@ -1673,6 +1721,8 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.indepPlayer = int32(n)
 			case "gm":
 				w.gmPlayer = int32(n)
+			case "skill_player":
+				w.skillPlayer = int32(n)
 			case "faery_region":
 				w.faeryRegion = int32(n)
 			case "hades_region":

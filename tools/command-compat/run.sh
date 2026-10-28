@@ -41,7 +41,8 @@ functions = {
                 'exec_comp', 'sort_load_queue', 'sort_run_queue', 'initial_command_load',
                 'min_pri_ready', 'init_wait_list', 'check_all_waits', 'start_phase', 'evening_phase',
                 'daily_command_loop', 'process_player_orders', 'interrupt_order', 'process_interrupted_units', 'process_orders'],
-    'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'prepend_order', 'queue', 'save_player_orders'],
+    'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'prepend_order', 'queue', 'save_player_orders',
+                'orders_template_sup', 'orders_other', 'orders_template', 'list_order_templates'],
     'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord', 'unit_deserts'],
     'move.c': ['check_captain_loses_sailors', 'restore_stack_actions', 'touch_loc_after_move', 'move_stack',
                'departure_message', 'arrival_message', 'discover_road', 'parse_exit_dir',
@@ -87,7 +88,8 @@ functions = {
                'rank_s', 'garrison_notices', 'garrison_spot_check',
                'garrison_strength', 'ping_garrisons', 'garrison_gold', 'top_ruler',
                'nprovs_to_rank', 'find_kings', 'lower_noble_rank',
-               'det_noble_rank_sup', 'determine_noble_ranks'],
+               'det_noble_rank_sup', 'determine_noble_ranks', 'may_rule_here',
+               'garr_own_s', 'garrison_summary'],
     'build.c': ['province_subloc'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
@@ -108,7 +110,7 @@ functions = {
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
-            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units', 'bark_dogs', 'clear_temps', 'ordinal', 'weeks'],
+            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units', 'bark_dogs', 'clear_temps', 'ordinal', 'weeks', 'knum'],
     'npc.c': ['controlled_humans_here', 'get_exit_dir', 'choose_npc_direction', 'npc_move',
               'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'necro.c': ['auto_undead'],
@@ -123,14 +125,14 @@ functions = {
               'find_trade', 'new_trade', 'add_city_trade', 'opium_market_delta',
               'expire_trades', 'loc_trade_sup', 'trade_suffuse_ring', 'location_trades', 'is_tradegood', 'list_pending_trades'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
-             'v_wait', 'd_wait', 'i_wait', 'next_np_turn'],
+             'v_wait', 'd_wait', 'i_wait', 'next_np_turn', 'print_hiring_status', 'print_unformed'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
     'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit',
                'admit_comp', 'print_admit_sup', 'print_admit', 'print_att_sup', 'print_att'],
     'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
                 'update_weather_view_locs', 'new_storm', 'create_some_storms',
                 'natural_weather', 'v_bind_storm', 'd_bind_storm',
-                'move_storm', 'move_bound_storms', 'dissipate_storm'],
+                'move_storm', 'move_bound_storms', 'dissipate_storm', 'storm_report'],
     'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school',
               'exp_s', 'rep_skill_comp', 'flat_skill_comp', 'list_skill_sup',
               'list_skills', 'fractional_skill_qualifier', 'list_partial_skills'],
@@ -141,9 +143,23 @@ functions = {
                  'char_rep_stack_info', 'collect_pledge_backlinks', 'show_pledged',
                  'prisoner_health', 'char_rep_prisoners', 'char_rep_health',
                  'char_rep_combat', 'char_rep_misc', 'char_rep_magic',
-                 'char_rep_sup', 'character_report', 'turn_end_loc_reports', 'player_banner'],
+                 'char_rep_sup', 'character_report', 'turn_end_loc_reports', 'player_banner',
+                 'sum_fighters', 'strip_leading_stupid_word', 'stupid_word', 'prev_word',
+                 'summary_trunc_name', 'unit_summary_sup', 'unit_summary', 'loc_ind_s',
+                 'loc_stack_catchup', 'loc_stack_rep_sup', 'loc_stack_report',
+                 'player_report_sup', 'stack_capacity_report', 'player_report',
+                 'rep_player', 'rep_char', 'rep_loc', 'inc', 'gen_include_sup',
+                 'gen_include_section', 'report_account_sup', 'report_account'],
     'summary.c': ['rank_comp', 'ranking', 'top_rank', 'out_rank_mine_top',
-                  'out_ranking', 'summary_provinces'],
+                  'out_ranking', 'collect_game_totals', 'summary_units', 'summary_skills',
+                  'summary_spells', 'summary_men', 'summary_gold', 'summary_land_owned',
+                  'summary_provinces', 'summary_report'],
+    'gm.c': ['pct', 'skill_use_comp', 'gm_show_skill_use_counts', 'skills_known_comp',
+             'gm_show_skills_known', 'gm_show_interesting_attributes', 'gm_list_animate_items',
+             'gm_show_gold', 'gm_show_control_arts', 'gm_count_stuff', 'gm_show_gate_stats',
+             'gm_show_locs_visited', 'gm_loyalty_stats', 'region_occupy_comp', 'gm_land_stats',
+             'wealth_list_comp', 'gm_faction_wealth', 'nobles_list_comp', 'gm_nobles_list',
+             'gm_player_details', 'list_all_notices', 'list_all_items', 'gm_report'],
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts'],
@@ -173,7 +189,8 @@ int immed_see_all, month_done, show_combat_flag;
     gm = open(f'{src}/gm.c').read()
     for name in ['gold_garrison', 'gold_combat', 'gold_combat_indep',
                  'gold_pot_basket', 'gold_trade', 'gold_opium', 'gold_taxes',
-                 'gold_inn', 'gold_temple', 'gold_provinces']:
+                 'gold_inn', 'gold_temple', 'gold_provinces', 'gold_common_magic',
+                 'gold_lead_to_gold', 'gold_times', 'gold_petty_thief', 'gold_pillage', 'gold_ferry']:
         m = re.search(rf'^int {name} = 0;\n', gm, re.M)
         if not m:
             sys.exit(f'no {name} definition in gm.c')
@@ -197,8 +214,17 @@ int immed_see_all, month_done, show_combat_flag;
         if file == 'combat.c':
             out.write('#include "combat-structs.h"\n')
         if file == 'summary.c':
-            for pattern in [r'^#define\s+SHOW_TOP\s+FALSE\n', r'^static ilist ranks = NULL;\n']:
+            for pattern in [r'^#define\s+SHOW_TOP\s+FALSE\n', r'^static ilist ranks = NULL;\n',
+                            r'^static int nplayers;\n', r'^static int ncontrolled;\n', r'^static int nother;\n']:
                 out.write(re.search(pattern, source, re.M).group(0))
+        if file == 'report.c':
+            start, end = source.index('#define\tTRUNC_NAME'), source.index('static char *\nstrip_leading_stupid_word(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/report.c"\n')
+            out.write(source[start:end])
+            for pattern in [r'^static int sum_\w+;\n', r'^static char \*loyal_chars = .*;\n',
+                            r'^static int loc_stack_explain;\n']:
+                for m in re.finditer(pattern, source, re.M):
+                    out.write(m.group(0))
         if file == 'buy.c':
             out.write(re.search(r'^static rng_stream economy_rng;\n', source, re.M).group(0))
             start, end = source.index('#define\tTAG_TURN'), source.index('/*\n *  Explanation of trade->cloak')
@@ -448,6 +474,7 @@ int show_loc_no_header, win_flag;
  * newly reached rendering dependency into a successful C oracle result. */
 void show_loc(int who, int where) STUB("show_loc")
 char *show_loc_header(int where) STUB("show_loc_header")
+void show_loc_posts(int who, int where, int full) STUB("show_loc_posts")
 ilist trades_to_check;
 ''')
 PY

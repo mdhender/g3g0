@@ -3178,3 +3178,80 @@ Validation at **0.71.0-alpha**, with all changes left **uncommitted**:
 
 No new defect/blocker found. No main integration, Go report text renderer,
 whole-world/stage-exit acceptance, issue closure/tick, commit or push.
+
+## Residual report-tail state (#125)
+
+The oracle extracts unchanged complete `orders_template_sup`, `orders_other`,
+`orders_template`, `list_order_templates`, `report_account_sup`/`report_account`,
+all active `summary_report` helpers, the complete `player_report` closure,
+`gm_report` and its gm.c helpers, and `gen_include_sup`/`gen_include_section`
+with `rep_player`, `rep_char`, `rep_loc` and `inc`. Existing real weights,
+inventory, ownership, skill, output and save writers are reused. Original
+report declarations/tables and GM gold scalars also come from the pin.
+
+Go extends report.go's **state projections**, not a report renderer:
+
+- Templates filter system/silent players and allocate output recipients;
+  autoquit's explicit player access remains separate. Existing commands and
+  own/foreign order queues are unchanged, not reconstructed from text.
+- Account reports stage, reset style and allocate only regular players.
+  The account-summary command/file input is inside `#if 0`; this does not
+  implement external `charge_account`.
+- Summary reports open regular output before `summary_provinces` allocates
+  every player. `loop_known` sorts the original known lists. Rankings and
+  skill/spell/men/gold/land statistics are deferred output-only scratch.
+- Player reports allocate nonsilent records through `player_report_sup` and
+  `unit_summary`, including system players. Unit, location-stack, weight,
+  storm and garrison text/scratch/render-only validation remain stage 2.
+- GM reports stage and open GM output, allocate every player in the known
+  gate/location passes (sorting original knowledge), then open skill-player
+  output last. Pure statistics and item/notice bodies remain stage 2.
+- Include generation validates **existing** output bits, allocates nonsilent
+  player records, and allocates corpse misc records through `rep_char` after
+  its initial output. Foreign players, ordinary items and other unsupported
+  entity kinds retain report.c's original source-located assertions. Silent
+  player inputs are not inspected. No deferred artifact memberships are made
+  up. Include text and location headers remain stage 2.
+
+Shared `openPlayerOutput` supplies ordinary sout.go output and report state
+effects, preserving real raw open-failure diagnostics before output allocates
+a player record. It emits no placeholder report lines. Transient report bits
+are deferred as in #122. `show_loc_header`, `show_loc_posts` and `show_loc`
+remain **aborting rejected-marker dependencies** on deliberately unexercised
+paths, not successful renderer substitutes. No production main call is wired.
+
+Nineteen appended cases compare actual C save bytes, raw list/record observers,
+output-file presence, preserved order queues and raw stdout/stderr/status.
+They cover all player subtypes/missing records, repeated calls, asymmetric
+knowledge, nested stacks, prisoners, capacity/storm traversals, gate knowledge,
+corpse allocation, recognized special/stale include inputs, exact include
+assertions, six report-family output-open failures, account style through an
+ordinary real output probe, and the original relative order of the new
+projections on a small world. Pure report artifacts are not read/compared.
+No new upstream source dependency or pin, renderer, admission handling,
+file-lifecycle/main integration or full-world/stage-exit acceptance is implied.
+
+Validation at **0.72.0-alpha**, left **uncommitted**:
+
+- Pinned C twice and Go match **789 sections / 58175 lines / 1005735 output
+  bytes**. The previous **770 sections / 57313 lines / 989824 output bytes**
+  and **17728 input lines / 321249 input bytes** are exact unchanged prefixes.
+  New input: **18083 lines / 328103 bytes**. Output SHA-256:
+  `68f9453a5ebd6373f4d3932fd9965f3a4c24dba8f2386d2113da063742021713`.
+- Negative linker probes wrapped only `report_account` at an already
+  expected-abort case, emitted the missing-dependency marker, and either
+  returned 0 or aborted 134. Both ordinary and `--update` runs rejected
+  **section 783** with harness status **2**, before status/update acceptance.
+  Recording hash remained unchanged in all four runs. Temporary wrapper
+  source/compiler scripts were deleted before acceptance checks.
+- Eight tools passed **sequentially**, `G3_REPO=$PWD/tmp/upstream.git`:
+  command **789/58175**, move **135/7150**, helper **37/1487**, RNG **321**,
+  code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase **5/484**,
+  calendar **2/119**, schedule **4/1801**, then default turn (identical status,
+  raw stdout/stderr and one state file).
+- Bounded `go vet ./...` and fresh bounded `go test -count=1 ./...` passed;
+  Olympia defaults took **1.709s**. Engine binaries used shared run_limited.
+
+No new stage-blocking defect or additional report input/state closure found.
+Main's explicit report-tail stop remains. No issue closure/tick, commit, push,
+whole-world check or stage-exit claim.

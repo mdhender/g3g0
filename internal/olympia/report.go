@@ -205,7 +205,153 @@ func (w *world) playerBannerState() {
 // including silent players. Province counts and ranking lists are scratch.
 func (w *world) summaryProvincesState() {
 	for pl := range w.loopKind(tPlayer) {
+		sortKnown(w.pPlayer(pl).known) // loop_known sorts the original list.
+	}
+}
+
+// reportOutputState preserves a MASTER out()'s open-before-allocation path
+// (sout.c:295–306,465–467), not its stage-2 body or transient output bits.
+// No blank/successful rendering substitute is emitted. Like ordinary output,
+// this uses openPlayerOutput, so an inaccessible log is still a real failure.
+func (w *world) reportOutputState(pl int) {
+	if w.immediate || pl == 0 || w.isPrisoner(pl) {
+		return
+	}
+	f := w.openPlayerOutput(pl)
+	w.pPlayer(pl)
+	_ = f.Close()
+}
+
+// listOrderTemplatesState projects order.c:369–577. Template traversal only
+// reads existing commands/order queues, including orders_other's foreign
+// units. All template text and loyalty/time-left formatting remain stage 2.
+func (w *world) listOrderTemplatesState() {
+	for pl := range w.loopKind(tPlayer) {
+		if w.subkind(pl) == subPlSystem || w.subkind(pl) == subPlSilent {
+			continue
+		}
+		w.reportOutputState(pl)
+		// orders_template_sup also allocates explicitly for the faction's
+		// autoquit reminder, even when output is in immediate mode.
+		if w.autoQuitTurns > 0 {
+			w.pPlayer(pl)
+		}
+	}
+}
+
+// reportAccountState is report.c:1725–1823. The account command/file-read
+// block is #if 0: no active account input or charge_account is implemented.
+// style(0), then the three html()/STYLE_PREV pairs, leave the style at zero.
+func (w *world) reportAccountState() {
+	w.stage("report_account()")
+	for pl := range w.loopKind(tPlayer) {
+		if w.subkind(pl) == subPlRegular {
+			w.styleHTML = 0
+			w.reportOutputState(pl)
+		}
+	}
+}
+
+// summaryReportState projects summary.c:140–389,438–502. Totals, rankings,
+// skill/spell/land counters and their render-only traversal are scratch and
+// deferred with report text. Regular output opens BEFORE summary_provinces
+// allocates every player and sorts their original knowledge lists.
+func (w *world) summaryReportState() {
+	w.stage("summary_report()")
+	for pl := range w.loopKind(tPlayer) {
+		if w.subkind(pl) == subPlRegular {
+			w.reportOutputState(pl)
+		}
+	}
+	w.summaryProvincesState()
+}
+
+// playerReportState projects report.c:803–1353. player_report_sup allocates
+// nonsystem records before output; unit_summary allocates even system records
+// after its initial output. Unit/location-stack/capacity/storm/garrison text,
+// scratch links and render-only validation remain stage 2. None changes saved
+// units, inventory, skills, commands, ownership, storm or garrison records.
+func (w *world) playerReportState() {
+	w.stage("player_report()")
+	for pl := range w.loopKind(tPlayer) {
+		if w.subkind(pl) == subPlSilent {
+			continue
+		}
+		if w.subkind(pl) != subPlSystem {
+			w.pPlayer(pl)
+		}
+		w.reportOutputState(pl)
 		w.pPlayer(pl)
+	}
+}
+
+// gmReportState projects gm.c:1–1048, not gm_show_all_skills (lore.go).
+// Statistics, sorted scratch copies, item/notice text and render-only entity
+// traversals remain stage 2. gate_stats/locs_visited allocate ALL players and
+// loop_known sorts the stored lists; neither pass grants knowledge. No active
+// input files are read by this closure. list_all_items outputs to skill_player
+// last, independently of the GM recipient and its subtype.
+func (w *world) gmReportState(pl int) {
+	w.stage("gm_report()")
+	w.reportOutputState(pl)
+	for i := range w.loopKind(tPlayer) {
+		sortKnown(w.pPlayer(i).known)
+	}
+	w.reportOutputState(int(w.skillPlayer))
+}
+
+// genIncludeSupState preserves report.c:1423–1566's existing-output input
+// validation. It must not synthesize memberships for omitted report bodies.
+// rep_char (1371–1389) sorts a COPY, then p_misc allocates corpse records;
+// that happens after the initial MASTER output, never before validation.
+// Include body text, lines(), and rep_loc/show_loc_header are stage 2.
+func (w *world) genIncludeSupState(pl int) {
+	p := w.pPlayer(pl)
+	sortKnown(p.output)
+	var chars lists.IList
+	for _, n := range p.output {
+		switch n {
+		case 0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 20, 21, 22, 23, 24, 25:
+			// OUT_BANNER/INCLUDE/LORE/NEW/LOC/TEMPLATE/GARR/SHOW_POSTS,
+			// LOG_CODE/SPECIAL/DEATH/MISC/DROP and EAT_* (sout.h).
+			continue
+		}
+		if !w.validBox(n) {
+			continue
+		}
+		switch w.kind(n) {
+		case tChar, tDeadchar:
+			chars.Append(n)
+		case tLoc, tShip:
+			// Only deferred location-header text.
+		case tPlayer:
+			assert(n == pl, "olympia/report.c", 1495, "n == pl")
+		case tItem:
+			if w.subkind(n) == subDeadBody {
+				chars.Append(n)
+			} else {
+				assert(false, "olympia/report.c", 1503, "FALSE")
+			}
+		default:
+			assert(false, "olympia/report.c", 1507, "FALSE")
+		}
+	}
+	w.reportOutputState(pl)
+	w.sortForOutput(chars)
+	for _, n := range chars {
+		if w.subkind(n) == subDeadBody {
+			w.pMisc(n)
+		}
+	}
+}
+
+// genIncludeSectionState is report.c:1568–1586's nonsilent loop. The helper
+// remains a state/input projection, not a successful include renderer.
+func (w *world) genIncludeSectionState() {
+	for pl := range w.loopKind(tPlayer) {
+		if w.subkind(pl) != subPlSilent {
+			w.genIncludeSupState(pl)
+		}
 	}
 }
 

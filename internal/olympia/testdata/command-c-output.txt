@@ -57311,3 +57311,865 @@ bad lore sheet function:
 assertion failure: olympia/lore.c (43): FALSE
 
 exit 134
+stdout:
+section report tail templates allocate regular npc savage not system or silent and preserve orders
+> entity 202 1 49
+> entity 203 1 48
+> entity 204 1 62
+> entity 205 1 52
+> entity 206 1 51
+> entity 9000 3 3
+> link 9000 1000
+> link 9000 1001
+> field 200 unit 1001
+> field 200 unit 1000
+> field 1000 loyal 3
+> field 1000 rate 20
+> set auto_quit 6
+> queue wait 5
+> load
+load 1
+> run -1 1 1 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 3
+ lr 20
+CO
+ li wait 5
+ ar 5 0 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> orders 200 200 wait 3
+> orders 200 1000 move north
+> orders 200 1001 stop
+> orders 200 201 format 1
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_regular
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_system
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_silent
+
+> report state 205
+report entity 205 order 0 player 0 attitudes 0 char 0 magic 0
+205 player pl_npc
+
+> report state 206
+report entity 206 order 0 player 0 attitudes 0 char 0 magic 0
+206 player pl_savage
+
+> report templates
+> report files
+report file 200 1
+report file 201 1
+report file 202 1
+report file 203 0
+report file 204 0
+report file 205 1
+report file 206 1
+> report stored_orders 200
+stored orders 1000: [move north]
+stored orders 200: [wait 3]
+stored orders 1001: [stop]
+stored orders 201: [format 1]
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1001 1000
+200 player pl_regular
+PL
+ un 1001 1000 
+
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_system
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_silent
+
+> report state 205
+report entity 205 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+205 player pl_npc
+PL
+
+> report state 206
+report entity 206 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+206 player pl_savage
+PL
+
+> report templates
+> report stored_orders 200
+stored orders 1000: [move north]
+stored orders 200: [wait 3]
+stored orders 1001: [stop]
+stored orders 201: [format 1]
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 3
+ lr 20
+CO
+ li wait 5
+ ar 5 0 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section report tail account only regular allocates no active account input
+> entity 202 1 49
+> entity 203 1 48
+> entity 204 1 62
+> entity 205 1 52
+> entity 206 1 51
+> entity 207 1 62
+> report style 2
+> report account
+> report style_probe 207
+> readlog 207
+log 207:
+0:0::0::style probe
+> report files
+report file 200 1
+report file 201 1
+report file 202 1
+report file 203 0
+report file 204 0
+report file 205 0
+report file 206 0
+report file 207 1
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_system
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_silent
+
+> report state 205
+report entity 205 order 0 player 0 attitudes 0 char 0 magic 0
+205 player pl_npc
+
+> report state 206
+report entity 206 order 0 player 0 attitudes 0 char 0 magic 0
+206 player pl_savage
+
+> report account
+stderr:
+report_account()
+report_account()
+
+exit 0
+stdout:
+section report tail summary allocates all subtypes and sorts original known not stored units or skills
+> entity 1 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 4
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 9001 1001
+> entity 202 1 49
+> entity 203 1 48
+> entity 204 1 62
+> entity 205 1 52
+> entity 206 1 51
+> entity 600 5 0
+> entity 601 5 0
+> field 601 required 600
+> field 200 unit 1001
+> field 200 unit 1000
+> report skill 1000 601 2 7
+> report skill 1000 600 1 4
+> field 200 known 9001
+> field 200 known 9000
+> field 204 known 9001
+> field 204 known 8000
+> report known 200
+raw known: 9001 9000
+> report known 204
+raw known: 9001 8000
+> report summary
+> report known 200
+raw known: 9000 9001
+> report known 204
+raw known: 8000 9001
+> report files
+report file 200 1
+report file 201 1
+report file 202 1
+report file 203 0
+report file 204 0
+report file 205 0
+report file 206 0
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1001 1000
+200 player pl_regular
+PL
+ kn 9000 9001 
+ un 1001 1000 
+
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_system
+PL
+
+> report state 204
+report entity 204 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+204 player pl_silent
+PL
+ kn 8000 9001 
+
+> report state 205
+report entity 205 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+205 player pl_npc
+PL
+
+> report state 206
+report entity 206 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+206 player pl_savage
+PL
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	601 2 7 0 0 \
+	600 1 4 0 0
+
+> save 1001
+1001 char 0
+LI
+ wh 9001
+CH
+ lo 200
+
+> report summary
+> report known 200
+raw known: 9000 9001
+stderr:
+summary_report()
+summary_report()
+
+exit 0
+stdout:
+section report tail player report nonsilent allocations and real nested stack capacity storm traversals
+> entity 1 4 0
+> entity 10 4 0
+> entity 19 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> link 1000 1001
+> field 200 unit 1001
+> field 200 unit 1000
+> field 1000 health 73
+> field 1001 health 100
+> field 1000 loyal 3
+> field 1000 rate 80
+> entity 202 1 49
+> entity 203 1 48
+> entity 204 1 62
+> entity 205 1 52
+> entity 206 1 51
+> entity 1002 2 0
+> link 9000 1002
+> field 1002 lord 201
+> field 1002 prisoner 1
+> field 201 unit 1002
+> entity 11 4 0
+> field 11 man 1
+> field 11 weight 2
+> field 11 land_cap 3
+> inventory 1000 1 37
+> inventory 1000 11 3
+> entity 7000 11 59
+> link 9000 7000
+> field 7000 summoner 1000
+> field 7000 strength 5
+> report order
+> report factions
+> report files
+report file 200 1
+report file 201 1
+report file 202 1
+report file 203 1
+report file 204 0
+report file 205 1
+report file 206 1
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1000 1001
+200 player pl_regular
+PL
+ un 1000 1001 
+
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_system
+PL
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_silent
+
+> report state 205
+report entity 205 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+205 player pl_npc
+PL
+
+> report state 206
+report entity 206 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+206 player pl_savage
+PL
+
+> save 1000
+1000 char 0
+il	1 37 \
+	11 3
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+ he 73
+ lk 3
+ lr 80
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+
+> save 1002
+1002 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pr 1
+
+> save 7000
+7000 storm rain
+LI
+ wh 9000
+MI
+ sb 1000
+ ss 5
+
+> report factions
+stderr:
+player_report()
+player_report()
+
+exit 0
+stdout:
+section report tail gm allocates silent recipients and all players with asymmetric known lists
+> entity 1 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 4
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 9001 1001
+> entity 202 1 62
+> entity 203 1 48
+> entity 204 1 49
+> entity 205 1 52
+> entity 206 1 51
+> set skill_player 203
+> field 200 unit 1001
+> field 200 unit 1000
+> field 200 known 9001
+> field 200 known 9000
+> field 202 known 9001
+> field 202 known 8000
+> report known 200
+raw known: 9001 9000
+> report known 202
+raw known: 9001 8000
+> report gm 202
+> report files
+report file 200 0
+report file 201 0
+report file 202 1
+report file 203 1
+report file 204 0
+report file 205 0
+report file 206 0
+> report known 200
+raw known: 9000 9001
+> report known 202
+raw known: 8000 9001
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_silent
+PL
+ kn 8000 9001 
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_system
+PL
+
+> report state 204
+report entity 204 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+204 player pl_regular
+PL
+
+> report state 205
+report entity 205 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+205 player pl_npc
+PL
+
+> report state 206
+report entity 206 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+206 player pl_savage
+PL
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9001
+CH
+ lo 200
+
+> report gm 202
+stderr:
+gm_report()
+gm_report()
+
+exit 0
+stdout:
+section report tail gm gate and location passes do not add knowledge
+> entity 1 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> link 9000 1001
+> entity 202 1 62
+> entity 203 1 48
+> entity 204 1 49
+> entity 7000 6 0
+> entity 7001 6 0
+> field 200 known 7001
+> field 200 known 9000
+> field 200 known 7000
+> set skill_player 203
+> report gm 201
+> report known 200
+raw known: 7000 7001 9000
+> report files
+report file 200 0
+report file 201 1
+report file 202 0
+report file 203 1
+report file 204 0
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_silent
+PL
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_system
+PL
+
+> report state 204
+report entity 204 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+204 player pl_regular
+PL
+
+stderr:
+gm_report()
+
+exit 0
+stdout:
+section report tail include seeded bits validate and allocate corpse misc without fabricating other memberships
+> entity 202 1 49
+> entity 203 1 48
+> entity 204 1 62
+> entity 205 1 52
+> entity 3000 4 56
+> entity 3001 4 56
+> entity 3002 8 0
+> field 3000 output_order 8
+> field 3001 output_order 2
+> report misc 3000
+report misc 3000 0
+3000 item dead body
+
+> report misc 3001
+report misc 3001 0
+3001 item dead body
+
+> report bit 200 3000
+> report bit 200 1001
+> report bit 200 3001
+> report bit 200 3002
+> report bit 200 200
+> report bit 200 9999
+> report bit 200 25
+> report bit 200 24
+> report bit 200 23
+> report bit 200 22
+> report bit 200 21
+> report bit 200 20
+> report bit 200 14
+> report bit 200 13
+> report bit 200 12
+> report bit 200 11
+> report bit 200 10
+> report bit 200 7
+> report bit 200 6
+> report bit 200 5
+> report bit 200 4
+> report bit 200 3
+> report bit 200 2
+> report bit 200 1
+> report bit 200 0
+> report include
+> report misc 3000
+report misc 3000 1
+3000 item dead body
+
+> report misc 3001
+report misc 3001 1
+3001 item dead body
+
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_system
+PL
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_silent
+
+> report state 205
+report entity 205 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+205 player pl_npc
+PL
+
+> report files
+report file 200 1
+report file 201 1
+report file 202 1
+report file 203 1
+report file 204 0
+report file 205 1
+> report include
+> save 1001
+1001 char 0
+CH
+ lo 200
+
+> save 3002
+3002 deadchar 0
+
+stderr:
+
+exit 0
+stdout:
+section report tail include silent faction input is not inspected and creates no output file
+> entity 202 1 62
+> report bit 202 201
+> report include
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_silent
+PL
+
+> report files
+report file 200 1
+report file 201 1
+report file 202 0
+stderr:
+
+exit 0
+stdout:
+section report invalid include foreign player asserts before any output
+> report bit 200 201
+> report include_sup 200
+stderr:
+assertion failure: olympia/report.c (1495): n == pl
+
+exit 134
+stdout:
+section report invalid include ordinary item asserts even without report rendering
+> entity 3000 4 0
+> report bit 200 3000
+> report include_sup 200
+stderr:
+assertion failure: olympia/report.c (1503): FALSE
+
+exit 134
+stdout:
+section report invalid include skill kind asserts
+> report bit 200 638
+> report include_sup 200
+stderr:
+assertion failure: olympia/report.c (1507): FALSE
+
+exit 134
+stdout:
+section report invalid include reserved html index is not a recognized include code
+> entity 8 4 0
+> report bit 200 8
+> report include_sup 200
+stderr:
+assertion failure: olympia/report.c (1503): FALSE
+
+exit 134
+stdout:
+section report invalid template output open failure is not successful state allocation
+> lore_root
+> report block 200
+> report templates
+stderr:
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section report invalid account output open failure
+> lore_root
+> report block 200
+> report account
+stderr:
+report_account()
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section report invalid summary output open failure precedes all player allocations
+> lore_root
+> report block 200
+> report summary
+stderr:
+summary_report()
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section report invalid player report output open failure
+> lore_root
+> report block 200
+> report factions
+stderr:
+player_report()
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section report invalid gm output open failure
+> lore_root
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> link 9000 1001
+> report block 200
+> report gm 200
+stderr:
+gm_report()
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section report invalid include output open failure after existing bit validation
+> lore_root
+> report block 200
+> report include_sup 200
+stderr:
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section report tail main ordered projections compose without rendering or changing commands
+> entity 1 4 0
+> entity 10 4 0
+> entity 11 4 0
+> entity 19 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> link 1000 1001
+> field 200 unit 1001
+> field 200 unit 1000
+> entity 202 1 48
+> entity 203 1 62
+> entity 204 1 49
+> set skill_player 202
+> orders 200 1000 wait 3
+> orders 200 1001 move north
+> report order
+> report templates
+> report account
+> report summary
+> report factions
+> report gm 201
+> report include
+> report files
+report file 200 1
+report file 201 1
+report file 202 1
+report file 203 0
+report file 204 1
+> report stored_orders 200
+stored orders 1000: [wait 3]
+stored orders 1001: [move north]
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1000 1001
+200 player pl_regular
+PL
+ un 1000 1001 
+
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+201 player pl_regular
+PL
+
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_system
+PL
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_silent
+PL
+
+> report state 204
+report entity 204 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+204 player pl_regular
+PL
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+stderr:
+report_account()
+summary_report()
+player_report()
+gm_report()
+
+exit 0

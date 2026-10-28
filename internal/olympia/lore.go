@@ -127,9 +127,7 @@ func (w *world) showLoreSheetsState() {
 // reads in school-then-nonschool order. It does not grant knowledge or queue
 // lore. The preceding listing and offered/research lines are stage-2 text.
 func (w *world) gmShowAllSkillsState(pl int) {
-	if !w.immediate && pl != 0 {
-		w.pPlayer(pl)
-	}
+	w.reportOutputState(pl)
 	// The listing traversals happen BEFORE any sheet reads. Keep their
 	// skill_school assertions in order, even though the text is deferred.
 	for sk := range w.loopKind(tSkill) {

@@ -153,19 +153,27 @@ func (w *world) bottomOut(pl, who int, format string, a ...any) {
 	w.bottomOutUnit(pl, who, 0, format, a...)
 }
 
+// openPlayerOutput is sout.c:149–162, shared by ordinary output and the
+// report state projections. Opening precedes the p_player allocation in
+// bottom_out. It does not invent output bits for deferred report artifacts.
+func (w *world) openPlayerOutput(pl int) *os.File {
+	name := sout("%s/log/%d", w.libdir, pl)
+	f, err := os.OpenFile(name, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0o666)
+	if err != nil {
+		fmt.Fprintf(w.stderr, "alloc_fp: can't open %s: ", name)
+		clib.Perror(w.stderr, "", err)
+		assert(false, "olympia/sout.c", 158, "FALSE")
+	}
+	return f
+}
+
 func (w *world) bottomOutUnit(pl, who, unit int, format string, a ...any) {
 	var fp io.Writer = w.stdout
 	if !w.immediate {
 		if pl == 0 {
 			return
 		}
-		name := sout("%s/log/%d", w.libdir, pl)
-		f, err := os.OpenFile(name, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0o666)
-		if err != nil {
-			fmt.Fprintf(w.stderr, "alloc_fp: can't open %s: ", name)
-			clib.Perror(w.stderr, "", err)
-			assert(false, "olympia/sout.c", 158, "FALSE")
-		}
+		f := w.openPlayerOutput(pl)
 		defer f.Close()
 		fp = f
 		setBit(&w.pPlayer(pl).output, who)

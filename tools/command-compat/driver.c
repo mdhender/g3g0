@@ -859,6 +859,49 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"locations")) turn_end_loc_reports();
    else if(!strcmp(text,"banner")) player_banner();
    else if(!strcmp(text,"provinces")) drv_summary_provinces();
+   else if(!strcmp(text,"templates")) list_order_templates();
+   else if(!strcmp(text,"account")) report_account();
+   else if(!strcmp(text,"summary")) summary_report();
+   else if(!strcmp(text,"factions")) player_report();
+   else if(!strcmp(text,"gm")) gm_report(n);
+   else if(!strcmp(text,"include")) gen_include_section();
+   else if(!strcmp(text,"include_sup")) gen_include_sup(n);
+   else if(!strcmp(text,"bit")) {
+    sscanf(line,"%*s %*s %d %d",&n,&a);
+    set_bit(&p_player(n)->output,a);
+   }
+   else if(!strcmp(text,"block")) {
+    if(mkdir(sout("%s/log/%d",libdir,n),0755)) return 2;
+   }
+   else if(!strcmp(text,"files")) {
+    struct stat st;
+    loop_player(n) {
+     printf("report file %d %d\n",n,stat(sout("%s/log/%d",libdir,n),&st)==0);
+    } next_player;
+   }
+   else if(!strcmp(text,"stored_orders")) {
+    struct entity_player *p=rp_player(n);
+    if(p) for(i=0;i<orders_len(p->orders);i++) {
+     int j;
+     printf("stored orders %d:",p->orders[i]->unit);
+     for(j=0;j<cstrings_len(p->orders[i]->l);j++) printf(" [%s]",p->orders[i]->l[j]);
+     printf("\n");
+    }
+   }
+   else if(!strcmp(text,"known")) {
+    struct entity_player *p=rp_player(n);
+    if(p) list("raw known",p->known);
+   }
+   else if(!strcmp(text,"misc")) {
+    printf("report misc %d %d\n",n,rp_misc(n)!=NULL);
+    save_box(stdout,n);
+   }
+   else if(!strcmp(text,"style")) style(n);
+   else if(!strcmp(text,"style_probe")) {
+    out_path=MASTER; out_alt_who=OUT_BANNER;
+    out(n,"style probe");
+    out_path=0; out_alt_who=0;
+   }
    else if(!strcmp(text,"skill")) {
     struct skill_ent *p=my_malloc(sizeof(*p));
     sscanf(line,"%*s %*s %d %d %d %d",&n,&a,&b,&d);
@@ -1202,6 +1245,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "post")) post_has_been_run = n;
    else if (!strcmp(text, "indep")) indep_player = n;
    else if (!strcmp(text, "gm")) gm_player = n;
+   else if (!strcmp(text, "skill_player")) skill_player = n;
    else if (!strcmp(text, "faery_region")) faery_region = n;
    else if (!strcmp(text, "hades_region")) hades_region = n;
    else if (!strcmp(text, "cloud_region")) cloud_region = n;

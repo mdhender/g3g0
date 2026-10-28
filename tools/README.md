@@ -376,6 +376,22 @@ No new upstream source dependency or pin: lore.c, u.c and use.c were tracked.
 Run the same eight comparisons sequentially before bounded vet/fresh defaults.
 No main integration, full Go renderer or whole-world/stage-exit claim.
 
+Residual report-tail state (#125) extends report.go and the existing
+command-compat oracle with complete original templates, account, summary,
+player-report, GM-report and include functions. Go preserves player/corpse
+record allocations, in-place known-list ordering, account style reset and
+existing-output include validation, not report bodies or output-only scratch
+statistics/validation. Shared sout.go log opening preserves real open-failure
+diagnostics before output allocations; deferred artifacts do not fabricate
+output bits. The account-summary input/command block is #if 0 in this pin.
+Original C executes its actual report closure; unexercised location-header
+and notice-rendering dependencies still abort with rejected markers, never
+successful rendering stubs. No new source dependency or pin: gm.c/order.c/
+report.c/summary.c and all called source files were already tracked below
+and in affected.sh. Run the same eight comparisons sequentially, then bounded
+vet/fresh defaults. Admissions, file lifecycle and main wiring remain #126/
+#123, including main's explicit stop; full-world/stage exit remains #90.
+
 Inventory transfer and token acquisition (#117) extend command-compat with
 the complete real `consume_item`, mutually recursive `move_item`/`drop_item`,
 and compiled `move_token` acquisition closure. Real lord interruption/NP,
