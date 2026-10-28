@@ -478,6 +478,30 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		case "trade":
 			n := args.num(t)
 			w.bx[n].trades.Append(&trade{kind: int32(args.num(t)), item: int32(args.num(t)), qty: int32(args.num(t)), cost: int32(args.num(t)), who: int32(args.num(t)), sort: int32(args.num(t))})
+		case "economy":
+			switch action := args.word(); action {
+			case "all":
+				w.matchAllTrades()
+			case "check":
+				w.checkValidatedTrades()
+			case "queue":
+				w.tradesToCheck.Append(args.num(t))
+			case "options":
+				n, a, b, d := args.num(t), args.num(t), args.num(t), args.num(t)
+				w.bx[n].trades[a].haveLeft = int32(b)
+				w.bx[n].trades[a].cloak = int32(d)
+			case "reduce":
+				n, a, b := args.num(t), args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "reduced %d\n", w.reduceQty(w.bx[n].trades[a], int32(b)))
+			case "attempt":
+				n, a, b, d := args.num(t), args.num(t), args.num(t), args.num(t)
+				w.attemptTrade(w.bx[n].trades[a], w.bx[b].trades[d])
+			case "state":
+				fmt.Fprintf(&stdout, "trade gold %d pot basket %d opium %d\n", w.goldTrade, w.goldPotBasket, w.goldOpium)
+				helperList(&stdout, "pending trades", w.tradesToCheck)
+			default:
+				t.Fatalf("unknown economy %s", action)
+			}
 		case "offers":
 			seller, where, except := args.num(t), args.num(t), args.num(t)
 			var l tradesList
@@ -1399,33 +1423,25 @@ func TestCommandSchedulerBoundaries(t *testing.T) {
 			w.dailyCommandLoop()
 		})
 	}
-	for _, boundary := range []string{"trades/evening"} {
-		t.Run(boundary, func(t *testing.T) {
-			w := newWorld()
-			w.allocBox(200, tPlayer, subPlRegular)
-			w.allocBox(1000, tChar, 0)
-			w.allocBox(9000, tLoc, subPlain)
-			w.pChar(1000).unitLord = 200
-			w.pLocInfo(1000).where = 9000
-			w.pLocInfo(9000).hereList.Append(1000)
-			c := w.pCommand(1000)
-			c.who, c.state = 1000, stateDone
-			w.tradesToCheck.Append(1000)
-			want := notImplemented("check_validated_trades")
-			defer func() {
-				if r := recover(); r != want {
-					t.Fatalf("boundary = %v, want %v", r, want)
-				}
-				if c.state != stateDone || c.wait != 0 || w.runQ.Len() != 0 {
-					t.Fatalf("command not completed before boundary: %+v, queue %v", c, w.runQ)
-				}
-			}()
-			c.cmd = int32(w.findCommand("xyzzy"))
-			c.wait, c.status = 1, 1
-			w.setState(c, stateRun, 0)
-			w.eveningPhase()
-		})
-	}
+	t.Run("trades/evening", func(t *testing.T) {
+		w := newWorld()
+		w.allocBox(200, tPlayer, subPlRegular)
+		w.allocBox(1000, tChar, 0)
+		w.allocBox(9000, tLoc, subPlain)
+		w.pChar(1000).unitLord = 200
+		w.pLocInfo(1000).where = 9000
+		w.pLocInfo(9000).hereList.Append(1000)
+		c := w.pCommand(1000)
+		c.who, c.state = 1000, stateDone
+		w.tradesToCheck.Append(1000)
+		c.cmd = int32(w.findCommand("xyzzy"))
+		c.wait, c.status = 1, 1
+		w.setState(c, stateRun, 0)
+		w.eveningPhase()
+		if c.state != stateDone || c.wait != 0 || w.runQ.Len() != 0 || w.tradesToCheck.Len() != 0 {
+			t.Fatalf("command/validation not completed: %+v, queue %v, trades %v", c, w.runQ, w.tradesToCheck)
+		}
+	})
 }
 
 // A garrison without a castle has no output recipients, but still reaches

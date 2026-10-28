@@ -497,7 +497,7 @@ func (w *world) doCommand(c *command) {
 		c.status = int8(w.finishCommand(c))
 	}
 	if w.tradesToCheck.Len() > 0 {
-		panic(notImplemented("check_validated_trades"))
+		w.checkValidatedTrades()
 	}
 }
 
@@ -654,8 +654,8 @@ func (w *world) eveningPhase() {
 		assert(c.state == stateRun, "olympia/input.c", 913, "c->state == STATE_RUN")
 		c.daysExecuting++
 		w.finishCommand(c)
-		if w.tradesToCheck.Len() != 0 {
-			panic(notImplemented("check_validated_trades"))
+		if w.tradesToCheck.Len() > 0 {
+			w.checkValidatedTrades()
 		}
 	}
 	w.checkAllWaits()

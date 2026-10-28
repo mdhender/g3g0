@@ -13,9 +13,8 @@ import (
 // Ported from olympia/buy.c: the per-game trade-route buyer secret (G3
 // issue #46), which load_db() sets up with init_trade_routes() and
 // save_db() keeps with save_trade_routes(), and
-// investigate_possible_trade(), which add_item() calls. City-arrival matching
-// below stops at the unported settlement dependency; the remaining economy
-// work belongs to #81 and later tasks.
+// investigate_possible_trade(), which add_item() calls, and complete trade
+// settlement/dispatch. Monthly market restock remains a later task (#83).
 //
 // The FIND BUY buyer test picks which cities buy a tradegood with
 // md5_int(city_sold, where, item, SECRET) & 1. The secret is 0xb05c0e
@@ -136,8 +135,7 @@ func (w *world) saveTradeRoutes() {
 // match_all_trades() to try soon.
 //
 // The gold test divides by the trade's cost, as C does; a cost of 0 would
-// be SIGFPE in C and a runtime panic here. No caller ported so far adds
-// gold.
+// be SIGFPE in C and a runtime panic here.
 func (w *world) investigatePossibleTrade(who, item, oldHas int) {
 	check := false
 
@@ -232,8 +230,7 @@ func (w *world) buyerList(where, except int) tradesList {
 	return l
 }
 
-// scanTrades is buy.c:635–653. Reaching a candidate pair is a real
-// settlement dependency, not permission to silently skip matching (#81).
+// scanTrades is buy.c:635–653.
 func (w *world) scanTrades(t *trade, l tradesList) {
 	for _, other := range l {
 		if t.qty <= 0 {
@@ -250,9 +247,94 @@ func (w *world) scanTrades(t *trade, l tradesList) {
 	}
 }
 
-// Settlement (buy.c:506–632) is stage task #81, not a successful stub.
+// reduceQty is buy.c:475–503. Locations generate stock/gold and do not
+// apply inventory or reserve limits. All arithmetic remains C int width.
+func (w *world) reduceQty(t *trade, cost int32) int32 {
+	if w.kind(int(t.who)) == tLoc {
+		return t.qty
+	}
+	if t.kind == tradeBuy {
+		has := max(int32(w.hasItem(int(t.who), itemGold))-t.haveLeft, 0)
+		return min(t.qty, has/cost)
+	}
+	if t.kind == tradeSell {
+		has := max(int32(w.hasItem(int(t.who), int(t.item)))-t.haveLeft, 0)
+		return min(t.qty, has)
+	}
+	assert(false, "olympia/buy.c", 501, "FALSE")
+	return 0
+}
+
+// attemptTrade is the complete buy.c:506–632 settlement, using the shared
+// inventory/lore/token and output machinery (including its failure behavior).
 func (w *world) attemptTrade(buyer, seller *trade) {
-	panic(notImplemented("attempt_trade"))
+	item := int(buyer.item)
+	assert(buyer != nil, "olympia/buy.c", 518, "buyer != NULL")
+	assert(seller != nil, "olympia/buy.c", 519, "seller != NULL")
+	assert(buyer.item == seller.item, "olympia/buy.c", 520, "buyer->item == seller->item")
+	if buyer.cost < seller.cost {
+		return
+	}
+	qty := min(w.reduceQty(buyer, seller.cost), w.reduceQty(seller, seller.cost))
+	if qty <= 0 {
+		return
+	}
+	cost := seller.cost * qty
+	buyer.qty -= qty
+	seller.qty -= qty
+	assert(buyer.qty >= 0, "olympia/buy.c", 543, "buyer->qty >= 0")
+	assert(seller.qty >= 0, "olympia/buy.c", 544, "seller->qty >= 0")
+	b, s := int(buyer.who), int(seller.who)
+	if w.kind(b) == tLoc {
+		w.genItem(s, itemGold, int(cost))
+		w.consumeItem(s, item, int(qty))
+		if item == itemPot || item == itemBasket {
+			w.goldPotBasket += cost
+		} else if item == itemOpium {
+			w.logWrite(11, "%s earned %s selling opium.", w.boxName(s), goldS(int(cost))) // LOG_SPECIAL
+			w.goldOpium += cost
+		} else {
+			w.goldTrade += cost
+		}
+	} else if w.kind(s) == tLoc {
+		w.consumeItem(b, itemGold, int(cost))
+		if w.itemUnique(item) != 0 {
+			w.moveItem(s, b, item, int(qty))
+		} else {
+			w.genItem(b, item, int(qty))
+		}
+	} else {
+		w.moveItem(b, s, itemGold, int(cost))
+		w.moveItem(s, b, item, int(qty))
+	}
+	sellerS, buyerS := "", ""
+	if seller.cloak == 0 {
+		sellerS = sout(" from %s", w.boxName(s))
+	}
+	if buyer.cloak == 0 {
+		buyerS = sout(" to %s", w.boxName(b))
+	}
+	if w.kind(b) != tLoc {
+		w.commandOut(b, "Bought %s%s for %s.", w.boxNameQty(item, int(qty)), sellerS, goldS(int(cost)))
+	}
+	if w.kind(s) != tLoc {
+		w.commandOut(s, "Sold %s%s for %s.", w.boxNameQty(item, int(qty)), buyerS, goldS(int(cost)))
+	}
+	where := 0
+	if w.kind(b) == tLoc {
+		where = b
+	} else if w.kind(s) == tLoc {
+		where = s
+	} else {
+		where = w.subloc(b)
+	}
+	if seller.cloak == 0 && buyer.cloak == 0 {
+		w.commandOut(where, "%s bought %s from %s for %s.", w.boxName(b), w.boxNameQty(item, int(qty)), w.boxName(s), goldS(int(cost)))
+	} else if seller.cloak != 0 {
+		w.commandOut(where, "%s bought %s for %s.", w.boxName(b), w.boxNameQty(item, int(qty)), goldS(int(cost)))
+	} else if buyer.cloak != 0 {
+		w.commandOut(where, "%s sold %s for %s.", w.boxName(s), w.boxNameQty(item, int(qty)), goldS(int(cost)))
+	}
 }
 
 // matchTrades is the complete buy.c:656–695 city-arrival dispatcher.
@@ -280,4 +362,30 @@ func (w *world) matchTrades(who int) {
 			w.scanTrades(t, buyers)
 		}
 	}
+}
+
+// matchAllTrades is buy.c:698–729 (phase instrumentation omitted).
+func (w *world) matchAllTrades() {
+	for where := range w.loopKind(tLoc) {
+		if w.marketHere(where) == 0 {
+			continue
+		}
+		sellers := w.sellerList(where, 0)
+		buyers := w.buyerList(where, 0)
+		if len(buyers) == 0 || len(sellers) == 0 {
+			continue
+		}
+		for _, buyer := range buyers {
+			w.scanTrades(buyer, sellers)
+		}
+	}
+}
+
+// checkValidatedTrades is buy.c:735–746. addItem during settlement can
+// append more entries: iterate the live list, not a snapshot or fixed length.
+func (w *world) checkValidatedTrades() {
+	for i := 0; i < w.tradesToCheck.Len(); i++ {
+		w.matchTrades(w.tradesToCheck[i])
+	}
+	w.tradesToCheck.Clear()
 }

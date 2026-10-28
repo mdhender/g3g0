@@ -72,9 +72,9 @@ they never execute an aborting COLLECT handler or claim harvesting works.
 
 All other command routines named by the C table are **aborting** stubs,
 never successful substitutes. The remaining aborting dependencies are
-unrelated noncharacter descriptions and validated-trade settlement. `is_port_city`
-is now the real dir.c definition. Candidate trade settlement still aborts at
-`attempt_trade`. Reaching any
+unrelated noncharacter descriptions and unported command/combat handlers.
+`is_port_city` and trade settlement/dispatch are real extracted definitions.
+Reaching any
 stub fails the script, including `--update`. Only instrumentation
 (`coverage_count` and phase markers) is a no-op: stage 3, not gameplay state. No compared
 scheduler, auto-attack scan, wait predicate or wait handler is a successful stub.
@@ -2137,3 +2137,87 @@ are opt-in and not run here; the actual turn still stops at day-1
 match_all_trades (#81). Production dailyEvents order/weekly gates are unchanged.
 Version **0.58.0-alpha**. Changes remain uncommitted, unstaged and unaccepted
 for parent review; no issue closure, push or stage tick is implied.
+
+## Day-1 trade settlement and live validation (#81)
+
+This extends **command-compat**, rather than the duplicate economy-compat
+named in the original issue. This harness already owns real inventory/lore/
+token transfer, arrival, command completion, market lists, output and saves.
+The pin stays `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`; no new source
+file is read, so affected.sh and the source dependency table are unchanged.
+Earlier historical #81 boundary notes above are superseded by this section.
+
+The script extracts these complete, unchanged definitions from real buy.c:
+
+| definition | exact source lines | count |
+|---|---|---|
+| reduce_qty | 475–503 | 29 |
+| attempt_trade | 506–632 | 127 |
+| match_all_trades | 698–729 | 32 |
+| check_validated_trades | 735–746 | 12 |
+
+These **200 C lines** reuse the accepted real seller/buyer lists, scan_trades,
+match_trades, market_here and investigate_possible_trade. Only phase counters
+are omitted. Original gm.c scalar definitions at **10, 11, 22** supply
+gold_pot_basket, gold_trade and gold_opium; the production port mutates int32
+fields, not observer-derived totals. There are **no settlement RNG draws or
+new RNG adapters**. Shared transfer machinery keeps its existing entity/mint
+streams, tags, guards and draw order per pinned rng-streams.md.
+
+Production removes only the owned attemptTrade/matchAllTrades stops and the
+two conditional completion stops in input.go. Both callers retain their C
+nonempty-list guards. The validator walks the **live growing list** and clears
+it **after** the loop; temporary market lists retain pointers to real trades
+while mutations remain visible. Unported BUY/SELL/FIND and monthly market
+restock (#83) are not implemented or blessed by tests.
+
+**26 appended small sections** compare raw C/Go stdout, stderr and status,
+actual saveBox/trade/inventory bytes, faction/special logs, lore/knowledge,
+ownership/NP mutations and gold metrics:
+
+- Cost mismatch, unequal quantities, buyer gold reserve at the **seller's**
+  price, seller inventory reserve, and reserves above stock/balance.
+- Equal-price seller here-order and character-first/city-last ordering even
+  when the city is cheaper; BUY and SELL entry scans, mismatched items and
+  self-offer skips. City ordinary sales generate stock without consuming its
+  insufficient inventory, and city purchases ignore gold/reserve inventory.
+- City ordinary accounting; pots/baskets **22 gold**, opium **33 gold**, and
+  actual LOG_SPECIAL output. None/seller/buyer/both cloaks and city-side cloak
+  display preserve exact C precedence and messages.
+- Real city/character unique-item ownership/lore transfers. An NPC-token sale
+  transfers its actual controlled unit, refunds **1 NP** then charges **1 NP**,
+  updates faction membership and emits the real token/ownership logs.
+- A live cascade starts with only **1000** queued by real add_item. Settlement
+  appends more work; **1002** then buys the third good from **1003**, who ends
+  with **10 gold**, before the queue clears. A snapshot/fixed-length validator
+  cannot complete this chain. Real do_command and evening_phase separately
+  drain real inventory-triggered queues; real move_stack arrival settles too.
+- Actual process_orders on a small map executes day-1 global matching, then
+  all 30 days through real daily callbacks. Valid tiny Hades/Faery regions and
+  factions allow their real autonomous setup, not successful callback stubs.
+  This is not the opt-in full-world turn or post_month/stage-exit acceptance.
+- Two deliberate raw invalid contracts retain exact reduce_qty/item-pair
+  assertions/status 134. A deliberately inconsistent missing-unique-inventory
+  case reproduces C's no-replacement behavior; this and malformed raw trades
+  alone are **not public-command defect proof**. No new bug was verified or
+  filed; known nonblocking G3 #309/#352/#353/#354/#355/#356 remain unchanged.
+
+Two deterministic C runs produce **606 sections / 42545 lines / 728447 bytes**,
+matched exactly by Go. Previous **580 sections / 41331 lines / 705663 bytes**
+and input **13058 lines / 232235 bytes** are exact prefixes, zero old bytes
+changed. New input: **13560 lines / 242037 bytes**. Move recordings remain
+unchanged. Literal C whitespace is retained.
+
+A removed temporary expected-134 section dispatched ATTACK. Normal and
+`--update` both rejected `out-of-scope C dependency: v_attack` with **status 2**,
+before abort-status acceptance or recording. The recording stayed SHA-256
+`33aaf710e8cc6871ebed0b62072d0ce6688ea4930185a5b798068a8b4d42faaa`.
+Every engine process still uses shared run_limited supervision. Only actual
+definitions replace the three former C trade stubs; unrelated missing
+dependencies remain explicit failures.
+
+Run command/move/helper/rng/code/loadsave/turn-driver/default-turn sequentially,
+then bounded vet/default tests. Whole-world/stage-exit checks remain opt-in
+and are left for parent acceptance; no new full-world boundary is inferred.
+Version **0.59.0-alpha**. Changes remain uncommitted and unaccepted; no commit,
+push, issue closure, stage tick or stage-exit success is implied.

@@ -85,6 +85,11 @@ type world struct {
 	goldCombat      int32
 	goldCombatIndep int32
 
+	// gm.c's city trade accounting (not saved).
+	goldPotBasket int32
+	goldTrade     int32
+	goldOpium     int32
+
 	// maxMapRow, maxMapCol and maxMapInit are max_map_row, max_map_col and
 	// max_map_init in dir.c, which determine_map_edges() sets.
 	maxMapRow  int32

@@ -122,3 +122,10 @@ and player orders and lore scanning, at day 1 before daily command/events.
 Comparison still honestly fails on the same 15 database paths, missing
 `orders/204`, raw stdout/stderr and status. This is diagnostic progress,
 not full-turn or stage-exit acceptance; default checks remain recorded/fast.
+
+After #81 (0.59.0-alpha), the opt-in diagnostic completes all 30 days and
+enters `post_month()`, stopping at `olympia-g3: move_city_gold: not yet
+implemented`. Two pinned C turns still exit 0 and match in their entire
+captures, including reports; Go exits 2. The comparison remains red on
+15 changed database paths, missing `orders/204`, raw stdout/stderr and status.
+This establishes the next real integration boundary, not stage-exit acceptance.

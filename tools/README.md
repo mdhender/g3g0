@@ -94,7 +94,20 @@ real daily_events and its original calendar prefix for small-map composition
 through actual gameplay callbacks, distinct from schedule-only traces.
 Run command/move/helper/rng/code/loadsave/turn-driver/default turn sequentially
 before bounded vet/default tests. No new source dependency/pin or RNG adapter;
-production dailyEvents order/gating and full-turn day-1 #81 boundary stay intact.
+production dailyEvents order/gating stay intact.
+Day-1 trade matching (#81) extends command-compat rather than creating a
+duplicate economy-compat: complete buy.c reduce_qty, attempt_trade,
+match_all_trades and check_validated_trades reuse the real market lists,
+inventory/lore/token, command/arrival and output/save lifecycle. The validator
+iterates its live growing queue and clears after the loop; real completion
+guards and the day-1 call position remain intact. Small cases cover reserves,
+partial balances/quantities, seller ties/city-last order, city generation and
+gold metrics, unique/token transfers, cloaks, a live settlement cascade, real
+command/evening/arrival triggers and actual process_orders on a tiny map.
+Run the same eight tools sequentially before bounded vet/default tests.
+No new source dependency/pin or RNG adapter. BUY/SELL/FIND commands and
+month-end restock (#83) remain unported; no full-world/stage-exit success or
+new observed full-world boundary is inferred from the small-map check.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks
@@ -104,8 +117,8 @@ SAIL/FLY and the eventual whole-engine raft fixture (#90) are separate work.
 Stack-arrival knowledge, contacts, weather views, ocean bookkeeping and city
 matching also use command-compat, reusing its actual Hades/Faery hooks, keyed
 streams, entity creation, order queues and real database writer. Candidate
-settlement stops explicitly at `attempt_trade` pending #81; empty and
-unmatched city paths execute real `match_trades`, not a skipped callback.
+settlement now executes real `attempt_trade`; empty and unmatched city paths
+also execute real `match_trades`, not a skipped callback.
 For exit topology, distances, randomized exit selection, weights or travel
 calculations, movement parsing/admission or movement bookkeeping, and character
 descriptions/stack display (including rank/aura/equipment), departure/arrival
@@ -232,7 +245,7 @@ tools/box-compat/run.sh --full       # after olympia-roundtrip, whose games it r
 tools/boxfile-compat/run.sh --full
 tools/check-compat/run.sh --full
 tools/loadsave-compat/run.sh --full
-tools/turn-compat/run.sh --full      # stage 1 exit; currently fails at match_all_trades
+tools/turn-compat/run.sh --full      # stage 1 exit; not yet accepted
 ```
 
 Run these one at a time: `box-compat`, `boxfile-compat`, `check-compat` and `loadsave-compat` read the games `olympia-roundtrip` caches, so do not run them while `olympia-roundtrip --fresh` rebuilds that cache.

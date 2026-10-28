@@ -50,6 +50,9 @@ int drv_bark_roll(int who, int hound);
 void drv_event_days(void);
 extern int gold_garrison;
 extern int gold_combat, gold_combat_indep;
+extern int gold_pot_basket, gold_trade, gold_opium;
+int drv_reduce(struct trade *t, int cost);
+void drv_attempt(struct trade *b, struct trade *s);
 void drv_inherit_rolls(int from, int item, int qty);
 void drv_storms(int num, int sk);
 void drv_storm_decay(void), drv_storm_move(void), drv_storm_touch(void);
@@ -393,6 +396,20 @@ int main(int argc, char **argv)
    struct trade *t=my_malloc(sizeof(*t));
    sscanf(line,"%*s %d %d %d %d %d %d %d",&n,&t->kind,&t->item,&t->qty,&t->cost,&t->who,&t->sort);
    trades_append(&bx[n]->trades,t);
+  }
+  else if (!strcmp(op, "economy")) {
+   sscanf(line,"%*s %s %d %d %d %d",text,&n,&a,&b,&d);
+   if (!strcmp(text,"all")) match_all_trades();
+   else if (!strcmp(text,"check")) check_validated_trades();
+   else if (!strcmp(text,"queue")) ilist_append(&trades_to_check,n);
+   else if (!strcmp(text,"options")) { bx[n]->trades[a]->have_left=b; bx[n]->trades[a]->cloak=d; }
+   else if (!strcmp(text,"reduce")) printf("reduced %d\n",drv_reduce(bx[n]->trades[a],b));
+   else if (!strcmp(text,"attempt")) drv_attempt(bx[n]->trades[a],bx[b]->trades[d]);
+   else if (!strcmp(text,"state")) {
+    printf("trade gold %d pot basket %d opium %d\n",gold_trade,gold_pot_basket,gold_opium);
+    list("pending trades",trades_to_check);
+   }
+   else { fprintf(stderr,"unknown economy %s\n",text); return 2; }
   }
   else if (!strcmp(op, "offers")) {
    trades_list l;

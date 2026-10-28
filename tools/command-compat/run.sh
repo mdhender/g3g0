@@ -103,7 +103,8 @@ functions = {
                  'auto_savage', 'init_savage_attacks'],
     'lore.c': ['queue_lore', 'scan_char_item_lore'],
     'buy.c': ['investigate_possible_trade', 'market_here', 'seller_comp',
-              'seller_list', 'buyer_list', 'scan_trades', 'match_trades'],
+              'seller_list', 'buyer_list', 'reduce_qty', 'attempt_trade',
+              'scan_trades', 'match_trades', 'match_all_trades', 'check_validated_trades'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait'],
     'produce.c': ['init_collect_list'],
@@ -141,7 +142,8 @@ int immed_see_all, month_done, show_combat_flag;
 #define phase_acted(x) ((void)0)
 ''')
     gm = open(f'{src}/gm.c').read()
-    for name in ['gold_garrison', 'gold_combat', 'gold_combat_indep']:
+    for name in ['gold_garrison', 'gold_combat', 'gold_combat_indep',
+                 'gold_pot_basket', 'gold_trade', 'gold_opium']:
         m = re.search(rf'^int {name} = 0;\n', gm, re.M)
         if not m:
             sys.exit(f'no {name} definition in gm.c')
@@ -202,8 +204,6 @@ int immed_see_all, month_done, show_combat_flag;
         if file == 'move.c':
             out.write('#line 8 "olympia/move.c"\n')
             out.write(re.search(r'^static ilist ocean_chars = NULL;\n', source, re.M).group(0))
-        if file == 'buy.c':
-            out.write('static void attempt_trade(struct trade *b, struct trade *s) { fprintf(stderr, "out-of-scope C dependency: attempt_trade\\n"); fflush(NULL); abort(); }\n')
         if file == 'storm.c':
             start = source.index('static rng_stream weather_rng;')
             end = source.index('int\nv_bind_storm(')
@@ -258,6 +258,8 @@ int drv_bandit(int faery, int who, int where) {
  return faery ? create_faery_bandit(who, where) : create_hades_bandit(who, where);
 }
 int drv_market(int who) { return market_here(who); }
+int drv_reduce(struct trade *t, int cost) { return reduce_qty(t, cost); }
+void drv_attempt(struct trade *b, struct trade *s) { attempt_trade(b, s); }
 void drv_storms(int num, int sk) { create_some_storms(num, sk); }
 void drv_storm_decay(void) { storm_decay(); }
 void drv_storm_move(void) { storm_move(); }
@@ -348,10 +350,6 @@ with open(f'{dst}/stubs.c', 'w') as out:
     for name in sorted(routines - real):
         out.write(f'int {name}(struct command *c) STUB("{name}")\n')
     out.write('''
-/* Only unreachable reporting routes and unrelated code.c dependencies. */
-void check_validated_trades(void) STUB("check_validated_trades")
-/* Later turn phases are explicit failures, never successful substitutes. */
-void match_all_trades(void) STUB("match_all_trades")
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1, pretty_data_files, time_self;
@@ -380,6 +378,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section economy '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section economy invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected economy status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section entities '* ]]; then
    [ "$status" = 0 ] || die "unexpected daily entity status $status in section $i"
   fi
