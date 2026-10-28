@@ -1426,6 +1426,19 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch action := args.word(); action {
 			case "order":
 				w.determineOutputOrder()
+			case "header":
+				n, where := args.num(t), args.num(t)
+				w.commandOut(n, "%s", w.showLocHeader(where))
+			case "barrier":
+				n, where := args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "barrier %d\n", b2i(w.showLocBarrier(n, where)))
+			case "header_parts":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "header records %d %d\n", b2i(w.rpLoc(n) != nil), b2i(w.rpSubloc(n) != nil))
+				fmt.Fprintf(&stdout, "inside [%s]\n", w.locInsideString(n))
+				fmt.Fprintf(&stdout, "civ [%s]\n", w.locCivS(n))
+				fmt.Fprintf(&stdout, "header [%s]\n", w.showLocHeader(n))
+				fmt.Fprintf(&stdout, "header records %d %d\n", b2i(w.rpLoc(n) != nil), b2i(w.rpSubloc(n) != nil))
 			case "players":
 				// C executes the complete original player_ent_info closure.
 				// Only report artifacts are deferred, never the compared state.

@@ -93,7 +93,9 @@ functions = {
     'build.c': ['province_subloc'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
-    'display.c': ['with_inventory_string', 'display_with', 'mage_s', 'priest_s',
+    'display.c': ['loc_inside_string', 'show_loc_barrier', 'safe_haven_s',
+                  'loc_civ_s', 'show_loc_header',
+                  'with_inventory_string', 'display_with', 'mage_s', 'priest_s',
                   'emperor', 'liner_desc_char', 'liner_desc', 'show_chars_below'],
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
             'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
@@ -316,6 +318,7 @@ int immed_see_all, month_done, show_combat_flag;
         for _, text in sorted(matches):
             out.write(text)
     out.write('''
+int drv_loc_barrier(int who, int where) { return show_loc_barrier(who, where); }
 char *drv_fetch(FILE *fp) { return fetch_inp(fp); }
 int drv_admission(char *acct, FILE *fp) { return make_new_players_sup(acct, fp); }
 void drv_make_players(void) { make_new_players(); }
@@ -494,7 +497,6 @@ int show_loc_no_header, win_flag;
 /* This allocation-only probe has no known locations to render. Never turn a
  * newly reached rendering dependency into a successful C oracle result. */
 void show_loc(int who, int where) STUB("show_loc")
-char *show_loc_header(int where) STUB("show_loc_header")
 void show_loc_posts(int who, int where, int full) STUB("show_loc_posts")
 ilist trades_to_check;
 ''')
@@ -521,6 +523,13 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section header '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section header invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected header status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section names '* ]]; then
    [ "$status" = 0 ] || die "unexpected names status $status in section $i"
   fi

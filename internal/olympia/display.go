@@ -3,8 +3,85 @@
 
 package olympia
 
-// Character descriptions from display.c. Noncharacter descriptions and report
-// assembly remain explicit boundaries; these helpers do not render reports.
+// Location headers and character descriptions from display.c. Noncharacter
+// descriptions and complete location-report assembly remain explicit boundaries.
+
+// locInsideString is display.c:8–49. Nested buildings still name the province,
+// not their immediate container; region names are raw names without box codes.
+func (w *world) locInsideString(where int) string {
+	if w.locDepth(where) == locBuild {
+		if w.subkind(w.loc(where)) == subOcean {
+			return sout(", in %s", w.boxName(w.province(where)))
+		}
+		if w.locDepth(w.loc(where)) == locProvince {
+			return sout(", in province %s", w.boxName(w.province(where)))
+		}
+		return sout(", in %s", w.boxName(w.province(where)))
+	} else if w.locDepth(where) == locSubloc {
+		if w.subkind(w.province(where)) == subOcean {
+			return sout(", in %s", w.boxName(w.province(where)))
+		}
+		return sout(", in province %s", w.boxName(w.province(where)))
+	} else if w.subkind(where) == subOcean {
+		if regName := w.name(w.region(where)); regName != "" {
+			return sout(", in %s", regName)
+		}
+		return ""
+	}
+	if regName := w.name(w.region(where)); regName != "" {
+		return sout(", in %s", regName)
+	}
+	return ""
+}
+
+func (w *world) showLocBarrier(who, where int) bool {
+	if w.locBarrier(where) != 0 {
+		w.commandOut(who, "A magical barrier surrounds %s.", w.boxName(where))
+		return true
+	}
+	return false
+}
+
+func (w *world) safeHavenS(n int) string {
+	if w.safeHaven(n) != 0 {
+		return ", safe haven"
+	}
+	return ""
+}
+
+// locCivS is display.c:125–143, including the unguarded region comparisons
+// in oly.h's in_faery/in_hades macros (zero special-region IDs also compare).
+func (w *world) locCivS(where int) string {
+	if w.locDepth(where) != locProvince || w.subkind(where) == subOcean ||
+		w.region(where) == int(w.faeryRegion) || w.region(where) == int(w.hadesRegion) {
+		return ""
+	}
+	var n int8
+	if p := w.rpLoc(where); p != nil {
+		n = p.civ
+	}
+	if n == 0 {
+		return ", wilderness"
+	}
+	return sout(", civ-%d", n)
+}
+
+// showLocHeader is the complete display.c:147–166 suffix sequence.
+func (w *world) showLocHeader(where int) string {
+	buf := w.boxNameKind(where)
+	buf += w.locInsideString(where)
+	if w.mineDepth(where) != 0 {
+		buf += sout(", depth~%d", w.mineDepth(where))
+	}
+	buf += w.safeHavenS(where)
+	if w.locHidden(where) != 0 {
+		buf += ", hidden"
+	}
+	if w.subkind(where) != subTunnel {
+		buf += w.locCivS(where)
+	}
+	return sout("%s", buf)
+}
 
 // withInventoryString is display.c:169–194. loop_inv preserves insertion order
 // and excludes invalid items and nonpositive quantities, not hidden items.

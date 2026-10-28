@@ -61010,3 +61010,448 @@ box qty [one~Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 stderr:
 
 exit 0
+stdout:
+section header provinces raw region names wilderness signed civ and empty region
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 2
+> entity 9002 3 1
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> name 8000 Far [West] <b>lands</b>
+> name 9000 Amber
+> report state 9000
+report entity 9000 order 0 player 0 attitudes 0 char 0 magic 0
+9000 loc plain
+na Amber
+LI
+ wh 8000
+
+> report header_parts 9000
+header records 0 0
+inside [, in Far {West} <b>lands</b>]
+civ [, wilderness]
+header [Amber~[9000], plain, in Far {West} <b>lands</b>, wilderness]
+header records 0 0
+> report header_parts 9002
+header records 0 0
+inside [, in Far {West} <b>lands</b>]
+civ []
+header [Ocean~[9002], ocean, in Far {West} <b>lands</b>]
+header records 0 0
+> field 9001 civ 7
+> report header_parts 9001
+header records 1 0
+inside [, in Far {West} <b>lands</b>]
+civ [, civ-7]
+header [Forest~[9001], forest, in Far {West} <b>lands</b>, civ-7]
+header records 1 0
+> field 9001 civ -3
+> report header_parts 9001
+header records 1 0
+inside [, in Far {West} <b>lands</b>]
+civ [, civ--3]
+header [Forest~[9001], forest, in Far {West} <b>lands</b>, civ--3]
+header records 1 0
+> name 8000
+> report header_parts 9000
+header records 0 0
+inside []
+civ [, wilderness]
+header [Amber~[9000], plain, wilderness]
+header records 0 0
+> report header_parts 9001
+header records 1 0
+inside []
+civ [, civ--3]
+header [Forest~[9001], forest, civ--3]
+header records 1 0
+> report header_parts 9002
+header records 0 0
+inside []
+civ []
+header [Ocean~[9002], ocean]
+header records 0 0
+> report state 9000
+report entity 9000 order 0 player 0 attitudes 0 char 0 magic 0
+9000 loc plain
+na Amber
+LI
+ wh 8000
+
+> save 8000
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+> save 9001
+9001 loc forest
+LI
+ wh 8000
+LO
+ lc -3
+
+stderr:
+
+exit 0
+stdout:
+section header sublocations buildings ocean and nested mine suffix ordering
+> entity 8000 3 50
+> name 8000 Outer Lands
+> entity 9000 3 3
+> name 9000 Amber
+> link 8000 9000
+> entity 9001 3 1
+> name 9001 Azure Sea
+> link 8000 9001
+> entity 9100 3 14
+> name 9100 Inland City
+> link 9000 9100
+> entity 9101 3 9
+> link 9001 9101
+> entity 9200 3 32
+> link 9000 9200
+> entity 9201 9 30
+> link 9001 9201
+> entity 9202 3 40
+> name 9202 Deep Mine
+> link 9100 9202
+> entity 9203 3 40
+> link 9202 9203
+> field 9203 shaft_depth 8
+> field 9203 safe 1
+> field 9203 loc_hidden 1
+> field 9203 civ 12
+> report header_parts 9100
+header records 0 0
+inside [, in province Amber~[9000]]
+civ []
+header [Inland City~[9100], city, in province Amber~[9000]]
+header records 0 0
+> report header_parts 9101
+header records 0 0
+inside [, in Azure Sea~[9001]]
+civ []
+header [Island~[9101], island, in Azure Sea~[9001]]
+header records 0 0
+> report header_parts 9200
+header records 0 0
+inside [, in province Amber~[9000]]
+civ []
+header [Castle~[9200], castle, in province Amber~[9000]]
+header records 0 0
+> report header_parts 9201
+header records 0 0
+inside [, in Azure Sea~[9001]]
+civ []
+header [Galley~[9201], galley, in Azure Sea~[9001]]
+header records 0 0
+> report header_parts 9202
+header records 0 0
+inside [, in Amber~[9000]]
+civ []
+header [Deep Mine~[9202], mine, in Amber~[9000]]
+header records 0 0
+> report header_parts 9203
+header records 1 1
+inside [, in Amber~[9000]]
+civ []
+header [Mine~[9203], mine, in Amber~[9000], depth~2, safe haven, hidden]
+header records 1 1
+> field 9203 shaft_depth -8
+> report header_parts 9203
+header records 1 1
+inside [, in Amber~[9000]]
+civ []
+header [Mine~[9203], mine, in Amber~[9000], depth~-2, safe haven, hidden]
+header records 1 1
+> field 9203 shaft_depth 2
+> report header_parts 9203
+header records 1 1
+inside [, in Amber~[9000]]
+civ []
+header [Mine~[9203], mine, in Amber~[9000], safe haven, hidden]
+header records 1 1
+> save 9203
+9203 loc mine
+LI
+ wh 9202
+LO
+ hi 1
+ lc 12
+SL
+ sd 2
+ sh 1
+
+> save 9202
+9202 loc mine
+na Deep Mine
+LI
+ wh 9100
+ hl 9203 
+
+> save 9100
+9100 loc city
+na Inland City
+LI
+ wh 9000
+ hl 9202 
+
+> save 9000
+9000 loc plain
+na Amber
+LI
+ wh 8000
+ hl 9100 9200 
+
+> save 9001
+9001 loc ocean
+na Azure Sea
+LI
+ wh 8000
+ hl 9101 9201 
+
+stderr:
+
+exit 0
+stdout:
+section header civ suppresses Faery Hades ocean nonprovince and tunnel header only
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 8002 3 50
+> name 8000 Ordinary
+> name 8001 Faery
+> name 8002 Hades
+> set faery_region 8001
+> set hades_region 8002
+> entity 9000 3 3
+> entity 9001 3 7
+> entity 9002 3 2
+> entity 9003 3 1
+> entity 9004 3 70
+> entity 9100 3 13
+> link 8000 9000
+> link 8001 9001
+> link 8002 9002
+> link 8000 9003
+> link 8000 9004
+> link 9000 9100
+> field 9000 civ 4
+> field 9001 civ 5
+> field 9002 civ 6
+> field 9003 civ 7
+> field 9004 civ 8
+> field 9100 civ 9
+> report header_parts 9000
+header records 1 0
+inside [, in Ordinary]
+civ [, civ-4]
+header [Plain~[9000], plain, in Ordinary, civ-4]
+header records 1 0
+> report header_parts 9001
+header records 1 0
+inside [, in Faery]
+civ []
+header [Underground~[9001], underground, in Faery]
+header records 1 0
+> report header_parts 9002
+header records 1 0
+inside [, in Hades]
+civ []
+header [Forest~[9002], forest, in Hades]
+header records 1 0
+> report header_parts 9003
+header records 1 0
+inside [, in Ordinary]
+civ []
+header [Ocean~[9003], ocean, in Ordinary]
+header records 1 0
+> report header_parts 9004
+header records 1 0
+inside [, in Ordinary]
+civ [, civ-8]
+header [Tunnel~[9004], tunnel, in Ordinary]
+header records 1 0
+> report header_parts 9100
+header records 1 0
+inside [, in province Plain~[9000]]
+civ []
+header [Cave~[9100], cave, in province Plain~[9000]]
+header records 1 0
+> link 8000 9001
+> report header_parts 9001
+header records 1 0
+inside [, in Ordinary]
+civ [, civ-5]
+header [Underground~[9001], underground, in Ordinary, civ-5]
+header records 1 0
+> save 9001
+9001 loc underground
+LI
+ wh 8000
+LO
+ lc 5
+
+> save 8001
+8001 loc region
+na Faery
+LI
+
+stderr:
+
+exit 0
+stdout:
+section header routed MASTER styles barrier returns bits and unchanged location state
+> lore_root
+> entity 8000 3 50
+> name 8000 West
+> entity 9000 3 3
+> name 9000 Gold Plain
+> link 8000 9000
+> field 9000 safe -1
+> field 9000 loc_hidden 1
+> field 9000 civ 3
+> report state 9000
+report entity 9000 order 0 player 0 attitudes 0 char 0 magic 0
+9000 loc plain
+na Gold Plain
+LI
+ wh 8000
+LO
+ hi 1
+ lc 3
+SL
+ sh -1
+
+> sout frame 3 8 1 17
+> sout route -2 0
+> sout style 7
+> report header 200 9000
+> report barrier 200 9000
+barrier 0
+> field 9000 barrier -2
+> report barrier 200 9000
+barrier 1
+> sout state
+route -2 0 frame 3 8 1 17
+vector:
+saved vector:
+> output 200 0
+output 1
+> readfile log/200
+file bytes log/200 132:
+0:7::3/8:17:Gold Plain~[9000], plain, in West, safe haven, hidden, civ-3
+0:7::3/8:17:A magical barrier surrounds Gold Plain~[9000].
+
+end file bytes
+> sout style 0
+> sout route -2 1
+> report header 201 9000
+> report barrier 201 9000
+barrier 1
+> output 201 1
+output 1
+> readfile log/201
+file bytes log/201 132:
+1:0::3/8:17:Gold Plain~[9000], plain, in West, safe haven, hidden, civ-3
+1:0::3/8:17:A magical barrier surrounds Gold Plain~[9000].
+
+end file bytes
+> report state 9000
+report entity 9000 order 0 player 0 attitudes 0 char 0 magic 0
+9000 loc plain
+na Gold Plain
+LI
+ wh 8000
+LO
+ hi 1
+ ba -2
+ lc 3
+SL
+ sh -1
+
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_regular
+PL
+
+stderr:
+
+exit 0
+stdout:
+section header barrier absent records do not allocate and ordinary character routing
+> lore_root
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> report state 9000
+report entity 9000 order 0 player 0 attitudes 0 char 0 magic 0
+9000 loc plain
+LI
+ wh 8000
+
+> report barrier 1000 9000
+barrier 0
+> report header 1000 9000
+> report state 9000
+report entity 9000 order 0 player 0 attitudes 0 char 0 magic 0
+9000 loc plain
+LI
+ wh 8000
+
+> output 200 1000
+output 1
+> readfile log/200
+file bytes log/200 43:
+1000:0::0::Plain~[9000], plain, wilderness
+
+end file bytes
+> field 9000 barrier 1
+> field 1000 prisoner 1
+> report barrier 1000 9000
+barrier 1
+> readfile log/200
+file bytes log/200 43:
+1000:0::0::Plain~[9000], plain, wilderness
+
+end file bytes
+> output 200 1000
+output 1
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+LO
+ ba 1
+
+> save 1000
+1000 char 0
+CH
+ lo 200
+ pr 1
+
+stderr:
+
+exit 0
+stdout:
+section header invalid missing region preserves name assertion before later suffix reads
+> entity 9000 3 3
+> field 9000 safe 1
+> report header 1000 9000
+stderr:
+assertion failure: olympia/code.c (228): valid_box(n)
+
+exit 134
+stdout:
+section header invalid location depth retains diagnostic and assertion
+> entity 9000 4 0
+> report header 1000 9000
+stderr:
+subkind is 0
+assertion failure: olympia/u.c (388): FALSE
+
+exit 134

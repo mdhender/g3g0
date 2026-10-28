@@ -6,6 +6,23 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Location headers (#138)
+
+The existing display.go owner ports complete unchanged stage-pin display.c
+8–49, 52–63, 66–74 and 125–166, reusing accepted topology, names, mine depth,
+safe-haven, hidden and output/cache helpers. Command-compat extracts the real
+definitions and replaces only its rejected show_loc_header dependency;
+show_loc/show_loc_posts and noncharacter descriptions remain explicit stops.
+Seven appended cases compare containment/suffix branches, raw record presence,
+saved state, assertions and real header/barrier log bytes with banner/include
+MASTER sections. See [the exact closure and byte evidence](command-compat#location-headers-138).
+C/C/Go is **890 sections / 61457 lines**; the entire **883/61012** prefix is
+unchanged. Sequential command/move/helper/code/loadsave/turn-driver/default
+turn/RNG checks, bounded vet and fresh bounded defaults pass. No source
+dependency or pin changes, full corpus/full turn run or strict stage-2
+report-tree acceptance is implied. Full strict parity remains a later task;
+its gate is unchanged.
+
 ## Bounded names/codes audit (#137)
 
 Complete unchanged stage-pin code.c 47–174, 212–343 and 350–466 already

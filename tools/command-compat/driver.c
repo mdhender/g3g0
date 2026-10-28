@@ -121,6 +121,8 @@ static void list(char *label, ilist l)
  printf("\n");
 }
 
+int drv_loc_barrier(int who, int where);
+
 /* Actual auto_attack has already emitted its output. Observe it, then abort:
  * this is deliberately NOT a successful combat replacement. */
 int regular_combat(int who, int target, int seize, int ally)
@@ -1049,6 +1051,21 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "report")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
+   else if(!strcmp(text,"header")) {
+    sscanf(line,"%*s %*s %d %d",&n,&a);
+    out(n,"%s",show_loc_header(a));
+   }
+   else if(!strcmp(text,"barrier")) {
+    sscanf(line,"%*s %*s %d %d",&n,&a);
+    printf("barrier %d\n",drv_loc_barrier(n,a));
+   }
+   else if(!strcmp(text,"header_parts")) {
+    printf("header records %d %d\n",rp_loc(n)!=NULL,rp_subloc(n)!=NULL);
+    printf("inside [%s]\n",loc_inside_string(n));
+    printf("civ [%s]\n",loc_civ_s(n));
+    printf("header [%s]\n",show_loc_header(n));
+    printf("header records %d %d\n",rp_loc(n)!=NULL,rp_subloc(n)!=NULL);
+   }
    else if(!strcmp(text,"players")) player_ent_info();
    else if(!strcmp(text,"characters")) character_report();
    else if(!strcmp(text,"locations")) turn_end_loc_reports();

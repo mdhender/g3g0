@@ -19303,3 +19303,169 @@ names repeat 310 2049
 names show 310 1
 field 1000 noble_item 310
 names show 1000 1
+
+# #138: complete original display.c location-header and barrier definitions.
+section header provinces raw region names wilderness signed civ and empty region
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 2
+entity 9002 3 1
+link 8000 9000
+link 8000 9001
+link 8000 9002
+name 8000 Far [West] <b>lands</b>
+name 9000 Amber
+report state 9000
+report header_parts 9000
+report header_parts 9002
+field 9001 civ 7
+report header_parts 9001
+field 9001 civ -3
+report header_parts 9001
+name 8000
+report header_parts 9000
+report header_parts 9001
+report header_parts 9002
+report state 9000
+save 8000
+save 9001
+
+section header sublocations buildings ocean and nested mine suffix ordering
+entity 8000 3 50
+name 8000 Outer Lands
+entity 9000 3 3
+name 9000 Amber
+link 8000 9000
+entity 9001 3 1
+name 9001 Azure Sea
+link 8000 9001
+entity 9100 3 14
+name 9100 Inland City
+link 9000 9100
+entity 9101 3 9
+link 9001 9101
+entity 9200 3 32
+link 9000 9200
+entity 9201 9 30
+link 9001 9201
+entity 9202 3 40
+name 9202 Deep Mine
+link 9100 9202
+entity 9203 3 40
+link 9202 9203
+field 9203 shaft_depth 8
+field 9203 safe 1
+field 9203 loc_hidden 1
+field 9203 civ 12
+report header_parts 9100
+report header_parts 9101
+report header_parts 9200
+report header_parts 9201
+report header_parts 9202
+report header_parts 9203
+field 9203 shaft_depth -8
+report header_parts 9203
+field 9203 shaft_depth 2
+report header_parts 9203
+save 9203
+save 9202
+save 9100
+save 9000
+save 9001
+
+section header civ suppresses Faery Hades ocean nonprovince and tunnel header only
+entity 8000 3 50
+entity 8001 3 50
+entity 8002 3 50
+name 8000 Ordinary
+name 8001 Faery
+name 8002 Hades
+set faery_region 8001
+set hades_region 8002
+entity 9000 3 3
+entity 9001 3 7
+entity 9002 3 2
+entity 9003 3 1
+entity 9004 3 70
+entity 9100 3 13
+link 8000 9000
+link 8001 9001
+link 8002 9002
+link 8000 9003
+link 8000 9004
+link 9000 9100
+field 9000 civ 4
+field 9001 civ 5
+field 9002 civ 6
+field 9003 civ 7
+field 9004 civ 8
+field 9100 civ 9
+report header_parts 9000
+report header_parts 9001
+report header_parts 9002
+report header_parts 9003
+report header_parts 9004
+report header_parts 9100
+link 8000 9001
+report header_parts 9001
+save 9001
+save 8001
+
+section header routed MASTER styles barrier returns bits and unchanged location state
+lore_root
+entity 8000 3 50
+name 8000 West
+entity 9000 3 3
+name 9000 Gold Plain
+link 8000 9000
+field 9000 safe -1
+field 9000 loc_hidden 1
+field 9000 civ 3
+report state 9000
+sout frame 3 8 1 17
+sout route -2 0
+sout style 7
+report header 200 9000
+report barrier 200 9000
+field 9000 barrier -2
+report barrier 200 9000
+sout state
+output 200 0
+readfile log/200
+sout style 0
+sout route -2 1
+report header 201 9000
+report barrier 201 9000
+output 201 1
+readfile log/201
+report state 9000
+save 200
+save 201
+
+section header barrier absent records do not allocate and ordinary character routing
+lore_root
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+report state 9000
+report barrier 1000 9000
+report header 1000 9000
+report state 9000
+output 200 1000
+readfile log/200
+field 9000 barrier 1
+field 1000 prisoner 1
+report barrier 1000 9000
+readfile log/200
+output 200 1000
+save 9000
+save 1000
+
+section header invalid missing region preserves name assertion before later suffix reads
+entity 9000 3 3
+field 9000 safe 1
+report header 1000 9000
+
+section header invalid location depth retains diagnostic and assertion
+entity 9000 4 0
+report header 1000 9000

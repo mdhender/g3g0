@@ -71,6 +71,59 @@ fresh bounded `go test -count=1 ./...` pass. Logs:
 `tmp/issue167-prefix-check.log`, `tmp/issue167-turn-default.log`,
 `tmp/issue167-vet.log` and `tmp/issue167-go-test.log`.
 
+## Location headers (#138)
+
+The existing display.go owner now ports complete unchanged display.c
+`loc_inside_string` **8–49**, `show_loc_barrier` **52–63**, `safe_haven_s`
+**66–74**, and `loc_civ_s` / `show_loc_header` **125–166** at the stage pin.
+The C extractor adds those exact definitions, exposing the static barrier
+through a fixture-only wrapper. Only the rejected `show_loc_header` dependency
+is replaced: `show_loc` and `show_loc_posts`, and noncharacter `liner_desc`
+dependencies still abort explicitly. No all-location root or duplicate state
+projection is introduced. Existing mineDepth, safeHaven, locHidden, topology,
+names and sout/cache owners are reused. display.c was already tracked, so
+neither the dependency set nor any pin changes.
+
+Seven appended asymmetric sections distinguish direct-province, ocean and
+nested-building containment; sublocations in land/ocean; raw named/empty
+regions; signed mine depth with truncation; depth → safe haven → hidden → civ
+suffix order; wilderness/signed civ; Faery/Hades/ocean/nonprovince suppression;
+and tunnel's direct civ string versus header suppression. Raw record-presence
+observations before/after rendering and actual save_box output check absence
+of unintended allocations or state changes. MASTER/header/banner/include
+section routing uses the actual output owner, with style, both indents and day
+fields. Real nonzero/zero barrier returns, prisoner suppression and output bits
+are observed alongside independent readfile bytes without flushing production
+streams. The two invalid controls retain exact code.c:228 and u.c:388
+assertions, in original order.
+
+Two actual deterministic pinned C runs, followed by Go, match **890 sections /
+61457 lines / 1149073 bytes**; default non-update comparison also passes.
+The entire inherited **883 sections / 61012 lines / 1140518 bytes** output
+prefix and **19305 lines / 353182 bytes** input prefix remain byte-exact.
+Inputs now total **19471 lines / 356567 bytes**. Output SHA-256:
+`4109632dbaf4950a4f15b27515c51a534e002909d5db0b6a30e9bf029a9140d9`.
+For example, the two real MASTER log observations each contain **132 bytes**,
+including `0:7::3/8:17:` versus `1:0::3/8:17:` headers and barrier lines;
+the normal character log remains **43 bytes** after a prisoner barrier call.
+Missing-dependency rejection still runs before expected-status checks and any
+recording update. All newly expected failure statuses are explicitly 134.
+Matching command captures were removed after comparison. Source/documentation
+diff whitespace checks pass; five new save_box here-list lines retain their
+literal C trailing spaces, not normalized output.
+
+At **0.78.0-alpha**, command/move/helper/code/loadsave/turn-driver/default-turn
+and RNG comparisons pass sequentially, each with explicit bare G3_REPO and
+run_limited engine supervision. Code retains its existing pin; its complete
+source/header dependency set is identical at the stage pin (checked with git
+diff). Bounded vet and fresh bounded default tests pass (Olympia 1.780s);
+the ordinary nine opt-in/child-entry skips are not extra whole-world checks.
+Logs: `tmp/issue138-{command,command-default,move,helper,code,loadsave,turn-driver,turn,rng}.log`,
+`tmp/issue138-{vet,go-test,prefix-check,code-source-compat,extract-check}.log`.
+No upstream/port defect or blocker was found. Full strict report-tree parity
+remains pending later stage-2 tasks and is not claimed or normalized here;
+no full corpus, full turn or stage-exit acceptance was run for this task.
+
 ## Bounded names/codes audit (#137)
 
 Audited complete unchanged pinned `code.c` definitions at **47–174,
