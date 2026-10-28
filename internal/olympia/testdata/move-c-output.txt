@@ -4787,3 +4787,1158 @@ stderr:
 assertion failure: olympia/combat.c (506): valid_box(who)
 
 exit 134
+stdout:
+section complete ordinary character suffix order and display flags
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 301 3 32 10101
+> box 204 1 49 0
+> box 1001 2 0 301
+> lord 1001 204
+> name 1001 Asymmetric Lord
+> rank 1001 60
+> aura 1001 23 0
+> magic_flags 1001 1 0 0
+> skill 1001 750 2 21
+> guard 1001 1
+> behind 1001 -3
+> box 401 4 0 0
+> unique 401 1001
+> olympus 10101
+> box 217 4 0 0
+> name 217 iron shield
+> bonuses 217 0 7 0
+> box 213 4 0 0
+> name 213 amber ox
+> plural 213 amber oxen
+> prominent 213 1
+> box 211 4 0 0
+> name 211 bright sword
+> bonuses 211 11 0 0
+> box 219 4 0 0
+> name 219 bow
+> bonuses 219 0 0 13
+> box 209 4 0 0
+> name 209 dull ox
+> prominent 209 0
+> inv 1001 217 1
+> inv 1001 213 3
+> inv 1001 211 1
+> inv 1001 219 1
+> inv 1001 209 19
+> banner 1001 Red & blue
+> display_flags 1 0
+> description_state
+state factor 20
+box 100 3 50 0 here 10101
+box 204 1 49 0 here
+box 209 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 211 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 213 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 217 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 219 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 301 3 32 10101 here 1001
+box 401 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 1001 2 0 301 here
+unit 0 0 0 204
+storm 0
+inv 217 1
+inv 213 3
+inv 211 1
+inv 219 1
+inv 209 19
+box 10101 3 3 100 here 301
+description 100 0 0 0 0
+description 204 0 0 0 0
+description 209 0 0 0 0
+description 211 0 0 0 1
+bonuses 0 0 11 0 0
+description 213 0 0 0 0
+description 217 0 0 0 1
+bonuses 0 0 0 7 0
+description 219 0 0 0 1
+bonuses 0 0 0 0 13
+description 301 0 0 0 0
+description 401 0 0 0 0
+description 1001 1 60 1 0
+aura 23 0
+description 10101 0 0 0 0
+> format_state
+format 0 0 1 0 [] olympus 10101
+text 100 [] [] []
+text 204 [] [] []
+text 209 [dull ox] [] []
+prominent 209 0 unique 0
+text 211 [bright sword] [] []
+prominent 211 0 unique 0
+text 213 [amber ox] [] [amber oxen]
+prominent 213 1 unique 0
+text 217 [iron shield] [] []
+prominent 217 0 unique 0
+text 219 [bow] [] []
+prominent 219 0 unique 0
+text 301 [] [] []
+text 401 [] [] []
+prominent 401 0 unique 1001
+text 1001 [Asymmetric Lord] [Red & blue] []
+flags 1001 1 -3 0 0
+skill 1001 750 2 21
+magician 1001 1
+text 10101 [] [] []
+> serialize 1001
+1001 char 0
+na Asymmetric Lord
+il	217 1 \
+	213 3 \
+	211 1 \
+	219 1 \
+	209 19
+LI
+ wh 301
+CH
+ lo 204
+ bh -3
+ gu 1
+ ra 60
+CM
+ im 1
+ ma 23
+MI
+ ds Red & blue
+
+> serialize 213
+213 item 0
+na amber ox
+IT
+ pl amber oxen
+ pr 1
+
+> serialize 401
+401 item 0
+IT
+ un 1001
+
+> describe 1001
+description [Asymmetric Lord~[1001], marquess, sorcerer, priest, Emperor, wielding bright sword~[211] and bow~[219], wearing iron shield~[217], on guard, "{<i>}Red & blue{</i>}", with three~amber oxen]
+> display_flags 0 0
+> describe 1001
+description [Asymmetric Lord~[1001], marquess, sorcerer, priest, Emperor, wielding bright sword~[211] and bow~[219], wearing iron shield~[217], on guard, with three~amber oxen]
+> display_flags 1 1
+> ally , allied~west
+> describe 1001
+description [Asymmetric Lord~[1001], marquess, sorcerer, priest, Emperor, wielding bright sword~[211] and bow~[219], wearing iron shield~[217], behind~-3, allied~west, "{<i>}Red & blue{</i>}", with three~amber oxen]
+> behind 1001 0
+> describe 1001
+description [Asymmetric Lord~[1001], marquess, sorcerer, priest, Emperor, wielding bright sword~[211] and bow~[219], wearing iron shield~[217], allied~west, "{<i>}Red & blue{</i>}", with three~amber oxen]
+> unit 1001 0 1 0
+> describe 1001
+description [Asymmetric Lord~[1001], marquess, sorcerer, priest, Emperor, wielding bright sword~[211] and bow~[219], wearing iron shield~[217], allied~west, "{<i>}Red & blue{</i>}", with three~amber oxen, prisoner]
+> description_state
+state factor 20
+box 100 3 50 0 here 10101
+box 204 1 49 0 here
+box 209 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 211 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 213 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 217 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 219 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 301 3 32 10101 here 1001
+box 401 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 1001 2 0 301 here
+unit 0 1 0 204
+storm 0
+inv 217 1
+inv 213 3
+inv 211 1
+inv 219 1
+inv 209 19
+box 10101 3 3 100 here 301
+description 100 0 0 0 0
+description 204 0 0 0 0
+description 209 0 0 0 0
+description 211 0 0 0 1
+bonuses 0 0 11 0 0
+description 213 0 0 0 0
+description 217 0 0 0 1
+bonuses 0 0 0 7 0
+description 219 0 0 0 1
+bonuses 0 0 0 0 13
+description 301 0 0 0 0
+description 401 0 0 0 0
+description 1001 1 60 1 0
+aura 23 0
+description 10101 0 0 0 0
+> format_state
+format 0 0 1 1 [, allied~west] olympus 10101
+text 100 [] [] []
+text 204 [] [] []
+text 209 [dull ox] [] []
+prominent 209 0 unique 0
+text 211 [bright sword] [] []
+prominent 211 0 unique 0
+text 213 [amber ox] [] [amber oxen]
+prominent 213 1 unique 0
+text 217 [iron shield] [] []
+prominent 217 0 unique 0
+text 219 [bow] [] []
+prominent 219 0 unique 0
+text 301 [] [] []
+text 401 [] [] []
+prominent 401 0 unique 1001
+text 1001 [Asymmetric Lord] [Red & blue] []
+flags 1001 1 0 0 0
+skill 1001 750 2 21
+magician 1001 1
+text 10101 [] [] []
+> serialize 1001
+1001 char 0
+na Asymmetric Lord
+il	217 1 \
+	213 3 \
+	211 1 \
+	219 1 \
+	209 19
+LI
+ wh 301
+CH
+ lo 204
+ pr 1
+ gu 1
+ ra 60
+CM
+ im 1
+ ma 23
+MI
+ ds Red & blue
+
+> serialize 213
+213 item 0
+na amber ox
+IT
+ pl amber oxen
+ pr 1
+
+> serialize 401
+401 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0
+stdout:
+section NPC noble item counts inventory filtering and fallback warning
+> box 1001 2 54 0
+> box 201 4 0 0
+> name 201 red wolf
+> plural 201 red wolves
+> prominent 201 1
+> unit 1001 201 0 0
+> box 219 4 0 0
+> name 219 ox
+> plural 219 oxen
+> prominent 219 -1
+> box 211 4 0 0
+> name 211 wagon
+> prominent 211 1
+> box 213 4 0 0
+> name 213 ruby
+> plural 213 rubies
+> prominent 213 1
+> inv 1001 201 0
+> describe 1001
+description [Red wolf~[1001], red wolf]
+> inv 1001 201 1204
+> inv 1001 219 2
+> inv 1001 211 1
+> inv 1001 213 0
+> inv 1001 998 7
+> describe 1001
+description [Red wolf~[1001], red wolves, number:~1,205, with two~oxen, one~wagon]
+> inv 1001 211 3
+> inv 1001 213 -3
+> describe 1001
+description [Red wolf~[1001], red wolves, number:~1,205, with two~oxen, three~wagon]
+> inv 1001 201 -2
+> describe 1001
+description [Red wolf~[1001], red wolves, number:~-1, with two~oxen, three~wagon]
+> inv 1001 201 2147483647
+> describe 1001
+description [Red wolf~[1001], red wolves, number:~-2,-147,-483,-648, with two~oxen, three~wagon]
+> unit 1001 201 1 0
+> describe 1001
+description [Red wolf~[1001], red wolves, number:~-2,-147,-483,-648, with two~oxen, three~wagon, prisoner]
+> description_state
+state factor 20
+box 201 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 211 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 213 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 219 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 1001 2 54 0 here
+unit 201 1 0 0
+inv 201 2147483647
+inv 219 2
+inv 211 3
+inv 213 -3
+inv 998 7
+description 201 0 0 0 0
+description 211 0 0 0 0
+description 213 0 0 0 0
+description 219 0 0 0 0
+description 1001 1 0 0 0
+> format_state
+format 0 0 0 0 [] olympus 0
+text 201 [red wolf] [] [red wolves]
+prominent 201 1 unique 0
+text 211 [wagon] [] []
+prominent 211 1 unique 0
+text 213 [ruby] [] [rubies]
+prominent 213 1 unique 0
+text 219 [ox] [] [oxen]
+prominent 219 -1 unique 0
+text 1001 [] [] []
+flags 1001 0 0 0 0
+stderr:
+warning: plural name not set for item [211]
+warning: plural name not set for item [211]
+warning: plural name not set for item [211]
+warning: plural name not set for item [211]
+
+exit 0
+stdout:
+section mage aura thresholds upper endpoints and next values
+> box 1001 2 0 0
+> describe 1001
+description [<no subkind>~[1001]]
+> magic_flags 1001 1 0 0
+> aura 1001 -7 0
+> describe 1001
+description [<no subkind>~[1001]]
+> aura 1001 5 0
+> describe 1001
+description [<no subkind>~[1001]]
+> aura 1001 6 0
+> describe 1001
+description [<no subkind>~[1001], conjurer]
+> aura 1001 10 0
+> describe 1001
+description [<no subkind>~[1001], conjurer]
+> aura 1001 11 0
+> describe 1001
+description [<no subkind>~[1001], mage]
+> aura 1001 15 0
+> describe 1001
+description [<no subkind>~[1001], mage]
+> aura 1001 16 0
+> describe 1001
+description [<no subkind>~[1001], wizard]
+> aura 1001 20 0
+> describe 1001
+description [<no subkind>~[1001], wizard]
+> aura 1001 21 0
+> describe 1001
+description [<no subkind>~[1001], sorcerer]
+> aura 1001 30 0
+> describe 1001
+description [<no subkind>~[1001], sorcerer]
+> aura 1001 31 0
+> describe 1001
+description [<no subkind>~[1001], 6th black circle]
+> aura 1001 40 0
+> describe 1001
+description [<no subkind>~[1001], 6th black circle]
+> aura 1001 41 0
+> describe 1001
+description [<no subkind>~[1001], 5th black circle]
+> aura 1001 50 0
+> describe 1001
+description [<no subkind>~[1001], 5th black circle]
+> aura 1001 51 0
+> describe 1001
+description [<no subkind>~[1001], 4th black circle]
+> aura 1001 60 0
+> describe 1001
+description [<no subkind>~[1001], 4th black circle]
+> aura 1001 61 0
+> describe 1001
+description [<no subkind>~[1001], 3rd black circle]
+> aura 1001 70 0
+> describe 1001
+description [<no subkind>~[1001], 3rd black circle]
+> aura 1001 71 0
+> describe 1001
+description [<no subkind>~[1001], 2nd black circle]
+> aura 1001 80 0
+> describe 1001
+description [<no subkind>~[1001], 2nd black circle]
+> aura 1001 81 0
+> describe 1001
+description [<no subkind>~[1001], master of the black arts]
+> magic_flags 1001 1 -1 0
+> describe 1001
+description [<no subkind>~[1001]]
+> magic_flags 1001 0 0 0
+> describe 1001
+description [<no subkind>~[1001]]
+> format_state
+format 0 0 0 0 [] olympus 0
+text 1001 [] [] []
+flags 1001 0 0 0 0
+magician 1001 0
+stderr:
+
+exit 0
+stdout:
+section mage uses actual auraculum and quantity independent bonuses
+> box 1001 2 0 0
+> magic_flags 1001 1 0 1
+> box 201 4 0 0
+> box 203 4 0 0
+> aura 1001 -31 201
+> aura_item 201 18 -2
+> aura_item 203 0 15
+> inv 1001 201 1
+> inv 1001 203 27
+> describe 1001
+description [<no subkind>~[1001], 6th black circle]
+> inv 1001 201 0
+> describe 1001
+description [<no subkind>~[1001], mage]
+> description_state
+state factor 20
+box 201 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 203 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 1001 2 0 0 here
+unit 0 0 0 0
+inv 201 0
+inv 203 27
+description 201 0 0 0 1
+bonuses 18 -2 0 0 0
+description 203 0 0 0 1
+bonuses 0 15 0 0 0
+description 1001 1 0 1 0
+aura -31 201
+> format_state
+format 0 0 0 0 [] olympus 0
+text 201 [] [] []
+prominent 201 0 unique 0
+text 203 [] [] []
+prominent 203 0 unique 0
+text 1001 [] [] []
+flags 1001 0 0 1 0
+magician 1001 1
+stderr:
+
+exit 0
+stdout:
+section religion requires known skill not merely entry or priest magic flag
+> box 1001 2 0 0
+> box 1002 2 0 0
+> box 1003 2 0 0
+> box 1004 2 0 0
+> box 1005 2 0 0
+> skill 1001 750 1 32767
+> skill 1002 750 2 -9
+> skill 1003 750 258 65571
+> skill 1004 749 2 35
+> skill 1005 750 0 35
+> describe 1001
+description [<no subkind>~[1001]]
+> describe 1002
+description [<no subkind>~[1002], priest]
+> describe 1003
+description [<no subkind>~[1003], priest]
+> describe 1004
+description [<no subkind>~[1004]]
+> describe 1005
+description [<no subkind>~[1005]]
+> format_state
+format 0 0 0 0 [] olympus 0
+text 1001 [] [] []
+flags 1001 0 0 0 0
+skill 1001 750 1 32767
+text 1002 [] [] []
+flags 1002 0 0 0 0
+skill 1002 750 2 -9
+text 1003 [] [] []
+flags 1003 0 0 0 0
+skill 1003 750 2 35
+text 1004 [] [] []
+flags 1004 0 0 0 0
+skill 1004 749 2 35
+text 1005 [] [] []
+flags 1005 0 0 0 0
+skill 1005 750 0 35
+stderr:
+
+exit 0
+stdout:
+section character subkind and absent data
+> box 1001 2 55 0
+> box 1002 2 56 0
+> box 1003 2 0 0
+> name 1003 Plain
+> describe 1001
+description [Demon lord~[1001], demon lord]
+> describe 1002
+description [Dead body~[1002], dead body]
+> describe 1003
+description [Plain~[1003]]
+> description_state
+state factor 20
+box 1001 2 55 0 here
+box 1002 2 56 0 here
+box 1003 2 0 0 here
+description 1001 0 0 0 0
+description 1002 0 0 0 0
+description 1003 0 0 0 0
+stderr:
+
+exit 0
+stdout:
+section emperor unique owner regular player castle and Olympus guards
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 10102 3 3 100
+> box 301 3 32 10101
+> box 302 3 32 10102
+> box 303 3 29 10101
+> box 204 1 49 0
+> box 205 1 52 0
+> box 1001 2 0 301
+> box 1002 2 0 301
+> olympus 10101
+> emperor
+emperor 0
+> box 401 4 0 0
+> emperor
+emperor 0
+> unique 401 1001
+> emperor
+emperor 0
+> lord 1001 205
+> emperor
+emperor 0
+> lord 1001 204
+> emperor
+emperor 1001
+> describe 1001
+description [<no subkind>~[1001], Emperor]
+> describe 1002
+description [<no subkind>~[1002]]
+> place 1001 302
+> emperor
+emperor 0
+> place 1001 303
+> emperor
+emperor 0
+> place 1001 10101
+> emperor
+emperor 0
+> place 1001 301
+> subkind 301 39
+> emperor
+emperor 0
+> subkind 301 32
+> emperor
+emperor 1001
+> unique 401 1002
+> emperor
+emperor 0
+> describe 1001
+description [<no subkind>~[1001]]
+> lord 1002 204
+> emperor
+emperor 1002
+> describe 1002
+description [<no subkind>~[1002], Emperor]
+> description_state
+state factor 20
+box 100 3 50 0 here 10101 10102
+box 204 1 49 0 here
+box 205 1 52 0 here
+box 301 3 32 10101 here 1002 1001
+box 302 3 32 10102 here
+box 303 3 29 10101 here
+box 401 4 0 0 here
+item 0 0 0 0 0 0 0 0 0
+box 1001 2 0 301 here
+unit 0 0 0 204
+box 1002 2 0 301 here
+unit 0 0 0 204
+box 10101 3 3 100 here 301 303
+box 10102 3 3 100 here 302
+description 100 0 0 0 0
+description 204 0 0 0 0
+description 205 0 0 0 0
+description 301 0 0 0 0
+description 302 0 0 0 0
+description 303 0 0 0 0
+description 401 0 0 0 0
+description 1001 1 0 0 0
+description 1002 1 0 0 0
+description 10101 0 0 0 0
+description 10102 0 0 0 0
+> format_state
+format 0 0 0 0 [] olympus 10101
+text 100 [] [] []
+text 204 [] [] []
+text 205 [] [] []
+text 301 [] [] []
+text 302 [] [] []
+text 303 [] [] []
+text 401 [] [] []
+prominent 401 0 unique 1002
+text 1001 [] [] []
+flags 1001 0 0 0 0
+text 1002 [] [] []
+flags 1002 0 0 0 0
+text 10101 [] [] []
+text 10102 [] [] []
+stderr:
+
+exit 0
+stdout:
+section leader only guard versus combat flags and signed behind
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 1001 2 0 10101
+> box 1002 2 0 1001
+> guard 1001 -1
+> guard 1002 1
+> behind 1001 259
+> behind 1002 128
+> describe 1001
+description [<no subkind>~[1001], on guard]
+> describe 1002
+description [<no subkind>~[1002]]
+> display_flags 0 1
+> describe 1001
+description [<no subkind>~[1001], behind~3]
+> describe 1002
+description [<no subkind>~[1002], behind~-128]
+> ally , allied~east
+> describe 1001
+description [<no subkind>~[1001], behind~3, allied~east]
+> describe 1002
+description [<no subkind>~[1002], behind~-128, allied~east]
+> behind 1001 0
+> describe 1001
+description [<no subkind>~[1001], allied~east]
+> display_flags 0 0
+> describe 1001
+description [<no subkind>~[1001], on guard]
+> describe 1002
+description [<no subkind>~[1002]]
+> format_state
+format 0 0 0 0 [, allied~east] olympus 0
+text 100 [] [] []
+text 1001 [] [] []
+flags 1001 -1 0 0 0
+text 1002 [] [] []
+flags 1002 1 -128 0 0
+text 10101 [] [] []
+stderr:
+
+exit 0
+stdout:
+section display with raw noncharacter list and depth first hidden descendants
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 204 1 49 0
+> box 205 1 49 0
+> box 1001 2 0 10101
+> lord 1001 204
+> name 1001 Root
+> with 1001
+with []
+> box 219 4 0 1001
+> with 1001
+with [, accompanied~by:]
+> box 1099 2 0 219
+> name 1099 Pruned
+> below 1001 1001
+> frame 7 -9
+> format_state
+format 7 -9 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 205 [] [] []
+text 219 [] [] []
+text 1001 [Root] [] []
+flags 1001 0 0 0 0
+text 1099 [Pruned] [] []
+text 10101 [] [] []
+> box 1003 2 0 1001
+> lord 1003 205
+> name 1003 First
+> magic_flags 1003 0 0 1
+> box 1007 2 0 1003
+> lord 1007 204
+> name 1007 Deep
+> box 1002 2 0 1001
+> lord 1002 205
+> name 1002 Last
+> unit 1002 0 1 0
+> with 1002
+with []
+> description_state
+state factor 20
+box 100 3 50 0 here 10101
+box 204 1 49 0 here
+box 205 1 49 0 here
+box 219 4 0 1001 here 1099
+box 1001 2 0 10101 here 219 1003 1002
+unit 0 0 0 204
+box 1002 2 0 1001 here
+unit 0 1 0 205
+box 1003 2 0 1001 here 1007
+unit 0 0 0 205
+box 1007 2 0 1003 here
+unit 0 0 0 204
+box 1099 2 0 219 here
+box 10101 3 3 100 here 1001
+description 100 0 0 0 0
+description 204 0 0 0 0
+description 205 0 0 0 0
+description 219 0 0 0 0
+description 1001 1 0 0 0
+description 1002 1 0 0 0
+description 1003 1 0 1 0
+aura 0 0
+description 1007 1 0 0 0
+description 1099 0 0 0 0
+description 10101 0 0 0 0
+> format_state
+format 7 -9 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 205 [] [] []
+text 219 [] [] []
+text 1001 [Root] [] []
+flags 1001 0 0 0 0
+text 1002 [Last] [] []
+flags 1002 0 0 0 0
+text 1003 [First] [] []
+flags 1003 0 0 1 0
+magician 1003 0
+text 1007 [Deep] [] []
+flags 1007 0 0 0 0
+text 1099 [Pruned] [] []
+text 10101 [] [] []
+> serialize 1001
+1001 char 0
+na Root
+LI
+ wh 10101
+ hl 219 1003 1002 
+CH
+ lo 204
+
+> serialize 1003
+1003 char 0
+na First
+LI
+ wh 1001
+ hl 1007 
+CH
+ lo 205
+CM
+ hs 1
+
+> serialize 1007
+1007 char 0
+na Deep
+LI
+ wh 1003
+CH
+ lo 204
+
+> serialize 1002
+1002 char 0
+na Last
+LI
+ wh 1001
+CH
+ lo 205
+ pr 1
+
+> serialize 204
+204 player pl_regular
+
+> serialize 205
+205 player pl_regular
+
+> output 1
+> below 1001 1001
+1001:0::10/3::First~[1003]
+1001:0::10/3::Deep~[1007]
+1001:0::10/3::Last~[1002], prisoner
+> format_state
+format 7 0 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 205 [] [] []
+text 219 [] [] []
+text 1001 [Root] [] []
+flags 1001 0 0 0 0
+text 1002 [Last] [] []
+flags 1002 0 0 0 0
+text 1003 [First] [] []
+flags 1003 0 0 1 0
+magician 1003 0
+text 1007 [Deep] [] []
+flags 1007 0 0 0 0
+text 1099 [Pruned] [] []
+text 10101 [] [] []
+> emit 1001 73
+1001:0::7::routing 73  
+> output 0
+> frame -2 11
+> show_day 1
+> day 19
+> below 1001 1001
+> report 204
+report 204:
+1001:0::1/3:19:First~[1003]
+1001:0::1/3:19:Deep~[1007]
+1001:0::1/3:19:Last~[1002], prisoner
+> report 205
+report 205:
+> description_state
+state factor 20
+box 100 3 50 0 here 10101
+box 204 1 49 0 here
+output: 1001
+box 205 1 49 0 here
+box 219 4 0 1001 here 1099
+box 1001 2 0 10101 here 219 1003 1002
+unit 0 0 0 204
+box 1002 2 0 1001 here
+unit 0 1 0 205
+box 1003 2 0 1001 here 1007
+unit 0 0 0 205
+box 1007 2 0 1003 here
+unit 0 0 0 204
+box 1099 2 0 219 here
+box 10101 3 3 100 here 1001
+description 100 0 0 0 0
+description 204 0 0 0 0
+description 205 0 0 0 0
+description 219 0 0 0 0
+description 1001 1 0 0 0
+description 1002 1 0 0 0
+description 1003 1 0 1 0
+aura 0 0
+description 1007 1 0 0 0
+description 1099 0 0 0 0
+description 10101 0 0 0 0
+> routing_state
+player_data 100 0
+player_data 204 1
+touched 204:
+known 204:
+output_order 204: 1001
+player_data 205 0
+player_data 219 0
+player_data 1001 0
+player_data 1002 0
+pledge 1003 0
+player_data 1003 0
+player_data 1007 0
+player_data 1099 0
+player_data 10101 0
+> format_state
+format -2 0 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 205 [] [] []
+text 219 [] [] []
+text 1001 [Root] [] []
+flags 1001 0 0 0 0
+text 1002 [Last] [] []
+flags 1002 0 0 0 0
+text 1003 [First] [] []
+flags 1003 0 0 1 0
+magician 1003 0
+text 1007 [Deep] [] []
+flags 1007 0 0 0 0
+text 1099 [Pruned] [] []
+text 10101 [] [] []
+> serialize 1001
+1001 char 0
+na Root
+LI
+ wh 10101
+ hl 219 1003 1002 
+CH
+ lo 204
+
+> serialize 1003
+1003 char 0
+na First
+LI
+ wh 1001
+ hl 1007 
+CH
+ lo 205
+CM
+ hs 1
+
+> serialize 1007
+1007 char 0
+na Deep
+LI
+ wh 1003
+CH
+ lo 204
+
+> serialize 1002
+1002 char 0
+na Last
+LI
+ wh 1001
+CH
+ lo 205
+ pr 1
+
+> serialize 204
+204 player pl_regular
+PL
+
+> serialize 205
+205 player pl_regular
+
+stderr:
+
+exit 0
+stdout:
+section below location routing and recipients order logs
+> box 100 3 50 0
+> box 10101 3 3 100
+> box 301 3 32 10101
+> box 1001 2 0 10101
+> name 1001 Alpha
+> box 1003 2 0 1001
+> name 1003 Beta
+> box 1002 2 0 10101
+> name 1002 Gamma
+> box 204 1 49 0
+> box 205 1 49 0
+> touched 204 10101
+> touched 205 301
+> show_day 1
+> day 23
+> frame 4 17
+> below 10101 10101
+> report 204
+report 204:
+10101:0::7/3:23:Alpha~[1001]
+10101:0::7/3:23:Beta~[1003]
+10101:0::7/3:23:Gamma~[1002]
+> report 205
+report 205:
+> routing_state
+player_data 100 0
+player_data 204 1
+touched 204: 10101
+known 204:
+output_order 204: 10101
+player_data 205 1
+touched 205: 301
+known 205:
+output_order 205:
+player_data 301 0
+player_data 1001 0
+player_data 1002 0
+player_data 1003 0
+player_data 10101 0
+> format_state
+format 4 0 0 0 [] olympus 0
+text 100 [] [] []
+text 204 [] [] []
+text 205 [] [] []
+text 301 [] [] []
+text 1001 [Alpha] [] []
+text 1002 [Gamma] [] []
+text 1003 [Beta] [] []
+text 10101 [] [] []
+stderr:
+
+exit 0
+stdout:
+section wiout vector recipients duplicates prisoners secondary reset
+> box 204 1 49 0
+> box 205 1 49 0
+> box 1001 2 0 0
+> box 1002 2 0 0
+> box 1003 2 0 0
+> lord 1001 204
+> lord 1002 205
+> lord 1003 204
+> unit 1003 0 1 0
+> vector 1002
+> vector 1003
+> vector 1001
+> vector 1002
+> frame -3 19
+> show_day 1
+> day 17
+> wiout -1 -7 53
+> format_state
+format -3 0 0 0 [] olympus 0
+text 204 [] [] []
+text 205 [] [] []
+text 1001 [] [] []
+flags 1001 0 0 0 0
+text 1002 [] [] []
+flags 1002 0 0 0 0
+text 1003 [] [] []
+flags 1003 0 0 0 0
+> emit 1001 89
+> report 204
+report 204:
+1001:0::-3/-7:17:wiout 53  
+1001:0::-3:17:routing 89  
+> report 205
+report 205:
+1002:0::-3/-7:17:wiout 53  
+1002:0::-3/-7:17:wiout 53  
+> routing_state
+player_data 204 1
+touched 204:
+known 204:
+output_order 204: 1001
+player_data 205 1
+touched 205:
+known 205:
+output_order 205: 1002
+player_data 1001 0
+player_data 1002 0
+player_data 1003 0
+> output 1
+> frame 2 -13
+> wiout -1 5 31
+1002:0::2/5:17:wiout 31  
+1001:0::2/5:17:wiout 31  
+1002:0::2/5:17:wiout 31  
+> format_state
+format 2 0 0 0 [] olympus 0
+text 204 [] [] []
+text 205 [] [] []
+text 1001 [] [] []
+flags 1001 0 0 0 0
+text 1002 [] [] []
+flags 1002 0 0 0 0
+text 1003 [] [] []
+flags 1003 0 0 0 0
+stderr:
+
+exit 0
+stdout:
+section wiout prisoner suppression still resets and empty below retains secondary
+> box 204 1 49 0
+> box 1001 2 0 0
+> box 1002 2 0 0
+> lord 1001 204
+> unit 1001 0 1 0
+> frame 5 -8
+> below 1001 1002
+> format_state
+format 5 -8 0 0 [] olympus 0
+text 204 [] [] []
+text 1001 [] [] []
+flags 1001 0 0 0 0
+text 1002 [] [] []
+> wiout 1001 7 91
+> format_state
+format 5 0 0 0 [] olympus 0
+text 204 [] [] []
+text 1001 [] [] []
+flags 1001 0 0 0 0
+text 1002 [] [] []
+> report 204
+report 204:
+> routing_state
+player_data 204 0
+player_data 1001 0
+player_data 1002 0
+stderr:
+
+exit 0
+stdout:
+section invalid description kind assertion
+> box 201 4 0 0
+> describe 201
+stderr:
+assertion failure: olympia/display.c (541): FALSE
+
+exit 134
+stdout:
+section invalid below recipient assertion
+> box 1001 2 0 0
+> below 999 1001
+stderr:
+assertion failure: olympia/display.c (566): valid_box(who)
+
+exit 134
+stdout:
+section invalid below container assertion
+> box 1001 2 0 0
+> below 1001 999
+stderr:
+assertion failure: olympia/loc.c (92): valid_box(who)
+
+exit 134
+stdout:
+section invalid NPC noble item assertion
+> box 1001 2 54 0
+> describe 1001
+stderr:
+assertion failure: olympia/u.c (1832): valid_box(item)
+
+exit 134
+stdout:
+section banner absent empty truncation and display flag
+> box 1001 2 0 0
+> display_flags 1 0
+> describe 1001
+description [<no subkind>~[1001]]
+> banner 1001 
+> describe 1001
+description [<no subkind>~[1001]]
+> banner 1001 12345678901234567890123456789012345678901234567890EXCESS
+> describe 1001
+description [<no subkind>~[1001], "{<i>}12345678901234567890123456789012345678901234567890{</i>}"]
+> serialize 1001
+1001 char 0
+MI
+ ds 12345678901234567890123456789012345678901234567890
+
+> display_flags 0 0
+> describe 1001
+description [<no subkind>~[1001]]
+> format_state
+format 0 0 0 0 [] olympus 0
+text 1001 [] [12345678901234567890123456789012345678901234567890] []
+stderr:
+
+exit 0

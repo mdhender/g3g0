@@ -87,6 +87,23 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 			cmd.parse = cstringsList{"move", strings.TrimSpace(c.rest)}
 			continue
 		}
+		if op == "ally" {
+			w.combatAlly = strings.TrimPrefix(c.rest, " ")
+			continue
+		}
+		if op == "name" || op == "plural" || op == "banner" {
+			n := c.num(t)
+			s := strings.TrimPrefix(c.rest, " ")
+			switch op {
+			case "name":
+				w.setName(n, s)
+			case "plural":
+				w.pItem(n).pluralName = &s
+			case "banner":
+				w.setBanner(n, s)
+			}
+			continue
+		}
 		var a [4]int
 		for i := range a {
 			if strings.TrimSpace(c.rest) != "" {
@@ -272,6 +289,68 @@ func runMoveSection(t *testing.T, lines []string) (output string) {
 		case "fighter":
 			p := w.pItem(n)
 			p.attack, p.defense, p.missile = int16(b), int16(sk), int16(d)
+		case "prominent":
+			w.pItem(n).prominent = int8(b)
+		case "magic_flags":
+			p := w.pMagic(n)
+			p.magician, p.hideMage, p.hideSelf = int8(b), int8(sk), int8(d)
+		case "behind":
+			w.pChar(n).behind = int8(b)
+		case "unique":
+			w.pItem(n).whoHas = int32(b)
+		case "olympus":
+			w.mountOlympus = int32(n)
+		case "subkind":
+			w.changeBoxSubkind(n, b)
+		case "place":
+			w.setWhere(n, b)
+		case "display_flags":
+			w.showDisplayString, w.showCombatFlag = n != 0, b != 0
+		case "skill":
+			w.pChar(n).skills.Append(&skillEnt{skill: int32(b), know: int8(sk), experience: int16(d)})
+		case "describe":
+			fmt.Fprintf(&stdout, "description [%s]\n", w.linerDesc(n))
+		case "with":
+			fmt.Fprintf(&stdout, "with [%s]\n", w.displayWith(n))
+		case "emperor":
+			fmt.Fprintf(&stdout, "emperor %d\n", w.emperor())
+		case "below":
+			w.showCharsBelow(n, b)
+		case "wiout":
+			w.wiout(n, int32(b), "wiout %d  ", sk)
+		case "serialize":
+			w.saveBox(&stdout, n)
+		case "format_state":
+			fmt.Fprintf(&stdout, "format %d %d %d %d [%s] olympus %d\n", w.indent, w.secondIndent, b2i(w.showDisplayString), b2i(w.showCombatFlag), w.combatAlly, w.mountOlympus)
+			for n := range w.loopBoxes() {
+				name, banner, plural := "", "", ""
+				if w.bx[n].name != nil {
+					name = *w.bx[n].name
+				}
+				if p := w.rpMisc(n); p != nil && p.display != nil {
+					banner = *p.display
+				}
+				if p := w.rpItem(n); p != nil && p.pluralName != nil {
+					plural = *p.pluralName
+				}
+				fmt.Fprintf(&stdout, "text %d [%s] [%s] [%s]\n", n, name, banner, plural)
+				var hidden, hideMage int8
+				if p := w.rpMagic(n); p != nil {
+					hidden, hideMage = p.hideSelf, p.hideMage
+				}
+				if p := w.rpChar(n); p != nil {
+					fmt.Fprintf(&stdout, "flags %d %d %d %d %d\n", n, p.guard, p.behind, hidden, hideMage)
+					for _, s := range p.skills {
+						fmt.Fprintf(&stdout, "skill %d %d %d %d\n", n, s.skill, s.know, s.experience)
+					}
+				}
+				if p := w.rpMagic(n); p != nil {
+					fmt.Fprintf(&stdout, "magician %d %d\n", n, p.magician)
+				}
+				if p := w.rpItem(n); p != nil {
+					fmt.Fprintf(&stdout, "prominent %d %d unique %d\n", n, p.prominent, p.whoHas)
+				}
+			}
 		case "rank":
 			w.pChar(n).rank = int8(b)
 		case "rank_s":

@@ -26,7 +26,10 @@ void init_lower(void);
 int hades_region, month_done, evening;
 int immediate, flush_always = 1;
 int immed_see_all;
+int show_combat_flag;
+int pretty_data_files;
 extern int second_indent;
+extern char *combat_ally;
 int drv_land(struct command *, struct exit_view *, int);
 int drv_fly(struct command *, struct exit_view *, int);
 int drv_water(struct command *, struct exit_view *, int, int);
@@ -116,6 +119,12 @@ int main(int argc, char **argv)
             cstrings_clear(&cmd.parse);
             cstrings_append(&cmd.parse, str_save("move"));
             cstrings_append(&cmd.parse, str_save(line + 9));
+        } else if (!strcmp(op, "ally")) combat_ally = str_save(line + 5);
+        else if (!strcmp(op, "name") || !strcmp(op, "plural") || !strcmp(op, "banner")) {
+            char *text = strchr(strchr(line, ' ') + 1, ' ') + 1;
+            if (!strcmp(op, "name")) set_name(a, text);
+            else if (!strcmp(op, "banner")) set_banner(a, text);
+            else p_item(a)->plural_name = str_save(text);
         } else if (!strcmp(op, "command")) { cmd.who = a; cmd.a = b; cmd.wait = c; cmd.cmd = d; }
         else if (!strcmp(op, "args")) { cmd.b = a; cmd.c = b; cmd.d = c; cmd.e = d; }
         else if (!strcmp(op, "tail")) { cmd.f = a; cmd.g = b; cmd.h = c; cmd.days_executing = d; }
@@ -246,6 +255,41 @@ int main(int argc, char **argv)
         }
         else if (!strcmp(op, "air")) { p_item(a)->fly_cap = b; p_item(a)->animal = c; p_item(a)->is_man_item = d; }
         else if (!strcmp(op, "fighter")) { p_item(a)->attack = b; p_item(a)->defense = c; p_item(a)->missile = d; }
+        else if (!strcmp(op, "prominent")) p_item(a)->prominent = b;
+        else if (!strcmp(op, "magic_flags")) { p_magic(a)->magician = b; p_magic(a)->hide_mage = c; p_magic(a)->hide_self = d; }
+        else if (!strcmp(op, "behind")) p_char(a)->behind = b;
+        else if (!strcmp(op, "unique")) p_item(a)->who_has = b;
+        else if (!strcmp(op, "olympus")) mount_olympus = a;
+        else if (!strcmp(op, "subkind")) change_box_subkind(a, b);
+        else if (!strcmp(op, "place")) set_where(a, b);
+        else if (!strcmp(op, "display_flags")) { show_display_string = a; show_combat_flag = b; }
+        else if (!strcmp(op, "skill")) {
+            struct skill_ent *s = my_malloc(sizeof(*s));
+            s->skill = b; s->know = c; s->experience = d;
+            skill_ents_append(&p_char(a)->skills, s);
+        }
+        else if (!strcmp(op, "describe")) printf("description [%s]\n", liner_desc(a));
+        else if (!strcmp(op, "with")) printf("with [%s]\n", display_with(a));
+        else if (!strcmp(op, "emperor")) printf("emperor %d\n", emperor());
+        else if (!strcmp(op, "below")) show_chars_below(a, b);
+        else if (!strcmp(op, "wiout")) wiout(a, b, "wiout %d  ", c);
+        else if (!strcmp(op, "serialize")) save_box(stdout, a);
+        else if (!strcmp(op, "format_state")) {
+            int n, i;
+            printf("format %d %d %d %d [%s] olympus %d\n", indent, second_indent, show_display_string, show_combat_flag, combat_ally, mount_olympus);
+            loop_boxes(n) {
+                printf("text %d [%s] [%s] [%s]\n", n, name(n) ? name(n) : "", banner(n) ? banner(n) : "", rp_item(n) && rp_item(n)->plural_name ? rp_item(n)->plural_name : "");
+                if (rp_char(n)) {
+                    printf("flags %d %d %d %d %d\n", n, char_guard(n), char_behind(n), char_hidden(n), char_hide_mage(n));
+                    for (i = 0; i < skill_ents_len(rp_char(n)->skills); i++) {
+                        struct skill_ent *s = rp_char(n)->skills[i];
+                        printf("skill %d %d %d %d\n", n, s->skill, s->know, s->experience);
+                    }
+                }
+                if (rp_magic(n)) printf("magician %d %d\n", n, is_magician(n));
+                if (rp_item(n)) printf("prominent %d %d unique %d\n", n, item_prominent(n), item_unique(n));
+            } next_box;
+        }
         else if (!strcmp(op, "rank")) p_char(a)->rank = b;
         else if (!strcmp(op, "rank_s")) printf("rank [%s]\n", rank_s(a));
         else if (!strcmp(op, "aura")) { p_magic(a)->max_aura = b; p_magic(a)->auraculum = c; }

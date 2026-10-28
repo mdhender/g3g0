@@ -35,6 +35,15 @@ func sout(format string, a ...any) string {
 	return s[:min(len(s), lenMax)]
 }
 
+// wiout is sout.c:506–519. It resets secondary indentation to zero, even
+// when the caller had a nonzero secondary indent before this call.
+func (w *world) wiout(who int, ind int32, format string, a ...any) {
+	s := sout(format, a...)
+	w.secondIndent = ind
+	w.commandOut(who, "%s", s)
+	w.secondIndent = 0
+}
+
 // commandOut is the default character/player route through out/vout,
 // out_sup and bottom_out. wout is an alias for out in C. Keep raw output
 // framing even in immediate mode, and keep the player's output bit mutation.

@@ -152,6 +152,10 @@ type world struct {
 	secondWaitList lists.IList // combat.c second_wait_list
 	flags          []*flagEnt  // c1.c signals, not saved
 
+	showDisplayString bool   // display.c show_display_string
+	showCombatFlag    bool   // combat.c show_combat_flag
+	combatAlly        string // display.c combat_ally
+
 	// monthDone is month_done in input.c, set after the daily loop.
 	monthDone int32
 

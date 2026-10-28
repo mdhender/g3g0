@@ -2200,3 +2200,416 @@ aura_result 999
 
 section invalid wield inventory owner assertion
 wield 999 1 1
+
+section complete ordinary character suffix order and display flags
+box 100 3 50 0
+box 10101 3 3 100
+box 301 3 32 10101
+box 204 1 49 0
+box 1001 2 0 301
+lord 1001 204
+name 1001 Asymmetric Lord
+rank 1001 60
+aura 1001 23 0
+magic_flags 1001 1 0 0
+skill 1001 750 2 21
+guard 1001 1
+behind 1001 -3
+box 401 4 0 0
+unique 401 1001
+olympus 10101
+box 217 4 0 0
+name 217 iron shield
+bonuses 217 0 7 0
+box 213 4 0 0
+name 213 amber ox
+plural 213 amber oxen
+prominent 213 1
+box 211 4 0 0
+name 211 bright sword
+bonuses 211 11 0 0
+box 219 4 0 0
+name 219 bow
+bonuses 219 0 0 13
+box 209 4 0 0
+name 209 dull ox
+prominent 209 0
+inv 1001 217 1
+inv 1001 213 3
+inv 1001 211 1
+inv 1001 219 1
+inv 1001 209 19
+banner 1001 Red & blue
+display_flags 1 0
+description_state
+format_state
+serialize 1001
+serialize 213
+serialize 401
+describe 1001
+display_flags 0 0
+describe 1001
+display_flags 1 1
+ally , allied~west
+describe 1001
+behind 1001 0
+describe 1001
+unit 1001 0 1 0
+describe 1001
+description_state
+format_state
+serialize 1001
+serialize 213
+serialize 401
+
+section NPC noble item counts inventory filtering and fallback warning
+box 1001 2 54 0
+box 201 4 0 0
+name 201 red wolf
+plural 201 red wolves
+prominent 201 1
+unit 1001 201 0 0
+box 219 4 0 0
+name 219 ox
+plural 219 oxen
+prominent 219 -1
+box 211 4 0 0
+name 211 wagon
+prominent 211 1
+box 213 4 0 0
+name 213 ruby
+plural 213 rubies
+prominent 213 1
+inv 1001 201 0
+describe 1001
+inv 1001 201 1204
+inv 1001 219 2
+inv 1001 211 1
+inv 1001 213 0
+inv 1001 998 7
+describe 1001
+inv 1001 211 3
+inv 1001 213 -3
+describe 1001
+inv 1001 201 -2
+describe 1001
+inv 1001 201 2147483647
+describe 1001
+unit 1001 201 1 0
+describe 1001
+description_state
+format_state
+
+section mage aura thresholds upper endpoints and next values
+box 1001 2 0 0
+describe 1001
+magic_flags 1001 1 0 0
+aura 1001 -7 0
+describe 1001
+aura 1001 5 0
+describe 1001
+aura 1001 6 0
+describe 1001
+aura 1001 10 0
+describe 1001
+aura 1001 11 0
+describe 1001
+aura 1001 15 0
+describe 1001
+aura 1001 16 0
+describe 1001
+aura 1001 20 0
+describe 1001
+aura 1001 21 0
+describe 1001
+aura 1001 30 0
+describe 1001
+aura 1001 31 0
+describe 1001
+aura 1001 40 0
+describe 1001
+aura 1001 41 0
+describe 1001
+aura 1001 50 0
+describe 1001
+aura 1001 51 0
+describe 1001
+aura 1001 60 0
+describe 1001
+aura 1001 61 0
+describe 1001
+aura 1001 70 0
+describe 1001
+aura 1001 71 0
+describe 1001
+aura 1001 80 0
+describe 1001
+aura 1001 81 0
+describe 1001
+magic_flags 1001 1 -1 0
+describe 1001
+magic_flags 1001 0 0 0
+describe 1001
+format_state
+
+section mage uses actual auraculum and quantity independent bonuses
+box 1001 2 0 0
+magic_flags 1001 1 0 1
+box 201 4 0 0
+box 203 4 0 0
+aura 1001 -31 201
+aura_item 201 18 -2
+aura_item 203 0 15
+inv 1001 201 1
+inv 1001 203 27
+describe 1001
+inv 1001 201 0
+describe 1001
+description_state
+format_state
+
+section religion requires known skill not merely entry or priest magic flag
+box 1001 2 0 0
+box 1002 2 0 0
+box 1003 2 0 0
+box 1004 2 0 0
+box 1005 2 0 0
+skill 1001 750 1 32767
+skill 1002 750 2 -9
+skill 1003 750 258 65571
+skill 1004 749 2 35
+skill 1005 750 0 35
+describe 1001
+describe 1002
+describe 1003
+describe 1004
+describe 1005
+format_state
+
+section character subkind and absent data
+box 1001 2 55 0
+box 1002 2 56 0
+box 1003 2 0 0
+name 1003 Plain
+describe 1001
+describe 1002
+describe 1003
+description_state
+
+section emperor unique owner regular player castle and Olympus guards
+box 100 3 50 0
+box 10101 3 3 100
+box 10102 3 3 100
+box 301 3 32 10101
+box 302 3 32 10102
+box 303 3 29 10101
+box 204 1 49 0
+box 205 1 52 0
+box 1001 2 0 301
+box 1002 2 0 301
+olympus 10101
+emperor
+box 401 4 0 0
+emperor
+unique 401 1001
+emperor
+lord 1001 205
+emperor
+lord 1001 204
+emperor
+describe 1001
+describe 1002
+place 1001 302
+emperor
+place 1001 303
+emperor
+place 1001 10101
+emperor
+place 1001 301
+subkind 301 39
+emperor
+subkind 301 32
+emperor
+unique 401 1002
+emperor
+describe 1001
+lord 1002 204
+emperor
+describe 1002
+description_state
+format_state
+
+section leader only guard versus combat flags and signed behind
+box 100 3 50 0
+box 10101 3 3 100
+box 1001 2 0 10101
+box 1002 2 0 1001
+guard 1001 -1
+guard 1002 1
+behind 1001 259
+behind 1002 128
+describe 1001
+describe 1002
+display_flags 0 1
+describe 1001
+describe 1002
+ally , allied~east
+describe 1001
+describe 1002
+behind 1001 0
+describe 1001
+display_flags 0 0
+describe 1001
+describe 1002
+format_state
+
+section display with raw noncharacter list and depth first hidden descendants
+box 100 3 50 0
+box 10101 3 3 100
+box 204 1 49 0
+box 205 1 49 0
+box 1001 2 0 10101
+lord 1001 204
+name 1001 Root
+with 1001
+box 219 4 0 1001
+with 1001
+box 1099 2 0 219
+name 1099 Pruned
+below 1001 1001
+frame 7 -9
+format_state
+box 1003 2 0 1001
+lord 1003 205
+name 1003 First
+magic_flags 1003 0 0 1
+box 1007 2 0 1003
+lord 1007 204
+name 1007 Deep
+box 1002 2 0 1001
+lord 1002 205
+name 1002 Last
+unit 1002 0 1 0
+with 1002
+description_state
+format_state
+serialize 1001
+serialize 1003
+serialize 1007
+serialize 1002
+serialize 204
+serialize 205
+output 1
+below 1001 1001
+format_state
+emit 1001 73
+output 0
+frame -2 11
+show_day 1
+day 19
+below 1001 1001
+report 204
+report 205
+description_state
+routing_state
+format_state
+serialize 1001
+serialize 1003
+serialize 1007
+serialize 1002
+serialize 204
+serialize 205
+
+section below location routing and recipients order logs
+box 100 3 50 0
+box 10101 3 3 100
+box 301 3 32 10101
+box 1001 2 0 10101
+name 1001 Alpha
+box 1003 2 0 1001
+name 1003 Beta
+box 1002 2 0 10101
+name 1002 Gamma
+box 204 1 49 0
+box 205 1 49 0
+touched 204 10101
+touched 205 301
+show_day 1
+day 23
+frame 4 17
+below 10101 10101
+report 204
+report 205
+routing_state
+format_state
+
+section wiout vector recipients duplicates prisoners secondary reset
+box 204 1 49 0
+box 205 1 49 0
+box 1001 2 0 0
+box 1002 2 0 0
+box 1003 2 0 0
+lord 1001 204
+lord 1002 205
+lord 1003 204
+unit 1003 0 1 0
+vector 1002
+vector 1003
+vector 1001
+vector 1002
+frame -3 19
+show_day 1
+day 17
+wiout -1 -7 53
+format_state
+emit 1001 89
+report 204
+report 205
+routing_state
+output 1
+frame 2 -13
+wiout -1 5 31
+format_state
+
+section wiout prisoner suppression still resets and empty below retains secondary
+box 204 1 49 0
+box 1001 2 0 0
+box 1002 2 0 0
+lord 1001 204
+unit 1001 0 1 0
+frame 5 -8
+below 1001 1002
+format_state
+wiout 1001 7 91
+format_state
+report 204
+routing_state
+
+section invalid description kind assertion
+box 201 4 0 0
+describe 201
+
+section invalid below recipient assertion
+box 1001 2 0 0
+below 999 1001
+
+section invalid below container assertion
+box 1001 2 0 0
+below 1001 999
+
+section invalid NPC noble item assertion
+box 1001 2 54 0
+describe 1001
+
+section banner absent empty truncation and display flag
+box 1001 2 0 0
+display_flags 1 0
+describe 1001
+banner 1001 
+describe 1001
+banner 1001 12345678901234567890123456789012345678901234567890EXCESS
+describe 1001
+serialize 1001
+display_flags 0 0
+describe 1001
+format_state

@@ -65,6 +65,10 @@ functions = {
     'art.c': ['has_auraculum', 'max_eff_aura'],
     'combat.c': ['find_wield', 'wield_s'],
     'day.c': ['touch_loc_pl'],
+    'use.c': ['exp_level', 'rp_skill_ent', 'has_skill'],
+    'display.c': ['with_inventory_string', 'display_with', 'mage_s', 'priest_s',
+                  'emperor', 'liner_desc_char', 'liner_desc', 'show_chars_below'],
+    'seed.c': ['int_comp'],
 }
 with open(dest, 'w') as out:
     out.write('#include <stdlib.h>\nint fuzzy_find;\n')
@@ -79,6 +83,14 @@ with open(dest, 'w') as out:
             out.write(source[start:end])
         if file == 'combat.c':
             out.write('#include "combat-structs.h"\n')
+        if file == 'display.c':
+            start = source.index('int show_display_string =')
+            end = source.index('\n\n', start)
+            out.write('#line 402 "olympia/display.c"\n' + source[start:end] + '\n')
+            # Unrelated descriptions are explicit rejected boundaries, not
+            # invented successful output. Keep the actual liner_desc switch.
+            for name in ['liner_desc_ship', 'liner_desc_loc', 'liner_desc_road', 'liner_desc_storm']:
+                out.write(f'static char *{name}(int n) {{ fprintf(stderr, "out-of-scope C dependency: {name}\\n"); abort(); }}\n')
         for name in names:
             m = re.search(rf'^(?:static )?[^\n(]+\n{name}\(.*?^\}}\n', source, re.M | re.S)
             if not m:
@@ -115,7 +127,7 @@ case "$(uname -s)" in
 esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -ffunction-sections -fdata-sections "${ldflags[@]}" \
  -I olympia -I lib -I "${WORK}" "${HERE}/driver.c" "${WORK}/helpers.c" \
- olympia/{code,glob,z,sout}.c lib/{checked_alloc,ilist,exit_views,rng,rnd,item_ents,admits,cstrings}.c \
+ olympia/{code,glob,z,sout,io}.c lib/{checked_alloc,ilist,exit_views,rng,rnd,item_ents,admits,cstrings,skill_ents,trades,req_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
 sections=$(grep -c '^section ' "${CASES}")
 section_names=()

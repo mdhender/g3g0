@@ -174,3 +174,63 @@ The entire old move **83-section input** and **4067-line / 81524-byte output**
 remain exact prefixes. Command input and its **207-section / 7193-line /
 137909-byte output** are unchanged. Recorded trailing whitespace is preserved.
 No new successful dependency stubs or expected-success NYI cases are introduced.
+
+## Complete character and stack descriptions (#115)
+
+The same harness now extracts complete display.c definitions at their original
+source locations: `with_inventory_string` (169–194), `display_with` (197–205),
+`mage_s` (336–358), `priest_s` (361–369), `emperor` (372–399),
+`liner_desc_char` (406–477), `liner_desc` (528–544) and `show_chars_below`
+(561–576), plus the original display globals (402–403). Linked sout.c supplies
+the actual `wiout` (506–519), including its reset of `second_indent` to **zero**,
+not to the caller's previous value. The full original `liner_desc` switch is
+retained: its four noncharacter helpers abort with the rejected unfinished
+dependency marker, never invented successful strings. Go retains explicit NYI
+for those branches. A temporary expected-abort noncharacter case was rejected
+in both normal and `--update` mode without changing the recording; it was
+removed after the check. Go tests retain checks of all four NYI boundaries.
+
+Real priest lookup uses complete use.c `exp_level` (957–974), `rp_skill_ent`
+(997–1013) and `has_skill` (1145–1156), with original lib/skill_ents.c. Existing
+Go `hasSkill`, `rankS`, `maxEffAura`, `wieldS`, name/quantity helpers and
+depth-first character walks are reused, not reimplemented in the driver.
+Serialization uses the linked original io.c `save_box` (2073–2123) and its
+actual print closure, lib/trades.c and req_ents.c, and seed.c `int_comp`
+(386–393). No serializer output is modeled. Output-bit insertion order is
+dumped separately because these bits are deliberately not saved to the DB.
+
+Seventeen appended sections discriminate complete suffix order (rank, aura,
+religion, Emperor, three independent equipment choices, guard/combat flags,
+banner, inventory, prisoner); ordinary and NPC names/counts including signed
+C-int wrap; noble-item exclusion, nonascending inventory order, prominence,
+quantity and invalid-entry filtering, and real missing-plural warnings. Every
+mage threshold has upper-endpoint and next-value controls, with absent/hidden/
+nonmagician controls and actual effective-aura bonuses. Priest controls retain
+known versus learning/unknown/unrelated skills and signed field wrapping.
+Emperor checks absent/zero throne owner, unowned/NPC/regular factions,
+wrong province/building/unfinished castle and changed unique owner. Leader-only
+guard, zero/nonzero signed behind and empty/nonempty ally suffixes differ.
+Banner controls cover absent, empty, truncation and the display toggle.
+
+Stack cases distinguish raw nonempty here lists from filtered character walks:
+an item-only list is accompanied but emits no descendant, and its character
+child is pruned. Nonascending nested characters are shown depth first,
+including hidden units and prisoners, without repeating the root. Actual
+immediate output, faction log bytes, location recipient order, vector duplicates,
+prisoner suppression, day/unit/primary/secondary framing, output bits and
+secondary reset are recorded. Empty walks retain the previous secondary indent;
+even a suppressed `wiout` resets it. Before/after complete state and real
+serialized character/item/player bytes check that descriptions do not mutate
+the database. Assertions retain the actual display.c/loc.c/u.c file, line,
+condition and status 134. Prior SIGSEGV/no-flush status 139 remains unchanged.
+
+The recording is now **116 sections / 5944 lines / 119914 bytes**, generated
+only by two fresh bounded deterministic C runs and compared exactly with Go.
+All prior **99-section input bytes** and **4789 lines / 96680 output bytes**
+are unchanged prefixes. Command's input and **207 sections / 7193 lines /
+137909 output bytes** are unchanged. Literal trailing spaces, including the
+empty-banner fixture and actual log messages, are intentional.
+
+This accepts only character formatting and stack display. Movement messages
+remain #110; report assembly, monthly rank computation, noncharacter
+descriptions and full MOVE/turn acceptance remain explicitly unfinished.
