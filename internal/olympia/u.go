@@ -450,6 +450,87 @@ func (w *world) subItem(who, item, qty int) bool {
 	return false
 }
 
+// genItem is u.c:1885–1891. addItem retains lore and trade bookkeeping.
+func (w *world) genItem(who, item, qty int) {
+	assert(w.itemUnique(item) == 0, "olympia/u.c", 1889, "!item_unique(item)")
+	w.addItem(who, item, qty)
+}
+
+func (w *world) canPay(who, amount int) bool {
+	return w.hasItem(who, itemGold) >= int32(amount)
+}
+
+func (w *world) charge(who, amount int) bool {
+	return w.subItem(who, itemGold, amount)
+}
+
+func (w *world) stackHasItem(who, item int) int32 {
+	var sum int32
+	for i := range w.loopStack(w.stackLeader(who)) {
+		if w.player(i) != w.player(who) {
+			continue
+		}
+		sum += w.hasItem(i, item)
+	}
+	return sum
+}
+
+func (w *world) hasUseKey(who, key int) int {
+	for e := range w.loopInv(who) {
+		if p := w.rpItemMagic(int(e.item)); p != nil && int(p.useKey) == key {
+			return int(e.item)
+		}
+	}
+	return 0
+}
+
+func (w *world) stackHasUseKey(who, key int) int {
+	for i := range w.loopStack(w.stackLeader(who)) {
+		if w.player(i) != w.player(who) {
+			continue
+		}
+		if item := w.hasUseKey(i, key); item != 0 {
+			return item
+		}
+	}
+	return 0
+}
+
+// stackSubItem preserves C's actor-first, then friendly stack-order borrowing.
+func (w *world) stackSubItem(who, item, qty int) bool {
+	if w.stackHasItem(who, item) < int32(qty) {
+		return false
+	}
+	n := min(w.hasItem(who, item), int32(qty))
+	if n > 0 {
+		qty = int(int32(qty) - n)
+		w.subItem(who, item, int(n))
+	}
+	assert(qty >= 0, "olympia/u.c", 2241, "qty >= 0")
+	if qty == 0 {
+		return true
+	}
+	for i := range w.loopStack(w.stackLeader(who)) {
+		if qty <= 0 {
+			break
+		}
+		if w.player(i) != w.player(who) {
+			continue
+		}
+		n = min(w.hasItem(i, item), int32(qty))
+		if n > 0 {
+			qty = int(int32(qty) - n)
+			w.subItem(i, item, int(n))
+		}
+	}
+	assert(qty == 0, "olympia/u.c", 2283, "qty == 0")
+	return true
+}
+
+func (w *world) autocharge(who, amount int) bool {
+	return w.stackSubItem(who, itemGold, amount)
+}
+
 func (w *world) destroyUniqueItem(who, item int) {
 	assert(w.kind(item) == tItem, "olympia/u.c", 1982, "kind(item) == T_item")
 	assert(w.itemUnique(item) != 0, "olympia/u.c", 1983, "item_unique(item)")

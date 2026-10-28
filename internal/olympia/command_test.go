@@ -50,6 +50,9 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 	if err := os.Mkdir(filepath.Join(w.libdir, "log"), 0o755); err != nil {
 		t.Fatal(err)
 	}
+	if err := os.Mkdir(filepath.Join(w.libdir, "orders"), 0o755); err != nil {
+		t.Fatal(err)
+	}
 	w.allocBox(200, tPlayer, subPlRegular)
 	w.allocBox(201, tPlayer, subPlRegular)
 	w.pPlayer(200)
@@ -114,6 +117,100 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "master":
+			n := args.num(t)
+			seed := make([]byte, 16)
+			for i := range seed {
+				seed[i] = byte(n + i)
+			}
+			path := filepath.Join(w.libdir, "randseed")
+			if err := os.WriteFile(path, seed, 0o600); err != nil {
+				t.Fatal(err)
+			}
+			if err := w.rnd.Load(path); err != nil {
+				t.Fatal(err)
+			}
+		case "ambush", "bandit":
+			faery, who, where := args.num(t) != 0, args.num(t), args.num(t)
+			if op == "bandit" {
+				if faery {
+					created = w.createFaeryBandit(who, where)
+				} else {
+					created = w.createHadesBandit(who, where)
+				}
+				fmt.Fprintf(&stdout, "created %d\n", created)
+			} else if faery {
+				w.faeryAttackCheck(who, where)
+			} else {
+				w.hadesAttackCheck(who, where)
+			}
+		case "region_rolls":
+			n, a := args.num(t), args.num(t)
+			fmt.Fprintf(&stdout, "hads ambush %d\n", w.streams.HadsAmbush(n, a))
+			fmt.Fprintf(&stdout, "hads kind %d\n", w.streams.HadsBanditKind(n, a))
+			fmt.Fprintf(&stdout, "hads retal %d\n", w.streams.HadsRetal(n, a))
+			fmt.Fprintf(&stdout, "faer ambush %d\n", w.streams.FaerAmbush(n, a))
+			fmt.Fprintf(&stdout, "faer kind %d\n", w.streams.FaerBanditKind(n, a))
+			fmt.Fprintf(&stdout, "faer retal %d\n", w.streams.FaerRetal(n, a))
+		case "bandits":
+			for n := range w.loopKind(tChar) {
+				if w.subkind(n) != subNi {
+					continue
+				}
+				fmt.Fprintf(&stdout, "bandit %d\n", n)
+				w.saveBox(&stdout, n)
+				fmt.Fprintf(&stdout, "bandit output %d\n", b2i(testBit(w.pPlayer(w.player(n)).output, n)))
+			}
+			for i, q := range w.loadQ {
+				helperList(&stdout, fmt.Sprintf("load_q %d", i), q)
+			}
+			helperList(&stdout, "run_q", w.runQ)
+		case "select_bandit":
+			for n := range w.loopKind(tChar) {
+				if w.subkind(n) == subNi {
+					c = w.rpCommand(n)
+					break
+				}
+			}
+		case "learn":
+			n, a, b, d := args.num(t), args.num(t), args.num(t), args.num(t)
+			w.pChar(n).skills.Append(&skillEnt{skill: int32(a), know: int8(b), experience: int16(d)})
+		case "payment":
+			kind, n, a := args.word(), args.num(t), args.num(t)
+			var result int
+			switch kind {
+			case "can":
+				result = b2i(w.canPay(n, a))
+			case "charge":
+				result = b2i(w.charge(n, a))
+			case "auto":
+				result = b2i(w.autocharge(n, a))
+			case "stack":
+				result = int(w.stackHasItem(n, a))
+			case "sub":
+				result = b2i(w.stackSubItem(n, a, args.num(t)))
+			case "key":
+				result = w.hasUseKey(n, a)
+			case "stackkey":
+				result = w.stackHasUseKey(n, a)
+			default:
+				t.Fatalf("unknown payment %q", kind)
+			}
+			fmt.Fprintf(&stdout, "payment %d\n", result)
+		case "genitem":
+			w.genItem(args.num(t), args.num(t), args.num(t))
+		case "output":
+			n, a := args.num(t), args.num(t)
+			fmt.Fprintf(&stdout, "output %d\n", b2i(testBit(w.pPlayer(n).output, a)))
+		case "orders_file":
+			n := args.num(t)
+			w.savePlayerOrders(n)
+			fmt.Fprintf(&stdout, "orders file %d:\n", n)
+			data, err := os.ReadFile(filepath.Join(w.libdir, "orders", fmt.Sprint(n)))
+			if err != nil && !os.IsNotExist(err) {
+				t.Fatal(err)
+			}
+			stdout.Write(data)
 		case "emit":
 			w.commandOut(args.num(t), "routing %d  ", args.num(t))
 		case "garrison_view":
@@ -308,6 +405,10 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pSkill(n).npReq = int32(a)
 			case "lore":
 				w.pItemMagic(n).lore = int32(a)
+			case "use_key":
+				w.pItemMagic(n).useKey = int8(a)
+			case "man":
+				w.pItem(n).isManItem = int8(a)
 			case "queued_lore":
 				w.pPlayer(n).deliverLore.Append(a)
 			case "touched":

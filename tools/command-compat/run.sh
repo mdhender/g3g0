@@ -36,7 +36,7 @@ functions = {
                 'exec_comp', 'sort_load_queue', 'sort_run_queue', 'initial_command_load',
                 'min_pri_ready', 'init_wait_list', 'check_all_waits', 'start_phase', 'evening_phase',
                 'daily_command_loop', 'process_player_orders', 'interrupt_order', 'process_interrupted_units'],
-    'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders'],
+    'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'queue', 'save_player_orders'],
     'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord'],
     'move.c': ['restore_stack_actions'],
     'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched'],
@@ -52,7 +52,10 @@ functions = {
             'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'add_np', 'deduct_np',
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
-            'destroy_unique_item', 'add_item', 'sub_item', 'set_known'],
+            'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
+            'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
+            'stack_sub_item', 'autocharge'],
+    'npc.c': ['create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'lore.c': ['queue_lore', 'scan_char_item_lore'],
     'buy.c': ['investigate_possible_trade'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
@@ -99,7 +102,10 @@ int pledge_backlinks;
             out.write(re.search(r'^static ilist collectors = NULL;\n', source, re.M).group(0))
         matches = []
         for name in names:
-            m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
+            pattern = rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n'
+            if name == 'queue':
+                pattern = r'^void queue\(.*?^\}\n'
+            m = re.search(pattern, source, re.M | re.S)
             if not m:
                 sys.exit(f'no definition of {name} in {file}')
             line = source.count('\n', 0, m.start()) + 1
@@ -120,12 +126,22 @@ void drv_sort_load(int pri) { sort_load_queue(load_q[pri]); }
 void drv_sort_run(void) { sort_run_queue(run_q); }
 ilist drv_collectors(void) { return collectors; }
 int drv_fort_covers(int n) { return fort_covers(n); }
+int drv_bandit(int faery, int who, int where) {
+ return faery ? create_faery_bandit(who, where) : create_hades_bandit(who, where);
+}
 char *drv_wait_check(struct command *c) { return check_wait_conditions(c); }
 void drv_signal(int who, char *flag) {
  struct flag_ent *p = my_malloc(sizeof(*p));
  p->who = who; p->flag = str_save(flag); flag_ents_append(&flags, p);
 }
 ''')
+# Region prefixes retain the original tags, structures, turn guards and whole
+# keyed leaf functions. No replaced draw or reset; the same master feeds mint.
+for region in ['hades', 'faery']:
+    source = open(f'{src}/{region}.c').read()
+    with open(f'{dst}/{region}-rng.c', 'w') as out:
+        out.write(f'#line 1 "olympia/{region}.c"\n')
+        out.write(source[:source.index(f'void\ncreate_{region}(void)')])
 glob = open(f'{src}/glob.c').read()
 table = glob[glob.index('struct cmd_tbl_ent cmd_tbl[]'):glob.index('char *kind_s[]')]
 routines = set()
@@ -157,7 +173,7 @@ case "$(uname -s)" in
 esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -w -ffunction-sections -fdata-sections "${ldflags[@]}" \
  -I olympia -I lib \
- "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" \
+ "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" "${WORK}/hades-rng.c" "${WORK}/faery-rng.c" \
  olympia/{code,glob,z,sout,io}.c \
  lib/{checked_alloc,ilist,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents,admits,trades,req_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
@@ -166,7 +182,7 @@ section_names=() # Bash 3 (Darwin) has no mapfile.
 while IFS= read -r line; do section_names+=("$line"); done < <(grep '^section ' "${CASES}")
 for run in run1 run2; do
  for ((i=0; i<sections; i++)); do
-  mkdir -p "${WORK}/${run}/${i}/log"
+  mkdir -p "${WORK}/${run}/${i}/log" "${WORK}/${run}/${i}/orders"
   status=0
   (run_limited "${RUN_TIMEOUT}" command-driver "${WORK}/driver" "${CASES}" "$i" "${WORK}/${run}/${i}") \
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?

@@ -27,6 +27,7 @@ void drv_signal(int who, char *flag);
 void drv_interrupted(void);
 int drv_sub_item(int who, int item, int qty);
 void drv_add_item(int who, int item, int qty);
+int drv_bandit(int faery, int who, int where);
 
 static void wait_dump(struct command *c)
 {
@@ -98,7 +99,70 @@ int main(int argc, char **argv)
   if (section != want) continue;
   printf("> %s\n", line);
   sscanf(line, "%31s", op);
-  if (!strcmp(op, "emit")) {
+  if (!strcmp(op, "master")) {
+   unsigned char seed[16]; FILE *s;
+   sscanf(line,"%*s %d",&n);
+   for (i=0;i<16;i++) seed[i]=n+i;
+   s=fopen(sout("%s/randseed",libdir),"wb"); if(!s) return 2;
+   fwrite(seed,1,16,s); fclose(s); load_seed(sout("%s/randseed",libdir));
+  }
+  else if (!strcmp(op, "ambush") || !strcmp(op, "bandit")) {
+   sscanf(line,"%*s %d %d %d",&n,&a,&b);
+   if (!strcmp(op,"bandit")) { created=drv_bandit(n,a,b); printf("created %d\n",created); }
+   else if(n) faery_attack_check(a,b); else hades_attack_check(a,b);
+  }
+  else if (!strcmp(op, "region_rolls")) {
+   sscanf(line,"%*s %d %d",&n,&a);
+   /* Each statement is sequenced: never rely on C argument evaluation order. */
+   printf("hads ambush %d\n",hads_ambush(n,a));
+   printf("hads kind %d\n",hads_bandit_kind(n,a));
+   printf("hads retal %d\n",hads_retal(n,a));
+   printf("faer ambush %d\n",faer_ambush(n,a));
+   printf("faer kind %d\n",faer_bandit_kind(n,a));
+   printf("faer retal %d\n",faer_retal(n,a));
+  }
+  else if (!strcmp(op, "bandits")) {
+   loop_char(n) {
+    if(subkind(n)!=sub_ni) continue;
+    printf("bandit %d\n",n); save_box(stdout,n);
+    printf("bandit output %d\n",test_bit(p_player(player(n))->output,n));
+   } next_char;
+   for(i=0;i<5;i++) list(sout("load_q %d",i),load_q[i]);
+   list("run_q",run_q);
+  }
+  else if (!strcmp(op, "select_bandit")) {
+   loop_char(n) { if(subkind(n)==sub_ni) { c=rp_command(n); break; } } next_char;
+  }
+  else if (!strcmp(op, "learn")) {
+   struct skill_ent *s=my_malloc(sizeof(*s));
+   sscanf(line,"%*s %d %d %d %d",&n,&a,&b,&d);
+   s->skill=a; s->know=(schar)b; s->experience=(short)d;
+   skill_ents_append(&p_char(n)->skills,s);
+  }
+  else if (!strcmp(op, "payment")) {
+   sscanf(line,"%*s %31s %d %d %d",text,&n,&a,&b);
+   if(!strcmp(text,"can")) result=can_pay(n,a);
+   else if(!strcmp(text,"charge")) result=charge(n,a);
+   else if(!strcmp(text,"auto")) result=autocharge(n,a);
+   else if(!strcmp(text,"stack")) result=stack_has_item(n,a);
+   else if(!strcmp(text,"sub")) result=stack_sub_item(n,a,b);
+   else if(!strcmp(text,"key")) result=has_use_key(n,a);
+   else if(!strcmp(text,"stackkey")) result=stack_has_use_key(n,a);
+   else return 2;
+   printf("payment %d\n",result);
+  }
+  else if (!strcmp(op, "genitem")) {
+   sscanf(line,"%*s %d %d %d",&n,&a,&b); gen_item(n,a,b);
+  }
+  else if (!strcmp(op, "output")) {
+   sscanf(line,"%*s %d %d",&n,&a); printf("output %d\n",test_bit(p_player(n)->output,a));
+  }
+  else if (!strcmp(op, "orders_file")) {
+   sscanf(line,"%*s %d",&n); save_player_orders(n);
+   printf("orders file %d:\n",n); log=fopen(sout("%s/orders/%d",libdir,n),"r");
+   if(log) { while((n=fgetc(log))!=EOF) putchar(n); fclose(log); }
+  }
+  else if (!strcmp(op, "emit")) {
    sscanf(line,"%*s %d %d",&n,&a); out(n,"routing %d  ",a);
   }
   else if (!strcmp(op, "garrison_view")) {
@@ -255,6 +319,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"np")) p_player(n)->noble_points = (short)a;
    else if (!strcmp(text,"skill_np")) p_skill(n)->np_req = a;
    else if (!strcmp(text,"lore")) p_item_magic(n)->lore = a;
+   else if (!strcmp(text,"use_key")) p_item_magic(n)->use_key = a;
+   else if (!strcmp(text,"man")) p_item(n)->is_man_item = (schar)a;
    else if (!strcmp(text,"queued_lore")) ilist_append(&p_player(n)->deliver_lore,a);
    else if (!strcmp(text,"touched")) set_bit(&p_player(n)->locs,a);
    else if (!strcmp(text,"weather_seen")) set_bit(&p_player(n)->weather_seen,a);

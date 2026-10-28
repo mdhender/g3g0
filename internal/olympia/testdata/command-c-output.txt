@@ -7191,3 +7191,1384 @@ stderr:
 combat boundary: regular_combat
 
 exit 134
+stdout:
+section hades creation every kind and shared mint source order
+> master 0
+> set turn 1
+> entity 100 1 0
+> entity 1 4 0
+> entity 26 4 0
+> entity 31 4 0
+> entity 32 4 0
+> entity 33 4 0
+> entity 288 4 0
+> place 9000
+> set day 3
+> bandit 0 1000 9000
+created 110158
+> set day 8
+> bandit 0 1000 9000
+created 140449
+> set day 2
+> bandit 0 1000 9000
+created 149794
+> set day 1
+> bandit 0 1000 9000
+created 79711
+> set day 4
+> bandit 0 1000 9000
+created 121151
+> bandits
+bandit 79711
+79711 char ni
+il	33 23
+LI
+ wh 9000
+CH
+ ni 33
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+
+bandit output 0
+bandit 110158
+110158 char ni
+il	26 10
+LI
+ wh 9000
+CH
+ ni 26
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+
+bandit output 0
+bandit 121151
+121151 char ni
+il	288 21
+LI
+ wh 9000
+CH
+ ni 288
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+
+bandit output 0
+bandit 140449
+140449 char ni
+il	31 5
+LI
+ wh 9000
+CH
+ ni 31
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+
+bandit output 0
+bandit 149794
+149794 char ni
+il	32 23
+LI
+ wh 9000
+CH
+ ni 32
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+
+bandit output 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 79711 110158 121151 140449 149794
+output 0 0 0 0 0 touched 1 0
+> readlog 200
+log 200:
+> save 9000
+9000 loc plain
+LI
+ hl 1000 110158 140449 149794 79711 121151 
+
+> newitem 1000 0
+created 59681
+> save_new
+59681 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section faery creation both kinds and gold after announcement
+> master 0
+> set turn 1
+> entity 100 1 0
+> entity 1 4 0
+> entity 25 4 0
+> entity 293 4 0
+> place 9000
+> set day 11
+> bandit 1 1000 9000
+created 110158
+> set day 12
+> bandit 1 1000 9000
+created 140449
+> set day 8
+> bandit 1 1000 9000
+created 149794
+> bandits
+bandit 110158
+110158 char ni
+il	25 21 \
+	1 22
+LI
+ wh 9000
+CH
+ ni 25
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+
+bandit output 0
+bandit 140449
+140449 char ni
+il	293 19 \
+	1 22
+LI
+ wh 9000
+CH
+ ni 293
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+
+bandit output 0
+bandit 149794
+149794 char ni
+il	293 24 \
+	1 5
+LI
+ wh 9000
+CH
+ ni 293
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+
+bandit output 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158 140449 149794
+output 0 0 0 0 0 touched 1 0
+> readlog 200
+log 200:
+> save 9000
+9000 loc plain
+LI
+ hl 1000 110158 140449 149794 
+
+> newitem 1000 0
+created 62442
+> save_new
+62442 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section hades ambush genuine success WAIT registration then queued ATTACK
+> master 0
+> set turn 1
+> set day 21
+> resolve_wait
+> entity 100 1 0
+> entity 288 4 0
+> name 288 gorgon
+> place 9000
+> field 200 touched 9000
+> ambush 0 1000 9000
+> bandits
+bandit 110158
+110158 char ni
+il	288 10
+LI
+ wh 9000
+CH
+ ni 288
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 1 0
+orders 110158: [attack 1000]
+> orders_file 100
+orders file 100:
+110158:attack 1000
+> output 200 9000
+output 1
+> readlog 200
+log 200:
+9000:0::0::Gorgon~[110158] appear.
+> select_bandit
+> dump
+cmd 94 who 110158 state 1 status 0 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 100 count 0 last 1 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 3 who 110158 state 1 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 21 inhibit 1 cur 0
+args 1000 0 0 0 0 0 0 0; parse [attack] [1000]
+player 100 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 110158
+load_q 4:
+run_q:
+> bandits
+bandit 110158
+110158 char ni
+il	288 10
+LI
+ wh 9000
+CH
+ ni 288
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+CO
+ li attack 1000
+ ar 1000 0 0 0 0 0 0 0
+ cs 1
+ wa 1
+ st 1
+ pr 3
+ if 1
+
+bandit output 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 110158
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 1 0
+orders 110158:
+> readlog 100
+log 100:
+9000:0::0::Gorgon~[110158] appear.
+110158:0::0::> wait time 0
+110158:0::0::Wait finished: zero days have passed.
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 9000
+9000 loc plain
+LI
+ hl 1000 110158 
+
+> newitem 1000 0
+created 68643
+> save_new
+68643 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section faery ambush genuine success WAIT registration without retaliation
+> master 0
+> set turn 1
+> set day 11
+> resolve_wait
+> entity 100 1 0
+> entity 1 4 0
+> entity 25 4 0
+> name 25 elf
+> place 9000
+> field 200 touched 9000
+> ambush 1 1000 9000
+> bandits
+bandit 110158
+110158 char ni
+il	25 21 \
+	1 22
+LI
+ wh 9000
+CH
+ ni 25
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 1 0
+orders 110158:
+> orders_file 100
+orders file 100:
+> output 200 9000
+output 1
+> readlog 200
+log 200:
+9000:0::0::Elf~[110158] appear.
+> select_bandit
+> dump
+cmd 94 who 110158 state 1 status 0 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 100 count 0 last 1 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 94 who 110158 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 11 inhibit 1 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 100 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> bandits
+bandit 110158
+110158 char ni
+il	25 21 \
+	1 22
+LI
+ wh 9000
+CH
+ ni 25
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+bandit output 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 1 0
+orders 110158:
+> readlog 100
+log 100:
+9000:0::0::Elf~[110158] appear.
+110158:0::0::> wait time 0
+110158:0::0::Wait finished: zero days have passed.
+> save 9000
+9000 loc plain
+LI
+ hl 1000 110158 
+
+> newitem 1000 0
+created 68643
+> save_new
+68643 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section region failed ambushes and day keys repeat without consuming mint
+> master 0
+> set turn 1
+> set day 1
+> place 9000
+> ambush 0 1000 9000
+> ambush 1 1000 9000
+> ambush 0 1000 9000
+> region_rolls 1000 9000
+hads ambush 64
+hads kind 4
+hads retal 2
+faer ambush 17
+faer kind 3
+faer retal 1
+> bandits
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> set day 2
+> ambush 0 1000 9000
+> ambush 1 1000 9000
+> region_rolls 1000 9000
+hads ambush 100
+hads kind 3
+hads retal 2
+faer ambush 62
+faer kind 3
+faer retal 1
+> bandits
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> newitem 1000 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section hades hidden predicate after draw seeds stream before master reload
+> master 0
+> set turn 1
+> set day 21
+> place 9000
+> field 1000 hidden 1
+> ambush 0 1000 9000
+> master 80
+> region_rolls 1000 9000
+hads ambush 5
+hads kind 5
+hads retal 1
+faer ambush 48
+faer kind 3
+faer retal 2
+> bandits
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> set turn 2
+> region_rolls 1000 9000
+hads ambush 31
+hads kind 4
+hads retal 2
+faer ambush 72
+faer kind 2
+faer retal 2
+> newitem 1000 0
+created 74840
+> save_new
+74840 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section faery hidden predicate after draw seeds stream before master reload
+> master 0
+> set turn 1
+> set day 11
+> place 9000
+> field 1000 hidden 1
+> ambush 1 1000 9000
+> master 80
+> region_rolls 1000 9000
+hads ambush 72
+hads kind 5
+hads retal 1
+faer ambush 4
+faer kind 3
+faer retal 2
+> bandits
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> set turn 2
+> region_rolls 1000 9000
+hads ambush 54
+hads kind 3
+hads retal 2
+faer ambush 54
+faer kind 2
+faer retal 2
+> newitem 1000 0
+created 74840
+> save_new
+74840 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section hades transcend alone then troops remove safety despite safe haven
+> master 0
+> set turn 1
+> set day 21
+> resolve_wait
+> entity 100 1 0
+> entity 288 4 0
+> entity 32 4 0
+> field 32 man 1
+> entity 911 5 0
+> learn 1000 911 2 0
+> place 9000
+> field 9000 safe 1
+> ambush 0 1000 9000
+> bandits
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> inventory 1000 32 1
+> ambush 0 1000 9000
+> bandits
+bandit 110158
+110158 char ni
+il	288 10
+LI
+ wh 9000
+CH
+ ni 288
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 1 0
+orders 110158: [attack 1000]
+> readlog 200
+log 200:
+> save 1000
+1000 char 0
+il	32 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	911 2 0 0 0
+
+stderr:
+
+exit 0
+stdout:
+section hades transcend stacked not alone
+> master 0
+> set turn 1
+> set day 21
+> resolve_wait
+> entity 100 1 0
+> entity 288 4 0
+> entity 911 5 0
+> learn 1000 911 2 0
+> place 9000
+> link 9000 1001
+> link 1000 1001
+> ambush 0 1000 9000
+> bandits
+bandit 110158
+110158 char ni
+il	288 10
+LI
+ wh 9000
+CH
+ ni 288
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 1 0
+orders 110158: [attack 1000]
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section hades NPC then hidden with troops is visible
+> master 0
+> set turn 1
+> set day 21
+> resolve_wait
+> entity 100 1 0
+> entity 288 4 0
+> entity 32 4 0
+> field 32 man 1
+> place 9000
+> field 1000 loyal 5
+> ambush 0 1000 9000
+> bandits
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> field 1000 loyal 0
+> field 1000 hidden 1
+> inventory 1000 32 1
+> ambush 0 1000 9000
+> bandits
+bandit 110158
+110158 char ni
+il	288 10
+LI
+ wh 9000
+CH
+ ni 288
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 5
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 1 0
+orders 110158: [attack 1000]
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section faery stone friendly nested prisoner blocks then enemy does not
+> master 0
+> set turn 1
+> set day 11
+> resolve_wait
+> entity 100 1 0
+> entity 1 4 0
+> entity 25 4 0
+> entity 69 4 0
+> field 69 use_key 8
+> place 9000
+> link 1000 1001
+> field 1001 prisoner 1
+> inventory 1001 69 1
+> payment stackkey 1000 8
+payment 69
+> ambush 1 1000 9000
+> bandits
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> field 1001 lord 201
+> payment stackkey 1000 8
+payment 0
+> ambush 1 1000 9000
+> bandits
+bandit 110158
+110158 char ni
+il	25 21 \
+	1 22
+LI
+ wh 9000
+CH
+ ni 25
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 1 0
+orders 110158:
+> readlog 200
+log 200:
+> save 1001
+1001 char 0
+il	69 1
+LI
+ wh 1000
+CH
+ lo 201
+ pr 1
+
+stderr:
+
+exit 0
+stdout:
+section faery zero and negative stones do not block hidden with follower
+> master 0
+> set turn 1
+> set day 12
+> resolve_wait
+> entity 100 1 0
+> entity 1 4 0
+> entity 293 4 0
+> entity 69 4 0
+> field 69 use_key 8
+> place 9000
+> link 1000 1001
+> field 1000 hidden 1
+> inventory 1000 69 0
+> inventory 1001 69 -2
+> payment stackkey 1000 8
+payment 0
+> ambush 1 1000 9000
+> bandits
+bandit 110158
+110158 char ni
+il	293 21 \
+	1 22
+LI
+ wh 9000
+CH
+ ni 293
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 110158
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 1 0
+orders 110158:
+> readlog 200
+log 200:
+> save 9000
+9000 loc plain
+LI
+ hl 1000 110158 
+
+stderr:
+
+exit 0
+stdout:
+section faery NPC predicate seeds stream before master reload
+> master 0
+> set turn 1
+> set day 11
+> place 9000
+> field 1000 loyal 5
+> ambush 1 1000 9000
+> master 80
+> region_rolls 1000 9000
+hads ambush 72
+hads kind 5
+hads retal 1
+faer ambush 4
+faer kind 3
+faer retal 2
+> bandits
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+stderr:
+
+exit 0
+stdout:
+section stack payment actor first then friendly here order excluding foreign
+> entity 1 4 0
+> place 9000
+> link 1000 1001
+> entity 1002 2 0
+> field 1002 lord 201
+> link 1000 1002
+> entity 1003 2 0
+> field 1003 lord 200
+> link 1001 1003
+> inventory 1000 1 5
+> inventory 1001 1 3
+> inventory 1002 1 100
+> inventory 1003 1 7
+> payment can 1001 4
+payment 0
+> payment can 1001 -1
+payment 1
+> payment stack 1001 1
+payment 15
+> payment auto 1001 9
+payment 1
+> save 1000
+1000 char 0
+LI
+ wh 9000
+ hl 1001 1002 
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+ hl 1003 
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+il	1 100
+LI
+ wh 1000
+CH
+ lo 201
+
+> save 1003
+1003 char 0
+il	1 6
+LI
+ wh 1001
+CH
+ lo 200
+
+> payment charge 1003 2
+payment 1
+> payment auto 1000 99
+payment 0
+> payment auto 1000 0
+payment 1
+> save 1003
+1003 char 0
+il	1 4
+LI
+ wh 1001
+CH
+ lo 200
+
+> payment stack 1000 1
+payment 4
+stderr:
+
+exit 0
+stdout:
+section item use keys skip nonpositive invalid and preserve first friendly match
+> entity 69 4 0
+> entity 70 4 0
+> entity 71 4 0
+> field 69 use_key 264
+> field 70 use_key 8
+> field 71 use_key -1
+> place 9000
+> link 1000 1001
+> inventory 1000 9999 9
+> inventory 1000 69 0
+> inventory 1000 70 -1
+> inventory 1001 71 1
+> inventory 1001 70 2
+> inventory 1001 69 1
+> payment key 1000 8
+payment 0
+> payment key 1001 8
+payment 70
+> payment key 1001 -1
+payment 71
+> payment stackkey 1000 8
+payment 70
+> payment stackkey 1001 8
+payment 70
+> field 1001 lord 201
+> payment stackkey 1000 8
+payment 0
+> payment stackkey 1001 8
+payment 70
+stderr:
+
+exit 0
+stdout:
+section stack quantity signed width and insufficient payment stays untouched
+> entity 1 4 0
+> place 9000
+> link 1000 1001
+> inventory 1000 1 2147483647
+> inventory 1001 1 1
+> payment stack 1000 1
+payment -2147483648
+> payment auto 1000 1
+payment 0
+> save 1000
+1000 char 0
+il	1 2147483647
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+il	1 1
+LI
+ wh 1000
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section stack negative payment retains actual assertion
+> entity 1 4 0
+> place 9000
+> payment auto 1000 -1
+stderr:
+assertion failure: olympia/u.c (2241): qty >= 0
+
+exit 134
+stdout:
+section generation real lore and trade path even zero quantity
+> entity 1 4 0
+> entity 69 4 0
+> field 69 lore 69
+> genitem 1000 69 0
+> genitem 1000 1 25
+> genitem 1000 1 7
+> lore_state 200
+known: 69
+lore: 69
+touched:
+weather:
+> save 1000
+1000 char 0
+il	1 32
+CH
+ lo 200
+
+> save 200
+200 player pl_regular
+PL
+ kn 69 
+
+stderr:
+
+exit 0
+stdout:
+section generation rejects unique item
+> newitem 1000 0
+created 77542
+> genitem 1000 77542 1
+stderr:
+assertion failure: olympia/u.c (1889): !item_unique(item)
+
+exit 134
+stdout:
+section faery retaliation and repeated same day entry preserve shared mint
+> master 1
+> set turn 1
+> set day 11
+> resolve_wait
+> entity 100 1 0
+> entity 1 4 0
+> entity 293 4 0
+> name 293 faery
+> place 9000
+> field 200 touched 9000
+> ambush 1 1000 9000
+> ambush 1 1000 9000
+> bandits
+bandit 81035
+81035 char ni
+il	293 7 \
+	1 2
+LI
+ wh 9000
+CH
+ ni 293
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+bandit 94793
+94793 char ni
+il	293 10 \
+	1 18
+LI
+ wh 9000
+CH
+ ni 293
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 81035 94793
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 81035 94793
+output 0 0 0 0 0 touched 1 0
+orders 81035: [attack 1000]
+orders 94793: [attack 1000]
+> orders_file 100
+orders file 100:
+81035:attack 1000
+94793:attack 1000
+> output 200 9000
+output 1
+> readlog 200
+log 200:
+9000:0::0::Faery~[81035] appear.
+9000:0::0::Faery~[94793] appear.
+> readlog 100
+log 100:
+9000:0::0::Faery~[81035] appear.
+9000:0::0::Faery~[94793] appear.
+> select_bandit
+> dump
+cmd 94 who 81035 state 1 status 0 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [wait] [time] [0]
+player 100 count 0 last 1 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1: 81035 94793
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 3 who 81035 state 1 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 11 inhibit 1 cur 0
+args 1000 0 0 0 0 0 0 0; parse [attack] [1000]
+player 100 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 94793
+load_q 2:
+load_q 3: 81035
+load_q 4:
+run_q:
+> bandits
+bandit 81035
+81035 char ni
+il	293 7 \
+	1 2
+LI
+ wh 9000
+CH
+ ni 293
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+CO
+ li attack 1000
+ ar 1000 0 0 0 0 0 0 0
+ cs 1
+ wa 1
+ st 1
+ pr 3
+ if 1
+
+bandit output 1
+bandit 94793
+94793 char ni
+il	293 10 \
+	1 18
+LI
+ wh 9000
+CH
+ ni 293
+ lo 100
+ he -1
+ lk 4
+ at 60
+ df 60
+ po 4
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+bandit output 0
+load_q 0:
+load_q 1: 94793
+load_q 2:
+load_q 3: 81035
+load_q 4:
+run_q:
+> pstate 100
+player 100 np 0 gained 0 spent 0 backlinks 0
+units: 81035 94793
+output 0 0 0 0 0 touched 1 0
+orders 81035:
+orders 94793: [attack 1000]
+> readlog 100
+log 100:
+9000:0::0::Faery~[81035] appear.
+9000:0::0::Faery~[94793] appear.
+81035:0::0::> wait time 0
+81035:0::0::Wait finished: zero days have passed.
+> newitem 1000 0
+created 67983
+> save_new
+67983 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section noncharacter and NPC subkind controls after initial ambush draw
+> master 0
+> set turn 1
+> set day 21
+> place 9000
+> set kind 1
+> ambush 0 1000 9000
+> set kind 2
+> set day 11
+> field 1000 subkind 23
+> ambush 1 1000 9000
+> master 80
+> region_rolls 1000 9000
+hads ambush 87
+hads kind 4
+hads retal 2
+faer ambush 4
+faer kind 3
+faer retal 2
+> bandits
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+stderr:
+
+exit 0

@@ -466,3 +466,62 @@ and the Go recording test matches. All prior **204 sections / 7002 lines /
 135225 bytes** remain byte-exact, with no rewritten prefix. Literal trailing
 spaces in the new recordings are actual C output. The corresponding move
 recording has 83 sections / 4067 lines / 81524 bytes and broader routing controls.
+
+## Hades/Faery entry ambushes (#111)
+
+Complete pinned definitions: npc.c `create_hades_bandit` (202–249),
+`create_faery_bandit` (252–290), `hades_attack_check` (293–319), and
+`faery_attack_check` (322–348); u.c `gen_item` (1885–1891), `can_pay`
+(2135–2140), `charge` (2143–2147), `stack_has_item` (2150–2167),
+`has_use_key` (2170–2190), `stack_has_use_key` (2193–2212),
+`stack_sub_item` (2223–2286), and `autocharge` (2289–2294); order.c
+`queue_order` (160–171), `queue` (199–208), and `save_player_orders`
+(211–256). Original hades.c/faery.c prefixes supply actual tags, static
+streams, turn guards, day children and keyed leaves in separate translation
+units, with original `#line` locations. **npc.c, hades.c and faery.c are new
+source dependencies** in tools/README.md and affected.sh.
+
+The existing `w.streams` instance supplies both region leaves and sequential
+mint draws. There is no new RNG, global test reset, assigned success ID or
+hardcoded successful roll. `master` writes and loads a real 16-byte seed in
+both engines without resetting streams. Region leaves are **keyed**, not
+counter-advancing: repeated identical day/actor/location keys replay their
+roll. Early-return tests reload a different master in the same turn after
+calling the hook, then observe original-root region rolls; the following
+turn reseeds. This distinguishes drawing before safety/NPC predicates from
+an incorrect early predicate return. Subsequent real unique-item allocation
+observes the shared mint cursor independently.
+
+21 appended cases cover every Hades monster and both Faery kinds; actual
+minted IDs, quantities, gold and creation order; seeded ambush failure and
+success; retaliation/no retaliation and same-day repeated entry; hidden,
+NPC loyalty/subkind, noncharacter, transcend-alone versus troops/stack,
+safe-haven nonexclusion, friendly/foreign prisoner stones and nonpositive
+inventories. Payment cases preserve actor-first then friendly stack order,
+signed 32-bit totals, insufficient-funds nonmutation, signed use-key width,
+inventory validity/positive-quantity filters and exact negative-quantity
+assertions. These raw negative/overflow constructions are helper contracts,
+not claims about publicly reachable engine defects. Generation keeps real
+lore/trade bookkeeping and the unique-item assertion.
+
+`bandits` serializes actual entities with C `save_box`, observes output bits
+and ready/run queues. `pstate` observes exact remaining orders;
+`orders_file` calls actual `save_player_orders` and reads its raw database
+file. Ordinary spectators' touched-location state makes appearance messages
+and output bits observable through actual sout routing. Real queued WAIT
+is loaded by `init_load_sup` at priority 1, executes, completes, and loads
+the queued ATTACK at priority 3. ATTACK **execution is not performed** by
+these C contracts and remains explicit NYI in Go; no successful combat or
+unfinished-handler replacement was added. Autonomous programs, daily Faery
+hunting (#77), MOVE integration (#67) and whole-turn acceptance remain
+separate tasks. #77 should reuse these entry hooks and helpers.
+
+Two fresh bounded C runs produce **228 sections / 8574 lines / 156526 bytes**,
+matched byte-for-byte by Go, including raw stdout/stderr/status, logs,
+serialized entities/orders, output bits and queue/RNG observations. All prior
+**207 sections / 7193 lines / 137909 bytes** and the complete prior command
+input are exact prefixes. Movement's full **135 sections / 7150 lines /
+142755 bytes**, including its complete input, is unchanged. Recording
+whitespace remains raw C output. Default tests read only recordings; world
+turns remain opt-in. Every reached unfinished C dependency marker still
+fails before recording, even for expected-abort cases and `--update`.

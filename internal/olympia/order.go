@@ -122,6 +122,11 @@ func (w *world) queueOrder(pl, who int, s string) {
 	p.l.Append(s)
 }
 
+// queue is order.c:199–208, the formatted interface to queue_order.
+func (w *world) queue(who int, format string, args ...any) {
+	w.queueOrder(w.player(who), who, fmt.Sprintf(format, args...))
+}
+
 // savePlayerOrders is save_player_orders(): player pl's queued orders, as
 // "unit:order" lines, queue by queue, to libdir/orders/pl. A queue whose
 // unit is not a valid box, or is a dead character, is skipped. The file is
