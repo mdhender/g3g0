@@ -891,23 +891,41 @@ func (w *world) summaryReportState() {
 	w.summaryProvincesState()
 }
 
-// playerReportState projects report.c:803–1353. player_report_sup allocates
-// nonsystem records before output; unit_summary allocates even system records
-// after its initial output. Unit/location-stack/capacity/storm/garrison text,
-// scratch links and render-only validation remain stage 2. None changes saved
-// units, inventory, skills, commands, ownership, storm or garrison records.
-func (w *world) playerReportState() {
+// playerReportSup is complete report.c:1188–1212.
+func (w *world) playerReportSup(pl int) {
+	if w.subkind(pl) == subPlSystem {
+		return
+	}
+	p := w.pPlayer(pl)
+	w.commandOut(pl, "Noble points:  %d     (%d gained, %d spent)", p.noblePoints, p.npGained, p.npSpent)
+	w.printHiringStatus(pl)
+	w.printUnformed(pl)
+	if p.fastStudy > 0 {
+		w.commandOut(pl, "%d fast study day%s are left.", p.fastStudy, addS(int(p.fastStudy)))
+		w.commandOut(pl, "")
+	}
+}
+
+// playerReport is complete report.c:1323–1350. Each accepted table runs
+// once, in original order, borrowing the ordinary MASTER output owner.
+func (w *world) playerReport() {
 	w.stage("player_report()")
+	w.outPath = master
+	w.outAltWho = 0
 	for pl := range w.loopKind(tPlayer) {
 		if w.subkind(pl) == subPlSilent {
 			continue
 		}
-		if w.subkind(pl) != subPlSystem {
-			w.pPlayer(pl)
-		}
-		w.reportOutputState(pl)
-		w.pPlayer(pl)
+		w.playerReportSup(pl)
+		w.unitSummary(pl)
+		w.locStackReport(pl)
+		w.stackCapacityReport(pl)
+		w.stormReport(pl)
+		w.garrisonSummary(pl)
+		w.commandOut(pl, "")
 	}
+	w.outPath = 0
+	w.outAltWho = 0
 }
 
 // gmReportState projects gm.c:1–1048, not gm_show_all_skills (lore.go).

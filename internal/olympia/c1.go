@@ -5,6 +5,37 @@ package olympia
 
 import "fmt"
 
+// Complete c1.c:904–944; unformed displays at most five IDs, but names the
+// full queue length. nextNPTurn owns its original allocation and schedule.
+func (w *world) printHiringStatus(pl int) {
+	assert(w.kind(pl) == tPlayer, "olympia/c1.c", 909, "kind(pl) == T_player")
+	if w.subkind(pl) != subPlRegular {
+		return
+	}
+	n := w.nextNPTurn(pl)
+	if n == 0 {
+		n += numMonths
+	}
+	w.commandOut(pl, "The next NP will be received at the end of turn %d.", int(w.sysclock.turn)+n)
+}
+
+func (w *world) printUnformed(pl int) {
+	p := w.rpPlayer(pl)
+	if p == nil || len(p.unformed) < 1 {
+		return
+	}
+	buf := ""
+	for i, n := range p.unformed {
+		if i >= 5 {
+			break
+		}
+		buf += " " + boxCodeLess(n)
+	}
+	w.commandOut(pl, "")
+	w.commandOut(pl, "The next %s nobles formed will be: %s", niceNum(len(p.unformed)), buf)
+	w.commandOut(pl, "")
+}
+
 // nextNPTurn is c1.c:881–901. The original first_turn schedule is disabled:
 // every regular faction receives NP on turns 8, 16, ... . Even a query
 // allocates a missing player record, as p_player does in C.

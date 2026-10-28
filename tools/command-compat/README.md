@@ -3,6 +3,99 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Player-report composition, storms and garrisons (#156)
+
+Existing report.go now implements complete `player_report_sup` **1188–1212**
+and `player_report` **1323–1350**. The root replaces `playerReportState` in
+both main and the existing oracle: support, accepted unit summary (#154),
+location-stack and capacity tables (#155), storms, garrisons and final blank
+run exactly once in original order. MASTER/banner routing resets to zero;
+the ordinary cached FILE owner, loops, weights and output sorting are reused.
+There is no copied state projection or parallel renderer.
+
+Existing c1.go adds complete `print_hiring_status` **904–921** and
+`print_unformed` **924–944**, storm.go adds `storm_report` **326–362**, and
+garr.go adds `garr_own_s` **813–857**, `garrison_summary` **860–906**, plus
+its original ownership predicate `may_rule_here` **142–165**. The C oracle
+already extracted all these complete definitions and their real dependencies.
+The adapter adds only direct report calls and NP-counter/fast-study fixture
+fields. No new game commands, C source dependency, pin, modeled definition
+or successful rendering substitute is introduced. Complete-definition equality
+against isolated immutable source, constants and actually reached branches
+are checked in `tmp/issue156-evidence.log`.
+
+Eleven appended sections (eight status **0**, three **134**) compare complete
+raw report bytes/streams/status and real state/save observers:
+
+- Regular, NPC, system and silent roots include absent-record controls.
+  System skips support but still runs tables; silent root skips everything.
+  Direct system support does not allocate, nor do absent-PL unformed/NPC
+  hiring checks. A direct silent support call still renders, as C does.
+- NP gained/spent, fast-study **1/2/negative** and six unsorted unformed IDs
+  preserve original wording, spacing and the first-five truncation. Hiring
+  covers turns **0/7/8/15/32767/-32768**, including zero countdown becoming
+  eight. No independent grammar, scheduling or signed-boundary fix is made.
+- Owned fog/wind/rain, foreign/silent ownership, absent summoners, nested
+  province lookup, negative and comma-formatted strengths retain actual storm
+  iteration. A storm without a province prints location **0** successfully;
+  there is no invented location assertion.
+- Garrison output order **1102,1100,1101** follows shared sorting, including
+  ID ties. Forwarding **-1/0/123**, recursive **21** figures versus the
+  garrison's own **26** maintenance cost, tax **57**, absent-castle filtering
+  and zero-strength ownership are exercised. Seven rulers display
+  `1000 1001 1002  ... 1006`; five, three and one retain their full IDs.
+- Full asymmetric faction composition includes listed foreign/nested units,
+  actual unit/stack/capacity tables, NP/unformed/fast-study, owned storm and
+  shared garrison rulers, system/NPC/silent controls and saved player,
+  character, inventory and storm records. Repeating after renaming the cached
+  file appends to the same inode: **3856 bytes** in `log/faction-original`,
+  with `log/200` still absent. Style bytes and the foreign-faction footnote
+  are compared literally. Failures retain **c1.c:909** and **sout.c:158**.
+
+At **0.96.0-alpha**, the extended recording is **1124 sections / 75560 lines /
+1466335 output bytes**. The inherited **1113 sections / 74785 lines /
+1445511 output bytes** and **24146 input lines / 457547 input bytes** are
+exact unchanged HEAD prefixes. New input: **24431 lines / 463271 bytes**.
+Output SHA-256:
+`0bb63affc1deda8e8a109ebdeab22773ac4c031016f72cd45d7b2410e78201a5`.
+Input SHA-256:
+`1631629b551d0979b5c34c67eb7bbe4aaa3487760a1d5dd26716ee23b323568a`.
+
+Four temporary linker probes wrap only `print_hiring_status` at expected
+assertion section **1120**, emit the rejected dependency marker and exit **0**
+or abort **134**. Both default and update modes reject with harness status
+**2** before expected-status acceptance or recording replacement. Every
+before/after recording hash remains the output SHA-256 above. Logs:
+`tmp/issue156-negative-{0,134}-{default,update}.log`. Temporary compiler
+wrapper/probe source are removed before the final real-C refresh/default.
+
+Final complete-real-C refresh and default both repeat C deterministically
+and match Go **1124/75560**, including live native traversal on unchanged
+shared input. Sequential move **135/7158**, helper **37/1487**, RNG **321**,
+code **43/969** (its deliberately unchanged older pin), loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**
+and default turn pass. The default turn compares raw streams/status and
+**2 cwd entries**, not a whole-world turn. All tools receive explicit isolated
+G3_REPO; engines and fresh test executables use the shared run_limited owner.
+Bounded `go vet ./...` and fresh bounded
+`go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...` pass
+(Olympia **2.072s**). Logs: `tmp/issue156-command{,-update}.log` and
+`tmp/issue156-{move,helper,rng,code,loadsave,turn-driver,turn,vet,test}.log`.
+Matching captures are removed; original C whitespace is retained.
+
+No new defect, prerequisite or oversized closure was found. The parent's
+all-thirteen-open-issue audit includes unlabeled issues and no bug/follow-C
+work. G3 #358 remains nonblocking and unchanged: malformed **C136/Go2** is
+not passing parity. G3 #359's source-linked comment and observed fifteen-byte
+truncation are unchanged. No later summary/GM/lore/include/writer roots,
+whole-world/lifecycle or stage-exit acceptance are claimed. Independent parent
+review confirms twelve complete original C definitions unchanged exactly once;
+the eight-tool tier, bounded vet and fresh tests pass (Olympia **1.461s**),
+logs `tmp/parent156-*.log`. Fresh parent strict post-#156 evidence has identical
+C repeats, both engines **0**, equal raw streams and paths/types/modes, but
+eight saved-report byte differences and exit **1** before lifecycle. Log:
+`tmp/parent156-strict.log`; captures: `tmp/parent-stage2-turn`.
+
 ## Location stack and capacity tables (#155)
 
 Existing report.go implements complete unchanged report.c `loc_ind_s`

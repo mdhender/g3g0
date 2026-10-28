@@ -6,6 +6,32 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Player-report composition, storms and garrisons (#156)
+
+Existing report.go replaces playerReportState with complete report.c support
+**1188–1212** and root **1323–1350**, executing accepted unit/stack/capacity
+tables once in C order. Existing c1.go, storm.go and garr.go add complete
+hiring/unformed **904–944**, storms **326–362**, garrison summaries **813–906**
+and ownership predicate **142–165**. Reuses actual loops, recursive weights,
+maintenance, sorting and cached output; no new dependency/pin or later root.
+
+At **0.96.0-alpha**, eleven appended sections match unchanged real C twice
+and Go: **1124 sections / 75560 lines / 1466335 output bytes**. Inherited
+**1113 sections / 74785 lines / 1445511 output bytes** and **457547 input
+bytes** remain exact prefixes. Cases cover subtype/allocation differences,
+NP/hiring/unformed/fast-study, owned storms, output-sorted garrisons,
+forwarding **-1**, seven-ruler truncation and full asymmetric composition
+through a renamed cached inode. Four marker controls reject before expected
+failure/update with unchanged hash; native traversal still matches.
+See [closure, hashes and evidence](command-compat#player-report-composition-storms-and-garrisons-156).
+
+Independent complete-C review and the eight default compatibility tools,
+bounded vet and fresh bounded tests pass; logs `tmp/parent156-*.log`.
+Fresh strict post-#156 run: identical C repeats, C/Go **0**, equal raw streams
+and paths/types/modes, eight saved-report byte differences, exit **1** before
+lifecycle; log `tmp/parent156-strict.log`. No stage-exit acceptance.
+G3 #358/#359 remain unchanged/nonblocking; malformed **C136/Go2** is not parity.
+
 ## Location stack and capacity tables (#155)
 
 Existing report.go implements complete pinned report.c loc_ind_s/catchup/

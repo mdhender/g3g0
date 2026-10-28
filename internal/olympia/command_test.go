@@ -1734,7 +1734,17 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "summary":
 				w.summaryReportState()
 			case "factions":
-				w.playerReportState()
+				w.playerReport()
+			case "faction_sup":
+				w.playerReportSup(args.num(t))
+			case "hiring":
+				w.printHiringStatus(args.num(t))
+			case "unformed":
+				w.printUnformed(args.num(t))
+			case "storms":
+				w.stormReport(args.num(t))
+			case "garrisons":
+				w.garrisonSummary(args.num(t))
 			case "gm":
 				w.gmReportState(args.num(t))
 			case "include":
@@ -2050,6 +2060,12 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pPlayer(n).units.Append(a)
 			case "np":
 				w.pPlayer(n).noblePoints = int16(a)
+			case "np_gained":
+				w.pPlayer(n).npGained = int16(a)
+			case "np_spent":
+				w.pPlayer(n).npSpent = int16(a)
+			case "fast_study":
+				w.pPlayer(n).fastStudy = int16(a)
 			case "first_turn":
 				w.pPlayer(n).firstTurn = int32(a)
 			case "sent":

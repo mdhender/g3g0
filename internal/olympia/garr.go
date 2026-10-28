@@ -11,6 +11,86 @@ import (
 
 // Ported from olympia/garr.c: the garrison ownership/output closure.
 
+// mayRuleHere is complete garr.c:142–165. Stop at the first matching
+// faction, reading the next pledge before the loop body as loop_loc_owner does.
+func (w *world) mayRuleHere(who, where int) bool {
+	pl := w.player(who)
+	if w.kind(where) == tLoc || w.kind(where) == tShip {
+		where = w.province(where)
+	} else {
+		assert(w.subkind(where) == subGarrison, "olympia/garr.c", 152, "subkind(where) == sub_garrison")
+	}
+	for i := w.provinceAdmin(where); i > 0; {
+		next := 0
+		if p := w.rpMagic(i); p != nil {
+			next = int(p.pledge)
+		}
+		if w.player(i) == pl {
+			return true
+		}
+		i = next
+	}
+	return false
+}
+
+// garrOwnS and garrisonSummary are complete garr.c:813–906. Ruler lists
+// longer than five retain the first three and final ruler, including C's
+// extra space before the ellipsis. Report order is the shared output order.
+func (w *world) garrOwnS(garr int) string {
+	var l [5]int
+	count := 0
+	for owner := w.provinceAdmin(garr); owner > 0; {
+		next := 0
+		if p := w.rpMagic(owner); p != nil {
+			next = int(p.pledge)
+		}
+		if count >= 5 {
+			l[4], l[3] = owner, -1
+		} else {
+			l[count] = owner
+		}
+		count++
+		owner = next
+	}
+	if l[0] == 0 {
+		return ""
+	}
+	buf := boxCodeLess(l[0])
+	for i := 1; i < 5 && l[i] != 0; i++ {
+		buf += " "
+		if l[i] == -1 {
+			buf += " ..."
+		} else {
+			buf += boxCodeLess(l[i])
+		}
+	}
+	return buf
+}
+
+func (w *world) garrisonSummary(pl int) {
+	var l lists.IList
+	for garr := range w.loopSubkind(subGarrison) {
+		if w.mayRuleHere(pl, garr) {
+			l.Append(garr)
+		}
+	}
+	if len(l) == 0 {
+		return
+	}
+	w.commandOut(pl, "")
+	w.commandOut(pl, "%6s %5s %4s %4s %4s %4s %6s %s", "garr", "where", "men", "cost", "tax", "forw", "castle", "rulers")
+	w.commandOut(pl, "%6s %5s %4s %4s %4s %4s %6s %s", "----", "-----", "---", "----", "---", "----", "------", "------")
+	w.sortForOutput(l)
+	for _, garr := range l {
+		p := w.rpMisc(garr)
+		forw := sout("%d", p.garrForward)
+		if p.garrForward == -1 {
+			forw = "-"
+		}
+		w.commandOut(pl, "%6s %5s %4d %4d %4d %4s %6s %s", boxCodeLess(garr), boxCodeLess(w.subloc(garr)), w.countStackFigures(garr), w.unitMaintCost(garr), p.garrTax, forw, boxCodeLess(int(p.garrCastle)), w.garrOwnS(garr))
+	}
+}
+
 // topRuler is garr.c:101–114. Like loop_loc_owner, fetch the next pledge
 // before the body. No strength test belongs to this ownership traversal.
 func (w *world) topRuler(n int) int {

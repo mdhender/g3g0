@@ -313,7 +313,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 		}
 		w.reportAccount()
 		w.summaryReportState()
-		w.playerReportState()
+		w.playerReport()
 		w.scanCharSkillLore()
 		w.showLoreSheetsState()
 		w.gmReportState(int(w.gmPlayer))

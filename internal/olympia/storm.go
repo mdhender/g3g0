@@ -274,6 +274,25 @@ func (w *world) updateWeatherViewLocs(stack, where int) {
 	}
 }
 
+// stormReport is complete storm.c:326–362, in the original storm loop order.
+func (w *world) stormReport(pl int) {
+	first := true
+	for i := range w.loopKind(tStorm) {
+		owner := w.npcSummoner(i)
+		if owner == 0 || w.player(owner) != pl {
+			continue
+		}
+		where := w.province(i)
+		if first {
+			w.commandOut(pl, "")
+			w.commandOut(pl, "%5s  %4s  %5s  %4s  %s", "storm", "kind", "owner", "loc", "strength")
+			w.commandOut(pl, "%5s  %4s  %5s  %4s  %s", "-----", "----", "-----", "----", "--------")
+			first = false
+		}
+		w.commandOut(pl, "%5s  %4s  %5s  %4s     %s", boxCodeLess(i), subkindS[w.subkind(i)], boxCodeLess(owner), boxCodeLess(where), commaNum(int(w.stormStrength(i))))
+	}
+}
+
 func (w *world) initWeatherViews() {
 	for who := range w.loopKind(tChar) {
 		if p := w.rpMagic(who); p != nil && p.knowsWeather != 0 {

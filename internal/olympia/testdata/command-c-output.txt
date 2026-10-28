@@ -74783,3 +74783,778 @@ saved vector:
 stderr:
 
 exit 0
+stdout:
+section report faction root empty regular NPC system silent missing records and route reset
+> entity 202 1 48
+> entity 203 1 52
+> entity 204 1 62
+> post empty_player 200
+> post empty_player 201
+> post empty_player 202
+> post empty_player 203
+> post empty_player 204
+> sout route 17 19
+> report factions
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> report state 201
+report entity 201 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+201 player pl_regular
+PL
+
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_system
+PL
+
+> report state 203
+report entity 203 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+203 player pl_npc
+PL
+
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_silent
+
+> report files
+report file 200 1
+report file 201 1
+report file 202 1
+report file 203 1
+report file 204 0
+> readlog 200
+log 200:
+0:0::0::Noble points:  0     (0 gained, 0 spent)
+0:0::0::The next NP will be received at the end of turn 8.
+0:0::0::
+0:0::0::
+> readlog 201
+log 201:
+0:0::0::Noble points:  0     (0 gained, 0 spent)
+0:0::0::The next NP will be received at the end of turn 8.
+0:0::0::
+0:0::0::
+> readlog 202
+log 202:
+0:0::0::
+0:0::0::
+> readlog 203
+log 203:
+0:0::0::Noble points:  0     (0 gained, 0 spent)
+0:0::0::
+0:0::0::
+stderr:
+player_report()
+
+exit 0
+stdout:
+section report faction support fast study singular plural negative unformed truncates after five
+> field 200 np 37
+> field 200 np_gained 9
+> field 200 np_spent 4
+> field 200 fast_study 1
+> field 200 unformed 3005
+> field 200 unformed 3004
+> field 200 unformed 3003
+> field 200 unformed 3002
+> field 200 unformed 3001
+> field 200 unformed 3000
+> sout route -2 0
+> report faction_sup 200
+> field 200 fast_study 2
+> report faction_sup 200
+> field 200 fast_study -1
+> report faction_sup 200
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+ np 37
+ fs -1
+
+> save 200
+200 player pl_regular
+PL
+ np 37
+ fs -1
+
+> readlog 200
+log 200:
+0:0::0::Noble points:  37     (9 gained, 4 spent)
+0:0::0::The next NP will be received at the end of turn 8.
+0:0::0::
+0:0::0::The next six nobles formed will be:  3005 3004 3003 3002 3001
+0:0::0::
+0:0::0::1 fast study day are left.
+0:0::0::
+0:0::0::Noble points:  37     (9 gained, 4 spent)
+0:0::0::The next NP will be received at the end of turn 8.
+0:0::0::
+0:0::0::The next six nobles formed will be:  3005 3004 3003 3002 3001
+0:0::0::
+0:0::0::2 fast study days are left.
+0:0::0::
+0:0::0::Noble points:  37     (9 gained, 4 spent)
+0:0::0::The next NP will be received at the end of turn 8.
+0:0::0::
+0:0::0::The next six nobles formed will be:  3005 3004 3003 3002 3001
+0:0::0::
+stderr:
+
+exit 0
+stdout:
+section report faction hiring schedule zero becomes eight turn wrap and signed boundary
+> sout route -2 0
+> set turn 0
+> report hiring 200
+> set turn 7
+> report hiring 200
+> set turn 8
+> report hiring 200
+> set turn 15
+> report hiring 200
+> set turn 32767
+> report hiring 200
+> set turn -32768
+> report hiring 200
+> readlog 200
+log 200:
+0:0::0::The next NP will be received at the end of turn 8.
+0:0::0::The next NP will be received at the end of turn 8.
+0:0::0::The next NP will be received at the end of turn 16.
+0:0::0::The next NP will be received at the end of turn 16.
+0:0::0::The next NP will be received at the end of turn 32768.
+0:0::0::The next NP will be received at the end of turn -32760.
+stderr:
+
+exit 0
+stdout:
+section report faction support system no allocation NPC no hiring silent direct call unformed no allocation
+> entity 202 1 48
+> entity 203 1 52
+> entity 204 1 62
+> post empty_player 202
+> post empty_player 203
+> post empty_player 204
+> sout route -2 0
+> report faction_sup 202
+> report unformed 203
+> report hiring 203
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_system
+
+> report state 203
+report entity 203 order 0 player 0 attitudes 0 char 0 magic 0
+203 player pl_npc
+
+> report faction_sup 203
+> field 204 unformed 1001
+> report faction_sup 204
+> report state 204
+report entity 204 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+204 player pl_silent
+PL
+ uf 1001 
+
+> readlog 203
+log 203:
+0:0::0::Noble points:  0     (0 gained, 0 spent)
+> readlog 204
+log 204:
+0:0::0::Noble points:  0     (0 gained, 0 spent)
+0:0::0::
+0:0::0::The next one nobles formed will be:  1001
+0:0::0::
+stderr:
+
+exit 0
+stdout:
+section report faction owned storms all kinds nested provinces foreign silent and absent owners
+> entity 202 1 62
+> entity 1002 2 0
+> field 1002 lord 202
+> field 1001 lord 201
+> entity 9000 3 3
+> entity 9001 3 14
+> link 9000 9001
+> entity 7003 11 57
+> entity 7001 11 58
+> entity 7002 11 59
+> entity 7000 11 59
+> entity 7004 11 57
+> link 9001 7003
+> link 9000 7001
+> link 9000 7002
+> link 9000 7000
+> link 9000 7004
+> field 7003 summoner 1000
+> field 7001 summoner 1000
+> field 7002 summoner 1001
+> field 7004 summoner 1002
+> field 7003 strength 12345
+> field 7001 strength -23
+> field 7002 strength 99
+> field 7004 strength 7
+> sout route -2 0
+> report storms 200
+> report storms 201
+> report storms 202
+> report storms 200
+> readlog 200
+log 200:
+0:0::0::
+0:0::0::storm  kind  owner   loc  strength
+0:0::0::-----  ----  -----  ----  --------
+0:0::0:: 7001  wind   1000  9000     -23
+0:0::0:: 7003   fog   1000  9000     12,345
+0:0::0::
+0:0::0::storm  kind  owner   loc  strength
+0:0::0::-----  ----  -----  ----  --------
+0:0::0:: 7001  wind   1000  9000     -23
+0:0::0:: 7003   fog   1000  9000     12,345
+> readlog 201
+log 201:
+0:0::0::
+0:0::0::storm  kind  owner   loc  strength
+0:0::0::-----  ----  -----  ----  --------
+0:0::0:: 7002  rain   1001  9000     99
+> readlog 202
+log 202:
+0:0::0::
+0:0::0::storm  kind  owner   loc  strength
+0:0::0::-----  ----  -----  ----  --------
+0:0::0:: 7004   fog   1002  9000     7
+> save 7003
+7003 storm fog
+LI
+ wh 9001
+MI
+ sb 1000
+ ss 12345
+
+> save 7000
+7000 storm rain
+LI
+ wh 9000
+
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+1000 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section report faction garrisons output sorted ties forwarding negative zero and positive rulers past five
+> entity 10 4 0
+> entity 11 4 0
+> field 11 man 1
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9002 3 3
+> entity 9001 3 32
+> link 8000 9000
+> link 8000 9002
+> link 9000 9001
+> link 9001 1000
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> entity 1006 2 0
+> field 1000 pledge 1001
+> field 1001 pledge 1002
+> field 1002 pledge 1003
+> field 1003 pledge 1004
+> field 1004 pledge 1005
+> field 1005 pledge 1006
+> field 1006 lord 201
+> entity 1102 2 64
+> entity 1100 2 64
+> entity 1101 2 64
+> entity 1103 2 64
+> link 9000 1102
+> link 9002 1100
+> link 9002 1101
+> link 9000 1103
+> field 1102 castle 9001
+> field 1100 castle 9001
+> field 1101 castle 9001
+> field 1102 output_order 1
+> field 1100 output_order 2
+> field 1101 output_order 2
+> field 1102 garr_forward -1
+> field 1100 garr_forward 0
+> field 1101 garr_forward 123
+> field 1102 garr_tax 57
+> inventory 1102 11 13
+> inventory 1100 11 2
+> link 1102 1003
+> inventory 1003 11 7
+> sout route -2 0
+> report garrisons 200
+> report garrisons 201
+> field 1004 pledge 0
+> report garrisons 200
+> field 1002 pledge 0
+> report garrisons 200
+> field 1000 pledge 0
+> report garrisons 200
+> report state 1102
+report entity 1102 order 1 player 0 attitudes 0 char 0 magic 0
+raw item 11 13
+1102 char garrison
+il	11 13
+LI
+ wh 9000
+ hl 1003 
+MI
+ gc 9001
+
+> save 1102
+1102 char garrison
+il	11 13
+LI
+ wh 9000
+ hl 1003 
+MI
+ gc 9001
+
+> save 1003
+1003 char 0
+il	11 7
+LI
+ wh 1102
+CH
+CM
+ pl 1004
+
+> readlog 200
+log 200:
+0:0::0::
+0:0::0::  garr where  men cost  tax forw castle rulers
+0:0::0::  ---- -----  --- ----  --- ---- ------ ------
+0:0::0::  1102  9000   21   26   57    -   9001 1000 1001 1002  ... 1006
+0:0::0::  1100  9002    2    4    0    0   9001 1000 1001 1002  ... 1006
+0:0::0::  1101  9002    0    0    0  123   9001 1000 1001 1002  ... 1006
+0:0::0::
+0:0::0::  garr where  men cost  tax forw castle rulers
+0:0::0::  ---- -----  --- ----  --- ---- ------ ------
+0:0::0::  1102  9000   21   26   57    -   9001 1000 1001 1002 1003 1004
+0:0::0::  1100  9002    2    4    0    0   9001 1000 1001 1002 1003 1004
+0:0::0::  1101  9002    0    0    0  123   9001 1000 1001 1002 1003 1004
+0:0::0::
+0:0::0::  garr where  men cost  tax forw castle rulers
+0:0::0::  ---- -----  --- ----  --- ---- ------ ------
+0:0::0::  1102  9000   21   26   57    -   9001 1000 1001 1002
+0:0::0::  1100  9002    2    4    0    0   9001 1000 1001 1002
+0:0::0::  1101  9002    0    0    0  123   9001 1000 1001 1002
+0:0::0::
+0:0::0::  garr where  men cost  tax forw castle rulers
+0:0::0::  ---- -----  --- ----  --- ---- ------ ------
+0:0::0::  1102  9000   21   26   57    -   9001 1000
+0:0::0::  1100  9002    2    4    0    0   9001 1000
+0:0::0::  1101  9002    0    0    0  123   9001 1000
+> readlog 201
+log 201:
+0:0::0::
+0:0::0::  garr where  men cost  tax forw castle rulers
+0:0::0::  ---- -----  --- ----  --- ---- ------ ------
+0:0::0::  1102  9000   21   26   57    -   9001 1000 1001 1002  ... 1006
+0:0::0::  1100  9002    2    4    0    0   9001 1000 1001 1002  ... 1006
+0:0::0::  1101  9002    0    0    0  123   9001 1000 1001 1002  ... 1006
+stderr:
+
+exit 0
+stdout:
+section report faction full asymmetric composition units stacks capacities storms garrisons and cache reuse
+> lore_root
+> entity 1 4 0
+> entity 10 4 0
+> entity 11 4 0
+> entity 19 4 0
+> field 10 weight 71
+> field 10 land_cap 100
+> field 11 man 1
+> field 11 weight 3
+> field 11 land_cap 8
+> field 11 attack 2
+> entity 202 1 48
+> entity 203 1 52
+> entity 204 1 62
+> entity 1002 2 0
+> entity 1003 2 64
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 32
+> entity 9200 9 30
+> link 8000 9000
+> link 9000 9001
+> link 9001 1000
+> link 9000 9200
+> link 9200 1001
+> link 1001 1002
+> link 9000 1003
+> field 1002 lord 201
+> field 1003 lord 203
+> field 1003 castle 9001
+> field 1003 garr_forward -1
+> field 1003 garr_tax 41
+> field 1000 pledge 1002
+> field 200 np 19
+> field 200 np_gained 3
+> field 200 np_spent 2
+> field 200 fast_study 17
+> field 200 unformed 4000
+> field 200 unit 1001
+> field 200 unit 1000
+> field 200 unit 1002
+> field 201 unit 1002
+> field 203 unit 1003
+> inventory 1000 1 43
+> inventory 1000 11 7
+> inventory 1002 11 2
+> inventory 1003 11 10
+> entity 7000 11 59
+> link 9000 7000
+> field 7000 summoner 1000
+> field 7000 strength 1001
+> report order
+> sout style 1
+> report factions
+> readlog 200
+log 200:
+0:1::0::Noble points:  19     (3 gained, 2 spent)
+0:1::0::The next NP will be received at the end of turn 8.
+0:1::0::
+0:1::0::The next one nobles formed will be:  4000
+0:1::0::
+0:1::0::17 fast study days are left.
+0:1::0::
+0:1::0::
+0:1::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+0:1::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+0:1::0::1000   9001   u0      0+ 0      43         7         7        <no subkind>
+0:1::0::1001   9200   u0      0+ 0                                    <no subkind>
+0:1::0::1002   9200   u0      0+ 0                 2         2 1001   <no subkind>
+0:1::0::                              ==== ==== ==== ==== ====
+0:1::0::                                43         9         9
+0:1::0::
+0:1::0::{<b>}Location                           Stack{</b>}
+0:1::0::--------                           -----
+0:1::0::Region
+0:1::0::  Plain~[9000]
+0:1::0::      Castle~[9001]                <no subkind>~[1000]
+0:1::0::      Galley~[9200]                <no subkind>~[1001]
+0:1::0::                                     <no subkind>~[1002] *
+0:1::0::
+0:1::0::                                      * -- unit belongs to another faction
+0:1::0::
+0:1::0::{<b>} stack    total wt         walk            ride            fly    {</b>}
+0:1::0:: -----    --------     -----------     -----------     -----------
+0:1::0::  1000          92        156   0%                                
+0:1::0::  1001         148        216   0%                                
+0:1::0::  1002          77        116   0%                                
+0:1::0::
+0:1::0::storm  kind  owner   loc  strength
+0:1::0::-----  ----  -----  ----  --------
+0:1::0:: 7000  rain   1000  9000     1,001
+0:1::0::
+0:1::0::  garr where  men cost  tax forw castle rulers
+0:1::0::  ---- -----  --- ----  --- ---- ------ ------
+0:1::0::  1003  9000   10   20   41    -   9001 1000 1002
+0:1::0::
+> readlog 201
+log 201:
+0:1::0::Noble points:  0     (0 gained, 0 spent)
+0:1::0::The next NP will be received at the end of turn 8.
+0:1::0::
+0:1::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+0:1::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+0:1::0::1002   9200   u0      0+ 0                 2         2 1001   <no subkind>
+0:1::0::
+0:1::0::{<b>}Location                           Stack{</b>}
+0:1::0::--------                           -----
+0:1::0::Region
+0:1::0::  Plain~[9000]
+0:1::0::      Galley~[9200]                  <no subkind>~[1002]
+0:1::0::
+0:1::0::{<b>} stack    total wt         walk            ride            fly    {</b>}
+0:1::0:: -----    --------     -----------     -----------     -----------
+0:1::0::  1002          77        116   0%                                
+0:1::0::
+0:1::0::  garr where  men cost  tax forw castle rulers
+0:1::0::  ---- -----  --- ----  --- ---- ------ ------
+0:1::0::  1003  9000   10   20   41    -   9001 1000 1002
+0:1::0::
+> readlog 202
+log 202:
+0:1::0::
+0:1::0::
+> readlog 203
+log 203:
+0:1::0::Noble points:  0     (0 gained, 0 spent)
+0:1::0::
+0:1::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+0:1::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+0:1::0::1003   9000   u0      0+ 0                10        10        Garrison
+0:1::0::
+0:1::0::{<b>}Location                           Stack{</b>}
+0:1::0::--------                           -----
+0:1::0::Region
+0:1::0::  Plain~[9000]                     Garrison~[1003]
+0:1::0::
+0:1::0::{<b>} stack    total wt         walk            ride            fly    {</b>}
+0:1::0:: -----    --------     -----------     -----------     -----------
+0:1::0::  1003         101        180   0%                                
+0:1::0::
+> report state 204
+report entity 204 order 0 player 0 attitudes 0 char 0 magic 0
+204 player pl_silent
+
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 1000 1001 1002
+200 player pl_regular
+PL
+ np 19
+ fs 17
+ un 1000 1001 1002 
+
+> report state 1000
+report entity 1000 order 3 player 0 attitudes 0 char 1 magic 1
+raw item 1 43
+raw item 11 7
+1000 char 0
+il	1 43 \
+	11 7
+LI
+ wh 9001
+CH
+ lo 200
+CM
+ pl 1002
+
+> report state 1003
+report entity 1003 order 7 player 0 attitudes 0 char 1 magic 0
+raw item 11 10
+1003 char garrison
+il	11 10
+LI
+ wh 9000
+CH
+ lo 203
+MI
+ gc 9001
+
+> save 200
+200 player pl_regular
+PL
+ np 19
+ fs 17
+ un 1000 1001 1002 
+
+> save 1000
+1000 char 0
+il	1 43 \
+	11 7
+LI
+ wh 9001
+CH
+ lo 200
+CM
+ pl 1002
+
+> save 1002
+1002 char 0
+il	11 2
+LI
+ wh 1001
+CH
+ lo 201
+
+> save 1003
+1003 char garrison
+il	11 10
+LI
+ wh 9000
+CH
+ lo 203
+MI
+ gc 9001
+
+> save 7000
+7000 storm rain
+LI
+ wh 9000
+MI
+ sb 1000
+ ss 1001
+
+> set flush 0
+> life rename log/200 log/faction-original
+> report factions
+> life path log/200
+path log/200 missing
+> life flush
+> readfile log/faction-original
+file bytes log/faction-original 3856:
+0:1::0::Noble points:  19     (3 gained, 2 spent)
+0:1::0::The next NP will be received at the end of turn 8.
+0:1::0::
+0:1::0::The next one nobles formed will be:  4000
+0:1::0::
+0:1::0::17 fast study days are left.
+0:1::0::
+0:1::0::
+0:1::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+0:1::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+0:1::0::1000   9001   u0      0+ 0      43         7         7        <no subkind>
+0:1::0::1001   9200   u0      0+ 0                                    <no subkind>
+0:1::0::1002   9200   u0      0+ 0                 2         2 1001   <no subkind>
+0:1::0::                              ==== ==== ==== ==== ====
+0:1::0::                                43         9         9
+0:1::0::
+0:1::0::{<b>}Location                           Stack{</b>}
+0:1::0::--------                           -----
+0:1::0::Region
+0:1::0::  Plain~[9000]
+0:1::0::      Castle~[9001]                <no subkind>~[1000]
+0:1::0::      Galley~[9200]                <no subkind>~[1001]
+0:1::0::                                     <no subkind>~[1002] *
+0:1::0::
+0:1::0::                                      * -- unit belongs to another faction
+0:1::0::
+0:1::0::{<b>} stack    total wt         walk            ride            fly    {</b>}
+0:1::0:: -----    --------     -----------     -----------     -----------
+0:1::0::  1000          92        156   0%                                
+0:1::0::  1001         148        216   0%                                
+0:1::0::  1002          77        116   0%                                
+0:1::0::
+0:1::0::storm  kind  owner   loc  strength
+0:1::0::-----  ----  -----  ----  --------
+0:1::0:: 7000  rain   1000  9000     1,001
+0:1::0::
+0:1::0::  garr where  men cost  tax forw castle rulers
+0:1::0::  ---- -----  --- ----  --- ---- ------ ------
+0:1::0::  1003  9000   10   20   41    -   9001 1000 1002
+0:1::0::
+0:1::0::Noble points:  19     (3 gained, 2 spent)
+0:1::0::The next NP will be received at the end of turn 8.
+0:1::0::
+0:1::0::The next one nobles formed will be:  4000
+0:1::0::
+0:1::0::17 fast study days are left.
+0:1::0::
+0:1::0::
+0:1::0::{<b>}unit   where  loyal heal B CA gold peas work sail figh under  name{</b>}
+0:1::0::----   -----  ----- ---- - -- ---- ---- ---- ---- ---- -----  ----
+0:1::0::1000   9001   u0      0+ 0      43         7         7        <no subkind>
+0:1::0::1001   9200   u0      0+ 0                                    <no subkind>
+0:1::0::1002   9200   u0      0+ 0                 2         2 1001   <no subkind>
+0:1::0::                              ==== ==== ==== ==== ====
+0:1::0::                                43         9         9
+0:1::0::
+0:1::0::{<b>}Location                           Stack{</b>}
+0:1::0::--------                           -----
+0:1::0::Region
+0:1::0::  Plain~[9000]
+0:1::0::      Castle~[9001]                <no subkind>~[1000]
+0:1::0::      Galley~[9200]                <no subkind>~[1001]
+0:1::0::                                     <no subkind>~[1002] *
+0:1::0::
+0:1::0::                                      * -- unit belongs to another faction
+0:1::0::
+0:1::0::{<b>} stack    total wt         walk            ride            fly    {</b>}
+0:1::0:: -----    --------     -----------     -----------     -----------
+0:1::0::  1000          92        156   0%                                
+0:1::0::  1001         148        216   0%                                
+0:1::0::  1002          77        116   0%                                
+0:1::0::
+0:1::0::storm  kind  owner   loc  strength
+0:1::0::-----  ----  -----  ----  --------
+0:1::0:: 7000  rain   1000  9000     1,001
+0:1::0::
+0:1::0::  garr where  men cost  tax forw castle rulers
+0:1::0::  ---- -----  --- ----  --- ---- ------ ------
+0:1::0::  1003  9000   10   20   41    -   9001 1000 1002
+0:1::0::
+
+end file bytes
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+stderr:
+player_report()
+player_report()
+
+exit 0
+stdout:
+section report invalid faction hiring nonplayer asserts before allocation
+> report hiring 1000
+stderr:
+assertion failure: olympia/c1.c (909): kind(pl) == T_player
+
+exit 134
+stdout:
+section report invalid faction support output open failure after player allocation
+> lore_root
+> post empty_player 200
+> report block 200
+> sout route -2 0
+> report faction_sup 200
+stderr:
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134
+stdout:
+section report faction owned storm missing province retains zero location
+> entity 7000 11 59
+> field 7000 summoner 1000
+> sout route -2 0
+> report storms 200
+> readlog 200
+log 200:
+0:0::0::
+0:0::0::storm  kind  owner   loc  strength
+0:0::0::-----  ----  -----  ----  --------
+0:0::0:: 7000  rain   1000     0     0
+stderr:
+
+exit 0
+stdout:
+section report invalid faction garrison output open fails after ownership traversal
+> lore_root
+> entity 9000 3 3
+> entity 9001 3 32
+> entity 1100 2 64
+> link 9000 9001
+> link 9001 1000
+> link 9000 1100
+> field 1100 castle 9001
+> report block 200
+> sout route -2 0
+> report garrisons 200
+stderr:
+alloc_fp: can't open ./log/200: Is a directory
+assertion failure: olympia/sout.c (158): FALSE
+
+exit 134

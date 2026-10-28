@@ -1263,6 +1263,11 @@ int main(int argc, char **argv)
    }
    else if(!strcmp(text,"summary")) summary_report();
    else if(!strcmp(text,"factions")) player_report();
+   else if(!strcmp(text,"faction_sup")) player_report_sup(n);
+   else if(!strcmp(text,"hiring")) print_hiring_status(n);
+   else if(!strcmp(text,"unformed")) print_unformed(n);
+   else if(!strcmp(text,"storms")) storm_report(n);
+   else if(!strcmp(text,"garrisons")) garrison_summary(n);
    else if(!strcmp(text,"gm")) gm_report(n);
    else if(!strcmp(text,"include")) gen_include_section();
    else if(!strcmp(text,"include_sup")) gen_include_sup(n);
@@ -1525,6 +1530,9 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"teaches")) ilist_append(&p_subloc(n)->teaches,a);
    else if (!strcmp(text,"unit")) ilist_append(&p_player(n)->units,a);
    else if (!strcmp(text,"np")) p_player(n)->noble_points = (short)a;
+   else if (!strcmp(text,"np_gained")) p_player(n)->np_gained = (short)a;
+   else if (!strcmp(text,"np_spent")) p_player(n)->np_spent = (short)a;
+   else if (!strcmp(text,"fast_study")) p_player(n)->fast_study = (short)a;
    else if (!strcmp(text,"first_turn")) p_player(n)->first_turn = a;
    else if (!strcmp(text,"sent")) p_player(n)->sent_orders = (schar)a;
    else if (!strcmp(text,"unformed")) ilist_append(&p_player(n)->unformed,a);
