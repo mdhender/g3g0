@@ -255,6 +255,10 @@ func (w *world) reduceQty(t *trade, cost int32) int32 {
 	}
 	if t.kind == tradeBuy {
 		has := max(int32(w.hasItem(int(t.who), itemGold))-t.haveLeft, 0)
+		// G3 #358: a loaded positive-quantity, zero-price BUY still divides
+		// by zero, even with no available gold. Keep the original operation,
+		// not a guard or suppressed row. C's failure is host-dependent; Go
+		// panics. See https://github.com/playbymail/olympia-g3/issues/358.
 		return min(t.qty, has/cost)
 	}
 	if t.kind == tradeSell {
@@ -263,6 +267,71 @@ func (w *world) reduceQty(t *trade, cost int32) int32 {
 	}
 	assert(false, "olympia/buy.c", 501, "FALSE")
 	return 0
+}
+
+// listMarketItems is the complete buy.c:1027–1066 renderer.
+func (w *world) listMarketItems(who int, l tradesList, first bool) bool {
+	for _, t := range l {
+		if t.cloak >= 2 {
+			continue
+		}
+		qty := w.reduceQty(t, t.cost)
+		if qty <= 0 {
+			continue
+		}
+		if first {
+			w.commandOut(who, "")
+			w.commandOut(who, "%5s %*s %7s %6s %9s   %-25s", "{<b>}trade", charField, "who", "price", "qty", "wt/ea", "item{</b>}")
+			w.commandOut(who, "%5s %*s %7s %6s %9s   %-25s", "-----", charField, "---", "-----", "---", "-----", "----")
+			first = false
+		}
+		kind := "sell"
+		if t.kind == tradeBuy {
+			kind = "buy"
+		}
+		trader := "?"
+		if t.cloak == 0 {
+			trader = boxCodeLess(int(t.who))
+		}
+		weight := 0
+		if p := w.rpItem(int(t.item)); p != nil {
+			weight = int(p.weight)
+		}
+		w.commandOut(who, "%5s %*s %7s %6s %9s   %-25s", kind, charField, trader,
+			commaNum(int(t.cost)), commaNum(int(qty)), commaNum(weight), w.pluralItemBox(int(t.item), int(qty)))
+	}
+	return first
+}
+
+// marketReport is the complete buy.c:1069–1120 report, not settlement.
+// The lists retain the actual buyer/seller traversal and saved sort effects.
+func (w *world) marketReport(who, where int) {
+	w.commandOut(who, "")
+	w.commandOut(who, "Market report:")
+	w.indent += 3
+	flag := true
+	for t := range w.loopTrade(where) {
+		if t.kind == tradeProduce && t.monthProd != 0 {
+			if flag {
+				w.commandOut(who, "")
+				flag = false
+			}
+			w.commandOut(who, "%s produces %s on month %d.", w.justName(where), w.pluralItemName(int(t.item), 2), t.monthProd)
+		}
+	}
+	first := true
+	l := w.buyerList(where, 0)
+	if len(l) > 0 {
+		first = w.listMarketItems(who, l, first)
+	}
+	l = w.sellerList(where, 0)
+	if len(l) > 0 {
+		first = w.listMarketItems(who, l, first)
+	}
+	if first {
+		w.commandOut(who, "No goods offered for trade.")
+	}
+	w.indent -= 3
 }
 
 // attemptTrade is the complete buy.c:506–632 settlement, using the shared

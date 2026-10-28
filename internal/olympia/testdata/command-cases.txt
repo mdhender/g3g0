@@ -20076,3 +20076,230 @@ link 8000 9000
 field 9000 summer 3
 set turn 2
 report exits 1000 9000
+
+section market rendering empty repeat preserves frame and absent records
+entity 9000 3 14
+sout frame 2 5 1 23
+report state 9000
+report market 1000 9000
+sout state
+report market 1000 9000
+report state 9000
+report state 1000
+readlog 200
+
+section market rendering BUY before SELL actual nested order stable seller ties and city last
+entity 9000 3 14
+entity 1 4 0
+entity 101 4 0
+name 101 Widget
+plural 101 Widgets
+field 101 weight 1234
+entity 1002 2 0
+field 1002 lord 201
+link 9000 1001
+link 1001 1002
+link 9000 1000
+inventory 1000 1 100
+inventory 1001 1 100
+inventory 1002 1 100
+inventory 1000 101 9
+inventory 1001 101 8
+inventory 1002 101 7
+trade 1000 2 101 8 9 1000 77
+trade 1000 1 101 8 5 1000 78
+trade 1001 2 101 8 4 1001 79
+trade 1001 1 101 8 5 1001 80
+trade 1002 2 101 8 4 1002 81
+trade 1002 1 101 8 5 1002 82
+trade 9000 2 101 33 1 9000 83
+trade 9000 1 101 44 1 9000 84
+economy options 9000 0 9999 0
+economy options 9000 1 9999 0
+economy raw 1000
+economy raw 1001
+economy raw 1002
+economy raw 9000
+report market 1000 9000
+economy raw 1000
+economy raw 1001
+economy raw 1002
+economy raw 9000
+economy state
+report market 1000 9000
+economy raw 1000
+readlog 200
+save 201
+
+section market rendering reserves balances clamped and one available
+entity 9000 3 14
+entity 1 4 0
+entity 101 4 0
+entity 102 4 0
+name 101 apple
+plural 101 apples
+name 102 pear
+plural 102 pears
+link 9000 1000
+link 9000 1001
+inventory 1000 1 17
+inventory 1000 101 6
+inventory 1001 1 2
+inventory 1001 102 3
+trade 1000 1 101 20 3 1000 19
+trade 1000 2 101 20 2 1000 20
+trade 1001 1 102 20 3 1001 21
+trade 1001 2 102 20 2 1001 22
+economy options 1000 0 5 0
+economy options 1000 1 5 0
+economy options 1001 0 3 0
+economy options 1001 1 4 0
+report market 1000 9000
+economy raw 1000
+economy raw 1001
+economy options 1000 0 -4 0
+economy options 1000 1 -4 0
+report market 1000 9000
+economy raw 1000
+readlog 200
+
+section market rendering cloak zero one two zero price city and cancelled characters
+entity 9000 3 14
+entity 1 4 0
+entity 101 4 0
+name 101 flax
+plural 101 flax bundles
+link 9000 1000
+inventory 1000 1 30
+inventory 1000 101 4
+trade 1000 1 101 9 3 1000 44
+trade 1000 2 101 9 0 1000 45
+trade 9000 1 101 20 0 9000 46
+trade 9000 2 101 30 0 9000 47
+report market 1000 9000
+economy options 1000 0 0 1
+economy options 1000 1 0 1
+economy options 9000 0 0 1
+economy options 9000 1 0 1
+report market 1000 9000
+economy options 1000 0 0 2
+economy options 1000 1 0 2
+economy options 9000 0 0 2
+economy options 9000 1 0 2
+trade 1000 1 101 0 0 1000 88
+trade 1000 1 999 5 0 1000 89
+report market 1000 9000
+economy raw 1000
+economy raw 9000
+readlog 200
+
+section market rendering positive zero cost BUY hidden before reduce
+entity 9000 3 14
+entity 101 4 0
+link 9000 1000
+trade 1000 1 101 1 0 1000 91
+economy options 1000 0 0 2
+report market 1000 9000
+economy raw 1000
+readlog 200
+
+section market rendering zero availability no table but real seller sort effects
+entity 9000 3 14
+entity 1 4 0
+entity 101 4 0
+link 9000 1000
+link 9000 1001
+trade 1000 1 101 20 3 1000 92
+trade 1000 2 101 20 2 1000 93
+trade 1001 2 101 20 1 1001 94
+economy raw 1000
+economy raw 1001
+report market 1000 9000
+economy raw 1000
+economy raw 1001
+name 101 feather
+save 101
+trade 9000 2 101 2 1 9000 95
+report market 1000 9000
+save 101
+economy raw 9000
+readlog 200
+
+section market rendering production notice loop includes hidden duplicates but not zero qty or month
+entity 9000 3 14
+name 9000 Loom town
+entity 101 4 0
+name 101 cloth
+plural 101 bolts of cloth
+entity 102 4 0
+name 102 wool
+plural 102 wool bales
+trade 9000 3 101 10 0 9000 11
+market options 9000 0 3 4 2
+trade 9000 3 102 5 0 9000 12
+market options 9000 1 -2 5 0
+trade 9000 3 101 1 0 9000 13
+market options 9000 2 3 6 1
+trade 9000 3 101 0 0 9000 14
+market options 9000 3 4 7 0
+trade 9000 3 102 5 0 9000 15
+trade 9000 4 102 5 0 9000 16
+market options 9000 5 5 8 0
+economy raw 9000
+report market 1000 9000
+economy raw 9000
+trade 9000 2 101 1 2 9000 17
+report market 1000 9000
+economy raw 9000
+readlog 200
+
+section market rendering moving prisoner filters and no item allocation
+entity 9000 3 14
+entity 101 4 0
+name 101 long_item_name_exceeding_twenty_five_characters
+plural 101 long_item_plurals_exceeding_twenty_five_characters
+entity 1002 2 0
+field 1002 lord 201
+link 9000 1000
+link 1000 1002
+link 9000 1001
+field 1000 prisoner 1
+field 1001 moving 17
+inventory 1000 101 5
+inventory 1001 101 5
+inventory 1002 101 5
+trade 1000 2 101 5 1 1000 31
+trade 1001 2 101 5 1 1001 32
+trade 1002 2 101 5 1 1002 33
+report market 200 9000
+economy raw 1000
+economy raw 1001
+economy raw 1002
+save 101
+report state 9000
+readlog 200
+
+section market rendering MASTER style routing cached inode and exact wide signed columns
+lore_root
+entity 9000 3 14
+entity 101 4 0
+name 101 ore
+plural 101 ores
+field 101 weight -32768
+trade 9000 1 101 2147483647 123456789 9000 9
+trade 9000 2 101 1 -123456789 9000 10
+sout frame 2 5 1 23
+sout route -2 0
+sout style 7
+report market 200 9000
+sout state
+output 200 0
+life flush
+readfile log/200
+life rename log/200 held-market
+report market 200 9000
+life flush
+readfile held-market
+life path log/200
+economy raw 9000
+save 200

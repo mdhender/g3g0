@@ -238,11 +238,12 @@ func (o *options) unported() bool {
 // dereference, which Go reaches as a nil pointer dereference, kills C with
 // SIGSEGV: nothing is flushed, and the status is 139. A step that is not
 // ported (a notImplemented) stops with the "not yet implemented" message.
-// Any other panic is a bug in the port and is not recovered.
+// Other panics are not recovered; normally they indicate a bug in the port.
 //
 // C's integer division by zero would die with SIGFPE (136) on x86-64 and
-// give 0 on arm64; nothing from load_db() to the end of main() divides by
-// anything but a constant, so the port does not handle it.
+// give 0 on arm64. A malformed loaded zero-price BUY can reach that division
+// in reduceQty during market reporting (G3 #358). Go's divide-by-zero panic
+// remains unrecovered; host-dependent C failure parity is not implemented.
 func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status int) {
 	// call_init_routines(): glob_init()
 	w := newWorld()

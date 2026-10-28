@@ -6,6 +6,35 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## City market rendering (#141)
+
+Existing buy.go implements complete stage-pin buy.c list_market_items
+1027–1066 and market_report 1069–1120 using actual buyerList/sellerList/
+reduceQty and the accepted names/output/cache owners. The command oracle
+extracts both unchanged real C definitions. Nine appended sections compare
+report bytes, BUY-before-SELL and native/stable seller order, actual sort-field
+mutation, saved trade/inventory equality, reserves/balances, cloak 0/1/2,
+zero availability, original production notices, record nonallocation,
+widths/trailing spaces and MASTER/style/renamed-cache routing. No settlement,
+BUY/SELL/movement handler, location root, new source dependency or pin change.
+At **0.81.0-alpha**, C/C/Go matches **925 sections / 63547 lines / 1195280
+bytes**, with all inherited **916 sections / 62819 lines** and input/recording
+bytes exact unchanged prefixes, plus #168's live native C/C/Go check.
+Sequential routine command/move/helper/RNG/code/loadsave/turn-driver/default
+turn, bounded vet and fresh bounded default tests pass; this is not full-world
+or stage-exit acceptance. See [exact closure, evidence and limits](command-compat#city-market-rendering-141).
+
+**G3 #358 remains open and owner-declared nonblocking.** Actual C loading a
+positive-quantity zero-price character BUY and rendering its market report
+fails with SIGFPE on this x86-64 host; real cancellation controls do not.
+The original division is retained and source-linked, with no local game fix
+or new engine failure handling. A separate real renderer probe establishes
+C **136** versus Go divide-by-zero panic **2**: raw/status failure parity
+does **not** pass and is not counted among the recorded passing cases.
+Normal validated-command generation of that malformed saved trade is not
+established. See the command-tool evidence and
+[G3 #358](https://github.com/playbymail/olympia-g3/issues/358).
+
 ## Portable admission oracle (#168)
 
 The inherited multi-account admission recording encoded filesystem-specific

@@ -878,6 +878,12 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "attempt":
 				n, a, b, d := args.num(t), args.num(t), args.num(t), args.num(t)
 				w.attemptTrade(w.bx[n].trades[a], w.bx[b].trades[d])
+			case "raw":
+				n := args.num(t)
+				for i, p := range w.bx[n].trades {
+					fmt.Fprintf(&stdout, "trade raw %d %d %d %d %d %d %d %d %d %d %d\n", i, p.who, p.kind, p.item, p.qty, p.cost, p.cloak, p.haveLeft, p.monthProd, p.expire, p.sort)
+				}
+				w.saveBox(&stdout, n)
 			case "state":
 				fmt.Fprintf(&stdout, "trade gold %d pot basket %d opium %d\n", w.goldTrade, w.goldPotBasket, w.goldOpium)
 				helperList(&stdout, "pending trades", w.tradesToCheck)
@@ -1457,6 +1463,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch action := args.word(); action {
 			case "order":
 				w.determineOutputOrder()
+			case "market":
+				w.marketReport(args.num(t), args.num(t))
 			case "exits", "sailable":
 				n, where := args.num(t), args.num(t)
 				if action == "exits" {

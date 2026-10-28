@@ -646,6 +646,13 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"options")) { bx[n]->trades[a]->have_left=b; bx[n]->trades[a]->cloak=d; }
    else if (!strcmp(text,"reduce")) printf("reduced %d\n",drv_reduce(bx[n]->trades[a],b));
    else if (!strcmp(text,"attempt")) drv_attempt(bx[n]->trades[a],bx[b]->trades[d]);
+   else if (!strcmp(text,"raw")) {
+    for(i=0;i<trades_len(bx[n]->trades);i++) {
+     struct trade *t=bx[n]->trades[i];
+     printf("trade raw %d %d %d %d %d %d %d %d %d %d %d\n",i,t->who,t->kind,t->item,t->qty,t->cost,t->cloak,t->have_left,t->month_prod,t->expire,t->sort);
+    }
+    save_box(stdout,n);
+   }
    else if (!strcmp(text,"state")) {
     printf("trade gold %d pot basket %d opium %d\n",gold_trade,gold_pot_basket,gold_opium);
     list("pending trades",trades_to_check);
@@ -1052,6 +1059,10 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "report")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
+   else if(!strcmp(text,"market")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    market_report(n,a);
+   }
    else if(!strcmp(text,"exits") || !strcmp(text,"sailable")) {
     if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
     if(!strcmp(text,"exits")) list_exits(n,a); else list_sailable_routes(n,a);

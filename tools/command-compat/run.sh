@@ -129,7 +129,8 @@ functions = {
               'seller_list', 'buyer_list', 'reduce_qty', 'attempt_trade',
               'scan_trades', 'match_trades', 'match_all_trades', 'check_validated_trades',
               'find_trade', 'new_trade', 'add_city_trade', 'opium_market_delta',
-              'expire_trades', 'loc_trade_sup', 'trade_suffuse_ring', 'location_trades', 'is_tradegood', 'list_pending_trades'],
+              'expire_trades', 'loc_trade_sup', 'trade_suffuse_ring', 'location_trades', 'is_tradegood', 'list_pending_trades',
+              'list_market_items', 'market_report'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait', 'next_np_turn', 'print_hiring_status', 'print_unformed'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
@@ -535,6 +536,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section market rendering '* ]]; then
+   [ "$status" = 0 ] || die "unexpected market rendering status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section routes '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

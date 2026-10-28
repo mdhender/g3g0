@@ -3,6 +3,86 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## City market rendering (#141)
+
+The existing buy.go now implements complete unchanged buy.c
+`list_market_items` **1027–1066** and `market_report` **1069–1120**. The
+oracle extracts both original definitions, reusing its actual buyer_list,
+seller_list, reduce_qty, names/plurals, output/cache and save_box closure.
+No new upstream dependency or pin, settlement, BUY/SELL handler, movement
+handler or full location-report root is added. Production notices use the
+original loop_trade filter and order, not the offer visibility filter.
+
+Nine appended sections compare empty/repeated reports; nested native buyer
+order before all sellers; stable equal-price seller order and city offers
+last; real original seller sort-field mutation (including unavailable rows),
+unchanged buyer/city sort fields, inventories, quantities, queues and all
+other trade fields; city reserve bypass and character balance/reserve limits;
+cloak 0/1/2; zero availability; positive zero-price city offers and character
+sellers; cleared and invalid-item trade filtering; hidden zero-price buyers;
+duplicate/hidden production notices, zero quantity/month and non-PRODUCE
+controls; moving/prisoner filters with a captive's eligible descendant;
+absent item metadata, its real plural warning and nonallocation; exact signed
+wide columns, minimum-width-not-truncation, markup and trailing spaces.
+`economy raw` supplements real save_box bytes with sort and every trade field.
+MASTER/style/day/indent output bits and a renamed cached inode are observed
+with existing readfile/life flush primitives; no observation closes the cache.
+
+At **0.81.0-alpha**, independently accepted by the parent, actual pinned C/C/Go
+matches **925 sections / 63547 lines / 1195280 bytes**, including raw streams,
+statuses, report bytes and state. The inherited **916 sections / 62819 lines /
+1177391 recording bytes** and **20078 input lines / 368722 input bytes** are
+exact unchanged prefixes. New inputs total **20305 lines / 373845 bytes**.
+Recording SHA-256:
+`a9a0ea8d3d58c13dcdf8d808fbec9355950928a6c3ad2bad38f8d59c81b97b2d`.
+The independent #168 live native-order check also matches raw C/C/Go
+(**28 lines / 426 bytes**) over the same unchanged directory.
+
+A temporary linker negative control returned success after emitting a
+missing-C-dependency marker from market_report. `--update` rejected it with
+status **2**, `section 916 reached a C stub`, before replacing any recording;
+the recording hash stayed unchanged. Its sources/binary tree were removed.
+Log: `tmp/issue141-negative.log`.
+
+### G3 #358: deliberately not a passing failure-parity case
+
+[G3 #358](https://github.com/playbymail/olympia-g3/issues/358), assigned to
+the owner, remains open and explicitly **nonblocking by owner decision**.
+The investigation executed real io.c read_boxes/load_box/trade_list_scan,
+then the real market_report → buyer_list → list_market_items → reduce_qty
+path, not a model or an investigate_possible_trade inference. Loaded positive
+quantity/zero-price character BUY data is accepted and divides by zero even
+with no gold. On this Linux amd64/GCC 12.2.0 host C exits **136/SIGFPE**, twice
+deterministically. Real v_buy zero-quantity cancellation and a loaded price-1
+control instead exit **0**, twice each. Normal validated BUY commands have
+not been shown to produce the malformed positive-quantity zero-price record;
+no corpus prevalence is claimed. Prior evidence and exact source/build/run
+provenance are retained in `tmp/issue141-probe/` and the upstream issue.
+
+After implementation, an isolated malformed-input probe again ran the actual
+C report twice (both **136**, raw streams/status/log identical). An equivalent
+temporary Go test executable invoked actual marketReport and exited **2**
+with `runtime error: integer divide by zero`. **Those raw bytes and statuses
+do not match; this is not recorded or counted as a passing C/Go case.** The
+original division remains in reduceQty, with a source-linked comment; there
+is no guard, row suppression, successful substitute or new panic recovery.
+olympia.go's existing host-dependent-failure comment is clarified only;
+engine failure handling is unchanged. Temporary test source/executable were
+removed. Evidence: `tmp/issue141-malformed-c{1,2}/`,
+`tmp/issue141-malformed-cases.txt`, `tmp/issue141-malformed-go.{stdout,stderr,status}`.
+
+Routine command/move/helper/RNG/code/loadsave/turn-driver/default-turn tools
+passed sequentially with explicit `G3_REPO=$PWD/tmp/upstream.git`, bounded
+engines, then bounded vet and fresh bounded default Go tests. Code-compat
+retains its deliberately unaffected older pin. Logs are
+`tmp/issue141-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`;
+recording refresh evidence is `tmp/issue141-command-update.log`. These are
+bounded small-case checks, not a new full-world/full-corpus or stage-exit
+acceptance claim. Parent independently reviewed the complete pinned C and Go
+diff, verified both extracted definitions unchanged exactly once and every
+inherited input/recording byte unchanged, then reran all eight tools, bounded
+vet and fresh bounded default tests. Parent logs: `tmp/parent141-*.log`.
+
 ## Portable admission recording and live native order (#168)
 
 This is a local harness correction, prerequisite to #140, not an engine or
