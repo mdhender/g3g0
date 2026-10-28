@@ -108,18 +108,18 @@ functions = {
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
-            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units', 'bark_dogs', 'clear_temps'],
+            'count_stack_move_nobles', 'count_stack_figures', 'count_stack_units', 'bark_dogs', 'clear_temps', 'ordinal'],
     'npc.c': ['controlled_humans_here', 'get_exit_dir', 'choose_npc_direction', 'npc_move',
               'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'necro.c': ['auto_undead'],
     'savage.c': ['create_savage', 'call_savage', 'savage_hates', 'savage_hate_here',
                  'auto_savage', 'init_savage_attacks'],
-    'lore.c': ['queue_lore', 'scan_char_item_lore'],
+    'lore.c': ['queue_lore', 'scan_char_item_lore', 'np_req_s'],
     'buy.c': ['investigate_possible_trade', 'market_here', 'seller_comp',
               'seller_list', 'buyer_list', 'reduce_qty', 'attempt_trade',
               'scan_trades', 'match_trades', 'match_all_trades', 'check_validated_trades',
               'find_trade', 'new_trade', 'add_city_trade', 'opium_market_delta',
-              'expire_trades', 'loc_trade_sup', 'trade_suffuse_ring', 'location_trades', 'is_tradegood'],
+              'expire_trades', 'loc_trade_sup', 'trade_suffuse_ring', 'location_trades', 'is_tradegood', 'list_pending_trades'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait', 'next_np_turn'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
@@ -129,10 +129,19 @@ functions = {
                 'update_weather_view_locs', 'new_storm', 'create_some_storms',
                 'natural_weather', 'v_bind_storm', 'd_bind_storm',
                 'move_storm', 'move_bound_storms', 'dissipate_storm'],
-    'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school'],
+    'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school',
+              'exp_s', 'rep_skill_comp', 'flat_skill_comp', 'list_skill_sup',
+              'list_skills', 'fractional_skill_qualifier', 'list_partial_skills'],
     'report.c': ['char_rep_location', 'output_order_comp', 'sort_for_output',
                  'determine_output_order', 'inv_item_comp', 'extra_item_info',
-                 'show_unclaimed', 'player_ent_info'],
+                 'show_unclaimed', 'player_ent_info', 'show_char_inventory',
+                 'show_carry_capacity', 'show_item_skills_sup', 'show_item_skills',
+                 'char_rep_stack_info', 'collect_pledge_backlinks', 'show_pledged',
+                 'prisoner_health', 'char_rep_prisoners', 'char_rep_health',
+                 'char_rep_combat', 'char_rep_misc', 'char_rep_magic',
+                 'char_rep_sup', 'character_report', 'turn_end_loc_reports', 'player_banner'],
+    'summary.c': ['rank_comp', 'ranking', 'top_rank', 'out_rank_mine_top',
+                  'out_ranking', 'summary_provinces'],
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts'],
@@ -185,6 +194,9 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(source[start:source.index('int max_map_row')])
         if file == 'combat.c':
             out.write('#include "combat-structs.h"\n')
+        if file == 'summary.c':
+            for pattern in [r'^#define\s+SHOW_TOP\s+FALSE\n', r'^static ilist ranks = NULL;\n']:
+                out.write(re.search(pattern, source, re.M).group(0))
         if file == 'buy.c':
             out.write(re.search(r'^static rng_stream economy_rng;\n', source, re.M).group(0))
             start, end = source.index('#define\tTAG_TURN'), source.index('/*\n *  Explanation of trade->cloak')
@@ -245,7 +257,12 @@ int immed_see_all, month_done, show_combat_flag;
             pattern = rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n'
             if name == 'queue':
                 pattern = r'^void queue\(.*?^\}\n'
+            if name == 'rank_comp':
+                pattern = r'^static\nint rank_comp\(.*?^\}\n'
             m = re.search(pattern, source, re.M | re.S)
+            if name == 'list_skill_sup':
+                # The first definition is disabled by #if 0; use the real #else.
+                m = list(re.finditer(pattern, source, re.M | re.S))[-1]
             if not m:
                 sys.exit(f'no definition of {name} in {file}')
             line = source.count('\n', 0, m.start()) + 1
@@ -254,6 +271,7 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(text)
     out.write('''
 int drv_load(struct command *c) { return load_command(c); }
+void drv_summary_provinces(void) { summary_provinces(); }
 void drv_garrison_pay(void) { default_garrison_pay(); }
 void drv_sink(int ship) { sink_ship(ship); }
 void drv_collapse(int fort) { building_collapses(fort); }
@@ -423,6 +441,11 @@ with open(f'{dst}/stubs.c', 'w') as out:
 /* Instrumentation only; coverage artifacts belong to stage 3. */
 void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1, pretty_data_files, time_self;
+int show_loc_no_header, win_flag;
+/* This allocation-only probe has no known locations to render. Never turn a
+ * newly reached rendering dependency into a successful C oracle result. */
+void show_loc(int who, int where) STUB("show_loc")
+char *show_loc_header(int where) STUB("show_loc_header")
 ilist trades_to_check;
 ''')
 PY
@@ -449,7 +472,11 @@ for run in run1 run2; do
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
   if [[ "${section_names[$i]}" == 'section report '* ]]; then
-   [ "$status" = 0 ] || die "unexpected player report state status $status in section $i; expected 0"
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section report invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected report state status $status in section $i; expected $expected_status"
   fi
   if [[ "${section_names[$i]}" == 'section closure '* ]]; then
    [ "$status" = 0 ] || die "unexpected monthly closure status $status in section $i; expected 0"

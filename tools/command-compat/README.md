@@ -3003,3 +3003,104 @@ Version **0.69.0-alpha**, left **uncommitted**. No new bug/blocker was found.
 No main integration, character/summary state (#124), lore (#122), stage-2
 rendering, whole-world/stage-exit acceptance, commit, push, issue closure or
 checklist tick is included.
+
+## Character report state and remaining allocations (#124)
+
+Pin remains `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`, read only from
+`tmp/upstream.git` via archive. Complete original definitions, with original
+`#line` locations, extend this existing oracle; real `save_box` is unchanged:
+
+| source | added definitions and inclusive lines |
+|---|---|
+| report.c | `show_carry_capacity` 73–105, `show_item_skills_sup` 108–193, `show_item_skills` 196–210, `show_char_inventory` 293–344, `char_rep_stack_info` 410–433, `collect_pledge_backlinks` 438–463, `show_pledged` 466–496, `prisoner_health` 499–510, `char_rep_prisoners` 513–537, `char_rep_health` 540–563, `char_rep_combat` 565–606, `char_rep_misc` 609–639, `char_rep_magic` 642–678, `char_rep_sup` 681–710, `character_report` 713–743, `turn_end_loc_reports` 1589–1642, `player_banner` 1645–1722 |
+| use.c | `exp_s` 977–994, `rep_skill_comp` 1199–1228, `flat_skill_comp` 1231–1238, active `list_skill_sup` 1262–1271, `list_skills` 1276–1335, `fractional_skill_qualifier` 1345–1361, `list_partial_skills` 1364–1406 |
+| summary.c | `rank_comp` 15–22, `ranking` 33–41, `top_rank` 44–69, `out_rank_mine_top` 72–89, `out_ranking` 92–119, `summary_provinces` 348–389; original SHOW_TOP/ranks declarations |
+| buy.c / lore.c / u.c | `list_pending_trades` 1123–1158 / `np_req_s` 120–134 / `ordinal` 1711–1724 |
+
+The C character renderer and its full closure really execute: no copied
+expected-state formulas or successful dependency stubs. The extractor selects
+the active `#else` definition of `list_skill_sup`, not the disabled `#if 0`
+alternative. The location-allocation probes use empty known-location sets;
+unported `show_loc`/`show_loc_header` dependencies **abort with the rejected
+dependency marker** if reached, never return success. These probes do not
+claim complete location rendering. `player_banner` itself executes whole.
+`summary_provinces` includes its real ranking/rendering dependencies.
+**summary.c is a new dependency**, tracked in tools/README.md and affected.sh.
+
+Go extends report.go, reusing #121's `reportAttitudeState`. Only persistent
+state and observable diagnostics/assertions are projected; report log bodies,
+output bits and scratch temp/output_order/ranking data are stage-2 artifacts
+or scratch, not substituted saved state. In particular:
+
+- `character_report` skips silent owners first. Prisoners only temporarily
+  toggle their prisoner flag for output, so stay prisoners and do not sort.
+  That initial output can still allocate a missing nonsilent owner player
+  record via sout.c:306; it does not trigger pledge collection.
+- Only the first eligible nonprisoner reaches `show_pledged`. Its two passes
+  first `p_magic`/clear **every** character (including silent/prisoners), then
+  append every nonzero pledge in character-chain order across factions.
+  Missing character records gain CH; empty magic alone emits no CM. A
+  non-null backlink pointer, even after clearing to zero entries, retains
+  bare CM because the real writer zero-checks the entire structure.
+- Duplicate stale backlink entries disappear on collection, but repeated
+  reports with the ready flag set do not rebuild. Pledge edits alone leave
+  stale backlinks until that flag is cleared. Allocated-empty lists stay
+  allocated across clear/repeat; never-allocated lists remain nil.
+- Eligible inventory and hostile/neutral/defend lists sort **in place**,
+  retaining invalid references and nonpositive entries filtered by writers.
+  Both skill displays sort copies and leave all stored skill rows in order.
+  Plural-name stderr warnings and prisoner/partial-skill source assertions
+  remain observable; report.c:504 and use.c:1358 failures record status 134.
+
+Allocation caller audit against actual main.c:981–1001 order:
+
+1. determine_output_order allocates no absent player record (#121).
+2. turn_end_loc_reports allocates **every nonsilent** player, before order
+   templates and player_ent_info. Templates' conditional p_player call
+   (order.c:398), print_admit and output routing therefore add no earlier
+   allocation. The new projection is intentionally not moved to summary.
+3. character_report has the lazy CH/CM effects above. Its allocation-only
+   owner route is also tested independently of the preceding player phase.
+4. player_banner's p_player is nonsilent, after character_report and before
+   summary. It is tested standalone as well as in the original composition.
+5. summary_provinces calls p_player for **ALL subtypes**, including silent
+   factions. Other summary mutations are scratch. Subsequent player_report
+   (player_report_sup/unit_summary), GM knowledge statistics and include
+   generation encounter records already established by this all-player pass;
+   they introduce no additional absent-record allocation in the actual tail.
+   Skill lore/knowledge remains #122, not this task.
+
+Eleven appended small sections cover all-prisoner/all-silent controls before
+first eligibility; missing CH/magic/player records; lazy cross-faction pledge
+targets and sources (ordinary, silent, prisoner), duplicate/clear/repeat and
+nil versus allocated-empty lists; all three original attitudes and descending
+inventories including invalid entries; unchanged descending known/partial
+skills; all player subtypes; original allocation-phase composition; and real
+assertion failures with healthy/immortal prisoner controls. No new default
+world test or private formatting-only test was added.
+
+Negative linker probes wrapped only `character_report` with a dependency
+marker, once returning status 0 and once aborting with 134. Normal and
+`--update` runs both rejected section **740** with harness status **2** at the
+marker check, before expected-status or recording acceptance. Recording hash
+stayed unchanged. Removed both temporary probe files, then reran the real
+ordinary command comparison successfully.
+
+Two C recordings and Go match **751 sections / 56776 lines / 979131 bytes**.
+The prior **740 sections / 55920 lines / 963859 output bytes** and **17227
+lines / 310599 input bytes** remain exact byte prefixes. New input is **17487
+lines / 316195 bytes**. Output SHA-256:
+`2c9911876370b789a97e4a41ce550ce12a55ef5f1806ce9ecfa9ecfe11448d88`.
+
+Eight tools passed **sequentially**, all with `G3_REPO=$PWD/tmp/upstream.git`:
+command **751/56776**, move **135/7150**, helper **37/1487**, RNG **321**,
+code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase **5/484**,
+calendar **2/119**, schedule **4/1801**, then default turn (identical status,
+raw stdout/stderr and one state file). Next, bounded `go vet ./...` and fresh
+bounded `go test -count=1 ./...` passed. All engines use shared run_limited;
+no whole-world, roundtrip or stage-exit run is claimed for this task.
+Source-only `git diff --check` passes; literal C recording whitespace remains.
+
+Version **0.70.0-alpha**; all changes left **uncommitted**. No new defect or
+upstream blocker found. No main integration, skill lore, full Go report
+renderer, issue closure/checklist tick, commit or push is included.

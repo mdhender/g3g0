@@ -342,6 +342,23 @@ Run the same eight comparisons sequentially before bounded vet/fresh defaults.
 Main integration, character/summary closure (#124), lore (#122) and stage-2
 rendering remain separate; no full-world/stage-exit acceptance is implied.
 
+Character report state and remaining allocations (#124) extend the same
+command comparison with complete original character_report/char_rep_sup and
+their rendering closure. Go extends report.go's state projection: lazy
+two-pass pledge backlinks allocate CH across ALL characters only at the first
+eligible nonsilent/nonprisoner report; allocated-empty temporary lists can
+retain bare CM sections. Only eligible character inventories and original
+hostile/neutral/defend lists sort; skill reporting sorts copies, not saved
+skills. Initial prisoner output can allocate a missing owner player record
+without collecting backlinks. Real turn_end_loc_reports/player_banner and
+summary_provinces allocation callers are compared, including all player
+subtypes and the original phase order. summary.c is a new source dependency,
+now tracked below and in affected.sh. Cases compare actual save_box bytes,
+raw list/record observers, streams/status and source-located assertions.
+Run command/move/helper/rng/code/loadsave/turn-driver/default-turn sequentially
+before bounded vet/fresh defaults. No main integration, lore or full Go
+report rendering, new tool/pin or full-world/stage-exit claim is implied.
+
 Inventory transfer and token acquisition (#117) extend command-compat with
 the complete real `consume_item`, mutually recursive `move_item`/`drop_item`,
 and compiled `move_token` acquisition closure. Real lord interruption/NP,
@@ -467,6 +484,6 @@ A tool needs rerunning after a pin move if any file it reads changed; [`affected
 | [`turn-compat`](turn-compat) | `testdata/` small real C snapshots and determinism manifest | the whole tree: it builds `olympia-g3` and turns `tests/olympia/fixtures/world.tgz` |
 | [`turn-driver-compat`](turn-driver-compat) | `internal/olympia/testdata/turn-{driver,phase}-c-output.txt`, `{calendar,schedule}-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `u.c`, `input.c`, `day.c`, `z.c`, `storm.c`, `seed.c`, `glob.c`, `rnd.c`; `lib/` `ilist.c`, `rng.c` |
 | [`move-compat`](move-compat) | `internal/olympia/testdata/move-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `dir.c`, `loc.c`, `u.c`, `swear.c`, `move.c`, `input.c`, `perm.c`, `stack.c`, `storm.c`, `garr.c`, `art.c`, `combat.c`, `day.c`, `code.c`, `glob.c`, `z.c`, `sout.c`, `display.c`, `use.c`, `io.c`, `seed.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `item_ents.c`, `admits.c`, `cstrings.c`, `skill_ents.c`, `trades.c`, `req_ents.c` |
-| [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `combat.c`, `art.c`, `display.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `build.c`, `u.c`, `dir.c`, `perm.c`, `storm.c`, `use.c`, `c1.c`, `produce.c`, `c2.c`, `immed.c`, `stealth.c`, `move.c`, `day.c`, `gm.c`, `seed.c`, `io.c`, `buy.c`, `lore.c`, `npc.c`, `hades.c`, `faery.c`, `savage.c`, `necro.c`, `report.c`, `cloud.c`, `tunnel.c`, `quest.c`, `scry.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c`, `wait_args.c`, `flag_ents.c`, `admits.c`, `trades.c`, `req_ents.c` |
+| [`command-compat`](command-compat) | `internal/olympia/testdata/command-c-output.txt` | `olympia/*.h`, `lib/*.h`; `olympia/` `code.c`, `glob.c`, `z.c`, `sout.c`, `input.c`, `combat.c`, `art.c`, `display.c`, `order.c`, `swear.c`, `stack.c`, `loc.c`, `garr.c`, `build.c`, `u.c`, `dir.c`, `perm.c`, `storm.c`, `use.c`, `c1.c`, `produce.c`, `c2.c`, `immed.c`, `stealth.c`, `move.c`, `day.c`, `gm.c`, `seed.c`, `io.c`, `buy.c`, `lore.c`, `npc.c`, `hades.c`, `faery.c`, `savage.c`, `necro.c`, `report.c`, `summary.c`, `cloud.c`, `tunnel.c`, `quest.c`, `scry.c`; `lib/` `checked_alloc.c`, `ilist.c`, `exit_views.c`, `rng.c`, `rnd.c`, `cstrings.c`, `item_ents.c`, `skill_ents.c`, `orders.c`, `wait_args.c`, `flag_ents.c`, `admits.c`, `trades.c`, `req_ents.c` |
 
 `genesis-compat`, `island-compat` and `mapgen-compat` have pins of their own and are not covered here.

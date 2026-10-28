@@ -57,6 +57,7 @@ int drv_starve_roll(int who, int item), drv_animal_roll(int who, int item, int i
 void drv_decay_mines(void), drv_decay_ghosts(void), drv_decay_corpses(void), drv_decay_bodies(void);
 int drv_corpse_roll(int who);
 void drv_auto_drop(void), drv_link_decay(void), drv_quest_decay(void), drv_kings(void);
+void drv_summary_provinces(void);
 int drv_rank_threshold(int n), drv_rank_lower(int n), drv_rank_sup(int n);
 extern int gold_inn, gold_temple;
 void drv_city_gold(void), drv_replenish(int where, int item, int qty);
@@ -829,6 +830,26 @@ int main(int argc, char **argv)
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
    else if(!strcmp(text,"players")) player_ent_info();
+   else if(!strcmp(text,"characters")) character_report();
+   else if(!strcmp(text,"locations")) turn_end_loc_reports();
+   else if(!strcmp(text,"banner")) player_banner();
+   else if(!strcmp(text,"provinces")) drv_summary_provinces();
+   else if(!strcmp(text,"skill")) {
+    struct skill_ent *p=my_malloc(sizeof(*p));
+    sscanf(line,"%*s %*s %d %d %d %d",&n,&a,&b,&d);
+    p->skill=a; p->know=b; p->days_studied=d;
+    skill_ents_append(&p_char(n)->skills,p);
+   }
+   else if(!strcmp(text,"backlinks")) {
+    struct char_magic *p=rp_magic(n);
+    printf("backlinks ready %d allocated %d\n",pledge_backlinks,p && p->pledged_to_us!=NULL);
+    if(p) list("pledged",p->pledged_to_us);
+    save_box(stdout,n);
+   }
+   else if(!strcmp(text,"backlink")) {
+    sscanf(line,"%*s %*s %d %d",&n,&a);
+    ilist_append(&p_magic(n)->pledged_to_us,a);
+   }
    else if(!strcmp(text,"admit")) {
     struct admit *p=my_malloc(sizeof(*p));
     sscanf(line,"%*s %*s %d %d %d %d",&n,&a,&b,&d);

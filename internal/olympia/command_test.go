@@ -1162,6 +1162,28 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				// C executes the complete original player_ent_info closure.
 				// Only report artifacts are deferred, never the compared state.
 				w.playerEntInfoState()
+			case "characters":
+				w.characterReportState()
+			case "locations":
+				w.turnEndLocReportsState()
+			case "banner":
+				w.playerBannerState()
+			case "provinces":
+				w.summaryProvincesState()
+			case "skill":
+				n, a, b, d := args.num(t), args.num(t), args.num(t), args.num(t)
+				w.pChar(n).skills.Append(&skillEnt{skill: int32(a), know: int8(b), daysStudied: int32(d)})
+			case "backlinks":
+				n := args.num(t)
+				p := w.rpMagic(n)
+				fmt.Fprintf(&stdout, "backlinks ready %d allocated %d\n", b2i(w.pledgeBacklinks), b2i(p != nil && p.pledgedToUs != nil))
+				if p != nil {
+					helperList(&stdout, "pledged", p.pledgedToUs)
+				}
+				w.saveBox(&stdout, n)
+			case "backlink":
+				n, a := args.num(t), args.num(t)
+				w.pMagic(n).pledgedToUs.Append(a)
 			case "admit":
 				n, a, b, d := args.num(t), args.num(t), args.num(t), args.num(t)
 				p := &admit{targ: int32(a), sense: int32(b)}
