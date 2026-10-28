@@ -5,6 +5,99 @@ package olympia
 
 import "github.com/mdhender/g3g0/internal/lists"
 
+// invItemComp is report.c:213–220. Sort the original list, including entries
+// which loopInv will subsequently filter; subtraction has C int width.
+func invItemComp(a, b *itemEnt) int { return int(a.item - b.item) }
+
+// extraItemInfo is complete report.c:246–290. Capacity display chooses fly,
+// ride, then land (not their sum). Aura visibility depends on the recipient,
+// not the inventory owner, and is always suppressed for unclaimed items.
+func (w *world) extraItemInfo(who, item, qty int) string {
+	s := ""
+	if p := w.rpItem(item); p != nil {
+		if p.flyCap > 0 {
+			s = sout("fly %s", niceNum(int(int32(p.flyCap)*int32(qty))))
+		} else if p.rideCap > 0 {
+			s = sout("ride %s", niceNum(int(int32(p.rideCap)*int32(qty))))
+		} else if p.landCap > 0 {
+			s = sout("cap %s", niceNum(int(int32(p.landCap)*int32(qty))))
+		}
+		if p.attack != 0 || p.defense != 0 || p.missile != 0 || item == itemGhostWarrior {
+			s += sout(" (%d,%d,%d)", p.attack, p.defense, p.missile)
+		}
+	} else if item == itemGhostWarrior {
+		s += " (0,0,0)"
+	}
+	if p := w.rpItemMagic(item); p != nil {
+		if p.attackBonus != 0 {
+			s += sout("+%d attack", p.attackBonus)
+		}
+		if p.defenseBonus != 0 {
+			s += sout("+%d defense", p.defenseBonus)
+		}
+		if p.missileBonus != 0 {
+			s += sout("+%d missile", p.missileBonus)
+		}
+		if p.auraBonus != 0 && who != 0 {
+			if m := w.rpMagic(who); m != nil && m.magician != 0 {
+				s += sout("+%d aura", p.auraBonus)
+			}
+		}
+	}
+	return s
+}
+
+// showCharInventory is complete report.c:294–344. Later report roots retain
+// their projections until their own tasks; callers must use one path only.
+func (w *world) showCharInventory(who, num int) {
+	safeQsort(w.bx[num].items, invItemComp)
+	first := true
+	var total int32
+	for e := range w.loopInv(num) {
+		var weight int32
+		if p := w.rpItem(int(e.item)); p != nil {
+			weight = int32(p.weight) * e.qty
+		}
+		if first {
+			w.commandOut(who, "")
+			w.commandOut(who, "Inventory:")
+			w.commandOut(who, "{<b>}%9s  %-30s %9s{</b>}", "qty", "name", "weight")
+			w.commandOut(who, "%9s  %-30s %9s", "---", "----", "------")
+			first = false
+		}
+		w.commandOut(who, "%9s  %-30s %9s  %s", commaNum(int(e.qty)), w.pluralItemBox(int(e.item), int(e.qty)), commaNum(int(weight)), w.extraItemInfo(who, int(e.item), int(e.qty)))
+		total += weight
+	}
+	if !first {
+		w.commandOut(who, "%9s  %-30s %9s", "", "", "======")
+		w.commandOut(who, "%9s  %-30s %9s", "", "", commaNum(int(total)))
+	} else {
+		w.commandOut(who, "")
+		w.commandOut(who, "%s has no possessions.", w.boxName(num))
+	}
+}
+
+// showUnclaimed is complete report.c:746–780: no empty message or total row.
+func (w *world) showUnclaimed(who, num int) {
+	safeQsort(w.bx[num].items, invItemComp)
+	first := true
+	for e := range w.loopInv(num) {
+		var weight int32
+		if p := w.rpItem(int(e.item)); p != nil {
+			weight = int32(p.weight) * e.qty
+		}
+		if first {
+			w.commandOut(who, "")
+			w.commandOut(who, "Unclaimed items:")
+			w.commandOut(who, "")
+			w.commandOut(who, "%9s  %-30s %9s", "qty", "name", "weight")
+			w.commandOut(who, "%9s  %-30s %9s", "---", "----", "------")
+			first = false
+		}
+		w.commandOut(who, "%9s  %-30s %9s  %s", commaNum(int(e.qty)), w.pluralItemBox(int(e.item), int(e.qty)), commaNum(int(weight)), w.extraItemInfo(0, int(e.item), int(e.qty)))
+	}
+}
+
 // sortForOutput is report.c:11–27. Equal scratch positions use entity IDs;
 // subtraction retains C int arithmetic rather than comparing as Go ints.
 func (w *world) sortForOutput(l lists.IList) {
@@ -53,7 +146,7 @@ func (w *world) playerEntInfoState() {
 		p := w.pPlayer(pl)
 		safeQsort(p.admits, func(a, b *admit) int { return int(a.targ - b.targ) })
 		w.reportAttitudeState(pl)
-		safeQsort(w.bx[pl].items, func(a, b *itemEnt) int { return int(a.item - b.item) })
+		safeQsort(w.bx[pl].items, invItemComp)
 		// show_unclaimed's plural formatter can warn on stderr, which is
 		// observable even though the inventory report itself is deferred.
 		for e := range w.loopInv(pl) {
@@ -158,7 +251,7 @@ func (w *world) characterReportState() {
 				}
 			}
 		}
-		safeQsort(w.bx[who].items, func(a, b *itemEnt) int { return int(a.item - b.item) })
+		safeQsort(w.bx[who].items, invItemComp)
 		for e := range w.loopInv(who) {
 			w.pluralItemBox(int(e.item), int(e.qty))
 		}

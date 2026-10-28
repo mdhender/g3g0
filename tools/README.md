@@ -6,6 +6,32 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Inventories and unclaimed items (#146)
+
+Existing report.go adds complete pinned report.c inv_item_comp **213–220**,
+extra_item_info **246–290**, show_char_inventory **294–344** and
+show_unclaimed **746–780**. Existing inventory, magic, naming/number and
+cached-output owners supply the real closure; the C oracle already extracts
+these complete unchanged definitions. Direct section calls do not implement
+later character/player roots or run their projections alongside rendering.
+Original in-place sort timing, invalid/nonpositive rows, weight arithmetic,
+capacity precedence, fighter/equipment/aura visibility, totals/empty output
+and literal plural warning bytes are preserved.
+
+At **0.86.0-alpha**, ten appended cases pass complete actual C/C/Go:
+**992 sections / 67520 lines / 1278600 output bytes**, with the inherited
+**982-section / 66938-line / 1262604-output-byte** and **399178-input-byte**
+prefixes unchanged. #168 live native traversal still matches. Sequential
+command/move/helper/RNG/code/loadsave/turn-driver/default-turn, bounded vet
+and fresh bounded default tests pass. Logs are `tmp/issue146-*.log`; exact
+closure, hashes, fixture constants and reached branches are documented in
+[command-compat](command-compat#inventories-and-unclaimed-items-146).
+No new source dependency/pin, later root/command or full-world/stage-exit
+acceptance. The parent's latest post-#145 strict full run still owns the
+eight saved-report byte differences and exit 1 before lifecycle controls;
+this task does not refresh that gate. G3 #358 remains nonblocking and
+unchanged; malformed C136/Go2 is not passing parity.
+
 ## Complete location report root (#145)
 
 Existing display.go adds complete pinned display.c show_loc **1056–1101**;

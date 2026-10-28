@@ -66936,3 +66936,585 @@ turn_end_loc_reports()
 assertion failure: olympia/display.c (912): FALSE
 
 exit 134
+stdout:
+section report inventory empty character and empty unclaimed do not allocate magic
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+1000 char 0
+CH
+ lo 200
+
+> report inventory 1000 1000
+> report unclaimed 200 200
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+1000 char 0
+CH
+ lo 200
+
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+> readlog 200
+log 200:
+1000:0::0::
+1000:0::0::<no subkind>~[1000] has no possessions.
+stderr:
+
+exit 0
+stdout:
+section report inventory sort original invalid nonpositive duplicates and repeated rendering
+> entity 501 4 0
+> entity 502 4 0
+> name 501 stone
+> plural 501 stones
+> name 502 reed
+> plural 502 reeds
+> field 501 weight 17
+> field 502 weight -3
+> inventory 1000 502 3
+> inventory 1000 9999 7
+> inventory 1000 501 0
+> inventory 1000 501 2
+> inventory 1000 502 -4
+> inventory 1000 501 5
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 502 3
+raw item 9999 7
+raw item 501 0
+raw item 501 2
+raw item 502 -4
+raw item 501 5
+1000 char 0
+il	502 3 \
+	501 2 \
+	501 5
+CH
+ lo 200
+
+> report inventory 1000 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 501 0
+raw item 501 2
+raw item 501 5
+raw item 502 3
+raw item 502 -4
+raw item 9999 7
+1000 char 0
+il	501 2 \
+	501 5 \
+	502 3
+CH
+ lo 200
+
+> report inventory 1000 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 501 0
+raw item 501 2
+raw item 501 5
+raw item 502 3
+raw item 502 -4
+raw item 9999 7
+1000 char 0
+il	501 2 \
+	501 5 \
+	502 3
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::
+1000:0::0::Inventory:
+1000:0::0::{<b>}      qty  name                              weight{</b>}
+1000:0::0::      ---  ----                              ------
+1000:0::0::        2  stones~[501]                          34  
+1000:0::0::        5  stones~[501]                          85  
+1000:0::0::        3  reeds~[502]                           -9  
+1000:0::0::                                             ======
+1000:0::0::                                                110
+1000:0::0::
+1000:0::0::Inventory:
+1000:0::0::{<b>}      qty  name                              weight{</b>}
+1000:0::0::      ---  ----                              ------
+1000:0::0::        2  stones~[501]                          34  
+1000:0::0::        5  stones~[501]                          85  
+1000:0::0::        3  reeds~[502]                           -9  
+1000:0::0::                                             ======
+1000:0::0::                                                110
+stderr:
+
+exit 0
+stdout:
+section report inventory all filtered still sorts before empty message
+> entity 501 4 0
+> inventory 1000 9999 2
+> inventory 1000 501 -1
+> inventory 1000 501 0
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 9999 2
+raw item 501 -1
+raw item 501 0
+1000 char 0
+CH
+ lo 200
+
+> report inventory 1000 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 501 -1
+raw item 501 0
+raw item 9999 2
+1000 char 0
+CH
+ lo 200
+
+> report unclaimed 1000 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 501 -1
+raw item 501 0
+raw item 9999 2
+1000 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::
+1000:0::0::<no subkind>~[1000] has no possessions.
+stderr:
+
+exit 0
+stdout:
+section report inventory capacity precedence fly ride land and no positive capacity
+> entity 501 4 0
+> entity 502 4 0
+> entity 503 4 0
+> entity 504 4 0
+> field 501 fly_cap 7
+> field 501 ride_cap 13
+> field 501 land_cap 19
+> field 502 fly_cap -3
+> field 502 ride_cap 23
+> field 502 land_cap 29
+> field 503 ride_cap -5
+> field 503 land_cap 31
+> field 504 fly_cap -7
+> field 504 ride_cap -11
+> field 504 land_cap -13
+> inventory 1000 504 1
+> inventory 1000 503 2
+> inventory 1000 502 3
+> inventory 1000 501 11
+> report inventory 1000 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 501 11
+raw item 502 3
+raw item 503 2
+raw item 504 1
+1000 char 0
+il	501 11 \
+	502 3 \
+	503 2 \
+	504 1
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::
+1000:0::0::Inventory:
+1000:0::0::{<b>}      qty  name                              weight{</b>}
+1000:0::0::      ---  ----                              ------
+1000:0::0::       11  <no subkind>~[501]                     0  fly 77
+1000:0::0::        3  <no subkind>~[502]                     0  ride 69
+1000:0::0::        2  <no subkind>~[503]                     0  cap 62
+1000:0::0::        1  <no subkind>~[504]                     0  
+1000:0::0::                                             ======
+1000:0::0::                                                  0
+stderr:
+warning: plural name not set for item [501]
+warning: plural name not set for item [502]
+warning: plural name not set for item [503]
+
+exit 0
+stdout:
+section report inventory fighter independent stats ghost exception and concatenated signed bonuses
+> entity 501 4 0
+> entity 502 4 0
+> entity 503 4 0
+> entity 504 4 0
+> entity 18 4 0
+> field 501 attack -9
+> field 502 defense 17
+> field 503 missile 23
+> field 504 attack_bonus 3
+> field 504 defense_bonus -4
+> field 504 missile_bonus 5
+> field 504 aura_bonus 7
+> field 501 fly_cap 1
+> field 501 attack_bonus -2
+> inventory 1000 504 1
+> inventory 1000 503 1
+> inventory 1000 502 1
+> inventory 1000 501 1
+> inventory 1000 18 1
+> report inventory 1000 1000
+> field 1000 magician 1
+> report inventory 1000 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 1
+raw item 18 1
+raw item 501 1
+raw item 502 1
+raw item 503 1
+raw item 504 1
+1000 char 0
+il	18 1 \
+	501 1 \
+	502 1 \
+	503 1 \
+	504 1
+CH
+ lo 200
+CM
+ im 1
+
+> readlog 200
+log 200:
+1000:0::0::
+1000:0::0::Inventory:
+1000:0::0::{<b>}      qty  name                              weight{</b>}
+1000:0::0::      ---  ----                              ------
+1000:0::0::        1  <no subkind>~[18]                      0   (0,0,0)
+1000:0::0::        1  <no subkind>~[501]                     0  fly one (-9,0,0)+-2 attack
+1000:0::0::        1  <no subkind>~[502]                     0   (0,17,0)
+1000:0::0::        1  <no subkind>~[503]                     0   (0,0,23)
+1000:0::0::        1  <no subkind>~[504]                     0  +3 attack+-4 defense+5 missile
+1000:0::0::                                             ======
+1000:0::0::                                                  0
+1000:0::0::
+1000:0::0::Inventory:
+1000:0::0::{<b>}      qty  name                              weight{</b>}
+1000:0::0::      ---  ----                              ------
+1000:0::0::        1  <no subkind>~[18]                      0   (0,0,0)
+1000:0::0::        1  <no subkind>~[501]                     0  fly one (-9,0,0)+-2 attack
+1000:0::0::        1  <no subkind>~[502]                     0   (0,17,0)
+1000:0::0::        1  <no subkind>~[503]                     0   (0,0,23)
+1000:0::0::        1  <no subkind>~[504]                     0  +3 attack+-4 defense+5 missile+7 aura
+1000:0::0::                                             ======
+1000:0::0::                                                  0
+stderr:
+
+exit 0
+stdout:
+section report inventory recipient not owner controls aura and unclaimed always suppresses it
+> entity 501 4 0
+> name 501 jewel
+> plural 501 jewels
+> field 501 aura_bonus -11
+> field 1001 magician 1
+> inventory 1000 501 2
+> inventory 200 501 3
+> report inventory 1001 1000
+> report inventory 1000 1000
+> field 1000 magician 1
+> report unclaimed 1000 200
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw item 501 3
+raw units:
+200 player pl_regular
+il	501 3
+PL
+
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 1
+raw item 501 2
+1000 char 0
+il	501 2
+CH
+ lo 200
+CM
+ im 1
+
+> report state 1001
+report entity 1001 order 0 player 0 attitudes 0 char 1 magic 1
+1001 char 0
+CH
+ lo 200
+CM
+ im 1
+
+> readlog 200
+log 200:
+1001:0::0::
+1001:0::0::Inventory:
+1001:0::0::{<b>}      qty  name                              weight{</b>}
+1001:0::0::      ---  ----                              ------
+1001:0::0::        2  jewels~[501]                           0  +-11 aura
+1001:0::0::                                             ======
+1001:0::0::                                                  0
+1000:0::0::
+1000:0::0::Inventory:
+1000:0::0::{<b>}      qty  name                              weight{</b>}
+1000:0::0::      ---  ----                              ------
+1000:0::0::        2  jewels~[501]                           0  
+1000:0::0::                                             ======
+1000:0::0::                                                  0
+1000:0::0::
+1000:0::0::Unclaimed items:
+1000:0::0::
+1000:0::0::      qty  name                              weight
+1000:0::0::      ---  ----                              ------
+1000:0::0::        3  jewels~[501]                           0  
+stderr:
+
+exit 0
+stdout:
+section report inventory plural warning null empty and absent item record weight zero
+> entity 501 4 0
+> entity 502 4 0
+> entity 503 4 0
+> name 501 oddity
+> name 502 empty-plural
+> plural 502
+> name 503 no-record
+> inventory 1000 503 2
+> inventory 1000 502 3
+> inventory 1000 501 4
+> report inventory 1000 1000
+> report unclaimed 1000 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 501 4
+raw item 502 3
+raw item 503 2
+1000 char 0
+il	501 4 \
+	502 3 \
+	503 2
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::
+1000:0::0::Inventory:
+1000:0::0::{<b>}      qty  name                              weight{</b>}
+1000:0::0::      ---  ----                              ------
+1000:0::0::        4  oddity~[501]                           0  
+1000:0::0::        3  empty-plural~[502]                     0  
+1000:0::0::        2  no-record~[503]                        0  
+1000:0::0::                                             ======
+1000:0::0::                                                  0
+1000:0::0::
+1000:0::0::Unclaimed items:
+1000:0::0::
+1000:0::0::      qty  name                              weight
+1000:0::0::      ---  ----                              ------
+1000:0::0::        4  oddity~[501]                           0  
+1000:0::0::        3  empty-plural~[502]                     0  
+1000:0::0::        2  no-record~[503]                        0  
+stderr:
+warning: plural name not set for item [501]
+warning: plural name not set for item [502]
+warning: plural name not set for item [503]
+warning: plural name not set for item [501]
+warning: plural name not set for item [502]
+warning: plural name not set for item [503]
+
+exit 0
+stdout:
+section report inventory signed int product and total overflow preserve comma bytes
+> entity 501 4 0
+> entity 502 4 0
+> field 501 weight 32767
+> field 502 weight 32767
+> field 501 fly_cap 32767
+> inventory 1000 502 65539
+> inventory 1000 501 65539
+> report inventory 1000 1000
+> report unclaimed 200 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 501 65539
+raw item 502 65539
+1000 char 0
+il	501 65539 \
+	502 65539
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::
+1000:0::0::Inventory:
+1000:0::0::{<b>}      qty  name                              weight{</b>}
+1000:0::0::      ---  ----                              ------
+1000:0::0::   65,539  <no subkind>~[501]             -2,-147,-450,-883  fly -2,-147,-450,-883
+1000:0::0::   65,539  <no subkind>~[502]             -2,-147,-450,-883  
+1000:0::0::                                             ======
+1000:0::0::                                             65,530
+200:0::0::
+200:0::0::Unclaimed items:
+200:0::0::
+200:0::0::      qty  name                              weight
+200:0::0::      ---  ----                              ------
+200:0::0::   65,539  <no subkind>~[501]             -2,-147,-450,-883  fly -2,-147,-450,-883
+200:0::0::   65,539  <no subkind>~[502]             -2,-147,-450,-883  
+stderr:
+warning: plural name not set for item [501]
+warning: plural name not set for item [502]
+warning: plural name not set for item [501]
+warning: plural name not set for item [502]
+
+exit 0
+stdout:
+section report inventory sort even suppressed prisoner output and cached renamed inode
+> lore_root
+> entity 501 4 0
+> entity 502 4 0
+> inventory 1000 502 2
+> inventory 1000 501 3
+> field 1000 prisoner 1
+> report inventory 1000 1000
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+raw item 501 3
+raw item 502 2
+1000 char 0
+il	501 3 \
+	502 2
+CH
+ lo 200
+ pr 1
+
+> field 1000 prisoner 0
+> report inventory 1000 1000
+> life rename log/200 log/old
+> report unclaimed 1000 1000
+> life flush
+> readfile log/old
+file bytes log/old 735:
+1000:0::0::
+1000:0::0::Inventory:
+1000:0::0::{<b>}      qty  name                              weight{</b>}
+1000:0::0::      ---  ----                              ------
+1000:0::0::        3  <no subkind>~[501]                     0  
+1000:0::0::        2  <no subkind>~[502]                     0  
+1000:0::0::                                             ======
+1000:0::0::                                                  0
+1000:0::0::
+1000:0::0::Unclaimed items:
+1000:0::0::
+1000:0::0::      qty  name                              weight
+1000:0::0::      ---  ----                              ------
+1000:0::0::        3  <no subkind>~[501]                     0  
+1000:0::0::        2  <no subkind>~[502]                     0  
+
+end file bytes
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+200 player pl_regular
+PL
+
+stderr:
+warning: plural name not set for item [501]
+warning: plural name not set for item [502]
+warning: plural name not set for item [501]
+warning: plural name not set for item [502]
+warning: plural name not set for item [501]
+warning: plural name not set for item [502]
+
+exit 0
+stdout:
+section report unclaimed independently sorts original player inventory and retains filtered rows
+> entity 501 4 0
+> entity 502 4 0
+> field 501 weight 7
+> field 502 weight 11
+> field 501 land_cap 13
+> field 502 attack 3
+> field 502 attack_bonus 5
+> field 502 aura_bonus 17
+> field 1000 magician -1
+> inventory 200 502 2
+> inventory 200 9999 1
+> inventory 200 501 0
+> inventory 200 501 3
+> inventory 200 502 -4
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw item 502 2
+raw item 9999 1
+raw item 501 0
+raw item 501 3
+raw item 502 -4
+raw units:
+200 player pl_regular
+il	502 2 \
+	501 3
+PL
+
+> report unclaimed 1000 200
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw item 501 0
+raw item 501 3
+raw item 502 2
+raw item 502 -4
+raw item 9999 1
+raw units:
+200 player pl_regular
+il	501 3 \
+	502 2
+PL
+
+> report unclaimed 1000 200
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw item 501 0
+raw item 501 3
+raw item 502 2
+raw item 502 -4
+raw item 9999 1
+raw units:
+200 player pl_regular
+il	501 3 \
+	502 2
+PL
+
+> readlog 200
+log 200:
+1000:0::0::
+1000:0::0::Unclaimed items:
+1000:0::0::
+1000:0::0::      qty  name                              weight
+1000:0::0::      ---  ----                              ------
+1000:0::0::        3  <no subkind>~[501]                    21  cap 39
+1000:0::0::        2  <no subkind>~[502]                    22   (3,0,0)+5 attack
+1000:0::0::
+1000:0::0::Unclaimed items:
+1000:0::0::
+1000:0::0::      qty  name                              weight
+1000:0::0::      ---  ----                              ------
+1000:0::0::        3  <no subkind>~[501]                    21  cap 39
+1000:0::0::        2  <no subkind>~[502]                    22   (3,0,0)+5 attack
+stderr:
+warning: plural name not set for item [501]
+warning: plural name not set for item [502]
+warning: plural name not set for item [501]
+warning: plural name not set for item [502]
+
+exit 0

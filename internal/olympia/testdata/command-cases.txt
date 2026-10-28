@@ -21535,3 +21535,180 @@ link 8000 9000
 link 9000 9100
 field 200 touched 9000
 report locations
+
+section report inventory empty character and empty unclaimed do not allocate magic
+report state 1000
+report inventory 1000 1000
+report unclaimed 200 200
+report state 1000
+report state 200
+readlog 200
+
+section report inventory sort original invalid nonpositive duplicates and repeated rendering
+entity 501 4 0
+entity 502 4 0
+name 501 stone
+plural 501 stones
+name 502 reed
+plural 502 reeds
+field 501 weight 17
+field 502 weight -3
+inventory 1000 502 3
+inventory 1000 9999 7
+inventory 1000 501 0
+inventory 1000 501 2
+inventory 1000 502 -4
+inventory 1000 501 5
+report state 1000
+report inventory 1000 1000
+report state 1000
+report inventory 1000 1000
+report state 1000
+readlog 200
+
+section report inventory all filtered still sorts before empty message
+entity 501 4 0
+inventory 1000 9999 2
+inventory 1000 501 -1
+inventory 1000 501 0
+report state 1000
+report inventory 1000 1000
+report state 1000
+report unclaimed 1000 1000
+report state 1000
+readlog 200
+
+section report inventory capacity precedence fly ride land and no positive capacity
+entity 501 4 0
+entity 502 4 0
+entity 503 4 0
+entity 504 4 0
+field 501 fly_cap 7
+field 501 ride_cap 13
+field 501 land_cap 19
+field 502 fly_cap -3
+field 502 ride_cap 23
+field 502 land_cap 29
+field 503 ride_cap -5
+field 503 land_cap 31
+field 504 fly_cap -7
+field 504 ride_cap -11
+field 504 land_cap -13
+inventory 1000 504 1
+inventory 1000 503 2
+inventory 1000 502 3
+inventory 1000 501 11
+report inventory 1000 1000
+report state 1000
+readlog 200
+
+section report inventory fighter independent stats ghost exception and concatenated signed bonuses
+entity 501 4 0
+entity 502 4 0
+entity 503 4 0
+entity 504 4 0
+entity 18 4 0
+field 501 attack -9
+field 502 defense 17
+field 503 missile 23
+field 504 attack_bonus 3
+field 504 defense_bonus -4
+field 504 missile_bonus 5
+field 504 aura_bonus 7
+field 501 fly_cap 1
+field 501 attack_bonus -2
+inventory 1000 504 1
+inventory 1000 503 1
+inventory 1000 502 1
+inventory 1000 501 1
+inventory 1000 18 1
+report inventory 1000 1000
+field 1000 magician 1
+report inventory 1000 1000
+report state 1000
+readlog 200
+
+section report inventory recipient not owner controls aura and unclaimed always suppresses it
+entity 501 4 0
+name 501 jewel
+plural 501 jewels
+field 501 aura_bonus -11
+field 1001 magician 1
+inventory 1000 501 2
+inventory 200 501 3
+report inventory 1001 1000
+report inventory 1000 1000
+field 1000 magician 1
+report unclaimed 1000 200
+report state 200
+report state 1000
+report state 1001
+readlog 200
+
+section report inventory plural warning null empty and absent item record weight zero
+entity 501 4 0
+entity 502 4 0
+entity 503 4 0
+name 501 oddity
+name 502 empty-plural
+plural 502
+name 503 no-record
+inventory 1000 503 2
+inventory 1000 502 3
+inventory 1000 501 4
+report inventory 1000 1000
+report unclaimed 1000 1000
+report state 1000
+readlog 200
+
+section report inventory signed int product and total overflow preserve comma bytes
+entity 501 4 0
+entity 502 4 0
+field 501 weight 32767
+field 502 weight 32767
+field 501 fly_cap 32767
+inventory 1000 502 65539
+inventory 1000 501 65539
+report inventory 1000 1000
+report unclaimed 200 1000
+report state 1000
+readlog 200
+
+section report inventory sort even suppressed prisoner output and cached renamed inode
+lore_root
+entity 501 4 0
+entity 502 4 0
+inventory 1000 502 2
+inventory 1000 501 3
+field 1000 prisoner 1
+report inventory 1000 1000
+report state 1000
+field 1000 prisoner 0
+report inventory 1000 1000
+life rename log/200 log/old
+report unclaimed 1000 1000
+life flush
+readfile log/old
+report state 200
+
+section report unclaimed independently sorts original player inventory and retains filtered rows
+entity 501 4 0
+entity 502 4 0
+field 501 weight 7
+field 502 weight 11
+field 501 land_cap 13
+field 502 attack 3
+field 502 attack_bonus 5
+field 502 aura_bonus 17
+field 1000 magician -1
+inventory 200 502 2
+inventory 200 9999 1
+inventory 200 501 0
+inventory 200 501 3
+inventory 200 502 -4
+report state 200
+report unclaimed 1000 200
+report state 200
+report unclaimed 1000 200
+report state 200
+readlog 200

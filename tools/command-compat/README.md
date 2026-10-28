@@ -3,6 +3,86 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Inventories and unclaimed items (#146)
+
+Existing report.go implements complete unchanged pinned report.c
+`inv_item_comp` **213–220**, `extra_item_info` **246–290**,
+`show_char_inventory` **294–344** and `show_unclaimed` **746–780**.
+These C definitions were already extracted in full by this oracle; two direct
+report operations now expose the sections without implementing later roots.
+Their complete real closure is the existing `loop_inv`/`safe_qsort`, original
+item/magic access macros, u.c `comma_num`/`nice_num`, code.c
+`plural_item_box`/`plural_item_name`/`box_name` and naming dependencies, and
+complete sout.c output/cache/routing. No C substitute, source dependency,
+pin, inventory storage, magic record or output owner was added.
+
+Both renderers sort the original inventory before traversal/output, retaining
+invalid/nonpositive rows which traversal and save_box may filter. Products,
+sum and comparator retain C int widths. Inventory prints its original total
+and empty message; unclaimed prints neither and always passes viewer zero
+to the aura formatter. Capacity precedence is fly, ride, land, then nothing;
+fighter tuples include the zero-stat ghost exception; signed bonus strings
+concatenate literally, including `+-4`, without invented spaces. Aura checks
+the recipient's magician flag, not inventory ownership or effective aura.
+Later character/player roots still execute only their existing projections;
+they do not render these sections or run both paths. Their original sort
+positions are unchanged and share the comparator. #147's capacity table and
+item skills, #148's player root and #151's character root remain separate.
+
+Ten appended cases compare raw/saved original lists, bytes, allocations and
+warnings: empty/fully filtered inventories, duplicate IDs, invalid positive
+and nonpositive rows, repeats, independent unclaimed sorting, unequal and
+negative weights, all capacity precedence branches, independent attack/
+defense/missile fighter tests, missing item records, ghost zero stats,
+positive/negative equipment bonuses, magician recipient versus nonmagician
+owner, unclaimed aura suppression, null/empty plural warnings, signed-int
+product/total overflow, prisoner-filtered output and cached renamed inodes.
+Actual C output confirms `fly 77`, `ride 69`, `cap 62`, `(0,0,0)`,
+`+-11 aura` only for the magician recipient and unclaimed `cap 39`/weight
+21 with no aura/total. All ten new sections exit zero. Constants checked
+against pinned oly.h: char/item **2/4**, ghost warrior **18**. IDs 501–504
+are synthetic ordinary items, not assumed built-in equipment IDs; 9999 is
+deliberately absent. Fixtures set the real typed fields; no threshold or
+branch is inferred merely from the case name.
+
+At **0.86.0-alpha**, refresh and fresh default command runs match two complete
+real C runs and Go: **992 sections / 67520 lines / 1278600 output bytes**.
+Inherited **982 sections / 66938 lines / 1262604 output bytes** and
+**21537 lines / 399178 input bytes** remain exact byte prefixes (verified
+against HEAD). New input: **21714 lines / 403193 bytes**.
+Output SHA-256:
+`96fe2f2e43b4b63c26cd466fffd40a7f64e1dbda485170dd119a349799e8d743`.
+Input SHA-256:
+`18f9256047a84b48c1975fd0aed190fad42ac7b2d5f77b00761b75475afa01f6`.
+#168's separate live native C/C/Go check matches **28 lines / 426 bytes**,
+with shared input unchanged. The existing missing-dependency marker check
+still precedes expected-failure acceptance and recording replacement.
+Logs: `tmp/issue146-command-update.log`, `tmp/issue146-command.log`.
+
+The required shared-output tier passed sequentially with explicit
+`G3_REPO="$PWD/tmp/upstream.git"`: command **992/67520**, move **135/7158**,
+helper **37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+and default turn (raw streams/status and both cwd entries match).
+Bounded `go vet ./...` and fresh
+`go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...` pass;
+Olympia **1.513s**. Logs: `tmp/issue146-{move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+These defaults do not run saved-world/full-corpus comparisons. Source/docs
+diff whitespace checks pass; original C recording trailing spaces are kept.
+
+Independent parent review verified all four unchanged complete C definitions
+exactly once, inherited byte prefixes and both hashes above. Parent sequential
+compatibility checks, bounded vet and fresh bounded default tests pass
+(Olympia **1.402s**). Logs:
+`tmp/parent146-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+
+No whole-world, strict lifecycle, full corpus or stage-exit acceptance is
+claimed here. The parent's post-#145 strict full run remains the latest:
+deterministic C/C, C/Go zero statuses, matching raw streams and entry
+paths/types/modes, but eight saved-report byte differences; exit 1 before
+lifecycle controls. G3 #358 remains nonblocking; original division and Go
+panic are untouched, and malformed C136/Go2 is not passing parity.
+
 ## Complete location report root (#145)
 
 Existing display.go implements complete pinned display.c `show_loc`

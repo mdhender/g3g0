@@ -1463,6 +1463,12 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch action := args.word(); action {
 			case "order":
 				w.determineOutputOrder()
+			case "inventory":
+				n, owner := args.num(t), args.num(t)
+				w.showCharInventory(n, owner)
+			case "unclaimed":
+				n, owner := args.num(t), args.num(t)
+				w.showUnclaimed(n, owner)
 			case "root":
 				n, where := args.num(t), args.num(t)
 				w.showLoc(n, where)
@@ -1955,6 +1961,16 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pItem(n).attack = int16(a)
 			case "defense":
 				w.pItem(n).defense = int16(a)
+			case "missile":
+				w.pItem(n).missile = int16(a)
+			case "attack_bonus":
+				w.pItemMagic(n).attackBonus = int8(a)
+			case "defense_bonus":
+				w.pItemMagic(n).defenseBonus = int8(a)
+			case "missile_bonus":
+				w.pItemMagic(n).missileBonus = int8(a)
+			case "fly_cap":
+				w.pItem(n).flyCap = int16(a)
 			case "default_garrison":
 				w.pMagic(n).defaultGarr = int8(a)
 			case "weight":

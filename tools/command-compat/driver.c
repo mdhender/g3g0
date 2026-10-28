@@ -1066,6 +1066,11 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "report")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"order")) determine_output_order();
+   else if(!strcmp(text,"inventory") || !strcmp(text,"unclaimed")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    if(!strcmp(text,"inventory")) show_char_inventory(n,a);
+    else show_unclaimed(n,a);
+   }
    else if(!strcmp(text,"root")) {
     if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
     show_loc(n,a);
@@ -1432,6 +1437,11 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"animal")) p_item(n)->animal = (schar)a;
    else if (!strcmp(text,"attack")) p_item(n)->attack = (short)a;
    else if (!strcmp(text,"defense")) p_item(n)->defense = (short)a;
+   else if (!strcmp(text,"missile")) p_item(n)->missile = (short)a;
+   else if (!strcmp(text,"attack_bonus")) p_item_magic(n)->attack_bonus = (schar)a;
+   else if (!strcmp(text,"defense_bonus")) p_item_magic(n)->defense_bonus = (schar)a;
+   else if (!strcmp(text,"missile_bonus")) p_item_magic(n)->missile_bonus = (schar)a;
+   else if (!strcmp(text,"fly_cap")) p_item(n)->fly_cap = a;
    else if (!strcmp(text,"default_garrison")) p_magic(n)->default_garr = (schar)a;
    else if (!strcmp(text,"weight")) p_item(n)->weight = a;
    else if (!strcmp(text,"land_cap")) p_item(n)->land_cap = a;
