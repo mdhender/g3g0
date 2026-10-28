@@ -5,6 +5,177 @@ package olympia
 
 import "github.com/mdhender/g3g0/internal/lists"
 
+// Character detail sections are complete report.c:410–678. They deliberately
+// remain separate from characterReportState until the root is ported (#151).
+func (w *world) charRepStackInfo(who, num int) {
+	if n := w.stackParent(num); n != 0 {
+		w.wiout(who, 16, "Stacked under:  %s", w.boxName(n))
+	}
+	first := true
+	assert(w.validBox(num), "olympia/report.c", 419, "valid_box(num)")
+	for n := range w.loopHere(num) {
+		if w.kind(n) == tChar && !w.isPrisoner(n) {
+			if first {
+				w.commandOut(who, "Stacked over:   %s", w.boxName(n))
+				first = false
+			} else {
+				w.commandOut(who, "                %s", w.boxName(n))
+			}
+		}
+	}
+}
+
+func (w *world) showPledged(who, num int) {
+	if !w.pledgeBacklinks {
+		w.collectPledgeBacklinks()
+	}
+	if p := w.rpMagic(num); p != nil {
+		if p.pledge != 0 {
+			w.wiout(who, 16, "Pledged to:     %s", w.boxName(int(p.pledge)))
+		}
+		for i, n := range p.pledgedToUs {
+			if i == 0 {
+				w.commandOut(who, "Pledged to us:  %s", w.boxName(n))
+			} else {
+				w.commandOut(who, "                %s", w.boxName(n))
+			}
+		}
+	}
+}
+
+func (w *world) prisonerHealth(who int) string {
+	var health int8
+	if p := w.rpChar(who); p != nil {
+		health = p.health
+	}
+	assert(health != 0, "olympia/report.c", 504, "health != 0")
+	if health < 0 {
+		return ""
+	}
+	return sout(", health %d", health)
+}
+
+func (w *world) charRepPrisoners(who, num int) {
+	first := true
+	assert(w.validBox(num), "olympia/report.c", 519, "valid_box(num)")
+	for n := range w.loopHere(num) {
+		if w.kind(n) == tChar && w.isPrisoner(n) {
+			if first {
+				w.commandOut(who, "Prisoners:      %s%s", w.boxName(n), w.prisonerHealth(n))
+				first = false
+			} else {
+				w.commandOut(who, "                %s%s", w.boxName(n), w.prisonerHealth(n))
+			}
+		}
+	}
+}
+
+func (w *world) charRepHealth(who, num int) {
+	var health, sick int8
+	if p := w.rpChar(num); p != nil {
+		health, sick = p.health, p.sick
+	}
+	if health == -1 {
+		w.commandOut(who, "Health:         n/a")
+		return
+	}
+	s := ""
+	if health > 0 && health < 100 {
+		if sick != 0 {
+			s = " (getting worse)"
+		} else {
+			s = " (getting better)"
+		}
+	}
+	w.commandOut(who, "Health:         %d%%%s", health, s)
+}
+
+func (w *world) charRepCombat(who, num int) {
+	var att, def, mis int16
+	var behind, point int8
+	if p := w.rpChar(num); p != nil {
+		att, def, mis = p.attack, p.defense, p.missile
+		behind, point = p.behind, p.breakPoint
+	}
+	if mk := w.nobleItem(num); mk != 0 {
+		att, def, mis = 0, 0, 0
+		if p := w.rpItem(mk); p != nil {
+			att, def, mis = p.attack, p.defense, p.missile
+		}
+	}
+	w.commandOut(who, "Combat:         attack %d, defense %d, missile %d", att, def, mis)
+	s := " (front line in combat)"
+	if behind != 0 {
+		s = " (stay behind in combat)"
+	}
+	w.commandOut(who, "                behind %d %s", behind, s)
+	s = ""
+	if point == 0 {
+		s = " (fight to the death)"
+	} else if point == 100 {
+		s = " (break almost immediately)"
+	}
+	w.commandOut(who, "Break point:    %d%%%s", point, s)
+}
+
+func (w *world) charRepMisc(who, num int) {
+	p := w.rpMagic(num)
+	if p != nil && p.abilityShroud != 0 {
+		w.commandOut(who, "Ability shroud: %d aura", p.abilityShroud)
+	}
+	if w.hasSkill(num, skHideSelf) != 0 {
+		var hidden int8
+		if p != nil {
+			hidden = p.hideSelf
+		}
+		s := "not concealing self"
+		if hidden != 0 {
+			if w.charReallyHidden(num) {
+				s = "concealing self"
+			} else {
+				s = "concealing self, but not alone"
+			}
+		}
+		w.commandOut(who, "use %4d %d      (%s)", skHideSelf, hidden, s)
+	}
+	if p != nil && p.visProtect > 0 {
+		w.commandOut(who, "Receive Vision: %d protection", p.visProtect)
+	}
+}
+
+func (w *world) charRepMagic(who, num int) {
+	var ca, ma int32
+	p := w.rpMagic(num)
+	if p != nil {
+		ca, ma = p.curAura, p.maxAura
+	}
+	mea := w.maxEffAura(num)
+	if ma < 0 {
+		ma = 0
+	}
+	w.commandOut(who, "")
+	w.commandOut(who, "Current aura:   %d", ca)
+	if ma < mea {
+		w.commandOut(who, "Maximum aura:   %d (%d+%d)", mea, ma, mea-ma)
+	} else {
+		w.commandOut(who, "Maximum aura:   %d", ma)
+	}
+	if p != nil {
+		if p.abilityShroud > 0 {
+			w.commandOut(who, "Ability shroud: %d aura", p.abilityShroud)
+		}
+		if w.isLocOrShip(int(p.projectCast)) {
+			w.commandOut(who, "Project cast:   %s", w.boxName(int(p.projectCast)))
+		}
+		if p.quickCast != 0 {
+			w.commandOut(who, "Quicken cast:   %d", p.quickCast)
+		}
+		if p.hideMage > 0 {
+			w.commandOut(who, "Appear common:  turn %d", int32(w.sysclock.turn)+int32(p.hideMage))
+		}
+	}
+}
+
 // showCarryCapacity is complete report.c:73–105. Ratios use the separate
 // travel weights, including C int multiplication before division.
 func (w *world) showCarryCapacity(who, num int) {

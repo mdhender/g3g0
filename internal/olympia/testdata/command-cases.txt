@@ -22444,3 +22444,298 @@ report experience 0
 
 section report invalid experience six asserts
 report experience 6
+
+section report details health absent n_a signed and recovery boundaries
+entity 1002 2 0
+report health 200 1002
+report state 1002
+field 1000 health -1
+report health 200 1000
+field 1000 health -2
+report health 200 1000
+field 1000 health 0
+report health 200 1000
+field 1000 health 1
+report health 200 1000
+field 1000 sick -1
+report health 200 1000
+field 1000 health 99
+report health 200 1000
+field 1000 sick 0
+report health 200 1000
+field 1000 health 100
+field 1000 sick 1
+report health 200 1000
+field 1000 health 127
+report health 200 1000
+field 1000 health 128
+report health 200 1000
+readlog 200
+
+section report details combat character and noble stats break and behind spacing
+entity 1002 2 0
+report combat 200 1002
+field 1000 char_attack 32767
+field 1000 char_defense -12
+field 1000 char_missile 71
+field 1000 behind 0
+field 1000 break 0
+report combat 200 1000
+field 1000 behind -3
+field 1000 break 100
+report combat 200 1000
+field 1000 behind 128
+field 1000 break 57
+report combat 200 1000
+entity 110 4 0
+field 110 attack -7
+field 110 defense 91
+field 110 missile 13
+field 1000 noble_item 110
+report combat 200 1000
+entity 111 4 0
+field 1000 noble_item 111
+report combat 200 1000
+save 1000
+report state 1002
+readlog 200
+
+section report details stack direct order nested parent and prisoner exclusion
+entity 5000 3 3
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 110 4 0
+name 1000 Parent
+name 1001 First
+name 1002 Captive
+name 1003 Second
+name 1004 Nested
+link 5000 1000
+link 1000 1003
+link 1000 110
+link 1000 1002
+link 1000 1001
+link 1001 1004
+field 1002 prisoner 1
+report stack_info 200 1000
+report stack_info 200 1001
+report stack_info 200 1003
+report stack_info 200 110
+report state 1000
+readlog 200
+
+section report details prisoners direct order positive negative and repeat
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 110 4 0
+name 1001 Healthy captive
+name 1002 Special captive
+name 1003 Sick captive
+field 1001 prisoner 1
+field 1001 health 100
+field 1002 prisoner 1
+field 1002 health -2
+field 1003 prisoner 1
+field 1003 health 1
+field 1003 sick 1
+field 1004 health 0
+link 1000 1003
+link 1000 110
+link 1000 1002
+link 1000 1001
+link 1000 1004
+report prisoner_health 1001
+report prisoner_health 1002
+report prisoners 200 1000
+report prisoners 200 1000
+report prisoners 200 1004
+save 1001
+save 1002
+readlog 200
+
+section report details lazy pledge two passes all characters order and retained allocation
+entity 202 1 62
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+field 1002 lord 202
+field 1003 prisoner 1
+name 1000 Target
+name 1001 First pledger
+name 1002 Silent pledger
+name 1003 Prisoner pledger
+field 1001 pledge 1000
+field 1002 pledge 1000
+field 1003 pledge 1000
+field 1000 pledge 1004
+report backlink 1000 1004
+report backlink 1004 1001
+report backlinks 1000
+report state 1004
+report health 200 1000
+report stack_info 200 1000
+report backlinks 1000
+report pledged 200 1000
+report backlinks 1000
+report backlinks 1004
+report state 1002
+report state 1003
+report state 1004
+field 1001 pledge 1004
+report pledged 200 1000
+report pledged 200 1001
+report pledged 200 1004
+report backlinks 1000
+report backlinks 1004
+readlog 200
+
+section report details empty pledge still allocates CH without eager collection
+entity 1002 2 0
+entity 1003 2 0
+report backlink 1003 1000
+report state 1002
+report backlinks 1002
+report detail_misc 200 1002
+report health 200 1002
+report state 1002
+report pledged 200 1002
+report state 1002
+report state 1003
+report backlinks 1003
+report backlinks 1002
+report pledged 200 1002
+readlog 200
+
+section report details misc unskilled learning known hidden and alone predicates
+entity 5000 3 3
+entity 1002 2 0
+link 5000 1000
+report detail_misc 200 1002
+field 1000 ability_shroud -2
+field 1000 vision_protect -1
+field 1000 hidden 1
+report detail_misc 200 1000
+learn 1001 638 1 0
+report detail_misc 200 1001
+learn 1000 638 2 0
+field 1000 ability_shroud 3
+field 1000 vision_protect 7
+report detail_misc 200 1000
+link 1000 1001
+report detail_misc 200 1000
+link 5000 1001
+entity 110 4 0
+field 110 man 1
+inventory 1000 110 1
+report detail_misc 200 1000
+link 1001 1000
+report detail_misc 200 1000
+field 1000 hidden 0
+report detail_misc 200 1000
+save 1000
+report state 1002
+readlog 200
+
+section report details magic absent negative innate bonus per entry and shroud gates
+entity 1002 2 0
+report magic 200 1002
+report state 1002
+field 1000 max_aura -7
+field 1000 cur_aura -3
+field 1000 ability_shroud -2
+field 1000 quick_cast -1
+field 1000 hide_mage -1
+report magic 200 1000
+entity 110 4 0
+entity 111 4 0
+entity 112 4 0
+field 110 aura_bonus 4
+field 111 aura_bonus 7
+field 112 aura_bonus 99
+inventory 1000 110 20
+inventory 1000 111 1
+inventory 1000 112 0
+report magic 200 1000
+field 1000 max_aura 13
+field 1000 cur_aura 2147483647
+field 1000 ability_shroud 5
+field 1000 quick_cast 32768
+set turn 32767
+field 1000 hide_mage 127
+report magic 200 1000
+field 110 aura_bonus -30
+report magic 200 1000
+save 1000
+readlog 200
+
+section report details magic auraculum held gate and project loc ship filtering
+entity 5000 3 3
+entity 5001 9 30
+entity 110 4 0
+name 5000 Projection land
+name 5001 Projection vessel
+field 1000 max_aura 10
+field 1000 auraculum 110
+field 110 item_aura 17
+field 110 aura_bonus 2
+field 1000 project_cast 5000
+report magic 200 1000
+inventory 1000 110 3
+field 1000 project_cast 5001
+report magic 200 1000
+field 1000 project_cast 1001
+field 1000 quick_cast 6
+report magic 200 1000
+field 1000 project_cast 9999
+report magic 200 1000
+field 1000 project_cast 0
+field 1000 hide_mage 1
+report magic 200 1000
+readlog 200
+
+section report details share MASTER frame and cached renamed output inode
+lore_root
+sout text 200 out 0 1 prefix
+life rename log/200 log/original
+sout route -2 1000
+sout frame 3 8 1 9
+field 1000 health 47
+field 1000 char_attack 19
+report health 200 1000
+report combat 200 1000
+report detail_misc 200 1000
+report magic 200 1000
+report pledged 200 1000
+sout state
+report state 200
+life flush
+readfile log/original
+report files
+
+section report invalid prisoner health zero asserts
+report prisoner_health 1000
+
+section report invalid prisoner health absent CH asserts without allocation
+entity 1002 2 0
+report prisoner_health 1002
+
+section report invalid prisoners zero health before first output open
+report block 200
+field 1001 prisoner 1
+link 1000 1001
+report prisoners 200 1000
+
+section report invalid prisoners zero health after first valid captive
+entity 1002 2 0
+field 1001 prisoner 1
+field 1001 health 42
+field 1002 prisoner 1
+link 1000 1001
+link 1000 1002
+report prisoners 200 1000
+
+section report invalid prisoners absent owner loop assertion before output
+report block 200
+report prisoners 200 9999

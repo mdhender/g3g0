@@ -6,6 +6,38 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Character detail sections (#150)
+
+Existing report.go implements complete report.c stack **410–433**, pledged
+**466–496**, prisoner health/list **499–537** and health/combat/misc/magic
+**540–678**, reusing location **357–407**, the existing two-pass backlink
+collector **438–463** and lazy world flag, names, topology, hidden/skill,
+inventory/aura and accepted output/cache owners. New direct renderers leave
+the character root's projection and original collection timing intact until
+#151; no duplicate effect pass, new dependency/pin, command or later root.
+
+At **0.90.0-alpha**, fifteen appended sections match complete actual C twice
+and Go: **1050 sections / 70245 lines / 1339950 output bytes**. The accepted
+**1035-section / 69581-line / 1324865-output-byte** and **420081-input-byte**
+prefixes remain exact. Cases actually reach health/recovery, noble versus
+character stats, exact behind/break spacing, descending stack/prisoner order,
+lazy all-character allocations and retained bare CM, every concealment phrase,
+shroud/vision, aura bonuses/auraculum, project target kind filters and signed
+quick/hide-mage boundaries. #168 live native traversal still matches unchanged
+shared input. Four temporary missing-marker controls (0/134, ordinary/update)
+reject before expected-failure acceptance or recording replacement; probes
+removed. See [closure, hashes and evidence](command-compat#character-detail-sections-150).
+
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded defaults pass with explicit isolated `G3_REPO`
+and engine run_limited supervision. No new source dependency or pin.
+
+The latest full strict evidence remains the parent's post-#145 diagnostic:
+deterministic C repeats, equal raw streams and complete paths/types/modes,
+eight saved-report byte differences, exit 1 before lifecycle. This task does
+not refresh or accept that gate; no full-world/stage-exit claim. G3 #358 stays
+nonblocking and unchanged; malformed C136/Go2 is not accepted as parity.
+
 ## Known and partial skills (#149)
 
 Existing use.go adds complete pinned use.c exp_s **977–994**, comparators

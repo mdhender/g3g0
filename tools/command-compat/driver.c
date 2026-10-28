@@ -130,6 +130,8 @@ void drv_ancillary(int mode, int who, int where);
 void drv_chars_below(int who, int n, int depth);
 char *drv_highlight(int who, int n, int depth);
 char *drv_fractional_skill_qualifier(struct skill_ent *p);
+void drv_char_detail(char *section, int who, int num);
+char *drv_prisoner_health(int who);
 void drv_route_view(int who, struct exit_view *v, int mode);
 
 /* Actual auto_attack has already emitted its output. Observe it, then abort:
@@ -1170,6 +1172,13 @@ int main(int argc, char **argv)
     if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
     if(!strcmp(text,"skills")) list_skills(n,a); else list_partial_skills(n,a);
    }
+   else if(!strcmp(text,"stack_info") || !strcmp(text,"pledged") ||
+           !strcmp(text,"prisoners") || !strcmp(text,"health") ||
+           !strcmp(text,"combat") || !strcmp(text,"detail_misc") || !strcmp(text,"magic")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    drv_char_detail(text,n,a);
+   }
+   else if(!strcmp(text,"prisoner_health")) printf("prisoner health [%s]\n",drv_prisoner_health(n));
    else if(!strcmp(text,"experience")) printf("experience [%s]\n",exp_s(n));
    else if(!strcmp(text,"qualifier")) {
     struct skill_ent p={0};
@@ -1425,6 +1434,14 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"created_death")) p_char(created)->death_time.turn = (short)a;
    else if (!strcmp(text,"melt")) p_char(n)->melt_me = (schar)a;
    else if (!strcmp(text,"sick")) p_char(n)->sick = (schar)a;
+   else if (!strcmp(text,"char_attack")) p_char(n)->attack = (short)a;
+   else if (!strcmp(text,"char_defense")) p_char(n)->defense = (short)a;
+   else if (!strcmp(text,"char_missile")) p_char(n)->missile = (short)a;
+   else if (!strcmp(text,"behind")) p_char(n)->behind = (schar)a;
+   else if (!strcmp(text,"break")) p_char(n)->break_point = (schar)a;
+   else if (!strcmp(text,"vision_protect")) p_magic(n)->vis_protect = (schar)a;
+   else if (!strcmp(text,"project_cast")) p_magic(n)->project_cast = a;
+   else if (!strcmp(text,"quick_cast")) p_magic(n)->quick_cast = (short)a;
    else if (!strcmp(text,"magician")) p_magic(n)->magician = (schar)a;
    else if (!strcmp(text,"max_aura")) p_magic(n)->max_aura = a;
    else if (!strcmp(text,"cur_aura")) p_magic(n)->cur_aura = a;

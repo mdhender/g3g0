@@ -1481,6 +1481,26 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "partial_skills":
 				n, owner := args.num(t), args.num(t)
 				w.listPartialSkills(n, owner)
+			case "stack_info", "pledged", "prisoners", "health", "combat", "detail_misc", "magic":
+				n, owner := args.num(t), args.num(t)
+				switch action {
+				case "stack_info":
+					w.charRepStackInfo(n, owner)
+				case "pledged":
+					w.showPledged(n, owner)
+				case "prisoners":
+					w.charRepPrisoners(n, owner)
+				case "health":
+					w.charRepHealth(n, owner)
+				case "combat":
+					w.charRepCombat(n, owner)
+				case "detail_misc":
+					w.charRepMisc(n, owner)
+				case "magic":
+					w.charRepMagic(n, owner)
+				}
+			case "prisoner_health":
+				fmt.Fprintf(&stdout, "prisoner health [%s]\n", w.prisonerHealth(args.num(t)))
 			case "experience":
 				fmt.Fprintf(&stdout, "experience [%s]\n", expS(args.num(t)))
 			case "qualifier":
@@ -1912,6 +1932,22 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pChar(n).meltMe = int8(a)
 			case "sick":
 				w.pChar(n).sick = int8(a)
+			case "char_attack":
+				w.pChar(n).attack = int16(a)
+			case "char_defense":
+				w.pChar(n).defense = int16(a)
+			case "char_missile":
+				w.pChar(n).missile = int16(a)
+			case "behind":
+				w.pChar(n).behind = int8(a)
+			case "break":
+				w.pChar(n).breakPoint = int8(a)
+			case "vision_protect":
+				w.pMagic(n).visProtect = int8(a)
+			case "project_cast":
+				w.pMagic(n).projectCast = int32(a)
+			case "quick_cast":
+				w.pMagic(n).quickCast = int16(a)
 			case "magician":
 				w.pMagic(n).magician = int8(a)
 			case "max_aura":

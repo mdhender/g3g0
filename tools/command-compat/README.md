@@ -3,6 +3,93 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Character detail sections (#150)
+
+Existing report.go adds complete pinned report.c `char_rep_stack_info`
+**410–433**, `show_pledged` **466–496**, `prisoner_health` and
+`char_rep_prisoners` **499–537**, and health/combat/misc/magic **540–678**.
+It reuses the existing `char_rep_location` **357–407**, two-pass
+`collect_pledge_backlinks` **438–463** and world-owned lazy flag, not a second
+collector. The character-report root remains its existing state projection
+until #151; these direct renderers do not prematurely replace it or run both
+effect paths. The original first eligible root call still owns collection
+timing; the new direct show_pledged entry collects only on its own first call.
+
+The complete unchanged C definitions and real closure were already linked:
+stack_parent/loop_here snapshots, player/ownership, has_skill and
+char_really_hidden/count_stack_any, noble-item and character/item accessors,
+has_auraculum/max_eff_aura and real inventory filtering, existing names and
+char_rep_location topology, wiout/out and the accepted FILE cache. Only
+direct oracle entry points and numeric setters are new; no new dependency,
+pin, command handler, rewritten C rendering or successful substitute.
+
+Fifteen appended sections compare real unchanged C twice and Go: ten status
+**0**, five status **134**. Health covers absent CH without allocation,
+**-1** n/a versus **-2**, **0/1/99/100/127/-128**, signed sickness and recovery.
+Combat distinguishes character **32767/-12/71** from noble-item **-7/91/13**
+and recordless zero stats, front/negative/wrapped behind and break **0/57/100**;
+the two spaces before the behind explanation are intentional. Stack/prisoner
+fixtures use descending character IDs with interleaved noncharacters,
+nested/direct children, prisoner filtering, positive/negative health and
+repeat calls. Assertions preserve report.c **504** and **519**, including
+first-invalid before opening a blocked output and invalid after a valid entry.
+
+Pledge observers verify no eager collection from health/misc/stack, ALL
+characters (including silent and prisoner), original iteration order, both
+passes, missing CH allocation and retained allocated-empty bare CM, and no
+recollection after changing a forward pledge. Hidden-skill fixtures separately
+use learning and known rows (no duplicate-first-row masking), and actually
+print all three concealment phrases: alone, other character/man inventory/
+stack parent, and switched off. Misc shroud prints negative nonzero values;
+magic shroud requires positive values. Vision, negative/zero/positive quick
+and hide-mage gates, **32768 → -32768**, turn **32767+127 = 32894**, negative
+innate clamp, per-entry rather than quantity aura bonuses, negative bonuses,
+held/unheld auraculum, and location/ship versus character/invalid/zero project
+targets are reached. The cached renamed inode receives **326 raw bytes**
+under the actual MASTER frame without reopening. Constants were checked
+against pinned oly.h: player/character/location/item/ship **1/2/3/4/9**,
+plain **3**, galley **30**, silent **62**, hide_self **638**.
+
+At **0.90.0-alpha**, command comparison passes **1050 sections / 70245 lines /
+1339950 output bytes**. Accepted **1035 sections / 69581 lines / 1324865
+output bytes** and **22446 lines / 420081 input bytes** remain byte-exact
+prefixes against HEAD. New input: **22741 lines / 426753 bytes**.
+Output SHA-256:
+`97ef87c83a29d2ce7d7e20ed73a535f7734f9b507157dcc12ebae703f0639565`.
+Input SHA-256:
+`7cdc4a7fcd75b09184e2a4e25e2b79afd1532244e6903503fe6e88781696640f`.
+#168 live native traversal still matches raw C/C/Go over unchanged shared input.
+Logs: `tmp/issue150-command{,-update}.log`.
+
+Four temporary linker controls wrap only the direct prisoner-health entry at
+the new invalid section **1045**: marker plus return **0** or abort **134**,
+ordinary and update mode. All reject with harness status **2** at the missing
+dependency check, before expected-failure acceptance or recording replacement;
+the recording hash remains unchanged during those probes. Probe sources and
+compiler wrapper were removed, and final refresh/default runs rebuilt unchanged
+C. Logs: `tmp/issue150-negative-{0,134}-{default,update}.log`.
+
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded default tests pass with explicit isolated
+`G3_REPO` throughout and engines under run_limited. Evidence:
+`tmp/issue150-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+The fresh Olympia suite took **1.572s**. `git diff --check` reports one new
+literal trailing space in C's saved here-list row; it is intentional exact
+oracle output, not whitespace to strip.
+
+No full-world/full-corpus/strict-lifecycle/stage-exit acceptance is implied.
+Latest strict evidence is still the parent's post-#145 diagnostic: deterministic
+C repeats, C/Go 0 and equal raw streams/paths/types/modes, eight saved-report
+byte differences, strict exit **1** before lifecycle. This task does not
+refresh that gate. G3 #358 remains nonblocking; original division/Go panic
+are unchanged, and malformed C136/Go2 is NOT passing parity.
+
+Independent parent review verified all ten complete unchanged C definitions
+exactly once, inherited byte prefixes and both hashes above. Parent sequential
+compatibility checks, bounded vet and fresh bounded default tests pass
+(Olympia **1.513s**). Logs:
+`tmp/parent150-{command,move,helper,rng,code,loadsave,turn-driver,turn,vet,tests}.log`.
+
 ## Known and partial skills (#149)
 
 Existing use.go implements complete pinned use.c `exp_s` **977–994**,

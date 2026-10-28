@@ -343,6 +343,17 @@ void drv_ancillary(int mode, int who, int where) {
 void drv_chars_below(int who, int n, int depth) { show_chars_below_highlight(who, n, depth); }
 char *drv_highlight(int who, int n, int depth) { return highlight_units(who, n, depth); }
 char *drv_fractional_skill_qualifier(struct skill_ent *p) { return fractional_skill_qualifier(p); }
+void drv_char_detail(char *section, int who, int num) {
+ if(!strcmp(section,"stack_info")) char_rep_stack_info(who,num);
+ else if(!strcmp(section,"pledged")) show_pledged(who,num);
+ else if(!strcmp(section,"prisoners")) char_rep_prisoners(who,num);
+ else if(!strcmp(section,"health")) char_rep_health(who,num);
+ else if(!strcmp(section,"combat")) char_rep_combat(who,num);
+ else if(!strcmp(section,"detail_misc")) char_rep_misc(who,num);
+ else if(!strcmp(section,"magic")) char_rep_magic(who,num);
+ else abort();
+}
+char *drv_prisoner_health(int who) { return prisoner_health(who); }
 void drv_route_view(int who, struct exit_view *v, int mode) {
  char first[LEN] = "Direct routes:";
  extern int second_indent;
