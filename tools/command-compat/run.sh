@@ -81,6 +81,7 @@ functions = {
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
             'consume_item', 'move_item', 'drop_item',
             'stackmate_inheritor', 'take_unit_items', 'put_back_cookie',
+            'survive_fatal', 'char_reclaim', 'dead_char_body', 'kill_char', 'hack_unique_item',
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
             'stack_sub_item', 'autocharge', 'find_nearest_land', 'max',
             'add_item_weight', 'determine_unit_weights', 'determine_stack_weights',
@@ -99,7 +100,8 @@ functions = {
     'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit'],
     'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
                 'update_weather_view_locs'],
-    'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total'],
+    'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school'],
+    'report.c': ['char_rep_location'],
     'c2.c': ['v_stop', 'v_format', 'v_notab'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts'],
@@ -239,7 +241,7 @@ for region in ['hades', 'faery']:
         out.write(source[:source.index(f'void\ncreate_{region}(void)')])
         if region == 'hades':
             out.write('#define phase_ran(x) ((void)0)\n#define phase_acted(x) ((void)0)\n')
-            for name in ['create_hades_nasty', 'auto_hades_sup', 'auto_hades']:
+            for name in ['create_hades_nasty', 'auto_hades_sup', 'auto_hades', 'random_hades_loc']:
                 m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
                 if not m:
                     sys.exit(f'no definition of {name} in hades.c')
@@ -346,6 +348,13 @@ for run in run1 run2; do
     'section inheritance invalid '*) expected_status=134 ;;
    esac
    [ "$status" = "$expected_status" ] || die "unexpected inheritance status $status in section $i; expected $expected_status"
+  fi
+  if [[ "${section_names[$i]}" == 'section death '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section death invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected death status $status in section $i; expected $expected_status"
   fi
   if [[ "${section_names[$i]}" == 'section arrival '* ]]; then
    expected_status=0

@@ -1328,3 +1328,130 @@ claimed; attempt_trade remains the explicit #81 boundary. Shared death and
 reclamation remain #119; reconciliation remains #73. No UNSTACK/DIE/RECLAIM
 handler was added. No new public-engine bug/blocker was reproduced; known
 nonblocking G3 #309/#352/#353/#354 remain deliberately unchanged.
+
+## Complete shared character death and reclamation (#119)
+
+Eight complete production definitions, **296 C lines**, at the unchanged pin
+`6a25f2d252ce45bd5adbe3baaccb3be3eed56279`:
+
+| source | complete definitions and original lines |
+|---|---|
+| u.c | `survive_fatal` 220–249; `char_reclaim` 252–262; `dead_char_body` 596–635; `kill_char` 734–833; `hack_unique_item` 1938–1944 |
+| use.c | `forget_skill` 1038–1067 |
+| hades.c | `random_hades_loc` 529–555 |
+| report.c | `char_rep_location` 357–407 |
+
+The C tool extracts complete actual definitions with original headers/macros
+and `#line` locations. It additionally extracts use.c `skill_school`
+1174–1189 (16 lines, already implemented in Go) for the original `magic_skill` macro.
+**report.c is a new source dependency**, tracked in tools/README.md and
+affected.sh: this location formatter feeds the death log, not deferred report
+assembly. Original Hades/entity prefixes and persistent `w.streams` preserve
+all tags, keys, draw order, turn guards and shared mint/exdr state. There is
+no second RNG, reset, successful gameplay stub or replacement C definition.
+
+28 appended actual-C sections discriminate:
+
+- Ordinary, captive and stacked deaths, with the dying unit's captive bit
+  cleared for its notification and parent notification, then set to suppress
+  subsequent output. Child **1003** precedes **1002** as MATES inheritor;
+  gold **101 → 86** and accounting, captive transfer/release, child promotion,
+  dependent lord changes, attitudes/pledge removal, actual running WAIT
+  interruption, saved orders and ready queues follow the existing real closure.
+  MATES_SILENT suppresses headings without suppressing transfers.
+- Survival consumes the known skill, restores health **100** and clears
+  sickness, leaving stack/items/orders/lord intact. Visible and captive-output
+  variants and a second fatal attempt distinguish survival from real death.
+  Absent/learning skills do not survive. Forgetting removes learning as well
+  as known entries, but returns false for missing entry/character structure.
+  Magic-school ancestry, ordinary skills, equipment aura bonuses, excess
+  **100 → 99** rather than a wholesale clamp, zero and negative aura are real.
+- Reclamation sets melt and bypasses both survival and transcendence, preserves
+  their skill entries, zeros magician aura, restores the NPC cookie, discards
+  inventory rather than giving it to mates, and flushes/interrupts real orders.
+- Ordinary corpses retain their entity ID and original nullable name, old lord,
+  peasant weight, unique-item inventory ownership and full death timestamp.
+  NPC subkind/loyalty, melt and no-grave cases become retained T_deadchar IDs
+  with zero subtype instead. Ocean cases select the first actual island in
+  saved order or execute bounded Plan B/C and leave no corpse when no land
+  exists. Later real entity leaves and unique creation observe shared RNG.
+- Multiple eligible Hades locations are chosen in entity-chain order, not
+  region-here order. Actor **1000 → 9101**, **1001 → 9100**; actual death
+  moves 1000 to 9101, updates knowledge/touch/output and restores health/sickness
+  without relinquishing lord/skills. Day replay, master reload during a
+  guarded turn, next turn and return to the old turn expose exact keyed state;
+  the subsequent real unique mint is **76084**. No eligible candidate returns
+  zero without a pick; trying to transcend in that deliberately incomplete
+  world reaches the existing actual arrival `loc_depth(0)` assertion (134),
+  not a fabricated successful nowhere arrival.
+- Token unit membership removal, positive capacity decrement, exhausted unique
+  destruction, positive melt capacity preservation and zero-capacity melt
+  destruction. The actual `player(who_has) == sub_pl_regular` expression is
+  preserved. The reproduced missing regular-holder vanishing notification is
+  filed/assigned upstream as [G3 #355](https://github.com/playbymail/olympia-g3/issues/355)
+  and linked in production, not silently described as harmless behavior.
+- Exact land, nested building/stack, named/unnamed region, ocean and nowhere
+  location strings. Missing-region, noncharacter kill and surviving noncharacter
+  child assertions retain original file/line/condition and flushed status 134.
+  These and the absent-Hades world are explicitly malformed harness controls,
+  not reproduced public-engine defects. Initial fixture-construction mistakes
+  (unallocated optional-structure target, raw subtype assignment bypassing
+  chains, invalid unique holder and missing ocean exits) were corrected in
+  the harness, never worked around in either engine.
+
+Two fresh bounded deterministic C runs produce **443 sections / 27958 lines /
+471158 bytes**, exactly matched by Go raw stdout/stderr/status and serialized
+death fields, names, kind chains, logs, all-player output bits, orders/queues,
+NP/accounting and RNG observations. New sections require 0 except four explicit
+malformed-state assertions (134). The complete previous command input
+**8731 lines / 150387 bytes** and output **415 sections / 26512 lines / 448122
+bytes** remain exact byte prefixes: **zero old bytes or reached boundaries
+changed**. New input is **9325 lines / 161068 bytes**. Entire move input
+**3150 lines / 53589 bytes** and output **135 sections / 7150 lines / 142755
+bytes** are unchanged. Raw C trailing whitespace remains intentional.
+
+An ephemeral expected-134 section queued, loaded and dispatched actual ATTACK.
+Both normal and `--update` rejected `out-of-scope C dependency: v_attack` with
+status 2 before accepting the abort or writing the recording. SHA-256 stayed
+`67b12101d5b61ed8e095cfa3e189d833e6243263f617baa4a3ebebe64c7a8798`.
+The probe was removed; no permanent test names a temporary private NYI boundary,
+and marker rejection remains specific rather than banning ordinary game text.
+
+Defaults remain small recordings and whole worlds opt-in. This does not add
+RECLAIM/FORGET/DIE handlers, damage/ocean-stack death/resurrection/combat
+callers, token melting/reconciliation or stage-2 report assembly. Existing
+`checkTokenUnits` remains explicitly unported until #73; `attempt_trade`
+remains #81. No full-turn or stage-exit success is claimed. Known nonblocking
+G3 #309/#352/#353/#354 remain unchanged; G3 #355 is also nonblocking and is
+deliberately reproduced rather than independently fixed.
+
+Command (update and normal), move, helper, rng, code, loadsave, turn-driver
+and default turn comparisons pass. C tools ran sequentially before bounded
+`go vet ./...` and fresh bounded default `go test -count=1` with the shared
+`-exec` timeout wrapper; both pass. Full-world and stage-exit tiers were not run.
+
+### Pre-acceptance location buffer refinement
+
+One additional real-C section exercises literal long nested location and
+region names, first below individual-join boundaries and then lengthening
+the inner name to **1169 bytes**. The outer and region names are **962** and
+**889 bytes**. Twelve actual location calls cover land versus ocean wording,
+nested joins that fill the buffer before province/region append, and joins
+that first reach the limit at the province or region. C returns **2048-byte**
+location strings at ten boundaries, with **1926/1916-byte** below-limit controls.
+
+Before changing production, `--update` ran actual pinned C twice
+deterministically and recorded this section; the targeted Go comparison
+failed at line **27977**: the location was **2900 bytes**, versus C's **2048**.
+All four concatenations in `charRepLocation` now call existing `sout` using
+the exact C formats, including `%s, in province %s`; no wrapper or final-only
+truncation was added. The same targeted comparison passes after the change.
+
+The comparison is now **444 sections / 28020 lines / 500621 bytes**; input is
+**9377 lines / 166322 bytes**. The entire previous **443-section / 27958-line /
+471158-byte** output and **9325-line / 161068-byte** input are exact prefixes.
+Only actual C generated the new expected bytes. Version remains
+**0.49.0-alpha**, and G3 #355's intentional reproduction is unchanged.
+
+After this refinement, command `--update` and normal comparisons pass
+sequentially, followed by bounded vet and fresh bounded default all-tests.

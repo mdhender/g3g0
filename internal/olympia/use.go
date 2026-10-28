@@ -60,6 +60,27 @@ func (w *world) hasSkill(who, skill int) int {
 	return expLevel(int(p.experience))
 }
 
+// forgetSkill removes an entry regardless of its learning state (use.c:1038–1067).
+func (w *world) forgetSkill(who, skill int) bool {
+	p := w.rpChar(who)
+	if p == nil {
+		return false
+	}
+	t := w.rpSkillEnt(who, skill)
+	if t == nil {
+		return false
+	}
+	p.skills.RemValue(t)
+	if w.subkind(w.skillSchool(skill)) == subMagic {
+		ch := w.pMagic(who)
+		ch.maxAura--
+		if ch.curAura > w.maxEffAura(who) && ch.curAura > 0 {
+			ch.curAura--
+		}
+	}
+	return true
+}
+
 // skillSchool is skill_school(): the school of skill sk, found by
 // following its required skills up to one that requires none. A chain
 // longer than 1000 (a loop) fails an assertion.

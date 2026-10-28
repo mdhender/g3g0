@@ -12,6 +12,131 @@ import (
 
 // Ported from olympia/u.c.
 
+func (w *world) surviveFatal(who int) bool {
+	if w.hasSkill(who, skSurviveFatal) == 0 {
+		return false
+	}
+	if w.forgetSkill(who, skSurviveFatal) {
+		w.commandOut(who, "%s would have died, but survived a fatal wound!", w.boxName(who))
+		w.commandOut(who, "Forgot %s.", w.boxCode(skSurviveFatal))
+		w.commandOut(who, "Health is now 100.")
+		w.pChar(who).health = 100
+		w.pChar(who).sick = 0
+		return true
+	}
+	if p := w.rpMagic(who); p != nil && p.magician != 0 {
+		p.curAura = 0
+	}
+	return false
+}
+
+func (w *world) charReclaim(who int) {
+	w.pChar(who).meltMe = 1
+	w.killChar(who, 0)
+}
+
+func (w *world) deadCharBody(pl, who int) {
+	grave := w.province(who)
+	if w.subkind(grave) == subOcean {
+		grave = w.findNearestLand(grave)
+	}
+	w.setWhere(who, 0)
+	if w.pChar(who).meltMe != 0 || w.isNPC(who) || grave == 0 {
+		w.changeBoxKind(who, tDeadchar)
+		if w.subkind(who) != 0 {
+			w.changeBoxSubkind(who, 0)
+		}
+		return
+	}
+	w.changeBoxKind(who, tItem)
+	w.changeBoxSubkind(who, subDeadBody)
+	w.pMisc(who).saveName = w.bx[who].name
+	w.bx[who].name = strSave("dead body")
+	w.rpMisc(who).oldLord = int32(pl)
+	p := w.pItem(who)
+	p.weight = 0
+	if peasant := w.rpItem(itemPeasant); peasant != nil {
+		p.weight = peasant.weight
+	}
+	p.pluralName = strSave("dead bodies")
+	w.hackUniqueItem(who, grave)
+}
+
+// killChar is the complete shared u.c:734–833 death path, not a command handler.
+func (w *world) killChar(who, inherit int) {
+	_ = w.subloc(who)
+	pl := w.player(who)
+	assert(w.kind(who) == tChar, "olympia/u.c", 740, "kind(who) == T_char")
+	if w.pChar(who).meltMe == 0 && w.surviveFatal(who) {
+		return
+	}
+	verb, logged := "died", "died"
+	if w.pChar(who).meltMe != 0 {
+		verb, logged = "vanished", "melted"
+	}
+	w.pChar(who).prisoner = 0
+	w.commandOut(who, "*** %s has %s ***", w.justName(who), verb)
+	if sp := w.stackParent(who); sp != 0 {
+		w.commandOut(sp, "%s has %s.", w.boxName(who), verb)
+	}
+	w.pChar(who).prisoner = 1
+	w.logWrite(12, "%s %s in %s.", w.boxName(who), logged, w.charRepLocation(who))
+	w.takeUnitItems(who, inherit, takeSome)
+	w.extractStackedUnit(who)
+	for i := range w.loopHere(who) {
+		fmt.Fprintf(w.stderr, "i=%s\n", w.boxNameKind(i))
+		assert(false, "olympia/u.c", 772, "FALSE")
+	}
+	w.flushUnitOrders(w.player(who), who)
+	w.interruptOrder(who)
+	if p := w.rpMagic(who); p != nil && p.magician != 0 {
+		p.curAura = 0
+	}
+	if w.pChar(who).meltMe == 0 && w.hasSkill(who, skTranscendDeath) != 0 {
+		hadesPoint := w.randomHadesLoc(who)
+		w.pChar(who).prisoner = 0
+		w.logWrite(11, "%s transcends death", w.boxName(who))
+		w.logWrite(11, "...%s moved to %s", w.boxName(who), w.boxName(hadesPoint))
+		w.pChar(who).prisoner = 0
+		w.pChar(who).sick = 0
+		w.pChar(who).health = 100
+		w.moveStack(who, hadesPoint)
+		w.commandOut(who, "%s appears at %s.", w.boxName(who), w.boxName(hadesPoint))
+		return
+	}
+	if magic := w.rpMagic(who); magic != nil && magic.token != 0 {
+		tokenItem := int(magic.token)
+		whoHas := w.itemUnique(tokenItem)
+		w.pPlayer(tokenItem).units.RemValue(who)
+		if w.pChar(who).meltMe == 0 {
+			w.pItemMagic(tokenItem).tokenNum--
+		}
+		num := int8(0)
+		if p := w.rpItemMagic(tokenItem); p != nil {
+			num = p.tokenNum
+		}
+		if num <= 0 {
+			// Preserve C's player ID versus subtype comparison, not subkind(player()).
+			// G3 #355: ordinary regular holders miss the vanishing notification.
+			// https://github.com/playbymail/olympia-g3/issues/355
+			if w.player(whoHas) == subPlRegular {
+				w.commandOut(whoHas, "%s vanishes.", w.boxName(tokenItem))
+			}
+			w.destroyUniqueItem(whoHas, tokenItem)
+		}
+	}
+	w.unitDeserts(who, 0, true, loyUnchanged, 0)
+	w.putBackCookie(who)
+	w.pChar(who).deathTime = w.sysclock
+	w.pChar(who).prisoner = 0
+	w.deadCharBody(pl, who)
+}
+
+func (w *world) hackUniqueItem(item, owner int) {
+	w.pItem(item).whoHas = int32(owner)
+	w.addItem(owner, item, 1)
+}
+
 // findNearestLand is the complete u.c:2010–2092. In particular, retries do
 // not reset where, and a missing exit rotates from the original location.
 func (w *world) findNearestLand(where int) int {

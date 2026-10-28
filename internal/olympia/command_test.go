@@ -478,6 +478,33 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			w.setKnown(args.num(t), args.num(t))
 		case "additem":
 			w.addItem(args.num(t), args.num(t), args.num(t))
+		case "death":
+			switch action := args.word(); action {
+			case "kill":
+				w.killChar(args.num(t), args.num(t))
+			case "reclaim":
+				w.charReclaim(args.num(t))
+			case "subkind":
+				w.changeBoxSubkind(args.num(t), args.num(t))
+			case "survive":
+				fmt.Fprintf(&stdout, "survive %d\n", b2i(w.surviveFatal(args.num(t))))
+			case "forget":
+				fmt.Fprintf(&stdout, "forget %d\n", b2i(w.forgetSkill(args.num(t), args.num(t))))
+			case "location":
+				fmt.Fprintf(&stdout, "location [%s]\n", w.charRepLocation(args.num(t)))
+			case "hades":
+				fmt.Fprintf(&stdout, "hades location %d\n", w.randomHadesLoc(args.num(t)))
+			case "state":
+				for _, kind := range []int{tChar, tItem, tDeadchar} {
+					fmt.Fprintf(&stdout, "kind chain %d:", kind)
+					for n := range w.loopKind(kind) {
+						fmt.Fprintf(&stdout, " %d", n)
+					}
+					fmt.Fprintln(&stdout)
+				}
+			default:
+				t.Fatalf("unknown death %s", action)
+			}
 		case "inherit":
 			switch action := args.word(); action {
 			case "take":
@@ -713,6 +740,22 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 			switch field {
 			case "lord":
 				w.pChar(n).unitLord = int32(a)
+			case "melt":
+				w.pChar(n).meltMe = int8(a)
+			case "sick":
+				w.pChar(n).sick = int8(a)
+			case "magician":
+				w.pMagic(n).magician = int8(a)
+			case "max_aura":
+				w.pMagic(n).maxAura = int32(a)
+			case "cur_aura":
+				w.pMagic(n).curAura = int32(a)
+			case "aura_bonus":
+				w.pItemMagic(n).auraBonus = int16(a)
+			case "token":
+				w.pMagic(n).token = int32(a)
+			case "required":
+				w.pSkill(n).requiredSkill = int32(a)
 			case "noble_item":
 				w.pChar(n).unitItem = int32(a)
 			case "prev":

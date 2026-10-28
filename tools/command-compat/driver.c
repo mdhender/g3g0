@@ -405,6 +405,25 @@ int main(int argc, char **argv)
    p_char(created)->prev_lord=a; p_char(created)->loy_kind=b; p_char(created)->loy_rate=d;
   }
   else if (!strcmp(op, "destroy")) { sscanf(line,"%*s %d %d",&n,&a); destroy_unique_item(n,a); }
+  else if (!strcmp(op, "death")) {
+   sscanf(line,"%*s %31s %d %d",text,&n,&a);
+   if(!strcmp(text,"kill")) kill_char(n,a);
+   else if(!strcmp(text,"reclaim")) char_reclaim(n);
+   else if(!strcmp(text,"subkind")) change_box_subkind(n,a);
+   else if(!strcmp(text,"survive")) printf("survive %d\n",survive_fatal(n));
+   else if(!strcmp(text,"forget")) printf("forget %d\n",forget_skill(n,a));
+   else if(!strcmp(text,"location")) printf("location [%s]\n",char_rep_location(n));
+   else if(!strcmp(text,"hades")) printf("hades location %d\n",random_hades_loc(n));
+   else if(!strcmp(text,"state")) {
+    int kinds[]={T_char,T_item,T_deadchar};
+    for(i=0;i<3;i++) {
+     printf("kind chain %d:",kinds[i]);
+     loop_kind(kinds[i],n) { printf(" %d",n); } next_kind;
+     printf("\n");
+    }
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "inherit")) {
    sscanf(line,"%*s %31s %d %d %d %d %d",text,&n,&a,&b,&d,&i);
    if(!strcmp(text,"take")) take_unit_items(n,a,b);
@@ -554,6 +573,14 @@ int main(int argc, char **argv)
   {
    sscanf(line,"%*s %d %31s %d",&n,text,&a);
    if (!strcmp(text,"lord")) p_char(n)->unit_lord = a;
+   else if (!strcmp(text,"melt")) p_char(n)->melt_me = (schar)a;
+   else if (!strcmp(text,"sick")) p_char(n)->sick = (schar)a;
+   else if (!strcmp(text,"magician")) p_magic(n)->magician = (schar)a;
+   else if (!strcmp(text,"max_aura")) p_magic(n)->max_aura = a;
+   else if (!strcmp(text,"cur_aura")) p_magic(n)->cur_aura = a;
+   else if (!strcmp(text,"aura_bonus")) p_item_magic(n)->aura_bonus = (short)a;
+   else if (!strcmp(text,"token")) p_magic(n)->token = a;
+   else if (!strcmp(text,"required")) p_skill(n)->required_skill = a;
    else if (!strcmp(text,"noble_item")) p_char(n)->unit_item = a;
    else if (!strcmp(text,"prev")) p_char(n)->prev_lord = a;
    else if (!strcmp(text,"rate")) p_char(n)->loy_rate = a;

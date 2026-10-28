@@ -79,3 +79,17 @@ func (w *world) autoHades() {
 		w.autoHadesSup(i)
 	}
 }
+
+// randomHadesLoc is hades.c:529–555, using the persistent keyed Hades stream.
+func (w *world) randomHadesLoc(who int) int {
+	var candidates []int
+	for i := range w.loopKind(tLoc) {
+		if w.region(i) == int(w.hadesRegion) && w.subkind(i) == subUnder {
+			candidates = append(candidates, i)
+		}
+	}
+	if len(candidates) == 0 {
+		return 0
+	}
+	return candidates[w.streams.HadsRandomLoc(who, len(candidates))]
+}
