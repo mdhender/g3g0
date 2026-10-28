@@ -141,6 +141,20 @@ Run command/move/helper/rng/code/loadsave/turn-driver/default-turn sequentially
 before bounded vet/fresh defaults. No full-world/stage-exit acceptance implied.
 For command parsing, dispatch, handlers or completion, also run
 `tools/command-compat/run.sh` (small real-C dispatch/scheduler recordings, no world turn).
+Monthly faction/tax/seasonal settlement (#84) extends that same command tool:
+complete day.c collect_taxes, add_claim_gold, add_noble_points,
+add_unformed_sup/add_unformed, special_locs_open/close and clear_orders_sent,
+plus c1.c next_np_turn. Small asymmetric accounts reuse real mint, inventory,
+NP/lord, topology, output and save closure. Cases cover player subtype/missing
+records, exact 0/4/5/6 unformed floors without pruning, shared-mint aftermath,
+NP turn/width boundaries, castle ownership/order/tax truncation and all seasonal
+branches/precedence with real logs. The existing turn-driver phase comparison
+owns post_month's month-2/month-6 gates; it accepts scheduling, not skipped
+gameplay. garrison_gold remains an explicit stop at its unchanged post_month
+position (#116 after maintenance #87), so #84 does not accept full post_month
+integration. Run command/move/helper/rng/code/loadsave/turn-driver/default-turn
+sequentially before bounded vet/fresh defaults. No duplicate upkeep/garrison
+harness, new source dependency/pin or full-world success is implied.
 MOVE/GO and all six movement synonyms use command-compat's actual C callbacks
 through dispatch/evenings, including queued multi-day NPC MOVE → WAIT. Also run
 move-compat for the shared travel, message and raft crew-loss contracts; full

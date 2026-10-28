@@ -188,6 +188,100 @@ func (w *world) clearOrdersSent() {
 	}
 }
 
+// Faction settlement, day.c:635–719. Claim/NP grants filter by subtype;
+// unformed replenishment instead visits every existing player record. Keep
+// list entries verbatim, including stale entries and lists longer than five.
+func (w *world) addClaimGold() {
+	for pl := range w.loopKind(tPlayer) {
+		if w.subkind(pl) == subPlRegular {
+			w.genItem(pl, itemGold, 25)
+		}
+	}
+}
+
+func (w *world) addNoblePoints() {
+	for pl := range w.loopKind(tPlayer) {
+		if w.subkind(pl) == subPlRegular && w.nextNPTurn(pl) == 0 {
+			w.addNP(pl, 1)
+		}
+	}
+}
+
+func (w *world) addUnformedSup(pl int) {
+	p := w.rpPlayer(pl)
+	if p == nil {
+		return
+	}
+	for len(p.unformed) < 5 {
+		n := w.newEnt(tUnform, 0)
+		if n <= 0 {
+			break
+		}
+		p.unformed.Append(n)
+	}
+}
+
+func (w *world) addUnformed() {
+	for pl := range w.loopKind(tPlayer) {
+		w.addUnformedSup(pl)
+	}
+}
+
+// collectTaxes is day.c:1756–1789: each castle consumes the province's
+// remaining cookies before truncating, including zero-tax output to its owner.
+func (w *world) collectTaxes() {
+	for fort := range w.loopSubkind(subCastle) {
+		prov, owner := w.province(fort), w.buildingOwner(fort)
+		if owner == 0 {
+			continue
+		}
+		amount := w.hasItem(prov, itemTaxCookie)
+		w.consumeItem(prov, itemTaxCookie, int(amount))
+		amount /= 2
+		w.goldTaxes += amount
+		w.genItem(owner, itemGold, int(amount))
+		w.commandOut(owner, "Collected %s in taxes.", goldS(int(amount)))
+	}
+}
+
+// Seasonal announcements, day.c:2046–2127. These do not change route flags;
+// postMonth owns the calendar gates. The else-if precedence is significant.
+func (w *world) specialLocsOpen() {
+	for i := range w.loopProvince() {
+		if w.summerbridge(i) == 1 {
+			w.logWrite(10, "%s open to the north.", w.boxName(i))
+			w.commandOut(i, "The swamps of Summerbridge have dried enough to permit passage north.")
+		} else if w.summerbridge(i) == 2 {
+			w.logWrite(10, "%s open to the south.", w.boxName(i))
+			w.commandOut(i, "The swamps of Summerbridge have dried enough to permit passage south.")
+		} else if w.uldim(i) == 3 {
+			w.logWrite(10, "%s open to the south.", w.boxName(i))
+			w.commandOut(i, "The snows blocking Uldim pass to the south have melted.")
+		} else if w.uldim(i) == 4 {
+			w.logWrite(10, "%s open to the north.", w.boxName(i))
+			w.commandOut(i, "The snows blocking Uldim pass to the north have melted.")
+		}
+	}
+}
+
+func (w *world) specialLocsClose() {
+	for i := range w.loopProvince() {
+		if w.summerbridge(i) == 1 {
+			w.logWrite(10, "%s closed to the north.", w.boxName(i))
+			w.commandOut(i, "Seasonal rains have made Summerbridge an impassable bog to the north.")
+		} else if w.summerbridge(i) == 2 {
+			w.logWrite(10, "%s closed to the south.", w.boxName(i))
+			w.commandOut(i, "Seasonal rains have made Summerbridge an impassable bog to the south.")
+		} else if w.uldim(i) == 3 {
+			w.logWrite(10, "%s closed to the south.", w.boxName(i))
+			w.commandOut(i, "Falling snow blocks Uldim pass to the south for the winter.")
+		} else if w.uldim(i) == 4 {
+			w.logWrite(10, "%s closed to the north.", w.boxName(i))
+			w.commandOut(i, "Falling snow blocks Uldim pass to the north for the winter.")
+		}
+	}
+}
+
 // postMonth is day.c's settlement sequence. Even report-producing phases
 // may mutate the world; none may be skipped on the way to save_db.
 func (w *world) postMonth() {

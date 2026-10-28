@@ -48,6 +48,9 @@ void drv_heal(void);
 int drv_heal_roll(int who, int sub, int low, int high);
 void drv_dogs(void), drv_ring(void), drv_curse(void);
 void drv_city_gold(void), drv_replenish(int where, int item, int qty);
+void drv_taxes(void), drv_claim(void), drv_np(void), drv_unformed(void);
+void drv_special_open(void), drv_special_close(void), drv_clear_sent(void);
+extern int gold_taxes;
 int drv_bark_roll(int who, int hound);
 void drv_event_days(void);
 extern int gold_garrison;
@@ -393,6 +396,32 @@ int main(int argc, char **argv)
     printf("arrival player %d allocated %d\n",n,p!=NULL);
     if(p) { list("known",p->known); list("touched",p->locs); list("weather",p->weather_seen); list("output",p->output); }
    } next_player;
+  }
+  else if (!strcmp(op, "accounts")) {
+   n=0; sscanf(line,"%*s %s %d",text,&n);
+   if (!strcmp(text,"taxes")) drv_taxes();
+   else if (!strcmp(text,"claim")) drv_claim();
+   else if (!strcmp(text,"np")) drv_np();
+   else if (!strcmp(text,"unformed")) drv_unformed();
+   else if (!strcmp(text,"sup")) add_unformed_sup(n);
+   else if (!strcmp(text,"next")) printf("next np %d %d\n",n,next_np_turn(n));
+   else if (!strcmp(text,"clear")) drv_clear_sent();
+   else if (!strcmp(text,"open")) drv_special_open();
+   else if (!strcmp(text,"close")) drv_special_close();
+   else if (!strcmp(text,"state")) {
+    printf("tax gold %d\n",gold_taxes);
+    loop_player(n) {
+     struct entity_player *p=rp_player(n);
+     printf("account %d allocated %d\n",n,p!=NULL);
+     if(p) {
+      printf("np gained %d spent %d sent %d\n",p->np_gained,p->np_spent,p->sent_orders);
+      list("unformed",p->unformed); list("output",p->output);
+     }
+     save_box(stdout,n);
+    } next_player;
+    loop_kind(T_unform,n) { save_box(stdout,n); } next_kind;
+   }
+   else return 2;
   }
   else if (!strcmp(op, "production")) {
    sscanf(line,"%*s %s %d %d %d",text,&n,&a,&b);
@@ -789,6 +818,11 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"castle")) p_misc(n)->garr_castle = a;
    else if (!strcmp(text,"unit")) ilist_append(&p_player(n)->units,a);
    else if (!strcmp(text,"np")) p_player(n)->noble_points = (short)a;
+   else if (!strcmp(text,"first_turn")) p_player(n)->first_turn = a;
+   else if (!strcmp(text,"sent")) p_player(n)->sent_orders = (schar)a;
+   else if (!strcmp(text,"unformed")) ilist_append(&p_player(n)->unformed,a);
+   else if (!strcmp(text,"summer")) p_subloc(n)->summer_flag = (schar)a;
+   else if (!strcmp(text,"uldim")) p_subloc(n)->uldim_flag = (schar)a;
    else if (!strcmp(text,"skill_np")) p_skill(n)->np_req = a;
    else if (!strcmp(text,"unique")) p_item(n)->who_has = a;
    else if (!strcmp(text,"token_num")) p_item_magic(n)->token_num = (schar)a;

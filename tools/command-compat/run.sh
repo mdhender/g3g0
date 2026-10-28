@@ -56,7 +56,9 @@ functions = {
               'inn_calamity', 'random_loc_damage', 'heal_char_sup', 'heal_characters',
               'dogs_bark_at_hidden_chars', 'increment_stone_ring_aura',
               'noncreator_curse_erode', 'daily_events', 'compute_civ_levels',
-              'post_production', 'move_city_gold'],
+              'post_production', 'move_city_gold', 'collect_taxes',
+              'add_claim_gold', 'add_noble_points', 'add_unformed_sup', 'add_unformed',
+              'special_locs_open', 'special_locs_close', 'clear_orders_sent'],
     'seed.c': ['int_comp', 'seed_taxes'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
@@ -109,7 +111,7 @@ functions = {
               'find_trade', 'new_trade', 'add_city_trade', 'opium_market_delta',
               'expire_trades', 'loc_trade_sup', 'trade_suffuse_ring', 'location_trades', 'is_tradegood'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
-             'v_wait', 'd_wait', 'i_wait'],
+             'v_wait', 'd_wait', 'i_wait', 'next_np_turn'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
     'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit'],
     'storm.c': ['weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
@@ -146,7 +148,7 @@ int immed_see_all, month_done, show_combat_flag;
 ''')
     gm = open(f'{src}/gm.c').read()
     for name in ['gold_garrison', 'gold_combat', 'gold_combat_indep',
-                 'gold_pot_basket', 'gold_trade', 'gold_opium']:
+                 'gold_pot_basket', 'gold_trade', 'gold_opium', 'gold_taxes']:
         m = re.search(rf'^int {name} = 0;\n', gm, re.M)
         if not m:
             sys.exit(f'no {name} definition in gm.c')
@@ -251,6 +253,13 @@ void drv_dogs(void) { dogs_bark_at_hidden_chars(); }
 void drv_ring(void) { increment_stone_ring_aura(); }
 void drv_curse(void) { noncreator_curse_erode(); }
 void drv_city_gold(void) { move_city_gold(); }
+void drv_taxes(void) { collect_taxes(); }
+void drv_claim(void) { add_claim_gold(); }
+void drv_np(void) { add_noble_points(); }
+void drv_unformed(void) { add_unformed(); }
+void drv_special_open(void) { special_locs_open(); }
+void drv_special_close(void) { special_locs_close(); }
+void drv_clear_sent(void) { clear_orders_sent(); }
 void drv_replenish(int where, int item, int qty) { replenish(where, item, qty); }
 int drv_bark_roll(int who, int hound) { return ent_bark(who, hound); }
 void drv_event_days(void) {
@@ -395,6 +404,9 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  if [[ "${section_names[$i]}" == 'section accounts '* ]]; then
+   [ "$status" = 0 ] || die "unexpected faction settlement status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section market '* ]]; then
    [ "$status" = 0 ] || die "unexpected market status $status in section $i"
   fi

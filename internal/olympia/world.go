@@ -90,6 +90,9 @@ type world struct {
 	goldTrade     int32
 	goldOpium     int32
 
+	// gm.c's castle tax accounting (not saved).
+	goldTaxes int32
+
 	// maxMapRow, maxMapCol and maxMapInit are max_map_row, max_map_col and
 	// max_map_init in dir.c, which determine_map_edges() sets.
 	maxMapRow  int32

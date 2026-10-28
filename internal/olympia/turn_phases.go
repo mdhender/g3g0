@@ -5,13 +5,7 @@ package olympia
 
 // Explicit unfinished world phases in input.c/day.c order. These are entry
 // boundaries for #66–#89, NOT implementations, even on an empty world.
-func (w *world) specialLocsOpen()           { panic(notImplemented("special_locs_open")) }
-func (w *world) specialLocsClose()          { panic(notImplemented("special_locs_close")) }
 func (w *world) garrisonGold()              { panic(notImplemented("garrison_gold")) }
-func (w *world) collectTaxes()              { panic(notImplemented("collect_taxes")) }
-func (w *world) addClaimGold()              { panic(notImplemented("add_claim_gold")) }
-func (w *world) addNoblePoints()            { panic(notImplemented("add_noble_points")) }
-func (w *world) addUnformed()               { panic(notImplemented("add_unformed")) }
 func (w *world) incrementCurrentAura()      { panic(notImplemented("increment_current_aura")) }
 func (w *world) decrementAbilityShroud()    { panic(notImplemented("decrement_ability_shroud")) }
 func (w *world) decrementRegionShroud()     { panic(notImplemented("decrement_region_shroud")) }

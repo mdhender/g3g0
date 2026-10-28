@@ -45419,3 +45419,1469 @@ IT
 stderr:
 
 exit 0
+stdout:
+section accounts grants subtype filtering unequal balances and order clearing
+> entity 1 4 0
+> entity 202 1 48
+> entity 203 1 52
+> entity 204 1 62
+> entity 205 1 49
+> entity 206 1 52
+> set indep 203
+> field 200 first_turn 1
+> field 201 first_turn 7
+> field 202 np 11
+> field 203 np 13
+> field 204 np 17
+> field 200 np 3
+> field 201 np 19
+> field 200 sent 7
+> field 201 sent -5
+> field 203 sent 1
+> inventory 200 1 9
+> inventory 201 1 71
+> inventory 202 1 101
+> inventory 203 1 203
+> accounts clear
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+il	1 9
+PL
+ np 3
+ ft 1
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+il	1 71
+PL
+ np 19
+ ft 7
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+202 player pl_system
+il	1 101
+PL
+ np 11
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+203 player pl_npc
+il	1 203
+PL
+ np 13
+
+account 204 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+204 player pl_silent
+PL
+ np 17
+
+account 205 allocated 0
+205 player pl_regular
+
+account 206 allocated 0
+206 player pl_npc
+
+> accounts claim
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+il	1 34
+PL
+ np 3
+ ft 1
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+il	1 96
+PL
+ np 19
+ ft 7
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+202 player pl_system
+il	1 101
+PL
+ np 11
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+203 player pl_npc
+il	1 203
+PL
+ np 13
+
+account 204 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+204 player pl_silent
+PL
+ np 17
+
+account 205 allocated 0
+205 player pl_regular
+il	1 25
+
+account 206 allocated 0
+206 player pl_npc
+
+> set turn 8
+> accounts np
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+il	1 34
+PL
+ np 4
+ ft 1
+
+account 201 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+il	1 96
+PL
+ np 20
+ ft 7
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+202 player pl_system
+il	1 101
+PL
+ np 11
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+203 player pl_npc
+il	1 203
+PL
+ np 13
+
+account 204 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+204 player pl_silent
+PL
+ np 17
+
+account 205 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+205 player pl_regular
+il	1 25
+PL
+ np 1
+
+account 206 allocated 0
+206 player pl_npc
+
+> accounts claim
+> accounts clear
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+il	1 59
+PL
+ np 4
+ ft 1
+
+account 201 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+il	1 121
+PL
+ np 20
+ ft 7
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+202 player pl_system
+il	1 101
+PL
+ np 11
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+203 player pl_npc
+il	1 203
+PL
+ np 13
+
+account 204 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+204 player pl_silent
+PL
+ np 17
+
+account 205 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+205 player pl_regular
+il	1 50
+PL
+ np 1
+
+account 206 allocated 0
+206 player pl_npc
+
+stderr:
+
+exit 0
+stdout:
+section accounts NP turn boundaries ignore first turn and preserve signed shorts
+> entity 202 1 49
+> entity 203 1 52
+> field 200 first_turn 1
+> field 201 first_turn 777
+> field 200 np 32767
+> field 201 np -3
+> field 203 np 21
+> set turn 0
+> accounts next 200
+next np 200 0
+> accounts np
+> set turn 1
+> accounts next 201
+next np 201 7
+> accounts np
+> set turn 7
+> accounts next 202
+next np 202 1
+> accounts np
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+PL
+ np -32768
+ ft 1
+
+account 201 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+ np -2
+ ft 777
+
+account 202 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+202 player pl_regular
+PL
+ np 1
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+203 player pl_npc
+PL
+ np 21
+
+> set turn 8
+> accounts next 200
+next np 200 0
+> accounts np
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 2 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+PL
+ np -32767
+ ft 1
+
+account 201 allocated 1
+np gained 2 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+ np -1
+ ft 777
+
+account 202 allocated 1
+np gained 2 spent 0 sent 0
+unformed:
+output:
+202 player pl_regular
+PL
+ np 2
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+203 player pl_npc
+PL
+ np 21
+
+> set turn 9
+> accounts next 201
+next np 201 7
+> accounts np
+> set turn 15
+> accounts next 200
+next np 200 1
+> accounts np
+> set turn 16
+> accounts next 201
+next np 201 0
+> accounts np
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 3 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+PL
+ np -32766
+ ft 1
+
+account 201 allocated 1
+np gained 3 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+ ft 777
+
+account 202 allocated 1
+np gained 3 spent 0 sent 0
+unformed:
+output:
+202 player pl_regular
+PL
+ np 3
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+203 player pl_npc
+PL
+ np 21
+
+> set turn 32767
+> accounts next 200
+next np 200 1
+> accounts np
+> set turn -1
+> accounts next 201
+next np 201 1
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 3 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+PL
+ np -32766
+ ft 1
+
+account 201 allocated 1
+np gained 3 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+ ft 777
+
+account 202 allocated 1
+np gained 3 spent 0 sent 0
+unformed:
+output:
+202 player pl_regular
+PL
+ np 3
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+203 player pl_npc
+PL
+ np 21
+
+stderr:
+
+exit 0
+stdout:
+section accounts missing records unformed and clear do not allocate next NP does
+> master 29
+> entity 202 1 49
+> entity 203 1 52
+> accounts clear
+> accounts sup 202
+> accounts sup 203
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+PL
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+
+account 202 allocated 0
+202 player pl_regular
+
+account 203 allocated 0
+203 player pl_npc
+
+> set turn 7
+> accounts np
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+PL
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+202 player pl_regular
+PL
+
+account 203 allocated 0
+203 player pl_npc
+
+> accounts next 203
+next np 203 1
+> accounts sup 203
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+PL
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+202 player pl_regular
+PL
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 8980 1524 1770 6131 6744
+output:
+203 player pl_npc
+PL
+ uf 8980 1524 1770 6131 6744 
+
+1524 unform 0
+
+1770 unform 0
+
+6131 unform 0
+
+6744 unform 0
+
+8980 unform 0
+
+> set turn 8
+> accounts np
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+PL
+ np 1
+
+account 201 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+ np 1
+
+account 202 allocated 1
+np gained 1 spent 0 sent 0
+unformed:
+output:
+202 player pl_regular
+PL
+ np 1
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 8980 1524 1770 6131 6744
+output:
+203 player pl_npc
+PL
+ uf 8980 1524 1770 6131 6744 
+
+1524 unform 0
+
+1770 unform 0
+
+6131 unform 0
+
+6744 unform 0
+
+8980 unform 0
+
+> newitem 1000 68
+created 72341
+> save_new
+72341 item suffuse_ring
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section accounts unformed floors zero four five six all subtypes no pruning
+> master 29
+> entity 202 1 48
+> entity 203 1 62
+> entity 204 1 52
+> entity 205 1 52
+> entity 206 1 49
+> entity 4000 12 0
+> entity 4001 12 0
+> entity 4002 12 0
+> entity 4003 12 0
+> entity 4010 12 0
+> entity 4011 12 0
+> entity 4012 12 0
+> entity 4013 12 0
+> entity 4014 12 0
+> entity 4020 12 0
+> entity 4021 12 0
+> entity 4022 12 0
+> entity 4023 12 0
+> entity 4024 12 0
+> entity 4025 12 0
+> field 201 unformed 4000
+> field 201 unformed 4001
+> field 201 unformed 4002
+> field 201 unformed 4003
+> field 202 unformed 4010
+> field 202 unformed 4011
+> field 202 unformed 4012
+> field 202 unformed 4013
+> field 202 unformed 4014
+> field 203 unformed 4020
+> field 203 unformed 4021
+> field 203 unformed 4022
+> field 203 unformed 4023
+> field 203 unformed 4024
+> field 203 unformed 4025
+> field 204 sent 1
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+200 player pl_regular
+PL
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4000 4001 4002 4003
+output:
+201 player pl_regular
+PL
+ uf 4000 4001 4002 4003 
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4010 4011 4012 4013 4014
+output:
+202 player pl_system
+PL
+ uf 4010 4011 4012 4013 4014 
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4020 4021 4022 4023 4024 4025
+output:
+203 player pl_silent
+PL
+ uf 4020 4021 4022 4023 4024 4025 
+
+account 204 allocated 1
+np gained 0 spent 0 sent 1
+unformed:
+output:
+204 player pl_npc
+PL
+ so 1
+
+account 205 allocated 0
+205 player pl_npc
+
+account 206 allocated 0
+206 player pl_regular
+
+4000 unform 0
+
+4001 unform 0
+
+4002 unform 0
+
+4003 unform 0
+
+4010 unform 0
+
+4011 unform 0
+
+4012 unform 0
+
+4013 unform 0
+
+4014 unform 0
+
+4020 unform 0
+
+4021 unform 0
+
+4022 unform 0
+
+4023 unform 0
+
+4024 unform 0
+
+4025 unform 0
+
+> accounts unformed
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 5649 2321 1659 5159 1642
+output:
+200 player pl_regular
+PL
+ uf 5649 2321 1659 5159 1642 
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4000 4001 4002 4003 9795
+output:
+201 player pl_regular
+PL
+ uf 4000 4001 4002 4003 9795 
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4010 4011 4012 4013 4014
+output:
+202 player pl_system
+PL
+ uf 4010 4011 4012 4013 4014 
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4020 4021 4022 4023 4024 4025
+output:
+203 player pl_silent
+PL
+ uf 4020 4021 4022 4023 4024 4025 
+
+account 204 allocated 1
+np gained 0 spent 0 sent 1
+unformed: 5190 9343 8609 1615 4539
+output:
+204 player pl_npc
+PL
+ so 1
+ uf 5190 9343 8609 1615 4539 
+
+account 205 allocated 0
+205 player pl_npc
+
+account 206 allocated 0
+206 player pl_regular
+
+1615 unform 0
+
+1642 unform 0
+
+1659 unform 0
+
+2321 unform 0
+
+4000 unform 0
+
+4001 unform 0
+
+4002 unform 0
+
+4003 unform 0
+
+4010 unform 0
+
+4011 unform 0
+
+4012 unform 0
+
+4013 unform 0
+
+4014 unform 0
+
+4020 unform 0
+
+4021 unform 0
+
+4022 unform 0
+
+4023 unform 0
+
+4024 unform 0
+
+4025 unform 0
+
+4539 unform 0
+
+5159 unform 0
+
+5190 unform 0
+
+5649 unform 0
+
+8609 unform 0
+
+9343 unform 0
+
+9795 unform 0
+
+> accounts unformed
+> accounts sup 201
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 5649 2321 1659 5159 1642
+output:
+200 player pl_regular
+PL
+ uf 5649 2321 1659 5159 1642 
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4000 4001 4002 4003 9795
+output:
+201 player pl_regular
+PL
+ uf 4000 4001 4002 4003 9795 
+
+account 202 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4010 4011 4012 4013 4014
+output:
+202 player pl_system
+PL
+ uf 4010 4011 4012 4013 4014 
+
+account 203 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4020 4021 4022 4023 4024 4025
+output:
+203 player pl_silent
+PL
+ uf 4020 4021 4022 4023 4024 4025 
+
+account 204 allocated 1
+np gained 0 spent 0 sent 1
+unformed: 5190 9343 8609 1615 4539
+output:
+204 player pl_npc
+PL
+ so 1
+ uf 5190 9343 8609 1615 4539 
+
+account 205 allocated 0
+205 player pl_npc
+
+account 206 allocated 0
+206 player pl_regular
+
+1615 unform 0
+
+1642 unform 0
+
+1659 unform 0
+
+2321 unform 0
+
+4000 unform 0
+
+4001 unform 0
+
+4002 unform 0
+
+4003 unform 0
+
+4010 unform 0
+
+4011 unform 0
+
+4012 unform 0
+
+4013 unform 0
+
+4014 unform 0
+
+4020 unform 0
+
+4021 unform 0
+
+4022 unform 0
+
+4023 unform 0
+
+4024 unform 0
+
+4025 unform 0
+
+4539 unform 0
+
+5159 unform 0
+
+5190 unform 0
+
+5649 unform 0
+
+8609 unform 0
+
+9343 unform 0
+
+9795 unform 0
+
+> newitem 1000 68
+created 60539
+> save_new
+60539 item suffuse_ring
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section accounts unformed stale duplicate entries count and remain verbatim
+> master 29
+> entity 4000 12 0
+> field 200 unformed 4000
+> field 200 unformed 4000
+> field 200 unformed 4444
+> field 200 unformed 4445
+> field 200 unformed 4446
+> accounts sup 200
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4000 4000 4444 4445 4446
+output:
+200 player pl_regular
+PL
+ uf 4000 4000 
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+
+4000 unform 0
+
+> newitem 1000 68
+created 70368
+> save_new
+70368 item suffuse_ring
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section accounts unformed mint aftermath empty list
+> master 29
+> accounts sup 200
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 5649 2321 1659 5159 1642
+output:
+200 player pl_regular
+PL
+ uf 5649 2321 1659 5159 1642 
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+
+1642 unform 0
+
+1659 unform 0
+
+2321 unform 0
+
+5159 unform 0
+
+5649 unform 0
+
+> newitem 1000 68
+created 62565
+> save_new
+62565 item suffuse_ring
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section accounts unformed mint aftermath full list control
+> master 29
+> entity 4000 12 0
+> entity 4001 12 0
+> entity 4002 12 0
+> entity 4003 12 0
+> entity 4004 12 0
+> field 200 unformed 4000
+> field 200 unformed 4001
+> field 200 unformed 4002
+> field 200 unformed 4003
+> field 200 unformed 4004
+> accounts sup 200
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed: 4000 4001 4002 4003 4004
+output:
+200 player pl_regular
+PL
+ uf 4000 4001 4002 4003 4004 
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+
+4000 unform 0
+
+4001 unform 0
+
+4002 unform 0
+
+4003 unform 0
+
+4004 unform 0
+
+> newitem 1000 68
+created 70368
+> save_new
+70368 item suffuse_ring
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section accounts castle taxes ordered owners consume before odd truncation
+> entity 1 4 0
+> entity 96 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 4
+> entity 9002 3 3
+> entity 9100 3 32
+> entity 9101 3 32
+> entity 9102 3 32
+> entity 9103 3 32
+> entity 9104 3 39
+> entity 9105 3 32
+> entity 1002 2 0
+> field 1001 lord 201
+> field 1002 lord 201
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 9000 9100
+> link 9000 9101
+> link 9001 9102
+> link 9002 9103
+> link 9001 9104
+> link 9001 9105
+> link 9100 1000
+> link 9101 1001
+> link 9104 1002
+> inventory 9000 96 11
+> inventory 9001 96 7
+> inventory 9002 96 1
+> inventory 1000 1 9
+> inventory 1001 1 31
+> accounts taxes
+> accounts state
+tax gold 5
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output: 1000
+200 player pl_regular
+PL
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output: 1001
+201 player pl_regular
+PL
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 9101 
+
+> save 9001
+9001 loc mountain
+il	96 7
+LI
+ wh 8000
+ hl 9102 9104 9105 
+
+> save 9002
+9002 loc plain
+il	96 1
+LI
+ wh 8000
+ hl 9103 
+
+> save 1000
+1000 char 0
+il	1 14
+LI
+ wh 9100
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+il	1 31
+LI
+ wh 9101
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Collected 5~gold in taxes.
+> readlog 201
+log 201:
+1001:0::0::Collected 0~gold in taxes.
+> link 9103 1002
+> accounts taxes
+> save 9002
+9002 loc plain
+LI
+ wh 8000
+ hl 9103 
+
+> save 1002
+1002 char 0
+LI
+ wh 9103
+CH
+ lo 201
+
+> accounts state
+tax gold 5
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output: 1000
+200 player pl_regular
+PL
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output: 1001 1002
+201 player pl_regular
+PL
+
+> readlog 201
+log 201:
+1001:0::0::Collected 0~gold in taxes.
+1001:0::0::Collected 0~gold in taxes.
+1002:0::0::Collected 0~gold in taxes.
+stderr:
+
+exit 0
+stdout:
+section accounts castle taxes reversed construction order ownership prisoner and zero output
+> entity 1 4 0
+> entity 96 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9101 3 32
+> entity 9100 3 32
+> entity 1002 2 0
+> field 1001 lord 201
+> field 1002 lord 201
+> field 1002 prisoner 1
+> link 8000 9000
+> link 9000 9100
+> link 9000 9101
+> link 9100 1002
+> link 9100 1001
+> link 9101 1000
+> inventory 9000 96 2147483647
+> accounts taxes
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 9101 
+
+> save 1000
+1000 char 0
+LI
+ wh 9101
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 201
+
+> save 1002
+1002 char 0
+il	1 1073741823
+LI
+ wh 9100
+CH
+ lo 201
+ pr 1
+
+> accounts taxes
+> accounts state
+tax gold 1073741823
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output: 1000
+200 player pl_regular
+PL
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output:
+201 player pl_regular
+PL
+
+> readlog 200
+log 200:
+1000:0::0::Collected 0~gold in taxes.
+1000:0::0::Collected 0~gold in taxes.
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section accounts seasonal announcements all branches precedence province filter and real logs
+> set turn 3
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 3
+> entity 9003 3 3
+> entity 9004 3 3
+> entity 9005 3 3
+> entity 9006 3 3
+> entity 9100 3 14
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 8000 9003
+> link 8000 9004
+> link 8000 9005
+> link 8000 9006
+> link 9000 9100
+> link 9000 1000
+> link 9003 1001
+> field 9000 summer 1
+> field 9000 uldim 3
+> field 9001 summer 2
+> field 9001 uldim 4
+> field 9002 uldim 3
+> field 9003 uldim 4
+> field 9004 uldim 1
+> field 9005 uldim 2
+> field 9006 summer 3
+> field 9100 summer 1
+> field 8000 uldim 3
+> field 200 touched 9000
+> field 200 touched 9001
+> field 200 touched 9002
+> field 200 touched 9003
+> field 201 touched 9002
+> field 201 touched 9004
+> field 201 touched 9005
+> field 201 touched 9006
+> accounts open
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output: 10 9000 9001 9002 9003
+200 player pl_regular
+PL
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output: 9002
+201 player pl_regular
+PL
+
+> readlog 10
+log 10:
+> readlog 200
+log 200:
+10:0::0::Plain~[9000] open to the north.
+9000:0::0::The swamps of Summerbridge have dried enough to permit passage north.
+10:0::0::Plain~[9001] open to the south.
+9001:0::0::The swamps of Summerbridge have dried enough to permit passage south.
+10:0::0::Plain~[9002] open to the south.
+9002:0::0::The snows blocking Uldim pass to the south have melted.
+10:0::0::Plain~[9003] open to the north.
+9003:0::0::The snows blocking Uldim pass to the north have melted.
+> readlog 201
+log 201:
+9002:0::0::The snows blocking Uldim pass to the south have melted.
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 1000 
+SL
+ uf 3
+ sf 1
+
+> save 9001
+9001 loc plain
+LI
+ wh 8000
+SL
+ uf 4
+ sf 2
+
+> save 9002
+9002 loc plain
+LI
+ wh 8000
+SL
+ uf 3
+
+> save 9003
+9003 loc plain
+LI
+ wh 8000
+ hl 1001 
+SL
+ uf 4
+
+> save 9100
+9100 loc city
+LI
+ wh 9000
+SL
+ sf 1
+
+> set turn 7
+> accounts close
+> accounts state
+tax gold 0
+account 200 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output: 10 9000 9001 9002 9003
+200 player pl_regular
+PL
+
+account 201 allocated 1
+np gained 0 spent 0 sent 0
+unformed:
+output: 9002
+201 player pl_regular
+PL
+
+> readlog 10
+log 10:
+> readlog 200
+log 200:
+10:0::0::Plain~[9000] open to the north.
+9000:0::0::The swamps of Summerbridge have dried enough to permit passage north.
+10:0::0::Plain~[9001] open to the south.
+9001:0::0::The swamps of Summerbridge have dried enough to permit passage south.
+10:0::0::Plain~[9002] open to the south.
+9002:0::0::The snows blocking Uldim pass to the south have melted.
+10:0::0::Plain~[9003] open to the north.
+9003:0::0::The snows blocking Uldim pass to the north have melted.
+10:0::0::Plain~[9000] closed to the north.
+9000:0::0::Seasonal rains have made Summerbridge an impassable bog to the north.
+10:0::0::Plain~[9001] closed to the south.
+9001:0::0::Seasonal rains have made Summerbridge an impassable bog to the south.
+10:0::0::Plain~[9002] closed to the south.
+9002:0::0::Falling snow blocks Uldim pass to the south for the winter.
+10:0::0::Plain~[9003] closed to the north.
+9003:0::0::Falling snow blocks Uldim pass to the north for the winter.
+> readlog 201
+log 201:
+9002:0::0::The snows blocking Uldim pass to the south have melted.
+9002:0::0::Falling snow blocks Uldim pass to the south for the winter.
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 1000 
+SL
+ uf 3
+ sf 1
+
+> save 9001
+9001 loc plain
+LI
+ wh 8000
+SL
+ uf 4
+ sf 2
+
+> save 9002
+9002 loc plain
+LI
+ wh 8000
+SL
+ uf 3
+
+> save 9003
+9003 loc plain
+LI
+ wh 8000
+ hl 1001 
+SL
+ uf 4
+
+stderr:
+
+exit 0

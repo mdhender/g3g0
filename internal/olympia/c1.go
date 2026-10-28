@@ -5,6 +5,16 @@ package olympia
 
 import "fmt"
 
+// nextNPTurn is c1.c:881–901. The original first_turn schedule is disabled:
+// every regular faction receives NP on turns 8, 16, ... . Even a query
+// allocates a missing player record, as p_player does in C.
+func (w *world) nextNPTurn(pl int) int {
+	w.pPlayer(pl)
+	ct := 7 - (int(w.sysclock.turn)+1)%numMonths
+	ft := 2
+	return (ft + ct) % numMonths
+}
+
 // Empty results represent C's NULL; every actual diagnostic/completion string
 // is nonempty. The signal command remains unported.
 var waitTags = []string{

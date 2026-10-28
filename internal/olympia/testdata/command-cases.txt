@@ -14172,3 +14172,317 @@ save 1000
 readlog 200
 newitem 1000 68
 save_new
+
+section accounts grants subtype filtering unequal balances and order clearing
+entity 1 4 0
+entity 202 1 48
+entity 203 1 52
+entity 204 1 62
+entity 205 1 49
+entity 206 1 52
+set indep 203
+field 200 first_turn 1
+field 201 first_turn 7
+field 202 np 11
+field 203 np 13
+field 204 np 17
+field 200 np 3
+field 201 np 19
+field 200 sent 7
+field 201 sent -5
+field 203 sent 1
+inventory 200 1 9
+inventory 201 1 71
+inventory 202 1 101
+inventory 203 1 203
+accounts clear
+accounts state
+accounts claim
+accounts state
+set turn 8
+accounts np
+accounts state
+accounts claim
+accounts clear
+accounts state
+
+section accounts NP turn boundaries ignore first turn and preserve signed shorts
+entity 202 1 49
+entity 203 1 52
+field 200 first_turn 1
+field 201 first_turn 777
+field 200 np 32767
+field 201 np -3
+field 203 np 21
+set turn 0
+accounts next 200
+accounts np
+set turn 1
+accounts next 201
+accounts np
+set turn 7
+accounts next 202
+accounts np
+accounts state
+set turn 8
+accounts next 200
+accounts np
+accounts state
+set turn 9
+accounts next 201
+accounts np
+set turn 15
+accounts next 200
+accounts np
+set turn 16
+accounts next 201
+accounts np
+accounts state
+set turn 32767
+accounts next 200
+accounts np
+set turn -1
+accounts next 201
+accounts state
+
+section accounts missing records unformed and clear do not allocate next NP does
+master 29
+entity 202 1 49
+entity 203 1 52
+accounts clear
+accounts sup 202
+accounts sup 203
+accounts state
+set turn 7
+accounts np
+accounts state
+accounts next 203
+accounts sup 203
+accounts state
+set turn 8
+accounts np
+accounts state
+newitem 1000 68
+save_new
+
+section accounts unformed floors zero four five six all subtypes no pruning
+master 29
+entity 202 1 48
+entity 203 1 62
+entity 204 1 52
+entity 205 1 52
+entity 206 1 49
+entity 4000 12 0
+entity 4001 12 0
+entity 4002 12 0
+entity 4003 12 0
+entity 4010 12 0
+entity 4011 12 0
+entity 4012 12 0
+entity 4013 12 0
+entity 4014 12 0
+entity 4020 12 0
+entity 4021 12 0
+entity 4022 12 0
+entity 4023 12 0
+entity 4024 12 0
+entity 4025 12 0
+field 201 unformed 4000
+field 201 unformed 4001
+field 201 unformed 4002
+field 201 unformed 4003
+field 202 unformed 4010
+field 202 unformed 4011
+field 202 unformed 4012
+field 202 unformed 4013
+field 202 unformed 4014
+field 203 unformed 4020
+field 203 unformed 4021
+field 203 unformed 4022
+field 203 unformed 4023
+field 203 unformed 4024
+field 203 unformed 4025
+field 204 sent 1
+accounts state
+accounts unformed
+accounts state
+accounts unformed
+accounts sup 201
+accounts state
+newitem 1000 68
+save_new
+
+section accounts unformed stale duplicate entries count and remain verbatim
+master 29
+entity 4000 12 0
+field 200 unformed 4000
+field 200 unformed 4000
+field 200 unformed 4444
+field 200 unformed 4445
+field 200 unformed 4446
+accounts sup 200
+accounts state
+newitem 1000 68
+save_new
+
+section accounts unformed mint aftermath empty list
+master 29
+accounts sup 200
+accounts state
+newitem 1000 68
+save_new
+
+section accounts unformed mint aftermath full list control
+master 29
+entity 4000 12 0
+entity 4001 12 0
+entity 4002 12 0
+entity 4003 12 0
+entity 4004 12 0
+field 200 unformed 4000
+field 200 unformed 4001
+field 200 unformed 4002
+field 200 unformed 4003
+field 200 unformed 4004
+accounts sup 200
+accounts state
+newitem 1000 68
+save_new
+
+section accounts castle taxes ordered owners consume before odd truncation
+entity 1 4 0
+entity 96 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 4
+entity 9002 3 3
+entity 9100 3 32
+entity 9101 3 32
+entity 9102 3 32
+entity 9103 3 32
+entity 9104 3 39
+entity 9105 3 32
+entity 1002 2 0
+field 1001 lord 201
+field 1002 lord 201
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 9000 9100
+link 9000 9101
+link 9001 9102
+link 9002 9103
+link 9001 9104
+link 9001 9105
+link 9100 1000
+link 9101 1001
+link 9104 1002
+inventory 9000 96 11
+inventory 9001 96 7
+inventory 9002 96 1
+inventory 1000 1 9
+inventory 1001 1 31
+accounts taxes
+accounts state
+save 9000
+save 9001
+save 9002
+save 1000
+save 1001
+readlog 200
+readlog 201
+link 9103 1002
+accounts taxes
+save 9002
+save 1002
+accounts state
+readlog 201
+
+section accounts castle taxes reversed construction order ownership prisoner and zero output
+entity 1 4 0
+entity 96 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9101 3 32
+entity 9100 3 32
+entity 1002 2 0
+field 1001 lord 201
+field 1002 lord 201
+field 1002 prisoner 1
+link 8000 9000
+link 9000 9100
+link 9000 9101
+link 9100 1002
+link 9100 1001
+link 9101 1000
+inventory 9000 96 2147483647
+accounts taxes
+save 9000
+save 1000
+save 1001
+save 1002
+accounts taxes
+accounts state
+readlog 200
+readlog 201
+
+section accounts seasonal announcements all branches precedence province filter and real logs
+set turn 3
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 3
+entity 9003 3 3
+entity 9004 3 3
+entity 9005 3 3
+entity 9006 3 3
+entity 9100 3 14
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 8000 9003
+link 8000 9004
+link 8000 9005
+link 8000 9006
+link 9000 9100
+link 9000 1000
+link 9003 1001
+field 9000 summer 1
+field 9000 uldim 3
+field 9001 summer 2
+field 9001 uldim 4
+field 9002 uldim 3
+field 9003 uldim 4
+field 9004 uldim 1
+field 9005 uldim 2
+field 9006 summer 3
+field 9100 summer 1
+field 8000 uldim 3
+field 200 touched 9000
+field 200 touched 9001
+field 200 touched 9002
+field 200 touched 9003
+field 201 touched 9002
+field 201 touched 9004
+field 201 touched 9005
+field 201 touched 9006
+accounts open
+accounts state
+readlog 10
+readlog 200
+readlog 201
+save 9000
+save 9001
+save 9002
+save 9003
+save 9100
+set turn 7
+accounts close
+accounts state
+readlog 10
+readlog 200
+readlog 201
+save 9000
+save 9001
+save 9002
+save 9003

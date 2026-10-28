@@ -2361,3 +2361,83 @@ test binaries used the shared `run-limited.sh` executor. Every compat call
 used `G3_REPO=$PWD/tmp/upstream.git`. No full-world run; parent owns it.
 No newly verified upstream defect or blocker was found. `git diff --check`
 reports only literal C recording trailing whitespace, intentionally retained.
+
+## #84 — faction accounts, castle taxes and seasonal announcements
+
+Pin remains **6a25f2d252ce45bd5adbe3baaccb3be3eed56279**. The existing
+command harness extracts these complete definitions, not modeled callbacks:
+
+| File | Complete definitions / pinned lines |
+| --- | --- |
+| `day.c` | `add_claim_gold` 635–653; `add_noble_points` 655–676; `add_unformed_sup` 678–696; `add_unformed` 699–719 |
+| `day.c` | `collect_taxes` 1756–1789; `special_locs_open` 2046–2085; `special_locs_close` 2088–2127; `clear_orders_sent` 2130–2144 |
+| `c1.c` | `next_np_turn` 881–901 |
+| `gm.c` | original `gold_taxes` scalar at 13 |
+
+Only phase instrumentation is omitted. No source dependency/pin change:
+all four files were already tracked. Go reuses its existing `clearOrdersSent`,
+real `newEnt`, `genItem`/`consumeItem`, `addNP`, owner/NP/lord helpers, output
+and database writer. It adds no alternate allocator, account model or separate
+upkeep/garrison harness. All ten new `accounts` sections require status **0**.
+Missing-dependency rejection precedes this status contract and `--update`.
+A temporary negative driver emitted the missing-dependency marker with status
+134 at the first accounts section: both ordinary and `--update` runs rejected
+it with status **2**, and the recording hash stayed unchanged. The probe was
+removed afterward.
+
+Recorded cases cover:
+
+- Unequal claim balances **9/71 → 34/96 → 59/121**, while system/NPC/silent
+  players retain their balances. A regular player lacking a player record
+  receives claim inventory without allocating that record; NP querying later
+  allocates it. Clearing orders covers positive/negative values and missing
+  records without allocation.
+- `next_np_turn` ignores asymmetric `first_turn` values **1/777**. Turns
+  **0/1/7/8/9/15/16/32767/-1** retain the C formula, including a turn-zero
+  grant, **7 → 1**, **8 → 0**, **9 → 7**, and signed-short NP wrap. Missing
+  records allocate even on a non-grant turn; nonregular players are skipped.
+- Unformed list lengths **0/4/5/6**: replenish exactly to five, leave five/six
+  untouched, include allocated NPC/system/silent records, and skip missing
+  regular/NPC records. Repeated calls do not allocate extras. A separate
+  malformed-list control verifies that stale/duplicate entries count verbatim;
+  it is not public bug evidence. Raw list state and real saved entities are
+  both compared. The shared mint produces a later unique item **62565** after
+  five unformed allocations versus **70368** after a full-list no-op; mixed
+  faction replenishment produces **60539**.
+- Castle iteration/ownership uses real `building_owner`, including its first
+  occupant behavior, unfinished-castle exclusion and ownerless castles. An
+  odd **11** cookies becomes **5** gold for the first owned castle, zero for
+  the next; unowned provinces retain **7/1** cookies until ownership changes.
+  One cookie is consumed despite producing zero gold. A reversed-construction,
+  asymmetric-owner control consumes **2147483647** cookies into **1073741823**
+  gold, preserving real prisoner output suppression. Repeated tax collection
+  emits ordinary zero-tax logs; totals, inventories, output bits and saved
+  state are compared.
+- Both seasonal functions execute all four real output branches, with
+  Summerbridge precedence over colliding Uldim flags. Uldim **1/2**, invalid
+  Summerbridge-only flags, cities and regions do not announce. Real faction
+  logs include `LOG_CODE` framing and province messages; saves show unchanged
+  route flags. The existing real-C turn-driver phase suite owns post_month's
+  month-2/month-6 calendar gates; it proves scheduling only.
+
+Two pinned C runs and Go match **636 sections / 46887 lines / 791460 bytes**.
+Previous **626 sections / 45421 lines / 770256 bytes** and input
+**14174 lines / 253908 bytes** remain exact prefixes, with no old byte changed.
+New input: **14488 lines / 259432 bytes**. Recording SHA-256:
+`f987d718a9b667f3687b97280debe46fd2e01418a678ae3571bcdb7db8186772`.
+Literal C trailing whitespace is retained.
+
+`garrison_gold` remains explicit at its existing post_month position; #116
+follows maintenance #87. No full post_month integration or full-world success
+is claimed, and no maintenance/account-command/report-body work is included.
+Version **0.62.0-alpha**; changes are **uncommitted**. Scope clarification:
+https://github.com/mdhender/g3g0/issues/84#issuecomment-6461896006.
+
+Final checks passed sequentially: command **636/46887**, move **135/7150**,
+helper **37/1487**, RNG **321 results**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152** plus phase **5/484**, calendar **2/119**, schedule
+**4/1801**, then default turn (raw status/stdout/stderr and one state file).
+Bounded `go vet ./...` and fresh `go test -count=1 ./...` passed afterward;
+test binaries used the shared `run-limited.sh` executor. Every compat call
+used `G3_REPO=$PWD/tmp/upstream.git`. No full-world run, new verified bug or
+blocker. `git diff --check` findings are only literal C trailing whitespace.

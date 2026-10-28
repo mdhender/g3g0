@@ -475,6 +475,45 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 					helperList(&stdout, "output", p.output)
 				}
 			}
+		case "accounts":
+			switch action := args.word(); action {
+			case "taxes":
+				w.collectTaxes()
+			case "claim":
+				w.addClaimGold()
+			case "np":
+				w.addNoblePoints()
+			case "unformed":
+				w.addUnformed()
+			case "sup":
+				w.addUnformedSup(args.num(t))
+			case "next":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "next np %d %d\n", n, w.nextNPTurn(n))
+			case "clear":
+				w.clearOrdersSent()
+			case "open":
+				w.specialLocsOpen()
+			case "close":
+				w.specialLocsClose()
+			case "state":
+				fmt.Fprintf(&stdout, "tax gold %d\n", w.goldTaxes)
+				for n := range w.loopKind(tPlayer) {
+					p := w.rpPlayer(n)
+					fmt.Fprintf(&stdout, "account %d allocated %d\n", n, b2i(p != nil))
+					if p != nil {
+						fmt.Fprintf(&stdout, "np gained %d spent %d sent %d\n", p.npGained, p.npSpent, p.sentOrders)
+						helperList(&stdout, "unformed", p.unformed)
+						helperList(&stdout, "output", p.output)
+					}
+					w.saveBox(&stdout, n)
+				}
+				for n := range w.loopKind(tUnform) {
+					w.saveBox(&stdout, n)
+				}
+			default:
+				t.Fatalf("unknown accounts %s", action)
+			}
 		case "production":
 			switch action := args.word(); action {
 			case "civ":
@@ -1056,6 +1095,16 @@ func runCommandSection(t *testing.T, lines []string) (output string) {
 				w.pPlayer(n).units.Append(a)
 			case "np":
 				w.pPlayer(n).noblePoints = int16(a)
+			case "first_turn":
+				w.pPlayer(n).firstTurn = int32(a)
+			case "sent":
+				w.pPlayer(n).sentOrders = int8(a)
+			case "unformed":
+				w.pPlayer(n).unformed.Append(a)
+			case "summer":
+				w.pSubloc(n).summerFlag = int8(a)
+			case "uldim":
+				w.pSubloc(n).uldimFlag = int8(a)
 			case "skill_np":
 				w.pSkill(n).npReq = int32(a)
 			case "unique":
