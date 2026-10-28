@@ -543,6 +543,12 @@ ilist trades_to_check;
 ''')
 PY
 
+# Expose only the existing static reader; all parsing and command loading
+# remains in the complete unchanged io.c translation unit.
+cat >"${WORK}/io-wrapper.c" <<'C'
+#include "io.c"
+void drv_read_boxes(char *path) { read_boxes(path); }
+C
 case "$(uname -s)" in
  Darwin) ldflags=(-Wl,-dead_strip) ;;
  *) ldflags=(-Wl,--gc-sections) ;;
@@ -550,7 +556,7 @@ esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -w -ffunction-sections -fdata-sections "${ldflags[@]}" \
  -I olympia -I lib -I "${WORK}" \
  "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" "${WORK}/hades-rng.c" "${WORK}/faery-rng.c" "${WORK}/npc-rng.c" \
- olympia/{code,glob,z,sout,io}.c \
+ olympia/{code,glob,z,sout}.c "${WORK}/io-wrapper.c" \
  lib/{checked_alloc,ilist,exit_views,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents,admits,trades,req_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
 sections=$(grep -c '^section ' "${CASES}")

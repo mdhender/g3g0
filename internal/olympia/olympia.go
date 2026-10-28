@@ -303,7 +303,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 		// artifacts only, not persistent state, input reads or diagnostics.
 		w.determineOutputOrder()
 		w.turnEndLocReports()
-		w.listOrderTemplatesState()
+		w.listOrderTemplates()
 		w.playerEntInfo()
 		w.characterReport()
 		w.playerBannerState()

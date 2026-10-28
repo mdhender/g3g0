@@ -23005,3 +23005,239 @@ entity 10 4 0
 entity 701 5 0
 report skill 1000 701 3 4
 report characters
+
+section report templates passwords absent empty present and broken mailer
+lore_root
+name 200 First faction
+name 201 Second faction
+entity 202 1 49
+name 202 Missing record
+report state 202
+report templates
+lore_file saved 200 player pl_regular|PL| pw |
+report saved saved
+lore_file saved 201 player pl_regular|PL| pw a secret with spaces| bm 1|
+report saved saved
+report templates
+lore_file saved 200 player pl_regular|PL| pw quote"inside| bm -1|
+report saved saved
+report templates
+report state 200
+report state 201
+report state 202
+sout state
+readlog 200
+readlog 201
+readlog 202
+
+section report templates autoquit even odd half thresholds and singular
+set turn 9
+field 200 last_order 8
+field 201 last_order 7
+set auto_quit 5
+report templates
+set auto_quit 4
+report templates
+set auto_quit 3
+report templates
+set auto_quit 1
+report templates
+set auto_quit 0
+report templates
+set auto_quit -1
+report templates
+save 200
+save 201
+readlog 200
+readlog 201
+
+section report templates own units loyalty thresholds prisoners and repeat queues
+entity 9000 3 3
+name 9000 Template plain
+name 1000 Contract noble
+name 1001 Fear prisoner
+link 9000 1000
+link 9000 1001
+field 200 unit 1000
+field 200 unit 1001
+field 1000 loyal 1
+field 1000 rate 49
+field 1001 loyal 3
+field 1001 rate 1
+field 1001 prisoner 1
+orders 200 200 format 17
+orders 200 1000 move north
+orders 200 1000 # retained comment
+orders 200 1001 wait time 2
+report templates
+report templates
+field 1000 rate 50
+field 1001 rate 2
+report templates
+report stored_orders 200
+save 1000
+save 1001
+readlog 200
+
+section report templates saved commands RUN negative zero one positive LOAD DONE
+lore_root
+entity 9000 3 3
+link 9000 1000
+field 200 unit 1000
+who 1000
+lore_file saved 1000 char 0|CO| li wait time 9| cs 2| wa -1|
+report saved saved
+orders 200 1000 move south
+report templates
+set wait 0
+report templates
+set wait 1
+report templates
+set wait 12001
+report templates
+set state 1
+report templates
+set state 0
+report templates
+save 1000
+dump
+report stored_orders 200
+readlog 200
+
+section report templates foreign active empty queued dead invalid and owned filters
+lore_root
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 1006 8 0
+field 1001 lord 201
+field 1002 lord 201
+field 1003 lord 201
+field 1004 lord 201
+field 1005 lord 201
+name 1001 Foreign queued
+field 1001 loyal 1
+field 1001 rate 1
+orders 200 200 faction queue
+orders 200 9999 invalid queue
+orders 200 1006 dead queue
+orders 200 1001 foreign queued order
+orders 200 1002 placeholder
+flush 200 1002
+orders 200 1003 placeholder
+flush 200 1003
+orders 200 1004 placeholder
+flush 200 1004
+orders 200 1005 placeholder
+flush 200 1005
+lore_file saved 1001 char 0|CO| li wait time 17| cs 2||1003 char 0|CO| li wait time 23| cs 1||1004 char 0|CO| li wait time 29| cs 2||1005 char 0|CO| li wait time 31| cs 3|
+report saved saved
+field 200 unit 1000
+orders 200 1000 own queued order
+report templates
+report templates
+report stored_orders 200
+save 1001
+save 1003
+save 1004
+save 1005
+readlog 200
+readlog 201
+
+section report templates foreign empty DONE and absent command produce no header
+field 1001 lord 201
+orders 200 1001 placeholder
+flush 200 1001
+orders 200 1000 placeholder
+flush 200 1000
+orders 200 9999 invalid queue
+entity 1002 8 0
+orders 200 1002 dead queue
+report templates
+report stored_orders 200
+readlog 200
+
+section report templates all subtypes missing records and reset routing
+entity 202 1 48
+entity 203 1 62
+entity 204 1 51
+entity 205 1 52
+entity 206 1 0
+name 204 Savage faction
+name 205 NPC faction
+name 206 Plain faction
+sout route -2 1000
+sout frame 3 7 1 13
+report templates
+sout state
+report state 202
+report state 203
+report state 204
+report state 205
+report state 206
+output 200 5
+output 204 5
+readlog 200
+readlog 201
+readlog 202
+readlog 203
+readlog 204
+readlog 205
+readlog 206
+
+section report templates direct character warning recipient ownership and prisoner suppression
+entity 9000 3 3
+link 9000 1000
+field 200 unit 1000
+field 1000 loyal 1
+field 1000 rate 49
+report template 1000 200
+field 1000 rate 50
+report template 1000 200
+field 1000 loyal 3
+field 1000 rate 1
+report template 1000 200
+report template 1000 201
+field 1000 prisoner 1
+report template 1000 200
+save 1000
+readlog 200
+readlog 201
+
+section report templates buffered cache renamed inode repeats and unchanged state
+lore_root
+set flush 0
+lore_file saved 200 player pl_regular|PL| pw cached secret|
+report saved saved
+report templates
+life rename log/200 log/original
+sout frame 4 11 1 17
+report templates
+sout state
+report state 200
+life path log/200
+life flush
+readfile log/original
+readlog 201
+life close
+report templates
+life flush
+readfile log/200
+
+section report templates immediate missing records allocate only autoquit own faction
+entity 202 1 49
+entity 203 1 62
+set immediate 1
+set auto_quit 0
+report templates
+report state 202
+report state 203
+set auto_quit 1
+report templates
+report state 202
+report state 203
+report files
+
+section report invalid templates direct nonplayer preserves output before orders_other assertion
+report template 200 1000

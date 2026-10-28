@@ -3,6 +3,104 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Complete order templates (#152)
+
+Existing order.go adds complete unchanged order.c `orders_template_sup`
+**370–454**, `orders_other` **457–505**, `orders_template` **508–547** and
+`list_order_templates` **550–570**. Main and the existing command oracle call
+the renderer once instead of listOrderTemplatesState; that copied projection
+is removed from report.go. The real player/unit loops, order queues, commands,
+names, loyalty/number formatting and sout.go cached output owner are reused.
+No handler, later report root, new source dependency or pin change is added.
+
+The existing report fixture adapter adds a direct template call and `saved`
+input action. A trivial wrapper includes complete unchanged io.c and exposes
+its existing static `read_boxes`; Go uses existing readBoxes. Existing
+`lore_file` creates actual saved PL/CO fixtures. Passwords, broken-mailer
+flags and command lines/states are therefore read by the actual saved-box
+parsers, not successful loader substitutes or new gameplay handlers. The
+original complete order template definitions were already extracted by this
+oracle; extraction, real loops/queue owners and missing-dependency guard stay
+unchanged. No compared C function is rewritten.
+
+Eleven appended sections (ten status **0**, one **134**) compare full raw
+template logs, output/frame state, saved records and retained queue contents:
+
+- Missing PL and absent/allocated-empty/nonempty passwords, embedded quotes
+  and spaces, broken mailer **0/1/-1**, repeated templates and allocation
+  after the initial password read. No escaping or independent mail fix.
+- Autoquit **5/4/3/1/0/-1**, ages **1/2** and immediate missing-record age
+  **0**. Integer half thresholds, singular/plural and disabled access match.
+- Own contract **49/50**, fear **1/2**, prisoners' name-without-location,
+  ordinary name/location, faction queues, multiple orders and raw comments.
+  Direct character recipients reach the separate contract warning at **49**,
+  suppress it at **50** and for fear/foreign recipients; prisoner output is
+  suppressed by the existing output owner, not by skipping the template.
+- Saved RUN wait **-1/0/1/12001** reaches still~executing, zero/plural,
+  one/singular and comma-number output; LOAD prints the stored line and DONE
+  omits it. The stored command and queued follow-up remain unchanged.
+- Foreign queued orders print without names/current command/loyalty warnings.
+  Empty foreign LOAD/RUN/**ERROR** queues still cause empty templates; absent
+  and DONE commands do not. The foreign heading is emitted only once, and
+  only when a template survives. Faction-self, owned-unit, invalid-box and
+  **T_deadchar 8** entries are filtered at their original positions.
+- System **48** and silent **62** missing records remain absent; regular
+  **49**, savage **51**, NPC **52** and plain subtype **0** receive templates.
+  MASTER uses OUT_TEMPLATE **5**, then resets routing to **0/0**, preserving
+  indent/second-indent/style/unit fields. Immediate mode allocates a missing
+  faction only when autoquit explicitly accesses it.
+- Buffered repeats keep the renamed FILE/inode: `log/200` stays missing while
+  `log/original` receives **250 raw bytes**, then close/reset permits a new
+  **140-byte** `log/200`. Observers explicitly flush; rendering itself does
+  not close or reset cache ownership. A direct nonplayer PL argument reaches
+  the original **order.c:464** assertion after earlier output.
+
+Numeric fixtures above were verified against pinned oly.h/sout.h, including
+LOY_contract/fear **1/3**, DONE/LOAD/RUN/ERROR **0/1/2/3**, player/character
+**1/2**, deadchar **8**, and all subtype/routing constants. The actual new
+recording was inspected to verify reached branches, not just case names.
+
+At **0.92.0-alpha**, unchanged real C runs twice deterministically and Go
+matches **1072 sections / 72518 lines / 1388090 output bytes**. All inherited
+**1061 sections / 71543 lines / 1368616 output bytes** and **23007 input
+lines / 432470 input bytes** remain exact byte prefixes against HEAD.
+New input totals **23243 lines / 437538 bytes**. Output SHA-256:
+`c76cb77668157edfb55f984dd5682ab252af3dae9fda14c113967641ef84a99a`.
+Input SHA-256:
+`9ff4678da1296821d37b4bd1c81a7d98ef56cd917e9ffed4b5f2bfd1fd2e13cc`.
+#168 live native traversal still matches raw C/C/Go with shared input
+unchanged. Logs: `tmp/issue152-command{,-update}.log`.
+
+Four temporary linker probes wrapped only the direct orders_template call
+with nonplayer pl **1000** at expected-failure section **1071**. Marker plus
+return **0** or abort **134**, in normal and update modes, all rejected with
+harness status **2** at the dependency guard, BEFORE expected-failure/status
+acceptance or recording replacement. The recording hash stayed unchanged in
+all four runs. Probe source/compiler wrapper were removed before the final
+ordinary comparison. Logs: `tmp/issue152-negative-{0,134}-{default,update}.log`.
+
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded defaults pass, using explicit isolated G3_REPO
+for every tool and run_limited for engines and test executables. Counts:
+move **135/7158**, helper **37/1487**, RNG **321**, code **43/969**, loadsave
+**61/3411**, turn-driver **7/152**, phase **5/484**, calendar **2/119**,
+schedule **4/1801**. The default turn compares raw status/streams and two cwd
+entries; it runs no world turn. Olympia's fresh default suite took **1.384s**.
+Logs: `tmp/issue152-{move,helper,rng,code,loadsave,turn-driver,turn,vet,test}.log`.
+Source-only diff whitespace check passes; literal C saved-record trailing
+whitespace is retained. Matching captures and temporary probes are removed.
+
+Independent parent review verified all four complete C definitions unchanged
+and present exactly once. The same eight-tool tier, bounded vet and fresh
+tests pass (Olympia **1.485s**); logs `tmp/parent152-*.log`.
+No new defect/prerequisite or upstream blocker found. No later root,
+full-corpus or stage-exit acceptance. Fresh parent strict post-#152
+result has deterministic C repeats, C/Go **0**, equal raw streams and
+paths/types/modes, eight saved-report byte differences, exit **1** before
+lifecycle; log `tmp/parent152-strict.log`, captures `tmp/parent-stage2-turn`.
+G3 #358 is nonblocking and unchanged; its division/Go panic and
+malformed **C136/Go2** are NOT passing parity.
+
 ## Complete character-report root (#151)
 
 Existing report.go implements complete unchanged report.c `char_rep_sup`

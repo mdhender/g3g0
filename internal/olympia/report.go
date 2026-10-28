@@ -530,23 +530,6 @@ func (w *world) reportOutputState(pl int) {
 	w.pPlayer(pl)
 }
 
-// listOrderTemplatesState projects order.c:369–577. Template traversal only
-// reads existing commands/order queues, including orders_other's foreign
-// units. All template text and loyalty/time-left formatting remain stage 2.
-func (w *world) listOrderTemplatesState() {
-	for pl := range w.loopKind(tPlayer) {
-		if w.subkind(pl) == subPlSystem || w.subkind(pl) == subPlSilent {
-			continue
-		}
-		w.reportOutputState(pl)
-		// orders_template_sup also allocates explicitly for the faction's
-		// autoquit reminder, even when output is in immediate mode.
-		if w.autoQuitTurns > 0 {
-			w.pPlayer(pl)
-		}
-	}
-}
-
 // reportAccountState is report.c:1725–1823. The account command/file-read
 // block is #if 0: no active account input or charge_account is implemented.
 // style(0), then the three html()/STYLE_PREV pairs, leave the style at zero.

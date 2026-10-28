@@ -6,6 +6,42 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Complete order templates (#152)
+
+Existing order.go implements complete pinned order.c orders_template_sup
+**370–454**, orders_other **457–505**, orders_template **508–547** and
+list_order_templates **550–570**. Main/oracle replace listOrderTemplatesState
+with the renderer; the copied report.go projection is removed. Real loops,
+saved commands, order queues, names/loyalty and sout.go's cached FILE owner
+are reused, not modeled or duplicated. A trivial wrapper exposes unchanged
+io.c's static read_boxes to the existing report fixture adapter; existing
+Go readBoxes and lore_file supply saved PL/CO inputs. No command handler,
+new upstream dependency/pin or later report root.
+
+At **0.92.0-alpha**, eleven appended sections match complete unchanged real
+C twice and Go: **1072 sections / 72518 lines / 1388090 output bytes**.
+Inherited **1061 sections / 71543 lines / 1368616 output bytes** and **432470
+input bytes** remain exact prefixes. Actual raw logs and records cover absent,
+empty and present passwords, broken mailer, autoquit half thresholds,
+contract **49/50**, fear **1/2**, saved RUN **-1/0/1/12001**, LOAD/DONE,
+foreign empty/queued orders, dead/invalid/prisoner filtering, all subtypes,
+immediate allocation, route/frame resets and renamed cached inode repeats.
+Numeric constants and reached branches were verified against the pin and
+recording. Four temporary marker probes (0/134, normal/update) reject before
+expected-failure acceptance/update, retaining the recording hash; removed.
+See [complete closure, hashes and evidence](command-compat#complete-order-templates-152).
+
+Sequential command/move/helper/RNG/code/loadsave/turn-driver/default-turn,
+bounded vet and fresh bounded defaults pass with explicit isolated G3_REPO
+and run_limited supervision. Logs: `tmp/issue152-*.log`. Source-only whitespace
+check passes; literal C recording whitespace is retained. Independent parent
+review and the same tool/vet/fresh-test tier pass; logs `tmp/parent152-*.log`.
+No stage-exit claim. Fresh post-#152 strict evidence remains deterministic
+C repeats, C/Go **0**, equal streams/paths/types/modes, eight report-byte
+differences, exit **1** before lifecycle; log `tmp/parent152-strict.log`.
+G3 #358 stays nonblocking and
+unchanged; division/Go panic with malformed **C136/Go2** is NOT passing parity.
+
 ## Complete character-report root (#151)
 
 Existing report.go replaces characterReportState with complete pinned

@@ -1682,7 +1682,12 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "provinces":
 				w.summaryProvincesState()
 			case "templates":
-				w.listOrderTemplatesState()
+				w.listOrderTemplates()
+			case "template":
+				who, pl := args.num(t), args.num(t)
+				w.ordersTemplate(who, pl)
+			case "saved":
+				w.readBoxes(args.word())
 			case "account":
 				w.reportAccountState()
 			case "summary":

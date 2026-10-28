@@ -14,6 +14,7 @@
 
 void glob_init(void);
 void init_lower(void);
+void drv_read_boxes(char *path);
 int drv_load(struct command *c);
 int find_command(char *s);
 void drv_state(struct command *c, int s);
@@ -1209,6 +1210,14 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"banner")) player_banner();
    else if(!strcmp(text,"provinces")) drv_summary_provinces();
    else if(!strcmp(text,"templates")) list_order_templates();
+   else if(!strcmp(text,"template")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    orders_template(n,a);
+   }
+   else if(!strcmp(text,"saved")) {
+    if(sscanf(line,"%*s %*s %8191s",text)!=1) return 2;
+    drv_read_boxes(text);
+   }
    else if(!strcmp(text,"account")) report_account();
    else if(!strcmp(text,"summary")) summary_report();
    else if(!strcmp(text,"factions")) player_report();

@@ -11,10 +11,8 @@ import (
 )
 
 // Ported from olympia/order.c: the parts of the order queues that
-// get_command() uses (rp_order_head(), top_order() and pop_order()), and
-// load_orders() and save_orders(), which keep the queues in libdir/orders,
-// one file per player, with what they call. The rest of order.c is left
-// for later stages.
+// get_command() uses, load_orders()/save_orders() and the complete order
+// template renderers. Remaining command handlers belong to later stages.
 
 // pOrderHead is p_order_head(): player pl's order queue for unit who,
 // appended to the player's queues if it has none. pl gets an
@@ -272,4 +270,124 @@ func (w *world) saveOrders() {
 	for i := range w.loopKind(tPlayer) {
 		w.savePlayerOrders(i)
 	}
+}
+
+// ordersTemplateSup is the complete order.c:370–454 template body. Commands
+// are only read here; rendering never loads, executes or consumes an order.
+func (w *world) ordersTemplateSup(who, num, pl int) {
+	nam := ""
+	if pl == w.player(num) {
+		if w.isPrisoner(num) || w.kind(num) != tChar {
+			nam = sout("  # %s", w.justName(num))
+		} else {
+			nam = sout("  # %s in %s", w.justName(num), w.boxName(w.subloc(num)))
+		}
+	}
+	w.commandOut(who, "unit %s%s", boxCodeLess(num), nam)
+	w.indent += 3
+	if pl == w.player(num) {
+		c := w.rpCommand(num)
+		if w.kind(num) == tPlayer && w.autoQuitTurns > 0 {
+			p := w.pPlayer(num)
+			turns := int(int32(w.sysclock.turn) - p.lastOrderTurn)
+			if turns >= int(w.autoQuitTurns/2) {
+				w.commandOut(who, "#")
+				w.commandOut(who, "# You have not sent in orders for %d turn%s.", turns, addS(turns))
+				w.commandOut(who, "# If you do not submit orders for %d turn%s,", w.autoQuitTurns, addS(int(w.autoQuitTurns)))
+				w.commandOut(who, "# your faction will be removed from the game.")
+				w.commandOut(who, "#")
+			}
+		}
+		if p := w.rpChar(num); p != nil && ((p.loyKind == loyContract && p.loyRate < 50) ||
+			(p.loyKind == loyFear && p.loyRate < 2)) {
+			w.commandOut(who, "#")
+			w.commandOut(who, "# %s has loyalty %s and will renounce", boxCodeLess(num), w.loyalS(num))
+			w.commandOut(who, "# loyalty at the end of this turn.")
+			w.commandOut(who, "#")
+		}
+		if c != nil && (c.state == stateRun || c.state == stateLoad) {
+			if c.state == stateRun {
+				timeLeft := " (still~executing)"
+				if c.wait >= 0 {
+					timeLeft = sout(" (executing for %s more day%s)", niceNum(int(c.wait)), addS(int(c.wait)))
+				}
+				w.commandOut(who, "# > %s%s", clib.Str(c.line), timeLeft)
+			} else {
+				w.commandOut(who, "%s", clib.Str(c.line))
+			}
+		}
+	}
+	if l := w.rpOrderHead(pl, num); l != nil {
+		for _, s := range l.l {
+			w.commandOut(who, "%s", s)
+		}
+	}
+	w.indent -= 3
+	w.commandOut(who, "")
+}
+
+// ordersOther is order.c:457–505, including active foreign commands with
+// empty queues (which cause a template, but are not themselves printed).
+func (w *world) ordersOther(who, pl int) {
+	assert(w.kind(pl) == tPlayer, "olympia/order.c", 464, "kind(pl) == T_player")
+	p := w.rpPlayer(pl)
+	if p == nil {
+		return
+	}
+	first := true
+	for _, q := range p.orders {
+		num := int(q.unit)
+		if pl == num || !w.validBox(num) || w.kind(num) == tDeadchar || p.units.Lookup(num) >= 0 {
+			continue
+		}
+		c, l := w.rpCommand(num), w.rpOrderHead(pl, num)
+		if (c == nil || c.state == stateDone) && (l == nil || l.l.Len() == 0) {
+			continue
+		}
+		if first {
+			w.commandOut(who, "#")
+			w.commandOut(who, "# Orders for units you do not control as of now")
+			w.commandOut(who, "#")
+			first = false
+		}
+		w.ordersTemplateSup(who, num, pl)
+	}
+}
+
+// ordersTemplate is order.c:508–547. Keep password lookup before the first
+// output, since output may allocate the absent player record.
+func (w *world) ordersTemplate(who, pl int) {
+	pass := ""
+	if p := w.rpPlayer(pl); p != nil && p.password != nil && *p.password != "" {
+		pass = sout(" \"%s\"", *p.password)
+	}
+	w.commandOut(who, "")
+	prefix := ""
+	if p := w.rpPlayer(pl); p != nil && p.brokenMailer != 0 {
+		prefix = " "
+	}
+	w.commandOut(who, "%sbegin %s%s  # %s", prefix, boxCodeLess(pl), pass, w.justName(pl))
+	if w.player(who) == pl && w.kind(who) == tChar {
+		if p := w.rpChar(who); p != nil && p.loyKind == loyContract && p.loyRate < 50 {
+			w.commandOut(who, "")
+			w.commandOut(who, "# WARNING -- loyalty is %s", w.loyalS(who))
+		}
+	}
+	w.commandOut(who, "")
+	w.ordersTemplateSup(who, pl, pl)
+	for i := range w.loopUnits(pl) {
+		w.ordersTemplateSup(who, i, pl)
+	}
+	w.ordersOther(who, pl)
+	w.commandOut(who, "end")
+}
+
+func (w *world) listOrderTemplates() {
+	w.outPath, w.outAltWho = master, 5 // OUT_TEMPLATE
+	for pl := range w.loopKind(tPlayer) {
+		if w.subkind(pl) != subPlSystem && w.subkind(pl) != subPlSilent {
+			w.ordersTemplate(pl, pl)
+		}
+	}
+	w.outPath, w.outAltWho = 0, 0
 }
