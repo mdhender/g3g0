@@ -7,9 +7,71 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `9a03d126b329ed466c4af48425553c025eaca26f`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 The script exports that revision with `git archive`, so the clone's checkout does not matter.
+
+## Shared USE assertion provenance (#290 amended scope)
+
+At **0.136.2-alpha**, the parent's narrow #290 amendment advances check from
+**f73e48118805ffe8ff5e763bfa4f20ae00c3a705** to the immutable merged pin above,
+alongside command/helper. Command's new C oracle requires the shared Go
+`skill_school` assertion at **use.c:1189**, incompatible with check's old-pin
+**1182**. Parent independently reproduced this source-line-only conflict and
+authorized these two extra pin/recording refreshes in #290; #291 retains the
+remaining eight affected pins and full-corpus proof. No check_db gameplay,
+extractor, assertion remapping or test weakening is added here.
+
+Complete relevant old/new source diff contains only the seven-line USE guard.
+All **46 extracted helper definitions** are body-identical at old/new pins and
+verbatim in the new generated source under original `#line` directives.
+`skill_school` is **157 bytes**, SHA-256
+`3f855279d65348a713e156f3e9621bed2c62033d59ef7962f3fe42c207465f67`;
+its return-type line moves **1174→1181**, assertion **1182→1189**. The entire
+check.c, io.c and world.tgz are unchanged from the old pin, hashes respectively
+`e60cef6a324e0b2e4708b8b78bb3769243295e380e4ec04f42bfda67f9143f27`,
+`8ce3a1ccbb044a973004f87e48ae51ed82590a5dd614c96237d4424652f7824c`,
+`5c59fc014ea3d2f9a14e4756bfa7ccc8c7c11b23bf6611320713ec19760d8ce9`.
+All **101** pristine archive files match the merged pin. Generated helpers.c:
+**17233 bytes**, SHA-256
+`e6a4c5187a06a6eefdb1a267c371aeedfb7a8a51f4e69acfc34a565dc08a3f0a`.
+Preflight check-driver: **206936 bytes**, SHA-256
+`f357580f82202f744f09ce7f6fa4ba2c497ff38db713461b8d910add8720d58a`.
+
+Default preflight runs unchanged real C twice before replacement/Go. The
+separate byte audit rejects dependency/NYI/stub/sanitizer markers before
+accepting the results; raw statuses remain **21 × 0 / 10 × 134**. The reviewed
+diff is **only output line 1634's assertion 1182→1189**; paths/types/modes,
+serialized bytes and every other output byte are unchanged. Normal --update
+independently repeats unchanged C twice before replacement/Go. Both pairs
+and the recording match: **31 sections / 2347 lines / 47399 bytes**, SHA-256
+`dda3edf28f247c271a430dc258d3059a9e93bede685fdce054144760059b62bc`.
+Old output SHA-256:
+`1888acfb30da506493e9cecd896241ab3cc133c832317c17b4e770aa6f30b43c`.
+Input remains unchanged, SHA-256
+`5e256d6dd7e158e78f5971f274d51144e639b1b6e8488b30565f097f2ff78423`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue290-check-preflight" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/check-compat/run.sh # expected 1: exact reviewed old-pin line diff
+# Audit both C outputs and source extraction before replacement.
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue290-check-update" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/check-compat/run.sh --update
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue290-check-default" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/check-compat/run.sh # fresh C/C/Go match, no recording update
+```
+
+Every C/Go engine/test is bounded by shared run_limited (**10s** per process).
+Inputs/source are disposable physical git archives from isolated bare
+`tmp/upstream.git`, never shared upstream checkouts or protected caches.
+Evidence: `tmp/issue290-{check-preflight,check-update,check-default,amend-source-proof}.log`;
+post-amendment routine gate results and exact commands are in
+[command-compat's #290 record](../command-compat/README.md#missing-use-argument-290-follow-c).
+Matching captures, generated source and task binaries are removed after proof.
+**No new-pin full-corpus result is claimed here**; that proof remains #291.
 
 The port follows `olympia/check.c` (all of it), in `check.go`:
 

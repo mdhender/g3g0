@@ -131,7 +131,11 @@ func TestCommandUseItemNYIBoundaries(t *testing.T) {
 			}
 			path := ""
 			w.useCoveragePath = &path
-			c := &command{who: 1000, a: 60000, b: 7, wait: 99, poll: 1}
+			c := &command{who: 1000, wait: 99, poll: 1}
+			line := "use 60000 7"
+			if !w.olyParse(c, &line) {
+				t.Fatal("parse failed")
+			}
 			defer func() {
 				if _, ok := recover().(notImplemented); !ok {
 					t.Fatal("item gameplay did not stop NYI")

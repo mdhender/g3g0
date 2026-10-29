@@ -6,8 +6,60 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `e733acb63bacb21167a1f2589d8dcdc023364896`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `9a03d126b329ed466c4af48425553c025eaca26f`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
+
+## Shared USE assertion provenance (#290 amended scope)
+
+At **0.136.2-alpha**, the parent's narrow #290 amendment advances helper from
+**e733acb63bacb21167a1f2589d8dcdc023364896** to the immutable merged pin above,
+alongside command/check. The seven-line bare-USE guard shifts `skill_school`'s
+assertion **use.c:1182→1189**. Command's new C recording and helper's old one
+cannot both match the shared Go owner; the parent independently reproduced
+this conflict before authorizing this pin/recording-only extension. #291
+retains the remaining eight affected pins and full-corpus proof. No helper
+gameplay, extractor, assertion remapping or test weakening is added here.
+
+Complete relevant source diff review finds only the use.c guard in helper's
+read set. All **43 extracted helper definitions** have byte-identical bodies
+at old/new pins and occur verbatim under their real source `#line` directives.
+`skill_school` is **157 bytes**, SHA-256
+`3f855279d65348a713e156f3e9621bed2c62033d59ef7962f3fe42c207465f67`;
+its return-type line moves **1174→1181**. All **100** pristine archive files
+match the immutable merged pin. Generated helpers.c: **16222 bytes**, SHA-256
+`d075f5fd4d5d20493a190c8c65349f8a74ce7a6559341a4ddb8e88388801b294`.
+Preflight helper-driver: **134040 bytes**, SHA-256
+`1aae4266d52b2c4558f6b588a3542693888f8f55613862410d954849e11a4529`.
+
+Before replacement or Go, default preflight runs unchanged real C twice,
+checks determinism and exposes exactly the expected one-line source-location
+diff. A separate byte audit rejects dependency/NYI/stub/sanitizer markers
+before accepting those results; statuses remain **17 × 0 / 20 × 134**.
+The normal --update then independently repeats C twice before replacement/Go.
+Both pairs and the recording match: **37 sections / 1487 lines / 58334 bytes**,
+SHA-256 `38eb129601726ec0e1bde510eea054c92fb5d51ed01c132933eb25504d08b5ef`.
+Only line **718** changes **1182→1189**; every other byte is exact. Old output
+SHA-256: `5bcd6faecfaae513f3266602ccf153af7181866a81e93c75746b3899a2d1ed5b`.
+Input remains unchanged, SHA-256
+`9905358ce5a0cb307f95e39396075dae205cec0479eec1edbe44aae10a853b4a`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue290-helper-preflight" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/helper-compat/run.sh # expected 1: exact reviewed old-pin line diff
+# Audit both C outputs and source extraction before replacement.
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue290-helper-update" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/helper-compat/run.sh --update
+```
+
+Both engine runs and the Go test are bounded by shared run_limited (**10s**
+per process). Inputs/source are disposable physical git archives from isolated
+bare `tmp/upstream.git`, never shared upstream checkouts or protected caches.
+Evidence: `tmp/issue290-{helper-preflight,helper-update,amend-source-proof}.log`;
+post-amendment routine gate results and exact commands are in
+[command-compat's #290 record](../command-compat/README.md#missing-use-argument-290-follow-c).
+Matching captures, generated source and task binaries are removed after proof.
 
 At #131's pin move, two identical C runs retain all 37 sections / 1487 lines;
 the only recording delta is is_unit's swear.c assertion offset 297→294.

@@ -1,7 +1,177 @@
 # Command dispatch, scheduler, waits, interruptions and ownership transfers
 
 Pinned reference: [Olympia G3 at
-7064d6c1767ba09772dc5e12af57719806184258](https://github.com/playbymail/olympia-g3/tree/7064d6c1767ba09772dc5e12af57719806184258).
+9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
+
+## Missing USE argument (#290, follow-C)
+
+**0.136.2-alpha**, Linux amd64, GCC 12.2.0, Go 1.26.4. This tool's
+default pin advances from 7064d6c to merged PR #365 **9a03d12**. Its tree
+`765148d47086f44dbd0be21c023e5691dbc6a41b` is identical to later head
+3434e8e. The parent-authorized narrow scope amendment also moves helper/check
+to this pin for shared assertion provenance (details below). The remaining
+eight affected tools' independent pins/recordings remain untouched for #291.
+The sole gameplay change is use.c:535–541's argument-count guard, after
+`use_skill = sk`, before validation/item dispatch. Bare USE emits exactly
+`Must specify what to use.` and increments `invalid / checks`; explicit
+`""` remains an argument with the original invalid-skill diagnostic.
+No parser clearing, successful callback, ATTACK, fog or console is added.
+
+Four appended sections use actual queue/load/do dispatch, complete command
+and USE dumps, save_box and state-export, retained queues, command fields,
+player counts/logs and entity/legacy RNG aftermath. They distinguish first
+bare USE; targeted USE and original `promote 9999 aaaa bbbb cccc` followed by
+bare USE; saved CO/li reparsing then bare USE; and explicit quoted empty
+arguments before/after bare USE. The existing `persist_command` writer/reader
+is reused: its 71-byte file contains the longer `li`, and the pre-load dump
+shows **[promote] [9999] [aaaa] [bbbb] [cccc]**, not empty slots. Original
+missing-argument's README/script/Lua and complete C dispatch/parser/load/save
+callers were read; no upstream fixture is rewritten or rebaselined.
+The existing item-NYI boundary test now parses its actual `use 60000 7`
+instead of constructing an impossible argumentless command with `a=60000`.
+All its NYI/accounting assertions remain intact and pass.
+
+**Necessary source-location-only exception to inherited output prefixes:**
+the exact seven-line upstream insertion shifts subsequent use.c assertions
+by +7. Real C therefore changes **21 inherited lines**, including stage-3
+lines, and nothing else in the inherited output. Go's ten corresponding
+assertion-location literals follow the new source; assertion conditions and
+timing are unchanged. Mappings: **648→655, 908→915, 950→957, 990→997,
+1182→1189, 1283→1290, 1349→1356, 1358→1365, 1371→1378, 2126→2133**.
+The last is not exercised in this recording. No output normalization or
+historical `#line` remapping is used. The source-proof log enumerates every
+changed old line. All other inherited bytes, including **67 high-bit bytes /
+2049 trailing-space lines** (stage-3 **13 / 1597**), remain exact. Both entire
+input prefixes, **742721 / 578307 bytes**, remain exact, including high bits.
+
+Current oracle: **1785 sections / 149824 output lines / 2909533 bytes**.
+Input: **39803 lines / 744331 bytes**, SHA-256
+`71adf26e7a9fd8f8e3c012da92771541944eeaefce923948b4de3e2688b49866`.
+Output SHA-256:
+`9b038ceb5ba7b42bfd7842a81c144e4ff6430973e7d0f78e9fac9e418a1c4f00`.
+Appended: **107 input lines / 1610 bytes**, **1726 output lines / 29142 bytes**.
+The 2880391-byte updated inherited output prefix hashes to
+`add8d4bf76bc455e80238b93f6881d27f143b7fa76a35e52fdd2d60e6610fc7e`;
+the 2134398-byte stage-3 output prefix to
+`1eabf595ecf06bcde56319a75012527a42dabb7e7218191b69006a86accccabe`.
+Old hashes/counts in historical sections below describe their own pins.
+
+Complete original use.c SHA-256:
+`a3b02c162764c06c10e0f3fc8b07a26ca304b203455e4973471aae9f5c47b27d`.
+The unchanged extracted `int v_use` definition (source lines 524–660,
+**2655 bytes**) hashes to
+`de1496d831f2f70e4f1a501a7c3b9816ed4336e5f4518b3d57ee8d0809f56d9f`.
+Source proof verifies exact definitions and original `#line` provenance for
+v/d/i_use, v/d_use_item, skill_school and char_np_total; generated helpers.c
+is **447819 bytes**, SHA-256
+`f0ba2942f2b93b53dfe364d0308e0655046d76d7c4cabbd96ad0e9a9ee05e8db`.
+Before-fix C driver: **855760 bytes**, SHA-256
+`c75d341d2011e4c91489c1c19ef7750583d5fdb3e0dc01d52af8ede89975f879`;
+default-repeat driver SHA-256
+`d03cdef416db9b07fe37a5c69c77b633a57dfc61926815cd7505e27faab9ac88`
+(different absolute build directory). Both C/C output pairs match the entire
+recording hash above. Source is a pristine git archive from isolated bare
+`tmp/upstream.git`; shared upstream working copies and protected caches are
+never built or run. Each tool generates its disposable physical inputs.
+
+Before any real C update, four actual compiled native marker controls
+(**0 / SIGABRT 134 × default / --update**) emit
+`missing dependency: native NYI marker control`; all reject with harness **2**
+before expected-status acceptance or recording replacement. The old recording
+hash remains unchanged after each. Control binary calls puts/fflush then
+raises SIGABRT iff MARKER_ABORT is set; direct bounded calls verify both raw
+statuses. A temporary CC adapter compiles that control as the requested `-o`
+driver, leaving the actual harness/marker gate unchanged. Controls use
+`CONTROL_SOURCE=tmp/issue290-controls/marker.c`,
+`CC=tmp/issue290-controls/cc.sh`, and disposable
+`WORK=tmp/issue290-controls/work`; unset/set MARKER_ABORT for 0/134.
+Temporary helpers/binaries and matching captures are removed after proof.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" bash tools/affected.sh \
+  7064d6c1767ba09772dc5e12af57719806184258 \
+  9a03d126b329ed466c4af48425553c025eaca26f
+# Four marker controls above run before --update, using this same command.
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue290-command-before" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/command-compat/run.sh --update
+# C/C deterministic first; old Go then panics in vUse at c.parse[1], length 1.
+# After the guard, no further recording update:
+. tools/lib/timeout.sh
+G3_REPO="$PWD/tmp/upstream.git" run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+```
+
+Every engine/test runs through run_limited/run-limited.sh (defaults **10s**
+per compat process except turn **120s**; standalone vet/tests **120s**,
+2s kill grace). All eight defaults run sequentially.
+
+**Historical initial-scope blocker (resolved by the amendment below):**
+initial vet passed; command, move, rng, code, loadsave, turn-driver and turn
+defaults passed but helper failed. Fresh full-enabled tests had exactly
+**two failures**, TestHelperMatchesC and TestCheckMatchesC:
+their unchanged old-pin C records assert **use.c:1182**, while the real new-pin
+source and Go assert **1189**. Helper's actual old-pin C/C runs matched its
+old recording before Go failed. This is an irreconcilable shared source-line
+contract while command alone moves its pin: retaining Go's 1182 instead would
+fail the new real-C command oracle at eight lines. The initial task was
+correctly left unaccepted; its failed logs are retained rather than erased.
+
+**Parent-amended scope, resolved routine gates:** parent independently
+reproduced the conflict (`tmp/parent290-cross-pin.log`) and amended #290,
+#291 and #289. This same implementer additionally moves **helper from e733acb**
+and **check from f73e481** to the same immutable merged pin, with unchanged
+real-C recording refreshes and provenance docs. #291 retains the remaining
+eight affected pins and complete pin-change/full-corpus proof. No other
+gameplay change, test weakening, assertion remapping or normalization occurs.
+Read [helper's evidence](../helper-compat/README.md#shared-use-assertion-provenance-290-amended-scope)
+and [check's evidence](../check-compat/README.md#shared-use-assertion-provenance-290-amended-scope).
+Each default preflight runs real C twice **before** replacement/Go, exposing
+only its one **1182→1189** assertion line; the separate byte/source/marker
+audit passes. Each --update independently repeats unchanged C twice before
+replacement/Go. All other bytes and both inputs remain unchanged.
+
+After those refreshes, the exact bounded vet/fresh full-enabled commands
+above pass: **11 test packages**, Olympia **2.453s**, with the same **10**
+explicit opt-in/child-entry skips. All eight sequential defaults above now
+**pass**; command repeats unchanged C twice and matches fresh Go (**1.757s**),
+including unchanged native traversal input. Helper/check update runs both
+pass C/C/Go; helper default also passes freshly in the eight-tool sequence.
+An additional fresh check default passes C/C/Go without recording replacement
+(`tmp/issue290-check-default.log`).
+Full-world serializer/fixture parity is not inferred from G3G0_FULL without
+game lists; no full-corpus acceptance is claimed by this bounded task.
+
+Evidence retained in `tmp/issue290-{command-before,negative-proof,source-proof,
+affected,vet,tests,vet-final,tests-final,defaults}.log` and
+`tmp/issue290-{command,move,helper,rng,code,loadsave,turn-driver,turn}-default.log`.
+Amendment evidence: `tmp/issue290-{helper,check}-{preflight,update}.log`,
+`tmp/issue290-amend-{preflight,source-proof,vet,tests,defaults}.log`, and
+`tmp/issue290-amend-{command,move,helper,rng,code,loadsave,turn-driver,turn}-default.log`.
+Initial blocked-state summary: `tmp/issue290-final-state.log`; final amended
+summary: `tmp/issue290-amend-final-state.log`. Retained log digest index:
+`tmp/issue290-evidence.sha256`.
+The before log records C/C determinism before the decisive Go panic; final
+amended command log records the fresh C/C/Go pass and unchanged native input.
+#289 remains open. Whole original missing-argument acceptance still waits for
+complete ATTACK #235 / fog #264; console/five immediate guards remain stage 5.
+
+Independent parent acceptance reviewed the complete pinned dispatcher and
+all engine/test/recording changes, reproduced the initial cross-pin failure,
+and verified the full inherited input prefix and all 21 source-location-only
+output changes. Bounded vet and fresh full-enabled tests pass again (11 test
+packages, Olympia **2.836s**). Eight sequential defaults plus the additional
+check default pass without recording updates; command repeats **1785 sections /
+149824 lines**, including raw native traversal. Evidence:
+`tmp/parent290-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn,check}.log`.
+All retained implementer evidence digests verify in `tmp/parent290-evidence.log`.
+This accepts only amended #290, not #291's full-corpus or stage/family exit.
 
 ## Missing GM arguments (#288, follow-C)
 

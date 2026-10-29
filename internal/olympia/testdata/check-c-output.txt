@@ -1631,7 +1631,7 @@ check_db()
 	check_eat_player: creating eat player [203]
 	check_npc_player: creating npc player [206]
 	check_garr_player: creating garrison player [207]
-assertion failure: olympia/use.c (1182): count++ < 1000
+assertion failure: olympia/use.c (1189): count++ < 1000
 exit 134
 d 755 lib
 d 755 lib/fact

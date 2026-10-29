@@ -348,6 +348,11 @@ func (w *world) addSkillExperience(who, sk int) {
 func (w *world) vUse(c *command) int {
 	sk, who := int(c.a), int(c.who)
 	c.useSkill = int32(sk)
+	if c.parse.Len()-1 < 1 {
+		w.commandOut(who, "Must specify what to use.")
+		w.useCoverageSkill(0, ucovChecks)
+		return 0
+	}
 	invalid := func() int {
 		w.commandOut(who, "%s is not a valid skill to use.", c.parse[1])
 		w.useCoverageSkill(0, ucovChecks)
@@ -415,7 +420,7 @@ func (w *world) vUse(c *command) int {
 		w.commandOut(who, "Work to produce one %s.", w.justName(int(p.produced)))
 	} else {
 		fmt.Fprintf(w.stderr, "sk == %s\n", w.boxName(sk))
-		assert(false, "olympia/use.c", 648, "FALSE")
+		assert(false, "olympia/use.c", 655, "FALSE")
 	}
 	w.useCoverageSkill(ent, ucovOk)
 	return 1
@@ -506,7 +511,7 @@ func (w *world) vUseItem(c *command) int {
 	}
 	if key < 1 || key > useKeyMax {
 		fmt.Fprintf(w.stderr, "bad use key: %d\n", key)
-		assert(false, "olympia/use.c", 908, "FALSE")
+		assert(false, "olympia/use.c", 915, "FALSE")
 	}
 	var ret int
 	switch key {
@@ -546,7 +551,7 @@ func (w *world) dUseItem(c *command) int {
 		panic(notImplemented("USE d_use_palantir"))
 	}
 	fmt.Fprintf(w.stderr, "bad use key: %d\n", key)
-	assert(false, "olympia/use.c", 950, "FALSE")
+	assert(false, "olympia/use.c", 957, "FALSE")
 	return 1
 }
 
@@ -579,7 +584,7 @@ func expS(level int) string {
 	case expGrand:
 		return "grand master"
 	default:
-		assert(false, "olympia/use.c", 990, "FALSE")
+		assert(false, "olympia/use.c", 997, "FALSE")
 	}
 	return ""
 }
@@ -615,7 +620,7 @@ func (w *world) listSkillSup(who int, e *skillEnt) {
 // listSkills is complete use.c:1276–1335. Only the temporary pointer list
 // is sorted; the raw and serialized skill order must remain unchanged.
 func (w *world) listSkills(who, num int) {
-	assert(w.validBox(num), "olympia/use.c", 1283, "valid_box(num)")
+	assert(w.validBox(num), "olympia/use.c", 1290, "valid_box(num)")
 	w.commandOut(who, "")
 	w.commandOut(who, "Skills known:")
 	w.indent += 3
@@ -644,18 +649,18 @@ func (w *world) listSkills(who, num int) {
 }
 
 func (w *world) fractionalSkillQualifier(p *skillEnt) string {
-	assert(p.know != skillKnow, "olympia/use.c", 1349, "p->know != SKILL_know")
+	assert(p.know != skillKnow, "olympia/use.c", 1356, "p->know != SKILL_know")
 	if p.know == skillDont {
 		return sout("0/%d%s", w.learnTime(int(p.skill)), w.npReqS(int(p.skill)))
 	}
-	assert(p.know == skillLearning, "olympia/use.c", 1358, "p->know == SKILL_learning")
+	assert(p.know == skillLearning, "olympia/use.c", 1365, "p->know == SKILL_learning")
 	return sout("%d/%d", p.daysStudied, w.learnTime(int(p.skill)))
 }
 
 // listPartialSkills is complete use.c:1364–1406. Missing/empty/all-known
 // lists produce no heading; assertion failures retain the first heading.
 func (w *world) listPartialSkills(who, num int) {
-	assert(w.validBox(num), "olympia/use.c", 1371, "valid_box(num)")
+	assert(w.validBox(num), "olympia/use.c", 1378, "valid_box(num)")
 	p := w.rpChar(num)
 	if p == nil || len(p.skills) < 1 {
 		return
@@ -686,7 +691,7 @@ func (w *world) charNPTotal(who int) int {
 		return 0
 	}
 	sum := int32(1)
-	assert(w.validBox(who), "olympia/use.c", 2126, "valid_box(who)")
+	assert(w.validBox(who), "olympia/use.c", 2133, "valid_box(who)")
 	if p := w.rpChar(who); p != nil {
 		if p.loyKind == loyOath {
 			sum += p.loyRate
@@ -785,7 +790,7 @@ func (w *world) skillSchool(sk int) int {
 	count := 0
 
 	for {
-		assert(count < 1000, "olympia/use.c", 1182, "count++ < 1000")
+		assert(count < 1000, "olympia/use.c", 1189, "count++ < 1000")
 		count++
 
 		n := w.reqSkill(sk)

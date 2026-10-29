@@ -715,7 +715,7 @@ skill_school 1
 > req 9010 9011
 > req 9011 9010
 > school 9010
-assertion failure: olympia/use.c (1182): count++ < 1000
+assertion failure: olympia/use.c (1189): count++ < 1000
 exit 134
 section macros
 > alloc 1001 2 0

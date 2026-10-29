@@ -39694,3 +39694,110 @@ formation_state 1002
 lore_state 200
 lore_state 201
 readlog 200
+
+section FOLLOW290 first bare USE real scheduler invalid checks no item or skill side effects
+master 37
+lore_root
+coverage path cmd.tsv
+ucov path use.tsv
+queue use
+load
+dump
+do
+dump
+ucov command
+save 1000
+save 200
+coverage write
+ucov write
+readfile cmd.tsv
+readfile use.tsv
+readlog 200
+export state
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section FOLLOW290 targeted and longer orders then bare USE retains scheduler counters and invalid checks
+master 37
+lore_root
+coverage path cmd.tsv
+ucov path use.tsv
+queue use 9999
+queue use
+queue promote 9999 aaaa bbbb cccc
+queue use
+load
+do
+dump
+do
+dump
+do
+dump
+do
+dump
+ucov command
+save 1000
+save 200
+coverage write
+ucov write
+readfile cmd.tsv
+readfile use.tsv
+readlog 200
+export state
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section FOLLOW290 saved CO li reparses nonempty slots before first queued bare USE
+master 37
+lore_root
+coverage path cmd.tsv
+ucov path use.tsv
+parse promote 9999 aaaa bbbb cccc
+save 1000
+persist_command
+readfile command-reload
+dump
+queue use
+load
+dump
+do
+dump
+ucov command
+save 1000
+save 200
+coverage write
+ucov write
+readfile cmd.tsv
+readfile use.tsv
+readlog 200
+export state
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section FOLLOW290 explicit empty quoted USE is an argument before and after bare USE
+master 37
+lore_root
+coverage path cmd.tsv
+ucov path use.tsv
+queue use ""
+queue use
+queue use "" aaaa bbbb cccc
+load
+dump
+do
+dump
+do
+dump
+do
+dump
+ucov command
+save 1000
+save 200
+coverage write
+ucov write
+readfile cmd.tsv
+readfile use.tsv
+readlog 200
+export state
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
