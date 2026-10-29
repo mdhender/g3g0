@@ -4,6 +4,37 @@
 G3 is the reference.
 Expected output comes only from G3's committed files, which its C engine wrote; nothing here re-baselines.
 
+## Drum prerequisite progress (#182)
+
+At **0.115.0-alpha**, the unchanged complete spec records **36 pass / 89 fail /
+0 error** (**119s**, **125 fixtures**), preserving every **34** accepted pass
+and adding only **phase-day0** and **savage-cap**. The existing tool adds those
+two actual passing check-script names to passing.txt; no expected byte,
+scenario, manifest, EXPECT.json or upstream harness is edited. savage-cap's
+original turn reaches the real drum callback after day-zero spawning; it does
+not require implementing SUMMON-SAVAGE or combat.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue182-spec" \
+  tools/olympia-spec/run.sh
+```
+
+All six original phase scripts separately pass unchanged real C twice then
+Go, with exact raw status/streams and every cwd entry/type/mode/byte captured
+before cleanup. phase-day0 newly matches **252 entries**; all five previously
+passing phase fixtures remain identical. [Strict fixture evidence](../turn-compat#drum-fixture-rerun-182).
+The final native-capture repeat additionally runs unchanged **savage-cap**
+against C twice then Go, all **238 cwd entries** and raw streams/status exact.
+No additional missing gameplay boundary is exposed. Golden remains **NO**:
+initialization exits **2** at unsupported `load_db (-i)`. Remaining **89**
+failures are not accepted parity. #177/#178 remain open; neither the six
+phase passes nor this no-loss spec progress establishes stage exit or
+whole-spec parity. The 201-world/four-corpus final tier remains #178.
+
+Logs: `tmp/issue182-spec.log`,
+`tmp/issue182-spec/{run-all,olympia-g3,golden}.log`,
+`tmp/issue182-fixtures{,-final}.log`, `tmp/issue182-fixture-captures/`.
+
 ## Hinder-meditation prerequisite progress (#181)
 
 At **0.114.0-alpha**, the unchanged complete spec records **34 pass / 91 fail /

@@ -401,6 +401,11 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "init":
 				w.initSavageAttacks()
 				fmt.Fprintf(&stdout, "initial savages %d\n", w.numSavages)
+			case "drum":
+				c.a = int32(args.num(t))
+				fmt.Fprintf(&stdout, "drum %d\n", w.vUseDrum(c))
+			case "count":
+				fmt.Fprintf(&stdout, "savages %d\n", w.numSavages)
 			case "auto":
 				w.autoSavage(args.num(t))
 			case "hates":

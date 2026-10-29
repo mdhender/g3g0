@@ -22,12 +22,14 @@ mint-top-id
 move-go
 move-out-first
 phase-daily
+phase-day0
 phase-month-close
 phase-month-decay
 phase-month-gold
 phase-month-open
 player-refused
 rng-selftest
+savage-cap
 save-fly-cap
 save-libdir-space
 save-seed-unwritable

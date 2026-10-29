@@ -105614,3 +105614,1601 @@ land pick 1
 stderr:
 
 exit 0
+stdout:
+section drum raw speeds no exits preserve NPC mint and shuffle state
+> master 2
+> place 9000
+> field 200 touched 9000
+> savage drum 0
+drum 1
+> savage drum 1
+drum 1
+> savage drum 2
+drum 1
+> savage drum -1
+drum 1
+> savage drum 256
+drum 1
+> savage count
+savages 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+1000:0::0::No savages are responding to the battle challenge.
+1000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+1000:0::0::No savages are responding to the call to arms.
+1000:0::0::<no subkind>~[1000] sounds a fast drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a fast drumbeat.
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+> readlog 9000
+log 9000:
+> usemeta legacy 1 100000
+use legacy 28797
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 20
+behavior wide -5213
+> entity_rolls 1000 7 5000
+prison roll 57
+land dir99 2
+land dir98 4
+land pick 1
+stderr:
+
+exit 0
+stdout:
+section drum building in city propagates only to immediate parent no spawn
+> master 2
+> place 9000
+> field 200 touched 9000
+> field 200 touched 9100
+> field 200 touched 9200
+> entity 9100 3 14
+> entity 9200 3 32
+> name 9200 Narrow Tower
+> link 9000 9100
+> link 9100 9200
+> link 9200 1000
+> savage drum 1
+drum 1
+> savage drum 2
+drum 1
+> savage drum 0
+drum 1
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9100:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9100:0::0::Slow beating drums may be heard coming from Narrow Tower~[9200].
+1000:0::0::<no subkind>~[1000] sounds a fast drumbeat.
+9100:0::0::<no subkind>~[1000] sounds a fast drumbeat.
+9100:0::0::Fast beating drums may be heard coming from Narrow Tower~[9200].
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9100:0::0::<no subkind>~[1000] sounds a drumbeat.
+9100:0::0::Beating drums may be heard coming from Narrow Tower~[9200].
+> readlog 9200
+log 9200:
+> readlog 9100
+log 9100:
+> readlog 9000
+log 9000:
+> savage count
+savages 0
+> usemeta legacy 1 100000
+use legacy 28797
+stderr:
+
+exit 0
+stdout:
+section drum ship in province emits fast sound without province exits
+> master 2
+> place 9000
+> field 200 touched 9000
+> field 200 touched 9001
+> field 200 touched 9200
+> entity 9200 9 30
+> name 9200 Quiet Ship
+> link 9000 9200
+> link 9200 1000
+> entity 9001 3 4
+> routes 9000 9001 0 0 0
+> savage drum 2
+drum 1
+> savage drum -7
+drum 1
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a fast drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a fast drumbeat.
+9000:0::0::Fast beating drums may be heard coming from Quiet Ship~[9200].
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::Beating drums may be heard coming from Quiet Ship~[9200].
+> readlog 9200
+log 9200:
+> readlog 9000
+log 9000:
+> readlog 9001
+log 9001:
+> shuffle 1000 9000
+exitdir 1 9001
+> usemeta legacy 1 100000
+use legacy 28797
+stderr:
+
+exit 0
+stdout:
+section drum raw other speeds shuffle every LAND exit and opposite directions
+> master 2
+> place 9000
+> field 200 touched 9000
+> field 200 touched 9001
+> field 200 touched 9002
+> field 200 touched 9003
+> field 200 touched 9004
+> entity 9001 3 4
+> entity 9002 3 5
+> entity 9003 3 3
+> entity 9004 3 1
+> routes 9000 9001 9002 9003 9004
+> savage drum 2
+drum 1
+> savage drum -1
+drum 1
+> savage drum 256
+drum 1
+> savage count
+savages 0
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a fast drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a fast drumbeat.
+9003:0::0::Fast beating drums may be heard to the north.
+9001:0::0::Fast beating drums may be heard to the south.
+9002:0::0::Fast beating drums may be heard to the west.
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9003:0::0::Beating drums may be heard to the north.
+9002:0::0::Beating drums may be heard to the west.
+9001:0::0::Beating drums may be heard to the south.
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9001:0::0::Beating drums may be heard to the south.
+9002:0::0::Beating drums may be heard to the west.
+9003:0::0::Beating drums may be heard to the north.
+> readlog 9000
+log 9000:
+> readlog 9001
+log 9001:
+> readlog 9002
+log 9002:
+> readlog 9003
+log 9003:
+> readlog 9004
+log 9004:
+> shuffle 1000 9000
+exitdir 3 9003
+exitdir 1 9001
+exitdir 2 9002
+> usemeta legacy 1 100000
+use legacy 28797
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 20
+behavior wide -5213
+stderr:
+
+exit 0
+stdout:
+section drum all candidates controlled no spawn emits every sound
+> master 2
+> place 9000
+> field 200 touched 9000
+> field 200 touched 9001
+> field 200 touched 9002
+> entity 9001 3 4
+> entity 9002 3 5
+> routes 9000 9001 9002 0 0
+> link 9001 1001
+> field 1001 loyal 1
+> entity 1002 2 0
+> field 1002 lord 201
+> field 1002 loyal 1
+> link 9002 1002
+> savage drum 0
+drum 1
+> savage drum 1
+drum 1
+> savage count
+savages 0
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9001:0::0::Beating drums may be heard to the south.
+9002:0::0::Beating drums may be heard to the west.
+1000:0::0::No savages are responding to the battle challenge.
+1000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9002:0::0::Slow beating drums may be heard to the west.
+9001:0::0::Slow beating drums may be heard to the south.
+1000:0::0::No savages are responding to the call to arms.
+> readlog 9000
+log 9000:
+> readlog 9001
+log 9001:
+> readlog 9002
+log 9002:
+> shuffle 1000 9000
+exitdir 1 9001
+exitdir 2 9002
+> usemeta legacy 1 100000
+use legacy 28797
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 20
+behavior wide -5213
+stderr:
+
+exit 0
+stdout:
+section drum ocean LAND filter no response preserves unrelated stream
+> master 2
+> place 9000
+> field 200 touched 9000
+> field 200 touched 9001
+> entity 9001 3 1
+> routes 9000 9001 0 0 0
+> savage drum 0
+drum 1
+> savage drum 1
+drum 1
+> savage count
+savages 0
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+1000:0::0::No savages are responding to the battle challenge.
+1000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+1000:0::0::No savages are responding to the call to arms.
+> readlog 9000
+log 9000:
+> readlog 9001
+log 9001:
+> shuffle 1000 9000
+> usemeta legacy 1 100000
+use legacy 28797
+stderr:
+
+exit 0
+stdout:
+section drum challenge real allocation queues init load and one success all sounds
+> master 2
+> set turn 1
+> field 200 touched 9000
+> field 200 touched 9001
+> field 200 touched 9002
+> field 200 touched 9003
+> field 200 touched 9004
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> place 9000
+> entity 9001 3 4
+> entity 9002 3 5
+> entity 9003 3 3
+> entity 9004 3 4
+> routes 9000 9001 9002 9003 9004
+> savage drum 0
+drum 1
+> savage count
+savages 1
+> savage_state
+savage unit 129744
+129744 char ni
+il	98 1 \
+	32 19
+LI
+ wh 9004
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 129744
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 129744
+output 0 0 0 0 0 touched 0 0
+orders 129744: [attack 1000]
+> orders_file 205
+orders file 205:
+129744:attack 1000
+> save 9001
+9001 loc mountain
+
+> save 9002
+9002 loc desert
+
+> save 9003
+9003 loc plain
+
+> save 9004
+9004 loc mountain
+LI
+ hl 129744 
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9004:0::0::Beating drums may be heard to the east.
+9003:0::0::Beating drums may be heard to the north.
+9002:0::0::Beating drums may be heard to the west.
+9001:0::0::Beating drums may be heard to the south.
+1000:0::0::Savages will surely respond to the battle challenge.
+> readlog 9000
+log 9000:
+> readlog 9001
+log 9001:
+> readlog 9002
+log 9002:
+> readlog 9003
+log 9003:
+> readlog 9004
+log 9004:
+> shuffle 1000 9000
+exitdir 3 9003
+exitdir 2 9002
+exitdir 4 9004
+exitdir 1 9001
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 11
+behavior wide 48721
+> usemeta legacy 1 100000
+use legacy 28797
+> entity_rolls 1000 7 5000
+prison roll 746
+land dir99 3
+land dir98 4
+land pick 0
+stderr:
+
+exit 0
+stdout:
+section drum call arms skips failed candidate then succeeds and continues sound
+> master 2
+> set turn 1
+> field 200 touched 9000
+> field 200 touched 9001
+> field 200 touched 9002
+> field 200 touched 9003
+> field 200 touched 9004
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> place 9000
+> entity 9001 3 4
+> entity 9002 3 5
+> entity 9003 3 3
+> entity 9004 3 4
+> routes 9000 9001 9002 9003 9004
+> link 9004 1001
+> field 1001 loyal 1
+> savage drum 1
+drum 1
+> savage count
+savages 1
+> savage_state
+savage unit 129744
+129744 char ni
+il	98 1 \
+	32 16
+LI
+ wh 9003
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 5
+ lr 3
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 129744
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 129744
+output 0 0 0 0 0 touched 0 0
+orders 129744: [stack 1000]
+> orders_file 205
+orders file 205:
+129744:stack 1000
+> save 9001
+9001 loc mountain
+
+> save 9002
+9002 loc desert
+
+> save 9003
+9003 loc plain
+LI
+ hl 129744 
+
+> save 9004
+9004 loc mountain
+LI
+ hl 1001 
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9004:0::0::Slow beating drums may be heard to the east.
+9003:0::0::Slow beating drums may be heard to the north.
+9002:0::0::Slow beating drums may be heard to the west.
+9001:0::0::Slow beating drums may be heard to the south.
+1000:0::0::Savages will surely respond to the call to arms.
+> readlog 9000
+log 9000:
+> readlog 9001
+log 9001:
+> readlog 9002
+log 9002:
+> readlog 9003
+log 9003:
+> readlog 9004
+log 9004:
+> shuffle 1000 9000
+exitdir 3 9003
+exitdir 2 9002
+exitdir 4 9004
+exitdir 1 9001
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 11
+behavior wide 57408
+> usemeta legacy 1 100000
+use legacy 28797
+> entity_rolls 1000 7 5000
+prison roll 746
+land dir99 3
+land dir98 4
+land pick 0
+stderr:
+
+exit 0
+stdout:
+section drum cap 199 first success reaches 200 subsequent call only sounds
+> master 2
+> set turn 1
+> field 200 touched 9000
+> field 200 touched 9001
+> field 200 touched 9002
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> place 9000
+> entity 9001 3 4
+> entity 9002 3 5
+> routes 9000 9001 9002 0 0
+> savage_population 199
+> savage init
+initial savages 199
+> savage drum 1
+drum 1
+> savage count
+savages 200
+> savage_state
+savage unit 129744
+129744 char ni
+il	98 1 \
+	32 11
+LI
+ wh 9002
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 5
+ lr 3
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 129744
+load_q 3:
+load_q 4:
+run_q:
+> orders_file 205
+orders file 205:
+129744:stack 1000
+> savage drum 0
+drum 1
+> savage count
+savages 200
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9002:0::0::Slow beating drums may be heard to the west.
+9001:0::0::Slow beating drums may be heard to the south.
+1000:0::0::Savages will surely respond to the call to arms.
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9002:0::0::Beating drums may be heard to the west.
+9001:0::0::Beating drums may be heard to the south.
+1000:0::0::No savages are responding to the battle challenge.
+> readlog 9001
+log 9001:
+> readlog 9002
+log 9002:
+> shuffle 1000 9000
+exitdir 1 9001
+exitdir 2 9002
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 15
+behavior wide 30105
+> usemeta legacy 1 100000
+use legacy 28797
+stderr:
+
+exit 0
+stdout:
+section drum cap 200 sound and shuffle still occur no spawn
+> master 2
+> set turn 1
+> field 200 touched 9000
+> field 200 touched 9001
+> field 200 touched 9002
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> place 9000
+> entity 9001 3 4
+> entity 9002 3 5
+> routes 9000 9001 9002 0 0
+> savage_population 200
+> savage init
+initial savages 200
+> savage drum 0
+drum 1
+> savage drum 1
+drum 1
+> savage count
+savages 200
+> savage_state
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> orders_file 205
+orders file 205:
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9002:0::0::Beating drums may be heard to the west.
+9001:0::0::Beating drums may be heard to the south.
+1000:0::0::No savages are responding to the battle challenge.
+1000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9002:0::0::Slow beating drums may be heard to the west.
+9001:0::0::Slow beating drums may be heard to the south.
+1000:0::0::No savages are responding to the call to arms.
+> readlog 9001
+log 9001:
+> readlog 9002
+log 9002:
+> shuffle 1000 9000
+exitdir 1 9001
+exitdir 2 9002
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 20
+behavior wide -5213
+> usemeta legacy 1 100000
+use legacy 28797
+stderr:
+
+exit 0
+stdout:
+section drum real USE item dispatch shifts speed accounts zero time start only
+> lore_root
+> master 2
+> place 9000
+> field 200 touched 9000
+> entity 98 4 0
+> field 98 use_key 7
+> inventory 1000 98 1
+> coverage path command.tsv
+> ucov path use.tsv
+> queue use 98 2
+> queue use 98 17
+> queue use 98
+> queue use 98 1
+> initial
+> start
+> dump
+cmd 93 who 1000 state 0 status 1 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 1 cur 99
+args 1 1 0 0 0 0 0 0; parse [use] [98] [1]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	98 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li use 98 1
+ ar 1 1 0 0 0 0 0 0
+ st 1
+ us 98
+ pr 3
+ if 1
+
+> save 98
+98 item 0
+IT
+IM
+ uk 7
+
+> coverage write
+> ucov write
+> readfile command.tsv
+file bytes command.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	4	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readfile use.tsv
+file bytes use.tsv 2724:
+kind	key	name	checks	ok	fail
+invalid	0	(invalid)	0	0	0
+skill	601		0	0	0
+skill	602		0	0	0
+skill	603		0	0	0
+skill	612		0	0	0
+skill	613		0	0	0
+skill	614		0	0	0
+skill	615		0	0	0
+skill	616		0	0	0
+skill	617		0	0	0
+skill	631		0	0	0
+skill	632		0	0	0
+skill	633		0	0	0
+skill	634		0	0	0
+skill	635		0	0	0
+skill	636		0	0	0
+skill	637		0	0	0
+skill	638	<no subkind>	0	0	0
+skill	639		0	0	0
+skill	651		0	0	0
+skill	652		0	0	0
+skill	653		0	0	0
+skill	654		0	0	0
+skill	655		0	0	0
+skill	656		0	0	0
+skill	657		0	0	0
+skill	658		0	0	0
+skill	659		0	0	0
+skill	661		0	0	0
+skill	671		0	0	0
+skill	672		0	0	0
+skill	673		0	0	0
+skill	674		0	0	0
+skill	675		0	0	0
+skill	676		0	0	0
+skill	681		0	0	0
+skill	682		0	0	0
+skill	691		0	0	0
+skill	692		0	0	0
+skill	693		0	0	0
+skill	694		0	0	0
+skill	695		0	0	0
+skill	696		0	0	0
+skill	697		0	0	0
+skill	701		0	0	0
+skill	702		0	0	0
+skill	703		0	0	0
+skill	704		0	0	0
+skill	706		0	0	0
+skill	707		0	0	0
+skill	721		0	0	0
+skill	722		0	0	0
+skill	723		0	0	0
+skill	732		0	0	0
+skill	733		0	0	0
+skill	751		0	0	0
+skill	752		0	0	0
+skill	753		0	0	0
+skill	754		0	0	0
+skill	755		0	0	0
+skill	756		0	0	0
+skill	801		0	0	0
+skill	802		0	0	0
+skill	803		0	0	0
+skill	804		0	0	0
+skill	805		0	0	0
+skill	806		0	0	0
+skill	807		0	0	0
+skill	808		0	0	0
+skill	809		0	0	0
+skill	811		0	0	0
+skill	812		0	0	0
+skill	813		0	0	0
+skill	814		0	0	0
+skill	821		0	0	0
+skill	822		0	0	0
+skill	823		0	0	0
+skill	824		0	0	0
+skill	825		0	0	0
+skill	826		0	0	0
+skill	827		0	0	0
+skill	828		0	0	0
+skill	829		0	0	0
+skill	831		0	0	0
+skill	832		0	0	0
+skill	833		0	0	0
+skill	841		0	0	0
+skill	842		0	0	0
+skill	843		0	0	0
+skill	844		0	0	0
+skill	845		0	0	0
+skill	846		0	0	0
+skill	847		0	0	0
+skill	848		0	0	0
+skill	849		0	0	0
+skill	851		0	0	0
+skill	852		0	0	0
+skill	861		0	0	0
+skill	862		0	0	0
+skill	863		0	0	0
+skill	864		0	0	0
+skill	865		0	0	0
+skill	866		0	0	0
+skill	867		0	0	0
+skill	868		0	0	0
+skill	869		0	0	0
+skill	871		0	0	0
+skill	872		0	0	0
+skill	881		0	0	0
+skill	882		0	0	0
+skill	883		0	0	0
+skill	884		0	0	0
+skill	885		0	0	0
+skill	886		0	0	0
+skill	887		0	0	0
+skill	888		0	0	0
+skill	889		0	0	0
+skill	891		0	0	0
+skill	892		0	0	0
+skill	893		0	0	0
+skill	894		0	0	0
+skill	901		0	0	0
+skill	902		0	0	0
+skill	903		0	0	0
+skill	904		0	0	0
+skill	905		0	0	0
+skill	906		0	0	0
+skill	907		0	0	0
+skill	908		0	0	0
+skill	909		0	0	0
+skill	911		0	0	0
+skill	921		0	0	0
+skill	922		0	0	0
+skill	997		0	0	0
+skill	998		0	0	0
+skill	999		0	0	0
+item	1	death_potion	0	0	0
+item	2	heal_potion	0	0	0
+item	3	slave_potion	0	0	0
+item	4	palantir	0	0	0
+item	5	proj_cast	0	0	0
+item	6	quick_cast	0	0	0
+item	7	drum	0	4	0
+item	8	faery_stone	0	0	0
+item	9	orb	0	0	0
+item	10	barbarian_kill	0	0	0
+item	11	savage_kill	0	0	0
+item	12	corpse_kill	0	0	0
+item	13	orc_kill	0	0	0
+item	14	skeleton_kill	0	0	0
+item	15	bta_skull	0	0	0
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::> use 98 2
+1000:0::0::<no subkind>~[1000] sounds a fast drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a fast drumbeat.
+1000:0::0::> use 98 17
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+1000:0::0::> use 98
+1000:0::0::<no subkind>~[1000] sounds a drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a drumbeat.
+1000:0::0::No savages are responding to the battle challenge.
+1000:0::0::> use 98 1
+1000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+1000:0::0::No savages are responding to the call to arms.
+> readlog 9000
+log 9000:
+> usemeta legacy 1 100000
+use legacy 28797
+stderr:
+
+exit 0
+stdout:
+section drum real USE call arms immediate loaded savage queued move retained stack
+> lore_root
+> master 2
+> set turn 1
+> field 200 touched 9000
+> field 200 touched 9001
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> field 98 use_key 7
+> inventory 1000 98 1
+> place 9000
+> entity 9001 3 4
+> routes 9000 9001 0 0 0
+> routes 9001 0 0 9000 0
+> coverage path command.tsv
+> ucov path use.tsv
+> queue use 98 1
+> load
+load 1
+> do
+> dump
+cmd 93 who 1000 state 0 status 1 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 1 cur 0
+args 1 1 0 0 0 0 0 0; parse [use] [98] [1]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2: 129744
+load_q 3:
+load_q 4:
+run_q:
+> savage count
+savages 1
+> savage_state
+savage unit 129744
+129744 char ni
+il	98 1 \
+	32 25
+LI
+ wh 9001
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 5
+ lr 3
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 129744
+load_q 3:
+load_q 4:
+run_q:
+> orders_file 205
+orders file 205:
+129744:stack 1000
+> save 1000
+1000 char 0
+il	98 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li use 98 1
+ ar 1 1 0 0 0 0 0 0
+ st 1
+ us 98
+ pr 3
+ if 1
+
+> coverage write
+> ucov write
+> readfile command.tsv
+file bytes command.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	1	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readfile use.tsv
+file bytes use.tsv 2724:
+kind	key	name	checks	ok	fail
+invalid	0	(invalid)	0	0	0
+skill	601		0	0	0
+skill	602		0	0	0
+skill	603		0	0	0
+skill	612		0	0	0
+skill	613		0	0	0
+skill	614		0	0	0
+skill	615		0	0	0
+skill	616		0	0	0
+skill	617		0	0	0
+skill	631		0	0	0
+skill	632		0	0	0
+skill	633		0	0	0
+skill	634		0	0	0
+skill	635		0	0	0
+skill	636		0	0	0
+skill	637		0	0	0
+skill	638	<no subkind>	0	0	0
+skill	639		0	0	0
+skill	651		0	0	0
+skill	652		0	0	0
+skill	653		0	0	0
+skill	654		0	0	0
+skill	655		0	0	0
+skill	656		0	0	0
+skill	657		0	0	0
+skill	658		0	0	0
+skill	659		0	0	0
+skill	661		0	0	0
+skill	671		0	0	0
+skill	672		0	0	0
+skill	673		0	0	0
+skill	674		0	0	0
+skill	675		0	0	0
+skill	676		0	0	0
+skill	681		0	0	0
+skill	682		0	0	0
+skill	691		0	0	0
+skill	692		0	0	0
+skill	693		0	0	0
+skill	694		0	0	0
+skill	695		0	0	0
+skill	696		0	0	0
+skill	697		0	0	0
+skill	701		0	0	0
+skill	702		0	0	0
+skill	703		0	0	0
+skill	704		0	0	0
+skill	706		0	0	0
+skill	707		0	0	0
+skill	721		0	0	0
+skill	722		0	0	0
+skill	723		0	0	0
+skill	732		0	0	0
+skill	733		0	0	0
+skill	751		0	0	0
+skill	752		0	0	0
+skill	753		0	0	0
+skill	754		0	0	0
+skill	755		0	0	0
+skill	756		0	0	0
+skill	801		0	0	0
+skill	802		0	0	0
+skill	803		0	0	0
+skill	804		0	0	0
+skill	805		0	0	0
+skill	806		0	0	0
+skill	807		0	0	0
+skill	808		0	0	0
+skill	809		0	0	0
+skill	811		0	0	0
+skill	812		0	0	0
+skill	813		0	0	0
+skill	814		0	0	0
+skill	821		0	0	0
+skill	822		0	0	0
+skill	823		0	0	0
+skill	824		0	0	0
+skill	825		0	0	0
+skill	826		0	0	0
+skill	827		0	0	0
+skill	828		0	0	0
+skill	829		0	0	0
+skill	831		0	0	0
+skill	832		0	0	0
+skill	833		0	0	0
+skill	841		0	0	0
+skill	842		0	0	0
+skill	843		0	0	0
+skill	844		0	0	0
+skill	845		0	0	0
+skill	846		0	0	0
+skill	847		0	0	0
+skill	848		0	0	0
+skill	849		0	0	0
+skill	851		0	0	0
+skill	852		0	0	0
+skill	861		0	0	0
+skill	862		0	0	0
+skill	863		0	0	0
+skill	864		0	0	0
+skill	865		0	0	0
+skill	866		0	0	0
+skill	867		0	0	0
+skill	868		0	0	0
+skill	869		0	0	0
+skill	871		0	0	0
+skill	872		0	0	0
+skill	881		0	0	0
+skill	882		0	0	0
+skill	883		0	0	0
+skill	884		0	0	0
+skill	885		0	0	0
+skill	886		0	0	0
+skill	887		0	0	0
+skill	888		0	0	0
+skill	889		0	0	0
+skill	891		0	0	0
+skill	892		0	0	0
+skill	893		0	0	0
+skill	894		0	0	0
+skill	901		0	0	0
+skill	902		0	0	0
+skill	903		0	0	0
+skill	904		0	0	0
+skill	905		0	0	0
+skill	906		0	0	0
+skill	907		0	0	0
+skill	908		0	0	0
+skill	909		0	0	0
+skill	911		0	0	0
+skill	921		0	0	0
+skill	922		0	0	0
+skill	997		0	0	0
+skill	998		0	0	0
+skill	999		0	0	0
+item	1	death_potion	0	0	0
+item	2	heal_potion	0	0	0
+item	3	slave_potion	0	0	0
+item	4	palantir	0	0	0
+item	5	proj_cast	0	0	0
+item	6	quick_cast	0	0	0
+item	7	drum	0	1	0
+item	8	faery_stone	0	0	0
+item	9	orb	0	0	0
+item	10	barbarian_kill	0	0	0
+item	11	savage_kill	0	0	0
+item	12	corpse_kill	0	0	0
+item	13	orc_kill	0	0	0
+item	14	skeleton_kill	0	0	0
+item	15	bta_skull	0	0	0
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::> use 98 1
+1000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9001:0::0::Slow beating drums may be heard to the south.
+1000:0::0::Savages will surely respond to the call to arms.
+> readlog 9000
+log 9000:
+> readlog 9001
+log 9001:
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 15
+behavior wide 36546
+> usemeta legacy 1 100000
+use legacy 28797
+> entity_rolls 1000 7 5000
+prison roll 746
+land dir99 3
+land dir98 4
+land pick 0
+> newitem 9000 0
+created 71855
+> save_new
+71855 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section drum no call independent shared mint and random control
+> lore_root
+> master 2
+> set turn 1
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> place 9000
+> entity 9001 3 4
+> routes 9000 9001 0 0 0
+> routes 9001 0 0 9000 0
+> shuffle 1000 9000
+exitdir 1 9001
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 20
+behavior wide -5213
+> usemeta legacy 1 100000
+use legacy 28797
+> entity_rolls 1000 7 5000
+prison roll 746
+land dir99 3
+land dir98 4
+land pick 0
+> newitem 9000 0
+created 76976
+> save_new
+76976 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section drum blocked hidden barrier LAND exit still sounds and spawns
+> master 2
+> set turn 1
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 32 4 0
+> entity 98 4 0
+> place 9000
+> field 200 touched 9000
+> field 200 touched 9001
+> entity 9001 3 4
+> field 9001 barrier 1
+> field 9001 loc_hidden 1
+> routes 9000 9001 0 0 0
+> savage drum 1
+drum 1
+> savage count
+savages 1
+> savage_state
+savage unit 129744
+129744 char ni
+il	98 1 \
+	32 25
+LI
+ wh 9001
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 5
+ lr 3
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1:
+load_q 2: 129744
+load_q 3:
+load_q 4:
+run_q:
+> orders_file 205
+orders file 205:
+129744:stack 1000
+> save 9001
+9001 loc mountain
+LI
+ hl 129744 
+LO
+ hi 1
+ ba 1
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9000:0::0::<no subkind>~[1000] sounds a slow drumbeat.
+9001:0::0::Slow beating drums may be heard to the south.
+1000:0::0::Savages will surely respond to the call to arms.
+> shuffle 1000 9000
+exitdir 1 9001
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 15
+behavior wide 36546
+> usemeta legacy 1 100000
+use legacy 28797
+> newitem 9000 0
+created 71855
+> save_new
+71855 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0

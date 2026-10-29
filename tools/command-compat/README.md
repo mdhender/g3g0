@@ -3,6 +3,92 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Drum USE item prerequisite (#182)
+
+**0.115.0-alpha** ports complete original savage.c `v_use_drum` **70–146**
+(**77 lines / 1483 bytes**, SHA-256
+`9dc335d781d225c678f8f50fcfdf094baaa965c639e62d169d324d5fa580103d`),
+and actual use.c **869–872** wiring: copy c.b into c.a, then call the drum
+callback. The original shared item tail **911–920** counts the callback's
+outcome and inhibits zero-time completion. Other item callbacks still stop
+explicitly, never returning fabricated success/failure. The boundary test
+excludes only this now-implemented key; all remaining NYI contracts stay.
+No summon-savage command, ATTACK/combat, independent fix or stage 4 work.
+
+Raw speeds **0/1** can summon; **2/negative/256** still emit sounds and shuffle
+LAND exits in a province. A building/ship instead emits to its immediate
+parent and returns before the shuffle/response branch. The exact original
+sound order/capitalization and opposite-direction table are retained. A failed
+controlled-human candidate permits a later attempt, only the first success
+spawns, and **every** remaining neighbor still hears the sound. The **200**
+cap counts the actual successful spawn. Existing callSavage/createSavage,
+queues, initLoadSup, NPC/exitdir/mint/legacy RNG and allocation owners are reused.
+
+All **100** archived command originals equal the immutable pin; all **583**
+extractor-listed complete definitions occur literally unchanged exactly once.
+The **1212** original files in read-only `tmp/issue179-roundtrip` equal the
+pin; its executable retains SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+Audited original dependency SHA-256 values:
+
+| definition (source lines) | SHA-256 |
+|---|---|
+| create_savage (savage.c 13–29) | `eff24412752d543e04e19847fc3d51b595d0a28a59de6092df72218c26913b8a` |
+| call_savage (savage.c 32–67) | `08a50be096ac37b33d04a9b0d2dce52afd248ba2284ccd1a6bb87f812b243032` |
+| init_load_sup (input.c 703–741) | `6e644e702057e833cddd719c3e94dd897531ad453355c27a688131ec51a7905a` |
+| exits_from_loc_nsew_select (dir.c 776–803) | `734a0dc4901db925078a615a0848bd6ad71982c5f168d99a2ba2f7fd1be848b4` |
+| controlled_humans_here (npc.c 65–84) | `95f1831398fec32d9be6a223c09fb179a83c97cd126d6471b92780da7ac1bcbd` |
+| v_use_item (use.c 785–920) | `76a9a4db221fb71559256a6fb36b2c431afa28140bc81b0f2715b49098acf144` |
+
+No new source dependency or pin move: savage.c/use.c and all actual
+dependencies are already tracked, so affected.sh is unchanged. The real
+original item/command tables and actual queues execute, without success overlays.
+The small `savage drum` adapter calls the complete original callback with raw
+arguments; parsed USE cases separately check the original item dispatch.
+
+**14 appended sections** cover raw speed branches, nested building/city and
+ship/province, no/ocean/controlled/hidden-barrier exits, failed candidate then
+later success, cap **199→200 / 200**, four-neighbor output after success,
+real queued USE/zero-time completion inhibition, command/USE accounting,
+saved command arguments, exact inventory/loyalty/order/load-queue state,
+shared shuffle/NPC/entity/legacy RNG aftermath and subsequent actual item mint.
+The seed-2 four-land-neighbor call tries **9004** (controlled) before spawning
+**129744** in **9003**, with **16** savages, summon loyalty **3**, loaded MOVE
+and retained STACK. Its sounds still reach **9002/9001** afterwards.
+
+Unchanged C runs twice before Go or recording replacement, matching **1380
+sections / 107214 output lines / 2134398 bytes**, SHA-256
+`c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac`.
+Input: **30431 lines / 578307 bytes**, SHA-256
+`3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659`.
+The ENTIRE inherited **571691-byte input / 2105533-byte output** remain exact
+prefixes, SHA-256 respectively
+`c5bbd288cc49cadc94ff68dde1315f8a67f359e271a265422e8be5be2a1e06b3` /
+`fe4b9575b0630d05abb40a63e18724f78266be65b41817a22e859d49c1194cd4`.
+Original C trailing spaces in four appended saved here-lists are intentional;
+do not normalize them to appease diff whitespace checks. New sections require
+status **0**, after dependency/NYI/stub/sanitizer rejection.
+
+Six actual linker controls wrap the direct drum call at section **1366**
+(status **0/134**, each default/update) and original **asfail** at inherited
+expected-abort section **27** (status **134**, default/update). Markers in
+stderr or stdout cause harness **2** **before** status acceptance/recording
+replacement; the recording hash remains unchanged in every control. Probe
+sources/launchers/captures are removed. Logs:
+`tmp/issue182-negative-{v_use_drum,asfail}-*.log`,
+`tmp/issue182-negatives.log`. The subsequent normal unchanged-C/C/Go default
+is `tmp/issue182-command-default-final.log`.
+
+Logs: `tmp/issue182-source-audit.log`,
+`tmp/issue182-command-update-complete.log`, `tmp/issue182-command-default.log`.
+An initial fixture setup left a supposedly controlled unit unsworn, provoking
+an invalid test-world C spawn/status **139**; no recording was accepted from
+that run. The fixture was corrected to real controlled loyalty. The first
+successful C recording exposed a Go constant spelling error, then the obsolete
+drum NYI assertion; both were corrected rather than accepting failed Go output.
+These initial failures remain in `tmp/issue182-command-{update,tests}.log` and
+`tmp/issue182-command-update-final.log`; the final normal comparison passes.
+
 ## Hinder-meditation USE prerequisite (#181)
 
 **0.114.0-alpha** ports complete original basic.c `v_hinder_med` **331–357**,

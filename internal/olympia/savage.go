@@ -5,8 +5,8 @@ package olympia
 
 import "fmt"
 
-// Complete savage.c:13–67,221–345,353–409 at the stage pin. The drum
-// command handlers and autonomous NPC dispatcher are separate work.
+// Complete savage.c:13–146,221–345,353–409 at the stage pin. The summon
+// command remains separate work.
 func (w *world) createSavage(where int) int {
 	n := w.newChar(subNi, itemSavage, where, 100, int(w.indepPlayer), loyNpc, 0, "")
 	if n < 0 {
@@ -38,6 +38,50 @@ func (w *world) callSavage(where, toWhere, who, why int) bool {
 	w.initLoadSup(n)
 	w.numSavages++
 	return true
+}
+
+// vUseDrum is complete savage.c:70–146. Raw speeds other than 0/1
+// still emit sound and shuffle exits, but cannot call savages.
+func (w *world) vUseDrum(c *command) int {
+	where, speed := w.subloc(int(c.who)), int(c.a)
+	speedS := ""
+	switch speed {
+	case 1:
+		speedS = "slow "
+	case 2:
+		speedS = "fast "
+	}
+	w.commandOut(int(c.who), "%s sounds a %sdrumbeat.", w.boxName(int(c.who)), speedS)
+	w.commandOut(where, "%s sounds a %sdrumbeat.", w.boxName(int(c.who)), speedS)
+	if w.locDepth(where) != locProvince {
+		s := sout("%sbeating drums may be heard coming from %s.", speedS, w.boxName(where))
+		w.commandOut(w.subloc(where), "%s", capitalize(s))
+		return 1
+	}
+	l := w.exitsFromLocNSEWSelect(int(c.who), w.province(where), exitLand, 1)
+	n := false
+	for _, v := range l {
+		dir := exitOpposite[v.direction]
+		s := sout("%sbeating drums may be heard to the %s.", speedS, fullDirS[dir])
+		w.commandOut(int(v.destination), "%s", capitalize(s))
+		if w.numSavages < 200 && w.subkind(int(v.destination)) != subOcean &&
+			(speed == 0 || speed == 1) && !n {
+			n = w.callSavage(int(v.destination), where, int(c.who), speed)
+		}
+	}
+	s := "call"
+	switch speed {
+	case 0:
+		s = "battle challenge"
+	case 1:
+		s = "call to arms"
+	}
+	if !n && (speed == 0 || speed == 1) {
+		w.commandOut(int(c.who), "No savages are responding to the %s.", s)
+	} else if n && (speed == 0 || speed == 1) {
+		w.commandOut(int(c.who), "Savages will surely respond to the %s.", s)
+	}
+	return 1
 }
 
 func (w *world) savageHates(where int) bool {

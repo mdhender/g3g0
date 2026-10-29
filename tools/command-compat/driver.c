@@ -357,6 +357,8 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "savage")) {
    sscanf(line,"%*s %31s %d",text,&n);
    if(!strcmp(text,"init")) { init_savage_attacks(); printf("initial savages %d\n",drv_savage_count()); }
+   else if(!strcmp(text,"drum")) { c->a=n; printf("drum %d\n",v_use_drum(c)); }
+   else if(!strcmp(text,"count")) printf("savages %d\n",drv_savage_count());
    else if(!strcmp(text,"auto")) auto_savage(n);
    else if(!strcmp(text,"hates")) printf("hates %d\n",drv_savage_hates(n));
    else if(!strcmp(text,"here")) printf("hate here %d\n",drv_savage_here(n));

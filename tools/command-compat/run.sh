@@ -125,7 +125,7 @@ functions = {
     'npc.c': ['controlled_humans_here', 'get_exit_dir', 'choose_npc_direction', 'npc_move',
               'create_hades_bandit', 'create_faery_bandit', 'hades_attack_check', 'faery_attack_check'],
     'necro.c': ['auto_undead'],
-    'savage.c': ['create_savage', 'call_savage', 'savage_hates', 'savage_hate_here',
+    'savage.c': ['create_savage', 'call_savage', 'v_use_drum', 'savage_hates', 'savage_hate_here',
                  'auto_savage', 'init_savage_attacks'],
     'lore.c': ['lore_function', 'deliver_lore_sheet', 'np_req_s', 'out_skill_line',
                'deliver_skill_lore', 'deliver_lore', 'queue_lore', 'lore_comp',
@@ -709,6 +709,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section drum '* ]]; then
+   [ "$status" = 0 ] || die "unexpected drum status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section hinder meditation '* ]]; then
    [ "$status" = 0 ] || die "unexpected hinder-meditation status $status in section $i"
   fi

@@ -98,6 +98,9 @@ func TestCommandUseSharedNYIBoundaries(t *testing.T) {
 
 func TestCommandUseItemNYIBoundaries(t *testing.T) {
 	for key := 1; key <= useKeyMax; key++ {
+		if key == useDrum {
+			continue // The real drum callback is covered by the C command oracle.
+		}
 		t.Run(fmt.Sprint(key), func(t *testing.T) {
 			w := newWorld()
 			w.allocBox(1000, tChar, 0)
@@ -105,7 +108,7 @@ func TestCommandUseItemNYIBoundaries(t *testing.T) {
 			w.pItemMagic(60000).useKey = int8(key)
 			w.genItem(1000, 60000, 1)
 			switch key {
-			case useDeathPotion, useHealPotion, useSlavePotion, useDrum, useFaeryStone, useBtaSkull:
+			case useDeathPotion, useHealPotion, useSlavePotion, useFaeryStone, useBtaSkull:
 				// These keys are not magic-safe-haven rejects in C. Missing
 				// gameplay must still stop NYI, not invent a shared-check fail.
 				w.allocBox(9000, tLoc, subPlain)
@@ -125,12 +128,8 @@ func TestCommandUseItemNYIBoundaries(t *testing.T) {
 				if c.wait != 0 || c.poll != 0 || c.inhibitFinish != 0 {
 					t.Fatal("item mutation crossed the callback boundary")
 				}
-				want := int32(60000)
-				if key == useDrum {
-					want = 7
-				}
-				if c.a != want {
-					t.Fatal("drum-only argument correction differs")
+				if c.a != 60000 {
+					t.Fatal("unported item argument changed")
 				}
 			}()
 			w.vUse(c)

@@ -30047,3 +30047,385 @@ readlog 200
 usemeta rolls 1001 1000
 usemeta legacy 1 100000
 entity_rolls 1000 7 5000
+
+section drum raw speeds no exits preserve NPC mint and shuffle state
+master 2
+place 9000
+field 200 touched 9000
+savage drum 0
+savage drum 1
+savage drum 2
+savage drum -1
+savage drum 256
+savage count
+save 1000
+readlog 200
+readlog 9000
+usemeta legacy 1 100000
+npc probe 1000
+entity_rolls 1000 7 5000
+
+section drum building in city propagates only to immediate parent no spawn
+master 2
+place 9000
+field 200 touched 9000
+field 200 touched 9100
+field 200 touched 9200
+entity 9100 3 14
+entity 9200 3 32
+name 9200 Narrow Tower
+link 9000 9100
+link 9100 9200
+link 9200 1000
+savage drum 1
+savage drum 2
+savage drum 0
+readlog 200
+readlog 9200
+readlog 9100
+readlog 9000
+savage count
+usemeta legacy 1 100000
+
+section drum ship in province emits fast sound without province exits
+master 2
+place 9000
+field 200 touched 9000
+field 200 touched 9001
+field 200 touched 9200
+entity 9200 9 30
+name 9200 Quiet Ship
+link 9000 9200
+link 9200 1000
+entity 9001 3 4
+routes 9000 9001 0 0 0
+savage drum 2
+savage drum -7
+readlog 200
+readlog 9200
+readlog 9000
+readlog 9001
+shuffle 1000 9000
+usemeta legacy 1 100000
+
+section drum raw other speeds shuffle every LAND exit and opposite directions
+master 2
+place 9000
+field 200 touched 9000
+field 200 touched 9001
+field 200 touched 9002
+field 200 touched 9003
+field 200 touched 9004
+entity 9001 3 4
+entity 9002 3 5
+entity 9003 3 3
+entity 9004 3 1
+routes 9000 9001 9002 9003 9004
+savage drum 2
+savage drum -1
+savage drum 256
+savage count
+readlog 200
+readlog 9000
+readlog 9001
+readlog 9002
+readlog 9003
+readlog 9004
+shuffle 1000 9000
+usemeta legacy 1 100000
+npc probe 1000
+
+section drum all candidates controlled no spawn emits every sound
+master 2
+place 9000
+field 200 touched 9000
+field 200 touched 9001
+field 200 touched 9002
+entity 9001 3 4
+entity 9002 3 5
+routes 9000 9001 9002 0 0
+link 9001 1001
+field 1001 loyal 1
+entity 1002 2 0
+field 1002 lord 201
+field 1002 loyal 1
+link 9002 1002
+savage drum 0
+savage drum 1
+savage count
+readlog 200
+readlog 9000
+readlog 9001
+readlog 9002
+shuffle 1000 9000
+usemeta legacy 1 100000
+npc probe 1000
+
+section drum ocean LAND filter no response preserves unrelated stream
+master 2
+place 9000
+field 200 touched 9000
+field 200 touched 9001
+entity 9001 3 1
+routes 9000 9001 0 0 0
+savage drum 0
+savage drum 1
+savage count
+readlog 200
+readlog 9000
+readlog 9001
+shuffle 1000 9000
+usemeta legacy 1 100000
+
+section drum challenge real allocation queues init load and one success all sounds
+master 2
+set turn 1
+field 200 touched 9000
+field 200 touched 9001
+field 200 touched 9002
+field 200 touched 9003
+field 200 touched 9004
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+place 9000
+entity 9001 3 4
+entity 9002 3 5
+entity 9003 3 3
+entity 9004 3 4
+routes 9000 9001 9002 9003 9004
+savage drum 0
+savage count
+savage_state
+pstate 205
+orders_file 205
+save 9001
+save 9002
+save 9003
+save 9004
+readlog 200
+readlog 9000
+readlog 9001
+readlog 9002
+readlog 9003
+readlog 9004
+shuffle 1000 9000
+npc probe 1000
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section drum call arms skips failed candidate then succeeds and continues sound
+master 2
+set turn 1
+field 200 touched 9000
+field 200 touched 9001
+field 200 touched 9002
+field 200 touched 9003
+field 200 touched 9004
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+place 9000
+entity 9001 3 4
+entity 9002 3 5
+entity 9003 3 3
+entity 9004 3 4
+routes 9000 9001 9002 9003 9004
+link 9004 1001
+field 1001 loyal 1
+savage drum 1
+savage count
+savage_state
+pstate 205
+orders_file 205
+save 9001
+save 9002
+save 9003
+save 9004
+readlog 200
+readlog 9000
+readlog 9001
+readlog 9002
+readlog 9003
+readlog 9004
+shuffle 1000 9000
+npc probe 1000
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section drum cap 199 first success reaches 200 subsequent call only sounds
+master 2
+set turn 1
+field 200 touched 9000
+field 200 touched 9001
+field 200 touched 9002
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+place 9000
+entity 9001 3 4
+entity 9002 3 5
+routes 9000 9001 9002 0 0
+savage_population 199
+savage init
+savage drum 1
+savage count
+savage_state
+orders_file 205
+savage drum 0
+savage count
+readlog 200
+readlog 9001
+readlog 9002
+shuffle 1000 9000
+npc probe 1000
+usemeta legacy 1 100000
+
+section drum cap 200 sound and shuffle still occur no spawn
+master 2
+set turn 1
+field 200 touched 9000
+field 200 touched 9001
+field 200 touched 9002
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+place 9000
+entity 9001 3 4
+entity 9002 3 5
+routes 9000 9001 9002 0 0
+savage_population 200
+savage init
+savage drum 0
+savage drum 1
+savage count
+savage_state
+orders_file 205
+readlog 200
+readlog 9001
+readlog 9002
+shuffle 1000 9000
+npc probe 1000
+usemeta legacy 1 100000
+
+section drum real USE item dispatch shifts speed accounts zero time start only
+lore_root
+master 2
+place 9000
+field 200 touched 9000
+entity 98 4 0
+field 98 use_key 7
+inventory 1000 98 1
+coverage path command.tsv
+ucov path use.tsv
+queue use 98 2
+queue use 98 17
+queue use 98
+queue use 98 1
+initial
+start
+dump
+save 1000
+save 98
+coverage write
+ucov write
+readfile command.tsv
+readfile use.tsv
+readlog 200
+readlog 9000
+usemeta legacy 1 100000
+
+section drum real USE call arms immediate loaded savage queued move retained stack
+lore_root
+master 2
+set turn 1
+field 200 touched 9000
+field 200 touched 9001
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+field 98 use_key 7
+inventory 1000 98 1
+place 9000
+entity 9001 3 4
+routes 9000 9001 0 0 0
+routes 9001 0 0 9000 0
+coverage path command.tsv
+ucov path use.tsv
+queue use 98 1
+load
+do
+dump
+savage count
+savage_state
+orders_file 205
+save 1000
+coverage write
+ucov write
+readfile command.tsv
+readfile use.tsv
+readlog 200
+readlog 9000
+readlog 9001
+npc probe 1000
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+newitem 9000 0
+save_new
+
+section drum no call independent shared mint and random control
+lore_root
+master 2
+set turn 1
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+place 9000
+entity 9001 3 4
+routes 9000 9001 0 0 0
+routes 9001 0 0 9000 0
+shuffle 1000 9000
+npc probe 1000
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+newitem 9000 0
+save_new
+
+section drum blocked hidden barrier LAND exit still sounds and spawns
+master 2
+set turn 1
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 32 4 0
+entity 98 4 0
+place 9000
+field 200 touched 9000
+field 200 touched 9001
+entity 9001 3 4
+field 9001 barrier 1
+field 9001 loc_hidden 1
+routes 9000 9001 0 0 0
+savage drum 1
+savage count
+savage_state
+orders_file 205
+save 9001
+readlog 200
+shuffle 1000 9000
+npc probe 1000
+usemeta legacy 1 100000
+newitem 9000 0
+save_new

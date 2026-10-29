@@ -490,12 +490,24 @@ func (w *world) vUseItem(c *command) int {
 		fmt.Fprintf(w.stderr, "bad use key: %d\n", key)
 		assert(false, "olympia/use.c", 908, "FALSE")
 	}
-	if key == useDrum {
-		c.a = c.b
+	var ret int
+	switch key {
+	case useDrum:
+		c.a = c.b // Speed follows the item; cmd_shift is off.
+		ret = w.vUseDrum(c)
+	default:
+		// Other item callbacks remain absent; never fabricate their outcomes.
+		panic(notImplemented(fmt.Sprintf("USE item key %d", key)))
 	}
-	// All item gameplay callbacks are absent. Stop before their return,
-	// outcome accounting and inhibit_finish effects, never fabricate failure.
-	panic(notImplemented(fmt.Sprintf("USE item key %d", key)))
+	if ret != 0 {
+		w.useCoverageItem(key, ucovOk)
+	} else {
+		w.useCoverageItem(key, ucovFail)
+	}
+	if ret != 1 || c.wait == 0 {
+		c.wait, c.inhibitFinish = 0, 1
+	}
+	return ret
 }
 
 func (w *world) dUseItem(c *command) int {

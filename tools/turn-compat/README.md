@@ -16,6 +16,69 @@ tools/turn-compat/run.sh --full          # real C/C/Go world turns and lifecycle
 tools/turn-compat/run.sh --full --record # explicitly refresh C-only recordings, then compare Go
 ```
 
+## Drum fixture rerun (#182)
+
+At **0.115.0-alpha**, only the complete original drum USE callback and real
+item-dispatch wiring are newly implemented. The unchanged immutable pin is
+**f73e48118805ffe8ff5e763bfa4f20ae00c3a705**. No upstream fixture/script,
+expected bytes, comparator, artifact policy or normalization is changed.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue179-roundtrip" \
+  WORK="$PWD/tmp/issue182-turn" tools/turn-compat/run.sh \
+  --full --command-coverage --use-coverage --phase-coverage --state-export
+```
+
+The strict **233-entry** ordinary turn and all **13 lifecycle / 10 command /
+15 USE / 23 phase / 13 export** controls pass, including all four nonempty
+export flag-free aftermath comparisons. Each unchanged real C run repeats
+before Go; raw streams/status and every cwd entry/type/mode/empty directory/
+regular byte match. The three expected Times status-1 failures remain exact.
+Matching captures are removed. Evidence: `tmp/issue182-turn-full.log` and
+`tmp/issue182-turn/{c-determinism,lifecycle,command-coverage,use-coverage,phase-coverage,state-coverage}.txt`.
+
+All **six original phase scripts** run real C twice before Go, unpacking their
+own pristine fixtures from a separate immutable export, never cached engine
+inputs. A temporary native launcher preserves argv[0] through run_limited and
+captures raw streams/status plus the **complete cwd before original cleanup**.
+The existing strict comparator and tree-modes.py compare all entries without
+exclusions. Every script prints **YES**; scripts and engines exit **0**:
+
+| fixture | strict C/C and C/Go result |
+|---|---|
+| phase-day0 | **252 entries, newly passing** |
+| phase-daily | **245 entries**, retained |
+| phase-month-open | **242 entries**, retained |
+| phase-month-gold | **241 entries**, retained |
+| phase-month-decay | **246 entries**, retained |
+| phase-month-close | **242 entries**, retained |
+
+The final repeat also runs the newly passing original **savage-cap** script
+against C twice then Go: **238 entries**, exact raw status/streams and every
+entry/type/mode/byte. Its native capture includes the script-owned stderr
+file after raw engine stderr has been replayed to that original destination.
+All seven final script comparisons pass in `tmp/issue182-fixtures-final.log`.
+
+Dependency/NYI/stub/sanitizer markers are rejected before status acceptance.
+No further missing gameplay boundary appears. Raw per-script logs, complete
+mode/type/byte digest manifests and strict diffs remain under
+`tmp/issue182-fixture-captures/`; summary: `tmp/issue182-fixtures.log`.
+Matching captures and temporary launchers/source exports are removed. An
+initial launcher used an environment variable also assigned by the original
+script, failing before capture/engine execution; this is not a gameplay
+failure or accepted parity. It was corrected using a distinct variable and
+the whole six-fixture run restarted. Initial evidence:
+`tmp/issue182-fixtures-initial.log`.
+
+The read-only C cache's **1212 originals** and executable SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`
+are verified against the pin (`tmp/issue182-source-audit.log`). Engines run
+only on real disposable copies. Final integrity also verifies all **41938**
+cached input file hashes unchanged (`tmp/issue182-final-integrity.log`).
+This accepts the drum prerequisite and its
+fixture progress, **not stage exit**: #177/#178 remain open, and the full
+201-world/four-corpus final tier is intentionally deferred to #178.
+
 ## Hinder-meditation fixture rerun (#181)
 
 At **0.114.0-alpha**, complete original hinder-meditation start/omen/finish,

@@ -6,6 +6,92 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Drum USE item prerequisite (#182)
+
+**0.115.0-alpha**, immutable C **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**:
+complete original savage.c `v_use_drum` **70–146** (**1483 bytes**, SHA-256
+`9dc335d781d225c678f8f50fcfdf094baaa965c639e62d169d324d5fa580103d`)
+and actual use.c **869–872** item wiring now execute, including c.a=c.b and
+the original outcome/zero-time tail. Existing real savage allocation/queues,
+initLoadSup, NPC/mint/exitdir/RNG and accounting owners are reused. Raw speed,
+sublocation, output order/capitalization, randomized LAND/opposite direction,
+first-success-only, sounds after success and cap behavior match original C.
+No SUMMON-SAVAGE, ATTACK/combat, independent fix or stage 4. No new source
+dependency, affected.sh change, pin move or upstream harness modification.
+[Complete source ranges/hashes and oracle evidence](command-compat#drum-use-item-prerequisite-182).
+
+Unchanged C twice and Go match **1380 sections / 107214 output lines /
+2134398 bytes**, SHA-256
+`c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac`.
+Input: **30431 lines / 578307 bytes**, SHA-256
+`3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659`.
+The entire inherited **571691 / 2105533-byte** input/output prefixes retain
+`c5bbd288cc49cadc94ff68dde1315f8a67f359e271a265422e8be5be2a1e06b3` /
+`fe4b9575b0630d05abb40a63e18724f78266be65b41817a22e859d49c1194cd4`.
+All **100** archived originals and **583** complete extracted definitions are
+audited unchanged. Fourteen appended asymmetric sections check real callbacks,
+actual item dispatch/queues/counters, saved state, allocation and shared RNG
+aftermath. Six actual linker controls reject dependency markers on **0/134**
+before expected-status acceptance or recording replacement, including the
+inherited expected-abort path. Final normal comparison passes.
+
+Bounded vet and fresh bounded **G3G0_FULL=1** tests pass (Olympia **2.078s**;
+final post-cleanup repeat **1.961s**, **11 packages**, **10** explicit
+opt-in/child-entry skips),
+as do all **15 engine/library defaults**, sequentially. Lists uses removed
+temporary native compiler/test launchers to bound its otherwise-unbounded C
+driver and test executable. Strict ordinary turn passes **233 entries**, plus
+all **13 lifecycle / 10 command / 15 USE / 23 phase / 13 export** controls,
+including four nonempty-export flag-free aftermath checks. No raw stream,
+status, filesystem entry/type/mode/byte is normalized or excluded. Every
+compat invocation explicitly sets isolated G3_REPO; engines/tests use the
+existing run_limited adapters. Read-only `tmp/issue179-roundtrip` retains all
+**1212** immutable originals and executable SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+Engines use only real pristine disposable copies, never cache inputs/symlinks.
+Final integrity verifies all **41938 cached input file hashes** unchanged.
+
+All **six unchanged phase scripts** pass C/C/Go with strict pre-cleanup raw
+captures: day0 newly matches **252 entries**, daily **245**, month-open **242**,
+month-gold **241**, month-decay **246**, month-close **242**.
+The final repeat also checks newly passing original **savage-cap** C twice
+then Go, exact raw streams/status and all **238 cwd entries**.
+[Full turn and fixture evidence](turn-compat#drum-fixture-rerun-182).
+The unchanged full spec preserves every **34** accepted pass and adds only
+**phase-day0 / savage-cap**: **36 pass / 89 fail / 0 error** (**119s**).
+Golden remains **NO**, initialization **2** at unsupported -i. No further
+missing gameplay boundary appears. All-open audit finds only #182/#177/#178
+and trackers #169/#19, no bug/follow-C; no issue/checklist edits, commit or push.
+All changes remain uncommitted for parent review. This is **not stage exit**:
+#177/#178 remain; the 201-world/four-corpus final tier and unrelated peripheral/
+native-platform reruns are intentionally not performed.
+
+Evidence: `tmp/issue182-{source-audit,final-integrity}.log`,
+`tmp/issue182-{vet,tests}{,-final}.log`, `tmp/issue182-*-default.log`,
+`tmp/issue182-command-{update-complete,default-final}.log`,
+`tmp/issue182-negative-*.log`, `tmp/issue182-turn-full.log`,
+`tmp/issue182-turn/`, `tmp/issue182-spec.log`,
+`tmp/issue182-fixtures{,-final}.log`, `tmp/issue182-fixture-captures/`.
+Initial construction/launcher failures are retained and explained in the
+tool-specific READMEs; none is represented as passing parity. Scratch probes,
+launchers, matching captures and temporary fixture exports are removed.
+
+Independent parent complete pinned-source/diff review and acceptance repeat
+passes: bounded vet, fresh bounded full-enabled tests (Olympia **1.941s**),
+14 relevant defaults, command **1380 sections / 107214 lines**, strict
+**233-entry** ordinary turn and all **13 lifecycle / 10 command / 15 USE /
+23 phase / 13 export** controls. Lists remains covered by fresh Go tests and
+the implementer's bounded native default. Spec independently repeats **36 pass /
+89 fail / 0 error** (**130s**), with no recorded names changed and all prior
+34 retained; all six original phase scripts now pass. Golden remains
+NO/initialization exit 2. Parent independently verifies both complete inherited
+recording prefixes, all **1212** cached originals and the accepted executable
+hash. Review confirms sound/shuffle effects survive both the cap and
+non-summoning speeds, while only one successful response is accepted per call.
+Logs: `tmp/parent182-{integrity,vet,tests,turn-full,spec}.log`,
+`tmp/parent182-*-default.log`; strict summaries: `tmp/parent182-turn/`.
+This accepts #182, not stage exit; #177/#178 remain.
+
 ## Hinder-meditation USE prerequisite (#181)
 
 **0.114.0-alpha**, immutable C **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**:
