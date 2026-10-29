@@ -68,6 +68,7 @@ functions = {
               'auto_drop', 'link_decay', 'quest_decay', 'post_month'],
     'scry.c': ['notify_loc_shroud', 'reset_cast_where'],
     'basic.c': ['v_hinder_med', 'hinder_med_omen', 'd_hinder_med'],
+    'alchem.c': ['new_potion'],
     'seed.c': ['int_comp', 'seed_taxes'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
@@ -349,6 +350,7 @@ int drv_use_callback(struct command *c, int sk, int finish) {
 void drv_magic_rolls(int who, int other) {
  printf("magic rolls %d %d %d\\n",magc_omen(who,other),magc_med(who,0),magc_scry(who,other));
 }
+int drv_potion_roll(int who, int item, int sub) { return magc_potion(who,item,sub,1,2); }
 void drv_use_table(void) {
  int i;
  for(i=0;i<(int)(sizeof(use_tbl)/sizeof(*use_tbl));i++) {
@@ -709,6 +711,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section potion '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section potion exhausted '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected potion status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section aura cap '* ]]; then
    [ "$status" = 0 ] || die "unexpected aura cap status $status in section $i"
   fi

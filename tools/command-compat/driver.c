@@ -107,6 +107,7 @@ void drv_use_table(void), drv_use_consume(int who,int sk), drv_use_scroll(int wh
 int drv_use_lookup(int sk), drv_use_may(int who,int sk), drv_use_correct(struct command *c), drv_use_meets(int who,int sk);
 int drv_use_callback(struct command *c, int sk, int finish);
 void drv_magic_rolls(int who, int other);
+int drv_potion_roll(int who, int item, int sub);
 void drv_json(FILE *fp, char *s), drv_export_unit(FILE *fp, int who), drv_export_faction(FILE *fp, int pl);
 void drv_export_location(FILE *fp, int where, int viewer);
 void drv_sort_ids(ilist l);
@@ -1045,6 +1046,14 @@ int main(int argc, char **argv)
    sscanf(line, "%*s %d %d", &n, &a);
    created = create_unique_item(n, a); printf("created %d\n", created);
   }
+  else if (!strcmp(op, "potion")) {
+   sscanf(line, "%*s %d", &n);
+   created = new_potion(n); printf("created %d\n", created);
+  }
+  else if (!strcmp(op, "potion_probe")) {
+   sscanf(line, "%*s %d %d", &n, &a);
+   printf("potion roll %d\n", drv_potion_roll(n, created, a));
+  }
   else if (!strcmp(op, "save_new")) save_box(stdout, created);
   else if (!strcmp(op, "delete_new")) { sscanf(line, "%*s %d", &n); destroy_unique_item(n, created); }
   else if (!strcmp(op, "drop_new")) { sscanf(line,"%*s %d %d",&n,&a); printf("drop new %d\n",drop_item(n,created,a)); }
@@ -1699,6 +1708,10 @@ int main(int argc, char **argv)
   }
   else if (!strcmp(op, "entity"))
   { sscanf(line,"%*s %d %d %d",&n,&a,&b); alloc_box(n,a,b); }
+  else if (!strcmp(op, "entity_range")) {
+   sscanf(line,"%*s %d %d %d %d",&n,&a,&b,&d);
+   for(i=n;i<=a;i++) alloc_box(i,b,d);
+  }
   else if (!strcmp(op, "link"))
   {
    sscanf(line,"%*s %d %d",&n,&a);

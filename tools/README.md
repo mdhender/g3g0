@@ -2003,6 +2003,18 @@ tools/<tool>/run.sh                  # each tool whose area the task touched, de
 
 For load and save work, add `tools/olympia-roundtrip/run.sh` (about 25 seconds once its C cache is built).
 `tools/box-compat/run.sh --games 10`, `tools/boxfile-compat/run.sh --games 10`, `tools/check-compat/run.sh --games 10` and `tools/loadsave-compat/run.sh --games 10` compare a fixed sample of saved games when a change could show only on real data.
+Potion allocation (#195, stage-4 P3) extends this same oracle with complete
+alchem.c:8–42 `new_potion`, reusing actual mint/inventory/MagcPotion/province/
+item-magic/output owners. Only alchem.c is newly tracked in affected.sh; pins
+remain independent and unchanged. Eight sections cover exact names/IDs/state,
+nested province, repeat/day/turn keys, independent stream and mint controls,
+preferred-range fallback and real exhaustion. Full exhaustion asserts at
+code.c:690, not return -1: preserve that actual C result, not a mocked failure.
+Run command/move/helper/rng/code/loadsave/turn-driver/default-turn sequentially,
+then literal bounded vet/fresh tests. Command totals are **1397 sections /
+108372 lines / 2153045 bytes**; both inherited byte prefixes are unchanged.
+See command-compat/README.md for full contracts, hashes and evidence.
+No brewing/item callback wiring, family completion or stage exit is implied.
 Current aura cap/limiting (#194, stage-4 P2) extends the existing command
 oracle with complete art.c:54–75 and nine small sections, not callback wiring.
 The cap multiplies at C int width before clamping; its one-aura floor checks
@@ -2740,7 +2752,8 @@ The scripts report a status of 124 as a timeout.
 Paths are in the G3 repository.
 `command-compat` additionally reads complete `olympia/coverage.c` and
 `olympia/state_export.c`, and the complete original magic RNG prefix and
-hinder-meditation closure from `olympia/basic.c`; the inherited dependency row
+hinder-meditation closure from `olympia/basic.c`, plus `olympia/alchem.c`'s
+complete `new_potion`; the inherited dependency row
 below lists its other sources.
 A tool needs rerunning after a pin move if any file it reads changed; [`affected.sh`](affected.sh) applies this table to `git diff --name-only OLD NEW`.
 

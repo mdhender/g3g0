@@ -1570,6 +1570,11 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		case "newitem":
 			created = w.createUniqueItem(args.num(t), args.num(t))
 			fmt.Fprintf(&stdout, "created %d\n", created)
+		case "potion":
+			created = w.newPotion(args.num(t))
+			fmt.Fprintf(&stdout, "created %d\n", created)
+		case "potion_probe":
+			fmt.Fprintf(&stdout, "potion roll %d\n", w.streams.MagcPotion(args.num(t), created, args.num(t), 1, 2))
 		case "save_new":
 			w.saveBox(&stdout, created)
 		case "delete_new":
@@ -2369,6 +2374,11 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		case "entity":
 			n, k, sk := args.num(t), args.num(t), args.num(t)
 			w.allocBox(n, k, sk)
+		case "entity_range":
+			low, high, k, sk := args.num(t), args.num(t), args.num(t), args.num(t)
+			for n := low; n <= high; n++ {
+				w.allocBox(n, k, sk)
+			}
 		case "link":
 			n, a := args.num(t), args.num(t)
 			if old := w.loc(a); old != 0 {

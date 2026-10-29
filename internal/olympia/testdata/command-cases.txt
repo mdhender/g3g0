@@ -30602,3 +30602,126 @@ entity_rolls 1000 7 5000
 usemeta legacy 1 100000
 newitem 1001 0
 save_new
+
+section potion nested actor repeated same turn and next turn real mint
+master 37
+set turn 11
+entity 5000 3 1
+entity 5001 3 17
+link 5000 5001
+link 5001 1001
+link 1001 1000
+usemeta state 1000 0
+potion 1000
+created_state
+save_new
+potion_probe 1000 0
+potion_probe 1000 0
+usemeta state 1000 0
+potion 1000
+save_new
+potion 1001
+save_new
+log
+usemeta rolls 1000 1001
+entity_rolls 1000 7 5000
+usemeta legacy 1 100000
+newitem 1001 0
+save_new
+set turn 12
+potion 1000
+save_new
+usemeta state 1000 0
+usemeta state 1001 0
+log
+
+section potion no call independent magic entity legacy mint control
+master 37
+set turn 11
+usemeta rolls 1000 1001
+entity_rolls 1000 7 5000
+usemeta legacy 1 100000
+newitem 1001 0
+save_new
+usemeta state 1000 0
+log
+
+section potion plain mint same allocation count independent RNG control
+master 37
+set turn 11
+newitem 1000 0
+save_new
+newitem 1000 0
+save_new
+newitem 1001 0
+save_new
+usemeta rolls 1000 1001
+entity_rolls 1000 7 5000
+usemeta legacy 1 100000
+newitem 1001 0
+save_new
+set turn 12
+newitem 1000 0
+save_new
+
+section potion unlocated actor lazy records zero province
+master 19
+set turn 3
+usemeta state 1001 0
+potion 1001
+created_state
+save_new
+usemeta state 1001 0
+usemeta state 1000 0
+log
+
+section potion day key and relocated province with sibling draws
+master 37
+set turn 11
+entity 5000 3 1
+entity 5002 3 2
+link 5000 1000
+potion 1000
+save_new
+potion_probe 1000 0
+potion_probe 1000 1
+usemeta rolls 1000 1001
+set day 1
+potion_probe 1000 0
+link 5002 1000
+potion 1000
+save_new
+usemeta rolls 1000 1001
+usemeta state 1000 0
+log
+
+section potion preferred allocation range full uses real fallback
+master 37
+set turn 11
+entity_range 59000 78999 4 0
+potion 1000
+created_state
+save_new
+usemeta state 1000 0
+log
+usemeta rolls 1000 1001
+entity_rolls 1000 7 5000
+usemeta legacy 1 100000
+newitem 1001 0
+save_new
+
+section potion exhausted allocator retains original alloc_box assertion
+master 37
+set turn 11
+entity_range 59000 149999 4 0
+usemeta state 1000 0
+log
+potion 1000
+
+section potion exhausted plain mint retains same original assertion control
+master 37
+set turn 11
+entity_range 59000 149999 4 0
+usemeta state 1000 0
+log
+newitem 1000 0

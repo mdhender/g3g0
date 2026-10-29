@@ -107959,3 +107959,414 @@ IT
 stderr:
 
 exit 0
+stdout:
+section potion nested actor repeated same turn and next turn real mint
+> master 37
+> set turn 11
+> entity 5000 3 1
+> entity 5001 3 17
+> link 5000 5001
+> link 5001 1001
+> link 1001 1000
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+1000 char 0
+LI
+ wh 1001
+CH
+ lo 200
+
+> potion 1000
+created 73265
+> created_state
+created kind 4 sub 0 unique 1000
+> save_new
+73265 item 0
+na Magic potion
+IT
+ wt 1
+ un 1000
+IM
+ rc 5000
+ ct 1000
+
+> potion_probe 1000 0
+potion roll 1
+> potion_probe 1000 0
+potion roll 1
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+use inventory 73265 1
+1000 char 0
+il	73265 1
+LI
+ wh 1001
+CH
+ lo 200
+
+> potion 1000
+created 67430
+> save_new
+67430 item 0
+na Magic potion
+IT
+ wt 1
+ un 1000
+IM
+ rc 5000
+ ct 1000
+
+> potion 1001
+created 65416
+> save_new
+65416 item 0
+na Strange potion
+IT
+ wt 1
+ un 1001
+IM
+ rc 5000
+ ct 1001
+
+> log
+log:
+1000:0::0::Produced one Magic potion~[s265]
+1000:0::0::Produced one Magic potion~[k430]
+1001:0::0::Produced one Strange potion~[h416]
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 5000
+prison roll 267
+land dir99 2
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 65068
+> save_new
+65068 item 0
+IT
+ un 1001
+
+> set turn 12
+> potion 1000
+created 68460
+> save_new
+68460 item 0
+na Magic potion
+IT
+ wt 1
+ un 1000
+IM
+ rc 5000
+ ct 1000
+
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+use inventory 73265 1
+use inventory 67430 1
+use inventory 68460 1
+1000 char 0
+il	73265 1 \
+	67430 1 \
+	68460 1
+LI
+ wh 1001
+CH
+ lo 200
+
+> usemeta state 1001 0
+use records 1001 1 0 0 0
+use inventory 65416 1
+use inventory 65068 1
+1001 char 0
+il	65416 1 \
+	65068 1
+LI
+ wh 5001
+ hl 1000 
+CH
+ lo 200
+
+> log
+log:
+1000:0::0::Produced one Magic potion~[s265]
+1000:0::0::Produced one Magic potion~[k430]
+1001:0::0::Produced one Strange potion~[h416]
+1000:0::0::Produced one Magic potion~[m460]
+stderr:
+
+exit 0
+stdout:
+section potion no call independent magic entity legacy mint control
+> master 37
+> set turn 11
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 5000
+prison roll 267
+land dir99 2
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 73265
+> save_new
+73265 item 0
+IT
+ un 1001
+
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+1000 char 0
+CH
+ lo 200
+
+> log
+log:
+stderr:
+
+exit 0
+stdout:
+section potion plain mint same allocation count independent RNG control
+> master 37
+> set turn 11
+> newitem 1000 0
+created 73265
+> save_new
+73265 item 0
+IT
+ un 1000
+
+> newitem 1000 0
+created 67430
+> save_new
+67430 item 0
+IT
+ un 1000
+
+> newitem 1001 0
+created 65416
+> save_new
+65416 item 0
+IT
+ un 1001
+
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 5000
+prison roll 267
+land dir99 2
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 65068
+> save_new
+65068 item 0
+IT
+ un 1001
+
+> set turn 12
+> newitem 1000 0
+created 68460
+> save_new
+68460 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section potion unlocated actor lazy records zero province
+> master 19
+> set turn 3
+> usemeta state 1001 0
+use records 1001 1 0 0 0
+1001 char 0
+CH
+ lo 200
+
+> potion 1001
+created 62328
+> created_state
+created kind 4 sub 0 unique 1001
+> save_new
+62328 item 0
+na Magic potion
+IT
+ wt 1
+ un 1001
+IM
+ ct 1001
+
+> usemeta state 1001 0
+use records 1001 1 0 0 0
+use inventory 62328 1
+1001 char 0
+il	62328 1
+CH
+ lo 200
+
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+1000 char 0
+CH
+ lo 200
+
+> log
+log:
+1001:0::0::Produced one Magic potion~[d328]
+stderr:
+
+exit 0
+stdout:
+section potion day key and relocated province with sibling draws
+> master 37
+> set turn 11
+> entity 5000 3 1
+> entity 5002 3 2
+> link 5000 1000
+> potion 1000
+created 73265
+> save_new
+73265 item 0
+na Magic potion
+IT
+ wt 1
+ un 1000
+IM
+ rc 5000
+ ct 1000
+
+> potion_probe 1000 0
+potion roll 1
+> potion_probe 1000 1
+potion roll 2
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> set day 1
+> potion_probe 1000 0
+potion roll 2
+> link 5002 1000
+> potion 1000
+created 67430
+> save_new
+67430 item 0
+na Strange potion
+IT
+ wt 1
+ un 1000
+IM
+ rc 5002
+ ct 1000
+
+> usemeta rolls 1000 1001
+magic rolls 4 90 95
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+use inventory 73265 1
+use inventory 67430 1
+1000 char 0
+il	73265 1 \
+	67430 1
+LI
+ wh 5002
+CH
+ lo 200
+
+> log
+log:
+1000:0::0::Produced one Magic potion~[s265]
+1000:0::0::Produced one Strange potion~[k430]
+stderr:
+
+exit 0
+stdout:
+section potion preferred allocation range full uses real fallback
+> master 37
+> set turn 11
+> entity_range 59000 78999 4 0
+> potion 1000
+created 137778
+> created_state
+created kind 4 sub 0 unique 1000
+> save_new
+137778 item 0
+na Magic potion
+IT
+ wt 1
+ un 1000
+IM
+ ct 1000
+
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+use inventory 137778 1
+1000 char 0
+il	137778 1
+CH
+ lo 200
+
+> log
+log:
+1000:0::0::Produced one Magic potion~[137778]
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 5000
+prison roll 267
+land dir99 2
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 101367
+> save_new
+101367 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0
+stdout:
+section potion exhausted allocator retains original alloc_box assertion
+> master 37
+> set turn 11
+> entity_range 59000 149999 4 0
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+1000 char 0
+CH
+ lo 200
+
+> log
+log:
+> potion 1000
+stderr:
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+
+exit 134
+stdout:
+section potion exhausted plain mint retains same original assertion control
+> master 37
+> set turn 11
+> entity_range 59000 149999 4 0
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+1000 char 0
+CH
+ lo 200
+
+> log
+log:
+> newitem 1000 0
+stderr:
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+
+exit 134

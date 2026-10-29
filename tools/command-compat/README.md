@@ -3,6 +3,74 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Potion allocation prerequisite (#195, stage 4 P3)
+
+**0.117.0-alpha** ports only complete alchem.c **8–42** `new_potion` into
+the natural alchem.go owner. The unchanged C definition is extracted once
+(SHA-256 `263519d6384cd65f112e4f62c998366af46bd5ed2eb81b97ba9c5ef0a9320a3a`).
+It reuses real unique-item allocation/inventory, naming, item-magic records,
+province traversal, output and persistent `MagcPotion(who,new,0,1,2)`.
+`alchem.c` is the sole new command-tool source dependency, also tracked by
+affected.sh. No pin changes, RNG adapters, brewing callbacks or item wiring.
+
+Eight appended sections cover both actual keyed names, exact IDs, ownership,
+inventory order and complete save_box bytes; nested actor → character → ruins
+→ province versus unlocated province zero; absent actor magic records;
+repeated same-turn allocations, repeat keyed probes, day and turn changes,
+relocation, and preferred-range exhaustion with real fallback. Independent
+no-call and equal-count plain-mint controls distinguish shared mint advancement
+from unchanged sibling magic/entity/legacy RNG. Produced-one logs retain the
+real item code/name and routing.
+
+**Exhaustion is an assertion, not a returned -1, at this pin.** Complete
+code.c `new_ent` calls `alloc_box(-1,...)` after both ranges are exhausted;
+the actual C/C/Go cases and plain-mint control preserve status **134** and
+`olympia/code.c (690): n > 0 && n < MAX_BOXES`. Neither the potion draw nor
+its naming/records/output can run after that assertion. The literal negative
+return branch in new_potion remains ported, but cannot be reached through
+this allocator; no mock failure, dummy ID, caught C assertion or invented
+successful failure-aftermath recording is used. All six ordinary sections
+require **0**; both exhaustion controls require **134**, after marker rejection.
+
+Cases preceded implementation. The old Go adapter failed explicitly on
+`potion`/`entity_range`; unchanged real C then ran twice before the C-only
+recording update and Go implementation. Totals: **1397 sections / 108372
+output lines / 2153045 output bytes**, input **30727 lines / 584230 bytes**.
+Entire inherited **582083-byte input / 2147299-byte output** prefixes remain
+byte-identical, including intentional C trailing spaces (the new `hl 1000 `
+line also deliberately retains its C space).
+
+| file | SHA-256 |
+|---|---|
+| command-cases.txt | `d680b5533b1335fe4b9ffead00943983090a9c5aadf0f38c2ea75e10ea103f7a` |
+| command-c-output.txt | `252a2e9e46ba4d781278959796c5918497add61ac795fceb65f74382e87eb801` |
+
+Evidence: `tmp/issue195-{before,c-first,after,prefix-proof,source-proof}.log`.
+Sequential command/move/helper/rng/code/loadsave/turn-driver/default-turn
+comparisons pass at their existing pins, each with explicit isolated G3_REPO
+and existing run_limited supervision (`tmp/issue195-*-final.log`). The final
+command rerun again requires unchanged real C twice before Go, including live
+native traversal. Literal bounded `go vet ./...` and fresh full-enabled
+bounded `go test -count=1 ./...` pass all **11 test packages**, repeated after
+scratch cleanup (Olympia **2.163s**; `tmp/issue195-{vet,tests}-clean.log`).
+
+Parent independently reviewed the primitive and allocator definitions,
+confirmed both entire inherited byte prefixes, and repeated literal bounded
+vet/fresh full-enabled tests plus all eight compatibility checks successfully
+(`tmp/parent195-*.log`; Olympia **1.925s**). The only full diff whitespace
+warning is the intentional new C recording line `hl 1000 `; source checks pass.
+
+Four temporary real linker controls wrap new_potion, emit a dependency marker
+and exit **0/134** in default/update runs. Every tool run rejects at section
+**1389** with status **2**, before expected-status acceptance or recording
+replacement; both recording hashes remain unchanged. Direct bounded launches
+also verify the injected engine statuses. Evidence:
+`tmp/issue195-negative-{0,134}-{default,update}.log` and
+`tmp/issue195-negative-statuses.log`. Probes and matching captures/build trees
+are removed. ALL **105** open local issues were audited, with no bug/follow-C;
+upstream G3 #309/#114/#361/#362 do not block this primitive.
+This is a primitive prerequisite, not alchemy/item-family or stage acceptance.
+
 ## Current aura cap prerequisite (#194, stage 4 P2)
 
 **0.116.0-alpha** ports complete art.c **54–75** `max_current_aura` and
