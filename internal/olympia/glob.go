@@ -333,6 +333,14 @@ func init() {
 	}
 	for i := range cmdTbl {
 		switch cmdTbl[i].name {
+		case "honor", "honour":
+			cmdTbl[i].start = (*world).vHonor
+		case "oath":
+			cmdTbl[i].start = (*world).vOath
+		case "pledge":
+			cmdTbl[i].start = (*world).vPledge
+		case "swear":
+			cmdTbl[i].start = (*world).vSwear
 		case "accept":
 			cmdTbl[i].start = (*world).vAccept
 		case "give":

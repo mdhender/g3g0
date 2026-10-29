@@ -3,6 +3,169 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## HONOR/HONOUR, OATH, PLEDGE and removed SWEAR (#205, stage 4 N07)
+
+**0.127.0-alpha** implements the complete pinned **int** definitions,
+including return-type lines: swear.c `v_honor` **682–718**, `v_oath`
+**721–791**, `v_swear` **216–287**; garr.c static `pledged_beneath`
+**121–139** and `v_pledge` **385–443**. The extractor retains all five
+unchanged exactly once (**4590 bytes**), including the original #if branches.
+SWEAR's unconditional **216–226** removal/refusal makes its later fealty
+code unreachable; Go does not implement that dead code or #if 0
+touch_garrison_locs. Individual source hashes and exact extraction proof:
+`tmp/issue205-source-proof.log`. No new source dependency or pin change:
+swear.c, garr.c and all reused dependencies were already tracked by affected.sh.
+
+The real dispatch starts are wired in glob.go, preserving **all five NULL
+finish/interrupt pairs**, original `c` permissions, times and priorities.
+swear.go/garr.go reuse char/player/magic, NP, gold/subItem, loyalty strings,
+output, parser, scheduler, persistence and the existing pledgeBacklinks owner.
+No parallel fealty/pledge engine, successful callback substitute or other task.
+
+Twenty-four appended sections (**22 status 0 / 2 exact assertions 134**)
+compare raw status/streams, original save_box bytes and unsaved record/list/
+backlink/queue state plus actual keyed/entity, mint and legacy RNG aftermath:
+
+- HONOR zero, insufficient funds, contract-rate accumulation versus reset,
+  signed 32-bit rate wrapping, and oath rejection **before** charge. A raw
+  negative amount really reaches charge → sub_item's **u.c:645 qty >= 0**
+  assertion; it does not become a negative gift or an insufficient-gold refusal.
+- OATH local clamp for zero, raw INT_MIN and above two leaves saved raw args
+  unchanged. Oath-1 → oath-2 costs exactly **one extra NP**; partial/absent NP,
+  maximum-loyalty refusal before the NP check, actual deduction and signed
+  short NP/spent fields are distinguished. Missing player records remain
+  absent during NP reads, but **refusal output allocates the owner** via the
+  real output machinery (both before/after record observers are recorded).
+- PLEDGE self/invalid/raw-name/NPC/LOY_npc/LOY_summon refusals; direct and
+  transitive cycles beside a valid nearby chain; nil versus existing magic;
+  repeated clear and successful set/clear invalidation only. Existing lazy
+  report collection rebuilds backlinks, retaining allocated-empty lists.
+  Noncharacter clear succeeds without the helper; the valid-human-target
+  noncharacter caller reaches the real **garr.c:125** assertion.
+- SWEAR absent, zero, valid, invalid, raw-name and raw-negative arguments
+  always refuse without changing ownership, resources, pledge or backlinks.
+- Actual **STATE_RUN** writer/reader roundtrips and generic NULL interruption
+  for every verb automatically load the next order, ultimately **WAIT**, but
+  never execute a start. Separately started HONOR finish and OATH interruption
+  after reload prove already-applied costs occur exactly once. The actual
+  HONOR → HONOUR → OATH → OATH → PLEDGE → SWEAR → clear → WAIT scheduler
+  composition records coverage rows **40/41/52/56/83**: **1/1/2/2 ok**, and
+  **1 SWEAR fail**, with gold **91→61** and NP **7→5**.
+
+Before implementation/update, unchanged C ran twice deterministically on
+the new cases (`tmp/issue205-before-c.log`); unchanged Go failed at the real
+**HONOR start** (`tmp/issue205-before-go.log`). The initial default's status
+**1** is the expected additional-recording diff, not failed C determinism.
+Local observer refinements (correct actual coverage indices and explicit
+before/after allocation observations) were also recorded from fresh C twice,
+never from Go. Final update and fresh separate default both pass:
+`tmp/issue205-update-final.log`, `tmp/issue205-command-default.log`.
+
+Final oracle: **1607 sections / 128590 output lines / 2536568 output bytes**;
+input **35134 lines / 663342 bytes**. Additions: **427 input lines / 7216
+input bytes / 2266 output lines / 38325 output bytes**. Entire HEAD prefixes
+**656126 / 2498243 bytes**, and original stage-3 **578307 / 2134398 bytes**,
+are unchanged. All **13 high-bit/non-UTF8 bytes** survive; the **two** new
+trailing-whitespace lines are literal C writer output, deliberately retained.
+Proof: `tmp/issue205-prefix-proof.log`.
+
+| file or prefix | SHA-256 |
+|---|---|
+| command-cases.txt | `7f489a8432ba7a04080b1243fd3c625d77631470040aad756c5f58b33048f722` |
+| command-c-output.txt | `1d587f79fbb0cb8ad1254e5f079f02efd3738c5808d948e4d0d5b5ee5672d593` |
+| HEAD 656126-byte input prefix | `062d8683d8fb6e92e97328c304d1c256264e7f1d5602dccab014aea798a1335e` |
+| HEAD 2498243-byte output prefix | `f4afb956fd6e88cbbad9164cf34eda9387d07f625aebd07bd2dc5d3979d6ba84` |
+| stage-3 578307-byte input prefix | `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` |
+| stage-3 2134398-byte output prefix | `c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac` |
+
+Four actual temporary linker controls wrap only v_honor, emit the rejected
+dependency marker, and exit **0/134** in **default/update** modes. Every
+harness rejects **section 1583 with status 2**, before accepting status or
+replacing recordings. The then-current output SHA-256 stays unchanged:
+`f2ef518c5496bf9b161283ba71b78930ac3569d88a845a0bce04613fbe4f2128`.
+Bounded direct executions also confirm actual marker-process statuses and raw
+streams. Logs: `tmp/issue205-negative-{0,134}-{default,update}.log`,
+`tmp/issue205-probe-STATUS-MODE.{stdout,stderr,status}` and
+`tmp/issue205-negative-proof.log`. Temporary helpers/probes/binaries removed.
+
+The following original **unmodified** check.sh scripts each print **YES /
+script 0**, running real C twice before freshly built Go through the trusted
+bounded native pre-cleanup launcher `tmp/stage4-capture` (`S4_ENGINE`,
+`S4_CAPTURE`, `OLYMPIA_ENGINE_BIN=$PWD/tmp/stage4-capture`). Both existing
+strict comparator and tree-modes.py match raw status/streams and **ALL** cwd
+entries/types/modes/empty dirs/bytes, with no normalization or exclusions:
+
+| fixture | engine status C/C/Go | cwd entries |
+|---|---|---|
+| loyalty-bind | 0 | 239 |
+| loyalty-refused | 0 | 239 |
+| inventory-give | 0 | 241 |
+| inventory-refused | 0 | 239 |
+| token-swear | 0 | 238 |
+| release-swear-np (separate expected abort) | 134 | 229 |
+
+The canonical unchanged C binary is
+`tmp/stage4-source/build/issue201/olympia-g3`, SHA-256
+`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`.
+The abort is exact **`olympia/swear.c (180): FALSE`**, never a successful
+turn. Protected cache inputs are untouched; original scripts unpack fresh
+physical disposable inputs. Fixture sources/EXPECT files match the immutable
+pin byte-for-byte with executable modes. Logs/provenance:
+`tmp/issue205-fixtures-proof.log`, `tmp/issue205-FIXTURE-{c1,c2,go}.log`;
+manifests/decisive abort stderr: `tmp/issue205-fixtures/FIXTURE/`.
+Matching captures and the fresh Go binary are removed.
+
+Exact command recipes are the N06b recipes immediately below, replacing
+`issue204` with `issue205` and using the six fixtures above. Actual validation:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" tools/command-compat/run.sh --update
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    "tools/$tool-compat/run.sh" # sequential; inspect every status
+done
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue205-spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" tools/olympia-spec/run.sh
+```
+
+Bounded vet and fresh full-enabled tests pass (**11 packages / 10 explicit
+opt-in/child-entry skips**, Olympia **2.156s**). Eight sequential defaults
+pass: command **1607/128590**, move **135/7158**, helper **37/1487**, RNG
+**321**, code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase
+**5/484**, calendar **2/119**, schedule **4/1801**, default turn **2 cwd entries**.
+Logs: `tmp/issue205-{vet,tests,default-status}.log`,
+`tmp/issue205-TOOL-default.log`. The full spec tool itself discovers exactly
+**loyalty-bind / loyalty-refused**: **46 pass / 79 fail / 0 error**, retaining
+all **44** prior names (including the earlier 41 and accepted stage-3 36).
+Tool-generated passing.txt SHA-256:
+`0c8a18a00fff32a3415bcde90dfa03a073b55ae7640523e35781cfef22af267d`.
+Golden remains **NO**, unsupported `-i` initialization **2**; not whole-spec parity.
+
+The parent-provided ALL-open audit contains **95 entries**, only filed
+stage tasks/trackers and root #19, no bug/follow-C. No new verified blocker
+or oversized prerequisite was found. No family/stage exit, full-corpus,
+non-Linux, sanitizer or stage-5 claim. Parent independently reviewed all five
+complete pinned definitions, shared owners and the entire engine/case diff,
+and verified both full HEAD and stage-3 byte prefixes. Independent bounded
+vet, fresh full-enabled tests and all eight sequential defaults pass
+(`tmp/parent205-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn}.log`).
+The parent command default repeats unchanged real C twice and matches Go on
+**1607 sections / 128590 lines**. Parent also independently ran all six
+original scripts in C/C/Go order: raw status/streams and all
+**239/239/241/239/238/229** cwd entries match both strict comparators. Every
+script prints **YES**; release-swear-np is the separate exact **134** abort,
+not a successful turn. Parent manifests, script logs and decisive assertion
+stderr remain under `tmp/parent205-fixtures/`; matching captures and the fresh
+parent Go binary were removed.
+The independent parent full spec confirms **46 pass / 79 fail / 0 error**,
+adds exactly the two loyalty fixtures and retains every previous name;
+golden remains **NO**, initialization **2** (`tmp/parent205-spec.log`).
+
 ## GIVE, PAY, GET and TAKE (#204, stage 4 N06b)
 
 **0.126.0-alpha** ports the complete pinned c1.c definitions, including

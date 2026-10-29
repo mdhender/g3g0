@@ -34705,3 +34705,430 @@ load
 do
 readlog 200
 export state
+
+section N07 HONOR zero and insufficient gold leave loyalty unchanged
+entity 1 4 0
+inventory 1000 1 17
+field 1000 loyal 3
+field 1000 rate 41
+queue honor 0
+load
+do
+queue honor 18
+load
+do
+save 1000
+readlog 200
+export state
+
+section N07 HONOR contract adds existing rate HONOUR resets noncontract
+entity 1 4 0
+inventory 1000 1 91
+field 1000 loyal 1
+field 1000 rate 37
+queue honor 13
+load
+do
+save 1000
+field 1000 loyal 3
+field 1000 rate 89
+queue honour 17
+load
+do
+save 1000
+readlog 200
+export state
+
+section N07 invalid HONOR raw negative reaches actual sub_item quantity assertion
+entity 1 4 0
+inventory 1000 1 17
+parse honor 1
+callback_start -3
+
+section N07 HONOR oath rejection precedes negative charge and amount zero precedes oath
+entity 1 4 0
+inventory 1000 1 17
+field 1000 loyal 2
+field 1000 rate 1
+parse honor 1
+callback_start -3
+callback_start 0
+callback_start 99
+save 1000
+readlog 200
+export state
+
+section N07 HONOR signed rate wraps at int boundary
+entity 1 4 0
+inventory 1000 1 17
+field 1000 loyal 1
+field 1000 rate 2147483640
+queue honour 13
+load
+do
+save 1000
+readlog 200
+export state
+
+section N07 OATH zero clamp and oath one to two costs only one extra NP
+field 200 np 7
+queue oath 0
+load
+do
+dump
+save 1000
+pstate 200
+queue oath 2
+load
+do
+dump
+save 1000
+pstate 200
+queue oath 2
+load
+do
+readlog 200
+export state
+
+section N07 OATH raw negative local clamp does not overwrite saved argument
+field 200 np 7
+queue oath 1
+load
+rawargs -2147483648 0 0
+do
+dump
+save 1000
+pstate 200
+readlog 200
+export state
+
+section N07 OATH above two local clamp and partial NP message order
+field 200 np 1
+field 1000 loyal 1
+field 1000 rate 500
+queue oath 2147483647
+load
+do
+dump
+save 1000
+pstate 200
+readlog 200
+export state
+
+section N07 OATH exact two NP noncontract reset and np_spent short wrap
+field 200 np 2
+field 200 np_spent 32767
+field 1000 loyal 3
+field 1000 rate 99
+queue oath 2
+load
+do
+save 1000
+pstate 200
+readlog 200
+export state
+
+section N07 OATH no NP and signed player NP width refuse without changing loyalty
+field 200 np 65535
+queue oath 2
+load
+do
+field 200 np 0
+queue oath
+load
+do
+save 1000
+pstate 200
+readlog 200
+export state
+
+section N07 OATH max refusal precedes NP check but output allocates missing player
+entity 202 1 51
+field 1000 lord 202
+field 1000 loyal 2
+field 1000 rate 3
+parse oath 2
+report state 202
+callback_start
+report state 202
+save 1000
+export state
+
+section N07 OATH no NP refusal allocates missing player through actual output
+entity 202 1 51
+field 1000 lord 202
+parse oath 2
+report state 202
+callback_start
+report state 202
+save 1000
+export state
+
+section N07 PLEDGE self and invalid noncharacter preserve backlinks and absent magic
+set backlinks 1
+queue pledge 1000
+load
+do
+report backlinks 1000
+queue pledge 200
+load
+do
+report backlinks 1000
+queue pledge 9999
+load
+do
+report backlinks 1000
+readlog 200
+export state
+
+section N07 PLEDGE clear allocates magic invalidates cache even absent or repeated
+set backlinks 1
+queue pledge 0
+load
+do
+report backlinks 1000
+set backlinks 1
+queue pledge
+load
+do
+report backlinks 1000
+readlog 200
+export state
+
+section N07 PLEDGE raw name retained on noncharacter and NPC refusals
+entity 9000 3 3
+field 1001 subkind 54
+set backlinks 1
+parse pledge Raw-Target
+callback_start 9000
+callback_start 1001
+field 1001 subkind 0
+field 1001 loyal 4
+callback_start 1001
+field 1001 loyal 5
+callback_start 1001
+report backlinks 1000
+readlog 200
+export state
+
+section N07 PLEDGE direct and transitive cycles refuse nearby acyclic chain succeeds
+entity 1002 2 0
+entity 1003 2 0
+field 1002 lord 201
+field 1003 lord 201
+field 1001 pledge 1000
+set backlinks 1
+queue pledge 1001
+load
+do
+report backlinks 1000
+field 1001 pledge 1002
+field 1002 pledge 1000
+set backlinks 1
+queue pledge 1001
+load
+do
+report backlinks 1000
+field 1002 pledge 1003
+queue pledge 1001
+load
+do
+report backlinks 1000
+save 1001
+save 1002
+readlog 200
+readlog 201
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
+
+section N07 PLEDGE successful set clear rebuild lazy backlinks only when requested
+field 1001 lord 201
+report backlink 1001 1000
+set backlinks 1
+queue pledge 1001
+load
+do
+report backlinks 1000
+report backlinks 1001
+report pledged 1001 1001
+report backlinks 1001
+queue pledge 0
+load
+do
+report backlinks 1000
+report backlinks 1001
+report pledged 1001 1001
+report backlinks 1001
+readlog 200
+readlog 201
+export state
+
+section N07 PLEDGE noncharacter caller clear never reaches pledged_beneath assertion
+who 200
+parse pledge 0
+callback_start
+report backlinks 200
+readlog 200
+export state
+
+section N07 invalid PLEDGE noncharacter caller valid human target reaches actual assertion
+who 200
+parse pledge 1001
+callback_start
+
+section N07 SWEAR every argument refuses without resource ownership or cache changes
+entity 1 4 0
+inventory 1000 1 17
+field 200 np 7
+field 1000 loyal 1
+field 1000 rate 91
+field 1000 pledge 1001
+set backlinks 1
+queue swear
+load
+do
+queue swear 0
+load
+do
+queue swear 1001
+load
+do
+queue swear 9999
+load
+do
+parse swear Raw-Target
+callback_start -2147483648
+report backlinks 1000
+save 1000
+pstate 200
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
+
+section N07 real STATE_RUN reload and NULL interruption all verbs retain next WAIT without starts
+entity 1 4 0
+inventory 1000 1 41
+field 200 np 7
+queue honor 13
+queue honour 17
+queue oath 2
+queue pledge 1001
+queue swear 0
+queue wait day 4
+load
+run 1 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 1 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 1 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+save 1000
+pstate 200
+export state
+
+section N07 HONOR started STATE_RUN persists finish never charges twice
+entity 1 4 0
+inventory 1000 1 41
+queue honor 13
+queue wait day 4
+load
+do
+save 1000
+transfer_probe state 1000
+persist_command
+transfer_probe state 1000
+save 1000
+finish
+save 1000
+dump
+readlog 200
+export state
+
+section N07 OATH started STATE_RUN persists interruption never refunds or charges twice
+field 200 np 7
+queue oath 2
+queue wait day 4
+load
+do
+save 1000
+pstate 200
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+save 1000
+pstate 200
+readlog 200
+export state
+
+section N07 queued HONOR HONOUR OATH PLEDGE SWEAR WAIT actual scheduler and coverage
+coverage path coverage.tsv
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+link 9000 1001
+entity 1 4 0
+inventory 1000 1 91
+field 200 np 7
+orders 200 1000 honor 13
+orders 200 1000 honour 17
+orders 200 1000 oath 1
+orders 200 1000 oath 2
+orders 200 1000 pledge 1001
+orders 200 1000 swear 0
+orders 200 1000 pledge 0
+orders 200 1000 wait day 4
+orders 200 1001 wait day 4
+resolve_wait
+initial
+start
+evening
+set day 1
+start
+evening
+set day 2
+start
+evening
+set day 3
+start
+evening
+set day 4
+start
+evening
+dump
+save 1000
+pstate 200
+coverage state 40
+coverage state 41
+coverage state 52
+coverage state 56
+coverage state 83
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state

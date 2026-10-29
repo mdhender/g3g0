@@ -22,6 +22,8 @@ load-orphan-unit
 load-short-entries
 load-stray-orders
 load-trade-no-price
+loyalty-bind
+loyalty-refused
 mint-top-id
 move-go
 move-out-first

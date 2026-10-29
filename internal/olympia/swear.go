@@ -6,6 +6,88 @@ package olympia
 // Ported from olympia/swear.c: lord() and player(), which write_master()
 // uses, and set_loyal(), set_lord() and is_unit(), which check_db() uses.
 
+// vSwear is the active unconditional refusal in swear.c:216–287. The
+// fealty code below its #if 1 return is unreachable in the pinned engine.
+func (w *world) vSwear(c *command) int {
+	w.commandOut(int(c.who), "The SWEAR order has been removed from the game.")
+	return 0
+}
+
+// vHonor is the complete swear.c:682–718 start (also HONOUR). In
+// particular, negative raw amounts reach charge's actual subItem assertion;
+// only zero and oath loyalty are rejected before that boundary.
+func (w *world) vHonor(c *command) int {
+	who, amount := int(c.who), int(c.a)
+	if amount == 0 {
+		w.commandOut(who, "Must specify an amount of gold to use as a gift.")
+		return 0
+	}
+	if p := w.rpChar(who); p != nil && p.loyKind == loyOath {
+		w.commandOut(who, "%s graciously declines the offer.", w.boxName(who))
+		return 0
+	}
+	if !w.charge(who, amount) {
+		w.commandOut(who, "Do not have %s.", goldS(amount))
+		return 0
+	}
+	if p := w.rpChar(who); p == nil || p.loyKind != loyContract {
+		w.pChar(who).loyKind = loyContract
+		w.pChar(who).loyRate = 0
+	}
+	w.pChar(who).loyRate += int32(amount)
+	w.commandOut(who, "%s now bound with %s.", w.boxName(who), w.loyalS(who))
+	return 1
+}
+
+// vOath is complete swear.c:721–791, with the original active #if 1
+// NP rule. Clamp only the local flag, not c.a; oath-1 -> oath-2 costs one
+// extra NP. NP reads do not allocate player records, but refusal output can
+// allocate the owner through the shared output machinery.
+func (w *world) vOath(c *command) int {
+	who, flag := int(c.who), int(c.a)
+	pl := w.player(who)
+	var lk int8
+	var lr int32
+	if p := w.rpChar(who); p != nil {
+		lk, lr = p.loyKind, p.loyRate
+	}
+	if flag > 2 {
+		flag = 2
+	}
+	if flag < 1 {
+		flag = 1
+	}
+	if lk == loyOath && lr >= 2 {
+		w.commandOut(who, "%s already is at %s, the maximum loyalty.", w.boxName(who), w.loyalS(who))
+		return 0
+	}
+	if flag == 2 && lk == loyOath && lr == 1 {
+		flag = 1
+	}
+	npCost := flag
+	assert(npCost > 0, "olympia/swear.c", 762, "np_cost > 0")
+	np := 0
+	if p := w.rpPlayer(pl); p != nil {
+		np = int(p.noblePoints)
+	}
+	if np < 1 {
+		w.commandOut(who, "Player %s has no Noble Points.", w.boxCode(pl))
+		return 0
+	}
+	if np < npCost {
+		w.commandOut(who, "Player %s only has %d Noble Points.", w.boxCode(pl), np)
+		npCost = np
+	}
+	if lk != loyOath {
+		w.pChar(who).loyKind = loyOath
+		w.pChar(who).loyRate = 0
+	}
+	w.pChar(who).loyRate += int32(npCost)
+	w.deductNP(pl, npCost)
+	w.commandOut(who, "%s now bound with %s.", w.boxName(who), w.loyalS(who))
+	return 1
+}
+
 // lord is lord(): who box n's owner is: n itself if it is a player,
 // otherwise its unit_lord, or 0 if it has no entity_char.
 func (w *world) lord(n int) int {

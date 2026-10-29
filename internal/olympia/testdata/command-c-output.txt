@@ -126322,3 +126322,2269 @@ LI
 stderr:
 
 exit 0
+stdout:
+section N07 HONOR zero and insufficient gold leave loyalty unchanged
+> entity 1 4 0
+> inventory 1000 1 17
+> field 1000 loyal 3
+> field 1000 rate 41
+> queue honor 0
+> load
+load 1
+> do
+> queue honor 18
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+il	1 17
+CH
+ lo 200
+ lk 3
+ lr 41
+CO
+ li honor 18
+ ar 18 0 0 0 0 0 0 0
+ wa 1
+ pr 3
+
+> readlog 200
+log 200:
+1000:0::0::> honor 0
+1000:0::0::Must specify an amount of gold to use as a gift.
+1000:0::0::> honor 18
+1000:0::0::Do not have 18~gold.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 17
+1000 char 0
+il	1 17
+CH
+ lo 200
+ lk 3
+ lr 41
+CO
+ li honor 18
+ ar 18 0 0 0 0 0 0 0
+ wa 1
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 HONOR contract adds existing rate HONOUR resets noncontract
+> entity 1 4 0
+> inventory 1000 1 91
+> field 1000 loyal 1
+> field 1000 rate 37
+> queue honor 13
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+il	1 78
+CH
+ lo 200
+ lk 1
+ lr 50
+CO
+ li honor 13
+ ar 13 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> field 1000 loyal 3
+> field 1000 rate 89
+> queue honour 17
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+il	1 61
+CH
+ lo 200
+ lk 1
+ lr 17
+CO
+ li honour 17
+ ar 17 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> readlog 200
+log 200:
+1000:0::0::> honor 13
+1000:0::0::<no subkind>~[1000] now bound with contract-50.
+1000:0::0::> honour 17
+1000:0::0::<no subkind>~[1000] now bound with contract-17.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 61
+1000 char 0
+il	1 61
+CH
+ lo 200
+ lk 1
+ lr 17
+CO
+ li honour 17
+ ar 17 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 invalid HONOR raw negative reaches actual sub_item quantity assertion
+> entity 1 4 0
+> inventory 1000 1 17
+> parse honor 1
+parse 1
+> callback_start -3
+stderr:
+assertion failure: olympia/u.c (645): qty >= 0
+
+exit 134
+stdout:
+section N07 HONOR oath rejection precedes negative charge and amount zero precedes oath
+> entity 1 4 0
+> inventory 1000 1 17
+> field 1000 loyal 2
+> field 1000 rate 1
+> parse honor 1
+parse 1
+> callback_start -3
+callback start 0
+> callback_start 0
+callback start 0
+> callback_start 99
+callback start 0
+> save 1000
+1000 char 0
+il	1 17
+CH
+ lo 200
+ lk 2
+ lr 1
+CO
+ li honor 1
+ ar 99 0 0 0 0 0 0 0
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] graciously declines the offer.
+1000:0::0::Must specify an amount of gold to use as a gift.
+1000:0::0::<no subkind>~[1000] graciously declines the offer.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 17
+1000 char 0
+il	1 17
+CH
+ lo 200
+ lk 2
+ lr 1
+CO
+ li honor 1
+ ar 99 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 HONOR signed rate wraps at int boundary
+> entity 1 4 0
+> inventory 1000 1 17
+> field 1000 loyal 1
+> field 1000 rate 2147483640
+> queue honour 13
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+il	1 4
+CH
+ lo 200
+ lk 1
+ lr -2147483643
+CO
+ li honour 13
+ ar 13 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> readlog 200
+log 200:
+1000:0::0::> honour 13
+1000:0::0::<no subkind>~[1000] now bound with contract--2147483643.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 4
+1000 char 0
+il	1 4
+CH
+ lo 200
+ lk 1
+ lr -2147483643
+CO
+ li honour 13
+ ar 13 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 OATH zero clamp and oath one to two costs only one extra NP
+> field 200 np 7
+> queue oath 0
+> load
+load 1
+> do
+> dump
+cmd 52 who 1000 state 2 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [oath] [0]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> save 1000
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 1
+CO
+ li oath 0
+ ar 0 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> pstate 200
+player 200 np 6 gained 0 spent 1 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> queue oath 2
+> load
+load 1
+> do
+> dump
+cmd 52 who 1000 state 2 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 2 0 0 0 0 0 0 0; parse [oath] [2]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> save 1000
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 2
+CO
+ li oath 2
+ ar 2 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> pstate 200
+player 200 np 5 gained 0 spent 2 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> queue oath 2
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> oath 0
+1000:0::0::<no subkind>~[1000] now bound with oath-1.
+1000:0::0::> oath 2
+1000:0::0::<no subkind>~[1000] now bound with oath-2.
+1000:0::0::> oath 2
+1000:0::0::<no subkind>~[1000] already is at oath-2, the maximum loyalty.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ np 5
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 2
+CO
+ li oath 2
+ ar 2 0 0 0 0 0 0 0
+ wa 1
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 OATH raw negative local clamp does not overwrite saved argument
+> field 200 np 7
+> queue oath 1
+> load
+load 1
+> rawargs -2147483648 0 0
+> do
+> dump
+cmd 52 who 1000 state 2 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args -2147483648 0 0 0 0 0 0 0; parse [oath] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> save 1000
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 1
+CO
+ li oath 1
+ ar -2147483648 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> pstate 200
+player 200 np 6 gained 0 spent 1 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> oath 1
+1000:0::0::<no subkind>~[1000] now bound with oath-1.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ np 6
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 1
+CO
+ li oath 1
+ ar -2147483648 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 OATH above two local clamp and partial NP message order
+> field 200 np 1
+> field 1000 loyal 1
+> field 1000 rate 500
+> queue oath 2147483647
+> load
+load 1
+> do
+> dump
+cmd 52 who 1000 state 2 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 2147483647 0 0 0 0 0 0 0; parse [oath] [2147483647]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> save 1000
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 1
+CO
+ li oath 2147483647
+ ar 2147483647 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> pstate 200
+player 200 np 0 gained 0 spent 1 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> oath 2147483647
+1000:0::0::Player [200] only has 1 Noble Points.
+1000:0::0::<no subkind>~[1000] now bound with oath-1.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 1
+CO
+ li oath 2147483647
+ ar 2147483647 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 OATH exact two NP noncontract reset and np_spent short wrap
+> field 200 np 2
+> field 200 np_spent 32767
+> field 1000 loyal 3
+> field 1000 rate 99
+> queue oath 2
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 2
+CO
+ li oath 2
+ ar 2 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> pstate 200
+player 200 np 0 gained 0 spent -32767 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> oath 2
+1000:0::0::<no subkind>~[1000] now bound with oath-2.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 2
+CO
+ li oath 2
+ ar 2 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 OATH no NP and signed player NP width refuse without changing loyalty
+> field 200 np 65535
+> queue oath 2
+> load
+load 1
+> do
+> field 200 np 0
+> queue oath
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li oath
+ ar 0 0 0 0 0 0 0 0
+ wa 1
+ pr 3
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> oath 2
+1000:0::0::Player [200] has no Noble Points.
+1000:0::0::> oath
+1000:0::0::Player [200] has no Noble Points.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li oath
+ ar 0 0 0 0 0 0 0 0
+ wa 1
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 OATH max refusal precedes NP check but output allocates missing player
+> entity 202 1 51
+> field 1000 lord 202
+> field 1000 loyal 2
+> field 1000 rate 3
+> parse oath 2
+parse 1
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_savage
+
+> callback_start
+callback start 0
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_savage
+PL
+
+> save 1000
+1000 char 0
+CH
+ lo 202
+ lk 2
+ lr 3
+CO
+ li oath 2
+ ar 2 0 0 0 0 0 0 0
+
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+202 player pl_savage
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 202
+ lk 2
+ lr 3
+CO
+ li oath 2
+ ar 2 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 OATH no NP refusal allocates missing player through actual output
+> entity 202 1 51
+> field 1000 lord 202
+> parse oath 2
+parse 1
+> report state 202
+report entity 202 order 0 player 0 attitudes 0 char 0 magic 0
+202 player pl_savage
+
+> callback_start
+callback start 0
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_savage
+PL
+
+> save 1000
+1000 char 0
+CH
+ lo 202
+CO
+ li oath 2
+ ar 2 0 0 0 0 0 0 0
+
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+202 player pl_savage
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 202
+CO
+ li oath 2
+ ar 2 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 PLEDGE self and invalid noncharacter preserve backlinks and absent magic
+> set backlinks 1
+> queue pledge 1000
+> load
+load 1
+> do
+> report backlinks 1000
+backlinks ready 1 allocated 0
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge 1000
+ ar 1000 0 0 0 0 0 0 0
+ pr 1
+
+> queue pledge 200
+> load
+load 1
+> do
+> report backlinks 1000
+backlinks ready 1 allocated 0
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge 200
+ ar 200 0 0 0 0 0 0 0
+ pr 1
+
+> queue pledge 9999
+> load
+load 1
+> do
+> report backlinks 1000
+backlinks ready 1 allocated 0
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge 9999
+ ar 9999 0 0 0 0 0 0 0
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> pledge 1000
+1000:0::0::Can't pledge to yourself.
+1000:0::0::> pledge 200
+1000:0::0::200 is not a character.
+1000:0::0::> pledge 9999
+1000:0::0::9999 is not a character.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge 9999
+ ar 9999 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 PLEDGE clear allocates magic invalidates cache even absent or repeated
+> set backlinks 1
+> queue pledge 0
+> load
+load 1
+> do
+> report backlinks 1000
+backlinks ready 0 allocated 0
+pledged:
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> set backlinks 1
+> queue pledge
+> load
+load 1
+> do
+> report backlinks 1000
+backlinks ready 0 allocated 0
+pledged:
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> pledge 0
+1000:0::0::Pledge cleared.  Lands will be claimed for ourselves.
+1000:0::0::> pledge
+1000:0::0::Pledge cleared.  Lands will be claimed for ourselves.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 PLEDGE raw name retained on noncharacter and NPC refusals
+> entity 9000 3 3
+> field 1001 subkind 54
+> set backlinks 1
+> parse pledge Raw-Target
+parse 1
+> callback_start 9000
+callback start 0
+> callback_start 1001
+callback start 0
+> field 1001 subkind 0
+> field 1001 loyal 4
+> callback_start 1001
+callback start 0
+> field 1001 loyal 5
+> callback_start 1001
+callback start 0
+> report backlinks 1000
+backlinks ready 1 allocated 0
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge Raw-Target
+ ar 1001 0 0 0 0 0 0 0
+
+> readlog 200
+log 200:
+1000:0::0::Raw-Target is not a character.
+1000:0::0::May not pledge land to Raw-Target.
+1000:0::0::May not pledge land to Raw-Target.
+1000:0::0::May not pledge land to Raw-Target.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge Raw-Target
+ ar 1001 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+ lk 5
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9000 loc plain
+
+stderr:
+
+exit 0
+stdout:
+section N07 PLEDGE direct and transitive cycles refuse nearby acyclic chain succeeds
+> entity 1002 2 0
+> entity 1003 2 0
+> field 1002 lord 201
+> field 1003 lord 201
+> field 1001 pledge 1000
+> set backlinks 1
+> queue pledge 1001
+> load
+load 1
+> do
+> report backlinks 1000
+backlinks ready 1 allocated 0
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge 1001
+ ar 1001 0 0 0 0 0 0 0
+ pr 1
+
+> field 1001 pledge 1002
+> field 1002 pledge 1000
+> set backlinks 1
+> queue pledge 1001
+> load
+load 1
+> do
+> report backlinks 1000
+backlinks ready 1 allocated 0
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge 1001
+ ar 1001 0 0 0 0 0 0 0
+ pr 1
+
+> field 1002 pledge 1003
+> queue pledge 1001
+> load
+load 1
+> do
+> report backlinks 1000
+backlinks ready 0 allocated 0
+pledged:
+1000 char 0
+CH
+ lo 200
+CM
+ pl 1001
+CO
+ li pledge 1001
+ ar 1001 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> save 1001
+1001 char 0
+CH
+ lo 200
+CM
+ pl 1002
+
+> save 1002
+1002 char 0
+CH
+ lo 201
+CM
+ pl 1003
+
+> readlog 200
+log 200:
+1000:0::0::> pledge 1001
+1000:0::0::Cannot pledge to <no subkind>~[1001] since <no subkind> is pledged to you.
+1000:0::0::> pledge 1001
+1000:0::0::Cannot pledge to <no subkind>~[1001] since <no subkind> is pledged to you.
+1000:0::0::> pledge 1001
+1000:0::0::Lands are now pledged to <no subkind>~[1001].
+1001:0::0::<no subkind>~[1000] pledges to us.
+> readlog 201
+log 201:
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 77542
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77542 1
+1000 char 0
+il	77542 1
+CH
+ lo 200
+CM
+ pl 1001
+CO
+ li pledge 1001
+ ar 1001 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+CH
+ lo 200
+CM
+ pl 1002
+
+export entity 1002 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1002 char 0
+CH
+ lo 201
+CM
+ pl 1003
+
+export entity 1003 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1003 char 0
+CH
+ lo 201
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N07 PLEDGE successful set clear rebuild lazy backlinks only when requested
+> field 1001 lord 201
+> report backlink 1001 1000
+> set backlinks 1
+> queue pledge 1001
+> load
+load 1
+> do
+> report backlinks 1000
+backlinks ready 0 allocated 0
+pledged:
+1000 char 0
+CH
+ lo 200
+CM
+ pl 1001
+CO
+ li pledge 1001
+ ar 1001 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> report backlinks 1001
+backlinks ready 0 allocated 1
+pledged: 1000
+1001 char 0
+CH
+ lo 201
+CM
+
+> report pledged 1001 1001
+> report backlinks 1001
+backlinks ready 1 allocated 1
+pledged: 1000
+1001 char 0
+CH
+ lo 201
+CM
+
+> queue pledge 0
+> load
+load 1
+> do
+> report backlinks 1000
+backlinks ready 0 allocated 0
+pledged:
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> report backlinks 1001
+backlinks ready 0 allocated 1
+pledged: 1000
+1001 char 0
+CH
+ lo 201
+CM
+
+> report pledged 1001 1001
+> report backlinks 1001
+backlinks ready 1 allocated 1
+pledged:
+1001 char 0
+CH
+ lo 201
+CM
+
+> readlog 200
+log 200:
+1000:0::0::> pledge 1001
+1000:0::0::Lands are now pledged to <no subkind>~[1001].
+1000:0::0::> pledge 0
+1000:0::0::Pledge cleared.  Lands will be claimed for ourselves.
+> readlog 201
+log 201:
+1001:0::0::<no subkind>~[1000] pledges to us.
+1001:0::0::Pledged to us:  <no subkind>~[1000]
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li pledge 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+CH
+ lo 201
+CM
+
+stderr:
+
+exit 0
+stdout:
+section N07 PLEDGE noncharacter caller clear never reaches pledged_beneath assertion
+> who 200
+> parse pledge 0
+parse 1
+> callback_start
+callback start 1
+> report backlinks 200
+backlinks ready 0 allocated 0
+pledged:
+200 player pl_regular
+CH
+PL
+CO
+ li pledge 0
+ ar 0 0 0 0 0 0 0 0
+
+> readlog 200
+log 200:
+200:0::0::Pledge cleared.  Lands will be claimed for ourselves.
+> export state
+export entity 200 char 1 player 1 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 200
+200 player pl_regular
+CH
+PL
+CO
+ li pledge 0
+ ar 0 0 0 0 0 0 0 0
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 invalid PLEDGE noncharacter caller valid human target reaches actual assertion
+> who 200
+> parse pledge 1001
+parse 1
+> callback_start
+stderr:
+assertion failure: olympia/garr.c (125): kind(a) == T_char
+
+exit 134
+stdout:
+section N07 SWEAR every argument refuses without resource ownership or cache changes
+> entity 1 4 0
+> inventory 1000 1 17
+> field 200 np 7
+> field 1000 loyal 1
+> field 1000 rate 91
+> field 1000 pledge 1001
+> set backlinks 1
+> queue swear
+> load
+load 1
+> do
+> queue swear 0
+> load
+load 1
+> do
+> queue swear 1001
+> load
+load 1
+> do
+> queue swear 9999
+> load
+load 1
+> do
+> parse swear Raw-Target
+parse 1
+> callback_start -2147483648
+callback start 0
+> report backlinks 1000
+backlinks ready 1 allocated 0
+pledged:
+1000 char 0
+il	1 17
+CH
+ lo 200
+ lk 1
+ lr 91
+CM
+ pl 1001
+CO
+ li swear Raw-Target
+ ar -2147483648 0 0 0 0 0 0 0
+ pr 1
+
+> save 1000
+1000 char 0
+il	1 17
+CH
+ lo 200
+ lk 1
+ lr 91
+CM
+ pl 1001
+CO
+ li swear Raw-Target
+ ar -2147483648 0 0 0 0 0 0 0
+ pr 1
+
+> pstate 200
+player 200 np 7 gained 0 spent 0 backlinks 1
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> swear
+1000:0::0::The SWEAR order has been removed from the game.
+1000:0::0::> swear 0
+1000:0::0::The SWEAR order has been removed from the game.
+1000:0::0::> swear 1001
+1000:0::0::The SWEAR order has been removed from the game.
+1000:0::0::> swear 9999
+1000:0::0::The SWEAR order has been removed from the game.
+1000:0::0::The SWEAR order has been removed from the game.
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 77542
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ np 7
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 17
+raw item 77542 1
+1000 char 0
+il	1 17 \
+	77542 1
+CH
+ lo 200
+ lk 1
+ lr 91
+CM
+ pl 1001
+CO
+ li swear Raw-Target
+ ar -2147483648 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N07 real STATE_RUN reload and NULL interruption all verbs retain next WAIT without starts
+> entity 1 4 0
+> inventory 1000 1 41
+> field 200 np 7
+> queue honor 13
+> queue honour 17
+> queue oath 2
+> queue pledge 1001
+> queue swear 0
+> queue wait day 4
+> load
+load 1
+> run 1 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 40 state 2 wait 1 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 41 who 1000 state 1 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 17 0 0 0 0 0 0 0; parse [honour] [17]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 4
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> run 1 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 41 state 2 wait 1 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 52 who 1000 state 1 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 2 0 0 0 0 0 0 0; parse [oath] [2]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 3
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> run 1 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 52 state 2 wait 1 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 56 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 0 0 0 0 0 0 0; parse [pledge] [1001]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 2
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 56 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 83 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [swear] [0]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 83 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	1 41
+CH
+ lo 200
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> pstate 200
+player 200 np 7 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000:
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+ np 7
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 41
+1000 char 0
+il	1 41
+CH
+ lo 200
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 HONOR started STATE_RUN persists finish never charges twice
+> entity 1 4 0
+> inventory 1000 1 41
+> queue honor 13
+> queue wait day 4
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+il	1 28
+CH
+ lo 200
+ lk 1
+ lr 13
+CO
+ li honor 13
+ ar 13 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 40 state 2 wait 1 callbacks 1 0 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 40 state 2 wait 1 callbacks 1 0 0
+> save 1000
+1000 char 0
+il	1 28
+CH
+ lo 200
+ lk 1
+ lr 13
+CO
+ li honor 13
+ ar 13 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> finish
+finish 1
+> save 1000
+1000 char 0
+il	1 28
+CH
+ lo 200
+ lk 1
+ lr 13
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> honor 13
+1000:0::0::<no subkind>~[1000] now bound with contract-13.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 28
+1000 char 0
+il	1 28
+CH
+ lo 200
+ lk 1
+ lr 13
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 OATH started STATE_RUN persists interruption never refunds or charges twice
+> field 200 np 7
+> queue oath 2
+> queue wait day 4
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 2
+CO
+ li oath 2
+ ar 2 0 0 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ pr 3
+
+> pstate 200
+player 200 np 5 gained 0 spent 2 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000: [wait day 4]
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 52 state 2 wait 1 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 2
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> pstate 200
+player 200 np 5 gained 0 spent 2 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> oath 2
+1000:0::0::<no subkind>~[1000] now bound with oath-2.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ np 5
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ lk 2
+ lr 2
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N07 queued HONOR HONOUR OATH PLEDGE SWEAR WAIT actual scheduler and coverage
+> coverage path coverage.tsv
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> link 9000 1001
+> entity 1 4 0
+> inventory 1000 1 91
+> field 200 np 7
+> orders 200 1000 honor 13
+> orders 200 1000 honour 17
+> orders 200 1000 oath 1
+> orders 200 1000 oath 2
+> orders 200 1000 pledge 1001
+> orders 200 1000 swear 0
+> orders 200 1000 pledge 0
+> orders 200 1000 wait day 4
+> orders 200 1001 wait day 4
+> resolve_wait
+> initial
+> start
+> evening
+> set day 1
+> start
+> evening
+> set day 2
+> start
+> evening
+> set day 3
+> start
+> evening
+> set day 4
+> start
+> evening
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 4 inhibit 1 cur 99
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 9 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	1 61
+LI
+ wh 9000
+CH
+ lo 200
+ lk 2
+ lr 2
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+> pstate 200
+player 200 np 5 gained 0 spent 2 backlinks 0
+units:
+output 0 0 0 1 1 touched 0 0
+orders 1000:
+orders 1001:
+> coverage state 40
+coverage allocated 1 ncmds 148 table 148
+coverage row 40 0 0 1 0
+> coverage state 41
+coverage allocated 1 ncmds 148 table 148
+coverage row 41 0 0 1 0
+> coverage state 52
+coverage allocated 1 ncmds 148 table 148
+coverage row 52 0 0 2 0
+> coverage state 56
+coverage allocated 1 ncmds 148 table 148
+coverage row 56 0 0 2 0
+> coverage state 83
+coverage allocated 1 ncmds 148 table 148
+coverage row 83 0 0 0 1
+> readlog 200
+log 200:
+1001:0::0::> wait day 4
+1000:0::0::> honor 13
+1000:0::0::<no subkind>~[1000] now bound with contract-13.
+1000:0::0::> honour 17
+1000:0::0::<no subkind>~[1000] now bound with contract-30.
+1000:0::0::> oath 1
+1000:0::0::<no subkind>~[1000] now bound with oath-1.
+1000:0::0::> oath 2
+1000:0::0::<no subkind>~[1000] now bound with oath-2.
+1000:0::0::> pledge 1001
+1000:0::0::Lands are now pledged to <no subkind>~[1001].
+1001:0::0::<no subkind>~[1000] pledges to us.
+1001:0::0::Wait finished: today is day 4.
+1000:0::0::> swear 0
+1000:0::0::The SWEAR order has been removed from the game.
+1000:0::0::> pledge 0
+1000:0::0::Pledge cleared.  Lands will be claimed for ourselves.
+1000:0::0::> wait day 4
+1000:0::0::Wait finished: today is day 4.
+> entity_rolls 1000 7 9000
+prison roll 431
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 77542
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001 1000
+200 player pl_regular
+PL
+ np 5
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 61
+raw item 77542 1
+1000 char 0
+il	1 61 \
+	77542 1
+LI
+ wh 9000
+CH
+ lo 200
+ lk 2
+ lr 2
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1010001 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ st 1
+ de 4
+ po 1
+ pr 1
+ if 1
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 1001 
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0

@@ -44,7 +44,7 @@ functions = {
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'prepend_order', 'queue', 'save_player_orders',
                 'orders_template_sup', 'orders_other', 'orders_template', 'list_order_templates'],
     'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord', 'unit_deserts',
-                'np_to_acquire', 'enough_np_to_acquire'],
+                'np_to_acquire', 'enough_np_to_acquire', 'v_honor', 'v_oath', 'v_swear'],
     'move.c': ['check_captain_loses_sailors', 'restore_stack_actions', 'touch_loc_after_move', 'move_stack',
                'departure_message', 'arrival_message', 'discover_road', 'parse_exit_dir',
                'save_v_array', 'restore_v_array', 'move_exit_land', 'land_check',
@@ -95,7 +95,7 @@ functions = {
                'garrison_strength', 'ping_garrisons', 'garrison_gold', 'top_ruler',
                'nprovs_to_rank', 'find_kings', 'lower_noble_rank',
                'det_noble_rank_sup', 'determine_noble_ranks', 'may_rule_here',
-               'garr_own_s', 'garrison_summary'],
+               'garr_own_s', 'garrison_summary', 'pledged_beneath', 'v_pledge'],
     'build.c': ['province_subloc'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'max_current_aura', 'limit_cur_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
@@ -751,6 +751,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N07 '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N07 invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N07 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N06b '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

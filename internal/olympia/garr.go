@@ -11,6 +11,61 @@ import (
 
 // Ported from olympia/garr.c: the garrison ownership/output closure.
 
+// pledgedBeneath is complete garr.c:121–139. Self is not beneath self;
+// vPledge rejects that case before calling this helper.
+func (w *world) pledgedBeneath(a, b int) bool {
+	assert(w.kind(a) == tChar, "olympia/garr.c", 125, "kind(a) == T_char")
+	assert(w.kind(b) == tChar, "olympia/garr.c", 126, "kind(b) == T_char")
+	if a == b {
+		return false
+	}
+	for b > 0 {
+		if p := w.rpMagic(b); p != nil {
+			b = int(p.pledge)
+		} else {
+			b = 0
+		}
+		if a == b {
+			return true
+		}
+	}
+	return false
+}
+
+// vPledge is complete garr.c:385–443. Only successful set/clear allocates
+// magic and invalidates the shared lazy backlinks. touch_garrison_locs is
+// #if 0 in the source and must not run here.
+func (w *world) vPledge(c *command) int {
+	who, target := int(c.who), int(c.a)
+	if target == who {
+		w.commandOut(who, "Can't pledge to yourself.")
+		return 0
+	}
+	if target == 0 {
+		w.pMagic(who).pledge = 0
+		w.commandOut(who, "Pledge cleared.  Lands will be claimed for ourselves.")
+		w.pledgeBacklinks = false
+		return 1
+	}
+	if w.kind(target) != tChar {
+		w.commandOut(who, "%s is not a character.", c.parse[1])
+		return 0
+	}
+	if w.isNPC(target) {
+		w.commandOut(who, "May not pledge land to %s.", c.parse[1])
+		return 0
+	}
+	if w.pledgedBeneath(who, target) {
+		w.commandOut(who, "Cannot pledge to %s since %s is pledged to you.", w.boxName(target), w.justName(target))
+		return 0
+	}
+	w.commandOut(who, "Lands are now pledged to %s.", w.boxName(target))
+	w.commandOut(target, "%s pledges to us.", w.boxName(who))
+	w.pMagic(who).pledge = int32(target)
+	w.pledgeBacklinks = false
+	return 1
+}
+
 // mayRuleHere is complete garr.c:142–165. Stop at the first matching
 // faction, reading the next pledge before the loop body as loop_loc_owner does.
 func (w *world) mayRuleHere(who, where int) bool {
