@@ -100455,3 +100455,1232 @@ land pick 2
 stderr:
 
 exit 0
+stdout:
+section state export locations asymmetric exits lowest viewer and recursive character membership
+> lore_root
+> master 17
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 4
+> entity 9002 3 1
+> entity 9003 3 65
+> entity 9100 3 14
+> entity 9101 3 13
+> entity 9200 3 37
+> entity 9201 3 53
+> entity 9300 9 30
+> entity 9400 7 0
+> entity 9401 7 0
+> entity 9402 7 0
+> entity 1100 2 0
+> entity 1101 2 0
+> entity 1102 2 0
+> entity 1103 2 0
+> entity 1104 2 0
+> entity 7000 4 0
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 8000 9003
+> link 9000 9100
+> link 9000 9101
+> link 9100 9200
+> link 9000 9201
+> link 9000 9300
+> link 9000 9402
+> link 9000 9401
+> link 9000 9400
+> road 9402 9003 0
+> road 9401 9001 1
+> road 9400 9002 0
+> routes 9000 9001 9002 0 9001 9003 0
+> field 9001 loc_hidden 1
+> field 9101 loc_hidden 1
+> field 9003 barrier 2
+> field 1001 lord 201
+> field 201 known 9001
+> field 201 known 9101
+> field 201 known 9401
+> field 200 unit 1001
+> field 200 unit 1000
+> field 200 unit 1103
+> field 200 unit 1104
+> link 9000 1001
+> link 9000 1000
+> link 1001 1101
+> link 1101 1100
+> link 1000 7000
+> link 7000 1102
+> link 9200 1103
+> link 9300 1104
+> field 1100 lord 201
+> field 1100 prisoner 1
+> field 1101 lord 200
+> field 1102 lord 201
+> field 1103 lord 200
+> field 1104 lord 200
+> export name 9000 225c8070726f76
+> export name 9100 EMPTY
+> export name 9200 NULL
+> export name 1100 NULL
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001 1000 1103 1104
+output:
+200 player pl_regular
+PL
+ un 1001 1000 1103 1104 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+ kn 9001 9101 9401 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 7000
+1000 char 0
+LI
+ wh 9000
+ hl 7000 
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1101
+1001 char 0
+LI
+ wh 9000
+ hl 1101 
+CH
+ lo 201
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1100 char 0
+LI
+ wh 1101
+CH
+ lo 201
+ pr 1
+
+export entity 1101 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1100
+1101 char 0
+LI
+ wh 1001
+ hl 1100 
+CH
+ lo 200
+
+export entity 1102 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1102 char 0
+LI
+ wh 7000
+CH
+ lo 201
+
+export entity 1103 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1103 char 0
+LI
+ wh 9200
+CH
+ lo 200
+
+export entity 1104 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1104 char 0
+LI
+ wh 9300
+CH
+ lo 200
+
+export entity 7000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1102
+7000 item 0
+LI
+ wh 1000
+ hl 1102 
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001 9002 9003
+8000 loc region
+LI
+ hl 9000 9001 9002 9003 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 9101 9201 9300 9402 9401 9400 1001 1000
+9000 loc plain
+na "\€prov
+LI
+ wh 8000
+ hl 9100 9101 9201 9300 9402 9401 9400 1001 1000 
+LO
+ pd 9001 9002 0 9001 9003 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc mountain
+LI
+ wh 8000
+LO
+ hi 1
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9002 loc ocean
+LI
+ wh 8000
+
+export entity 9003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9003 loc cloud
+LI
+ wh 8000
+LO
+ ba 2
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9100 loc city
+LI
+ wh 9000
+ hl 9200 
+
+export entity 9101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9101 loc cave
+LI
+ wh 9000
+LO
+ hi 1
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1103
+9200 loc inn
+LI
+ wh 9100
+ hl 1103 
+
+export entity 9201 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9201 loc collapsed mine
+LI
+ wh 9000
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1104
+9300 ship galley
+LI
+ wh 9000
+ hl 1104 
+
+export entity 9400 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9400 road 0
+LI
+ wh 9000
+GA
+ tl 9002
+
+export entity 9401 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9401 road 0
+LI
+ wh 9000
+GA
+ tl 9001
+ rh 1
+
+export entity 9402 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9402 road 0
+LI
+ wh 9000
+GA
+ tl 9003
+
+> export location 9000 1001
+{"id": 9000, "name": "\"\\\u0080prov", "kind": "loc", "subkind": "plain", "depth": "province", "province": 9000,
+      "exits": [{"direction": "north", "destination": 9001, "distance": 10, "road": 0, "impassable": 0, "hidden": 1}, {"direction": "east", "destination": 9002, "distance": 2, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "west", "destination": 9001, "distance": 10, "road": 0, "impassable": 0, "hidden": 1}, {"direction": "up", "destination": 9003, "distance": 7, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9100, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "in", "destination": 9101, "distance": 1, "road": 0, "impassable": 0, "hidden": 1}, {"direction": "in", "destination": 9201, "distance": 0, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9300, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9003, "distance": 7, "road": 9402, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9001, "distance": 10, "road": 9401, "impassable": 0, "hidden": 1}, {"direction": "road", "destination": 9002, "distance": 2, "road": 9400, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}, {"id": 1001, "name": "", "faction": 201}, {"id": 1100, "name": "", "faction": 201}, {"id": 1101, "name": "", "faction": 200}]}
+> export location 9000 1000
+{"id": 9000, "name": "\"\\\u0080prov", "kind": "loc", "subkind": "plain", "depth": "province", "province": 9000,
+      "exits": [{"direction": "east", "destination": 9002, "distance": 2, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "up", "destination": 9003, "distance": 7, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9100, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "in", "destination": 9201, "distance": 0, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9300, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9003, "distance": 7, "road": 9402, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9002, "distance": 2, "road": 9400, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}, {"id": 1001, "name": "", "faction": 201}, {"id": 1100, "name": "", "faction": 201}, {"id": 1101, "name": "", "faction": 200}]}
+> export faction 200
+{"id": 200, "name": "",
+   "units": [
+     {"id": 1000, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1001, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1103, "name": "", "where": 9200, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1104, "name": "", "where": 9300, "stacked_under": 0,
+      "items": [],
+      "skills": []}],
+   "locations": [
+     {"id": 9000, "name": "\"\\\u0080prov", "kind": "loc", "subkind": "plain", "depth": "province", "province": 9000,
+      "exits": [{"direction": "east", "destination": 9002, "distance": 2, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "up", "destination": 9003, "distance": 7, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9100, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "in", "destination": 9201, "distance": 0, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9300, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9003, "distance": 7, "road": 9402, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9002, "distance": 2, "road": 9400, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}, {"id": 1001, "name": "", "faction": 201}, {"id": 1100, "name": "", "faction": 201}, {"id": 1101, "name": "", "faction": 200}]},
+     {"id": 9200, "name": "", "kind": "loc", "subkind": "inn", "depth": "", "province": 9000,
+      "exits": [{"direction": "out", "destination": 9100, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1103, "name": "", "faction": 200}]},
+     {"id": 9300, "name": "", "kind": "ship", "subkind": "galley", "depth": "", "province": 9000,
+      "exits": [],
+      "here": [{"id": 1104, "name": "", "faction": 200}]}]}
+> export path state.json
+> export write
+> readfile state.json
+file bytes state.json 2034:
+{"turn": 0, "factions": [
+  {"id": 200, "name": "",
+   "units": [
+     {"id": 1000, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1001, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1103, "name": "", "where": 9200, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1104, "name": "", "where": 9300, "stacked_under": 0,
+      "items": [],
+      "skills": []}],
+   "locations": [
+     {"id": 9000, "name": "\"\\\u0080prov", "kind": "loc", "subkind": "plain", "depth": "province", "province": 9000,
+      "exits": [{"direction": "east", "destination": 9002, "distance": 2, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "up", "destination": 9003, "distance": 7, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9100, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "in", "destination": 9201, "distance": 0, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9300, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9003, "distance": 7, "road": 9402, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9002, "distance": 2, "road": 9400, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}, {"id": 1001, "name": "", "faction": 201}, {"id": 1100, "name": "", "faction": 201}, {"id": 1101, "name": "", "faction": 200}]},
+     {"id": 9200, "name": "", "kind": "loc", "subkind": "inn", "depth": "", "province": 9000,
+      "exits": [{"direction": "out", "destination": 9100, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1103, "name": "", "faction": 200}]},
+     {"id": 9300, "name": "", "kind": "ship", "subkind": "galley", "depth": "", "province": 9000,
+      "exits": [],
+      "here": [{"id": 1104, "name": "", "faction": 200}]}]},
+  {"id": 201, "name": "",
+   "units": [],
+   "locations": []}]}
+
+end file bytes
+> export write
+> readfile state.json
+file bytes state.json 2034:
+{"turn": 0, "factions": [
+  {"id": 200, "name": "",
+   "units": [
+     {"id": 1000, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1001, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1103, "name": "", "where": 9200, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1104, "name": "", "where": 9300, "stacked_under": 0,
+      "items": [],
+      "skills": []}],
+   "locations": [
+     {"id": 9000, "name": "\"\\\u0080prov", "kind": "loc", "subkind": "plain", "depth": "province", "province": 9000,
+      "exits": [{"direction": "east", "destination": 9002, "distance": 2, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "up", "destination": 9003, "distance": 7, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9100, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "in", "destination": 9201, "distance": 0, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9300, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9003, "distance": 7, "road": 9402, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9002, "distance": 2, "road": 9400, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}, {"id": 1001, "name": "", "faction": 201}, {"id": 1100, "name": "", "faction": 201}, {"id": 1101, "name": "", "faction": 200}]},
+     {"id": 9200, "name": "", "kind": "loc", "subkind": "inn", "depth": "", "province": 9000,
+      "exits": [{"direction": "out", "destination": 9100, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1103, "name": "", "faction": 200}]},
+     {"id": 9300, "name": "", "kind": "ship", "subkind": "galley", "depth": "", "province": 9000,
+      "exits": [],
+      "here": [{"id": 1104, "name": "", "faction": 200}]}]},
+  {"id": 201, "name": "",
+   "units": [],
+   "locations": []}]}
+
+end file bytes
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001 1000 1103 1104
+output:
+200 player pl_regular
+PL
+ un 1001 1000 1103 1104 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+ kn 9001 9101 9401 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 7000
+1000 char 0
+LI
+ wh 9000
+ hl 7000 
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1101
+1001 char 0
+LI
+ wh 9000
+ hl 1101 
+CH
+ lo 201
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1100 char 0
+LI
+ wh 1101
+CH
+ lo 201
+ pr 1
+
+export entity 1101 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1100
+1101 char 0
+LI
+ wh 1001
+ hl 1100 
+CH
+ lo 200
+
+export entity 1102 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1102 char 0
+LI
+ wh 7000
+CH
+ lo 201
+
+export entity 1103 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1103 char 0
+LI
+ wh 9200
+CH
+ lo 200
+
+export entity 1104 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1104 char 0
+LI
+ wh 9300
+CH
+ lo 200
+
+export entity 7000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1102
+7000 item 0
+LI
+ wh 1000
+ hl 1102 
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001 9002 9003
+8000 loc region
+LI
+ hl 9000 9001 9002 9003 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 9101 9201 9300 9402 9401 9400 1001 1000
+9000 loc plain
+na "\€prov
+LI
+ wh 8000
+ hl 9100 9101 9201 9300 9402 9401 9400 1001 1000 
+LO
+ pd 9001 9002 0 9001 9003 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc mountain
+LI
+ wh 8000
+LO
+ hi 1
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9002 loc ocean
+LI
+ wh 8000
+
+export entity 9003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9003 loc cloud
+LI
+ wh 8000
+LO
+ ba 2
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9100 loc city
+LI
+ wh 9000
+ hl 9200 
+
+export entity 9101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9101 loc cave
+LI
+ wh 9000
+LO
+ hi 1
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1103
+9200 loc inn
+LI
+ wh 9100
+ hl 1103 
+
+export entity 9201 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9201 loc collapsed mine
+LI
+ wh 9000
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1104
+9300 ship galley
+LI
+ wh 9000
+ hl 1104 
+
+export entity 9400 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9400 road 0
+LI
+ wh 9000
+GA
+ tl 9002
+
+export entity 9401 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9401 road 0
+LI
+ wh 9000
+GA
+ tl 9001
+ rh 1
+
+export entity 9402 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9402 road 0
+LI
+ wh 9000
+GA
+ tl 9003
+
+> field 200 known 9001
+> field 200 known 9101
+> field 200 known 9401
+> export faction 200
+{"id": 200, "name": "",
+   "units": [
+     {"id": 1000, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1001, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1103, "name": "", "where": 9200, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1104, "name": "", "where": 9300, "stacked_under": 0,
+      "items": [],
+      "skills": []}],
+   "locations": [
+     {"id": 9000, "name": "\"\\\u0080prov", "kind": "loc", "subkind": "plain", "depth": "province", "province": 9000,
+      "exits": [{"direction": "north", "destination": 9001, "distance": 10, "road": 0, "impassable": 0, "hidden": 1}, {"direction": "east", "destination": 9002, "distance": 2, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "west", "destination": 9001, "distance": 10, "road": 0, "impassable": 0, "hidden": 1}, {"direction": "up", "destination": 9003, "distance": 7, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9100, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "in", "destination": 9101, "distance": 1, "road": 0, "impassable": 0, "hidden": 1}, {"direction": "in", "destination": 9201, "distance": 0, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9300, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9003, "distance": 7, "road": 9402, "impassable": 0, "hidden": 0}, {"direction": "road", "destination": 9001, "distance": 10, "road": 9401, "impassable": 0, "hidden": 1}, {"direction": "road", "destination": 9002, "distance": 2, "road": 9400, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}, {"id": 1001, "name": "", "faction": 201}, {"id": 1100, "name": "", "faction": 201}, {"id": 1101, "name": "", "faction": 200}]},
+     {"id": 9200, "name": "", "kind": "loc", "subkind": "inn", "depth": "", "province": 9000,
+      "exits": [{"direction": "out", "destination": 9100, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1103, "name": "", "faction": 200}]},
+     {"id": 9300, "name": "", "kind": "ship", "subkind": "galley", "depth": "", "province": 9000,
+      "exits": [],
+      "here": [{"id": 1104, "name": "", "faction": 200}]}]}
+> export location 9100 1000
+{"id": 9100, "name": "", "kind": "loc", "subkind": "city", "depth": "subloc", "province": 9000,
+      "exits": [{"direction": "east", "destination": 9002, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "in", "destination": 9200, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "out", "destination": 9000, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": []}
+> export location 9200 1103
+{"id": 9200, "name": "", "kind": "loc", "subkind": "inn", "depth": "", "province": 9000,
+      "exits": [{"direction": "out", "destination": 9100, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1103, "name": "", "faction": 200}]}
+> export location 9300 1104
+{"id": 9300, "name": "", "kind": "ship", "subkind": "galley", "depth": "", "province": 9000,
+      "exits": [],
+      "here": [{"id": 1104, "name": "", "faction": 200}]}
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001 1000 1103 1104
+output:
+200 player pl_regular
+PL
+ kn 9001 9101 9401 
+ un 1001 1000 1103 1104 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+ kn 9001 9101 9401 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 7000
+1000 char 0
+LI
+ wh 9000
+ hl 7000 
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1101
+1001 char 0
+LI
+ wh 9000
+ hl 1101 
+CH
+ lo 201
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1100 char 0
+LI
+ wh 1101
+CH
+ lo 201
+ pr 1
+
+export entity 1101 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1100
+1101 char 0
+LI
+ wh 1001
+ hl 1100 
+CH
+ lo 200
+
+export entity 1102 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1102 char 0
+LI
+ wh 7000
+CH
+ lo 201
+
+export entity 1103 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1103 char 0
+LI
+ wh 9200
+CH
+ lo 200
+
+export entity 1104 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1104 char 0
+LI
+ wh 9300
+CH
+ lo 200
+
+export entity 7000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1102
+7000 item 0
+LI
+ wh 1000
+ hl 1102 
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001 9002 9003
+8000 loc region
+LI
+ hl 9000 9001 9002 9003 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 9101 9201 9300 9402 9401 9400 1001 1000
+9000 loc plain
+na "\€prov
+LI
+ wh 8000
+ hl 9100 9101 9201 9300 9402 9401 9400 1001 1000 
+LO
+ pd 9001 9002 0 9001 9003 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc mountain
+LI
+ wh 8000
+LO
+ hi 1
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9002 loc ocean
+LI
+ wh 8000
+
+export entity 9003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9003 loc cloud
+LI
+ wh 8000
+LO
+ ba 2
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9100 loc city
+LI
+ wh 9000
+ hl 9200 
+
+export entity 9101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9101 loc cave
+LI
+ wh 9000
+LO
+ hi 1
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1103
+9200 loc inn
+LI
+ wh 9100
+ hl 1103 
+
+export entity 9201 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9201 loc collapsed mine
+LI
+ wh 9000
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1104
+9300 ship galley
+LI
+ wh 9000
+ hl 1104 
+
+export entity 9400 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9400 road 0
+LI
+ wh 9000
+GA
+ tl 9002
+
+export entity 9401 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9401 road 0
+LI
+ wh 9000
+GA
+ tl 9001
+ rh 1
+
+export entity 9402 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9402 road 0
+LI
+ wh 9000
+GA
+ tl 9003
+
+> usemeta legacy 1 100000
+use legacy 62497
+> entity_rolls 1000 7 5000
+prison roll 701
+land dir99 2
+land dir98 1
+land pick 1
+stderr:
+
+exit 0
+stdout:
+section state export ocean port routing insertion order barriers and hidden outward exit
+> lore_root
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 9002 3 4
+> entity 9100 3 14
+> entity 9101 3 13
+> entity 9200 3 46
+> entity 9201 3 29
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 9001 9100
+> link 9001 9101
+> link 9100 9200
+> link 9200 9201
+> routes 9000 9001 9002 0 0
+> routes 9001 0 0 9000 0
+> field 9001 loc_hidden 1
+> field 9100 loc_hidden 1
+> field 9101 link_open 1
+> field 9101 link_to 9000
+> field 9101 link_to 9002
+> field 9101 link_to 9000
+> field 9001 link_from 9101
+> link 9200 1001
+> link 9000 1000
+> field 200 unit 1001
+> field 200 unit 1000
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001 1000
+output:
+200 player pl_regular
+PL
+ un 1001 1000 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9200
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001 9002
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc ocean
+LI
+ wh 8000
+ hl 1000 
+LO
+ pd 9001 9002 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 9101
+9001 loc plain
+LI
+ wh 8000
+ hl 9100 9101 
+LO
+ pd 0 0 9000 0 
+ hi 1
+SL
+ lf 9101 
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9002 loc mountain
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9100 loc city
+LI
+ wh 9001
+ hl 9200 
+LO
+ hi 1
+
+export entity 9101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9101 loc cave
+LI
+ wh 9001
+SL
+ lt 9000 9002 9000 
+ lp 1
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9201 1001
+9200 loc tower
+LI
+ wh 9100
+ hl 9201 1001 
+
+export entity 9201 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9201 loc temple
+LI
+ wh 9200
+
+> export location 9000 1000
+{"id": 9000, "name": "", "kind": "loc", "subkind": "ocean", "depth": "province", "province": 9000,
+      "exits": [{"direction": "east", "destination": 9002, "distance": 2, "road": 0, "impassable": 1, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}]}
+> export location 9001 1000
+{"id": 9001, "name": "", "kind": "loc", "subkind": "plain", "depth": "province", "province": 9001,
+      "exits": [{"direction": "south", "destination": 9000, "distance": 2, "road": 0, "impassable": 1, "hidden": 0}, {"direction": "in", "destination": 9101, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "in", "destination": 9101, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": []}
+> export location 9100 1000
+{"id": 9100, "name": "", "kind": "loc", "subkind": "city", "depth": "subloc", "province": 9001,
+      "exits": [{"direction": "south", "destination": 9000, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "in", "destination": 9200, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "out", "destination": 9001, "distance": 1, "road": 0, "impassable": 0, "hidden": 1}],
+      "here": []}
+> export location 9101 1000
+{"id": 9101, "name": "", "kind": "loc", "subkind": "cave", "depth": "subloc", "province": 9001,
+      "exits": [{"direction": "out", "destination": 9001, "distance": 1, "road": 0, "impassable": 0, "hidden": 1}, {"direction": "<no dir>", "destination": 9000, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "<no dir>", "destination": 9002, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}, {"direction": "<no dir>", "destination": 9000, "distance": 1, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": []}
+> export location 9200 1001
+{"id": 9200, "name": "", "kind": "loc", "subkind": "tower", "depth": "", "province": 9001,
+      "exits": [{"direction": "out", "destination": 9100, "distance": 0, "road": 0, "impassable": 0, "hidden": 1}, {"direction": "in", "destination": 9201, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1001, "name": "", "faction": 200}]}
+> export faction 200
+{"id": 200, "name": "",
+   "units": [
+     {"id": 1000, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1001, "name": "", "where": 9200, "stacked_under": 0,
+      "items": [],
+      "skills": []}],
+   "locations": [
+     {"id": 9000, "name": "", "kind": "loc", "subkind": "ocean", "depth": "province", "province": 9000,
+      "exits": [{"direction": "east", "destination": 9002, "distance": 2, "road": 0, "impassable": 1, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}]},
+     {"id": 9200, "name": "", "kind": "loc", "subkind": "tower", "depth": "", "province": 9001,
+      "exits": [{"direction": "out", "destination": 9100, "distance": 0, "road": 0, "impassable": 0, "hidden": 1}, {"direction": "in", "destination": 9201, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1001, "name": "", "faction": 200}]}]}
+> export path state.json
+> export write
+> readfile state.json
+file bytes state.json 1010:
+{"turn": 0, "factions": [
+  {"id": 200, "name": "",
+   "units": [
+     {"id": 1000, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1001, "name": "", "where": 9200, "stacked_under": 0,
+      "items": [],
+      "skills": []}],
+   "locations": [
+     {"id": 9000, "name": "", "kind": "loc", "subkind": "ocean", "depth": "province", "province": 9000,
+      "exits": [{"direction": "east", "destination": 9002, "distance": 2, "road": 0, "impassable": 1, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}]},
+     {"id": 9200, "name": "", "kind": "loc", "subkind": "tower", "depth": "", "province": 9001,
+      "exits": [{"direction": "out", "destination": 9100, "distance": 0, "road": 0, "impassable": 0, "hidden": 1}, {"direction": "in", "destination": 9201, "distance": 0, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1001, "name": "", "faction": 200}]}]},
+  {"id": 201, "name": "",
+   "units": [],
+   "locations": []}]}
+
+end file bytes
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001 1000
+output:
+200 player pl_regular
+PL
+ un 1001 1000 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9200
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001 9002
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc ocean
+LI
+ wh 8000
+ hl 1000 
+LO
+ pd 9001 9002 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 9101
+9001 loc plain
+LI
+ wh 8000
+ hl 9100 9101 
+LO
+ pd 0 0 9000 0 
+ hi 1
+SL
+ lf 9101 
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9002 loc mountain
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9100 loc city
+LI
+ wh 9001
+ hl 9200 
+LO
+ hi 1
+
+export entity 9101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9101 loc cave
+LI
+ wh 9001
+SL
+ lt 9000 9002 9000 
+ lp 1
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9201 1001
+9200 loc tower
+LI
+ wh 9100
+ hl 9201 1001 
+
+export entity 9201 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9201 loc temple
+LI
+ wh 9200
+
+stderr:
+
+exit 0
+stdout:
+section state export nonempty output cache survives location traversal and rename
+> lore_root
+> master 17
+> entity 9000 3 3
+> entity 9001 3 2
+> routes 9000 0 9001 0 0
+> link 9000 1000
+> field 200 unit 1000
+> life open 0
+> set flush 0
+> emit 1000 1
+> life rename log log-held
+> lore_dir log
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1000
+output: 1000
+200 player pl_regular
+PL
+ un 1000 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+LO
+ pd 0 9001 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc forest
+
+> export location 9000 1000
+{"id": 9000, "name": "", "kind": "loc", "subkind": "plain", "depth": "province", "province": 9000,
+      "exits": [{"direction": "east", "destination": 9001, "distance": 8, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}]}
+> export path state.json
+> export write
+> readfile state.json
+file bytes state.json 536:
+{"turn": 0, "factions": [
+  {"id": 200, "name": "",
+   "units": [
+     {"id": 1000, "name": "", "where": 9000, "stacked_under": 0,
+      "items": [],
+      "skills": []}],
+   "locations": [
+     {"id": 9000, "name": "", "kind": "loc", "subkind": "plain", "depth": "province", "province": 9000,
+      "exits": [{"direction": "east", "destination": 9001, "distance": 8, "road": 0, "impassable": 0, "hidden": 0}],
+      "here": [{"id": 1000, "name": "", "faction": 200}]}]},
+  {"id": 201, "name": "",
+   "units": [],
+   "locations": []}]}
+
+end file bytes
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1000
+output: 1000
+200 player pl_regular
+PL
+ un 1000 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+LO
+ pd 0 9001 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc forest
+
+> emit 1000 2
+> life flush
+> readfile log-held/200
+file bytes log-held/200 46:
+1000:0::0::routing 1  
+1000:0::0::routing 2  
+
+end file bytes
+> life path log/200
+path log/200 missing
+> life close
+> emit 1000 3
+> life flush
+> readfile log/200
+file bytes log/200 23:
+1000:0::0::routing 3  
+
+end file bytes
+> usemeta legacy 1 100000
+use legacy 62497
+> entity_rolls 1000 7 5000
+prison roll 701
+land dir99 2
+land dir98 1
+land pick 1
+stderr:
+
+exit 0

@@ -6,6 +6,104 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Complete location export and save lifecycle (#176)
+
+**0.112.0-alpha** completes state_export.c `export_location` **133–189** in
+the existing owner and removes only the state-export CLI gate. Main forwards
+the actual path and writes after save_db/save_logdir, before Times. Original
+unit/faction/root/byte JSON is unchanged; real topology/visibility, copied
+sorts and all_char_here membership are used without extra filters. Ships
+have no exported exits; building depth renders the original table's NULL
+as empty. No new gameplay, G3 #114 expansion, pin or source dependency.
+
+Unchanged C twice and Go match **1332 sections / 101686 lines / 2035552
+output bytes**, SHA-256
+`57ad48790379b5df3ef83e155320c0ef6c6d78026477c29e81c22626f98d28f0`.
+Input: **29344 lines / 559758 bytes**, SHA-256
+`35c5e55721fe82b4481ddc2dcb2e1414f82041937c8556fd3801e85830b91615`.
+The complete accepted **556686-byte input / 2001138-byte output** prefixes
+are untouched, including literal C whitespace. **100** archived command
+files and **574** complete extracted definitions are audited unchanged;
+the entire original state_export.c remains directly compiled. Three new
+nonempty/asymmetric cases compare full raw JSON and saved/raw/list/record
+aftermath, lowest-ID viewer, hidden exits/known destinations, road/direction/
+distance/impassability/order, recursive prisoners/foreign units, names and
+ship/building/province depths. RNG and borrowed output/cache/inode controls
+pass. Four actual negative linker probes reject markers on status **0/134**,
+default/update, before status acceptance/recording replacement, retaining
+the output hash. [Complete audit and byte evidence](command-compat#complete-location-export-176).
+
+Sequential bounded vet and fresh bounded full-enabled tests pass (**11
+packages**, Olympia **1.934s**); all **15 engine/library defaults** pass.
+Strict full **233-entry** ordinary turn and **13 lifecycle / 10 command /
+15 USE / 23 phase** controls pass. New `turn-compat --full --state-export`
+also passes **13** controls using the pristine nonempty phase-month-open
+scenario, with four strict flag-free aftermath controls. Full JSON is
+**3520 bytes**, SHA-256
+`c7bd7db18c75fad5844a7470e2512535c32afe7e87d814664c57bd5a3ee1a729`.
+Every raw status/stream and cwd entry/type/mode/byte is compared, not parsed
+JSON or selected fields. Paths colliding with system, randseed, report,
+log/fact and Times entries preserve actual post-save/cache behavior.
+[Exact lifecycle and fixture evidence](turn-compat#state-export-save-lifecycle-176).
+
+All six unchanged phase scripts ran C twice then Go with pre-cleanup complete
+captures: **month-open / month-gold / month-close pass byte-exactly**;
+**day0 / daily / month-decay fail** at separate still-NYI **guard / stack /
+USE v_hinder_med** callbacks (Go engine **2**, script **1**, versus C **0/YES**).
+These are genuine prerequisite boundaries, not an export mismatch or license
+to hide gameplay work in #176/#177. Source/sizing notes are separate in
+`tmp/issue176-prerequisites.log`. Parent verified the actual pinned fixture
+orders and retained failure captures, and filed/attached **#180** (GUARD/STACK)
+and **#181** (hinder meditation) before implementation. They run after #176
+acceptance and before #177; further callbacks must be separately sized if
+these first stops expose more missing gameplay.
+Matching captures and all temporary probes/launchers/scripts are removed;
+decisive failed captures and complete manifests remain. No successful
+gameplay substitutes, fixture/harness edits or output normalization.
+
+Spec genuinely advances to **32 pass / 93 fail / 0 error**, retaining every
+inherited **23** pass; only nine actual unchanged script passes are added
+by the existing tool. Golden initialization remains unsupported `-i`/**2**,
+golden **NO**. [Exact new names](olympia-spec#location-export-integration-176).
+No six-phase-fixture or stage-exit success is claimed. Broader integrated
+four-dump combinations/failure closure remain #177; final full rerun #178.
+Accepted #179 201-world/four-corpus evidence is not repeated. No genesis/
+mapgen/island/scanf or native Darwin/Windows rerun/platform claim.
+
+Every compat invocation explicitly sets `G3_REPO="$PWD/tmp/upstream.git"`;
+all engines/tests use run_limited, including the unchanged lists C driver
+through a removed temporary compiler launcher. Read-only cache verified:
+all **1212** archived originals equal pin **f73e481**, executable SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+Engines use real disposable copies, never cached inputs or symlink sources.
+Logs: `tmp/issue176-{source-audit,cache-audit,bytes-aftermath,vet,tests,spec,fixtures,prerequisites}.log`,
+`tmp/issue176-command-{update,default}.log`, `tmp/issue176-*-default.log`,
+`tmp/issue176-negative-{0,134}-{default,update}.log`,
+`tmp/issue176-{turn-full,state-turn}.log`; summaries/JSON under
+`tmp/issue176-{turn,state-turn}/`, manifests/failures under
+`tmp/issue176-fixture-captures/`.
+Final bounded vet/fresh bounded full-enabled repeat also passes (Olympia
+**1.848s**): `tmp/issue176-{vet,tests}-final.log`. Final hashes, unchanged
+HEAD/origin, tool outcomes and cleanup audit: `tmp/issue176-final-integrity.log`;
+decisive evidence digest index: `tmp/issue176-evidence.sha256`.
+
+Independent parent complete pinned-source/diff review and acceptance repeat:
+bounded vet/fresh bounded tests and 14 relevant defaults pass (lists remains
+covered by the fresh Go suite and implementer's bounded C/C/Go default).
+Command **1332 sections / 101686 lines**, strict **233-entry** ordinary turn,
+all **13 lifecycle / 10 command / 15 USE / 23 phase / 13 export** controls
+and four nonempty export flag-free aftermath controls pass. Complete JSON
+retains the SHA-256 above. Spec independently repeats **32/93/0** (116s),
+retaining all 23 earlier names and adding precisely the nine documented
+passes; golden remains NO/initialization exit 2. Parent verifies inherited
+recording prefixes, all 1212 cached C sources/executable hash and unchanged
+raw/saved/allocation snapshots for the three new oracle scenarios. Retained
+failed fixture C/Go captures match their full manifests; original pinned
+orders reach exactly the NYI handlers tracked in #180/#181. This accepts
+the export scope, not six-fixture or stage-exit completion.
+Parent logs: `tmp/parent176-{vet,tests,turn-full,spec}.log`,
+`tmp/parent176-*-default.log`; strict summaries/JSON: `tmp/parent176-turn/`.
+
 ## State export primitives and faction roots (#175)
 
 **0.111.0-alpha** adds source-corresponding state_export.go: complete byte-string

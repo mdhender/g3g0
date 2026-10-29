@@ -75,10 +75,61 @@ func (w *world) exportUnit(fp io.Writer, who int) {
 	fmt.Fprint(fp, "]}")
 }
 
-// Location traversal is deliberately unfinished until #176. The CLI gate
-// remains in place; direct faction/root calls must not require locations.
+// Complete state_export.c:133–189. exitsFromLoc owns its scratch list;
+// consume it immediately, without sorting or reclaiming it. Only the copied
+// character IDs are sorted. In particular, ships do not request exits.
 func (w *world) exportLocation(fp io.Writer, where, viewer int) {
-	panic(notImplemented("export_location"))
+	fmt.Fprintf(fp, "{\"id\": %d, \"name\": ", where)
+	jsonStr(fp, w.name(where))
+	fmt.Fprint(fp, ", \"kind\": ")
+	jsonStr(fp, kindS[w.kind(where)])
+	fmt.Fprint(fp, ", \"subkind\": ")
+	jsonStr(fp, subkindS[w.subkind(where)])
+	fmt.Fprint(fp, ", \"depth\": ")
+	depth := ""
+	if w.kind(where) == tLoc {
+		depth = locDepthS[w.locDepth(where)]
+	}
+	jsonStr(fp, depth)
+	fmt.Fprintf(fp, ", \"province\": %d", w.province(where))
+	fmt.Fprint(fp, ",\n      \"exits\": [")
+	n := 0
+	if w.kind(where) == tLoc {
+		for _, v := range w.exitsFromLoc(viewer, where) {
+			if v.hidden != 0 {
+				continue
+			}
+			if n != 0 {
+				fmt.Fprint(fp, ", ")
+			}
+			n++
+			fmt.Fprint(fp, "{\"direction\": ")
+			direction := "road"
+			if v.road == 0 {
+				direction = fullDirS[v.direction]
+			}
+			jsonStr(fp, direction)
+			hidden := 0
+			if v.destHidden != 0 {
+				hidden = 1
+			}
+			fmt.Fprintf(fp, ", \"destination\": %d, \"distance\": %d, \"road\": %d, \"impassable\": %d, \"hidden\": %d}",
+				v.destination, v.distance, v.road, v.impassable, hidden)
+		}
+	}
+	fmt.Fprint(fp, "]")
+	here := w.allCharHere(where)
+	sortIDs(here)
+	fmt.Fprint(fp, ",\n      \"here\": [")
+	for i, c := range here {
+		if i != 0 {
+			fmt.Fprint(fp, ", ")
+		}
+		fmt.Fprintf(fp, "{\"id\": %d, \"name\": ", c)
+		jsonStr(fp, w.name(c))
+		fmt.Fprintf(fp, ", \"faction\": %d}", w.player(c))
+	}
+	fmt.Fprint(fp, "]}")
 }
 
 func (w *world) exportFaction(fp io.Writer, pl int) {

@@ -5,6 +5,7 @@
 # after run/olympia-g3.sh.
 assert-flush
 cli-options
+coast-rocks
 load-bad-master
 load-box-usage
 load-comment-lines
@@ -18,6 +19,12 @@ load-short-entries
 load-stray-orders
 load-trade-no-price
 mint-top-id
+move-go
+move-out-first
+phase-month-close
+phase-month-gold
+phase-month-open
+player-refused
 rng-selftest
 save-fly-cap
 save-libdir-space
@@ -26,3 +33,5 @@ summary-trunc-name
 token-vanish
 trade-route-seed-parse
 wait-ferry-range
+wait-gm-stack
+wait-not-weather

@@ -9,7 +9,7 @@ PINNED_REV=f73e48118805ffe8ff5e763bfa4f20ae00c3a705
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 WORK="${WORK:-${ROOT}/tmp/turn-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
-full=0 record=0 command_coverage=0 use_coverage=0 phase_coverage=0
+full=0 record=0 command_coverage=0 use_coverage=0 phase_coverage=0 state_export=0
 die() { echo "error: $*" >&2; exit 2; }
 for arg in "$@"; do
 	case "$arg" in
@@ -18,13 +18,15 @@ for arg in "$@"; do
 	--command-coverage) command_coverage=1 ;;
 	--use-coverage) use_coverage=1 ;;
 	--phase-coverage) phase_coverage=1 ;;
-	*) die "usage: $0 [--full [--record] [--command-coverage] [--use-coverage] [--phase-coverage]]" ;;
+	--state-export) state_export=1 ;;
+	*) die "usage: $0 [--full [--record] [--command-coverage] [--use-coverage] [--phase-coverage] [--state-export]]" ;;
 	esac
 done
 [ "$record" = 0 ] || [ "$full" = 1 ] || die "--record requires --full and two real pinned C runs"
 [ "$command_coverage" = 0 ] || [ "$full" = 1 ] || die "--command-coverage requires --full"
 [ "$use_coverage" = 0 ] || [ "$full" = 1 ] || die "--use-coverage requires --full"
 [ "$phase_coverage" = 0 ] || [ "$full" = 1 ] || die "--phase-coverage requires --full"
+[ "$state_export" = 0 ] || [ "$full" = 1 ] || die "--state-export requires --full"
 mkdir -p "${WORK}/bin"
 WORK="$(cd "${WORK}" && pwd -P)"
 (cd "${ROOT}" && go build -o "${WORK}/bin/compare" ./tools/turn-compat &&
@@ -159,18 +161,30 @@ else
 fi
 [ "$status" = 0 ] || exit "$status"
 
-for family in command use phase; do
+for family in command use phase state; do
 	flag=--coverage
 	if [ "$family" = command ]; then
 		[ "$command_coverage" = 1 ] || continue
 	elif [ "$family" = use ]; then
 		[ "$use_coverage" = 1 ] || continue
 		flag=--use-coverage
-	else
+	elif [ "$family" = phase ]; then
 		[ "$phase_coverage" = 1 ] || continue
 		flag=--phase-coverage
+	else
+		[ "$state_export" = 1 ] || continue
+		flag=--state-export
 	fi
 	cases=(load load-save turn turn-nosave duplicate missing directory blocked saved-system report)
+	if [ "$family" = state ]; then
+		cases+=(saved-directory seed times)
+		# Real nonempty factions/topology from the unchanged pinned scenario.
+		# This exercises export at each save boundary, not just an empty root.
+		mkdir -p "${WORK}/state-fixtures"
+		git -C "${G3_REPO}" archive "$PINNED_REV" tests/olympia/fixtures \
+			tests/olympia/regress/phase-month-open/scenario.patch | tar -x -C "${WORK}/state-fixtures"
+		. "${WORK}/state-fixtures/tests/olympia/fixtures/scenario.sh"
+	fi
 	if [ "$family" = phase ]; then
 		cases+=(command-combined use-combined all-combined command-shared use-shared all-shared command-failure use-failure prior-failures dash-path parse-missing parse-empty parse-equals)
 	fi
@@ -189,7 +203,11 @@ for family in command use phase; do
 		base="${WORK}/${family}-coverage/${case_name}"
 		rm -rf "${base}"
 		mkdir -p "${base}/input"
-		cp -a "${WORK}/input/." "${base}/input/"
+		if [ "$family" = state ]; then
+			scenario_unpack "${WORK}/state-fixtures/tests/olympia/regress/phase-month-open" "${base}/input" || die "cannot unpack phase-month-open"
+		else
+			cp -a "${WORK}/input/." "${base}/input/"
+		fi
 		ARGS=(-l ./lib test-use-const-report-date)
 		expected_status=0
 		path=cov.tsv
@@ -202,6 +220,9 @@ for family in command use phase; do
 		case "$case_name" in
 		missing) path=missing/cov.tsv ;;
 		directory) path=lib/log ;;
+		saved-directory) path=lib/fact ;;
+		seed) path=lib/randseed ;;
+		times) path=lib/times_0 ;;
 		blocked) path=blocked/cov.tsv; printf 'not a directory\n' >"${base}/input/blocked" ;;
 		saved-system) path=lib/system ;;
 		report) path=lib/players ;;
@@ -275,6 +296,11 @@ for family in command use phase; do
 			printf 'complete ordinary-turn phase TSV: ' >>"${WORK}/phase-coverage.txt"
 			shasum -a 256 "${WORK}/phase-turn.tsv" | cut -d' ' -f1 >>"${WORK}/phase-coverage.txt"
 		fi
+		if [ "$family" = state ] && [ "$case_name" = turn ]; then
+			cp "${base}/c/cwd/cov.tsv" "${WORK}/state-turn.json"
+			printf 'complete ordinary-turn JSON: ' >>"${WORK}/state-coverage.txt"
+			shasum -a 256 "${WORK}/state-turn.json" | cut -d' ' -f1 >>"${WORK}/state-coverage.txt"
+		fi
 		case "$case_name" in
 		shared-checks|hide)
 			if [ "$case_name" = shared-checks ]; then
@@ -308,7 +334,7 @@ for family in command use phase; do
 	done
 	rm -rf "${WORK}/${family}-coverage"
 done
-rm -rf "${WORK}/use-fixtures"
+rm -rf "${WORK}/use-fixtures" "${WORK}/state-fixtures"
 
 # Exercise main's actual composition as well as the component recordings in
 # command-compat. These opt-in controls change only lifecycle inputs on the

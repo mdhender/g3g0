@@ -58,6 +58,32 @@ The golden turn's directory is kept in the run dir until the next run.
 `run-all.sh` never re-baselines, and every `check.sh --update` and `golden_check.sh --update` refuses to run while `OLYMPIA_ENGINE_BIN` is set.
 The gates also run inside the export, so they cannot write to the clone.
 
+## Location export integration (#176)
+
+At **0.112.0-alpha**, the unchanged full spec runs **125 fixtures** and exits
+**0**: **32 pass / 93 fail / 0 error** in **118 seconds**. Every inherited
+**23** pass remains. The tool itself adds exactly nine genuine unchanged
+script passes to `passing.txt`: `coast-rocks`, `move-go`, `move-out-first`,
+`phase-month-close`, `phase-month-gold`, `phase-month-open`, `player-refused`,
+`wait-gm-stack`, `wait-not-weather`. Expected files/harnesses are not edited.
+Command: `G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue176-spec"
+tools/olympia-spec/run.sh`; log: `tmp/issue176-spec.log`, full raw script
+results under `tmp/issue176-spec/`. Golden initialization still exits **2**
+at unsupported `-i`; golden is **NO**, not a passing spec.
+
+All six phase fixtures separately ran their original scripts against real C
+twice then Go with bounded engines and pre-cleanup raw status/stream/complete
+cwd capture. C/C matches for all six; C/Go matches fully for **month-open,
+month-gold and month-close**, including all JSON bytes and **242/241/242** cwd
+entries/types/modes/bytes. **day0, daily and month-decay remain NO**: their
+Go engines stop at **guard**, **stack** and **USE v_hinder_med** respectively
+(engine **2**, script **1**; both C scripts are YES/**0**). These first
+observed missing-gameplay prerequisites remain outside export, not rewritten
+expectations or successful substitutes. See [exact outcomes and prerequisite
+scope](../turn-compat#state-export-save-lifecycle-176),
+`tmp/issue176-fixtures.log` and `tmp/issue176-prerequisites.log`.
+No six-fixture, full-C-spec, native-platform or stage-exit acceptance claimed.
+
 ## Results
 
 Follow-C #179 run: 2026-10-29, Linux amd64, Go 1.26.4, immutable

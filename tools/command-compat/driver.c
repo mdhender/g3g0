@@ -106,6 +106,7 @@ void drv_ucov_seed(int ent, int outcome, int value);
 void drv_use_table(void), drv_use_consume(int who,int sk), drv_use_scroll(int who,int basis), drv_use_magic(struct command *c,int sk);
 int drv_use_lookup(int sk), drv_use_may(int who,int sk), drv_use_correct(struct command *c), drv_use_meets(int who,int sk);
 void drv_json(FILE *fp, char *s), drv_export_unit(FILE *fp, int who), drv_export_faction(FILE *fp, int pl);
+void drv_export_location(FILE *fp, int where, int viewer);
 void drv_sort_ids(ilist l);
 
 /* Observe filesystem decisions, not deferred artifact bodies. In particular
@@ -236,6 +237,10 @@ int main(int argc, char **argv)
    }
    else if(!strcmp(label,"json")) { drv_json(stdout,bx[n]->name); putchar('\n'); }
    else if(!strcmp(label,"unit")) { drv_export_unit(stdout,n); putchar('\n'); }
+   else if(!strcmp(label,"location")) {
+    sscanf(line,"%*s %*s %d %d",&n,&a);
+    drv_export_location(stdout,n,a); putchar('\n');
+   }
    else if(!strcmp(label,"faction")) { drv_export_faction(stdout,n); putchar('\n'); }
    else if(!strcmp(label,"sort")) { drv_sort_ids(p_player(n)->units); list("sorted",p_player(n)->units); }
    else if(!strcmp(label,"path")) {

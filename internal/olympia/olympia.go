@@ -223,8 +223,7 @@ func Run(args []string, stdout, stderr io.Writer, stdoutIsTTY bool) int {
 // are read by load_db(), save_db() and what main() runs after them.
 func (o *options) unported() bool {
 	return o.eatFlag || o.startlocFlag || o.addFlag ||
-		o.immedAfter || o.mailNow || o.htmlFlag ||
-		o.stateExportPath != ""
+		o.immedAfter || o.mailNow || o.htmlFlag
 }
 
 // runEngine is main() from load_db() on. A turn runs until the first real
@@ -263,6 +262,9 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	}
 	if o.phaseCoveragePath != "" {
 		w.phaseCoveragePath = &o.phaseCoveragePath
+	}
+	if o.stateExportPath != "" {
+		w.stateExportPath = &o.stateExportPath
 	}
 
 	defer func() {
@@ -345,8 +347,9 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	if o.saveFlag && o.runFlag {
 		w.saveLogdir(o.winFlag)
 	}
+	w.writeStateExport()
 
-	// write_state_export() and -M and -h stop before load_db() (unported).
+	// -M and -h stop before load_db() (unported).
 
 	w.timesMasthead()
 	w.closeTimes()

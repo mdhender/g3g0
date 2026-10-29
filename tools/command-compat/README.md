@@ -3,6 +3,86 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Complete location export (#176)
+
+**0.112.0-alpha** completes original `export_location` **133–189** in the
+existing state_export.go. The temporary location-boundary test is replaced
+by real C/C/Go contract sections in `TestCommandMatchesC`. Main now accepts
+the path and calls the root writer after save_db/save_logdir and before
+Times, at the original position. Other mode gates and missing USE/gameplay
+callbacks stay NYI. No G3 #114 format expansion or invented visibility filter.
+
+The wrapper still includes **all unchanged state_export.c** and exposes one
+additional static entry point, not a replacement implementation. All **100**
+archived files equal the pin and all **574** extracted complete definitions
+occur literally unchanged exactly once. Source audit includes all real
+dir.c exit constructors/cache, loc.c all_char_here/add_char_here/province/
+subloc, u.c loc_depth/loc_hidden/test_known, swear.c lord/player, original
+macros and glob.c tables. No new dependency or affected.sh/pin change.
+Whole state_export.c remains **6496 bytes**, SHA-256
+`2f710e5ec96c810996206c87efc7908fe50f75732b28f7119237e9ef1fb8210b`;
+complete export_location SHA-256
+`e110d3b2d8868e0e2d80813e068170c1b4b2d891fc8cf1c5bb669f398f66e2e5`.
+Full per-definition ranges/hashes: `tmp/issue176-source-audit.log`.
+
+Three appended asymmetric sections cover actual nonempty location/faction/
+root bytes, lowest-ID viewer versus a higher-ID listed unit with a different
+lord/knowledge, undiscovered exits versus known hidden destinations, unsorted
+roads and duplicated directions/destinations, port insertion, distance,
+barriers, collapsed mines, cloud links, open links, hidden outward exits,
+province/subloc/building/ship names and depths. Original loc_depth_s has
+**NULL at build depth**, so a building's depth is **empty**, not an invented
+"build" label; `<no depth` also retains the original missing bracket.
+Ships have no exported exits even though the shared constructor can build
+them. `all_char_here` includes foreign units, prisoners and nested character
+stacks, but prunes noncharacter branches and excludes units inside buildings
+or ships from the outer location. No extra visibility/prisoner filter.
+
+Exit order is the real constructor's order, never sorted. C owns/reuses its
+static exit scratch and frees old entries on the next construction; export
+borrows it immediately and never sorts/reclaims it. Go uses the existing
+fresh scratch constructor without retaining references. Only copied here IDs
+sort. Raw/saved/allocation/list snapshots before and after export are exactly
+identical: **3050 / 1647 / 795 bytes**, SHA-256 respectively
+`043c619e22245dae42fb1432c93654c3d26d583095777af55ca12efe80cabdf3`,
+`f640a8a19a5a26b9bceaefbfcd68dc9d944d9321aacb9da52c820a03ab19c1ae`,
+`efbc06099e4cfd80225d30174215a2a412c260ca221c49acd02f3a8b6441a650`.
+Explicit later knowledge changes are not mislabeled read-only. Legacy next
+draw **62497** and entity draws **701/2/1/1** match the inherited independent
+no-export control; a borrowed buffered output stream survives location/root
+export and directory rename without reopening or losing its inode.
+Evidence: `tmp/issue176-bytes-aftermath.log` and complete raw recording.
+
+Unchanged real C twice and Go match **1332 sections / 101686 lines /
+2035552 output bytes**, SHA-256
+`57ad48790379b5df3ef83e155320c0ef6c6d78026477c29e81c22626f98d28f0`.
+Input: **29344 lines / 559758 bytes**, SHA-256
+`35c5e55721fe82b4481ddc2dcb2e1414f82041937c8556fd3801e85830b91615`.
+The entire inherited **556686-byte input / 2001138-byte output** prefixes
+retain their accepted hashes `cf2cfca1a439847fdb69d72003a9bc992071b7dc1bd2fc226f5d41857e4136a3`
+and `22c85b5fb8598701ecd92b7fd304f8f01f4b62f7143c53fcd0388be4765bb540`.
+Literal trailing spaces in C save/output bytes remain deliberately unchanged.
+
+Four actual linker probes wrap the new direct location entry point: marker
+on stdout/status **0** and stderr/status **134**, both default and update.
+All reject at section **1329** with harness status **2**, before expected
+statuses or recording replacement; the complete output hash stays unchanged.
+Probe sources, compiler launcher and probe captures are removed. Logs:
+`tmp/issue176-negative-{0,134}-{default,update}.log`. The normal command
+default passes again after their removal (`tmp/issue176-command-default.log`).
+
+Bounded vet/fresh full-enabled tests (**11 packages**, Olympia **1.934s**) and
+all **15 engine/library defaults** pass. Strict ordinary turn and all **13
+lifecycle / 10 command / 15 USE / 23 phase** controls pass, plus **13** new
+nonempty export controls and four flag-free aftermath comparisons; see
+[turn evidence](../turn-compat#state-export-save-lifecycle-176).
+All six unchanged phase scripts ran real C twice then Go: **three pass and
+three expose separate unported gameplay prerequisites**, not export byte
+differences. Spec is **32 pass / 93 fail / 0 error**, retaining all 23 prior
+passes. Exact fixture outcomes and remaining boundaries are documented there
+and in [spec](../olympia-spec#location-export-integration-176). No six-fixture
+or stage-exit success is claimed; broader combinations remain #177.
+
 ## State export byte strings, units and faction roots (#175)
 
 **0.111.0-alpha** adds `internal/olympia/state_export.go`, corresponding to

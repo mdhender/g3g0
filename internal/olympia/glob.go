@@ -13,9 +13,12 @@ package olympia
 // the NULL; with no terminator that is len(kindS) == tMax and
 // len(subkindS) == subMax.
 //
-// Not ported, because loading and saving do not use it: loc_depth_s.
 // libdir is options.libdir (olympia.go) and world.libdir; show_day is
 // world.showDay. See cmdTbl for the command-handler boundaries.
+
+// The build-depth entry is NULL in C: json_str renders it as empty. Retain
+// the original missing closing bracket in the no-depth label as well.
+var locDepthS = []string{"<no depth", "region", "province", "subloc", ""}
 
 var shortDirS = []string{"<no dir>", "n", "e", "s", "w", "u", "d", "i", "o"}
 var fullDirS = []string{"<no dir>", "north", "east", "south", "west", "up", "down", "in", "out"}

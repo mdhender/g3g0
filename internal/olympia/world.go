@@ -238,7 +238,7 @@ type world struct {
 	phaseCoveragePath *string
 	phRan             [phMax]int32
 	phActed           [phMax]int32
-	stateExportPath   *string // state_export.c; CLI remains gated until #176.
+	stateExportPath   *string // state_export.c; nil suppresses writing.
 
 	// stderr is C's stderr, which print_box_usage() and alloc_box() write
 	// to. newWorld sets it to os.Stderr; the engine sets it to its own.

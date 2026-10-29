@@ -29182,3 +29182,163 @@ master 17
 set turn 32767
 usemeta legacy 1 100000
 entity_rolls 1000 7 5000
+
+section state export locations asymmetric exits lowest viewer and recursive character membership
+lore_root
+master 17
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 4
+entity 9002 3 1
+entity 9003 3 65
+entity 9100 3 14
+entity 9101 3 13
+entity 9200 3 37
+entity 9201 3 53
+entity 9300 9 30
+entity 9400 7 0
+entity 9401 7 0
+entity 9402 7 0
+entity 1100 2 0
+entity 1101 2 0
+entity 1102 2 0
+entity 1103 2 0
+entity 1104 2 0
+entity 7000 4 0
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 8000 9003
+link 9000 9100
+link 9000 9101
+link 9100 9200
+link 9000 9201
+link 9000 9300
+link 9000 9402
+link 9000 9401
+link 9000 9400
+road 9402 9003 0
+road 9401 9001 1
+road 9400 9002 0
+routes 9000 9001 9002 0 9001 9003 0
+field 9001 loc_hidden 1
+field 9101 loc_hidden 1
+field 9003 barrier 2
+field 1001 lord 201
+field 201 known 9001
+field 201 known 9101
+field 201 known 9401
+field 200 unit 1001
+field 200 unit 1000
+field 200 unit 1103
+field 200 unit 1104
+link 9000 1001
+link 9000 1000
+link 1001 1101
+link 1101 1100
+link 1000 7000
+link 7000 1102
+link 9200 1103
+link 9300 1104
+field 1100 lord 201
+field 1100 prisoner 1
+field 1101 lord 200
+field 1102 lord 201
+field 1103 lord 200
+field 1104 lord 200
+export name 9000 225c8070726f76
+export name 9100 EMPTY
+export name 9200 NULL
+export name 1100 NULL
+export state
+export location 9000 1001
+export location 9000 1000
+export faction 200
+export path state.json
+export write
+readfile state.json
+export write
+readfile state.json
+export state
+field 200 known 9001
+field 200 known 9101
+field 200 known 9401
+export faction 200
+export location 9100 1000
+export location 9200 1103
+export location 9300 1104
+export state
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section state export ocean port routing insertion order barriers and hidden outward exit
+lore_root
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 9002 3 4
+entity 9100 3 14
+entity 9101 3 13
+entity 9200 3 46
+entity 9201 3 29
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 9001 9100
+link 9001 9101
+link 9100 9200
+link 9200 9201
+routes 9000 9001 9002 0 0
+routes 9001 0 0 9000 0
+field 9001 loc_hidden 1
+field 9100 loc_hidden 1
+field 9101 link_open 1
+field 9101 link_to 9000
+field 9101 link_to 9002
+field 9101 link_to 9000
+field 9001 link_from 9101
+link 9200 1001
+link 9000 1000
+field 200 unit 1001
+field 200 unit 1000
+export state
+export location 9000 1000
+export location 9001 1000
+export location 9100 1000
+export location 9101 1000
+export location 9200 1001
+export faction 200
+export path state.json
+export write
+readfile state.json
+export state
+
+section state export nonempty output cache survives location traversal and rename
+lore_root
+master 17
+entity 9000 3 3
+entity 9001 3 2
+routes 9000 0 9001 0 0
+link 9000 1000
+field 200 unit 1000
+life open 0
+set flush 0
+emit 1000 1
+life rename log log-held
+lore_dir log
+export state
+export location 9000 1000
+export path state.json
+export write
+readfile state.json
+export state
+emit 1000 2
+life flush
+readfile log-held/200
+life path log/200
+life close
+emit 1000 3
+life flush
+readfile log/200
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000

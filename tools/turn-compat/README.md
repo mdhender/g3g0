@@ -16,6 +16,84 @@ tools/turn-compat/run.sh --full          # real C/C/Go world turns and lifecycle
 tools/turn-compat/run.sh --full --record # explicitly refresh C-only recordings, then compare Go
 ```
 
+## State export save lifecycle (#176)
+
+**0.112.0-alpha** adds `--full --state-export`: **13** actual-engine controls
+using the unchanged pinned **phase-month-open** scenario, with four nonempty
+regular factions, units and asymmetric routes. Each case unpacks pristine
+fixture input; engines only run in fresh real copies. No upstream scripts,
+scenarios, expected bytes, comparator exclusions or normalization change.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue179-roundtrip" \
+  WORK="$PWD/tmp/issue176-state-turn" tools/turn-compat/run.sh \
+  --full --state-export
+```
+
+Cases: load only, load+save, turn+save, turn without save, duplicate path
+(last wins), ENOENT, ENOTDIR, the pre-save `lib/log` path, collisions with
+saved system/post-writer players, existing saved `lib/fact` directory,
+saved randseed and Times output. In particular, state export is **after**
+save_logdir: `lib/log` is no longer a directory then, unlike the earlier
+coverage writers. Times follows export; its collision is compared as real
+file/cache behavior, not a fabricated failure. All C statuses are **0**;
+failed opens are nonfatal with original diagnostics. C runs twice before
+Go; raw status/streams and every cwd entry/type/mode/byte match.
+
+Four load/turn/save combinations also run flag-free C twice and Go. Only
+after the strict complete comparison is the requested dump removed from
+disposable captures; every remaining observation matches flag-free C.
+The nonempty complete turn JSON is **3520 bytes**, SHA-256
+`c7bd7db18c75fad5844a7470e2512535c32afe7e87d814664c57bd5a3ee1a729`,
+retained at `tmp/issue176-state-turn/state-turn.json`. Load/load-save JSON
+hash is `161677dae01c4c2b30589c7bbb9efbc7b8a1a7577edef48e43dcde707449c9c9`.
+No selected-field JSON check substitutes for raw bytes. Log/summary:
+`tmp/issue176-state-turn.log`, `tmp/issue176-state-turn/state-coverage.txt`.
+
+The earlier complete run also passes strict **233-entry** ordinary turn,
+all **13 lifecycle / 10 command / 15 USE / 23 phase** controls and an empty
+root export family (`tmp/issue176-turn-full.log` and `tmp/issue176-turn/`).
+The nonempty repeat above strengthens the new export controls; it does not
+replace inherited cases. All **15** default tools, bounded vet and fresh
+bounded full-enabled tests pass. Read-only C cache provenance is independently
+verified: all **1212** archived originals equal the pin, binary SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+
+All six unchanged phase fixture scripts also ran themselves against bounded
+real C twice and Go, with a temporary capture launcher preserving complete
+raw engine status/streams/cwd **before each script's cleanup**. Each C/C
+capture passes the strict turn comparator and tree-modes.py. Results:
+
+| fixture | C twice | Go script / engine | complete C/Go cwd |
+|---|---|---|---|
+| phase-day0 | YES / 0 | NO / 2: command guard start NYI | differs; stopped before dumps |
+| phase-daily | YES / 0 | NO / 2: command stack start NYI | differs; stopped before dumps |
+| phase-month-open | YES / 0 | YES / 0 | **242 entries**, exact |
+| phase-month-gold | YES / 0 | YES / 0 | **241 entries**, exact |
+| phase-month-decay | YES / 0 | NO / 2: USE v_hinder_med callback NYI | differs; stopped before dumps |
+| phase-month-close | YES / 0 | YES / 0 | **242 entries**, exact |
+
+All three NO scripts exit **1**, not engine status 2. Successful JSON hashes:
+open above; gold **2111 bytes**,
+`03e6bdf8e326bca1e97195a2d116a45d143419da79c71a2e43c6bd94454f1d2c`;
+close **3520 bytes**,
+`4005271ab9a072c0cae4b3a7983f6718c08d51331c788522469fb4353b4a9a72`.
+Logs/manifests: `tmp/issue176-fixtures{,-discovery}.log`,
+`tmp/issue176-fixture-captures/`. Matching captures and temporary launchers/
+scripts/source export are removed; decisive failed C/Go captures remain.
+
+These three **first observed** missing-gameplay boundaries are separate
+prerequisites, not export implementation work or an exhaustive inventory:
+combat.c `v_guard` **2947–2964** (small callback), stack.c `v_stack`
+**703–741** (plus real char/visibility checks), basic.c `v_hinder_med`,
+`hinder_med_omen`, `d_hinder_med` **331–420** (cast-location/visibility and
+real keyed magic RNG closure). Scope/source hashes: `tmp/issue176-prerequisites.log`.
+No gameplay callback is replaced with success, fixture orders removed, or
+USE handler ported. Per the no-issue-edits instruction no GitHub issue is
+created/edited: parent must separately file/size these before expanding.
+There is **no six-fixture/stage-exit acceptance**; #177 still owns broader
+four-dump combinations/failure closure and #178 the final full rerun.
+
 ## Monthly phase CLI controls (#174)
 
 At **0.110.0-alpha**, `--full --phase-coverage` adds **23** actual-world

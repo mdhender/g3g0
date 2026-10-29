@@ -662,11 +662,12 @@ cat >"${WORK}/io-wrapper.c" <<'C'
 void drv_read_boxes(char *path) { read_boxes(path); }
 C
 # Keep the entire original translation unit, including export_location.
-# Direct faction/root cases below require no locations; nothing replaces it.
+# Expose static entry points without replacing bodies or dependencies.
 cat >"${WORK}/state-export-wrapper.c" <<'C'
 #include "state_export.c"
 void drv_json(FILE *fp, char *s) { json_str(fp, s); }
 void drv_export_unit(FILE *fp, int who) { export_unit(fp, who); }
+void drv_export_location(FILE *fp, int where, int viewer) { export_location(fp, where, viewer); }
 void drv_export_faction(FILE *fp, int pl) { export_faction(fp, pl); }
 void drv_sort_ids(ilist l) { sort_ids(l); }
 C

@@ -51,24 +51,6 @@ func TestCommandMatchesC(t *testing.T) {
 	}
 }
 
-// The unfinished location path must stop, never silently omit a location or
-// supply successful output to the complete faction/root implementations.
-func TestStateExportLocationBoundary(t *testing.T) {
-	w := newWorld()
-	w.allocBox(200, tPlayer, subPlRegular)
-	w.allocBox(1000, tChar, 0)
-	w.allocBox(5000, tLoc, subPlain)
-	w.pPlayer(200).units.Append(1000)
-	w.setWhere(1000, 5000)
-	defer func() {
-		if got := recover(); got != notImplemented("export_location") {
-			t.Fatalf("location boundary = %v", got)
-		}
-	}()
-	var out strings.Builder
-	w.exportFaction(&out, 200)
-}
-
 // Native directory order is not portable recording data. The tool supplies
 // two fresh real-C runs over this same unchanged directory before Go reads it.
 func TestCommandAdmissionNativeOrder(t *testing.T) {
@@ -228,6 +210,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				fmt.Fprintln(&stdout)
 			case "unit":
 				w.exportUnit(&stdout, args.num(t))
+				fmt.Fprintln(&stdout)
+			case "location":
+				where, viewer := args.num(t), args.num(t)
+				w.exportLocation(&stdout, where, viewer)
 				fmt.Fprintln(&stdout)
 			case "faction":
 				w.exportFaction(&stdout, args.num(t))
