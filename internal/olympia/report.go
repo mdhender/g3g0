@@ -173,8 +173,6 @@ func stupidWord(s string) bool {
 
 // -1 represents C's NULL. Start at t itself, including a previously written
 // NUL, and walk backwards over bytes; only a literal space is a separator.
-// Preserve native C's empty backward traversal when t is NULL; its relational
-// pointer comparison is nonportable: https://github.com/playbymail/olympia-g3/issues/359.
 func prevWord(s []byte, t int) int {
 	for t > 0 && s[t] != ' ' {
 		t--
@@ -199,7 +197,7 @@ func (w *world) summaryTruncName(who int) string {
 	if t >= 0 {
 		b[t] = 0
 	}
-	for {
+	for t >= 0 {
 		t = prevWord(b, t)
 		if t < 0 || b[t] != ' ' {
 			break

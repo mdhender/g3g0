@@ -1,7 +1,7 @@
 # Movement helper compatibility
 
-Pin: `e733acb63bacb21167a1f2589d8dcdc023364896` in
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
+Pin: `f73e48118805ffe8ff5e763bfa4f20ae00c3a705` in
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
 Current #131 recording: **135 sections / 7158 lines**, from two identical
 real-C runs. Only G3 #353's unowned route changes: the explicit owner

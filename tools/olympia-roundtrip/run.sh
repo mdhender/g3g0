@@ -59,7 +59,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 # shellcheck source=../lib/timeout.sh
 . "${HERE}/../lib/timeout.sh"
 
-PINNED_REV=e733acb63bacb21167a1f2589d8dcdc023364896
+PINNED_REV=f73e48118805ffe8ff5e763bfa4f20ae00c3a705
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 G3_REV="${G3_REV:-${PINNED_REV}}"
 WORK="${WORK:-${ROOT}/tmp/olympia-roundtrip}"
@@ -141,11 +141,11 @@ for d in "${REGRESS}"/*/; do
 done
 all=()
 # Exact-pin contract, not a general allowance for failed turns. Source:
-# e733acb tests/olympia/regress/release-swear-np/{check.sh,README.md}
+# f73e481 tests/olympia/regress/release-swear-np/{check.sh,README.md}
 # (G3 #357): status 134, swear.c assertion, no sanitizer report. At older
 # or override pins keep the ordinary +turn path, requiring status 0.
 unavailable=""
-if [ "${G3_REV}" = e733acb63bacb21167a1f2589d8dcdc023364896 ]; then
+if [ "${G3_REV}" = f73e48118805ffe8ff5e763bfa4f20ae00c3a705 ]; then
 	unavailable=release-swear-np+turn
 fi
 for g in "${games[@]}"; do
@@ -230,17 +230,39 @@ unpack_game() {
 	fi
 }
 
+# Reject reference dependency/sanitizer failures even for expected statuses.
+valid_c_reference() {
+	local status=0
+	grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency|NYI|stub|Sanitizer|runtime error:' "$1/stdout" "$1/stderr" >/dev/null 2>&1 || status=$?
+	[ "$status" = 1 ]
+}
+mkdir -p "${WORK}/invalid-reference"
+for stream in stdout stderr; do
+	for marker in 'missing dependency' 'NYI' 'C stub' 'AddressSanitizer' 'runtime error:'; do
+		: >"${WORK}/invalid-reference/stdout"
+		: >"${WORK}/invalid-reference/stderr"
+		printf '%s\n' "$marker" >"${WORK}/invalid-reference/${stream}"
+		if valid_c_reference "${WORK}/invalid-reference"; then die "accepted invalid C reference"; fi
+	done
+done
+rm -rf "${WORK}/invalid-reference"
+if valid_c_reference "${WORK}/invalid-reference"; then die "accepted missing C reference"; fi
+
 # run_engine BIN SRC OUT ARGS... copies SRC to OUT/cwd and runs BIN ARGS...
 # there, with OUT/{stdout,stderr,status}.
 run_engine() {
 	local bin="$1" src="$2" out="$3" ec=0
 	shift 3
+	[ -d "${src}" ] && [ ! -L "${src}" ] || die "input must be an actual directory: ${src}"
 	rm -rf "${out}"
 	mkdir -p "${out}"
 	cp -a "${src}" "${out}/cwd"
 	chmod -R u+w "${out}/cwd"
 	(cd "${out}/cwd" && run_as "${bin}" "$@" >"${out}/stdout" 2>"${out}/stderr") || ec=$?
 	echo "${ec}" >"${out}/status"
+	if [ "${bin}" = "${C_BIN}" ]; then
+		valid_c_reference "${out}" || die "invalid C reference or unreadable streams: ${out}"
+	fi
 }
 
 # same_run A B succeeds if two run_engine outputs match exactly.
@@ -252,9 +274,9 @@ same_run() {
 # Require the precise pinned assertion, not just SIGABRT. Reject missing
 # dependency markers before accepting a failure, even alongside the assertion.
 expected_abort() {
-	[ "$(cat "$1/status")" = 134 ] &&
-		grep -q 'assertion failure: .*/swear\.c (180): FALSE$' "$1/stderr" &&
-		! grep -Ei 'AddressSanitizer|runtime error|out-of-scope|not yet implemented|missing.*dependency|C stub' "$1/stdout" "$1/stderr" >/dev/null
+	valid_c_reference "$1" &&
+		[ "$(cat "$1/status")" = 134 ] &&
+		grep -q 'assertion failure: .*/swear\.c (180): FALSE$' "$1/stderr"
 }
 
 # Always execute twice: failed turns are controls, never cached saved games.
@@ -314,6 +336,7 @@ prepare() {
 	local c="$1" dir="${CASES}/$1" g
 	[ -f "${dir}/error" ] && return 1
 	if [ -f "${dir}/ready" ]; then
+		valid_c_reference "${dir}/c" || die "invalid cached C reference: ${dir}/c"
 		if check_determinism "${c}" && [ ! -f "${dir}/deterministic" ]; then
 			same_c "${c}" || return 1
 		fi

@@ -1008,11 +1008,12 @@ trades: [1 1 10 5 0 2 3 4 who 42] [2 77 0 9 1 0 0 0 who 43] [3 1 -5 0 0 0 0 0 wh
 > next
 line [tl\x091 77 1] hash 29804 t [1 77 1]
 > trade_scan 44
-trades: [1 1 10 5 0 2 3 4 who 42] [2 77 0 9 1 0 0 0 who 43] [3 1 -5 0 0 0 0 0 who 43] [1 77 1 0 0 0 0 0 who 44]
+trade_list_scan(44): item 77 qty 1 has no price
+trades: [1 1 10 5 0 2 3 4 who 42] [2 77 0 9 1 0 0 0 who 43] [3 1 -5 0 0 0 0 0 who 43]
 > next
 line [tl\x091 77 1 2 3 4 5 6 7 8 9] hash 29804 t [1 77 1 2 3 4 5 6 7 8 9]
 > trade_scan 45
-trades: [1 1 10 5 0 2 3 4 who 42] [2 77 0 9 1 0 0 0 who 43] [3 1 -5 0 0 0 0 0 who 43] [1 77 1 0 0 0 0 0 who 44] [1 77 1 2 3 4 5 6 who 45]
+trades: [1 1 10 5 0 2 3 4 who 42] [2 77 0 9 1 0 0 0 who 43] [3 1 -5 0 0 0 0 0 who 43] [1 77 1 2 3 4 5 6 who 45]
 exit 0
 section trade_list_print
 > alloc 1 4 0
@@ -1595,4 +1596,112 @@ zero_check 0
 zero_check 0
 > zero -1 0
 zero_check 0
+exit 0
+section loaded trade price boundaries all kinds and continuation after rejected entries
+> alloc 1 4 0
+> alloc 77 4 0
+> put f  tl\x091 77 1 -1 1 2 3 4 \\\x0a\x091 77 1 0 1 2 3 4 \\\x0a\x091 77 1 1 1 2 3 4 \\\x0a\x091 77 0 -1 1 2 3 4 \\\x0a\x091 77 0 0 1 2 3 4 \\\x0a\x091 77 -1 -1 1 2 3 4 \\\x0a\x091 77 -1 0 1 2 3 4\x0a
+> put f  tl\x092 77 1 -1 1 2 3 4 \\\x0a\x092 77 1 0 1 2 3 4 \\\x0a\x092 77 1 1 1 2 3 4 \\\x0a\x092 77 0 -1 1 2 3 4 \\\x0a\x092 77 0 0 1 2 3 4 \\\x0a\x092 77 -1 -1 1 2 3 4 \\\x0a\x092 77 -1 0 1 2 3 4\x0a
+> put f  tl\x093 77 1 -1 1 2 3 4 \\\x0a\x093 77 1 0 1 2 3 4 \\\x0a\x093 77 1 1 1 2 3 4 \\\x0a\x093 77 0 -1 1 2 3 4 \\\x0a\x093 77 0 0 1 2 3 4 \\\x0a\x093 77 -1 -1 1 2 3 4 \\\x0a\x093 77 -1 0 1 2 3 4\x0a
+> put f  tl\x094 77 1 -1 1 2 3 4 \\\x0a\x094 77 1 0 1 2 3 4 \\\x0a\x094 77 1 1 1 2 3 4 \\\x0a\x094 77 0 -1 1 2 3 4 \\\x0a\x094 77 0 0 1 2 3 4 \\\x0a\x094 77 -1 -1 1 2 3 4 \\\x0a\x094 77 -1 0 1 2 3 4\x0a
+> alloc 2 2 0
+> put f  tl\x090 77 1 0 \\\x0a\x095 77 1 -2147483648 \\\x0a\x095 77 0 0 \\\x0a\x095 77 -1 0 \\\x0a\x095 2 2147483647 1 \\\x0a\x091 999 1 0 \\\x0a\x091 0 1 -1 \\\x0a\x092 77 2147483647 2147483647\x0a
+> put f  tl\x091 77 1\x0a tl\x091 77\x0a tl\x091 77 2147483647 -2147483648 \\\x0a
+> readfile f
+readfile 1
+> next
+line [tl\x091 77 1 -1 1 2 3 4 \x5c] hash 29804 t [1 77 1 -1 1 2 3 4 \x5c]
+> trade_scan 41
+trade_list_scan(41): item 77 qty 1 has no price
+trade_list_scan(41): item 77 qty 1 has no price
+trades: [1 77 1 1 1 2 3 4 who 41] [1 77 0 -1 1 2 3 4 who 41] [1 77 0 0 1 2 3 4 who 41] [1 77 -1 -1 1 2 3 4 who 41] [1 77 -1 0 1 2 3 4 who 41]
+> next
+line [tl\x092 77 1 -1 1 2 3 4 \x5c] hash 29804 t [2 77 1 -1 1 2 3 4 \x5c]
+> trade_scan 42
+trade_list_scan(42): item 77 qty 1 has no price
+trade_list_scan(42): item 77 qty 1 has no price
+trades: [1 77 1 1 1 2 3 4 who 41] [1 77 0 -1 1 2 3 4 who 41] [1 77 0 0 1 2 3 4 who 41] [1 77 -1 -1 1 2 3 4 who 41] [1 77 -1 0 1 2 3 4 who 41] [2 77 1 1 1 2 3 4 who 42] [2 77 0 -1 1 2 3 4 who 42] [2 77 0 0 1 2 3 4 who 42] [2 77 -1 -1 1 2 3 4 who 42] [2 77 -1 0 1 2 3 4 who 42]
+> next
+line [tl\x093 77 1 -1 1 2 3 4 \x5c] hash 29804 t [3 77 1 -1 1 2 3 4 \x5c]
+> trade_scan 43
+trade_list_scan(43): item 77 qty 1 has no price
+trade_list_scan(43): item 77 qty 1 has no price
+trades: [1 77 1 1 1 2 3 4 who 41] [1 77 0 -1 1 2 3 4 who 41] [1 77 0 0 1 2 3 4 who 41] [1 77 -1 -1 1 2 3 4 who 41] [1 77 -1 0 1 2 3 4 who 41] [2 77 1 1 1 2 3 4 who 42] [2 77 0 -1 1 2 3 4 who 42] [2 77 0 0 1 2 3 4 who 42] [2 77 -1 -1 1 2 3 4 who 42] [2 77 -1 0 1 2 3 4 who 42] [3 77 1 1 1 2 3 4 who 43] [3 77 0 -1 1 2 3 4 who 43] [3 77 0 0 1 2 3 4 who 43] [3 77 -1 -1 1 2 3 4 who 43] [3 77 -1 0 1 2 3 4 who 43]
+> next
+line [tl\x094 77 1 -1 1 2 3 4 \x5c] hash 29804 t [4 77 1 -1 1 2 3 4 \x5c]
+> trade_scan 44
+trade_list_scan(44): item 77 qty 1 has no price
+trade_list_scan(44): item 77 qty 1 has no price
+trades: [1 77 1 1 1 2 3 4 who 41] [1 77 0 -1 1 2 3 4 who 41] [1 77 0 0 1 2 3 4 who 41] [1 77 -1 -1 1 2 3 4 who 41] [1 77 -1 0 1 2 3 4 who 41] [2 77 1 1 1 2 3 4 who 42] [2 77 0 -1 1 2 3 4 who 42] [2 77 0 0 1 2 3 4 who 42] [2 77 -1 -1 1 2 3 4 who 42] [2 77 -1 0 1 2 3 4 who 42] [3 77 1 1 1 2 3 4 who 43] [3 77 0 -1 1 2 3 4 who 43] [3 77 0 0 1 2 3 4 who 43] [3 77 -1 -1 1 2 3 4 who 43] [3 77 -1 0 1 2 3 4 who 43] [4 77 1 1 1 2 3 4 who 44] [4 77 0 -1 1 2 3 4 who 44] [4 77 0 0 1 2 3 4 who 44] [4 77 -1 -1 1 2 3 4 who 44] [4 77 -1 0 1 2 3 4 who 44]
+> next
+line [tl\x090 77 1 0 \x5c] hash 29804 t [0 77 1 0 \x5c]
+> trade_scan 45
+trade_list_scan(45): item 77 qty 1 has no price
+trade_list_scan(45): item 77 qty 1 has no price
+trade_list_scan(45): bad item 999
+trade_list_scan(45): bad item 0
+trades: [1 77 1 1 1 2 3 4 who 41] [1 77 0 -1 1 2 3 4 who 41] [1 77 0 0 1 2 3 4 who 41] [1 77 -1 -1 1 2 3 4 who 41] [1 77 -1 0 1 2 3 4 who 41] [2 77 1 1 1 2 3 4 who 42] [2 77 0 -1 1 2 3 4 who 42] [2 77 0 0 1 2 3 4 who 42] [2 77 -1 -1 1 2 3 4 who 42] [2 77 -1 0 1 2 3 4 who 42] [3 77 1 1 1 2 3 4 who 43] [3 77 0 -1 1 2 3 4 who 43] [3 77 0 0 1 2 3 4 who 43] [3 77 -1 -1 1 2 3 4 who 43] [3 77 -1 0 1 2 3 4 who 43] [4 77 1 1 1 2 3 4 who 44] [4 77 0 -1 1 2 3 4 who 44] [4 77 0 0 1 2 3 4 who 44] [4 77 -1 -1 1 2 3 4 who 44] [4 77 -1 0 1 2 3 4 who 44] [5 77 0 0 0 0 0 0 who 45] [5 77 -1 0 0 0 0 0 who 45] [5 2 2147483647 1 0 0 0 0 who 45] [2 77 2147483647 2147483647 0 0 0 0 who 45]
+> next
+line [tl\x091 77 1] hash 29804 t [1 77 1]
+> trade_scan 46
+trade_list_scan(46): item 77 qty 1 has no price
+trades: [1 77 1 1 1 2 3 4 who 41] [1 77 0 -1 1 2 3 4 who 41] [1 77 0 0 1 2 3 4 who 41] [1 77 -1 -1 1 2 3 4 who 41] [1 77 -1 0 1 2 3 4 who 41] [2 77 1 1 1 2 3 4 who 42] [2 77 0 -1 1 2 3 4 who 42] [2 77 0 0 1 2 3 4 who 42] [2 77 -1 -1 1 2 3 4 who 42] [2 77 -1 0 1 2 3 4 who 42] [3 77 1 1 1 2 3 4 who 43] [3 77 0 -1 1 2 3 4 who 43] [3 77 0 0 1 2 3 4 who 43] [3 77 -1 -1 1 2 3 4 who 43] [3 77 -1 0 1 2 3 4 who 43] [4 77 1 1 1 2 3 4 who 44] [4 77 0 -1 1 2 3 4 who 44] [4 77 0 0 1 2 3 4 who 44] [4 77 -1 -1 1 2 3 4 who 44] [4 77 -1 0 1 2 3 4 who 44] [5 77 0 0 0 0 0 0 who 45] [5 77 -1 0 0 0 0 0 who 45] [5 2 2147483647 1 0 0 0 0 who 45] [2 77 2147483647 2147483647 0 0 0 0 who 45]
+> next
+line [tl\x091 77] hash 29804 t [1 77]
+> trade_scan 47
+trades: [1 77 1 1 1 2 3 4 who 41] [1 77 0 -1 1 2 3 4 who 41] [1 77 0 0 1 2 3 4 who 41] [1 77 -1 -1 1 2 3 4 who 41] [1 77 -1 0 1 2 3 4 who 41] [2 77 1 1 1 2 3 4 who 42] [2 77 0 -1 1 2 3 4 who 42] [2 77 0 0 1 2 3 4 who 42] [2 77 -1 -1 1 2 3 4 who 42] [2 77 -1 0 1 2 3 4 who 42] [3 77 1 1 1 2 3 4 who 43] [3 77 0 -1 1 2 3 4 who 43] [3 77 0 0 1 2 3 4 who 43] [3 77 -1 -1 1 2 3 4 who 43] [3 77 -1 0 1 2 3 4 who 43] [4 77 1 1 1 2 3 4 who 44] [4 77 0 -1 1 2 3 4 who 44] [4 77 0 0 1 2 3 4 who 44] [4 77 -1 -1 1 2 3 4 who 44] [4 77 -1 0 1 2 3 4 who 44] [5 77 0 0 0 0 0 0 who 45] [5 77 -1 0 0 0 0 0 who 45] [5 2 2147483647 1 0 0 0 0 who 45] [2 77 2147483647 2147483647 0 0 0 0 who 45] [1 77 0 0 0 0 0 0 who 47]
+> next
+line [tl\x091 77 2147483647 -2147483648 \x5c] hash 29804 t [1 77 2147483647 -2147483648 \x5c]
+> trade_scan 48
+trade_list_scan(48): item 77 qty 2147483647 has no price
+trades: [1 77 1 1 1 2 3 4 who 41] [1 77 0 -1 1 2 3 4 who 41] [1 77 0 0 1 2 3 4 who 41] [1 77 -1 -1 1 2 3 4 who 41] [1 77 -1 0 1 2 3 4 who 41] [2 77 1 1 1 2 3 4 who 42] [2 77 0 -1 1 2 3 4 who 42] [2 77 0 0 1 2 3 4 who 42] [2 77 -1 -1 1 2 3 4 who 42] [2 77 -1 0 1 2 3 4 who 42] [3 77 1 1 1 2 3 4 who 43] [3 77 0 -1 1 2 3 4 who 43] [3 77 0 0 1 2 3 4 who 43] [3 77 -1 -1 1 2 3 4 who 43] [3 77 -1 0 1 2 3 4 who 43] [4 77 1 1 1 2 3 4 who 44] [4 77 0 -1 1 2 3 4 who 44] [4 77 0 0 1 2 3 4 who 44] [4 77 -1 -1 1 2 3 4 who 44] [4 77 -1 0 1 2 3 4 who 44] [5 77 0 0 0 0 0 0 who 45] [5 77 -1 0 0 0 0 0 who 45] [5 2 2147483647 1 0 0 0 0 who 45] [2 77 2147483647 2147483647 0 0 0 0 who 45] [1 77 0 0 0 0 0 0 who 47]
+> trade_print tl\x09
+tl	1 77 1 1 1 2 3 4 \
+	2 77 1 1 1 2 3 4 \
+	3 77 1 1 1 2 3 4 \
+	3 77 0 -1 1 2 3 4 \
+	3 77 0 0 1 2 3 4 \
+	3 77 -1 -1 1 2 3 4 \
+	3 77 -1 0 1 2 3 4 \
+	4 77 1 1 1 2 3 4 \
+	4 77 0 -1 1 2 3 4 \
+	4 77 0 0 1 2 3 4 \
+	4 77 -1 -1 1 2 3 4 \
+	4 77 -1 0 1 2 3 4 \
+	5 77 0 0 0 0 0 0 \
+	5 77 -1 0 0 0 0 0 \
+	5 2 2147483647 1 0 0 0 0 \
+	2 77 2147483647 2147483647 0 0 0 0
+> readlin
+readlin NULL
+exit 0
+section loaded trade item bounds invalid precedence and nonpositive priced quantities
+> alloc 149999 4 0
+> put f  tl\x091 -2147483648 1 0 \\\x0a\x092 -1 1 -1 \\\x0a\x093 0 1 0 \\\x0a\x094 149998 1 0 \\\x0a\x091 150000 1 0 \\\x0a\x092 2147483647 1 0 \\\x0a\x093 149999 1 0 \\\x0a\x094 149999 1 1\x0a
+> put f  tl\x091 149999 0 1 \\\x0a\x091 149999 -1 1 \\\x0a\x092 149999 0 1 \\\x0a\x092 149999 -1 1 \\\x0a\x093 149999 0 1 \\\x0a\x093 149999 -1 1 \\\x0a\x094 149999 0 1 \\\x0a\x094 149999 -2147483648 1\x0a
+> readfile f
+readfile 1
+> next
+line [tl\x091 -2147483648 1 0 \x5c] hash 29804 t [1 -2147483648 1 0 \x5c]
+> trade_scan 49
+trade_list_scan(49): bad item -2147483648
+trade_list_scan(49): bad item -1
+trade_list_scan(49): bad item 0
+trade_list_scan(49): bad item 149998
+trade_list_scan(49): bad item 150000
+trade_list_scan(49): bad item 2147483647
+trade_list_scan(49): item 149999 qty 1 has no price
+trades: [4 149999 1 1 0 0 0 0 who 49]
+> next
+line [tl\x091 149999 0 1 \x5c] hash 29804 t [1 149999 0 1 \x5c]
+> trade_scan 50
+trades: [4 149999 1 1 0 0 0 0 who 49] [1 149999 0 1 0 0 0 0 who 50] [1 149999 -1 1 0 0 0 0 who 50] [2 149999 0 1 0 0 0 0 who 50] [2 149999 -1 1 0 0 0 0 who 50] [3 149999 0 1 0 0 0 0 who 50] [3 149999 -1 1 0 0 0 0 who 50] [4 149999 0 1 0 0 0 0 who 50] [4 149999 -2147483648 1 0 0 0 0 who 50]
+> trade_print tl\x09
+tl	4 149999 1 1 0 0 0 0 \
+	3 149999 0 1 0 0 0 0 \
+	3 149999 -1 1 0 0 0 0 \
+	4 149999 0 1 0 0 0 0 \
+	4 149999 -2147483648 1 0 0 0 0
+> readlin
+readlin NULL
 exit 0

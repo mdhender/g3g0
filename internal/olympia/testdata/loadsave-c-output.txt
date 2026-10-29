@@ -3001,6 +3001,8 @@ section create_relics: nowhere_loc holds items and trades
 > boxes
 can't open lib/master: No such file or directory
 fast_scan failed, scan_all_boxes()
+trade_list_scan(10102): item 1 qty 5 has no price
+trade_list_scan(10102): item 10 qty 9 has no price
 > relics
 Created Imperial Throne~[401]
 Created Crown of Prosperity~[402]
@@ -3060,7 +3062,7 @@ f 644 255 lib/item
 |  uk 15
 |  lo 403
 | 
-f 644 235 lib/loc
+f 644 196 lib/loc
 | 10001 loc region
 | na Region
 | LI
@@ -3078,9 +3080,7 @@ f 644 235 lib/loc
 | \x09401 1 \x5c
 | \x09402 1 \x5c
 | \x09403 1
-| tl\x092 1 5 0 0 0 0 0 \x5c
-| \x091 1 5 1 0 0 0 0 \x5c
-| \x092 10 9 0 0 0 0 0
+| tl\x091 1 5 1 0 0 0 0
 | LI
 |  wh 10001
 | 

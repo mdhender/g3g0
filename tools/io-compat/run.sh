@@ -45,7 +45,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-e733acb63bacb21167a1f2589d8dcdc023364896}"
+G3_REV="${G3_REV:-f73e48118805ffe8ff5e763bfa4f20ae00c3a705}"
 WORK="${WORK:-${ROOT}/tmp/io-compat}"
 CC="${CC:-cc}"
 CASES="${ROOT}/internal/olympia/testdata/io-cases.txt"
@@ -673,6 +673,20 @@ echo "building the C driver (log: ${WORK}/build.log)"
 	die "C driver build failed; see ${WORK}/build.log"
 
 sections=$(grep -c '^section ' "${CASES}")
+# Reject invalid references before accepting statuses or updating recordings.
+# stderr is merged by the driver itself, so one capture covers both streams.
+valid_reference() {
+	local status=0
+	grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency|NYI|stub|Sanitizer|runtime error:' "$1" >/dev/null 2>&1 || status=$?
+	[ "$status" = 1 ]
+}
+# Negative controls include expected-failure captures and unreadable streams.
+for marker in 'missing dependency' 'NYI' 'C stub' 'AddressSanitizer' 'runtime error:'; do
+	printf '%s\nexit 134\n' "$marker" >"${WORK}/invalid-reference"
+	if valid_reference "${WORK}/invalid-reference"; then die "accepted invalid C reference"; fi
+done
+rm "${WORK}/invalid-reference"
+if valid_reference "${WORK}/invalid-reference"; then die "accepted missing C reference"; fi
 # The driver sends its stderr to its stdout. Bash reports each crash on its
 # own stderr, which is dropped. Each section runs in a fresh directory, for
 # the files it writes.
@@ -681,6 +695,8 @@ for run in run1 run2; do
 		status=0
 		mkdir "${WORK}/${run}/${i}"
 		(cd "${WORK}/${run}/${i}" && run_limited "${RUN_TIMEOUT}" io-driver "${WORK}/io-driver" "${CASES}" "${i}" >>../out.txt) || status=$?
+		valid_reference "${WORK}/${run}/out.txt" || die "invalid C reference in section ${i}"
+		[ "$status" != 124 ] || die "C section ${i} timed out"
 		echo "exit ${status}" >>"${WORK}/${run}/out.txt"
 	done
 done 2>/dev/null

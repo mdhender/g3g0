@@ -81,7 +81,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-e733acb63bacb21167a1f2589d8dcdc023364896}"
+G3_REV="${G3_REV:-f73e48118805ffe8ff5e763bfa4f20ae00c3a705}"
 WORK="${WORK:-${ROOT}/tmp/loadsave-compat}"
 GAMES="${GAMES:-${ROOT}/tmp/olympia-roundtrip/cases}"
 CC="${CC:-cc}"
@@ -626,7 +626,7 @@ echo "building the C driver (log: ${WORK}/build.log)"
 # as "| LINE", escaped as the driver escapes, and "\ no newline at end"
 # when the last line has none.
 cat >"${WORK}/section.py" <<'EOF'
-import os, signal, subprocess, sys
+import os, re, signal, subprocess, sys
 
 driver, cases, sections, outdir, runner = sys.argv[1], sys.argv[2], int(sys.argv[3]), sys.argv[4], sys.argv[5]
 
@@ -673,6 +673,8 @@ def run(i):
     p = subprocess.Popen(["bash", runner, driver, cases, str(i)], cwd=d, stdout=subprocess.PIPE,
                          stderr=subprocess.DEVNULL)
     data, _ = p.communicate()
+    if re.search(rb'out-of-scope|not (yet )?implemented|missing.*dependency|NYI|stub|Sanitizer|runtime error:', data, re.I):
+        sys.exit(f"section {i}: invalid C reference: {data!r}")
     if p.returncode == 124:
         sys.exit(f"section {i} timed out")
     lines = data.split(b"\n")

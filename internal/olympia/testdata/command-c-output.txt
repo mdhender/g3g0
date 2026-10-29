@@ -90459,3 +90459,20 @@ bad use key: 2
 assertion failure: olympia/use.c (950): FALSE
 
 exit 134
+stdout:
+section report summary NULL traversal guard and exact upstream fixture names
+> name 1000 abcdefghijklmnopqrst
+> report trunc_name 1000
+trunc name [abcdefghijklmno]
+> name 1000 The Lord of the Rings
+> report trunc_name 1000
+trunc name [Lord]
+> name 1000 Sword of Kings Forever
+> report trunc_name 1000
+trunc name [Sword of Kings]
+> name 1000 Buyer One
+> report trunc_name 1000
+trunc name [Buyer One]
+stderr:
+
+exit 0

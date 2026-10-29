@@ -27723,3 +27723,13 @@ ucov path EMPTY
 parse use 60000
 set use_skill 60000
 ucov finish
+
+section report summary NULL traversal guard and exact upstream fixture names
+name 1000 abcdefghijklmnopqrst
+report trunc_name 1000
+name 1000 The Lord of the Rings
+report trunc_name 1000
+name 1000 Sword of Kings Forever
+report trunc_name 1000
+name 1000 Buyer One
+report trunc_name 1000

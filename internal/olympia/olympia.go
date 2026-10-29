@@ -240,8 +240,7 @@ func (o *options) unported() bool {
 // Other panics are not recovered; normally they indicate a bug in the port.
 //
 // C's integer division by zero would die with SIGFPE (136) on x86-64 and
-// give 0 on arm64. A malformed loaded zero-price BUY can reach that division
-// in reduceQty during market reporting (G3 #358). Go's divide-by-zero panic
+// give 0 on arm64. Go's divide-by-zero panic
 // remains unrecovered; host-dependent C failure parity is not implemented.
 func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status int) {
 	// call_init_routines(): glob_init()

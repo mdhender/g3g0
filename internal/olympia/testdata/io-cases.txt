@@ -1029,3 +1029,51 @@ zero 0 0
 zero 1 0
 zero 0 1
 zero -1 0
+
+section loaded trade price boundaries all kinds and continuation after rejected entries
+alloc 1 4 0
+alloc 77 4 0
+# For each loaded kind: positive qty with negative/zero/one price, then
+# zero and negative qty with negative/zero price. Metadata survives retention.
+put f  tl\x091 77 1 -1 1 2 3 4 \\\x0a\x091 77 1 0 1 2 3 4 \\\x0a\x091 77 1 1 1 2 3 4 \\\x0a\x091 77 0 -1 1 2 3 4 \\\x0a\x091 77 0 0 1 2 3 4 \\\x0a\x091 77 -1 -1 1 2 3 4 \\\x0a\x091 77 -1 0 1 2 3 4\x0a
+put f  tl\x092 77 1 -1 1 2 3 4 \\\x0a\x092 77 1 0 1 2 3 4 \\\x0a\x092 77 1 1 1 2 3 4 \\\x0a\x092 77 0 -1 1 2 3 4 \\\x0a\x092 77 0 0 1 2 3 4 \\\x0a\x092 77 -1 -1 1 2 3 4 \\\x0a\x092 77 -1 0 1 2 3 4\x0a
+put f  tl\x093 77 1 -1 1 2 3 4 \\\x0a\x093 77 1 0 1 2 3 4 \\\x0a\x093 77 1 1 1 2 3 4 \\\x0a\x093 77 0 -1 1 2 3 4 \\\x0a\x093 77 0 0 1 2 3 4 \\\x0a\x093 77 -1 -1 1 2 3 4 \\\x0a\x093 77 -1 0 1 2 3 4\x0a
+put f  tl\x094 77 1 -1 1 2 3 4 \\\x0a\x094 77 1 0 1 2 3 4 \\\x0a\x094 77 1 1 1 2 3 4 \\\x0a\x094 77 0 -1 1 2 3 4 \\\x0a\x094 77 0 0 1 2 3 4 \\\x0a\x094 77 -1 -1 1 2 3 4 \\\x0a\x094 77 -1 0 1 2 3 4\x0a
+# Unknown kinds and a valid non-item box are not independently validated.
+# Invalid item wins over missing price; continuation then retains the next row.
+alloc 2 2 0
+put f  tl\x090 77 1 0 \\\x0a\x095 77 1 -2147483648 \\\x0a\x095 77 0 0 \\\x0a\x095 77 -1 0 \\\x0a\x095 2 2147483647 1 \\\x0a\x091 999 1 0 \\\x0a\x091 0 1 -1 \\\x0a\x092 77 2147483647 2147483647\x0a
+# Missing numeric fields default to zero and a rejected final continuation
+# ends at EOF rather than losing the previous retained entries.
+put f  tl\x091 77 1\x0a tl\x091 77\x0a tl\x091 77 2147483647 -2147483648 \\\x0a
+readfile f
+next
+trade_scan 41
+next
+trade_scan 42
+next
+trade_scan 43
+next
+trade_scan 44
+next
+trade_scan 45
+next
+trade_scan 46
+next
+trade_scan 47
+next
+trade_scan 48
+trade_print tl\x09
+readlin
+
+section loaded trade item bounds invalid precedence and nonpositive priced quantities
+alloc 149999 4 0
+put f  tl\x091 -2147483648 1 0 \\\x0a\x092 -1 1 -1 \\\x0a\x093 0 1 0 \\\x0a\x094 149998 1 0 \\\x0a\x091 150000 1 0 \\\x0a\x092 2147483647 1 0 \\\x0a\x093 149999 1 0 \\\x0a\x094 149999 1 1\x0a
+put f  tl\x091 149999 0 1 \\\x0a\x091 149999 -1 1 \\\x0a\x092 149999 0 1 \\\x0a\x092 149999 -1 1 \\\x0a\x093 149999 0 1 \\\x0a\x093 149999 -1 1 \\\x0a\x094 149999 0 1 \\\x0a\x094 149999 -2147483648 1\x0a
+readfile f
+next
+trade_scan 49
+next
+trade_scan 50
+trade_print tl\x09
+readlin

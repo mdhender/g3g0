@@ -1,7 +1,31 @@
 # Command dispatch, scheduler, waits, interruptions and ownership transfers
 
 Pinned reference: [Olympia G3 at
-e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
+f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
+
+## Follow-C load validation and summary traversal (#179)
+
+At **0.108.1-alpha**, the affected pin moves to merged G3 #360. The complete
+original io.c and report.c definitions are still used unchanged by C. Go's
+summary loop now checks its NULL sentinel before calling prevWord; its old
+comment preserving the nonportable comparison is obsolete and removed.
+One appended section checks the exact four new upstream summary names:
+unbroken 20-byte name, repeated stop words, word break and short name.
+Existing broader name boundaries and stop-word-table cases remain unchanged.
+Loaded-trade boundary coverage extends [io-compat](../io-compat), not a second
+loader harness.
+
+Real C twice and Go pass **1283 sections / 90478 lines / 1769914 output
+bytes**, SHA-256 `5a3d7d10790885c7045e4d52f46e3f7754341c1fb63a6273a66dac5190b303dc`.
+Input: **27735 lines / 530718 bytes**, SHA-256
+`3184d7795bd11f7d527f2c4e5ac7212fa4d379798015f5c41c2398ae2244127a`.
+ALL inherited **530432 input bytes** and **1769491 output bytes** remain
+exact prefixes, retaining their #172 hashes below. The only added output is
+the 17-line successful summary section. Live native traversal also still
+matches raw C/C/Go. No unrelated output, source dependency or oracle changes.
+Logs: `tmp/issue179-command-{update,default}.log`,
+`tmp/issue179-recording-audit.log`; full new-fixture/whole-world evidence is
+in [the pin gate](../README.md#follow-c-pin-gate-179).
 
 ## USE accounting and real shared dispatch (#172)
 

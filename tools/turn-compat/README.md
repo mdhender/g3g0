@@ -1,7 +1,7 @@
 # Strict whole-tree turn comparison (#56, #134)
 
 Pinned reference: [playbymail/olympia-g3 at
-e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
+f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 No turn engine code is implemented here. The reference is real C, never Go.
 
 There are no artifact exclusions. Both C/C determinism and C/Go comparison
@@ -220,9 +220,37 @@ stdout/stderr diffs. `c-determinism.txt` retains repeat metadata. The redundant
 matching C repeat is deleted immediately; matching Go/C game outputs are
 deleted after success. The input and C build remain reusable.
 
+### #179 follow-C pin gate (2026-10-29)
+
+Linux amd64, GCC 12.2.0, Go 1.26.4, merged immutable pin
+`f73e48118805ffe8ff5e763bfa4f20ae00c3a705`:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue179-roundtrip" \
+  WORK="$PWD/tmp/issue179-turn" tools/turn-compat/run.sh --full --command-coverage --use-coverage
+```
+
+The freshly built unchanged C engine repeats exactly; Go matches status 0,
+raw stdout/stderr and **all 233 cwd entries**, including report/Times/auxiliary
+artifacts, empty directories, entry types/modes and bytes. All **13 lifecycle
+controls**, **10 command controls** and **15 USE controls** pass under the
+same strict contract, including the three expected status-1 Times failures
+and flag-free aftermath comparisons. No exclusions or normalization.
+
+A real-C-only recording run updates only the pin and C binary SHA-256 in
+`testdata/c-determinism.txt`; its entire manifest body and all small snapshot
+bytes remain unchanged. The provenance assertion advances with that recording.
+The finished full rerun above passes after the initial recording run exposed
+the old literal pin in that assertion. Matching captures are cleaned; retain
+`tmp/issue179-turn/{c-determinism,lifecycle,command-coverage,use-coverage}.txt`
+and `tmp/issue179-turn-final.log`. New fixture raw C/C/Go checks and the rest
+of the inherited acceptance are in [the pin gate](../README.md#follow-c-pin-gate-179).
+Remaining USE gameplay, phase coverage and state export are still gated.
+
 ### #166 final strict integration evidence (2026-10-28)
 
-Linux amd64, GCC 12.2.0, Go 1.26.4, unchanged exact stage pin above:
+Linux amd64, GCC 12.2.0, Go 1.26.4, then-stage pin
+`e733acb63bacb21167a1f2589d8dcdc023364896`:
 
 ```sh
 G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/stage2-roundtrip" \

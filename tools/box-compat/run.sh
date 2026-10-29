@@ -64,7 +64,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-e733acb63bacb21167a1f2589d8dcdc023364896}"
+G3_REV="${G3_REV:-f73e48118805ffe8ff5e763bfa4f20ae00c3a705}"
 WORK="${WORK:-${ROOT}/tmp/box-compat}"
 GAMES="${GAMES:-${ROOT}/tmp/olympia-roundtrip/cases}"
 CC="${CC:-cc}"
@@ -673,6 +673,9 @@ for run in run1 run2; do
 		status=0
 		mkdir "${WORK}/${run}/${i}"
 		(cd "${WORK}/${run}/${i}" && run_limited "${RUN_TIMEOUT}" box-driver "${WORK}/box-driver" "${CASES}" "${i}" >>../out.txt) || status=$?
+		marker_status=0
+		grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency|NYI|stub|Sanitizer|runtime error:' "${WORK}/${run}/out.txt" >/dev/null 2>&1 || marker_status=$?
+		[ "$marker_status" = 1 ] || die "invalid C reference in section ${i}"
 		[ "${status}" -ne "${TIMEOUT_STATUS}" ] || die "section ${i} timed out after ${RUN_TIMEOUT}s"
 		echo "exit ${status}" >>"${WORK}/${run}/out.txt"
 	done

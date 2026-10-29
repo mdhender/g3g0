@@ -14,7 +14,10 @@ The games are:
 
 - `world`: G3's shared base world, `tests/olympia/fixtures/world.tgz`.
 - Every regress fixture with a saved game, named after its directory under `tests/olympia/regress`: `scenario.patch` over `world.tgz`, unpacked with G3's own `scenario_unpack` (`tests/olympia/fixtures/scenario.sh`), or the fixture's `scenario.tgz` (`trade-routes`).
-  `mint-top-id`, `rng-selftest` and `save-seed-unwritable` have no saved game of their own.
+  `mint-top-id`, `rng-selftest`, `save-seed-unwritable`, `load-trade-no-price`
+  and `summary-trunc-name` have no saved game of their own. The last two are
+  G3 #360 check-only fixtures: they mutate fresh `trade-market` copies for
+  four real turns each. They do not add ordinary or `+turn` corpus names.
 - Each of those after one successful C turn, named `<game>+turn`.
   The turn is `olympia-g3 -r -l ./lib -S test-use-const-report-date`, as the fixtures run it.
 
@@ -24,8 +27,8 @@ cases remain, plus `savage-cap` and `token-vanish` before/after a turn and
 the ordinary `release-swear-np` load/save case.
 
 `release-swear-np+turn` is **unavailable**, not a saved-game case. The unchanged
-pinned [check.sh](https://github.com/playbymail/olympia-g3/blob/e733acb63bacb21167a1f2589d8dcdc023364896/tests/olympia/regress/release-swear-np/check.sh)
-and [README.md](https://github.com/playbymail/olympia-g3/blob/e733acb63bacb21167a1f2589d8dcdc023364896/tests/olympia/regress/release-swear-np/README.md)
+pinned [check.sh](https://github.com/playbymail/olympia-g3/blob/f73e48118805ffe8ff5e763bfa4f20ae00c3a705/tests/olympia/regress/release-swear-np/check.sh)
+and [README.md](https://github.com/playbymail/olympia-g3/blob/f73e48118805ffe8ff5e763bfa4f20ae00c3a705/tests/olympia/regress/release-swear-np/README.md)
 require its real C turn to abort with status 134 and the `swear.c` FALSE
 assertion, without sanitizer errors (G3 #357). No successful save exists.
 The harness explicitly checks that contract twice, requiring the exact pinned
@@ -48,7 +51,7 @@ A case passes when the exit status, stdout and stderr match byte for byte, and s
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `e733acb63bacb21167a1f2589d8dcdc023364896`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
 The revision is pinned in `run.sh` (`PINNED_REV`); `G3_REV` tests against another.
 Change the pin only on purpose, together with [`tools/olympia-spec`](../olympia-spec).
 
@@ -129,6 +132,36 @@ case passes and every selected control meets its contract.
 
 ## Results
 
+For #179 (**0.108.1-alpha**, Linux amd64, GCC 12.2.0, Go 1.26.4), rebuild
+from pristine `f73e48118805ffe8ff5e763bfa4f20ae00c3a705` under
+`tmp/issue179-roundtrip`, leaving `tmp/stage3-roundtrip` intact. All **201**
+inherited names and the bytes/digests of all **41938 input files** are unchanged from
+the old-pin corpus. All **201 C/C determinism checks** were freshly made.
+The finished-script warm repeat passes **201 / 0 fail / 0 error / 1 EXPECTED_ABORT**
+in **145s**, freshly repeating the real C abort twice at `swear.c (180)` /
+status **134** and every Go load/save. No successful abort snapshot exists.
+The final-source repeat after the recording/full-tool checks has the same
+counts in **147s**. Its final audit also confirms all **5228 input directories**
+and every input file retain the old corpus's exact bytes/types/modes.
+The exact new-pin abort source, fixture and README are byte-identical to the
+accepted old-pin versions; the pin exception follows that review, not a
+general allowance. Marker rejection now precedes all C result/status handling,
+including cached references and expected aborts, with negative controls for
+either stream and absent captures. Engines require real directory inputs.
+
+All **1212** archived regular source/fixture files match the immutable export;
+C binary SHA-256 `151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+Logs: `tmp/issue179-roundtrip-{final,final2}.log`,
+`tmp/issue179-{source-audit,corpus-audit,final-audit}.log`,
+`tmp/issue179-inputs.sha256`, `tmp/issue179-roundtrip/results.tsv`.
+The initial pristine run completed every case and determinism marker but its
+shell footer failed after this script was edited while it was running. The
+145s and 147s complete reruns use the finished script and verified cache;
+that initial shell failure is not represented as a green run.
+The two unchanged new upstream check scripts separately pass real C twice
+and Go, including exact raw status/streams/all-entry trees on all eight turns:
+`tmp/issue179-fixtures.log`. See the [pin gate](../README.md#follow-c-pin-gate-179).
+
 Final #166 run, 2026-10-28, Linux amd64, GCC 12.2.0, Go 1.26.4,
 unchanged pin `e733acb63bacb21167a1f2589d8dcdc023364896`:
 **201 PASS / 0 FAIL / 0 ERROR / 1 separate EXPECTED_ABORT**, in **619s**.
@@ -151,7 +184,8 @@ agree with the fresh binary SHA-256
 Inputs/results remain in `tmp/stage2-roundtrip`; full tools enumerate its
 201 actual `input/lib` directories plus their own base world = **202 worlds**.
 
-Historical #133 run at this pin, 2026-10-28, Linux amd64, GCC 12.2.0,
+Historical #133 run at `e733acb63bacb21167a1f2589d8dcdc023364896`,
+2026-10-28, Linux amd64, GCC 12.2.0,
 Go 1.26.4: `--determinism-all` passes **201**, fail 0, error 0, with **1
 separate expected abort**, in 153 seconds. Exact-pin format-1 inputs/C
 results and their 201 determinism checks were reused; every Go load/save

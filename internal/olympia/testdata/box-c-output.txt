@@ -1285,7 +1285,7 @@ readfile 1
 > load 4242
 Unforseen box 4242 found in load phase.
 Remove some/lib/master and retry.
-assertion failure: olympia/io.c (1989): FALSE
+assertion failure: olympia/io.c (2002): FALSE
 exit 134
 section unforseen box with default libdir
 > putl f 4243 char 0
@@ -1295,7 +1295,7 @@ readfile 1
 > load 4243
 Unforseen box 4243 found in load phase.
 Remove lib/master and retry.
-assertion failure: olympia/io.c (1989): FALSE
+assertion failure: olympia/io.c (2002): FALSE
 exit 134
 section continuation at end of file
 > alloc 3401 2 0

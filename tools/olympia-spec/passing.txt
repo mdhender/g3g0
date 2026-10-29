@@ -1,6 +1,6 @@
 # Spec gates that pass against the Go engine (cmd/olympia), one per line.
 # Written by tools/olympia-spec/run.sh; do not edit by hand.
-# G3 revision: e733acb63bacb21167a1f2589d8dcdc023364896
+# G3 revision: f73e48118805ffe8ff5e763bfa4f20ae00c3a705
 # A name is a tests/olympia/regress fixture; "golden" is golden_check.sh
 # after run/olympia-g3.sh.
 assert-flush
@@ -16,11 +16,13 @@ load-number-width
 load-orphan-unit
 load-short-entries
 load-stray-orders
+load-trade-no-price
 mint-top-id
 rng-selftest
 save-fly-cap
 save-libdir-space
 save-seed-unwritable
+summary-trunc-name
 token-vanish
 trade-route-seed-parse
 wait-ferry-range

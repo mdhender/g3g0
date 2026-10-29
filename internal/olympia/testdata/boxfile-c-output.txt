@@ -702,7 +702,7 @@ section read_boxes of an unforseen box
 > read loc
 Unforseen box 10102 found in load phase.
 Remove lib/master and retry.
-assertion failure: olympia/io.c (1989): FALSE
+assertion failure: olympia/io.c (2002): FALSE
 exit 134
 d 755 lib
 f 644 31 lib/loc
@@ -986,7 +986,7 @@ section write_player of a unit that is not a character
 > unit 1001 1002
 > unit 1001 10101
 > writeplayer 1001
-assertion failure: olympia/io.c (2182): kind(who) == T_char || kind(who) == T_deleted
+assertion failure: olympia/io.c (2195): kind(who) == T_char || kind(who) == T_deleted
 exit 134
 d 755 lib
 d 755 lib/fact
@@ -1004,7 +1004,7 @@ section write_player of a unit that is a player
 > alloc 1002 1 49
 > unit 1001 1002
 > writeplayer 1001
-assertion failure: olympia/io.c (2182): kind(who) == T_char || kind(who) == T_deleted
+assertion failure: olympia/io.c (2195): kind(who) == T_char || kind(who) == T_deleted
 exit 134
 d 755 lib
 d 755 lib/fact

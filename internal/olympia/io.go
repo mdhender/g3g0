@@ -595,7 +595,8 @@ func (w *world) tradeListPrint(fp io.Writer, header string, l tradesList) {
 
 // tradeListScan is trade_list_scan(): a trade from s, and from each
 // continuation line while the last one ends in a backslash, appended to l
-// if its item is a valid box. Each trade's who is boxNum.
+// if its item is valid and a positive quantity has a price. Each trade's
+// who is boxNum.
 func (w *world) tradeListScan(s string, l *tradesList, boxNum int) {
 	for {
 		p := &trade{}
@@ -611,10 +612,13 @@ func (w *world) tradeListScan(s string, l *tradesList, boxNum int) {
 
 		p.who = int32(boxNum)
 
-		if w.validBox(int(p.item)) {
-			l.Append(p)
-		} else {
+		if !w.validBox(int(p.item)) {
 			fmt.Fprintf(w.stderr, "trade_list_scan(%d): bad item %d\n", boxNum, p.item)
+		} else if p.qty > 0 && p.cost < 1 {
+			// BUY/SELL refuse these orders, and traders divide by the price.
+			fmt.Fprintf(w.stderr, "trade_list_scan(%d): item %d qty %d has no price\n", boxNum, p.item, p.qty)
+		} else {
+			l.Append(p)
 		}
 
 		if lastIsBackslash(s) { // another entry follows
@@ -1897,7 +1901,7 @@ func (w *world) loadBox(n int) {
 	if !w.validBox(n) {
 		fmt.Fprintf(w.stderr, "Unforseen box %d found in load phase.\n", n)
 		fmt.Fprintf(w.stderr, "Remove %s/master and retry.\n", w.libdir)
-		assert(false, "olympia/io.c", 1989, "FALSE")
+		assert(false, "olympia/io.c", 2002, "FALSE")
 	}
 
 	w.extBoxnum = int32(n)
@@ -1973,7 +1977,7 @@ func (w *world) loadBox(n int) {
 	}
 
 	if w.line != nil {
-		assert(*w.line == "", "olympia/io.c", 2067, "*line == '\\0'")
+		assert(*w.line == "", "olympia/io.c", 2080, "*line == '\\0'")
 		w.advance() // advance over blank separating line
 	}
 }
@@ -1986,7 +1990,7 @@ func (w *world) saveBox(fp io.Writer, n int) {
 		return
 	}
 
-	assert(w.validBox(n), "olympia/io.c", 2083, "valid_box(n)")
+	assert(w.validBox(n), "olympia/io.c", 2096, "valid_box(n)")
 
 	p := w.bx[n]
 
@@ -2107,7 +2111,7 @@ func (w *world) writePlayer(pl int) {
 
 	for who := range w.loopUnits(pl) {
 		assert(w.kind(who) == tChar || w.kind(who) == tDeleted,
-			"olympia/io.c", 2182, "kind(who) == T_char || kind(who) == T_deleted")
+			"olympia/io.c", 2195, "kind(who) == T_char || kind(who) == T_deleted")
 
 		w.saveBox(fp, who)
 	}
@@ -2432,7 +2436,7 @@ func removeDir(dir string) {
 	}
 }
 
-// saveLogdir is io.c:3031–3069. win_flag changes only the initial removal
+// saveLogdir is io.c:3044–3082. win_flag changes only the initial removal
 // and parent mkdir: the two renames and final mkdir deliberately use '/'.
 // mkdir/remove failures are ignored; each failed rename reports and continues.
 func (w *world) saveLogdir(win bool) {
@@ -2737,10 +2741,10 @@ func (w *world) loadDb() {
 	// Assertions to verify the sanity of the linehash macro
 	// Switch the byte ordering if this fails
 
-	assert(linehash("ab f") == 'a'<<8|'b', "olympia/io.c", 2878, "linehash(\"ab f\") == 'ab'")
-	assert(linehash("") == 0, "olympia/io.c", 2879, "linehash(\"\") == 0")
-	assert(linehash("na") == 'n'<<8|'a', "olympia/io.c", 2880, "linehash(\"na\") == 'na'")
-	assert(linehash("ab ") == 'a'<<8|'b', "olympia/io.c", 2881, "linehash(\"ab \") == 'ab'")
+	assert(linehash("ab f") == 'a'<<8|'b', "olympia/io.c", 2891, "linehash(\"ab f\") == 'ab'")
+	assert(linehash("") == 0, "olympia/io.c", 2892, "linehash(\"\") == 0")
+	assert(linehash("na") == 'n'<<8|'a', "olympia/io.c", 2893, "linehash(\"na\") == 'na'")
+	assert(linehash("ab ") == 'a'<<8|'b', "olympia/io.c", 2894, "linehash(\"ab \") == 'ab'")
 
 	w.loadSeed(sout("%s/randseed", w.libdir))
 	w.initTradeRoutes() // issue #46: per-game trade-route buyer secret

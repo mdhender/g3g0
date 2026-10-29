@@ -14,7 +14,7 @@ The spec is the three gates that G3 documents for another engine in `doc/claude/
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `e733acb63bacb21167a1f2589d8dcdc023364896`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
 The revision is pinned in `run.sh` (`PINNED_REV`).
 `G3_REV` runs another revision, but then `passing.txt` is neither compared nor written.
 Change the pin only on purpose, and rerun this and [`tools/olympia-roundtrip`](../olympia-roundtrip) when you do.
@@ -60,7 +60,28 @@ The gates also run inside the export, so they cannot write to the clone.
 
 ## Results
 
-Final #166 run: 2026-10-28, Linux amd64, Go 1.26.4, pinned revision above.
+Follow-C #179 run: 2026-10-29, Linux amd64, Go 1.26.4, immutable
+`f73e48118805ffe8ff5e763bfa4f20ae00c3a705`:
+
+- `G3_REPO="$PWD/tmp/upstream.git" tools/olympia-spec/run.sh` exits 0 with
+  **23 pass / 102 fail / 0 error** (80 seconds, **125 fixtures**). All **21**
+  inherited passes remain. Only the genuinely passing new unchanged checks
+  `load-trade-no-price` and `summary-trunc-name` are added to `passing.txt`,
+  along with the new provenance pin. No upstream expected bytes are rewritten.
+- Those two check-only fixtures add no saved-game corpus names. Both also
+  pass unchanged on real C twice; all eight real-turn cases match exact raw
+  C/C/Go status, streams and complete **239-entry** cwd trees. See
+  `tmp/issue179-fixtures.log` and [the pin gate](../README.md#follow-c-pin-gate-179).
+- Golden remains **NO**: initialization exits **2** at explicitly unsupported
+  `load_db (-i)`. The 102 existing failures, remaining USE handlers, phase
+  coverage, state export and later commands/modes remain unimplemented; this
+  is a no-lost-passes check, not whole-spec parity or stage-3 completion.
+- Logs: `tmp/issue179-spec.log` and
+  `tmp/olympia-spec/{run-all,olympia-g3,golden}.log`. Full C spec and macOS
+  acceptance were not rerun. Every Go engine uses the native bounded launcher.
+
+Final #166 run: 2026-10-28, Linux amd64, Go 1.26.4, then-pin
+`e733acb63bacb21167a1f2589d8dcdc023364896`.
 `G3_REPO="$PWD/tmp/upstream.git" tools/olympia-spec/run.sh`:
 
 - Regress: **pass 21, fail 102, error 0** (70 seconds, 123 fixtures).

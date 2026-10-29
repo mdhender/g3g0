@@ -6,12 +6,15 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `6a25f2d252ce45bd5adbe3baaccb3be3eed56279`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
-This advances the former retained pin (unchanged code-tool inputs) to the
-stage pin before exercising the new allocator functions. `tools/affected.sh`
-for that move does not list code-compat; its previous 20 sections / 652 lines
-remain byte-identical.
+For #179, io.c is linked whole and changed, so this formerly retained pin
+advances with the affected tools. The allocator recording remains unchanged.
+
+Historically, the allocator acceptance advanced its former retained pin to
+`6a25f2d252ce45bd5adbe3baaccb3be3eed56279` before exercising the new functions.
+That move left code-tool inputs unchanged (`tools/affected.sh` did not list
+code-compat); the previous **20 sections / 652 lines** stayed byte-identical.
 
 The port follows, from `olympia/code.c`: `letter_val`, `int_to_code`, `code_to_int`, `print_box_usage`, `scode`, `name`, `set_name`, `set_banner`, `box_code`, `box_code_less`, the chains (`add_next_chain`, `remove_next_chain`, `add_sub_chain`, `remove_sub_chain` and their cache), `delete_box`, `change_box_kind`, `change_box_subkind` and `alloc_box`.
 From `olympia/oly.h`: `kind_first`, `kind_next`, `sub_first`, `sub_next` and `loc`.
@@ -22,11 +25,11 @@ shared sequential/keyed APIs; each world owns one persistent instance,
 constructed before load with live clock/master callbacks. Loading the seed
 does not reset an already-seeded turn. `display_name` and the name helpers built on it that `check_db` uses (`box_name`, `just_name`, `plural_item_name`) are checked by [`helper-compat`](../helper-compat). `display_kind`, `box_name_kind` and the quantity helpers also run in [`command-compat`](../command-compat#bounded-namescodes-audit-137); #137 audits their remaining fallback/composition paths without adding another naming implementation.
 
-For #137, all upstream inputs read by this tool (including headers and linked
-lib files) are unchanged between this retained pin and stage-2's
+Historically for #137, all inputs (including headers and linked lib files)
+were unchanged between the retained `6a25f2d252ce45bd5adbe3baaccb3be3eed56279` and stage-2's
 `e733acb63bacb21167a1f2589d8dcdc023364896`; code.c has identical blob
-`1a9996f1c7ea3da603a35a3c534a00549c4375a7`. The independent code-tool pin
-and its 43-section / 969-line recording deliberately remain unchanged.
+`1a9996f1c7ea3da603a35a3c534a00549c4375a7`. At that acceptance the independent
+code-tool pin and 43-section / 969-line recording deliberately stayed unchanged.
 
 ## Prerequisites
 

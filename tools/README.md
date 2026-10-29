@@ -6,6 +6,136 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Follow-C pin gate (#179)
+
+**0.108.1-alpha** follows merged G3 #360 at immutable
+`f73e48118805ffe8ff5e763bfa4f20ae00c3a705`, not its former proposal head.
+The complete six-file diff from `e733acb63bacb21167a1f2589d8dcdc023364896`
+contains only io.c's loaded-trade rejection, report.c's NULL traversal guard,
+and README/check.sh pairs for two new check-only fixtures. No phase/export
+feature or independent gameplay fix is included. G3 #358/#359 are now followed;
+the older descriptions of their unfixed behavior below are historical.
+
+`tools/affected.sh` and the actual link/extraction dependencies require only
+these twelve pin moves: code, io, box, boxfile, check, loadsave, olympia-cli,
+olympia-roundtrip, olympia-spec, turn, command and move. Code's formerly
+retained pin moves because io.c is linked whole. All unaffected pins and
+recordings remain intact; the turn provenance test advances with its real-C
+manifest. Every invocation explicitly uses `G3_REPO="$PWD/tmp/upstream.git"`.
+
+The port rejects a trade only after validating its item, and only for
+`qty > 0 && cost < 1`, independent of kind; exact stderr, continuation and
+nonpositive quantities match C. Summary truncation guards the NULL sentinel
+before prevWord without changing output. Source-located io.c assertions move
+by the upstream insertion's **13 lines**, including non-exercised assertion
+sites, to retain exact diagnostics at the new pin.
+
+Recording review (real unchanged C twice before every update, then Go):
+
+- IO appends two all-kind/price/quantity/item-bound/continuation sections:
+  **51 sections / 1707 lines / 91694 bytes**. The only inherited behavioral
+  delta is the short positive-quantity, absent-price row being diagnosed and
+  dropped, including its subsequent list observer.
+- Command appends one four-name section: **1283 sections / 90478 lines /
+  1769914 bytes**. The inherited **530432 input bytes** (SHA-256
+  `9466b4111cb9732208571b30bbe7bbab5adafedf4ff9e87b12759f6cbe90d207`)
+  and **1769491 output bytes** (SHA-256
+  `927a74512cd4171cc161874a886601e69dcd2348d38cc269249981c681aca305`)
+  remain exact prefixes. New full hashes are in the tool READMEs.
+- Box's two assertion lines and boxfile's three assertion lines change only
+  their source numbers (**1989 → 2002**, **2182 → 2195**), not status **134**.
+- Loadsave adds two no-price diagnostics in the existing relic/trade case,
+  drops exactly those two loaded zero-price SELLs and retains its priced BUY;
+  saved `lib/loc` consequently shrinks **235 → 196 bytes**. All other bytes
+  remain unchanged. Code/check/move and the CLI results remain byte-identical.
+- Turn's small snapshots, raw streams and entire manifest body are unchanged;
+  only the pin and actual C binary hash change in its provenance header.
+
+Marker checks precede status acceptance/record updates on the changed IO,
+box, boxfile and loadsave recordings; existing command/turn checks remain.
+Roundtrip rejects markers on every C invocation and cached reference before
+handling expected statuses, with either-stream/missing-capture controls. No
+sanitizer, missing dependency, NYI or successful substitute supplies an oracle.
+
+Pristine `tmp/issue179-roundtrip` preserves the old `tmp/stage3-roundtrip`.
+All **1212** archived regular source/fixture files and **100** original files
+used by the command driver match the immutable archive. The complete unchanged
+IO prefix and both summary functions are audited independently. C binary
+SHA-256: `151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+All **201** inherited corpus names and the bytes/types/modes/digests of
+**41938 input files** are unchanged; both added upstream fixtures have no
+scenario of their own, so neither adds corpus names. All 201 fresh C/C
+determinism markers exist. The completed roundtrip repeat is **201 pass /
+0 fail / 0 error / 1 separate EXPECTED_ABORT** (145s); the exact unchanged
+abort contract repeats real C twice at **swear.c:180 / status 134**. There is
+no manufactured successful `release-swear-np+turn` snapshot. See the roundtrip
+README for the initial footer failure and successful finished-script repeat.
+
+Both unchanged new upstream scripts, `load-trade-no-price` and
+`summary-trunc-name`, pass **real C twice and Go**, four real turns per script
+per engine. A temporary bounded capture launcher lets the original scripts
+run their own pristine unpack/mutations/checks while retaining each engine's
+actual raw status/streams and complete post-engine cwd before their cleanup.
+All **eight C/C and eight C/Go comparisons** match **239 cwd entries** per
+case (including the fixture's own empty out/err capture plumbing), using the
+existing strict turn comparator plus tree-modes.py: no byte/path exclusions
+or normalization. Matching captures are removed; eight complete C manifests
+and their stream/status hashes remain under `tmp/issue179-fixture-captures`.
+
+Inherited acceptance completed at this pin, sequentially on Linux amd64,
+GCC 12.2.0 and Go 1.26.4:
+
+- Bounded vet and fresh bounded `G3G0_FULL=1` tests pass: **11 packages**,
+  **10 explicit skips**; the four saved-world suites run through their full
+  tools below rather than pretending their ordinary test skips exercised them.
+- All **15 engine/library defaults**, genesis and mapgen pass. CLI retains
+  all **92 vectors**; unrelated recordings/pins are not refreshed.
+- Full box/boxfile/check/loadsave use the **201 fresh inputs plus one base
+  world = 202 worlds** each. Box plain/pretty, all three boxfile variants and
+  check cover **8,146,800 boxes**; loadsave covers **8,146,791 saved boxes**.
+  Check/loadsave emit **zero check_db diagnostics**. Raw outputs/statuses,
+  saved types/modes/bytes match. All input hashes remain intact afterwards.
+- Strict full turn repeats C and matches Go status 0, raw streams and
+  **all 233 cwd entries**. All **13 lifecycle**, **10 command** and **15 USE**
+  controls pass, including expected status-1 Times opens and dump aftermath.
+- Spec preserves all **21** accepted names and adds only the two new real
+  passing checks: **23 pass / 102 fail / 0 error**, **125 fixtures** (80s).
+  Golden is still **NO**, initialization **exit 2** at unsupported `-i`.
+- A final-source roundtrip repeat is **201 / 0 / 0 / 1 EXPECTED_ABORT**
+  (147s). Final audit reconfirms all **41938 files / 5228 directories** against
+  the old-pin inputs (bytes/types/modes), every pre-full-tool input hash,
+  all **1212** original archive files and the unchanged C binary hash above.
+- The known Linux exceptions were rerun, not rebaselined: scanf exits **1**
+  (**78** deterministic probes, **11** macOS numeric-width differences);
+  island exits **1** (**114/119** cases, five differences/seven failed checks,
+  all **17** upstream gates pass C and Go). Neither tool is called passing.
+
+No new prerequisite/blocker was found. Remaining USE gameplay, phase/export
+and later-mode gates stay in place; full C spec and macOS were not rerun.
+Independent parent complete-source/diff/recording review and sequential pin-gate
+repeat pass: bounded vet/fresh full-enabled tests; all 15 engine/library
+defaults plus genesis/mapgen; **201 roundtrips / 1 separate EXPECTED_ABORT**
+(143s); all four **202-world** full tools; strict **233-entry** turn, all
+**13 lifecycle / 10 command / 15 USE** controls; and unchanged **23/102/0**
+spec progress (79s), with golden still NO. Parent independently verifies all
+**1212** original archive files, the C binary hash, inherited command/IO input
+prefixes, unchanged turn manifest body and all **41938** input hashes after
+the full tools. No next-stage feature is accepted by this pin gate.
+Parent logs: `tmp/parent179-{vet,tests,roundtrip,turn-full,spec,input-integrity}.log`,
+`tmp/parent179-*-default.log` and `tmp/parent179-*-full.log`;
+strict summaries in `tmp/parent179-turn/`. Future work uses the new immutable
+pin and preserves all **23** accepted spec passes.
+
+Evidence: `tmp/issue179-{affected,source-audit,recording-audit,corpus-audit}.log`,
+`tmp/issue179-{io,loadsave}-recording.diff`, `tmp/issue179-fixtures.log`,
+`tmp/issue179-roundtrip-{final,final2}.log`, `tmp/issue179-*-default.log`,
+`tmp/issue179-{box,boxfile,check,loadsave}-full.log`,
+`tmp/issue179-{turn-final,spec,vet-final,tests-post-record,final-audit,negative}.log`,
+`tmp/issue179-inputs.sha256` and `tmp/issue179-roundtrip/results.tsv`.
+Engine inputs are real disposable
+directory copies, never cached inputs or symlink-copy sources; all engines
+use `run_limited`, tests the `run-limited.sh` exec adapter, tools sequentially.
+
 ## Command coverage (#170)
 
 Stage 3 adds only `--coverage`: world-owned lazy int32 counters, the complete

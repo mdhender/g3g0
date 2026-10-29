@@ -7,7 +7,7 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `e733acb63bacb21167a1f2589d8dcdc023364896`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 The script exports that revision with `git archive`, so the clone's checkout does not matter.
 
@@ -78,7 +78,7 @@ In the engine, `load_db()` runs more between the box-file passes and `check_db()
 ## Results
 
 Final #166 run: 2026-10-28, Linux amd64, GCC 12.2.0, Go 1.26.4,
-at the unchanged pinned revision above.
+at then-pin `e733acb63bacb21167a1f2589d8dcdc023364896`.
 
 - Check 1: **31 sections / 2347 lines**, deterministic C, unchanged
   recording and matching Go.

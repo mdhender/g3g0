@@ -6,13 +6,40 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `e733acb63bacb21167a1f2589d8dcdc023364896`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
+
+## Loaded trade validation (#179)
+
+At **0.108.1-alpha**, follow merged G3 #360: reject valid-box trades only
+when `qty > 0 && cost < 1`, regardless of trade kind, after invalid-item
+validation. Emit the exact C diagnostic and continue the list. Nonpositive
+quantities and valid non-item boxes retain their original treatment.
+
+Two appended sections extend this oracle, not a replacement loader: all four
+loaded kinds across negative/zero/one quantity and price, unknown kinds,
+metadata/owner retention, missing fields, rejected-entry continuation/EOF,
+signed extremes and item bounds (-1/0, 149999/150000, unallocated and int32
+extremes). Printing distinguishes raw retained rows from BUY/SELL writer
+filtering. Real C repeats deterministically before recording and Go comparison.
+Reference-marker rejection precedes status handling and `--update`; negative
+controls cover missing files and dependency/NYI/stub/sanitizer markers even
+beside `exit 134`.
+
+Recording: **51 sections / 1707 lines / 91694 bytes**, SHA-256
+`f3cf3284ccf054c9105ff499053c6808f76b2e87ba6c0a6fb32d7fbd51fe24c9`.
+Input: **1079 lines / 22777 bytes**, SHA-256
+`6e80f9e038681a728ec8d2d480c791ce6cf66f3f8d3655071352b7d7195222b0`.
+The original input is an exact prefix. The only inherited output change is
+the missing-price diagnostic/removal of the short positive-quantity row in
+`trade_list_scan`, including its subsequent list observer; all other inherited
+bytes remain exact. Logs: `tmp/issue179-io-{update,default}.log` and
+`tmp/issue179-{io-recording.diff,recording-audit.log}`.
 
 The port follows:
 
 - `olympia/z.c`: `getlin`, `getlin_ew`, `eat_leading_trailing_whitespace`, `readfile`, `closefile`, `readlin` and `readlin_ew`, and the `iswhite` and `isdigit` macros of `olympia/z.h`.
-- `olympia/io.c`, lines 1 to 817 (up to `print_loc_info`): the `linehash`, `t_string` and `advance` macros, the `line` and `ext_boxnum` statics, `zero_check`, `if_name`, `box_scan`/`box_print`, `boxlist0_scan`/`boxlist0_print`, `boxlist_scan`/`boxlist_print`, `admit_print_sup`/`admit_print`/`admit_scan`, `ilist_print`/`ilist_scan`, `known_print`/`known_scan`, `scan_ints`, the `skill_list`, `item_list`, `trade_list` and `req_list` pairs, and `olytime_scan`/`olytime_print`.
+- `olympia/io.c`, the complete prefix before `print_loc_info`: the `linehash`, `t_string` and `advance` macros, the `line` and `ext_boxnum` statics, `zero_check`, `if_name`, `box_scan`/`box_print`, `boxlist0_scan`/`boxlist0_print`, `boxlist_scan`/`boxlist_print`, `admit_print_sup`/`admit_print`/`admit_scan`, `ilist_print`/`ilist_scan`, `known_print`/`known_scan`, `scan_ints`, the `skill_list`, `item_list`, `trade_list` and `req_list` pairs, and `olytime_scan`/`olytime_print`.
 - `olympia/u.c`: `set_bit` and `test_bit`. `known_print` sorts with `int_comp` (`olympia/seed.c`) through `loop_known` (`olympia/loop.h`).
 
 ## Prerequisites

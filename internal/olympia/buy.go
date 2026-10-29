@@ -255,10 +255,8 @@ func (w *world) reduceQty(t *trade, cost int32) int32 {
 	}
 	if t.kind == tradeBuy {
 		has := max(int32(w.hasItem(int(t.who), itemGold))-t.haveLeft, 0)
-		// G3 #358: a loaded positive-quantity, zero-price BUY still divides
-		// by zero, even with no available gold. Keep the original operation,
-		// not a guard or suppressed row. C's failure is host-dependent; Go
-		// panics. See https://github.com/playbymail/olympia-g3/issues/358.
+		// G3 #360 rejects loaded positive-quantity trades with no price in
+		// tradeListScan. Keep buy.c's original division unchanged here.
 		return min(t.qty, has/cost)
 	}
 	if t.kind == tradeSell {
