@@ -394,6 +394,14 @@ func init() {
 			cmdTbl[i].start = (*world).vFlag
 		case "times":
 			cmdTbl[i].start = (*world).vTimes
+		case "post":
+			cmdTbl[i].start = (*world).vPost
+		case "message":
+			cmdTbl[i].start = (*world).vMessage
+		case "rumor":
+			cmdTbl[i].start = (*world).vRumor
+		case "press":
+			cmdTbl[i].start = (*world).vPress
 		case "public":
 			cmdTbl[i].start = (*world).vPublic
 		case "split":

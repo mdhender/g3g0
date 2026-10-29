@@ -130911,3 +130911,2976 @@ CH
 stderr:
 
 exit 0
+stdout:
+section N09 POST counted preserves exact text whitespace hash quotes and order-looking text
+> entity 9000 3 3
+> link 9000 1001
+> link 1001 1000
+> parse post 3
+parse 1
+> text queue 202023202271756f746522202009
+> text queue EMPTY
+> queue public
+> queue wait day 4
+> callback_start
+callback start 1
+> text state
+text post 77542 where 9000 creator 1000 misc 1 null 0 lines 3
+text [  # "quote"  	]
+text []
+text [public]
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text indent 0
+> report posts 200 9000 1
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 1 0 0 0 touched 0 0
+orders 1000: [wait day 4]
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Posted in Plain~[9000]:
+200:0::3::Posted by <no subkind>~[1000]:
+200:0::6::"  # "quote"  	
+200:0::7::
+200:0::7::public"
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 68129
+> save_new
+68129 item scroll
+IT
+ un 1000
+
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 200
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 68129 1
+1000 char 0
+il	68129 1
+LI
+ wh 1001
+CH
+ lo 200
+CO
+ li post 3
+ ar 3 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+1001 char 0
+LI
+ wh 9000
+ hl 1000 
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001 77542
+9000 loc plain
+LI
+ hl 1001 77542 
+
+export entity 68129 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+68129 item scroll
+IT
+ un 1000
+
+export entity 77542 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+stderr:
+
+exit 0
+stdout:
+section N09 POST zero trims trailing only and case insensitive END versus counted END
+> entity 9000 3 3
+> link 9000 1000
+> parse post 0
+parse 1
+> text queue 2020616263202009
+> text queue EMPTY
+> text queue 2009456e442009
+> queue wait day 4
+> callback_start
+callback start 1
+> text state
+text post 77542 where 9000 creator 1000 misc 1 null 0 lines 2
+text [  abc]
+text []
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text indent 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait day 4]
+> flush 200 1000
+> parse post 1
+parse 1
+> queue END
+> callback_start
+callback start 1
+> text state
+text post 68129 where 9000 creator 1000 misc 1 null 0 lines 1
+text [END]
+68129 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text post 77542 where 9000 creator 1000 misc 1 null 0 lines 2
+text [  abc]
+text []
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text indent 0
+> report posts 200 9000 0
+> readlog 200
+log 200:
+200:0::0::
+200:0::0::Posted in Plain:
+200:0::3::Posted by <no subkind>~[1000]:
+200:0::6::"  abc
+200:0::7::"
+200:0::3::
+200:0::3::Posted by <no subkind>~[1000]:
+200:0::6::"END"
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 200
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li post 1
+ ar 1 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 77542 68129
+9000 loc plain
+LI
+ hl 1000 77542 68129 
+
+export entity 68129 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+68129 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+export entity 77542 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+stderr:
+
+exit 0
+stdout:
+section N09 immediate END NULL versus one blank nonNULL and raw negative leaves queue
+> entity 9000 3 3
+> link 9000 1000
+> parse post 0
+parse 1
+> queue END
+> callback_start
+callback start 0
+> text state
+text indent 0
+> parse post 0
+parse 1
+> text queue EMPTY
+> queue END
+> callback_start
+callback start 1
+> text state
+text post 77542 where 9000 creator 1000 misc 1 null 0 lines 1
+text []
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text indent 0
+> parse post 1
+parse 1
+> queue untouched
+> callback_start -1
+callback start 0
+> callback_start -2147483648
+callback start 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [untouched]
+> text state
+text post 77542 where 9000 creator 1000 misc 1 null 0 lines 1
+text []
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text indent 0
+> readlog 200
+log 200:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li post 1
+ ar -2147483648 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 77542
+9000 loc plain
+LI
+ hl 1000 77542 
+
+export entity 77542 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+stderr:
+
+exit 0
+stdout:
+section N09 EOF consumes preceding text for counted and END modes
+> parse post 3
+parse 1
+> queue consumed
+> text queue EMPTY
+> callback_start
+callback start 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> parse message 0 1001
+parse 1
+> queue consumed too
+> callback_start
+callback start 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> parse press 2
+parse 1
+> queue consumed press
+> callback_start
+callback start 0
+> parse rumor 0
+parse 1
+> queue consumed rumor
+> callback_start
+callback start 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> text state
+text indent 0
+> readlog 200
+log 200:
+1000:0::0::Ran out of posting text.
+1000:0::0::Ran out of posting text.
+1000:0::0::Ran out of posting text.
+1000:0::0::Ran out of posting text.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li rumor 0
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N09 POST and MESSAGE MAX_POST 60 succeeds 61 rejects before target validation
+> entity 9000 3 3
+> link 9000 1000
+> parse post 1
+parse 1
+> queue 123456789012345678901234567890123456789012345678901234567890
+> callback_start
+callback start 1
+> parse post 1
+parse 1
+> queue 1234567890123456789012345678901234567890123456789012345678901
+> callback_start
+callback start 0
+> parse message 1 1001
+parse 1
+> queue 123456789012345678901234567890123456789012345678901234567890
+> callback_start
+callback start 1
+> parse message 1 0
+parse 1
+> queue 1234567890123456789012345678901234567890123456789012345678901
+> callback_start
+callback start 0
+> text state
+text post 77542 where 9000 creator 1000 misc 1 null 0 lines 1
+text [123456789012345678901234567890123456789012345678901234567890]
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text indent 0
+> report posts 200 9000 1
+> readlog 200
+log 200:
+1000:0::0::Line length of posted text exceeds 60 characters.
+1000:0::0::Post rejected.
+1001:0::0::Received a message from <no subkind>~[1000]:
+1001:0::3::"123456789012345678901234567890123456789012345678901234567890"
+1000:0::0::Message delivered.
+1000:0::0::Line length of message text exceeds 60 characters.
+1000:0::0::Message rejected.
+200:0::0::
+200:0::0::Posted in Plain~[9000]:
+200:0::3::Posted by <no subkind>~[1000]:
+200:0::6::"123456789012345678901234567890123456789012345678901234567890"
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 68129
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001 200
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 68129 1
+1000 char 0
+il	68129 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li message 1 0
+ ar 1 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 77542
+9000 loc plain
+LI
+ hl 1000 77542 
+
+export entity 68129 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+68129 item scroll
+IT
+ un 1000
+
+export entity 77542 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+stderr:
+
+exit 0
+stdout:
+section N09 MESSAGE consumes before invalid entity and wrong kind validation no colocation rule
+> entity 9000 3 3
+> entity 9001 3 3
+> field 1001 lord 201
+> link 9001 1001
+> parse message 1 0
+parse 1
+> queue invalid target consumed
+> callback_start
+callback start 0
+> parse message 1 9000
+parse 1
+> queue wrong kind consumed
+> callback_start
+callback start 0
+> parse message 3 1001
+parse 1
+> text queue 202023202271756f746522202009
+> text queue EMPTY
+> queue end
+> callback_start
+callback start 1
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> text state
+text indent 0
+> readlog 200
+log 200:
+1000:0::0::[0] is not a valid entity.
+1000:0::0::May not send a message to [9000].
+1000:0::0::Message delivered.
+> readlog 201
+log 201:
+1001:0::0::Received a message from <no subkind>~[1000]:
+1001:0::3::"  # "quote"  	
+1001:0::4::
+1001:0::4::end"
+> save 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li message 3 1001
+ ar 3 1001 0 0 0 0 0 0
+
+> save 1001
+1001 char 0
+LI
+ wh 9001
+CH
+ lo 201
+
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li message 3 1001
+ ar 3 1001 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+LI
+ wh 9001
+CH
+ lo 201
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9000 loc plain
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9001 loc plain
+LI
+ hl 1001 
+
+stderr:
+
+exit 0
+stdout:
+section N09 MESSAGE single and multiple blanks quotes indentation restore asymmetric logs
+> field 1001 lord 201
+> sout frame 7 2 0 0
+> parse message 1 1001
+parse 1
+> text queue EMPTY
+> callback_start
+callback start 1
+> parse message 2 1001
+parse 1
+> text queue EMPTY
+> text queue EMPTY
+> callback_start
+callback start 1
+> parse message 0 1001
+parse 1
+> text queue 20206869202009
+> queue END
+> callback_start
+callback start 1
+> parse message 0 1001
+parse 1
+> queue END
+> callback_start
+callback start 0
+> parse message 1 1001
+parse 1
+> queue remains
+> callback_start -1
+callback start 0
+> text state
+text indent 7
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000: [remains]
+> readlog 200
+log 200:
+1000:0::7/2::Message delivered.
+1000:0::7/2::Message delivered.
+1000:0::7/2::Message delivered.
+> readlog 201
+log 201:
+1001:0::7/2::Received a message from <no subkind>~[1000]:
+1001:0::10/2::""
+1001:0::7/2::Received a message from <no subkind>~[1000]:
+1001:0::10/2::"
+1001:0::11/2::"
+1001:0::7/2::Received a message from <no subkind>~[1000]:
+1001:0::10/2::"  hi"
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li message 1 1001
+ ar -1 1001 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 201
+
+stderr:
+
+exit 0
+stdout:
+section N09 PRESS RUMOR 78 byte success 79 refusal and column zero escaping attribution
+> lore_root
+> life times_open
+> name 1000 Town~Crier
+> parse press 3
+parse 1
+> queue =-=- literal
+> text queue 203d2d3d2d207370616365
+> queue 123456789012345678901234567890123456789012345678901234567890123456789012345678
+> callback_start
+callback start 1
+> readfile times_press
+file bytes times_press 440:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+> =-=- literal
+ =-=- space
+123456789012345678901234567890123456789012345678901234567890123456789012345678
+
+                                   -- Town Crier [1000]
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile times_rumor
+file bytes times_rumor 116:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> parse rumor 3
+parse 1
+> queue =-=- literal
+> text queue EMPTY
+> queue 123456789012345678901234567890123456789012345678901234567890123456789012345678
+> callback_start
+callback start 1
+> readfile times_rumor
+file bytes times_rumor 287:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+> =-=- literal
+
+123456789012345678901234567890123456789012345678901234567890123456789012345678
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> parse press 1
+parse 1
+> queue 1234567890123456789012345678901234567890123456789012345678901234567890123456789
+> callback_start
+callback start 0
+> parse rumor 1
+parse 1
+> queue 1234567890123456789012345678901234567890123456789012345678901234567890123456789
+> callback_start
+callback start 0
+> readfile times_press
+file bytes times_press 440:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+> =-=- literal
+ =-=- space
+123456789012345678901234567890123456789012345678901234567890123456789012345678
+
+                                   -- Town Crier [1000]
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile times_rumor
+file bytes times_rumor 287:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+> =-=- literal
+
+123456789012345678901234567890123456789012345678901234567890123456789012345678
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::Press posted.
+1000:0::0::Rumor posted.
+1000:0::0::Line length of message text exceeds 78 characters.
+1000:0::0::Post rejected.
+1000:0::0::Line length of message text exceeds 78 characters.
+1000:0::0::Post rejected.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+na Town~Crier
+CH
+ lo 200
+CO
+ li rumor 1
+ ar 1 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N09 PRESS RUMOR NULL blank and repeated opens retain original inode after rename
+> lore_root
+> life times_open
+> life rename times_press press-old
+> life rename times_rumor rumor-old
+> life times_open
+> parse press 0
+parse 1
+> queue END
+> callback_start
+callback start 0
+> parse rumor 0
+parse 1
+> queue END
+> callback_start
+callback start 0
+> parse press 0
+parse 1
+> text queue EMPTY
+> queue END
+> callback_start
+callback start 1
+> parse rumor 1
+parse 1
+> text queue EMPTY
+> callback_start
+callback start 1
+> readfile press-old
+file bytes press-old 536:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+
+                                 -- <no subkind> [1000]
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile rumor-old
+file bytes rumor-old 309:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile times_press
+file bytes times_press missing
+> readfile times_rumor
+file bytes times_rumor missing
+> life times_close
+> life times_open
+> parse press 1
+parse 1
+> queue New file
+> callback_start
+callback start 1
+> parse rumor 1
+parse 1
+> queue New rumor
+> callback_start
+callback start 1
+> readfile times_press
+file bytes times_press 343:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+New file
+
+                                 -- <no subkind> [1000]
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile times_rumor
+file bytes times_rumor 202:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+New rumor
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> life times_close
+> readlog 200
+log 200:
+1000:0::0::Press posted.
+1000:0::0::Rumor posted.
+1000:0::0::Press posted.
+1000:0::0::Rumor posted.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li rumor 1
+ ar 1 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N09 actual STATE_RUN reload NULL interrupts next WAIT never consumes text or starts
+> queue post 1
+> queue message 1 1001
+> queue press 1
+> queue rumor 1
+> queue wait day 4
+> queue text must remain
+> load
+load 1
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 58 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 47 who 1000 state 1 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 1001 0 0 0 0 0 0; parse [message] [1] [1001]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 4
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 47 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 59 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [press] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 3
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 59 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 73 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [rumor] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 2
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 73 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [text must remain]
+> text state
+text indent 0
+> readlog 200
+log 200:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N09 started POST MESSAGE PRESS RUMOR reload NULL finish no second text consumption
+> lore_root
+> entity 9000 3 3
+> link 9000 1000
+> life times_open
+> queue post 1
+> queue A notice
+> queue wait day 4
+> load
+load 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> finish
+finish 1
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> flush 200 1000
+> queue message 1 1001
+> queue A message
+> queue wait day 4
+> load
+load 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> finish
+finish 1
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> flush 200 1000
+> queue press 1
+> queue A press
+> queue wait day 4
+> load
+load 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> finish
+finish 1
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> flush 200 1000
+> queue rumor 1
+> queue A rumor
+> queue wait day 4
+> load
+load 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> finish
+finish 1
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> text state
+text post 77542 where 9000 creator 1000 misc 1 null 0 lines 1
+text [A notice]
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text indent 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 1 touched 0 0
+orders 1000:
+> readfile times_press
+file bytes times_press 342:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+A press
+
+                                 -- <no subkind> [1000]
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile times_rumor
+file bytes times_rumor 200:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+A rumor
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readlog 200
+log 200:
+1001:0::0::Received a message from <no subkind>~[1000]:
+1001:0::3::"A message"
+1000:0::0::Message delivered.
+1000:0::0::Press posted.
+1000:0::0::Rumor posted.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 77542
+9000 loc plain
+LI
+ hl 1000 77542 
+
+export entity 77542 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+stderr:
+
+exit 0
+stdout:
+section N09 actual process_orders consumes text-looking orders coverage and mint aftermath
+> lore_root
+> coverage path coverage.tsv
+> master 0
+> entity 205 1 52
+> entity 206 1 52
+> entity 207 1 52
+> set indep 205
+> set hades_player 206
+> set faery_player 207
+> entity 25 4 0
+> entity 26 4 0
+> entity 8100 3 50
+> entity 8200 3 50
+> entity 9100 3 7
+> entity 9200 3 3
+> set hades_region 8100
+> set faery_region 8200
+> link 8100 9100
+> link 8200 9200
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 1 4 0
+> link 8000 9000
+> link 9000 1000
+> link 9000 1001
+> field 1000 health 100
+> field 1001 health 100
+> life times_open
+> queue press 1
+> queue public
+> queue rumor 0
+> queue =-=- news
+> queue eNd
+> queue post 1
+> queue times 1
+> queue message 1 1001
+> queue name Not executed
+> queue press 1
+> queue 1234567890123456789012345678901234567890123456789012345678901234567890123456789
+> queue rumor 1
+> queue 1234567890123456789012345678901234567890123456789012345678901234567890123456789
+> queue post 1
+> queue 1234567890123456789012345678901234567890123456789012345678901
+> queue message 1 9000
+> queue Wrong kind consumed
+> queue wait day 31
+> who 1001
+> queue wait day 31
+> who 1000
+> resolve_wait
+> process
+> text state
+text post 59369 where 9000 creator 1000 misc 1 null 0 lines 1
+text [times 1]
+59369 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text indent 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 1 touched 1 0
+orders 1000:
+orders 1001:
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 0 0 0 0
+flags allocated 0 count 0
+> coverage state 47
+coverage allocated 1 ncmds 148 table 148
+coverage row 47 0 0 1 1
+> coverage state 58
+coverage allocated 1 ncmds 148 table 148
+coverage row 58 0 0 1 1
+> coverage state 59
+coverage allocated 1 ncmds 148 table 148
+coverage row 59 0 0 1 1
+> coverage state 73
+coverage allocated 1 ncmds 148 table 148
+coverage row 73 0 0 1 1
+> coverage state 61
+coverage allocated 1 ncmds 148 table 148
+coverage row 61 0 0 0 0
+> coverage state 85
+coverage allocated 1 ncmds 148 table 148
+coverage row 85 0 0 0 0
+> coverage state 49
+coverage allocated 1 ncmds 148 table 148
+coverage row 49 0 0 0 0
+> coverage state 94
+coverage allocated 1 ncmds 148 table 148
+coverage row 94 0 0 42 0
+> readfile times_press
+file bytes times_press 341:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+public
+
+                                 -- <no subkind> [1000]
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile times_rumor
+file bytes times_rumor 204:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+> =-=- news
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> report posts 200 9000 1
+> readlog 200
+log 200:
+1000:0::0::> press 1
+1000:0::0::Press posted.
+1001:0::0::> wait day 31
+1000:0::0::> rumor 0
+1000:0::0::Rumor posted.
+1000:0::0::> post 1
+1000:0::0::> message 1 1001
+1001:0::0::Received a message from <no subkind>~[1000]:
+1001:0::3::"name Not executed"
+1000:0::0::Message delivered.
+1000:0::0::> press 1
+1000:0::0::Line length of message text exceeds 78 characters.
+1000:0::0::Post rejected.
+1000:0::0::> rumor 1
+1000:0::0::Line length of message text exceeds 78 characters.
+1000:0::0::Post rejected.
+1000:0::0::> post 1
+1000:0::0::Line length of posted text exceeds 60 characters.
+1000:0::0::Post rejected.
+1000:0::0::> message 1 9000
+1000:0::0::May not send a message to [9000].
+1000:0::0::> wait day 31
+200:0::0::
+200:0::0::Posted in Plain~[9000]:
+200:0::3::Posted by <no subkind>~[1000]:
+200:0::6::"times 1"
+> entity_rolls 1000 7 9000
+prison roll 35
+land dir99 4
+land dir98 3
+land pick 2
+> usemeta legacy 1 100000
+use legacy 87265
+> newitem 1000 42
+created 65636
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 25 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+25 item 0
+
+export entity 26 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+26 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001 200
+200 player pl_regular
+PL
+ lt 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 205 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+205 player pl_npc
+
+export entity 206 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1038 1681 2262 2708 3491 3982 4857 5495 5825 6258 6319 6814 7135 7748 7957 9387 9983 79711 117561 121151 122620 125377 132521 139413 143294
+output: 7748 4857 6258 79711 121151 1681 9387 6814 139413 7135 3491 5825 7957 2262 122620 132521 143294 3982 9983 2708 125377 1038 6319 117561 5495
+206 player pl_npc
+PL
+ lt 1
+ un 1038 1681 2262 2708 3491 3982 4857 5495 5825 \
+	6258 6319 6814 7135 7748 7957 9387 9983 79711 117561 121151 \
+	122620 125377 132521 139413 143294 
+
+export entity 207 char 0 player 1 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+units: 81606 82021 82881 88338 89136 106078 110650 116644 119220 128566 132198 138884 139320 139556 146637
+output: 139320 138884 106078 82021 146637 119220 82881 81606 116644 139556 132198 89136 88338 110650 128566
+207 player pl_npc
+PL
+ lt 1
+ un 81606 82021 82881 88338 89136 106078 110650 116644 119220 \
+	128566 132198 138884 139320 139556 146637 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1010000 order 0
+here:
+raw item 65636 1
+1000 char 0
+il	65636 1
+LI
+ wh 9000
+CH
+ lo 200
+ he 100
+CO
+ li wait day 31
+ ar 0 31 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ de 28
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1010001 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 100
+CO
+ li wait day 31
+ ar 0 31 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ de 30
+ po 1
+ pr 1
+
+export entity 1038 char 1 player 0 magic 0 misc 0 skill 0 temp 10021 order 0
+here:
+1038 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 1681 char 1 player 0 magic 0 misc 0 skill 0 temp 10005 order 0
+here:
+raw item 26 96
+1681 char 0
+na Lesser Demon
+il	26 96
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 2262 char 1 player 0 magic 0 misc 0 skill 0 temp 10013 order 0
+here:
+raw item 26 58
+2262 char 0
+na Lesser Demon
+il	26 58
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 2708 char 1 player 0 magic 0 misc 0 skill 0 temp 10019 order 0
+here:
+raw item 26 141
+2708 char 0
+na Lesser Demon
+il	26 141
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 3491 char 1 player 0 magic 0 misc 0 skill 0 temp 10010 order 0
+here:
+raw item 26 63
+3491 char 0
+na Lesser Demon
+il	26 63
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 3982 char 1 player 0 magic 0 misc 0 skill 0 temp 10017 order 0
+here:
+raw item 26 149
+3982 char 0
+na Greater Demon
+il	26 149
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 4857 char 1 player 0 magic 0 misc 0 skill 0 temp 10001 order 0
+here:
+raw item 26 105
+4857 char 0
+na Lesser Demon
+il	26 105
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 5495 char 1 player 0 magic 0 misc 0 skill 0 temp 10024 order 0
+here:
+raw item 26 119
+5495 char 0
+na Lesser Demon
+il	26 119
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 5825 char 1 player 0 magic 0 misc 0 skill 0 temp 10011 order 0
+here:
+raw item 26 92
+5825 char 0
+na Lesser Demon
+il	26 92
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 6258 char 1 player 0 magic 0 misc 0 skill 0 temp 10002 order 0
+here:
+raw item 26 189
+6258 char 0
+na Greater Demon
+il	26 189
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 6319 char 1 player 0 magic 0 misc 0 skill 0 temp 10022 order 0
+here:
+6319 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 6814 char 1 player 0 magic 0 misc 0 skill 0 temp 10007 order 0
+here:
+raw item 26 142
+6814 char 0
+na Lesser Demon
+il	26 142
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 7135 char 1 player 0 magic 0 misc 0 skill 0 temp 10009 order 0
+here:
+7135 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 7748 char 1 player 0 magic 0 misc 0 skill 0 temp 10000 order 0
+here:
+raw item 26 119
+7748 char 0
+na Greater Demon
+il	26 119
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 7957 char 1 player 0 magic 0 misc 0 skill 0 temp 10012 order 0
+here:
+7957 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 8100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+8100 loc region
+LI
+ hl 9100 
+
+export entity 8200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+8200 loc region
+LI
+ hl 9200 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001 59369
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 1001 59369 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 7748 4857 6258 79711 121151 1681 9387 6814 139413 7135 3491 5825 7957 2262 122620 132521 143294 3982 9983 2708 125377 1038 6319 117561 5495
+9100 loc underground
+LI
+ wh 8100
+ hl 7748 4857 6258 79711 121151 1681 9387 6814 139413 \
+	7135 3491 5825 7957 2262 122620 132521 143294 3982 9983 2708 \
+	125377 1038 6319 117561 5495 
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 139320 138884 106078 82021 146637 119220 82881 81606 116644 139556 132198 89136 88338 110650 128566
+9200 loc plain
+LI
+ wh 8200
+ hl 139320 138884 106078 82021 146637 119220 82881 81606 116644 \
+	139556 132198 89136 88338 110650 128566 
+
+export entity 9387 char 1 player 0 magic 0 misc 0 skill 0 temp 10006 order 0
+here:
+raw item 26 165
+9387 char 0
+na Greater Demon
+il	26 165
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 9983 char 1 player 0 magic 0 misc 0 skill 0 temp 10018 order 0
+here:
+9983 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 59369 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+59369 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+export entity 65636 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+65636 item scroll
+IT
+ un 1000
+
+export entity 79711 char 1 player 0 magic 0 misc 0 skill 0 temp 10003 order 0
+here:
+raw item 26 30
+79711 char ni
+na Tortured spirits
+il	26 30
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 81606 char 1 player 0 magic 0 misc 0 skill 0 temp 10007 order 0
+here:
+raw item 25 28
+81606 char ni
+na Faery Hunt
+il	25 28
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 82021 char 1 player 0 magic 0 misc 0 skill 0 temp 10003 order 0
+here:
+raw item 25 54
+82021 char ni
+na Faery Hunt
+il	25 54
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 82881 char 1 player 0 magic 0 misc 0 skill 0 temp 10006 order 0
+here:
+raw item 25 72
+82881 char ni
+na Faery Hunt
+il	25 72
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 88338 char 1 player 0 magic 0 misc 0 skill 0 temp 10012 order 0
+here:
+raw item 25 76
+88338 char ni
+na Faery Hunt
+il	25 76
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 89136 char 1 player 0 magic 0 misc 0 skill 0 temp 10011 order 0
+here:
+raw item 25 55
+89136 char ni
+na Faery Hunt
+il	25 55
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 106078 char 1 player 0 magic 0 misc 0 skill 0 temp 10002 order 0
+here:
+raw item 25 65
+106078 char ni
+na Faery Hunt
+il	25 65
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 110650 char 1 player 0 magic 0 misc 0 skill 0 temp 10013 order 0
+here:
+raw item 25 36
+110650 char ni
+na Faery Hunt
+il	25 36
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 116644 char 1 player 0 magic 0 misc 0 skill 0 temp 10008 order 0
+here:
+raw item 25 40
+116644 char ni
+na Faery Hunt
+il	25 40
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 117561 char 1 player 0 magic 0 misc 0 skill 0 temp 10023 order 0
+here:
+raw item 26 73
+117561 char ni
+na Tortured spirits
+il	26 73
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 119220 char 1 player 0 magic 0 misc 0 skill 0 temp 10005 order 0
+here:
+raw item 25 74
+119220 char ni
+na Faery Hunt
+il	25 74
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 121151 char 1 player 0 magic 0 misc 0 skill 0 temp 10004 order 0
+here:
+raw item 26 54
+121151 char ni
+na Tortured spirits
+il	26 54
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 122620 char 1 player 0 magic 0 misc 0 skill 0 temp 10014 order 0
+here:
+raw item 26 68
+122620 char ni
+na Tortured spirits
+il	26 68
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 125377 char 1 player 0 magic 0 misc 0 skill 0 temp 10020 order 0
+here:
+raw item 26 59
+125377 char ni
+na Tortured spirits
+il	26 59
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 128566 char 1 player 0 magic 0 misc 0 skill 0 temp 10014 order 0
+here:
+raw item 25 100
+128566 char ni
+na Faery Hunt
+il	25 100
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 132198 char 1 player 0 magic 0 misc 0 skill 0 temp 10010 order 0
+here:
+raw item 25 66
+132198 char ni
+na Faery Hunt
+il	25 66
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 132521 char 1 player 0 magic 0 misc 0 skill 0 temp 10015 order 0
+here:
+raw item 26 48
+132521 char ni
+na Tortured spirits
+il	26 48
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 138884 char 1 player 0 magic 0 misc 0 skill 0 temp 10001 order 0
+here:
+raw item 25 27
+138884 char ni
+na Faery Hunt
+il	25 27
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 139320 char 1 player 0 magic 0 misc 0 skill 0 temp 10000 order 0
+here:
+raw item 25 25
+139320 char ni
+na Faery Hunt
+il	25 25
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 139413 char 1 player 0 magic 0 misc 0 skill 0 temp 10008 order 0
+here:
+raw item 26 29
+139413 char ni
+na Tortured spirits
+il	26 29
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 139556 char 1 player 0 magic 0 misc 0 skill 0 temp 10009 order 0
+here:
+raw item 25 85
+139556 char ni
+na Faery Hunt
+il	25 85
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 143294 char 1 player 0 magic 0 misc 0 skill 0 temp 10016 order 0
+here:
+raw item 26 34
+143294 char ni
+na Tortured spirits
+il	26 34
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+export entity 146637 char 1 player 0 magic 0 misc 0 skill 0 temp 10004 order 0
+here:
+raw item 25 53
+146637 char ni
+na Faery Hunt
+il	25 53
+LI
+ wh 9200
+CH
+ ni 25
+ lo 207
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ po 1
+ pr 1
+ if 1
+
+stderr:
+process_orders()
+queue_npc_orders()
+
+   ..............................
+
+exit 0
+stdout:
+section N09 zero preserves all whitespace while counted bytes include multibyte at limits
+> entity 9000 3 3
+> link 9000 1000
+> parse post 0
+parse 1
+> text queue 2020092020
+> queue END
+> callback_start
+callback start 1
+> parse post 1
+parse 1
+> text queue c3a931323334353637383930313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738
+> callback_start
+callback start 1
+> parse post 1
+parse 1
+> text queue c3a93132333435363738393031323334353637383930313233343536373839303132333435363738393031323334353637383930313233343536373839
+> callback_start
+callback start 0
+> text state
+text post 68129 where 9000 creator 1000 misc 1 null 0 lines 1
+text [é1234567890123456789012345678901234567890123456789012345678]
+68129 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text post 77542 where 9000 creator 1000 misc 1 null 0 lines 1
+text [  	  ]
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text indent 0
+> report posts 200 9000 1
+> readlog 200
+log 200:
+1000:0::0::Line length of posted text exceeds 60 characters.
+1000:0::0::Post rejected.
+200:0::0::
+200:0::0::Posted in Plain~[9000]:
+200:0::3::Posted by <no subkind>~[1000]:
+200:0::6::"  	  "
+200:0::3::
+200:0::3::Posted by <no subkind>~[1000]:
+200:0::6::"é1234567890123456789012345678901234567890123456789012345678"
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 200
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li post 1
+ ar 1 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 77542 68129
+9000 loc plain
+LI
+ hl 1000 77542 68129 
+
+export entity 68129 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+68129 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+export entity 77542 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+stderr:
+
+exit 0
+stdout:
+section N09 started actions reload NULL interruption never repeat text allocation or Times writes
+> lore_root
+> entity 9000 3 3
+> link 9000 1000
+> life times_open
+> queue post 1
+> queue A notice
+> queue wait day 4
+> load
+load 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> flush 200 1000
+> queue message 1 1001
+> queue A message
+> queue wait day 4
+> load
+load 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> flush 200 1000
+> queue press 1
+> queue A press
+> queue wait day 4
+> load
+load 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> flush 200 1000
+> queue rumor 1
+> queue A rumor
+> queue wait day 4
+> load
+load 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> queue Negative-count sentinel
+> parse press 1
+parse 1
+> callback_start -1
+callback start 0
+> parse rumor 1
+parse 1
+> callback_start -2147483648
+callback start 0
+> text state
+text post 77542 where 9000 creator 1000 misc 1 null 0 lines 1
+text [A notice]
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+text indent 0
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 1 touched 0 0
+orders 1000: [Negative-count sentinel]
+> readfile times_press
+file bytes times_press 342:
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+                        Player-contributed press
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+A press
+
+                                 -- <no subkind> [1000]
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readfile times_rumor
+file bytes times_rumor 200:
+                                 Rumors
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+A rumor
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+end file bytes
+> readlog 200
+log 200:
+1001:0::0::Received a message from <no subkind>~[1000]:
+1001:0::3::"A message"
+1000:0::0::Message delivered.
+1000:0::0::Press posted.
+1000:0::0::Rumor posted.
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 68129
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 68129 1
+1000 char 0
+il	68129 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li rumor 1
+ ar -2147483648 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 77542
+9000 loc plain
+LI
+ hl 1000 77542 
+
+export entity 68129 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+68129 item scroll
+IT
+ un 1000
+
+export entity 77542 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+77542 post 0
+LI
+ wh 9000
+IT
+IM
+ ct 1000
+MI
+
+stderr:
+
+exit 0

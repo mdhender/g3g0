@@ -5,10 +5,170 @@ package olympia
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/mdhender/g3g0/internal/clib"
 )
+
+// Complete c2.c:160–170. C measures bytes, not display columns or runes.
+func lineLengthCheck(lines []string) int {
+	n := 0
+	for _, line := range lines {
+		n = max(n, len(line))
+	}
+	return n
+}
+
+// Complete c2.c:173–226. nil is NULL (including immediate END and negative
+// counts); a single empty string is real text. text_list_free (150–157) is
+// owned by GC. Failure discards text but never restores popped orders.
+func (w *world) parseTextList(c *command) []string {
+	var lines []string
+	pl, who := w.player(int(c.who)), int(c.who)
+	count := c.a
+	for c.a == 0 || count > 0 {
+		order, ok := w.topOrder(pl, who)
+		if !ok {
+			w.commandOut(who, "Ran out of posting text.")
+			return nil
+		}
+		if c.a == 0 {
+			t := eatLeadingTrailingWhitespace(order)
+			if iStrcmp(t, "end") == 0 {
+				w.popOrder(pl, who)
+				break
+			}
+			// C trims in place but copies from the original pointer, keeping
+			// leading whitespace. An all-whitespace line is not modified:
+			// the returned pointer already points to its terminating NUL.
+			if t != "" {
+				order = strings.TrimRight(order, " \t")
+			}
+		}
+		lines = append(lines, order)
+		w.popOrder(pl, who)
+		if c.a != 0 {
+			count--
+		}
+	}
+	return lines
+}
+
+// Complete c2.c:229–256. Posts are transient entities, allocated only after
+// consuming and validating text; the existing report/save owners handle them.
+func (w *world) vPost(c *command) int {
+	lines := w.parseTextList(c)
+	if lines == nil {
+		return 0
+	}
+	if lineLengthCheck(lines) > maxPost {
+		w.commandOut(int(c.who), "Line length of posted text exceeds %d characters.", maxPost)
+		w.commandOut(int(c.who), "Post rejected.")
+		return 0
+	}
+	n := w.newEnt(tPost, 0)
+	w.pItemMagic(n).creator = c.who
+	w.setWhere(n, w.subloc(int(c.who)))
+	w.pMisc(n).postTxt = lines
+	return 1
+}
+
+// Complete c2.c:259–323. Text validation/consumption precedes target checks.
+func (w *world) vMessage(c *command) int {
+	target := int(c.b)
+	lines := w.parseTextList(c)
+	if lines == nil {
+		return 0
+	}
+	if lineLengthCheck(lines) > maxPost {
+		w.commandOut(int(c.who), "Line length of message text exceeds %d characters.", maxPost)
+		w.commandOut(int(c.who), "Message rejected.")
+		return 0
+	}
+	if !w.validBox(target) {
+		w.commandOut(int(c.who), "%s is not a valid entity.", w.boxCode(target))
+		return 0
+	}
+	if w.kind(target) != tChar {
+		w.commandOut(int(c.who), "May not send a message to %s.", w.boxCode(target))
+		return 0
+	}
+	w.commandOut(target, "Received a message from %s:", w.boxName(int(c.who)))
+	w.indent += 3
+	first := true
+	for i, line := range lines {
+		before, after := "", ""
+		if first {
+			before = "\""
+		}
+		if i+1 == len(lines) {
+			after = "\""
+		}
+		w.commandOut(target, "%s%s%s", before, line, after)
+		if first {
+			first = false
+			w.indent++
+		}
+	}
+	if !first {
+		w.indent--
+	}
+	w.indent -= 3
+	w.commandOut(int(c.who), "Message delivered.")
+	return 1
+}
+
+// Complete c2.c:475–512. The real Times FILE must already be open.
+func (w *world) vRumor(c *command) int {
+	lines := w.parseTextList(c)
+	if lines == nil {
+		return 0
+	}
+	if lineLengthCheck(lines) > 78 {
+		w.commandOut(int(c.who), "Line length of message text exceeds %d characters.", 78)
+		w.commandOut(int(c.who), "Post rejected.")
+		return 0
+	}
+	for _, line := range lines {
+		if strings.HasPrefix(line, "=-=-") {
+			fmt.Fprintf(w.rumorFP, "> %s\n", line)
+		} else {
+			fmt.Fprintf(w.rumorFP, "%s\n", line)
+		}
+	}
+	fmt.Fprint(w.rumorFP, "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n")
+	_ = w.rumorFP.Flush()
+	w.commandOut(int(c.who), "Rumor posted.")
+	return 1
+}
+
+// Complete c2.c:515–560. Attribution uses a minimum 55-byte field, and
+// replaces literal tildes throughout box_name, not just its separator.
+func (w *world) vPress(c *command) int {
+	lines := w.parseTextList(c)
+	if lines == nil {
+		return 0
+	}
+	if lineLengthCheck(lines) > 78 {
+		w.commandOut(int(c.who), "Line length of message text exceeds %d characters.", 78)
+		w.commandOut(int(c.who), "Post rejected.")
+		return 0
+	}
+	for _, line := range lines {
+		if strings.HasPrefix(line, "=-=-") {
+			fmt.Fprintf(w.pressFP, "> %s\n", line)
+		} else {
+			fmt.Fprintf(w.pressFP, "%s\n", line)
+		}
+	}
+	attrib := strings.ReplaceAll("-- "+w.boxName(int(c.who)), "~", " ")
+	fmt.Fprintf(w.pressFP, "\n%s\n\n", clib.PadLeft(attrib, 55))
+	fmt.Fprint(w.pressFP, "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n")
+	_ = w.pressFP.Flush()
+	w.commandOut(int(c.who), "Press posted.")
+	return 1
+}
 
 // Complete c2.c:563–583. publicTurn is unsaved monthly state; the first
 // call alone allocates the record and generates CLAIM gold for the faction.

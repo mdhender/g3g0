@@ -3,6 +3,211 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Text orders and press (#207, stage 4 N09)
+
+**0.129.0-alpha** ports complete pinned c2.c definitions, including actual
+return-type lines: `void text_list_free` **150–157** (GC counterpart), static
+`int line_length_check` **160–170**, static `char ** parse_text_list`
+**173–226**, `int v_post` **229–256**, `int v_message` **259–323**,
+`int v_rumor` **475–512**, and `int v_press` **515–560**. All seven original
+definitions are extracted unchanged exactly once (**4043 bytes**); individual
+range hashes are in `tmp/issue207-source-proof.log`. No new extracted source
+dependency or pin change: c2.c and its real queue, allocation, output, Times,
+report, persistence and RNG closure were already tracked by affected.sh.
+
+Only the four actual starts are bound. All four genuine NULL finish/interrupt
+pairs, permissions, times and priorities remain unchanged. c2.go reuses the
+existing order queue top/pop, whitespace/case helpers, entity allocation and
+setWhere, item creator/postTxt, command output/indent and Times FILE owners.
+TIMES and the existing open/close/cache/flush owners are unchanged. There is
+no parallel queue/file layer, lazy nil-FILE fallback, input-mail/CLI/world-init
+work, or later-stage implementation.
+
+**14 appended sections, all explicitly status 0**, compare real save_box bytes,
+unsaved allocation/creator/text/list/queue/cache state, raw streams/status and
+entity/keyed, shared mint and legacy RNG aftermath. They distinguish:
+
+- Counted text (including literal END) versus count-zero, case-insensitive,
+  space/tab-trimmed END; negative raw counts return NULL without consuming.
+  Immediate END is NULL; one blank line is non-NULL. EOF consumes all earlier
+  text rather than restoring it. Counted whitespace/#/quotes remain exact.
+  The subtle C mutation is retained: END-mode strips trailing whitespace from
+  nonblank text but keeps its leading whitespace; an all-whitespace line is
+  unchanged because C's returned pointer already points at its terminating NUL.
+- MAX_POST is **60** from oly.h:1376, not 78. POST/MESSAGE test **60/61 bytes**,
+  including multibyte text; PRESS/RUMOR test their literal **78/79** boundary.
+  MESSAGE consumes/checks text before invalid-target/kind checks, delivers to a
+  different faction in a different location, and preserves asymmetric sender/
+  receiver logs, single/multiple blanks, quote positions and indent restoration.
+- POST really allocates a new entity, records its creator, places it at
+  **subloc** even when the sender is nested under another character, retains
+  transient postTxt for the existing later location report and invokes the
+  original save_box owner. Subsequent mint/item and other RNG draws match.
+- PRESS/RUMOR escape only a literal `=-=-` at column zero. PRESS replaces all
+  attribution tildes with spaces and uses the existing byte-width **55** pad;
+  RUMOR has no attribution. Dash/newline order is literal C. Independent file
+  reads do **not** flush production FILEs, and observe the explicitly flushed
+  Times bytes. Repeated opens write the original inode after pathname renames;
+  close/open resets ownership and creates new files.
+- Actual STATE_RUN writer/reader roundtrips and generic NULL interrupts for
+  all four verbs load the next WAIT without executing starts or consuming text.
+  Separately started actions persist and take both their genuine NULL finish
+  and interrupt paths without duplicate allocation/delivery/Times writes.
+  Real process_orders consumes order-looking lines as text, not new starts.
+  Coverage rows **47/58/59/73** each record **1 ok / 1 fail**; NAME/PUBLIC/TIMES
+  rows **49/61/85** stay zero. WAIT row **94** records **42 ok**, including real
+  generated NPC waits, not a substitute process_orders implementation.
+
+Unchanged real C ran twice before implementation/recording update; unchanged
+Go failed at the actual POST start with `command post start`
+(`tmp/issue207-before-{c,go}.log`). The first complete default's status 1 is
+the intentional appended-recording diff, not a C/C failure. Earlier setup
+probes exposed missing location/NPC setup, duplicate entities and malformed
+adapter argument ordering; these were corrected, not accepted as expected
+statuses. All final cases and observer refinements run unchanged C twice
+before C-only updates. Final update/default: `tmp/issue207-update-final.log`,
+`tmp/issue207-command-default.log`.
+
+Final oracle: **1646 sections / 133886 output lines / 2635730 output bytes**;
+input **36129 lines / 681492 bytes**. Additions are **454 input lines / 8801
+input bytes / 2973 output lines / 52032 output bytes**. Both entire accepted
+HEAD prefixes (**672691 / 2583698 bytes**) and stage-3 prefixes (**578307 /
+2134398 bytes**) are unchanged, including all **29 inherited high-bit output
+bytes** (13 from stage 3) and authentic trailing spaces. Four added raw
+multibyte output bytes bring the total to **33**; **19** added trailing-space
+lines are original C bytes, not formatter mistakes. Source-only whitespace
+check passes; the full diff check correctly flags those recording lines.
+Proof: `tmp/issue207-prefix-proof.log`.
+
+| file or prefix | SHA-256 |
+|---|---|
+| command-cases.txt | `7677f9a3e75821b0a59d5ddc3a13b2d863d419c6d6a29f4cee7134d4032f99f3` |
+| command-c-output.txt | `b6bf9af788cef08bb4c44eecf853f859a183dd5bd39cf75135d0145fa3b305c8` |
+| HEAD 672691-byte input prefix | `08dda9c1a617c2dd911317aa4ae6606d57e9e564f338f4dcc4f43f9042f8bdd0` |
+| HEAD 2583698-byte output prefix | `a16e3850f402e199b8e05e5e6ef33e05bd0167dc804da6a5b00fe744c99fc819` |
+| stage-3 578307-byte input prefix | `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` |
+| stage-3 2134398-byte output prefix | `c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac` |
+
+Four actual temporary linker controls wrap v_post, emit the rejected dependency
+marker and exit **0/134 × default/update**. All reject **section 1632 / harness
+status 2** before status acceptance or recording replacement. Bounded direct
+executions confirm each actual status. The then-current recording hash stays
+`ef7506cadc9126a65bb04ede3fef73eef0a62d7fb137069c0329a0b924c4f814`
+in all four runs. Evidence: `tmp/issue207-negative-proof.log`,
+`tmp/issue207-negative-STATUS-MODE.log`, `tmp/issue207-probe-STATUS-MODE.{stdout,stderr}`.
+
+Original unmodified check.sh scripts pass unchanged C twice then freshly built
+Go through trusted bounded `tmp/stage4-capture` with S4_ENGINE, S4_CAPTURE and
+OLYMPIA_ENGINE_BIN. The canonical unchanged C executable remains
+`tmp/stage4-source/build/issue201/olympia-g3`, SHA-256
+`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`,
+with canonical compile-time assertion paths, not the older absolute-path binary.
+The unchanged strict comparator and tree-modes.py compare raw streams/status
+and **ALL** cwd entries/types/modes/empty directories/bytes, without exclusions
+or normalization, including script-owned stderr/turn.out:
+
+| original fixture | C/C/Go engine status; script status | cwd entries |
+|---|---|---|
+| player-press | 0; YES / 0 | 239 |
+| player-refused | 0; YES / 0 | 237 |
+| player-settings | 0; YES / 0 | 237 |
+| order-quoted-comment | 0; YES / 0 | 247 |
+| order-unrecognized | 0; YES / 0 | 243 |
+| release-swear-np, separate expected abort | **134**; YES / 0 | 229 |
+
+The abort remains exact `olympia/swear.c (180): FALSE`, not a successful turn
+or cached +turn input. Original fixture files and executable modes match the
+pin; scripts unpack fresh physical disposable inputs and never run on protected
+caches. Manifests remain under `tmp/issue207-fixtures/FIXTURE/`; evidence is
+`tmp/issue207-fixtures-{c,final}-proof.log`,
+`tmp/issue207-fixture-source-proof.log` and `tmp/issue207-FIXTURE-{c1,c2,go}.log`.
+Matching captures and temporary helpers/probes/binaries are removed; trusted
+pre-existing binaries are retained.
+
+Original-script replay recipe (use a fresh ignored scratch directory and
+capture root; the launcher/comparator are the trusted pre-existing binaries):
+
+```sh
+. tools/lib/timeout.sh
+mkdir -p tmp/_issue207
+run_limited 120 go "$(command -v go)" build -o tmp/_issue207/olympia ./cmd/olympia
+CAPTURES="$PWD/tmp/issue207-fixtures"
+for fixture in player-press player-refused player-settings \
+    order-quoted-comment order-unrecognized release-swear-np; do
+  for engine in c1 c2 go; do
+    bin="$PWD/tmp/stage4-source/build/issue201/olympia-g3"
+    [ "$engine" != go ] || bin="$PWD/tmp/_issue207/olympia"
+    S4_ENGINE="$bin" S4_CAPTURE="$CAPTURES/$fixture/$engine" \
+      OLYMPIA_ENGINE_BIN="$PWD/tmp/stage4-capture" \
+      bash "$PWD/tmp/stage4-source/tests/olympia/regress/$fixture/check.sh" || exit 1
+    capture="$CAPTURES/$fixture/$engine"
+    if rg -i 'out-of-scope|not (yet )?implemented|missing.*dependency|NYI|stub|Sanitizer|runtime error:' \
+        "$capture/stdout" "$capture/stderr"; then exit 2; fi
+    expected=0
+    [ "$fixture" != release-swear-np ] || expected=134
+    [ "$(cat "$capture/status")" = "$expected" ] || exit 2
+  done
+  for engine in c2 go; do
+    run_limited 120 compare "$PWD/tmp/stage4-turn/bin/compare" \
+      "$CAPTURES/$fixture/c1" "$CAPTURES/$fixture/$engine" || exit 1
+    python3 tools/lib/tree-modes.py \
+      "$CAPTURES/$fixture/c1/cwd" "$CAPTURES/$fixture/$engine/cwd" || exit 1
+  done
+  run_limited 120 compare "$PWD/tmp/stage4-turn/bin/compare" \
+    --manifest "$CAPTURES/$fixture/c1" >"$CAPTURES/$fixture/manifest.txt"
+  # Retain decisive logs/manifests; remove all three matching captures.
+done
+```
+
+Exact final validation commands (all engines/tests bounded, explicit isolated
+source, independent per-tool pins unchanged):
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" tools/command-compat/run.sh --update
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    "tools/$tool-compat/run.sh" # sequential; inspect every status
+done
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue207-spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" tools/olympia-spec/run.sh
+```
+
+Bounded vet and fresh full-enabled tests pass (**11 test packages / 10 explicit
+opt-in/child-entry skips**, Olympia **2.442s**); whole-corpus tests still need
+their full tool's game lists. Eight sequential defaults pass: command
+**1646/133886**, move **135/7158**, helper **37/1487**, RNG **321**, code
+**43/969**, loadsave **61/3411**, turn-driver **7/152**, phase **5/484**,
+calendar **2/119**, schedule **4/1801**, default turn **2 cwd entries**.
+Logs: `tmp/issue207-{vet-final,tests,default-status}.log`,
+`tmp/issue207-TOOL-default.log`. The full spec tool genuinely adds only
+**player-press**: **50 pass / 75 fail / 0 error**, retaining every **49** prior
+pass, including all **46** before N08 and stage-3 **36**. No manual passing.txt
+edits; its new SHA-256 is
+`2c9769dbd408b99397f70696ca12d91d4956f2cf7d659bb9968062c55a0c6450`.
+Golden remains **NO**, unsupported `-i` initialization **2**, not whole-spec
+parity (`tmp/issue207-spec.log`).
+
+The supplied ALL-open audit contains **93 entries**, only stage tasks/trackers
+and root #19, no bug/follow-C. No new blocker or oversized prerequisite was
+found. No family/stage exit, full-corpus, sanitizer/non-Linux or stage-5 claim.
+
+Independent parent acceptance reviewed the complete pinned definitions and
+engine/adapter/case diffs, and verified the inherited recording prefixes.
+Bounded vet, fresh full-enabled tests and all eight sequential defaults pass
+again (`tmp/parent207-{vet,tests,TOOL}.log`). The independent full spec confirms
+**50 pass / 75 fail / 0 error**, with no change to the generated passing list;
+golden remains **NO**, initialization **2** (`tmp/parent207-spec.log`). All six
+original fixtures above independently match C/C/fresh Go on raw status/streams
+and every cwd entry/type/mode/byte, including the separate exact **134** abort.
+Parent manifests and script logs remain under `tmp/parent207-fixtures/`;
+matching captures and the scratch binary were removed. This accepts N09 only,
+not the player family or stage exit.
+
 ## Player identity/settings (#206, stage 4 N08)
 
 **0.128.0-alpha** ports the complete pinned definitions, including actual

@@ -1580,6 +1580,29 @@ int main(int argc, char **argv)
    }
    else return 2;
   }
+  else if (!strcmp(op, "text")) {
+   sscanf(line,"%*s %31s",label);
+   if(!strcmp(label,"queue")) {
+    unsigned byte; char *p, bytes[4096]; int len=0;
+    if(sscanf(line,"%*s %*s %8191s",text)!=1) return 2;
+    if(strcmp(text,"EMPTY")) for(p=text;*p;p+=2) {
+     if(sscanf(p,"%2x",&byte)!=1) return 2;
+     bytes[len++]=(char)byte;
+    }
+    bytes[len]=0;
+    cstrings_append(&drv_orders(player(c->who),c->who)->l,str_save(bytes));
+   }
+   else if(!strcmp(label,"state")) {
+    loop_kind(T_post,n) {
+     struct entity_misc *p=rp_misc(n);
+     printf("text post %d where %d creator %d misc %d null %d lines %d\n",n,loc(n),item_creator(n),p!=NULL,p==NULL || p->post_txt==NULL,p ? cstrings_len(p->post_txt) : 0);
+     if(p) for(i=0;i<cstrings_len(p->post_txt);i++) printf("text [%s]\n",p->post_txt[i]);
+     save_box(stdout,n);
+    } next_kind;
+    printf("text indent %d\n",indent);
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "queue"))
    cstrings_append(&drv_orders(player(c->who), c->who)->l, str_save(line + 6));
   else if (!strcmp(op, "orders")) {

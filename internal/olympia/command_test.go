@@ -1722,6 +1722,40 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			default:
 				t.Fatalf("unknown stack probe %s", action)
 			}
+		case "text":
+			switch action := args.word(); action {
+			case "queue":
+				s := args.word()
+				var data []byte
+				if s != "EMPTY" {
+					var err error
+					data, err = hex.DecodeString(s)
+					if err != nil {
+						t.Fatal(err)
+					}
+				}
+				w.pOrderHead(w.player(int(c.who)), int(c.who)).l.Append(string(data))
+			case "state":
+				for n := range w.loopKind(tPost) {
+					p := w.rpMisc(n)
+					var lines []string
+					if p != nil {
+						lines = p.postTxt
+					}
+					creator := 0
+					if m := w.rpItemMagic(n); m != nil {
+						creator = int(m.creator)
+					}
+					fmt.Fprintf(&stdout, "text post %d where %d creator %d misc %d null %d lines %d\n", n, w.loc(n), creator, b2i(p != nil), b2i(lines == nil), len(lines))
+					for _, s := range lines {
+						fmt.Fprintf(&stdout, "text [%s]\n", s)
+					}
+					w.saveBox(&stdout, n)
+				}
+				fmt.Fprintf(&stdout, "text indent %d\n", w.indent)
+			default:
+				t.Fatalf("unknown text %s", action)
+			}
 		case "queue":
 			w.pOrderHead(w.player(int(c.who)), int(c.who)).l.Append(strings.TrimPrefix(line, "queue "))
 		case "orders":

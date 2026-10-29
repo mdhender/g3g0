@@ -35673,3 +35673,457 @@ dump
 settings state 200
 readlog 200
 export state
+
+section N09 POST counted preserves exact text whitespace hash quotes and order-looking text
+entity 9000 3 3
+link 9000 1001
+link 1001 1000
+parse post 3
+text queue 202023202271756f746522202009
+text queue EMPTY
+queue public
+queue wait day 4
+callback_start
+text state
+report posts 200 9000 1
+pstate 200
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+save_new
+export state
+
+section N09 POST zero trims trailing only and case insensitive END versus counted END
+entity 9000 3 3
+link 9000 1000
+parse post 0
+text queue 2020616263202009
+text queue EMPTY
+text queue 2009456e442009
+queue wait day 4
+callback_start
+text state
+pstate 200
+flush 200 1000
+parse post 1
+queue END
+callback_start
+text state
+report posts 200 9000 0
+readlog 200
+export state
+
+section N09 immediate END NULL versus one blank nonNULL and raw negative leaves queue
+entity 9000 3 3
+link 9000 1000
+parse post 0
+queue END
+callback_start
+text state
+parse post 0
+text queue EMPTY
+queue END
+callback_start
+text state
+parse post 1
+queue untouched
+callback_start -1
+callback_start -2147483648
+pstate 200
+text state
+readlog 200
+export state
+
+section N09 EOF consumes preceding text for counted and END modes
+parse post 3
+queue consumed
+text queue EMPTY
+callback_start
+pstate 200
+parse message 0 1001
+queue consumed too
+callback_start
+pstate 200
+parse press 2
+queue consumed press
+callback_start
+parse rumor 0
+queue consumed rumor
+callback_start
+pstate 200
+text state
+readlog 200
+export state
+
+section N09 POST and MESSAGE MAX_POST 60 succeeds 61 rejects before target validation
+entity 9000 3 3
+link 9000 1000
+parse post 1
+queue 123456789012345678901234567890123456789012345678901234567890
+callback_start
+parse post 1
+queue 1234567890123456789012345678901234567890123456789012345678901
+callback_start
+parse message 1 1001
+queue 123456789012345678901234567890123456789012345678901234567890
+callback_start
+parse message 1 0
+queue 1234567890123456789012345678901234567890123456789012345678901
+callback_start
+text state
+report posts 200 9000 1
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
+
+section N09 MESSAGE consumes before invalid entity and wrong kind validation no colocation rule
+entity 9000 3 3
+entity 9001 3 3
+field 1001 lord 201
+link 9001 1001
+parse message 1 0
+queue invalid target consumed
+callback_start
+parse message 1 9000
+queue wrong kind consumed
+callback_start
+parse message 3 1001
+text queue 202023202271756f746522202009
+text queue EMPTY
+queue end
+callback_start
+pstate 200
+text state
+readlog 200
+readlog 201
+save 1000
+save 1001
+export state
+
+section N09 MESSAGE single and multiple blanks quotes indentation restore asymmetric logs
+field 1001 lord 201
+sout frame 7 2 0 0
+parse message 1 1001
+text queue EMPTY
+callback_start
+parse message 2 1001
+text queue EMPTY
+text queue EMPTY
+callback_start
+parse message 0 1001
+text queue 20206869202009
+queue END
+callback_start
+parse message 0 1001
+queue END
+callback_start
+parse message 1 1001
+queue remains
+callback_start -1
+text state
+pstate 200
+readlog 200
+readlog 201
+export state
+
+section N09 PRESS RUMOR 78 byte success 79 refusal and column zero escaping attribution
+lore_root
+life times_open
+name 1000 Town~Crier
+parse press 3
+queue =-=- literal
+text queue 203d2d3d2d207370616365
+queue 123456789012345678901234567890123456789012345678901234567890123456789012345678
+callback_start
+readfile times_press
+readfile times_rumor
+parse rumor 3
+queue =-=- literal
+text queue EMPTY
+queue 123456789012345678901234567890123456789012345678901234567890123456789012345678
+callback_start
+readfile times_rumor
+parse press 1
+queue 1234567890123456789012345678901234567890123456789012345678901234567890123456789
+callback_start
+parse rumor 1
+queue 1234567890123456789012345678901234567890123456789012345678901234567890123456789
+callback_start
+readfile times_press
+readfile times_rumor
+pstate 200
+readlog 200
+export state
+
+section N09 PRESS RUMOR NULL blank and repeated opens retain original inode after rename
+lore_root
+life times_open
+life rename times_press press-old
+life rename times_rumor rumor-old
+life times_open
+parse press 0
+queue END
+callback_start
+parse rumor 0
+queue END
+callback_start
+parse press 0
+text queue EMPTY
+queue END
+callback_start
+parse rumor 1
+text queue EMPTY
+callback_start
+readfile press-old
+readfile rumor-old
+readfile times_press
+readfile times_rumor
+life times_close
+life times_open
+parse press 1
+queue New file
+callback_start
+parse rumor 1
+queue New rumor
+callback_start
+readfile times_press
+readfile times_rumor
+life times_close
+readlog 200
+export state
+
+section N09 actual STATE_RUN reload NULL interrupts next WAIT never consumes text or starts
+queue post 1
+queue message 1 1001
+queue press 1
+queue rumor 1
+queue wait day 4
+queue text must remain
+load
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+pstate 200
+text state
+readlog 200
+export state
+
+section N09 started POST MESSAGE PRESS RUMOR reload NULL finish no second text consumption
+lore_root
+entity 9000 3 3
+link 9000 1000
+life times_open
+queue post 1
+queue A notice
+queue wait day 4
+load
+callback_start
+run 0 0 1 0
+persist_command
+finish
+dump
+flush 200 1000
+queue message 1 1001
+queue A message
+queue wait day 4
+load
+callback_start
+run 0 0 1 0
+persist_command
+finish
+dump
+flush 200 1000
+queue press 1
+queue A press
+queue wait day 4
+load
+callback_start
+run 0 0 1 0
+persist_command
+finish
+dump
+flush 200 1000
+queue rumor 1
+queue A rumor
+queue wait day 4
+load
+callback_start
+run 0 0 1 0
+persist_command
+finish
+dump
+text state
+pstate 200
+readfile times_press
+readfile times_rumor
+readlog 200
+export state
+
+section N09 actual process_orders consumes text-looking orders coverage and mint aftermath
+lore_root
+coverage path coverage.tsv
+master 0
+entity 205 1 52
+entity 206 1 52
+entity 207 1 52
+set indep 205
+set hades_player 206
+set faery_player 207
+entity 25 4 0
+entity 26 4 0
+entity 8100 3 50
+entity 8200 3 50
+entity 9100 3 7
+entity 9200 3 3
+set hades_region 8100
+set faery_region 8200
+link 8100 9100
+link 8200 9200
+entity 8000 3 50
+entity 9000 3 3
+entity 1 4 0
+link 8000 9000
+link 9000 1000
+link 9000 1001
+field 1000 health 100
+field 1001 health 100
+life times_open
+queue press 1
+queue public
+queue rumor 0
+queue =-=- news
+queue eNd
+queue post 1
+queue times 1
+queue message 1 1001
+queue name Not executed
+queue press 1
+queue 1234567890123456789012345678901234567890123456789012345678901234567890123456789
+queue rumor 1
+queue 1234567890123456789012345678901234567890123456789012345678901234567890123456789
+queue post 1
+queue 1234567890123456789012345678901234567890123456789012345678901
+queue message 1 9000
+queue Wrong kind consumed
+queue wait day 31
+who 1001
+queue wait day 31
+who 1000
+resolve_wait
+process
+text state
+pstate 200
+settings state 200
+coverage state 47
+coverage state 58
+coverage state 59
+coverage state 73
+coverage state 61
+coverage state 85
+coverage state 49
+coverage state 94
+readfile times_press
+readfile times_rumor
+report posts 200 9000 1
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
+
+section N09 zero preserves all whitespace while counted bytes include multibyte at limits
+entity 9000 3 3
+link 9000 1000
+parse post 0
+text queue 2020092020
+queue END
+callback_start
+parse post 1
+text queue c3a931323334353637383930313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738
+callback_start
+parse post 1
+text queue c3a93132333435363738393031323334353637383930313233343536373839303132333435363738393031323334353637383930313233343536373839
+callback_start
+text state
+report posts 200 9000 1
+readlog 200
+export state
+
+section N09 started actions reload NULL interruption never repeat text allocation or Times writes
+lore_root
+entity 9000 3 3
+link 9000 1000
+life times_open
+queue post 1
+queue A notice
+queue wait day 4
+load
+callback_start
+run 0 0 1 0
+persist_command
+generic_interrupt 1000
+dump
+flush 200 1000
+queue message 1 1001
+queue A message
+queue wait day 4
+load
+callback_start
+run 0 0 1 0
+persist_command
+generic_interrupt 1000
+dump
+flush 200 1000
+queue press 1
+queue A press
+queue wait day 4
+load
+callback_start
+run 0 0 1 0
+persist_command
+generic_interrupt 1000
+dump
+flush 200 1000
+queue rumor 1
+queue A rumor
+queue wait day 4
+load
+callback_start
+run 0 0 1 0
+persist_command
+generic_interrupt 1000
+dump
+queue Negative-count sentinel
+parse press 1
+callback_start -1
+parse rumor 1
+callback_start -2147483648
+text state
+pstate 200
+readfile times_press
+readfile times_rumor
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
