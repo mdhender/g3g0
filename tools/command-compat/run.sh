@@ -149,7 +149,9 @@ functions = {
              'v_fullname', 'v_banner', 'v_flag', 'v_split', 'v_emote'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production',
                   'item_gen_here', 'find_harv', 'v_generic_harvest', 'mage_menial_how',
-                  'i_generic_harvest', 'v_collect'],
+                  'i_generic_harvest', 'v_collect', 'd_generic_harvest', 'bump_other_collectors',
+                  'd_collect', 'i_collect', 'v_quarry', 'v_recruit', 'v_raise_corpses',
+                  'v_fish', 'v_wood', 'v_opium', 'v_mallorn', 'v_yew', 'v_catch', 'v_mage_menial'],
     'perm.c': ['is_hostile', 'is_defend', 'clear_all_att', 'rp_admit', 'p_admit', 'will_admit',
                'v_admit', 'set_att', 'v_set_att', 'v_hostile', 'v_defend', 'v_neutral', 'v_att_clear',
                'admit_comp', 'print_admit_sup', 'print_admit', 'print_att_sup', 'print_att'],
@@ -570,6 +572,8 @@ int drv_harvest_find(int item) { return find_harv(item)!=NULL; }
 int drv_harvest_gen(int terr,int item) { return item_gen_here(terr,item); }
 int drv_harvest_start(struct command *c,int item,int number,int days) { return v_generic_harvest(c,number,days,find_harv(item)); }
 int drv_harvest_summary(struct command *c,int item) { return i_generic_harvest(c,find_harv(item)); }
+int drv_harvest_daily(struct command *c,int item) { return d_generic_harvest(c,find_harv(item)); }
+void drv_harvest_bump(int where,int item) { bump_other_collectors(where,find_harv(item)); }
 void drv_menial(int who) {
  int roll=ent_menial(who);
  printf("menial %d %d [%s]\\n",who,roll,mage_menial_how(who));
@@ -781,6 +785,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N12b '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N12b invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N12b status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N12a '* ]]; then
    [ "$status" = 0 ] || die "unexpected N12a status $status in section $i"
   fi

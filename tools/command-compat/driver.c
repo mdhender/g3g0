@@ -37,6 +37,8 @@ void drv_collect_add(int who), drv_harvest_table(void), drv_menial(int who);
 int drv_harvest_find(int item), drv_harvest_gen(int terr, int item);
 int drv_harvest_start(struct command *c, int item, int number, int days);
 int drv_harvest_summary(struct command *c, int item);
+int drv_harvest_daily(struct command *c, int item);
+void drv_harvest_bump(int where, int item);
 void drv_evening(void), drv_daily(void), drv_players(void), drv_sort_run(void);
 void drv_sort_load(int pri);
 int drv_fort_covers(int n);
@@ -1853,6 +1855,9 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"start")) printf("harvest start %d\n",drv_harvest_start(c,n,a,b));
    else if(!strcmp(text,"collect")) printf("harvest collect %d\n",v_collect(c));
    else if(!strcmp(text,"summary")) printf("harvest summary %d\n",drv_harvest_summary(c,n));
+   else if(!strcmp(text,"daily")) printf("harvest daily %d\n",drv_harvest_daily(c,n));
+   else if(!strcmp(text,"bump")) drv_harvest_bump(n,a);
+   else if(!strcmp(text,"roll")) printf("harvest roll %d\n",econ_harvest(n,a,1,100));
    else if(!strcmp(text,"show")) show_to_garrison=n;
    else if(!strcmp(text,"state")) {
     printf("harvest command %d %d %d %d wait %d show %d\n",c->a,c->b,c->c,c->d,c->wait,show_to_garrison);

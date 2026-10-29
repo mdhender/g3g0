@@ -37375,3 +37375,729 @@ save 1000
 readlog 200
 entity_rolls 1000 7 9000
 usemeta legacy 1 100000
+
+section N12b queued recruit day one through three completes once then next order
+place 9000
+entity 10 4 0
+inventory 9000 10 7
+queue recruit 3 9
+queue guard 1
+initial
+day 1
+dump
+harvest state
+save 9000
+save 1000
+day 2
+dump
+harvest state
+day 3
+dump
+harvest state
+day 4
+dump
+save 9000
+save 1000
+save 200
+readlog 200
+
+section N12b competing workers drain unequal stock and copied duplicate collectors interrupt once
+place 9000
+entity 11 4 0
+entity 78 4 0
+entity 682 5 0
+learn 1000 682 2 0
+learn 1001 682 2 0
+inventory 9000 78 7
+inventory 1000 11 2
+inventory 1001 11 4
+queue quarry 9 8
+queue guard 1
+who 1001
+place 9000
+queue stone 0 8
+queue wait time 2
+initial
+harvest add 1000
+harvest add 1001
+day 1
+dump
+save 1000
+save 1001
+harvest state
+day 2
+dump
+harvest state
+save 9000
+save 1000
+save 1001
+day 3
+dump
+readlog 200
+usemeta state 1000 682
+usemeta state 1001 682
+
+section N12b worker cap exact requested quantity before stock depletion
+place 9000
+entity 11 4 0
+entity 78 4 0
+entity 682 5 0
+learn 1000 682 2 0
+inventory 9000 78 20
+inventory 1000 11 7
+queue quarry 3 12
+load
+do
+day 1
+harvest state
+save 9000
+save 1000
+readlog 200
+
+section N12b daily revalidation current location and worker count but lost skill still collects
+place 9000
+entity 9001 3 5
+entity 11 4 0
+entity 78 4 0
+entity 682 5 0
+learn 1000 682 2 0
+inventory 9000 78 9
+inventory 9001 78 12
+inventory 1000 11 3
+queue quarry 0 4
+load
+do
+day 1
+death forget 1000 682
+link 9001 1000
+day 2
+save 9000
+save 9001
+save 1000
+subitem 1000 11 3
+day 3
+harvest state
+dump
+readlog 200
+save 1000
+
+section N12b moved collector with empty stock summarizes without terrain or skill recheck
+place 9000
+entity 9001 3 5
+entity 11 4 0
+entity 78 4 0
+entity 682 5 0
+learn 1000 682 2 0
+inventory 9000 78 9
+inventory 1000 11 3
+queue quarry 5 4
+load
+do
+link 9001 1000
+day 1
+harvest state
+save 1000
+save 9000
+readlog 200
+
+section N12b rare mallorn chance miss retained versus last day summary keyed day stream
+master 7
+set turn 4
+place 9000
+field 9000 subkind 11
+entity 9001 3 5
+link 9001 9000
+entity 70 4 0
+entity 705 5 0
+learn 1000 705 2 0
+inventory 9000 70 12
+queue mallorn 0 10
+load
+do
+day 1
+harvest roll 70 1000
+harvest state
+day 2
+harvest roll 70 1000
+harvest state
+day 3
+harvest roll 70 1000
+harvest state
+day 4
+harvest roll 70 1000
+harvest state
+day 5
+harvest roll 70 1000
+harvest state
+day 6
+harvest roll 70 1000
+harvest state
+day 7
+harvest roll 70 1000
+harvest state
+day 8
+harvest roll 70 1000
+harvest state
+day 9
+harvest roll 70 1000
+harvest state
+day 10
+harvest roll 70 1000
+harvest state
+save 9000
+save 1000
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section N12b fish from ship shares immediate ocean stock with direct collector but not port
+master 11
+place 9000
+field 9000 subkind 1
+entity 9001 3 14
+entity 9002 9 30
+entity 9003 9 30
+link 9000 9001
+link 9000 9002
+link 9001 9003
+link 9002 1000
+entity 19 4 0
+entity 87 4 0
+entity 603 5 0
+learn 1000 603 2 0
+learn 1001 603 2 0
+inventory 1000 19 6
+inventory 1001 19 2
+inventory 9000 87 1
+inventory 9001 87 3
+inventory 9002 87 90
+inventory 9003 87 91
+queue fish 0 9
+load
+do
+who 1001
+place 9000
+queue fish 0 9
+load
+do
+select 1000
+day 1
+day 2
+day 3
+day 4
+harvest state
+dump
+save 9000
+save 9001
+save 9002
+save 1000
+save 1001
+link 9003 1000
+generic_interrupt 1000
+queue fish 0 1
+load
+do
+day 5
+harvest state
+save 9001
+save 9003
+save 1000
+readlog 200
+
+section N12b all command aliases reparse through COLLECT genuine NULL alias callbacks
+lore_root
+master 13
+place 9000
+entity 10 4 0
+entity 11 4 0
+entity 19 4 0
+entity 70 4 0
+entity 78 4 0
+entity 87 4 0
+entity 77 4 0
+entity 68 4 0
+entity 51 4 0
+entity 93 4 0
+entity 682 5 0
+entity 603 5 0
+entity 702 5 0
+entity 703 5 0
+entity 655 5 0
+entity 705 5 0
+entity 706 5 0
+learn 1000 682 2 0
+learn 1000 603 2 0
+learn 1000 702 2 0
+learn 1000 703 2 0
+learn 1000 655 2 0
+learn 1000 705 2 0
+learn 1000 706 2 0
+inventory 9000 10 9
+inventory 9000 78 19
+inventory 9000 87 29
+inventory 9000 77 39
+inventory 9000 68 49
+inventory 9000 51 59
+inventory 9000 93 69
+inventory 9000 70 79
+inventory 1000 11 4
+inventory 1000 19 3
+coverage path coverage.tsv
+queue quarry 2 1
+load
+do
+day 1
+harvest state
+queue stone 1 1
+load
+do
+day 2
+harvest state
+queue wood 3 1
+load
+do
+day 3
+harvest state
+queue yew 2 1
+load
+do
+day 4
+harvest state
+queue fish 2 1
+load
+do
+day 5
+harvest state
+queue catch 2 1
+load
+do
+day 6
+harvest state
+queue mallorn 2 1
+load
+do
+day 7
+harvest state
+queue opium 2 1
+load
+do
+day 8
+harvest state
+queue recruit 2 1
+load
+do
+day 9
+harvest state
+coverage write
+readfile coverage.tsv
+save 9000
+save 1000
+save 200
+readlog 200
+
+section N12b all seven USE starts reparse and account original USE indices not COLLECT starts
+lore_root
+master 19
+place 9000
+entity 50000 5 0
+entity 603 5 0
+entity 655 5 0
+entity 682 5 0
+entity 702 5 0
+entity 703 5 0
+entity 802 5 0
+entity 901 5 0
+field 603 required 50000
+field 655 required 50000
+field 682 required 50000
+field 702 required 50000
+field 703 required 50000
+field 802 required 50000
+field 901 required 50000
+learn 1000 50000 2 0
+learn 1000 603 2 0
+learn 1000 655 2 0
+learn 1000 682 2 0
+learn 1000 702 2 0
+learn 1000 703 2 0
+learn 1000 802 2 0
+learn 1000 901 2 0
+entity 1 4 0
+entity 11 4 0
+entity 19 4 0
+entity 31 4 0
+entity 78 4 0
+entity 87 4 0
+entity 77 4 0
+entity 68 4 0
+entity 51 4 0
+entity 277 4 0
+inventory 9000 31 4
+inventory 9000 78 8
+inventory 9000 87 9
+inventory 9000 77 10
+inventory 9000 68 11
+inventory 9000 51 12
+inventory 9000 277 13
+inventory 1000 11 2
+inventory 1000 19 3
+coverage path coverage.tsv
+ucov path use.tsv
+queue use 682 1 1
+load
+do
+ucov command
+day 1
+queue use 702 1 1
+load
+do
+ucov command
+day 2
+queue use 703 1 1
+load
+do
+ucov command
+day 3
+queue use 603 1 1
+load
+do
+ucov command
+day 4
+queue use 655 1 1
+load
+do
+ucov command
+day 5
+queue use 901 1 1
+load
+do
+ucov command
+day 6
+queue use 802 2
+load
+do
+ucov command
+day 7
+harvest state
+day 8
+harvest state
+coverage write
+ucov write
+readfile coverage.tsv
+readfile use.tsv
+save 9000
+save 1000
+save 200
+readlog 200
+usemeta skill_usage 802
+usemeta skill_usage 682
+usemeta legacy 1 100000
+
+section N12b STOP zero collected retains queued next order and reports failure
+place 9000
+entity 10 4 0
+inventory 9000 10 7
+queue recruit 3 0
+load
+do
+queue stop
+queue guard 1
+stops
+dump
+harvest state
+save 1000
+day 1
+dump
+save 9000
+save 1000
+readlog 200
+
+section N12b STOP partial persisted command interrupts failure without dropping next order
+place 9000
+entity 10 4 0
+inventory 9000 10 7
+queue recruit 3 0
+load
+do
+day 1
+persist_command
+init_collect
+queue stop
+queue guard 1
+stops
+dump
+harvest state
+save 1000
+day 2
+dump
+save 9000
+save 1000
+readlog 200
+
+section N12b STOP exact raw partial success uses c d versus c c and clears all duplicates
+place 9000
+entity 10 4 0
+inventory 9000 10 7
+queue recruit 3 0
+load
+do
+harvest add 1000
+transfer_probe args 10 3 3 3
+queue stop
+queue guard 1
+stops
+dump
+harvest state
+save 1000
+day 1
+dump
+save 9000
+readlog 200
+
+section N12b depletion finishes current before bump zero collector and STOP sees idle
+place 9000
+entity 10 4 0
+inventory 9000 10 1
+queue recruit 0 0
+load
+do
+who 1001
+place 9000
+queue recruit 5 0
+load
+do
+queue guard 1
+select 1000
+day 1
+dump
+harvest state
+orders 200 1000 stop
+orders 200 1000 guard 1
+stops
+dump
+save 9000
+save 1000
+save 1001
+readlog 200
+
+section N12b persisted daily collector resumes real queues and exhausts once
+place 9000
+entity 10 4 0
+inventory 9000 10 3
+queue recruit 0 0
+load
+do
+day 1
+persist_command
+init_collect
+initial
+day 2
+harvest state
+day 3
+harvest state
+day 4
+harvest state
+save 9000
+save 1000
+readlog 200
+
+section N12b menial visible gold quantity is ten with no invented requested number cap
+master 3
+place 9000
+entity 1 4 0
+entity 277 4 0
+entity 802 5 0
+learn 1000 802 2 0
+inventory 9000 277 4
+queue collect 277 1 9
+load
+do
+day 1
+harvest state
+save 9000
+save 1000
+readlog 200
+harvest roll 277 1000
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section N12b begin economy even chance zero changes subsequent active market keyed stream
+master 3
+place 9000
+entity 10 4 0
+inventory 9000 10 5
+queue recruit 0 1
+load
+do
+day 1
+harvest roll 93 1000
+harvest roll 10 1000
+harvest state
+save 9000
+save 1000
+usemeta legacy 1 100000
+
+section N12b internal missing harvest definition real finish and interrupt diagnostics
+place 9000
+parse collect 9999 1 1
+run 0 1 1 0
+finish
+run 7 1 1 0
+generic_interrupt 1000
+harvest state
+readlog 200
+readlog 10
+
+section N12b invalid worker desired remainder asserts original qty nonnegative
+place 9000
+entity 11 4 0
+entity 78 4 0
+inventory 9000 78 3
+inventory 1000 11 3
+parse collect 78 2 1
+transfer_probe args 78 2 2 5
+harvest daily 78
+
+section N12b invalid bump preserves missing command assertion without extra filtering
+place 9000
+harvest add 1001
+harvest bump 9000 10
+
+section N12b bump skips different resource and different immediate location without deduping
+place 9000
+entity 9001 3 5
+entity 1002 2 0
+field 1002 lord 200
+entity 10 4 0
+entity 31 4 0
+entity 901 5 0
+learn 1001 901 2 0
+inventory 9000 10 1
+inventory 9000 31 4
+inventory 9001 10 5
+queue recruit 0 0
+load
+do
+who 1001
+place 9000
+queue collect 31 0 0
+load
+do
+who 1002
+place 9001
+queue recruit 0 0
+load
+do
+harvest add 1001
+harvest add 1002
+select 1000
+day 1
+harvest state
+save 1000
+save 1001
+save 1002
+save 9000
+save 9001
+readlog 200
+
+section N12b depleted stock and absent workers after accepted start no daily skill validation
+place 9000
+entity 11 4 0
+entity 78 4 0
+entity 682 5 0
+learn 1000 682 2 0
+inventory 9000 78 5
+inventory 1000 11 3
+queue quarry 2 0
+load
+do
+subitem 9000 78 5
+day 1
+harvest state
+dump
+save 9000
+save 1000
+readlog 200
+
+section N12b workerfree spiny root chance quarters and quantity one per day
+master 9
+place 9000
+entity 66 4 0
+entity 704 5 0
+learn 1000 704 2 0
+inventory 9000 66 9
+queue collect 66 2 5
+load
+do
+day 1
+harvest roll 66 1000
+harvest state
+day 2
+harvest roll 66 1000
+harvest state
+day 3
+harvest roll 66 1000
+harvest state
+day 4
+harvest roll 66 1000
+harvest state
+day 5
+harvest roll 66 1000
+harvest state
+save 9000
+save 1000
+readlog 200
+usemeta legacy 1 100000
+
+section N12b C32 addition wraps before worker quantity cap
+place 9000
+entity 11 4 0
+entity 78 4 0
+entity 682 5 0
+learn 1000 682 2 0
+inventory 9000 78 7
+inventory 1000 11 3
+parse collect 78 2147483647 3
+transfer_probe args 78 2147483647 2147483647 2147483646
+set wait 3
+harvest daily 78
+harvest state
+save 9000
+save 1000
+
+section N12b exact chance twenty accepted twentyone rejected and final zero miss summarizes
+master 7
+set turn 4
+place 9000
+field 9000 subkind 11
+entity 9001 3 5
+link 9001 9000
+entity 70 4 0
+entity 705 5 0
+learn 1000 705 2 0
+inventory 9000 70 8
+queue mallorn 2 3
+load
+do
+set day 170
+harvest daily 70
+harvest roll 70 1000
+harvest state
+set day 47
+harvest daily 70
+harvest roll 70 1000
+harvest state
+set wait 0
+finish
+harvest state
+queue mallorn 1 1
+load
+do
+set day 47
+finish
+harvest roll 70 1000
+harvest state
+save 9000
+save 1000
+readlog 200
+usemeta legacy 1 100000

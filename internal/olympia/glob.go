@@ -333,6 +333,26 @@ func init() {
 	}
 	for i := range cmdTbl {
 		switch cmdTbl[i].name {
+		case "collect":
+			cmdTbl[i].start = (*world).vCollect
+			cmdTbl[i].finish = (*world).dCollect
+			cmdTbl[i].interrupt = (*world).iCollect
+		case "recruit":
+			cmdTbl[i].start = (*world).vRecruit
+		case "quarry", "stone":
+			cmdTbl[i].start = (*world).vQuarry
+		case "fish":
+			cmdTbl[i].start = (*world).vFish
+		case "wood":
+			cmdTbl[i].start = (*world).vWood
+		case "opium":
+			cmdTbl[i].start = (*world).vOpium
+		case "mallorn":
+			cmdTbl[i].start = (*world).vMallorn
+		case "yew":
+			cmdTbl[i].start = (*world).vYew
+		case "catch":
+			cmdTbl[i].start = (*world).vCatch
 		case "honor", "honour":
 			cmdTbl[i].start = (*world).vHonor
 		case "oath":

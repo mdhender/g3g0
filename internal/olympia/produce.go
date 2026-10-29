@@ -3,6 +3,8 @@
 
 package olympia
 
+import "fmt"
+
 // Original produce.c:10–88 terrain and depth tables. Production replenishes
 // a stock floor; it does not add the table quantity each month.
 const poppyOpium = 25
@@ -93,8 +95,7 @@ func (w *world) locationProduction() {
 	}
 }
 
-// COLLECT dispatch remains unsupported until the daily/reparse closure is
-// ported. These complete start and summary owners are shared by that closure.
+// The collector list is rebuilt from persisted running COLLECT commands.
 func (w *world) initCollectList() {
 	cmdCollect := w.findCommand("collect")
 	assert(cmdCollect > 0, "olympia/produce.c", 533, "cmd_collect > 0")
@@ -256,7 +257,7 @@ func (w *world) iGenericHarvest(c *command, t *harvest) int {
 	return 0
 }
 
-// produce.c:783–801. Deliberately not installed in cmdTbl yet.
+// produce.c:783–801.
 func (w *world) vCollect(c *command) int {
 	t := findHarv(int(c.a))
 	if t == nil {
@@ -264,4 +265,132 @@ func (w *world) vCollect(c *command) int {
 		return 0
 	}
 	return w.vGenericHarvest(c, int(c.b), int(c.c), t)
+}
+
+// produce.c:546–576. Interruptions remove entries from the original list;
+// the snapshot deliberately preserves duplicates and original visit order.
+func (w *world) bumpOtherCollectors(where int, t *harvest) {
+	for _, who := range w.collectors.Copy() {
+		c := w.rpCommand(who)
+		assert(c != nil, "olympia/produce.c", 559, "c")
+		if c.a != int32(t.item) {
+			continue
+		}
+		wh2 := w.subloc(int(c.who))
+		if t.item == itemFish && w.isShip(wh2) {
+			wh2 = w.loc(wh2)
+		}
+		if where == wh2 {
+			w.interruptOrder(int(c.who))
+		}
+	}
+}
+
+// produce.c:626–698. Re-read location, stock and workers, but not skill.
+// Saved quantities and all intermediate resource arithmetic are C ints.
+func (w *world) dGenericHarvest(c *command, t *harvest) int {
+	who := int(c.who)
+	where := w.subloc(who)
+	number := c.c
+	if t.item == itemFish && w.isShip(where) {
+		where = w.loc(where)
+	}
+	qty := w.hasItem(where, t.item)
+	if t.worker != 0 {
+		qty = min(qty, w.hasItem(who, t.worker))
+		if number > 0 && c.d+qty > number {
+			qty = number - c.d
+		}
+		assert(qty >= 0, "olympia/produce.c", 647, "qty >= 0")
+	} else {
+		qty = min(qty, 1)
+	}
+	if qty > 0 {
+		w.streams.BeginEconomy(where)
+		if t.chance != 0 && w.streams.EconHarvest(t.item, who, 1, 100) > t.chance {
+			if c.wait == 0 {
+				return w.iGenericHarvest(c, t)
+			}
+			return 1
+		}
+		if t.visItem != 0 {
+			w.consumeItem(where, t.item, int(qty))
+			n := qty * int32(t.mult)
+			w.genItem(who, t.visItem, int(n))
+			c.d += n
+		} else {
+			w.moveItem(where, who, t.item, int(qty))
+			c.d += qty
+		}
+		if w.hasItem(where, t.item) == 0 {
+			ret := w.iGenericHarvest(c, t)
+			w.bumpOtherCollectors(where, t)
+			return ret
+		}
+		if c.wait != 0 && !(number > 0 && c.d >= number) {
+			return 1
+		}
+	}
+	return w.iGenericHarvest(c, t)
+}
+
+// produce.c:804–820 and 823–839 retain the original internal-error logs.
+func (w *world) dCollect(c *command) int {
+	t := findHarv(int(c.a))
+	if t == nil {
+		w.commandOut(int(c.who), "Internal error.")
+		w.logWrite(10, "d_collect: t is NULL, who=%d", c.who)
+		return 0
+	}
+	return w.dGenericHarvest(c, t)
+}
+
+func (w *world) iCollect(c *command) int {
+	t := findHarv(int(c.a))
+	if t == nil {
+		w.commandOut(int(c.who), "Internal error.")
+		w.logWrite(10, "i_collect: t is NULL, who=%d", c.who)
+		return 0
+	}
+	return w.iGenericHarvest(c, t)
+}
+
+// Each produce.c:842–962 wrapper reparses through the shared command parser,
+// replacing the command index and clearing use_skill just as oly_parse does.
+func (w *world) harvestAlias(c *command, item, number, days, line int) int {
+	s := fmt.Sprintf("collect %d %d %d", item, number, days)
+	ret := w.olyParse(c, &s)
+	assert(ret, "olympia/produce.c", line, "ret")
+	return w.vCollect(c)
+}
+
+func (w *world) vQuarry(c *command) int {
+	return w.harvestAlias(c, itemStone, int(c.a), int(c.b), 848)
+}
+func (w *world) vRecruit(c *command) int {
+	return w.harvestAlias(c, itemPeasant, int(c.a), int(c.b), 860)
+}
+func (w *world) vRaiseCorpses(c *command) int {
+	return w.harvestAlias(c, itemCorpse, int(c.a), int(c.b), 872)
+}
+func (w *world) vFish(c *command) int {
+	return w.harvestAlias(c, itemFish, int(c.a), int(c.b), 884)
+}
+func (w *world) vWood(c *command) int {
+	return w.harvestAlias(c, itemLumber, int(c.a), int(c.b), 896)
+}
+func (w *world) vOpium(c *command) int {
+	return w.harvestAlias(c, itemOpium, int(c.a), int(c.b), 908)
+}
+func (w *world) vMallorn(c *command) int {
+	return w.harvestAlias(c, itemMallornWood, int(c.a), int(c.b), 921)
+}
+func (w *world) vYew(c *command) int {
+	return w.harvestAlias(c, itemYew, int(c.a), int(c.b), 933)
+}
+func (w *world) vCatch(c *command) int {
+	return w.harvestAlias(c, itemWildHorse, int(c.a), int(c.b), 946)
+}
+func (w *world) vMageMenial(c *command) int {
+	return w.harvestAlias(c, itemMageMenial, 0, int(c.a), 959)
 }

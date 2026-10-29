@@ -15,9 +15,16 @@ import (
 // checks all C NULL bits; every other absent implementation must remain NYI.
 func TestCommandUseCallbackBoundaries(t *testing.T) {
 	implemented := map[int][2]func(*world, *command) int{
-		skHideSelf:  {(*world).vHide, (*world).dHide},
-		skBindStorm: {(*world).vBindStorm, (*world).dBindStorm},
-		skHinderMed: {(*world).vHinderMed, (*world).dHinderMed},
+		skHideSelf:      {(*world).vHide, (*world).dHide},
+		skBindStorm:     {(*world).vBindStorm, (*world).dBindStorm},
+		skHinderMed:     {(*world).vHinderMed, (*world).dHinderMed},
+		skQuarryStone:   {(*world).vQuarry, nil},
+		skCatchHorse:    {(*world).vCatch, nil},
+		skHarvestLumber: {(*world).vWood, nil},
+		skHarvestYew:    {(*world).vYew, nil},
+		skRaiseCorpses:  {(*world).vRaiseCorpses, nil},
+		skMageMenial:    {(*world).vMageMenial, nil},
+		skFishing:       {(*world).vFish, nil},
 	}
 	for i, row := range useTbl {
 		for phase, callback := range []func(*world, *command) int{row.start, row.finish, row.interrupt} {
@@ -57,6 +64,10 @@ func TestCommandUseSharedNYIBoundaries(t *testing.T) {
 	for _, row := range useTbl[1 : len(useTbl)-1] {
 		if row.start == nil || row.skill == skHideSelf || row.skill == skBindStorm || row.skill == skHinderMed {
 			continue
+		}
+		switch row.skill {
+		case skQuarryStone, skCatchHorse, skHarvestLumber, skHarvestYew, skRaiseCorpses, skMageMenial, skFishing:
+			continue // Real reparse/dispatch outcomes are covered by the C oracle.
 		}
 		t.Run(fmt.Sprint(row.skill), func(t *testing.T) {
 			w := newWorld()

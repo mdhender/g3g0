@@ -2594,6 +2594,14 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				fmt.Fprintf(&stdout, "harvest collect %d\n", w.vCollect(c))
 			case "summary":
 				fmt.Fprintf(&stdout, "harvest summary %d\n", w.iGenericHarvest(c, findHarv(args.num(t))))
+			case "daily":
+				fmt.Fprintf(&stdout, "harvest daily %d\n", w.dGenericHarvest(c, findHarv(args.num(t))))
+			case "bump":
+				where, item := args.num(t), args.num(t)
+				w.bumpOtherCollectors(where, findHarv(item))
+			case "roll":
+				item, who := args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "harvest roll %d\n", w.streams.EconHarvest(item, who, 1, 100))
 			case "show":
 				w.showToGarrison = args.num(t) != 0
 			case "state":
@@ -3271,7 +3279,7 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 // success. This is a port-boundary contract, not a fabricated C recording.
 func TestCommandUnportedStops(t *testing.T) {
 	w := newWorld()
-	for _, name := range []string{"collect", "attack"} {
+	for _, name := range []string{"attack"} {
 		i := w.findCommand(name)
 		for phase, fn := range map[string]func(*world, *command) int{"start": cmdTbl[i].start, "finish": cmdTbl[i].finish, "interrupt": cmdTbl[i].interrupt} {
 			if fn == nil {
@@ -3292,7 +3300,7 @@ func TestCommandUnportedStops(t *testing.T) {
 // Real transfer/interrupt orchestration must not turn unported non-NULL
 // callbacks into success. This tests the explicit boundary, not C results.
 func TestCommandInterruptionBoundaries(t *testing.T) {
-	for _, name := range []string{"sail", "collect"} {
+	for _, name := range []string{"sail"} {
 		for _, transfer := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%s/transfer=%v", name, transfer), func(t *testing.T) {
 				w := newWorld()
