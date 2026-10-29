@@ -1647,6 +1647,38 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			fmt.Fprintf(&stdout, "np %d\n", w.charNPTotal(args.num(t)))
 		case "save":
 			w.saveBox(&stdout, args.num(t))
+		case "persist_command":
+			n := int(c.who)
+			path := filepath.Join(w.libdir, "command-reload")
+			fp, err := os.Create(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			fmt.Fprintf(fp, "%d %s 0\n", n, kindS[w.kind(n)])
+			w.printCommand(fp, c)
+			fmt.Fprintln(fp)
+			if err := fp.Close(); err != nil {
+				t.Fatal(err)
+			}
+			w.bx[n].cmd = nil
+			for i := range w.loadQ {
+				w.loadQ[i].Clear()
+			}
+			w.runQ.Clear()
+			w.readBoxes("command-reload")
+			c = w.rpCommand(n)
+		case "formation_state":
+			n := args.num(t)
+			p := w.rpChar(n)
+			fmt.Fprintf(&stdout, "formation %d kind %d char %d command %d loc %d name %d\n",
+				n, w.kind(n), b2i(p != nil), b2i(w.rpCommand(n) != nil), w.loc(n), b2i(w.bx[n].name != nil))
+			if p != nil {
+				fmt.Fprintf(&stdout, "fresh %d behind %d health %d attack %d defense %d break %d\n",
+					p.freshHire, p.behind, p.health, p.attack, p.defense, p.breakPoint)
+			}
+			if p := w.rpPlayer(n); p != nil {
+				helperList(&stdout, "unformed", p.unformed)
+			}
 		case "report":
 			switch action := args.word(); action {
 			case "order":
@@ -2814,6 +2846,9 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		case "evening":
 			w.eveningPhase()
 		case "daily":
+			w.dailyCommandLoop()
+		case "day":
+			w.sysclock.day = int16(args.num(t))
 			w.dailyCommandLoop()
 		case "players":
 			w.processPlayerOrders()

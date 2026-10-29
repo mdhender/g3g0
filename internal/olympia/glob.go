@@ -335,6 +335,9 @@ func init() {
 		switch cmdTbl[i].name {
 		case "admit":
 			cmdTbl[i].start = (*world).vAdmit
+		case "form":
+			cmdTbl[i].start = (*world).vForm
+			cmdTbl[i].finish = (*world).dForm
 		case "contact":
 			cmdTbl[i].start = (*world).vContact
 		case "default":

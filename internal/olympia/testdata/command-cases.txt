@@ -31925,3 +31925,410 @@ predicate contacted 1002 1000
 readlog 200
 readlog 201
 export state
+
+section N03 selected noble delayed formation duplicate removal exact cost and inherited behind
+entity 9000 3 14
+link 9000 1000
+link 9000 1001
+entity 1100 12 0
+entity 1101 12 0
+field 200 unformed 1100
+field 200 unformed 1101
+field 200 unformed 1101
+field 200 unformed 1100
+field 200 np 9
+field 200 np_spent 7
+field 1000 behind 259
+orders 200 1101 wait time 2
+orders 200 1101 format 6
+queue form 1101 "Chosen noble"
+queue wait time 2
+load
+do
+dump
+formation_state 1101
+pstate 200
+day 1
+day 2
+day 3
+formation_state 1101
+day 4
+day 5
+day 6
+formation_state 1101
+day 7
+dump
+formation_state 1101
+formation_state 200
+save 1101
+save 1100
+save 9000
+pstate 200
+select 1101
+dump
+start
+dump
+save 1101
+readlog 200
+entity_rolls 1101 7 9000
+usemeta legacy 1 100000
+export state
+
+section N03 invalid unformed foreign ID diagnoses then first owned fallback default name
+entity 9000 3 14
+link 9000 1000
+entity 1100 12 0
+entity 1101 12 0
+field 200 unformed 1100
+field 201 unformed 1101
+field 200 np 1
+queue form 1101
+load
+do
+day 1
+day 2
+day 3
+day 4
+day 5
+day 6
+day 7
+formation_state 1100
+formation_state 1101
+formation_state 200
+save 1100
+pstate 200
+readlog 200
+entity_rolls 1100 7 9000
+usemeta legacy 1 100000
+
+section N03 invalid existing character fallback explicit empty name and ignored later argument
+entity 9000 3 14
+link 9000 1000
+entity 1100 12 0
+field 200 unformed 1100
+field 200 np 1
+queue form 1001 "" "Not the name"
+load
+do
+day 1
+day 2
+day 3
+day 4
+day 5
+day 6
+day 7
+formation_state 1100
+save 1100
+pstate 200
+readlog 200
+
+section N03 invalid nonexistent ID fallback uses shared name trimming
+entity 9000 3 14
+link 9000 1000
+entity 1100 12 0
+field 200 unformed 1100
+field 200 np 1
+queue form 9999 "  Ada  "
+load
+do
+day 1
+day 2
+day 3
+day 4
+day 5
+day 6
+day 7
+formation_state 1100
+save 1100
+readlog 200
+
+section N03 exhausted list does not allocate charge or consume mint RNG
+entity 9000 3 14
+link 9000 1000
+field 200 np 5
+queue form
+load
+do
+day 1
+day 2
+day 3
+day 4
+day 5
+day 6
+day 7
+dump
+pstate 200
+formation_state 200
+newitem 1000 42
+entity_rolls 1100 7 9000
+usemeta legacy 1 100000
+export state
+readlog 200
+
+section N03 invalid specified exhausted list emits both diagnostics no allocation
+entity 9000 3 14
+link 9000 1000
+entity 1100 12 0
+field 201 unformed 1100
+field 200 np 1
+queue form 1100 "No recruit"
+load
+do
+day 1
+day 2
+day 3
+day 4
+day 5
+day 6
+day 7
+formation_state 1100
+formation_state 200
+pstate 200
+readlog 200
+
+section N03 city checked before NP and start refusal retains unformed
+place 9000
+entity 1100 12 0
+field 200 unformed 1100
+field 200 np 0
+queue form 1100
+load
+do
+dump
+formation_state 1100
+formation_state 200
+pstate 200
+readlog 200
+
+section N03 city start short NP refuses without reserving noble
+entity 9000 3 14
+link 9000 1000
+entity 1100 12 0
+field 200 unformed 1100
+field 200 np -1
+queue form 1100
+load
+do
+dump
+formation_state 1100
+formation_state 200
+pstate 200
+readlog 200
+
+section N03 completion NP recheck before invalid target validation after persisted reload
+lore_root
+entity 9000 3 14
+link 9000 1000
+entity 1100 12 0
+field 200 unformed 1100
+field 200 np 1
+queue form 9999 "Should not form"
+queue format 11
+load
+do
+day 1
+day 2
+day 3
+save 1000
+persist_command
+readfile command-reload
+initial
+dump
+field 200 np 0
+day 4
+day 5
+day 6
+day 7
+dump
+formation_state 1100
+formation_state 200
+pstate 200
+start
+dump
+readlog 200
+export state
+
+section N03 city not rechecked completion moves to current sublocation after reload
+lore_root
+entity 9000 3 14
+entity 9001 3 3
+link 9000 1000
+entity 1100 12 0
+field 200 unformed 1100
+field 200 np 1
+queue form 0 "Reloaded noble"
+queue wait time 5
+orders 200 1100 format 23
+orders 200 1100 wait time 3
+load
+do
+day 1
+day 2
+persist_command
+readfile command-reload
+link 9001 1000
+field 1000 behind -2
+initial
+dump
+day 3
+day 4
+day 5
+day 6
+day 7
+dump
+formation_state 1100
+save 1100
+save 9000
+save 9001
+pstate 200
+select 1100
+dump
+start
+dump
+pstate 200
+readlog 200
+entity_rolls 1100 7 9001
+usemeta legacy 1 100000
+export state
+
+section N03 real NULL interruption leaves noble unformed and next orders retained
+lore_root
+entity 9000 3 14
+link 9000 1000
+entity 1100 12 0
+field 200 unformed 1100
+field 200 np 1
+queue form 1100 "Interrupted"
+queue wait time 3
+orders 200 1100 format 9
+load
+do
+day 1
+persist_command
+initial
+generic_interrupt 1000
+dump
+formation_state 1100
+formation_state 200
+pstate 200
+start
+day 2
+dump
+formation_state 1100
+readlog 200
+entity_rolls 1100 7 9000
+usemeta legacy 1 100000
+
+section N03 current owner determines completion unformed pool and NP after transfer
+entity 9000 3 14
+link 9000 1000
+entity 1100 12 0
+entity 1101 12 0
+field 200 unformed 1100
+field 201 unformed 1101
+field 200 np 1
+field 201 np 2
+queue form 1100 "New owner"
+load
+do
+field 1000 lord 201
+day 1
+day 2
+day 3
+day 4
+day 5
+day 6
+day 7
+formation_state 1100
+formation_state 1101
+save 1101
+formation_state 200
+formation_state 201
+pstate 200
+pstate 201
+readlog 200
+readlog 201
+export state
+
+section N03 command permissions reject faction and garrison before callbacks
+entity 1002 2 64
+field 1002 lord 200
+who 1002
+queue form
+load
+do
+dump
+who 200
+queue form
+load
+do
+dump
+readlog 200
+export state
+
+section N03 no formation control mint entity and legacy RNG aftermath
+entity 9000 3 14
+link 9000 1000
+field 200 np 5
+set day 7
+newitem 1000 42
+entity_rolls 1100 7 9000
+usemeta legacy 1 100000
+export state
+
+section N03 unformed list populated during delay and existing character fields not reset
+entity 9000 3 14
+link 9000 1000
+entity 1100 12 0
+field 1100 char_missile 31
+field 1100 sick 1
+field 1100 rate 17
+field 1100 health 5
+field 1100 char_attack 7
+field 1100 char_defense 9
+field 1100 break 2
+field 200 np 1
+queue form 0 ""
+load
+do
+day 1
+day 2
+field 200 unformed 1100
+field 200 np 7
+day 3
+day 4
+day 5
+day 6
+day 7
+formation_state 1100
+save 1100
+formation_state 200
+pstate 200
+readlog 200
+export state
+
+section N03 formation output borrows existing cached stream after path rename
+lore_root
+entity 9000 3 14
+link 9000 1000
+entity 1100 12 0
+field 200 unformed 1100
+field 200 np 1
+queue form 1100 "Cached noble"
+load
+do
+life rename log/200 held
+day 1
+day 2
+day 3
+day 4
+day 5
+day 6
+day 7
+formation_state 1100
+pstate 200
+life path log/200
+readfile held
+life close
+life path log/200
+readfile held

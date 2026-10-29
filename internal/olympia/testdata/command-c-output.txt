@@ -113889,3 +113889,1530 @@ CH
 stderr:
 
 exit 0
+stdout:
+section N03 selected noble delayed formation duplicate removal exact cost and inherited behind
+> entity 9000 3 14
+> link 9000 1000
+> link 9000 1001
+> entity 1100 12 0
+> entity 1101 12 0
+> field 200 unformed 1100
+> field 200 unformed 1101
+> field 200 unformed 1101
+> field 200 unformed 1100
+> field 200 np 9
+> field 200 np_spent 7
+> field 1000 behind 259
+> orders 200 1101 wait time 2
+> orders 200 1101 format 6
+> queue form 1101 "Chosen noble"
+> queue wait time 2
+> load
+load 1
+> do
+> dump
+cmd 32 who 1000 state 2 status 1 wait 7 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1101 0 0 0 0 0 0 0; parse [form] [1101] [Chosen noble]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> formation_state 1101
+formation 1101 kind 12 char 0 command 0 loc 0 name 0
+> pstate 200
+player 200 np 9 gained 0 spent 7 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1101: [wait time 2] [format 6]
+orders 1000: [wait time 2]
+> day 1
+> day 2
+> day 3
+> formation_state 1101
+formation 1101 kind 12 char 0 command 0 loc 0 name 0
+> day 4
+> day 5
+> day 6
+> formation_state 1101
+formation 1101 kind 12 char 0 command 0 loc 0 name 0
+> day 7
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 1
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1101 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> formation_state 1101
+formation 1101 kind 2 char 1 command 1 loc 1000 name 1
+fresh 1 behind 3 health 100 attack 80 defense 80 break 50
+> formation_state 200
+formation 200 kind 1 char 0 command 0 loc 0 name 0
+unformed: 1100 1100
+> save 1101
+1101 char 0
+na Chosen noble
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 500
+ bh 3
+ bp 50
+ at 80
+ df 80
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+> save 1100
+1100 unform 0
+
+> save 9000
+9000 loc city
+LI
+ hl 1000 1001 
+
+> pstate 200
+player 200 np 8 gained 0 spent 8 backlinks 0
+units: 1101
+output 0 0 0 1 0 touched 1 0
+orders 1101: [format 6]
+orders 1000:
+> select 1101
+> dump
+cmd 94 who 1101 state 1 status 0 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 1
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1: 1101 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> start
+> dump
+cmd 94 who 1101 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000 1101
+> save 1101
+1101 char 0
+na Chosen noble
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 500
+ bh 3
+ bp 50
+ at 80
+ df 80
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> form 1101 "Chosen noble"
+1101:0::0::Chosen noble~[1101] stacks beneath <no subkind>~[1000].
+1000:0::0::Chosen noble~[1101] stacks beneath us.
+1000:0::0::> wait time 2
+1101:0::0::> wait time 2
+> entity_rolls 1101 7 9000
+prison roll 4
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1101
+output: 1000 1101
+200 player pl_regular
+PL
+ np 8
+ un 1101 
+ uf 1100 1100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 10000 order 0
+here: 1101
+1000 char 0
+LI
+ wh 9000
+ hl 1101 
+CH
+ lo 200
+ bh 3
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1100 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1100 unform 0
+
+export entity 1101 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1101 char 0
+na Chosen noble
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 500
+ bh 3
+ bp 50
+ at 80
+ df 80
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000 1001
+9000 loc city
+LI
+ hl 1000 1001 
+
+stderr:
+
+exit 0
+stdout:
+section N03 invalid unformed foreign ID diagnoses then first owned fallback default name
+> entity 9000 3 14
+> link 9000 1000
+> entity 1100 12 0
+> entity 1101 12 0
+> field 200 unformed 1100
+> field 201 unformed 1101
+> field 200 np 1
+> queue form 1101
+> load
+load 1
+> do
+> day 1
+> day 2
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> formation_state 1100
+formation 1100 kind 2 char 1 command 1 loc 1000 name 1
+fresh 1 behind 0 health 100 attack 80 defense 80 break 50
+> formation_state 1101
+formation 1101 kind 12 char 0 command 0 loc 0 name 0
+> formation_state 200
+formation 200 kind 1 char 0 command 0 loc 0 name 0
+unformed:
+> save 1100
+1100 char 0
+na New noble
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 500
+ bp 50
+ at 80
+ df 80
+
+> pstate 200
+player 200 np 0 gained 0 spent 1 backlinks 0
+units: 1100
+output 0 0 0 1 0 touched 1 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> form 1101
+1000:0::0::[1101] is not a valid unformed noble entity.
+1100:0::0::New noble~[1100] stacks beneath <no subkind>~[1000].
+1000:0::0::New noble~[1100] stacks beneath us.
+> entity_rolls 1100 7 9000
+prison roll 563
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+stderr:
+
+exit 0
+stdout:
+section N03 invalid existing character fallback explicit empty name and ignored later argument
+> entity 9000 3 14
+> link 9000 1000
+> entity 1100 12 0
+> field 200 unformed 1100
+> field 200 np 1
+> queue form 1001 "" "Not the name"
+> load
+load 1
+> do
+> day 1
+> day 2
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> formation_state 1100
+formation 1100 kind 2 char 1 command 1 loc 1000 name 1
+fresh 1 behind 0 health 100 attack 80 defense 80 break 50
+> save 1100
+1100 char 0
+na New noble
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 500
+ bp 50
+ at 80
+ df 80
+
+> pstate 200
+player 200 np 0 gained 0 spent 1 backlinks 0
+units: 1100
+output 0 0 0 1 0 touched 1 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> form 1001 "" "Not the name"
+1000:0::0::[1001] is not a valid unformed noble entity.
+1100:0::0::New noble~[1100] stacks beneath <no subkind>~[1000].
+1000:0::0::New noble~[1100] stacks beneath us.
+stderr:
+
+exit 0
+stdout:
+section N03 invalid nonexistent ID fallback uses shared name trimming
+> entity 9000 3 14
+> link 9000 1000
+> entity 1100 12 0
+> field 200 unformed 1100
+> field 200 np 1
+> queue form 9999 "  Ada  "
+> load
+load 1
+> do
+> day 1
+> day 2
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> formation_state 1100
+formation 1100 kind 2 char 1 command 1 loc 1000 name 1
+fresh 1 behind 0 health 100 attack 80 defense 80 break 50
+> save 1100
+1100 char 0
+na Ada
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 500
+ bp 50
+ at 80
+ df 80
+
+> readlog 200
+log 200:
+1000:0::0::> form 9999 "  Ada  "
+1000:0::0::[9999] is not a valid unformed noble entity.
+1100:0::0::Ada~[1100] stacks beneath <no subkind>~[1000].
+1000:0::0::Ada~[1100] stacks beneath us.
+stderr:
+
+exit 0
+stdout:
+section N03 exhausted list does not allocate charge or consume mint RNG
+> entity 9000 3 14
+> link 9000 1000
+> field 200 np 5
+> queue form
+> load
+load 1
+> do
+> day 1
+> day 2
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> dump
+cmd 32 who 1000 state 0 status 0 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 7 debug 7 inhibit 0 cur 99
+args 0 0 0 0 0 0 0 0; parse [form]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 5 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> formation_state 200
+formation 200 kind 1 char 0 command 0 loc 0 name 0
+unformed:
+> newitem 1000 42
+created 77542
+> entity_rolls 1100 7 9000
+prison roll 563
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ np 5
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 3010000 order 0
+here:
+raw item 77542 1
+1000 char 0
+il	77542 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li form
+ ar 0 0 0 0 0 0 0 0
+ de 7
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77542 item scroll
+IT
+ un 1000
+
+> readlog 200
+log 200:
+1000:0::0::> form
+1000:0::0::No further nobles may be formed this turn.
+stderr:
+
+exit 0
+stdout:
+section N03 invalid specified exhausted list emits both diagnostics no allocation
+> entity 9000 3 14
+> link 9000 1000
+> entity 1100 12 0
+> field 201 unformed 1100
+> field 200 np 1
+> queue form 1100 "No recruit"
+> load
+load 1
+> do
+> day 1
+> day 2
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> formation_state 1100
+formation 1100 kind 12 char 0 command 0 loc 0 name 0
+> formation_state 200
+formation 200 kind 1 char 0 command 0 loc 0 name 0
+unformed:
+> pstate 200
+player 200 np 1 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> form 1100 "No recruit"
+1000:0::0::[1100] is not a valid unformed noble entity.
+1000:0::0::No further nobles may be formed this turn.
+stderr:
+
+exit 0
+stdout:
+section N03 city checked before NP and start refusal retains unformed
+> place 9000
+> entity 1100 12 0
+> field 200 unformed 1100
+> field 200 np 0
+> queue form 1100
+> load
+load 1
+> do
+> dump
+cmd 32 who 1000 state 0 status 0 wait 7 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1100 0 0 0 0 0 0 0; parse [form] [1100]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> formation_state 1100
+formation 1100 kind 12 char 0 command 0 loc 0 name 0
+> formation_state 200
+formation 200 kind 1 char 0 command 0 loc 0 name 0
+unformed: 1100
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> form 1100
+1000:0::0::Nobles may only be formed in cities.
+stderr:
+
+exit 0
+stdout:
+section N03 city start short NP refuses without reserving noble
+> entity 9000 3 14
+> link 9000 1000
+> entity 1100 12 0
+> field 200 unformed 1100
+> field 200 np -1
+> queue form 1100
+> load
+load 1
+> do
+> dump
+cmd 32 who 1000 state 0 status 0 wait 7 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1100 0 0 0 0 0 0 0; parse [form] [1100]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> formation_state 1100
+formation 1100 kind 12 char 0 command 0 loc 0 name 0
+> formation_state 200
+formation 200 kind 1 char 0 command 0 loc 0 name 0
+unformed: 1100
+> pstate 200
+player 200 np -1 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> form 1100
+1000:0::0::To form another noble requires 1 Noble Point.
+stderr:
+
+exit 0
+stdout:
+section N03 completion NP recheck before invalid target validation after persisted reload
+> lore_root
+> entity 9000 3 14
+> link 9000 1000
+> entity 1100 12 0
+> field 200 unformed 1100
+> field 200 np 1
+> queue form 9999 "Should not form"
+> queue format 11
+> load
+load 1
+> do
+> day 1
+> day 2
+> day 3
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li form 9999 "Should not form"
+ ar 9999 0 0 0 0 0 0 0
+ cs 2
+ wa 4
+ st 1
+ de 3
+ pr 3
+
+> persist_command
+> readfile command-reload
+file bytes command-reload 101:
+1000 char 0
+CO
+ li form 9999 "Should not form"
+ ar 9999 0 0 0 0 0 0 0
+ cs 2
+ wa 4
+ st 1
+ de 3
+ pr 3
+
+
+end file bytes
+> initial
+> dump
+cmd 32 who 1000 state 2 status 1 wait 4 poll 0 pri 3 cond 0 fuzzy 0 days 3 debug 0 inhibit 0 cur 99
+args 9999 0 0 0 0 0 0 0; parse [form] [9999] [Should not form]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> field 200 np 0
+> day 4
+> day 5
+> day 6
+> day 7
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 1
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> formation_state 1100
+formation 1100 kind 12 char 0 command 0 loc 0 name 0
+> formation_state 200
+formation 200 kind 1 char 0 command 1 loc 0 name 0
+unformed: 1100
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> start
+> dump
+cmd 33 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 99
+args 11 0 0 0 0 0 0 0; parse [format] [11]
+player 200 count 2 last 0 format 11 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> form 9999 "Should not form"
+1000:0::0::To form another noble requires 1 Noble Point.
+1000:0::0::> format 11
+1000:0::0::Formatting for Player~[200] set to 11.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ fo 11
+ uf 1100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 10000 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li format 11
+ ar 11 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1100 unform 0
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N03 city not rechecked completion moves to current sublocation after reload
+> lore_root
+> entity 9000 3 14
+> entity 9001 3 3
+> link 9000 1000
+> entity 1100 12 0
+> field 200 unformed 1100
+> field 200 np 1
+> queue form 0 "Reloaded noble"
+> queue wait time 5
+> orders 200 1100 format 23
+> orders 200 1100 wait time 3
+> load
+load 1
+> do
+> day 1
+> day 2
+> persist_command
+> readfile command-reload
+file bytes command-reload 94:
+1000 char 0
+CO
+ li form 0 "Reloaded noble"
+ ar 0 0 0 0 0 0 0 0
+ cs 2
+ wa 5
+ st 1
+ de 2
+ pr 3
+
+
+end file bytes
+> link 9001 1000
+> field 1000 behind -2
+> initial
+> dump
+cmd 32 who 1000 state 2 status 1 wait 5 poll 0 pri 3 cond 0 fuzzy 0 days 2 debug 0 inhibit 0 cur 99
+args 0 0 0 0 0 0 0 0; parse [form] [0] [Reloaded noble]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 1
+args 0 5 0 0 0 0 0 0; parse [wait] [time] [5]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1100 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> formation_state 1100
+formation 1100 kind 2 char 1 command 1 loc 1000 name 1
+fresh 1 behind -2 health 100 attack 80 defense 80 break 50
+> save 1100
+1100 char 0
+na Reloaded noble
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 500
+ bh -2
+ bp 50
+ at 80
+ df 80
+CO
+ li format 23
+ ar 23 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+> save 9000
+9000 loc city
+LI
+
+> save 9001
+9001 loc plain
+LI
+ hl 1000 
+
+> pstate 200
+player 200 np 0 gained 0 spent 1 backlinks 0
+units: 1100
+output 0 0 0 1 0 touched 0 1
+orders 1000:
+orders 1100: [wait time 3]
+> select 1100
+> dump
+cmd 33 who 1100 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 1
+args 23 0 0 0 0 0 0 0; parse [format] [23]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1: 1100 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> start
+> dump
+cmd 94 who 1100 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 0 3 0 0 0 0 0 0; parse [wait] [time] [3]
+player 200 count 4 last 0 format 23 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000 1100
+> pstate 200
+player 200 np 0 gained 0 spent 1 backlinks 0
+units: 1100
+output 0 0 0 1 0 touched 0 1
+orders 1000:
+orders 1100:
+> readlog 200
+log 200:
+1000:0::0::> form 0 "Reloaded noble"
+1100:0::0::Reloaded noble~[1100] stacks beneath <no subkind>~[1000].
+1000:0::0::Reloaded noble~[1100] stacks beneath us.
+1000:0::0::> wait time 5
+1100:0::0::> format 23
+1100:0::0::Formatting for Player~[200] set to 23.
+1100:0::0::> wait time 3
+> entity_rolls 1100 7 9001
+prison roll 563
+land dir99 4
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1100
+output: 1000 1100
+200 player pl_regular
+PL
+ fo 23
+ un 1100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 10000 order 0
+here: 1100
+1000 char 0
+LI
+ wh 9001
+ hl 1100 
+CH
+ lo 200
+ bh -2
+CO
+ li wait time 5
+ ar 0 5 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 20000 order 0
+here:
+1100 char 0
+na Reloaded noble
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 500
+ bh -2
+ bp 50
+ at 80
+ df 80
+CO
+ li wait time 3
+ ar 0 3 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+9000 loc city
+LI
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9001 loc plain
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N03 real NULL interruption leaves noble unformed and next orders retained
+> lore_root
+> entity 9000 3 14
+> link 9000 1000
+> entity 1100 12 0
+> field 200 unformed 1100
+> field 200 np 1
+> queue form 1100 "Interrupted"
+> queue wait time 3
+> orders 200 1100 format 9
+> load
+load 1
+> do
+> day 1
+> persist_command
+> initial
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 1
+args 0 3 0 0 0 0 0 0; parse [wait] [time] [3]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> formation_state 1100
+formation 1100 kind 12 char 0 command 0 loc 0 name 0
+> formation_state 200
+formation 200 kind 1 char 0 command 1 loc 0 name 0
+unformed: 1100
+> pstate 200
+player 200 np 1 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+orders 1100: [format 9]
+> start
+> day 2
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 1 debug 2 inhibit 0 cur 99
+args 0 3 0 0 0 0 0 0; parse [wait] [time] [3]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> formation_state 1100
+formation 1100 kind 12 char 0 command 0 loc 0 name 0
+> readlog 200
+log 200:
+1000:0::0::> form 1100 "Interrupted"
+1000:0::0::> wait time 3
+> entity_rolls 1100 7 9000
+prison roll 561
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+stderr:
+
+exit 0
+stdout:
+section N03 current owner determines completion unformed pool and NP after transfer
+> entity 9000 3 14
+> link 9000 1000
+> entity 1100 12 0
+> entity 1101 12 0
+> field 200 unformed 1100
+> field 201 unformed 1101
+> field 200 np 1
+> field 201 np 2
+> queue form 1100 "New owner"
+> load
+load 1
+> do
+> field 1000 lord 201
+> day 1
+> day 2
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> formation_state 1100
+formation 1100 kind 12 char 0 command 0 loc 0 name 0
+> formation_state 1101
+formation 1101 kind 2 char 1 command 1 loc 1000 name 1
+fresh 1 behind 0 health 100 attack 80 defense 80 break 50
+> save 1101
+1101 char 0
+na New owner
+LI
+ wh 1000
+CH
+ lo 201
+ he 100
+ lk 1
+ lr 500
+ bp 50
+ at 80
+ df 80
+
+> formation_state 200
+formation 200 kind 1 char 0 command 0 loc 0 name 0
+unformed: 1100
+> formation_state 201
+formation 201 kind 1 char 0 command 0 loc 0 name 0
+unformed:
+> pstate 200
+player 200 np 1 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> pstate 201
+player 201 np 1 gained 0 spent 1 backlinks 0
+units: 1101
+output 0 0 0 1 0 touched 1 0
+> readlog 200
+log 200:
+1000:0::0::> form 1100 "New owner"
+> readlog 201
+log 201:
+1000:0::0::[1100] is not a valid unformed noble entity.
+1101:0::0::New owner~[1101] stacks beneath <no subkind>~[1000].
+1000:0::0::New owner~[1101] stacks beneath us.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ np 1
+ uf 1100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1101
+output: 1000 1101
+201 player pl_regular
+PL
+ np 1
+ un 1101 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 3010000 order 0
+here: 1101
+1000 char 0
+LI
+ wh 9000
+ hl 1101 
+CH
+ lo 201
+CO
+ li form 1100 "New owner"
+ ar 1100 0 0 0 0 0 0 0
+ st 1
+ de 7
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1100 unform 0
+
+export entity 1101 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1101 char 0
+na New owner
+LI
+ wh 1000
+CH
+ lo 201
+ he 100
+ lk 1
+ lr 500
+ bp 50
+ at 80
+ df 80
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N03 command permissions reject faction and garrison before callbacks
+> entity 1002 2 64
+> field 1002 lord 200
+> who 1002
+> queue form
+> load
+load 1
+> do
+> dump
+cmd 32 who 1002 state 0 status 0 wait 7 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [form]
+player 200 count 1 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> who 200
+> queue form
+> load
+load 1
+> do
+> dump
+cmd 32 who 200 state 0 status 0 wait 7 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [form]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+200:0::0::> form
+200:0::0::Player~[200] may not issue that order.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 200
+200 player pl_regular
+PL
+CO
+ li form
+ ar 0 0 0 0 0 0 0 0
+ wa 7
+ pr 3
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char garrison
+CH
+ lo 200
+CO
+ li form
+ ar 0 0 0 0 0 0 0 0
+ wa 7
+ pr 3
+
+stderr:
+
+exit 0
+stdout:
+section N03 no formation control mint entity and legacy RNG aftermath
+> entity 9000 3 14
+> link 9000 1000
+> field 200 np 5
+> set day 7
+> newitem 1000 42
+created 77542
+> entity_rolls 1100 7 9000
+prison roll 563
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+ np 5
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 77542 1
+1000 char 0
+il	77542 1
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N03 unformed list populated during delay and existing character fields not reset
+> entity 9000 3 14
+> link 9000 1000
+> entity 1100 12 0
+> field 1100 char_missile 31
+> field 1100 sick 1
+> field 1100 rate 17
+> field 1100 health 5
+> field 1100 char_attack 7
+> field 1100 char_defense 9
+> field 1100 break 2
+> field 200 np 1
+> queue form 0 ""
+> load
+load 1
+> do
+> day 1
+> day 2
+> field 200 unformed 1100
+> field 200 np 7
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> formation_state 1100
+formation 1100 kind 2 char 1 command 1 loc 1000 name 1
+fresh 1 behind 0 health 100 attack 80 defense 80 break 50
+> save 1100
+1100 char 0
+na New noble
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ si 1
+ lk 1
+ lr 500
+ bp 50
+ at 80
+ df 80
+ mi 31
+
+> formation_state 200
+formation 200 kind 1 char 0 command 0 loc 0 name 0
+unformed:
+> pstate 200
+player 200 np 6 gained 0 spent 1 backlinks 0
+units: 1100
+output 0 0 0 1 0 touched 1 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> form 0 ""
+1100:0::0::New noble~[1100] stacks beneath <no subkind>~[1000].
+1000:0::0::New noble~[1100] stacks beneath us.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1100
+output: 1000 1100
+200 player pl_regular
+PL
+ np 6
+ un 1100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 3010000 order 0
+here: 1100
+1000 char 0
+LI
+ wh 9000
+ hl 1100 
+CH
+ lo 200
+CO
+ li form 0 ""
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ de 7
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1100 char 0
+na New noble
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ si 1
+ lk 1
+ lr 500
+ bp 50
+ at 80
+ df 80
+ mi 31
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N03 formation output borrows existing cached stream after path rename
+> lore_root
+> entity 9000 3 14
+> link 9000 1000
+> entity 1100 12 0
+> field 200 unformed 1100
+> field 200 np 1
+> queue form 1100 "Cached noble"
+> load
+load 1
+> do
+> life rename log/200 held
+> day 1
+> day 2
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> formation_state 1100
+formation 1100 kind 2 char 1 command 1 loc 1000 name 1
+fresh 1 behind 0 health 100 attack 80 defense 80 break 50
+> pstate 200
+player 200 np 0 gained 0 spent 1 backlinks 0
+units: 1100
+output 0 0 0 1 0 touched 1 0
+orders 1000:
+> life path log/200
+path log/200 missing
+> readfile held
+file bytes held 155:
+1000:0::0::> form 1100 "Cached noble"
+1100:0::0::Cached noble~[1100] stacks beneath <no subkind>~[1000].
+1000:0::0::Cached noble~[1100] stacks beneath us.
+
+end file bytes
+> life close
+> life path log/200
+path log/200 missing
+> readfile held
+file bytes held 155:
+1000:0::0::> form 1100 "Cached noble"
+1100:0::0::Cached noble~[1100] stacks beneath <no subkind>~[1000].
+1000:0::0::Cached noble~[1100] stacks beneath us.
+
+end file bytes
+stderr:
+
+exit 0

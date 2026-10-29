@@ -5,6 +5,68 @@ package olympia
 
 import "fmt"
 
+// Complete c1.c:947–974. Ownership initializes the new noble's queued command
+// before joinStack moves it beneath the forming noble; do not use newChar,
+// which allocates a different entity and has different initialization.
+func (w *world) formNewNoble(who int, name string, new int) {
+	assert(w.kind(new) == tUnform, "olympia/c1.c", 953, "kind(new) == T_unform")
+	w.changeBoxKind(new, tChar)
+	p := w.pChar(new)
+	op := w.pChar(who)
+	p.behind = op.behind
+	p.freshHire = 1
+	p.health = 100
+	p.attack = 80
+	p.defense = 80
+	p.breakPoint = 50
+	w.setName(new, name)
+	w.setWhere(new, w.subloc(who))
+	w.setLord(new, w.player(who), loyContract, 500)
+	w.joinStack(new, who)
+}
+
+func (w *world) vForm(c *command) int {
+	if w.subkind(w.subloc(int(c.who))) != subCity {
+		w.commandOut(int(c.who), "Nobles may only be formed in cities.")
+		return 0
+	}
+	// noble_cost(pl) is the constant 1 in c1.c:878, not a scaling tariff.
+	if p := w.rpPlayer(w.player(int(c.who))); p == nil || p.noblePoints < 1 {
+		w.commandOut(int(c.who), "To form another noble requires 1 Noble Point.")
+		return 0
+	}
+	return 1
+}
+
+func (w *world) dForm(c *command) int {
+	pl := w.player(int(c.who))
+	if p := w.rpPlayer(pl); p == nil || p.noblePoints < 1 {
+		w.commandOut(int(c.who), "To form another noble requires 1 Noble Point.")
+		return 0
+	}
+	p := w.pPlayer(w.player(int(c.who)))
+	new := int(c.a)
+	if new != 0 && (w.kind(new) != tUnform || p.unformed.Lookup(new) < 0) {
+		w.commandOut(int(c.who), "%s is not a valid unformed noble entity.", w.boxCode(new))
+		new = 0
+	}
+	if new == 0 && len(p.unformed) > 0 {
+		new = p.unformed[0]
+	}
+	if new == 0 {
+		w.commandOut(int(c.who), "No further nobles may be formed this turn.")
+		return 0
+	}
+	name := "New noble"
+	if c.parse.Len() >= 3 && c.parse[2] != "" {
+		name = c.parse[2]
+	}
+	w.formNewNoble(int(c.who), name, new)
+	p.unformed.RemValue(new)
+	w.deductNP(pl, 1)
+	return 1
+}
+
 // Complete c1.c:904–944; unformed displays at most five IDs, but names the
 // full queue length. nextNPTurn owns its original allocation and schedule.
 func (w *world) printHiringStatus(pl int) {

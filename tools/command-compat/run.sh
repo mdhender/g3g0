@@ -141,7 +141,8 @@ functions = {
               'expire_trades', 'loc_trade_sup', 'trade_suffuse_ring', 'location_trades', 'is_tradegood', 'list_pending_trades',
               'list_market_items', 'market_report'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
-             'v_wait', 'd_wait', 'i_wait', 'next_np_turn', 'print_hiring_status', 'print_unformed'],
+             'v_wait', 'd_wait', 'i_wait', 'next_np_turn', 'print_hiring_status', 'print_unformed',
+             'form_new_noble', 'v_form', 'd_form'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
     'perm.c': ['is_hostile', 'is_defend', 'clear_all_att', 'rp_admit', 'p_admit', 'will_admit',
                'v_admit', 'set_att', 'v_set_att', 'v_hostile', 'v_defend', 'v_neutral', 'v_att_clear',
@@ -279,6 +280,7 @@ int immed_see_all, month_done, show_combat_flag;
             out.write('#line 402 "olympia/display.c"\n' + source[start:end] + '\n')
             out.write(re.search(r'^int show_loc_no_header = FALSE;\n', source, re.M).group(0))
         if file == 'c1.c':
+            out.write(re.search(r'^#define\s+noble_cost\(pl\).*\n', source, re.M).group(0))
             start, end = source.index('struct flag_ent {'), source.index('static int\nflag_raised(')
             out.write(source[start:end])
             start, end = source.index('static char *wait_tags[]'), source.index('void\nclear_wait_parse(')
@@ -680,7 +682,24 @@ PY
 # remains in the complete unchanged io.c translation unit.
 cat >"${WORK}/io-wrapper.c" <<'C'
 #include "io.c"
+extern ilist load_q[5], run_q;
 void drv_read_boxes(char *path) { read_boxes(path); }
+/* Restart only the command record through the original writer/reader, with
+ * process-local scheduler queues discarded as on process restart. Orders and
+ * all gameplay records remain owned by their normal implementations. */
+void drv_persist_command(int who) {
+ FILE *fp = fopen(sout("%s/command-reload",libdir),"w");
+ int i;
+ assert(fp);
+ fprintf(fp,"%d %s 0\n",who,kind_s[kind(who)]);
+ print_command(fp,rp_command(who));
+ fprintf(fp,"\n");
+ fclose(fp);
+ bx[who]->cmd = NULL;
+ for(i=0;i<5;i++) ilist_clear(&load_q[i]);
+ ilist_clear(&run_q);
+ read_boxes("command-reload");
+}
 C
 # Keep the entire original translation unit, including export_location.
 # Expose static entry points without replacing bodies or dependencies.
@@ -717,6 +736,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N03 '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N03 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N02 '* ]]; then
    [ "$status" = 0 ] || die "unexpected N02 status $status in section $i"
   fi

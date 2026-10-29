@@ -16,6 +16,7 @@
 void glob_init(void);
 void init_lower(void);
 void drv_read_boxes(char *path);
+void drv_persist_command(int who);
 void drv_list_player(int pl);
 void drv_gm_economy(char *part, int pl);
 int drv_gm_pct(int n, int d);
@@ -1533,6 +1534,20 @@ int main(int argc, char **argv)
   }
   else if (!strcmp(op, "np_total")) { sscanf(line,"%*s %d",&n); printf("np %d\n",char_np_total(n)); }
   else if (!strcmp(op, "save")) { sscanf(line,"%*s %d",&n); save_box(stdout,n); }
+  else if (!strcmp(op, "persist_command")) {
+   n=c->who;
+   drv_persist_command(n);
+   c=rp_command(n);
+  }
+  else if (!strcmp(op, "formation_state")) {
+   sscanf(line,"%*s %d",&n);
+   printf("formation %d kind %d char %d command %d loc %d name %d\n",
+    n,kind(n),rp_char(n)!=NULL,rp_command(n)!=NULL,loc(n),bx[n]->name!=NULL);
+   if(rp_char(n)) printf("fresh %d behind %d health %d attack %d defense %d break %d\n",
+    p_char(n)->fresh_hire,p_char(n)->behind,p_char(n)->health,
+    p_char(n)->attack,p_char(n)->defense,p_char(n)->break_point);
+   if(rp_player(n)) list("unformed",rp_player(n)->unformed);
+  }
   else if (!strcmp(op, "pstate")) {
    struct entity_player *p;
    sscanf(line,"%*s %d",&n); p = p_player(n);
@@ -1962,6 +1977,11 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "start")) start_phase();
   else if (!strcmp(op, "evening")) drv_evening();
   else if (!strcmp(op, "daily")) drv_daily();
+  else if (!strcmp(op, "day")) {
+   sscanf(line,"%*s %d",&n);
+   sysclock.day=(short)n;
+   drv_daily();
+  }
   else if (!strcmp(op, "players")) drv_players();
   else if (!strcmp(op, "auto")) check_all_auto_attacks();
   else if (!strcmp(op, "empty_chars"))

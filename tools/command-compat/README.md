@@ -3,6 +3,90 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Form nobles (#200, stage 4 N03)
+
+**0.122.0-alpha** adds the three complete c1.c definitions
+`form_new_noble` **947–974**, `v_form` **977–1002**, and `d_form`
+**1003–1067** (the return-type line is 1003, not 1005). Their unchanged
+extractions occur exactly once, **1975 source bytes** total; individual
+SHA-256 proofs are in `tmp/issue200-source-proof.log`. Actual callers are
+glob.c's FORM start/completion slots and d_form's private formation call.
+The genuine NULL interrupt remains NULL. Existing c1.go/glob.go own the port;
+setName/changeBoxKind/setWhere/setLord/joinStack, NP, command initialization,
+orders, report routing and RNG owners are reused. No new source dependency,
+pin, package or affected.sh/table change. `noble_cost(pl)` is constant **1**.
+
+Sixteen appended status-0 cases distinguish selected versus first unformed,
+invalid foreign/nonexistent/character targets and diagnostic-before-fallback,
+duplicate removal, empty/exhausted and later-populated queues, default/empty/
+trimmed names, exact NP charging after formation, city-before-NP start checks,
+NP depletion/replenishment and changed owner/location/behind during the delay.
+Fresh hire, 100 health, 80/80 attack/defense, 50 break, retained unrelated
+character fields, and new noble command initialization/retained orders are
+observed directly. Actual queued dispatch and daily_command_loop run days
+1–7; successful starts alone are not the test. Command-only persistence uses
+the original print_command/read_boxes/scan_command through a thin io.c
+adapter, discards process-local scheduler queues, then calls actual
+initial_command_load. It covers successful relocation outside the city,
+completion NP failure before target validation, and genuine NULL interruption
+with no charge/formation and subsequent WAIT orders intact. This is a real
+serialized command reload, not a claim of a new full-world corpus run.
+
+Raw streams/status, save_box bytes, allocations, unsaved fresh-hire state,
+lists, queues and RNG aftermath match C. Exhaustion and no-FORM controls both
+mint **77542**, then yield entity **563/3/4/2** and legacy **38266**. Formation
+also borrows the existing cached FILE after log/200 is renamed: both completion
+messages reach the **155-byte** held inode, log/200 stays absent before/after
+close. No parallel formation, allocation fallback or output-cache owner.
+
+Unchanged real C ran twice before every C-only update/Go comparison. Final:
+**1474 sections / 115418 output lines / 2285364 output bytes**; input
+**32334 lines / 614892 bytes**. Additions: **16 sections / 407 input lines /
+6219 input bytes / 1527 output lines / 28420 output bytes**. Entire HEAD
+prefixes **608673 input / 2256944 output bytes** and stage-3 prefixes
+**578307 / 2134398** remain byte-exact, including all **13 non-UTF8 bytes**
+and authentic trailing spaces. `tmp/issue200-prefix-proof.log` records hashes;
+`tmp/issue200-c-cache-final.log` records final C/C/update/Go. The pre-port
+Go test fails explicitly at `command form start` (`tmp/issue200-go-before.log`).
+
+| file | SHA-256 |
+|---|---|
+| command-cases.txt | `d6a60edbada701d15f81a694b26b79dc0cca1e267ceba4ff382074e1c8342011` |
+| command-c-output.txt | `ce9ae9ece4b418600f9ec27d53acdaddd851be612310b643c9305ff84555bf94` |
+
+Four temporary linker controls emit a dependency marker from actual v_form
+and exit **0/134**, in default/update modes. All reject section **1458** with
+harness status **2** before status acceptance/record replacement; the
+then-current C recording stays unchanged. Bounded direct calls verify both
+statuses. Logs: `tmp/issue200-negative-{0,134}-{default,update}.log` and
+`tmp/issue200-negative-statuses.log`. Probes/build helpers and matching
+captures are removed. Bounded vet and fresh full-enabled tests pass across
+**11 packages / 10 explicit opt-in/child-entry skips**; eight sequential
+defaults pass at their existing pins. Logs: `tmp/issue200-{vet,tests}-clean.log`
+and `tmp/issue200-TOOL-final.log`. Reproduce with N01's bounded command block
+below (explicit isolated G3_REPO on every compatibility invocation).
+
+Both unchanged original fixture scripts ran real C twice, then fresh Go.
+C/C match raw status/streams and **241 inventory-give / 239 recruitment-refused
+cwd entries**, including types/modes/bytes; original scripts print YES.
+Go really stops at **ACCEPT start** and **RECRUIT start**, respectively
+(engine status **2**, script status **1**), before those original turns can
+finish. These are observed paths, not speculative combat/later-stage gates;
+do not suppress NYI or claim family exit. Logs:
+`tmp/issue200-{inventory-give,recruitment-refused}-{c1,c2,go}.log`, retained
+Go raw stderr/stdout logs and `tmp/issue200-fixtures/*/c-manifest.txt`.
+The full existing spec tool, not manual passing.txt edits, reruns at the pin:
+**38 pass / 87 fail / 0 error**, no changed names (all 36 stage-3 names retained),
+golden **NO**, initialization status **2**. Command:
+`G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue200-spec" GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" bash tools/olympia-spec/run.sh`
+(`tmp/issue200-spec.log`). No new verified engine bug or oversized FORM
+dependency was found. Remaining mixed family callbacks and stage exit are
+separate; no full-world, golden, native non-Linux or sanitizer acceptance.
+Parent independently reviewed all three complete pinned definitions and the
+full engine/adapter/case diff, verified complete inherited byte prefixes, and
+reran bounded vet, fresh full-enabled tests and all eight sequential defaults
+successfully (`tmp/parent200-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn}.log`).
+
 ## Admission, attitudes and contact (#199, stage 4 N02)
 
 **0.121.0-alpha** adds complete perm.c `p_admit` **27–47**, `v_admit`
