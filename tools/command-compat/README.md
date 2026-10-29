@@ -3,6 +3,182 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Player identity/settings (#206, stage 4 N08)
+
+**0.128.0-alpha** ports the complete pinned definitions, including actual
+return-type lines: c1.c static **int** `may_name` **314–359**, **int**
+`v_name` **362–419**, `v_times` **422–441**, `v_fullname` **444–470**,
+`v_banner` **473–526**, `v_flag` **1152–1179**, `v_split` **1694–1736**;
+c2.c **int** `v_public` **563–583**; u.c `char *` `rest_name`
+**2491–2508**. The small rest_name prerequisite has only these three
+identity callers. All nine definitions are extracted unchanged exactly once
+(**5299 bytes**), including SPLIT's original commented-out implementation.
+Individual exact-range SHA-256 hashes and extraction proof are retained in
+`tmp/issue206-source-proof.log`. No pin or source-dependency changes:
+c1.c/c2.c/u.c/art.c/code.c and the complete reused closure were already read
+and tracked by affected.sh. No provenance-table expansion is necessary.
+
+The actual seven starts are bound in glob.go, retaining **all seven NULL
+finish/interrupt pairs**, permissions, times and priorities. c1.go/c2.go reuse
+setName/setBanner, hasAuraculum, ownership/ruling, gold/inventory, player and
+misc records, parser/cmdShift, flagRaised/WAIT, output, scheduler, persistence
+and RNG owners. u.go's restName distinguishes NULL from a quoted empty field
+and joins every parsed field through the existing bounded sout owner. Existing
+FORMAT, NOTAB and STOP are unchanged. SPLIT always refuses; its obsolete
+commented report-splitting settings are not implemented. No duplicate settings
+layer, text/press/GM expansion, or invented successful callback is included.
+
+**25 appended sections, all explicitly status 0**, compare raw status/streams,
+real save_box bytes, unsaved record/pointer/list/queue/cache state and actual
+entity/keyed, shared mint and legacy RNG aftermath. They distinguish:
+
+- NAME's optional target only with at least two arguments and positive a;
+  actual saved parse/numeric shifts beyond eight arguments; joined, quoted,
+  hash, apostrophe and bracket text; missing-name before ownership before
+  35-byte character/25-byte other limits, including multibyte input. Same-faction
+  character/player, foreign targets, safehaven, owned tower/ship versus ruled
+  province, creator, possessed versus absent auraculum, each of the five
+  permitted potion keys and summoned versus foreign storm paths are real.
+  Target notifications and output allocations use the actual output router.
+- REALNAME's 60/61-byte boundary, missing/empty refusal, preserved existing
+  full-name pointer (including allocated empty) and player allocation timing.
+  BANNER's 50/51-byte boundary, missing/empty clear and misc allocation,
+  explicit valid-box before ownership before length, saved target shift and
+  sender-only notification; default/self callbacks do not add an ownership gate.
+- FLAG missing/duplicate/case-insensitive/quoted-empty signals, same text from
+  a different unit, first-argument-only behavior beyond eight args and actual
+  append order. Existing unsaved flag lifetime and monthly/process owners are
+  unchanged. The scheduler's WAIT really finishes on the new FLAG, not on a
+  parse error or a synthetic signal injection.
+- TIMES mutates saved a by 1/2 remapping before signed-char narrowing; 256,
+  128, negative and absent arguments distinguish nonzero receives-flag logic.
+  PUBLIC credits the faction exactly 100 CLAIM gold once, with repeated and
+  signed-nonzero refusal, missing-player allocation and no NP changes.
+  SPLIT preserves seeded nondefault settings for all arguments.
+- Actual STATE_RUN writer/reader roundtrips and generic NULL interruption for
+  all seven commands load the next WAIT without executing starts. Separately
+  started PUBLIC persists and takes its genuine NULL finish/interruption
+  without a second credit or refund. Real queued starts record coverage rows
+  **4/29/49/61/68/78/85/94**: BANNER/FLAG/REALNAME/TIMES **1 ok** each,
+  NAME **2 ok**, PUBLIC **1 ok / 1 fail**, SPLIT **1 fail**, WAIT **3 ok**.
+
+Unchanged real C ran twice before implementation/update; unchanged Go failed
+at the actual **NAME start** (`tmp/issue206-before-{c,go}.log`). The first
+default's status 1 is the deliberate additional-recording diff, not a C/C
+failure. Corrected test setup constants and later observer refinements were
+also run through fresh unchanged C twice, never inferred from Go. In
+particular the final scheduler uses C's actual `wait flag "Ready #" 1000`
+syntax, and PUBLIC's persisted command is actually PUBLIC, not its next WAIT.
+Final C-only update and independent default pass:
+`tmp/issue206-update-final-observers.log`, `tmp/issue206-command-default.log`.
+
+Final oracle: **1632 sections / 130913 output lines / 2583698 output bytes**;
+input **35675 lines / 672691 bytes**. Additions are **541 input lines / 9349
+input bytes / 2323 output lines / 47130 output bytes**. Both entire HEAD
+prefixes (**663342 / 2536568 bytes**) and stage-3 prefixes (**578307 /
+2134398 bytes**) remain identical. All **13 inherited high-bit/non-UTF8 output
+bytes** survive; eight added multibyte inputs contribute **16** high-bit bytes
+to the input and echoed output, whose total is now **29**. The existing parser
+strips high bits for execution (for example `é` becomes `C)`), not for the echoed
+order. All **nine new trailing-space lines** are literal original C output.
+Proof: `tmp/issue206-prefix-proof.log`.
+
+| file or prefix | SHA-256 |
+|---|---|
+| command-cases.txt | `08dda9c1a617c2dd911317aa4ae6606d57e9e564f338f4dcc4f43f9042f8bdd0` |
+| command-c-output.txt | `a16e3850f402e199b8e05e5e6ef33e05bd0167dc804da6a5b00fe744c99fc819` |
+| HEAD 663342-byte input prefix | `7f489a8432ba7a04080b1243fd3c625d77631470040aad756c5f58b33048f722` |
+| HEAD 2536568-byte output prefix | `1d587f79fbb0cb8ad1254e5f079f02efd3738c5808d948e4d0d5b5ee5672d593` |
+| stage-3 578307-byte input prefix | `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` |
+| stage-3 2134398-byte output prefix | `c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac` |
+
+Four actual temporary linker controls wrap only v_name, emit the rejected
+dependency marker and exit **0/134 × default/update**. Each harness rejects
+**section 1607 / status 2**, before accepting expected status or replacing
+recordings. Bounded direct executions confirm actual marker-process statuses
+0/134 and retain raw streams. The then-current recording hash remains
+`1da2d2d18fe5e3791ffe563673453e0da7b2fa67eab09c063e80f99b76f30142`
+in all four runs. Logs: `tmp/issue206-negative-{0,134}-{default,update}.log`,
+`tmp/issue206-probe-STATUS-MODE.{stdout,stderr}` and
+`tmp/issue206-negative-proof.log`. Temporary probe sources, compiler wrapper,
+binaries and matching captures are removed.
+
+Original unmodified check.sh scripts pass C twice then freshly built Go
+through the trusted bounded `tmp/stage4-capture` launcher, using S4_ENGINE,
+S4_CAPTURE and OLYMPIA_ENGINE_BIN exactly as the N06b recipe below. Both the
+strict comparator and tree-modes.py compare raw status/streams and **ALL** cwd
+entries/types/modes/empty dirs/bytes, with no exclusions or normalization:
+
+| fixture | C/C/Go engine status; script result | cwd entries |
+|---|---|---|
+| player-settings | 0; YES / 0 | 237 |
+| player-refused (retained regression) | 0; YES / 0 | 237 |
+| order-quoted-comment | 0; YES / 0 | 247 |
+| order-unrecognized (REALNAME following a rejected order) | 0; YES / 0 | 243 |
+
+The canonical unchanged C binary is
+`tmp/stage4-source/build/issue201/olympia-g3`, SHA-256
+`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`.
+No older absolute-path assertion binary was used. Original scripts/EXPECT
+files equal the immutable pin including executable modes; each script unpacks
+fresh physical disposable inputs. Protected caches are untouched. Script-owned
+turn.out/stderr files remain included in the captures/manifests. Final proof:
+`tmp/issue206-fixtures-final-proof.log`, `tmp/issue206-fixture-source-proof.log`,
+`tmp/issue206-FIXTURE-{c1,c2,go}.log`, and retained manifests under
+`tmp/issue206-fixtures/FIXTURE/`. Matching captures and scratch Go binary removed.
+
+Exact validation commands (all tests/engines bounded, per-tool pins unchanged):
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" tools/command-compat/run.sh --update
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    "tools/$tool-compat/run.sh" # sequential; inspect every status
+done
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue206-spec-final" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" tools/olympia-spec/run.sh
+```
+
+Bounded vet and fresh full-enabled tests pass (**11 packages / 10 explicit
+opt-in/child-entry skips**, Olympia **2.186s**). All eight sequential defaults
+pass: command **1632/130913**, move **135/7158**, helper **37/1487**, RNG
+**321**, code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase
+**5/484**, calendar **2/119**, schedule **4/1801**, default turn **2 cwd entries**.
+Logs: `tmp/issue206-{vet-final,tests,default-status}.log`,
+`tmp/issue206-TOOL-default.log`.
+The full spec tool discovers exactly **order-quoted-comment,
+order-unrecognized and player-settings**: **49 pass / 76 fail / 0 error**,
+retaining all **46** previous names, including prior **44** and stage-3 **36**.
+No passing.txt hand edits. Its SHA-256 is
+`278a6ee2c28b1db59f485abdccff26aedc06a85ee1526aaa29da18efbcd32d37`.
+Golden remains **NO**, unsupported `-i` initialization **2**, not whole-spec
+parity. release-swear-np remains a separate expected **134** at
+`swear.c:180`, never a successful turn or new cached +turn input.
+
+The supplied ALL-open audit has **94 entries**, only filed stage tasks/
+trackers and root #19, no bug/follow-C. No new blocker or oversized prerequisite
+was found. No family/stage exit, full-corpus, sanitizer/non-Linux or stage-5
+claim. Parent independently reviewed all nine complete pinned definitions,
+shared owners and the engine/adapter/case diff; verified both entire inherited
+HEAD and stage-3 byte prefixes; and passed bounded vet, fresh full-enabled
+tests and all eight sequential defaults
+(`tmp/parent206-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn}.log`).
+The parent command run repeats unchanged real C twice and matches Go on
+**1632 sections / 130913 lines**. Parent also ran all four original scripts
+independently in C/C/Go order: every script prints **YES**, engine **0**,
+and raw streams/status plus all **237/237/247/243** cwd entries match the
+strict comparator and tree-modes.py without normalization or exclusions.
+Manifests and script logs remain in `tmp/parent206-fixtures/`; matching
+captures and the fresh parent Go binary were removed.
+The independent parent full spec confirms **49 pass / 76 fail / 0 error**,
+the same three additions and no lost names; golden remains **NO**,
+initialization **2** (`tmp/parent206-spec.log`).
+
 ## HONOR/HONOUR, OATH, PLEDGE and removed SWEAR (#205, stage 4 N07)
 
 **0.127.0-alpha** implements the complete pinned **int** definitions,

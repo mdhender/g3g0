@@ -108,6 +108,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 	c.who, c.state = 1000, stateDone
 	created := 0
 	savedVector := w.outVector
+	var savedPlayer *entityPlayer
+	var savedFullname *string
 	var watched []string
 	fileState := func(path string) {
 		st, err := os.Stat(path)
@@ -183,6 +185,35 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "settings":
+			action, n := args.word(), args.num(t)
+			p := w.rpPlayer(n)
+			var fullname *string
+			if p != nil {
+				fullname = p.fullName
+			}
+			switch action {
+			case "remember":
+				savedPlayer, savedFullname = p, fullname
+			case "seed":
+				p = w.pPlayer(n)
+				p.publicTurn, p.splitLines, p.splitBytes = int8(args.num(t)), int32(args.num(t)), int32(args.num(t))
+			case "state":
+				s := "NULL"
+				if fullname != nil {
+					s = *fullname
+				}
+				fmt.Fprintf(&stdout, "settings %d player %d same %d fullname same %d [%s]\n", n, b2i(p != nil), b2i(p == savedPlayer), b2i(fullname == savedFullname), s)
+				if p != nil {
+					fmt.Fprintf(&stdout, "settings values %d %d %d %d\n", p.compuserve, p.publicTurn, p.splitLines, p.splitBytes)
+				}
+				fmt.Fprintf(&stdout, "flags allocated %d count %d\n", b2i(w.flags != nil), len(w.flags))
+				for _, p := range w.flags {
+					fmt.Fprintf(&stdout, "flag %d [%s]\n", p.who, p.flag)
+				}
+			default:
+				t.Fatalf("unknown settings %s", action)
+			}
 		case "export":
 			switch action := args.word(); action {
 			case "name":

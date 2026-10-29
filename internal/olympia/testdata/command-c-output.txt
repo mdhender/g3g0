@@ -128588,3 +128588,2326 @@ IT
 stderr:
 
 exit 0
+stdout:
+section N08 NAME joined quoted hash apostrophe brackets and saved shift beyond eight args
+> queue name 1001 "Joe #1" Joe's [keep] 4 5 6 7 8 9
+> load
+load 1
+> do
+> dump
+cmd 49 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 4 5 6 7 8; parse [name] [Joe #1] [Joe's] [[keep]] [4] [5] [6] [7] [8] [9]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1001
+1001 char 0
+na Joe #1 Joe's {keep} 4 5 6 7 8 9
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::> name 1001 "Joe #1" Joe's [keep] 4 5 6 7 8 9
+1000:0::0::<no subkind>~[1001] will now be known as Joe #1 Joe's {keep} 4 5 6 7 8 9~[1001].
+1001:0::0::<no subkind>~[1001] will now be known as Joe #1 Joe's {keep} 4 5 6 7 8 9~[1001].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li name 1001 "Joe #1" Joe's [keep] 4 5 6 7 8 9
+ ar 0 0 0 4 5 6 7 8
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+na Joe #1 Joe's {keep} 4 5 6 7 8 9
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 NAME missing empty invalid target validation order and optional target condition
+> queue name
+> load
+load 1
+> do
+> queue name ""
+> load
+load 1
+> do
+> queue name 9999 ""
+> load
+load 1
+> do
+> queue name 9999 x
+> load
+load 1
+> do
+> queue name 1001
+> load
+load 1
+> do
+> queue name 0 hello
+> load
+load 1
+> do
+> parse name hello there
+parse 1
+> callback_start -3
+callback start 1
+> dump
+cmd 49 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args -3 0 0 0 0 0 0 0; parse [name] [hello] [there]
+player 200 count 6 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> name
+1000:0::0::No new name given.
+1000:0::0::> name ""
+1000:0::0::No new name given.
+1000:0::0::> name 9999 ""
+1000:0::0::No new name given.
+1000:0::0::> name 9999 x
+1000:0::0::Not allowed to change the name of [9999].
+1000:0::0::> name 1001
+1000:0::0::<no subkind>~[1000] will now be known as 1001~[1000].
+1000:0::0::> name 0 hello
+1000:0::0::1001~[1000] will now be known as 0 hello~[1000].
+1000:0::0::0 hello~[1000] will now be known as hello there~[1000].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+na hello there
+CH
+ lo 200
+CO
+ li name hello there
+ ar -3 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 NAME byte lengths 35 character 25 player and multibyte
+> queue name 12345678901234567890123456789012345
+> load
+load 1
+> do
+> queue name 123456789012345678901234567890123456
+> load
+load 1
+> do
+> queue name 123456789012345678901234567890123é
+> load
+load 1
+> do
+> queue name 1234567890123456789012345678901234é
+> load
+load 1
+> do
+> queue name 200 1234567890123456789012345é
+> load
+load 1
+> do
+> queue name 200 12345678901234567890123456é
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> name 12345678901234567890123456789012345
+1000:0::0::<no subkind>~[1000] will now be known as 12345678901234567890123456789012345~[1000].
+1000:0::0::> name 123456789012345678901234567890123456
+1000:0::0::Name is longer than 35 characters.
+1000:0::0::> name 123456789012345678901234567890123C)
+1000:0::0::12345678901234567890123456789012345~[1000] will now be known as 123456789012345678901234567890123C)~[1000].
+1000:0::0::> name 1234567890123456789012345678901234C)
+1000:0::0::Name is longer than 35 characters.
+1000:0::0::> name 200 1234567890123456789012345C)
+1000:0::0::Name is longer than 25 characters.
+1000:0::0::> name 200 12345678901234567890123456C)
+1000:0::0::Name is longer than 25 characters.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+na 123456789012345678901234567890123C)
+CH
+ lo 200
+CO
+ li name 200 12345678901234567890123456C)
+ ar 0 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 NAME same faction player and human versus foreign character and player
+> field 1001 lord 201
+> queue name 1001 stolen
+> load
+load 1
+> do
+> queue name 201 stolen
+> load
+load 1
+> do
+> queue name 200 Our Faction
+> load
+load 1
+> do
+> field 1001 lord 200
+> queue name 1001 Our Friend
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> name 1001 stolen
+1000:0::0::Not allowed to change the name of [1001].
+1000:0::0::> name 201 stolen
+1000:0::0::Not allowed to change the name of [201].
+1000:0::0::> name 200 Our Faction
+1000:0::0::Player~[200] will now be known as Our Faction~[200].
+1000:0::0::> name 1001 Our Friend
+1000:0::0::<no subkind>~[1001] will now be known as Our Friend~[1001].
+1001:0::0::<no subkind>~[1001] will now be known as Our Friend~[1001].
+> readlog 201
+log 201:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+na Our Faction
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li name 1001 Our Friend
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+na Our Friend
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 NAME owned building and ship notifications foreign and safehaven denial
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 46
+> entity 9002 9 31
+> link 8000 9000
+> link 9000 9001
+> link 9000 9002
+> link 9001 1000
+> link 9002 1001
+> queue name 9001 New Tower
+> load
+load 1
+> do
+> queue name 9002 New Ship
+> load
+load 1
+> do
+> field 1001 lord 201
+> queue name 9002 Stolen Ship
+> load
+load 1
+> do
+> field 9001 safe 1
+> queue name 9001 Safe Tower
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> name 9001 New Tower
+1000:0::0::Tower~[9001] will now be known as New Tower~[9001].
+1000:0::0::> name 9002 New Ship
+1000:0::0::Roundship~[9002] will now be known as New Ship~[9002].
+1000:0::0::> name 9002 Stolen Ship
+1000:0::0::Not allowed to change the name of [9002].
+1000:0::0::> name 9001 Safe Tower
+1000:0::0::Not allowed to change the name of [9001].
+> readlog 201
+log 201:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+CO
+ li name 9001 Safe Tower
+ ar 0 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9002
+CH
+ lo 201
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9001 9002
+9000 loc plain
+LI
+ wh 8000
+ hl 9001 9002 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9001 loc tower
+na New Tower
+LI
+ wh 9000
+ hl 1000 
+SL
+ sh 1
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9002 ship roundship
+na New Ship
+LI
+ wh 9000
+ hl 1001 
+
+stderr:
+
+exit 0
+stdout:
+section N08 NAME ruled province versus unowned province
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 3 32
+> entity 1002 2 64
+> link 8000 9000
+> link 8000 9001
+> link 9000 9002
+> link 9002 1000
+> link 9000 1002
+> field 1002 castle 9002
+> queue name 9000 Our Province
+> load
+load 1
+> do
+> queue name 9001 No Ruler
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> name 9000 Our Province
+1000:0::0::Plain~[9000] will now be known as Our Province~[9000].
+1000:0::0::> name 9001 No Ruler
+1000:0::0::Not allowed to change the name of [9001].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9002
+CH
+ lo 200
+CO
+ li name 9001 No Ruler
+ ar 0 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1002 char 0 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+1002 char garrison
+LI
+ wh 9000
+MI
+ gc 9002
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9002 1002
+9000 loc plain
+na Our Province
+LI
+ wh 8000
+ hl 9002 1002 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc plain
+LI
+ wh 8000
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9002 loc castle
+LI
+ wh 9000
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N08 NAME item creator and possessed auraculum versus absent auraculum
+> entity 500 4 42
+> entity 501 4 42
+> entity 502 4 42
+> field 500 creator 1000
+> field 501 creator 1001
+> field 1000 auraculum 501
+> queue name 500 Created Item
+> load
+load 1
+> do
+> queue name 501 Missing Aura
+> load
+load 1
+> do
+> inventory 1000 501 1
+> queue name 501 My Aura
+> load
+load 1
+> do
+> queue name 502 Unowned Item
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> name 500 Created Item
+1000:0::0::Scroll~[500] will now be known as Created Item~[500].
+1000:0::0::> name 501 Missing Aura
+1000:0::0::Not allowed to change the name of [501].
+1000:0::0::> name 501 My Aura
+1000:0::0::Scroll~[501] will now be known as My Aura~[501].
+1000:0::0::> name 502 Unowned Item
+1000:0::0::Not allowed to change the name of [502].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 500 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+500 item scroll
+na Created Item
+IT
+IM
+ ct 1000
+
+export entity 501 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+501 item scroll
+na My Aura
+IT
+IM
+ ct 1001
+
+export entity 502 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+502 item scroll
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 0 order 0
+here:
+raw item 501 1
+1000 char 0
+il	501 1
+CH
+ lo 200
+CM
+ ar 501
+CO
+ li name 502 Unowned Item
+ ar 0 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 NAME all five allowed potion keys foreign creator no inventory
+> entity 500 4 42
+> field 500 creator 1001
+> field 500 use_key 1
+> queue name 500 Death Potion
+> load
+load 1
+> do
+> field 500 use_key 2
+> queue name 500 Heal Potion
+> load
+load 1
+> do
+> field 500 use_key 3
+> queue name 500 Slave Potion
+> load
+load 1
+> do
+> field 500 use_key 5
+> queue name 500 Project Potion
+> load
+load 1
+> do
+> field 500 use_key 6
+> queue name 500 Quick Potion
+> load
+load 1
+> do
+> field 500 use_key 4
+> queue name 500 Foreign Other
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> name 500 Death Potion
+1000:0::0::Scroll~[500] will now be known as Death Potion~[500].
+1000:0::0::> name 500 Heal Potion
+1000:0::0::Death Potion~[500] will now be known as Heal Potion~[500].
+1000:0::0::> name 500 Slave Potion
+1000:0::0::Heal Potion~[500] will now be known as Slave Potion~[500].
+1000:0::0::> name 500 Project Potion
+1000:0::0::Slave Potion~[500] will now be known as Project Potion~[500].
+1000:0::0::> name 500 Quick Potion
+1000:0::0::Project Potion~[500] will now be known as Quick Potion~[500].
+1000:0::0::> name 500 Foreign Other
+1000:0::0::Not allowed to change the name of [500].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 500 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+500 item scroll
+na Quick Potion
+IT
+IM
+ uk 4
+ ct 1001
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li name 500 Foreign Other
+ ar 0 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 NAME summoned storm only and invalid kind denied
+> entity 500 11 59
+> field 500 summoner 1000
+> queue name 500 My Storm
+> load
+load 1
+> do
+> field 500 summoner 1001
+> queue name 500 Foreign Storm
+> load
+load 1
+> do
+> queue name 638 Hidden Skill
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> name 500 My Storm
+1000:0::0::Rain~[500] will now be known as My Storm~[500].
+1000:0::0::> name 500 Foreign Storm
+1000:0::0::Not allowed to change the name of [500].
+1000:0::0::> name 638 Hidden Skill
+1000:0::0::Not allowed to change the name of [638].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 500 char 0 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+500 storm rain
+na My Storm
+MI
+ sb 1001
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li name 638 Hidden Skill
+ ar 0 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 REALNAME nil and empty refuse without allocating absent player before output
+> entity 202 1 51
+> field 1000 lord 202
+> settings remember 202
+> parse realname
+parse 1
+> callback_start
+callback start 0
+> settings state 202
+settings 202 player 1 same 0 fullname same 1 [NULL]
+settings values 0 0 0 0
+flags allocated 0 count 0
+> parse realname ""
+parse 1
+> callback_start
+callback start 0
+> settings state 202
+settings 202 player 1 same 0 fullname same 1 [NULL]
+settings values 0 0 0 0
+flags allocated 0 count 0
+> readlog 202
+log 202:
+1000:0::0::No new name given.
+1000:0::0::No new name given.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+202 player pl_savage
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 202
+CO
+ li realname ""
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 REALNAME 60 bytes success 61 refusal keeps existing pointer and empty nil distinct
+> post mail 200 name_empty
+> settings remember 200
+> queue realname ""
+> load
+load 1
+> do
+> settings state 200
+settings 200 player 1 same 1 fullname same 1 []
+settings values 0 0 0 0
+flags allocated 0 count 0
+> queue realname 123456789012345678901234567890123456789012345678901234567890
+> load
+load 1
+> do
+> settings remember 200
+> queue realname 1234567890123456789012345678901234567890123456789012345678901
+> load
+load 1
+> do
+> settings state 200
+settings 200 player 1 same 1 fullname same 1 [123456789012345678901234567890123456789012345678901234567890]
+settings values 0 0 0 0
+flags allocated 0 count 0
+> queue realname
+> load
+load 1
+> do
+> settings state 200
+settings 200 player 1 same 1 fullname same 1 [123456789012345678901234567890123456789012345678901234567890]
+settings values 0 0 0 0
+flags allocated 0 count 0
+> readlog 200
+log 200:
+1000:0::0::> realname ""
+1000:0::0::No new name given.
+1000:0::0::> realname 123456789012345678901234567890123456789012345678901234567890
+1000:0::0::> realname 1234567890123456789012345678901234567890123456789012345678901
+1000:0::0::Name is longer than 60 characters.
+1000:0::0::> realname
+1000:0::0::No new name given.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ fn 123456789012345678901234567890123456789012345678901234567890
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li realname
+ ar 0 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 REALNAME joined quoted and multibyte byte boundary
+> queue realname "Full #" O'Brien Family
+> load
+load 1
+> do
+> save 200
+200 player pl_regular
+PL
+ fn Full # O'Brien Family
+
+> queue realname 1234567890123456789012345678901234567890123456789012345678é
+> load
+load 1
+> do
+> save 200
+200 player pl_regular
+PL
+ fn 1234567890123456789012345678901234567890123456789012345678C)
+
+> queue realname 12345678901234567890123456789012345678901234567890123456789é
+> load
+load 1
+> do
+> save 200
+200 player pl_regular
+PL
+ fn 1234567890123456789012345678901234567890123456789012345678C)
+
+> readlog 200
+log 200:
+1000:0::0::> realname "Full #" O'Brien Family
+1000:0::0::> realname 1234567890123456789012345678901234567890123456789012345678C)
+1000:0::0::> realname 12345678901234567890123456789012345678901234567890123456789C)
+1000:0::0::Name is longer than 60 characters.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ fn 1234567890123456789012345678901234567890123456789012345678C)
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li realname 12345678901234567890123456789012345678901234567890123456789C)
+ ar 0 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 BANNER default missing and quoted empty clear allocate misc
+> queue banner
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li banner
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> queue banner "Our # banner" O'Brien
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+CH
+ lo 200
+MI
+ ds Our # banner O'Brien
+CO
+ li banner "Our # banner" O'Brien
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> queue banner ""
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> banner
+1000:0::0::Banner cleared.
+1000:0::0::> banner "Our # banner" O'Brien
+1000:0::0::Banner set.
+1000:0::0::> banner ""
+1000:0::0::Banner cleared.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li banner ""
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 BANNER 50 versus 51 bytes preserves old display on refusal
+> queue banner 12345678901234567890123456789012345678901234567890
+> load
+load 1
+> do
+> queue banner 123456789012345678901234567890123456789012345678901
+> load
+load 1
+> do
+> queue banner 123456789012345678901234567890123456789012345678é
+> load
+load 1
+> do
+> queue banner 1234567890123456789012345678901234567890123456789é
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> banner 12345678901234567890123456789012345678901234567890
+1000:0::0::Banner set.
+1000:0::0::> banner 123456789012345678901234567890123456789012345678901
+1000:0::0::Banner is longer than 50 characters.
+1000:0::0::> banner 123456789012345678901234567890123456789012345678C)
+1000:0::0::Banner set.
+1000:0::0::> banner 1234567890123456789012345678901234567890123456789C)
+1000:0::0::Banner is longer than 50 characters.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+MI
+ ds 123456789012345678901234567890123456789012345678C)
+CO
+ li banner 1234567890123456789012345678901234567890123456789C)
+ ar 0 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 BANNER explicit invalid before ownership before length and target shift notifications
+> field 1001 lord 201
+> queue banner 9999 123456789012345678901234567890123456789012345678901
+> load
+load 1
+> do
+> queue banner 1001 123456789012345678901234567890123456789012345678901
+> load
+load 1
+> do
+> field 1001 lord 200
+> queue banner 1001 First Second 3 4 5 6 7 8 9
+> load
+load 1
+> do
+> dump
+cmd 4 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 3 4 5 6 7 8; parse [banner] [First] [Second] [3] [4] [5] [6] [7] [8] [9]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> queue banner 1001 ""
+> load
+load 1
+> do
+> readlog 200
+log 200:
+1000:0::0::> banner 9999 123456789012345678901234567890123456789012345678901
+1000:0::0::[9999] is not a valid entity.
+1000:0::0::> banner 1001 123456789012345678901234567890123456789012345678901
+1000:0::0::You do not control [1001].
+1000:0::0::> banner 1001 First Second 3 4 5 6 7 8 9
+1000:0::0::Banner set.
+1000:0::0::> banner 1001 ""
+1000:0::0::Banner cleared.
+> readlog 201
+log 201:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li banner 1001 ""
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 BANNER self bypass ownership checks player direct callback differs from explicit player
+> who 201
+> parse banner "Self Banner"
+parse 1
+> callback_start
+callback start 1
+> parse banner 201 "Explicit Self"
+parse 1
+> callback_start
+callback start 1
+> dump
+cmd 4 who 201 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [banner] [Explicit Self]
+player 201 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 201
+log 201:
+201:0::0::Banner set.
+201:0::0::Banner set.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+units:
+output: 201
+201 player pl_regular
+PL
+MI
+ ds Explicit Self
+CO
+ li banner 201 "Explicit Self"
+ ar 0 0 0 0 0 0 0 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 FLAG missing duplicate case insensitive quoted empty per unit and list order
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 0 0 0 0
+flags allocated 0 count 0
+> queue flag
+> load
+load 1
+> do
+> queue flag ""
+> load
+load 1
+> do
+> queue flag ""
+> load
+load 1
+> do
+> queue flag "Hello #" a b c d e f g h i
+> load
+load 1
+> do
+> queue flag "hELLO #"
+> load
+load 1
+> do
+> who 1001
+> queue flag "Hello #"
+> load
+load 1
+> do
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 0 0 0 0
+flags allocated 1 count 3
+flag 1000 []
+flag 1000 [Hello #]
+flag 1001 [Hello #]
+> readlog 200
+log 200:
+1000:0::0::> flag
+1000:0::0::Must specify what message to signal.
+1000:0::0::> flag ""
+1000:0::0::> flag ""
+1000:0::0::<no subkind>~[1000] has already given that signal this month.
+1000:0::0::> flag "Hello #" a b c d e f g h i
+1000:0::0::> flag "hELLO #"
+1000:0::0::<no subkind>~[1000] has already given that signal this month.
+1001:0::0::> flag "Hello #"
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li flag "hELLO #"
+ ar 0 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+CO
+ li flag "Hello #"
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+stderr:
+
+exit 0
+stdout:
+section N08 TIMES remaps saved a and signed char nonzero width semantics
+> queue times 1
+> load
+load 1
+> do
+> dump
+cmd 85 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 2 0 0 0 0 0 0 0; parse [times] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 2 0 0 0
+flags allocated 0 count 0
+> queue times 2
+> load
+load 1
+> do
+> dump
+cmd 85 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [times] [2]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 1 0 0 0
+flags allocated 0 count 0
+> queue times 256
+> load
+load 1
+> do
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 0 0 0 0
+flags allocated 0 count 0
+> queue times 128
+> load
+load 1
+> do
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values -128 0 0 0
+flags allocated 0 count 0
+> queue times -1
+> load
+load 1
+> do
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 0 0 0 0
+flags allocated 0 count 0
+> queue times
+> load
+load 1
+> do
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 0 0 0 0
+flags allocated 0 count 0
+> readlog 200
+log 200:
+1000:0::0::> times 1
+1000:0::0::Will not receive the Times.
+1000:0::0::> times 2
+1000:0::0::Will not receive the Times.
+1000:0::0::> times 256
+1000:0::0::Will receive the Times.
+1000:0::0::> times 128
+1000:0::0::Will not receive the Times.
+1000:0::0::> times -1
+1000:0::0::Will receive the Times.
+1000:0::0::> times
+1000:0::0::Will receive the Times.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li times
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 PUBLIC first gold faction only once repeated nonzero signed public flag and no NP
+> entity 1 4 0
+> field 200 np 7
+> parse public
+parse 1
+> settings remember 200
+> callback_start
+callback start 1
+> settings state 200
+settings 200 player 1 same 1 fullname same 1 [NULL]
+settings values 0 1 0 0
+flags allocated 0 count 0
+> callback_start
+callback start 0
+> settings state 200
+settings 200 player 1 same 1 fullname same 1 [NULL]
+settings values 0 1 0 0
+flags allocated 0 count 0
+> settings seed 200 -128 1234 56789
+> callback_start
+callback start 0
+> settings state 200
+settings 200 player 1 same 1 fullname same 1 [NULL]
+settings values 0 -128 1234 56789
+flags allocated 0 count 0
+> save 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li public
+ ar 0 0 0 0 0 0 0 0
+
+> pstate 200
+player 200 np 7 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+> readlog 200
+log 200:
+1000:0::0::Received 100 CLAIM gold.
+1000:0::0::Already a public turn.
+1000:0::0::Already a public turn.
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 77542
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+raw item 1 100
+200 player pl_regular
+il	1 100
+PL
+ np 7
+ sl 1234
+ sb 56789
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77542 1
+1000 char 0
+il	77542 1
+CH
+ lo 200
+CO
+ li public
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N08 PUBLIC absent player allocation and faction gold versus noble gold
+> entity 1 4 0
+> entity 202 1 51
+> field 1000 lord 202
+> settings remember 202
+> parse public
+parse 1
+> callback_start
+callback start 1
+> settings state 202
+settings 202 player 1 same 0 fullname same 1 [NULL]
+settings values 0 1 0 0
+flags allocated 0 count 0
+> callback_start
+callback start 0
+> settings state 202
+settings 202 player 1 same 0 fullname same 1 [NULL]
+settings values 0 1 0 0
+flags allocated 0 count 0
+> readlog 202
+log 202:
+1000:0::0::Received 100 CLAIM gold.
+1000:0::0::Already a public turn.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+raw item 1 100
+202 player pl_savage
+il	1 100
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 202
+CO
+ li public
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 SPLIT unsupported retains nondefault settings all raw arguments
+> settings seed 200 -1 1234 56789
+> queue split
+> load
+load 1
+> do
+> queue split 1 1
+> load
+load 1
+> do
+> queue split 0 0
+> load
+load 1
+> do
+> parse split 99 88
+parse 1
+> callback_start -2147483648
+callback start 0
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 0 -1 1234 56789
+flags allocated 0 count 0
+> readlog 200
+log 200:
+1000:0::0::> split
+1000:0::0::This command is no longer supported.
+1000:0::0::> split 1 1
+1000:0::0::This command is no longer supported.
+1000:0::0::> split 0 0
+1000:0::0::This command is no longer supported.
+1000:0::0::This command is no longer supported.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ sl 1234
+ sb 56789
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li split 99 88
+ ar -2147483648 88 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 actual STATE_RUN reload NULL interrupts next WAIT no settings starts
+> queue name Changed
+> queue realname Changed
+> queue banner Changed
+> queue flag Changed
+> queue times 1
+> queue public
+> queue split 1 1
+> queue wait day 4
+> load
+load 1
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 49 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 68 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [realname] [Changed]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 6
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 68 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 4 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [banner] [Changed]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 5
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 4 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 29 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [flag] [Changed]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 4
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 29 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 85 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [times] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 3
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 85 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 61 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [public]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 2
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 61 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 78 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 1 0 0 0 0 0 0; parse [split] [1] [1]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 78 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 0 0 0 0
+flags allocated 0 count 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 PUBLIC started run reload NULL finish does not credit twice
+> entity 1 4 0
+> queue public
+> queue wait day 4
+> load
+load 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 61 state 2 wait 0 callbacks 1 0 0
+> finish
+finish 1
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 0 1 0 0
+flags allocated 0 count 0
+> readlog 200
+log 200:
+1000:0::0::Received 100 CLAIM gold.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+raw item 1 100
+200 player pl_regular
+il	1 100
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N08 queued player settings FLAG synchronizes actual WAIT scheduler coverage
+> coverage path coverage.tsv
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 1 4 0
+> link 8000 9000
+> link 9000 1000
+> link 9000 1001
+> orders 200 1000 name "Joe #1"
+> orders 200 1000 realname O'Brien Family
+> orders 200 1000 banner My Banner
+> orders 200 1000 times 2
+> orders 200 1000 public
+> orders 200 1000 public
+> orders 200 1000 split 1 1
+> orders 200 1000 flag "Ready #"
+> orders 200 1000 wait day 4
+> orders 200 1001 wait flag "Ready #" 1000
+> orders 200 1001 name Wait Finished
+> orders 200 1001 wait day 4
+> resolve_wait
+> initial
+> start
+> evening
+> set day 1
+> start
+> evening
+> set day 2
+> start
+> evening
+> set day 3
+> start
+> evening
+> set day 4
+> start
+> evening
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 5 debug 4 inhibit 1 cur 99
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 12 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> settings state 200
+settings 200 player 1 same 0 fullname same 0 [O'Brien Family]
+settings values 1 1 0 0
+flags allocated 1 count 1
+flag 1000 [Ready #]
+> save 1001
+1001 char 0
+na Wait Finished
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ st 1
+ de 5
+ po 1
+ pr 1
+ if 1
+
+> coverage state 4
+coverage allocated 1 ncmds 148 table 148
+coverage row 4 0 0 1 0
+> coverage state 29
+coverage allocated 1 ncmds 148 table 148
+coverage row 29 0 0 1 0
+> coverage state 49
+coverage allocated 1 ncmds 148 table 148
+coverage row 49 0 0 2 0
+> coverage state 61
+coverage allocated 1 ncmds 148 table 148
+coverage row 61 0 0 1 1
+> coverage state 68
+coverage allocated 1 ncmds 148 table 148
+coverage row 68 0 0 1 0
+> coverage state 78
+coverage allocated 1 ncmds 148 table 148
+coverage row 78 0 0 0 1
+> coverage state 85
+coverage allocated 1 ncmds 148 table 148
+coverage row 85 0 0 1 0
+> coverage state 94
+coverage allocated 1 ncmds 148 table 148
+coverage row 94 0 0 3 0
+> readlog 200
+log 200:
+1000:0::0::> name "Joe #1"
+1000:0::0::<no subkind>~[1000] will now be known as Joe #1~[1000].
+1001:0::0::> wait flag "Ready #" 1000
+1000:0::0::> realname O'Brien Family
+1000:0::0::> banner My Banner
+1000:0::0::Banner set.
+1000:0::0::> times 2
+1000:0::0::Will not receive the Times.
+1000:0::0::> public
+1000:0::0::Received 100 CLAIM gold.
+1000:0::0::> public
+1000:0::0::Already a public turn.
+1000:0::0::> split 1 1
+1000:0::0::This command is no longer supported.
+1000:0::0::> flag "Ready #"
+1001:0::0::Wait finished: Joe #1~[1000] signaled 'Ready #'
+1000:0::0::> wait day 4
+1001:0::0::> name Wait Finished
+1001:0::0::<no subkind>~[1001] will now be known as Wait Finished~[1001].
+1001:0::0::> wait day 4
+1000:0::0::Wait finished: today is day 4.
+1001:0::0::Wait finished: today is day 4.
+> entity_rolls 1000 7 9000
+prison roll 431
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 77542
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+raw item 1 100
+200 player pl_regular
+il	1 100
+PL
+ fn O'Brien Family
+ ci 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 1 skill 0 temp 1010000 order 0
+here:
+raw item 77542 1
+1000 char 0
+na Joe #1
+il	77542 1
+LI
+ wh 9000
+CH
+ lo 200
+MI
+ ds My Banner
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ st 1
+ de 5
+ po 1
+ pr 1
+ if 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+na Wait Finished
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ st 1
+ de 5
+ po 1
+ pr 1
+ if 1
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 1001 
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N08 PUBLIC started run reload NULL interruption does not refund or credit twice
+> entity 1 4 0
+> queue public
+> queue wait day 4
+> load
+load 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 61 state 2 wait 0 callbacks 1 0 0
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 4 0 0 0 0 0 0; parse [wait] [day] [4]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> settings state 200
+settings 200 player 1 same 0 fullname same 1 [NULL]
+settings values 0 1 0 0
+flags allocated 0 count 0
+> readlog 200
+log 200:
+1000:0::0::Received 100 CLAIM gold.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+raw item 1 100
+200 player pl_regular
+il	1 100
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li wait day 4
+ ar 0 4 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0

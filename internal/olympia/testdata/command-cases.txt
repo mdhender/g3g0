@@ -35132,3 +35132,544 @@ entity_rolls 1000 7 9000
 usemeta legacy 1 100000
 newitem 1000 42
 export state
+
+section N08 NAME joined quoted hash apostrophe brackets and saved shift beyond eight args
+queue name 1001 "Joe #1" Joe's [keep] 4 5 6 7 8 9
+load
+do
+dump
+save 1001
+readlog 200
+export state
+
+section N08 NAME missing empty invalid target validation order and optional target condition
+queue name
+load
+do
+queue name ""
+load
+do
+queue name 9999 ""
+load
+do
+queue name 9999 x
+load
+do
+queue name 1001
+load
+do
+queue name 0 hello
+load
+do
+parse name hello there
+callback_start -3
+dump
+readlog 200
+export state
+
+section N08 NAME byte lengths 35 character 25 player and multibyte
+queue name 12345678901234567890123456789012345
+load
+do
+queue name 123456789012345678901234567890123456
+load
+do
+queue name 123456789012345678901234567890123é
+load
+do
+queue name 1234567890123456789012345678901234é
+load
+do
+queue name 200 1234567890123456789012345é
+load
+do
+queue name 200 12345678901234567890123456é
+load
+do
+readlog 200
+export state
+
+section N08 NAME same faction player and human versus foreign character and player
+field 1001 lord 201
+queue name 1001 stolen
+load
+do
+queue name 201 stolen
+load
+do
+queue name 200 Our Faction
+load
+do
+field 1001 lord 200
+queue name 1001 Our Friend
+load
+do
+readlog 200
+readlog 201
+export state
+
+section N08 NAME owned building and ship notifications foreign and safehaven denial
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 46
+entity 9002 9 31
+link 8000 9000
+link 9000 9001
+link 9000 9002
+link 9001 1000
+link 9002 1001
+queue name 9001 New Tower
+load
+do
+queue name 9002 New Ship
+load
+do
+field 1001 lord 201
+queue name 9002 Stolen Ship
+load
+do
+field 9001 safe 1
+queue name 9001 Safe Tower
+load
+do
+readlog 200
+readlog 201
+export state
+
+section N08 NAME ruled province versus unowned province
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 3 32
+entity 1002 2 64
+link 8000 9000
+link 8000 9001
+link 9000 9002
+link 9002 1000
+link 9000 1002
+field 1002 castle 9002
+queue name 9000 Our Province
+load
+do
+queue name 9001 No Ruler
+load
+do
+readlog 200
+export state
+
+section N08 NAME item creator and possessed auraculum versus absent auraculum
+entity 500 4 42
+entity 501 4 42
+entity 502 4 42
+field 500 creator 1000
+field 501 creator 1001
+field 1000 auraculum 501
+queue name 500 Created Item
+load
+do
+queue name 501 Missing Aura
+load
+do
+inventory 1000 501 1
+queue name 501 My Aura
+load
+do
+queue name 502 Unowned Item
+load
+do
+readlog 200
+export state
+
+section N08 NAME all five allowed potion keys foreign creator no inventory
+entity 500 4 42
+field 500 creator 1001
+field 500 use_key 1
+queue name 500 Death Potion
+load
+do
+field 500 use_key 2
+queue name 500 Heal Potion
+load
+do
+field 500 use_key 3
+queue name 500 Slave Potion
+load
+do
+field 500 use_key 5
+queue name 500 Project Potion
+load
+do
+field 500 use_key 6
+queue name 500 Quick Potion
+load
+do
+field 500 use_key 4
+queue name 500 Foreign Other
+load
+do
+readlog 200
+export state
+
+section N08 NAME summoned storm only and invalid kind denied
+entity 500 11 59
+field 500 summoner 1000
+queue name 500 My Storm
+load
+do
+field 500 summoner 1001
+queue name 500 Foreign Storm
+load
+do
+queue name 638 Hidden Skill
+load
+do
+readlog 200
+export state
+
+section N08 REALNAME nil and empty refuse without allocating absent player before output
+entity 202 1 51
+field 1000 lord 202
+settings remember 202
+parse realname
+callback_start
+settings state 202
+parse realname ""
+callback_start
+settings state 202
+readlog 202
+export state
+
+section N08 REALNAME 60 bytes success 61 refusal keeps existing pointer and empty nil distinct
+post mail 200 name_empty
+settings remember 200
+queue realname ""
+load
+do
+settings state 200
+queue realname 123456789012345678901234567890123456789012345678901234567890
+load
+do
+settings remember 200
+queue realname 1234567890123456789012345678901234567890123456789012345678901
+load
+do
+settings state 200
+queue realname
+load
+do
+settings state 200
+readlog 200
+export state
+
+section N08 REALNAME joined quoted and multibyte byte boundary
+queue realname "Full #" O'Brien Family
+load
+do
+save 200
+queue realname 1234567890123456789012345678901234567890123456789012345678é
+load
+do
+save 200
+queue realname 12345678901234567890123456789012345678901234567890123456789é
+load
+do
+save 200
+readlog 200
+export state
+
+section N08 BANNER default missing and quoted empty clear allocate misc
+queue banner
+load
+do
+save 1000
+queue banner "Our # banner" O'Brien
+load
+do
+save 1000
+queue banner ""
+load
+do
+readlog 200
+export state
+
+section N08 BANNER 50 versus 51 bytes preserves old display on refusal
+queue banner 12345678901234567890123456789012345678901234567890
+load
+do
+queue banner 123456789012345678901234567890123456789012345678901
+load
+do
+queue banner 123456789012345678901234567890123456789012345678é
+load
+do
+queue banner 1234567890123456789012345678901234567890123456789é
+load
+do
+readlog 200
+export state
+
+section N08 BANNER explicit invalid before ownership before length and target shift notifications
+field 1001 lord 201
+queue banner 9999 123456789012345678901234567890123456789012345678901
+load
+do
+queue banner 1001 123456789012345678901234567890123456789012345678901
+load
+do
+field 1001 lord 200
+queue banner 1001 First Second 3 4 5 6 7 8 9
+load
+do
+dump
+queue banner 1001 ""
+load
+do
+readlog 200
+readlog 201
+export state
+
+section N08 BANNER self bypass ownership checks player direct callback differs from explicit player
+who 201
+parse banner "Self Banner"
+callback_start
+parse banner 201 "Explicit Self"
+callback_start
+dump
+readlog 201
+export state
+
+section N08 FLAG missing duplicate case insensitive quoted empty per unit and list order
+settings state 200
+queue flag
+load
+do
+queue flag ""
+load
+do
+queue flag ""
+load
+do
+queue flag "Hello #" a b c d e f g h i
+load
+do
+queue flag "hELLO #"
+load
+do
+who 1001
+queue flag "Hello #"
+load
+do
+settings state 200
+readlog 200
+export state
+
+section N08 TIMES remaps saved a and signed char nonzero width semantics
+queue times 1
+load
+do
+dump
+settings state 200
+queue times 2
+load
+do
+dump
+settings state 200
+queue times 256
+load
+do
+settings state 200
+queue times 128
+load
+do
+settings state 200
+queue times -1
+load
+do
+settings state 200
+queue times
+load
+do
+settings state 200
+readlog 200
+export state
+
+section N08 PUBLIC first gold faction only once repeated nonzero signed public flag and no NP
+entity 1 4 0
+field 200 np 7
+parse public
+settings remember 200
+callback_start
+settings state 200
+callback_start
+settings state 200
+settings seed 200 -128 1234 56789
+callback_start
+settings state 200
+save 1000
+pstate 200
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
+
+section N08 PUBLIC absent player allocation and faction gold versus noble gold
+entity 1 4 0
+entity 202 1 51
+field 1000 lord 202
+settings remember 202
+parse public
+callback_start
+settings state 202
+callback_start
+settings state 202
+readlog 202
+export state
+
+section N08 SPLIT unsupported retains nondefault settings all raw arguments
+settings seed 200 -1 1234 56789
+queue split
+load
+do
+queue split 1 1
+load
+do
+queue split 0 0
+load
+do
+parse split 99 88
+callback_start -2147483648
+settings state 200
+readlog 200
+export state
+
+section N08 actual STATE_RUN reload NULL interrupts next WAIT no settings starts
+queue name Changed
+queue realname Changed
+queue banner Changed
+queue flag Changed
+queue times 1
+queue public
+queue split 1 1
+queue wait day 4
+load
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+settings state 200
+export state
+
+section N08 PUBLIC started run reload NULL finish does not credit twice
+entity 1 4 0
+queue public
+queue wait day 4
+load
+callback_start
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+finish
+dump
+settings state 200
+readlog 200
+export state
+
+section N08 queued player settings FLAG synchronizes actual WAIT scheduler coverage
+coverage path coverage.tsv
+entity 8000 3 50
+entity 9000 3 3
+entity 1 4 0
+link 8000 9000
+link 9000 1000
+link 9000 1001
+orders 200 1000 name "Joe #1"
+orders 200 1000 realname O'Brien Family
+orders 200 1000 banner My Banner
+orders 200 1000 times 2
+orders 200 1000 public
+orders 200 1000 public
+orders 200 1000 split 1 1
+orders 200 1000 flag "Ready #"
+orders 200 1000 wait day 4
+orders 200 1001 wait flag "Ready #" 1000
+orders 200 1001 name Wait Finished
+orders 200 1001 wait day 4
+resolve_wait
+initial
+start
+evening
+set day 1
+start
+evening
+set day 2
+start
+evening
+set day 3
+start
+evening
+set day 4
+start
+evening
+dump
+settings state 200
+save 1001
+coverage state 4
+coverage state 29
+coverage state 49
+coverage state 61
+coverage state 68
+coverage state 78
+coverage state 85
+coverage state 94
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
+
+section N08 PUBLIC started run reload NULL interruption does not refund or credit twice
+entity 1 4 0
+queue public
+queue wait day 4
+load
+callback_start
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+settings state 200
+readlog 200
+export state

@@ -38,6 +38,7 @@ void drv_sort_load(int pri);
 int drv_fort_covers(int n);
 char *drv_wait_check(struct command *c);
 void drv_signal(int who, char *flag);
+void drv_flags(void);
 void drv_interrupted(void);
 int drv_sub_item(int who, int item, int qty);
 void drv_add_item(int who, int item, int qty);
@@ -190,6 +191,8 @@ int main(int argc, char **argv)
  int section = -1, want, n, a, b, d, i, result, created = 0;
  struct command *c;
  ilist saved_vector = NULL;
+ struct entity_player *saved_player = NULL;
+ char *saved_fullname = NULL;
  if (argc != 4 || !(fp = fopen(argv[1], "r"))) return 2;
  want = atoi(argv[2]);
  libdir = argv[3];
@@ -228,6 +231,25 @@ int main(int argc, char **argv)
    for (i=0;i<16;i++) seed[i]=n+i;
    s=fopen(sout("%s/randseed",libdir),"wb"); if(!s) return 2;
    fwrite(seed,1,16,s); fclose(s); load_seed(sout("%s/randseed",libdir));
+  }
+  else if (!strcmp(op, "settings")) {
+   struct entity_player *p;
+   sscanf(line,"%*s %31s %d",label,&n);
+   p=rp_player(n);
+   if(!strcmp(label,"remember")) {
+    saved_player=p; saved_fullname=p ? p->full_name : NULL;
+   }
+   else if(!strcmp(label,"seed")) {
+    sscanf(line,"%*s %*s %d %d %d %d",&n,&a,&b,&d);
+    p=p_player(n); p->public_turn=(schar)a; p->split_lines=b; p->split_bytes=d;
+   }
+   else if(!strcmp(label,"state")) {
+    printf("settings %d player %d same %d fullname same %d [%s]\n",n,p!=NULL,p==saved_player,
+     (p ? p->full_name : NULL)==saved_fullname,p && p->full_name ? p->full_name : "NULL");
+    if(p) printf("settings values %d %d %d %d\n",p->compuserve,p->public_turn,p->split_lines,p->split_bytes);
+    drv_flags();
+   }
+   else return 2;
   }
   else if (!strcmp(op, "export")) {
    n=0;

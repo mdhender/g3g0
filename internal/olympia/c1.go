@@ -5,6 +5,165 @@ package olympia
 
 import "fmt"
 
+// Complete c1.c:314–359, including the static permission helper. Item
+// naming deliberately does not require possession except for an auraculum.
+func (w *world) mayName(who, target int) bool {
+	switch w.kind(target) {
+	case tChar, tPlayer:
+		return w.player(who) == w.player(target)
+	case tLoc, tShip:
+		if w.kind(target) == tLoc && w.safeHaven(target) != 0 {
+			return false
+		}
+		if w.locDepth(target) == locBuild {
+			return w.player(who) == w.player(w.buildingOwner(target))
+		}
+		return w.mayRuleHere(who, target)
+	case tItem:
+		if w.hasAuraculum(who) == target {
+			return true
+		}
+		if p := w.rpItemMagic(target); p != nil {
+			if int(p.creator) == who {
+				return true
+			}
+			switch int(p.useKey) {
+			case useDeathPotion, useHealPotion, useSlavePotion, useProjCast, useQuickCast:
+				return true
+			}
+		} else if who == 0 { // item_creator's absent-record value is zero.
+			return true
+		}
+	case tStorm:
+		return w.npcSummoner(target) == who
+	}
+	return false
+}
+
+// Complete c1.c:362–419. cmdShift changes the saved parse and numeric
+// fields; validation order and byte lengths are the original C contract.
+func (w *world) vName(c *command) int {
+	who, target := int(c.who), int(c.who)
+	if c.parse.Len()-1 >= 2 && c.a > 0 {
+		target = int(c.a)
+		w.cmdShift(c)
+	}
+	newName := restName(c, 1)
+	if newName == nil || *newName == "" {
+		w.commandOut(who, "No new name given.")
+		return 0
+	}
+	if !w.mayName(who, target) {
+		w.commandOut(who, "Not allowed to change the name of %s.", w.boxCode(target))
+		return 0
+	}
+	limit := 25
+	if w.kind(target) == tChar {
+		limit = 35
+	}
+	if len(*newName) > limit {
+		w.commandOut(who, "Name is longer than %d characters.", limit)
+		return 0
+	}
+	oldName := w.boxName(target)
+	w.setName(target, *newName)
+	w.commandOut(who, "%s will now be known as %s.", oldName, w.boxName(target))
+	if target != who && (w.kind(target) == tChar || w.isLocOrShip(target)) {
+		w.commandOut(target, "%s will now be known as %s.", oldName, w.boxName(target))
+	}
+	return 1
+}
+
+// Complete c1.c:422–441. Remap before narrowing to signed char; the
+// receives-Times message tests the narrowed field, not the original int.
+func (w *world) vTimes(c *command) int {
+	if c.a == 1 {
+		c.a = 2
+	} else if c.a == 2 {
+		c.a = 1
+	}
+	p := w.pPlayer(w.player(int(c.who)))
+	p.compuserve = int8(c.a)
+	if p.compuserve != 0 {
+		w.commandOut(int(c.who), "Will not receive the Times.")
+	} else {
+		w.commandOut(int(c.who), "Will receive the Times.")
+	}
+	return 1
+}
+
+// Complete c1.c:444–470. Refusals do not replace an existing fullName,
+// including a nonnil empty string, or allocate a player before output.
+func (w *world) vFullname(c *command) int {
+	newName := restName(c, 1)
+	if newName == nil || *newName == "" {
+		w.commandOut(int(c.who), "No new name given.")
+		return 0
+	}
+	if len(*newName) > 60 {
+		w.commandOut(int(c.who), "Name is longer than %d characters.", 60)
+		return 0
+	}
+	w.pPlayer(w.player(int(c.who))).fullName = newName
+	return 1
+}
+
+// Complete active c1.c:473–526. Only an explicit target takes the valid-box
+// and may_name checks. setBanner owns allocation and NULL/empty clearing.
+func (w *world) vBanner(c *command) int {
+	who, target := int(c.who), int(c.who)
+	if c.parse.Len()-1 >= 2 && c.a > 0 {
+		target = int(c.a)
+		w.cmdShift(c)
+		if !w.validBox(target) {
+			w.commandOut(who, "%s is not a valid entity.", w.boxCode(target))
+			return 0
+		}
+		if !w.mayName(who, target) {
+			w.commandOut(who, "You do not control %s.", w.boxCode(target))
+			return 0
+		}
+	}
+	newName := restName(c, 1)
+	text := ""
+	if newName != nil {
+		text = *newName
+	}
+	if len(text) > 50 {
+		w.commandOut(who, "Banner is longer than 50 characters.")
+		return 0
+	}
+	w.setBanner(target, text)
+	if text != "" {
+		w.commandOut(who, "Banner set.")
+	} else {
+		w.commandOut(who, "Banner cleared.")
+	}
+	return 1
+}
+
+// Complete c1.c:1152–1179; share the actual WAIT signal list and lookup.
+func (w *world) vFlag(c *command) int {
+	if c.parse.Len()-1 < 1 {
+		w.commandOut(int(c.who), "Must specify what message to signal.")
+		return 0
+	}
+	flag := c.parse[1]
+	if w.flagRaised(int(c.who), flag) >= 0 {
+		w.commandOut(int(c.who), "%s has already given that signal this month.", w.boxName(int(c.who)))
+		return 0
+	}
+	w.flags = append(w.flags, &flagEnt{who: c.who, flag: flag})
+	return 1
+}
+
+// c1.c:1694–1736: SPLIT is unconditionally unsupported. The old report
+// splitting implementation is a C comment, not active settings behavior.
+func (w *world) vSplit(c *command) int {
+	w.commandOut(int(c.who), "This command is no longer supported.")
+	return 0
+}
+
 // Complete c1.c:529–651. ACCEPT deliberately appends unvalidated raw fields.
 func (w *world) vAccept(c *command) int {
 	p := w.pChar(int(c.who))

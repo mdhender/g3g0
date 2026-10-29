@@ -384,6 +384,20 @@ func init() {
 			cmdTbl[i].start = (*world).vFormat
 		case "notab":
 			cmdTbl[i].start = (*world).vNotab
+		case "name":
+			cmdTbl[i].start = (*world).vName
+		case "realname":
+			cmdTbl[i].start = (*world).vFullname
+		case "banner":
+			cmdTbl[i].start = (*world).vBanner
+		case "flag":
+			cmdTbl[i].start = (*world).vFlag
+		case "times":
+			cmdTbl[i].start = (*world).vTimes
+		case "public":
+			cmdTbl[i].start = (*world).vPublic
+		case "split":
+			cmdTbl[i].start = (*world).vSplit
 		case "guard":
 			cmdTbl[i].start = (*world).vGuard
 		case "stack":

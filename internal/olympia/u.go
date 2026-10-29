@@ -12,6 +12,20 @@ import (
 
 // Ported from olympia/u.c.
 
+// restName is complete u.c:2491–2508. Missing arguments return NULL,
+// whereas a quoted empty argument returns a nonnil empty string. Join all
+// parsed fields, not only the eight cached numeric command arguments.
+func restName(c *command, a int) *string {
+	if c.parse.Len()-1 < a {
+		return nil
+	}
+	s := c.parse[a]
+	for _, field := range c.parse[a+1:] {
+		s = sout("%s %s", s, field)
+	}
+	return &s
+}
+
 // nprovinces retains u.c:2511–2526's nonzero static cache for this world.
 func (w *world) nprovinces() int {
 	if w.nprov != 0 {

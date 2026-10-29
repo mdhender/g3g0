@@ -10,6 +10,20 @@ import (
 	"github.com/mdhender/g3g0/internal/clib"
 )
 
+// Complete c2.c:563–583. publicTurn is unsaved monthly state; the first
+// call alone allocates the record and generates CLAIM gold for the faction.
+func (w *world) vPublic(c *command) int {
+	pl := w.player(int(c.who))
+	if p := w.rpPlayer(pl); p != nil && p.publicTurn != 0 {
+		w.commandOut(int(c.who), "Already a public turn.")
+		return 0
+	}
+	w.pPlayer(pl).publicTurn = 1
+	w.genItem(pl, itemGold, 100)
+	w.commandOut(int(c.who), "Received 100 CLAIM gold.")
+	return 1
+}
+
 // Complete c2.c:11–43; validation precedes quantity assertions and dropItem
 // owns consumption, unique ownership, ocean routing and token side effects.
 func (w *world) vDiscard(c *command) int {

@@ -110,7 +110,7 @@ functions = {
                   'show_nearby_cities', 'show_loc_skills', 'show_loc_posts',
                   'show_weather', 'show_loc_ruler', 'show_loc_stats', 'show_loc'],
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
-            'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
+            'rest_name', 'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
             'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
             'contacted', 'char_where', 'char_here', 'check_char_where', 'check_char_here',
             'check_char_gone', 'check_still_here', 'add_char_damage', 'count_man_items',
@@ -145,7 +145,8 @@ functions = {
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait', 'next_np_turn', 'print_hiring_status', 'print_unformed',
              'form_new_noble', 'v_form', 'd_form', 'v_accept', 'will_accept_sup', 'will_accept', 'how_many',
-             'v_give', 'v_pay', 'may_take', 'v_get'],
+             'v_give', 'v_pay', 'may_take', 'v_get', 'may_name', 'v_name', 'v_times',
+             'v_fullname', 'v_banner', 'v_flag', 'v_split'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
     'perm.c': ['is_hostile', 'is_defend', 'clear_all_att', 'rp_admit', 'p_admit', 'will_admit',
                'v_admit', 'set_att', 'v_set_att', 'v_hostile', 'v_defend', 'v_neutral', 'v_att_clear',
@@ -186,7 +187,7 @@ functions = {
              'wealth_list_comp', 'gm_faction_wealth', 'nobles_list_comp', 'gm_nobles_list',
              'gm_player_details', 'list_all_notices', 'list_all_items', 'gm_report'],
     'c2.c': ['v_stop', 'v_format', 'v_notab', 'open_times', 'times_masthead', 'close_times',
-             'v_discard', 'v_claim'],
+             'v_discard', 'v_claim', 'v_public'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts', 'add_contact', 'v_contact', 'cloak_lord'],
     'main.c': ['write_totimes', 'write_email', 'list_a_player', 'write_player_list',
@@ -346,6 +347,8 @@ int immed_see_all, month_done, show_combat_flag;
                 pattern = r'^static\nint rank_comp\(.*?^\}\n'
             if name == 'get_city_id':
                 pattern = r'^static int get_city_id\(.*?^\}\n'
+            if name == 'v_flag':
+                pattern = r'^int v_flag\(.*?^\}\n'
             m = re.search(pattern, source, re.M | re.S)
             if name == 'list_skill_sup':
                 # The first definition is disabled by #if 0; use the real #else.
@@ -592,6 +595,10 @@ void drv_signal(int who, char *flag) {
  struct flag_ent *p = my_malloc(sizeof(*p));
  p->who = who; p->flag = str_save(flag); flag_ents_append(&flags, p);
 }
+void drv_flags(void) {
+ printf("flags allocated %d count %d\\n",flags!=NULL,flag_ents_len(flags));
+ for(int i=0;i<flag_ents_len(flags);i++) printf("flag %d [%s]\\n",flags[i]->who,flags[i]->flag);
+}
 ''')
 # Region prefixes retain the original tags, structures, turn guards and whole
 # keyed leaf functions. No replaced draw or reset; the same master feeds mint.
@@ -751,6 +758,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N08 '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N08 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N07 '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

@@ -27,6 +27,8 @@ loyalty-refused
 mint-top-id
 move-go
 move-out-first
+order-quoted-comment
+order-unrecognized
 phase-daily
 phase-day0
 phase-month-close
@@ -34,6 +36,7 @@ phase-month-decay
 phase-month-gold
 phase-month-open
 player-refused
+player-settings
 release-swear-np
 rng-selftest
 savage-cap
