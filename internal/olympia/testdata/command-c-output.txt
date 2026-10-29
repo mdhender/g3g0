@@ -85820,3 +85820,892 @@ end file bytes
 stderr:
 
 exit 0
+stdout:
+section use prerequisites complete original metadata placeholder and sentinel
+> usemeta table
+use row 0 NULL 0 0 0 0 0 0 lookup -1 skill 0
+use row 1 c 801 1 1 0 7 0 lookup 1 skill 801
+use row 2 c 861 1 1 0 7 0 lookup 2 skill 861
+use row 3 c 862 1 0 0 1 0 lookup 3 skill 862
+use row 4 c 871 1 0 0 1 0 lookup 4 skill 871
+use row 5 c 864 1 1 0 7 0 lookup 5 skill 864
+use row 6 c 865 1 1 0 7 0 lookup 6 skill 865
+use row 7 c 866 1 1 0 7 0 lookup 7 skill 866
+use row 8 c 867 1 1 0 7 0 lookup 8 skill 867
+use row 9 c 868 1 1 0 7 0 lookup 9 skill 868
+use row 10 c 869 1 1 0 7 0 lookup 10 skill 869
+use row 11 c 805 1 1 0 7 0 lookup 11 skill 805
+use row 12 c 872 1 0 0 1 0 lookup 12 skill 872
+use row 13 c 807 1 1 0 7 0 lookup 13 skill 807
+use row 14 c 804 1 1 0 7 0 lookup 14 skill 804
+use row 15 c 809 1 1 0 3 0 lookup 15 skill 809
+use row 16 c 811 1 1 0 7 0 lookup 16 skill 811
+use row 17 c 841 1 1 0 7 0 lookup 17 skill 841
+use row 18 c 843 1 1 0 3 0 lookup 18 skill 843
+use row 19 c 848 1 1 0 7 0 lookup 19 skill 848
+use row 20 c 844 1 1 0 3 0 lookup 20 skill 844
+use row 21 c 812 1 1 0 3 0 lookup 21 skill 812
+use row 22 c 813 1 1 0 7 0 lookup 22 skill 813
+use row 23 c 814 1 1 0 10 0 lookup 23 skill 814
+use row 24 c 849 1 1 0 7 0 lookup 24 skill 849
+use row 25 c 847 1 1 0 10 0 lookup 25 skill 847
+use row 26 c 845 1 1 0 10 0 lookup 26 skill 845
+use row 27 c 846 1 1 0 7 0 lookup 27 skill 846
+use row 28 c 894 1 1 0 10 0 lookup 28 skill 894
+use row 29 c 889 1 1 0 7 0 lookup 29 skill 889
+use row 30 c 887 1 1 0 7 0 lookup 30 skill 887
+use row 31 c 888 1 1 0 7 0 lookup 31 skill 888
+use row 32 c 851 1 1 0 7 0 lookup 32 skill 851
+use row 33 c 998 1 1 0 7 0 lookup 33 skill 998
+use row 34 c 999 1 1 0 4 0 lookup 34 skill 999
+use row 35 c 893 1 1 0 10 0 lookup 35 skill 893
+use row 36 c 806 1 1 0 7 0 lookup 36 skill 806
+use row 37 c 823 1 1 0 7 0 lookup 37 skill 823
+use row 38 c 842 1 1 0 7 0 lookup 38 skill 842
+use row 39 c 863 1 1 0 7 0 lookup 39 skill 863
+use row 40 c 882 1 1 0 7 0 lookup 40 skill 882
+use row 41 c 903 1 1 0 7 0 lookup 41 skill 903
+use row 42 c 891 1 1 0 7 0 lookup 42 skill 891
+use row 43 c 892 1 1 0 7 0 lookup 43 skill 892
+use row 44 c 886 1 1 0 14 0 lookup 44 skill 886
+use row 45 c 881 1 1 0 14 0 lookup 45 skill 881
+use row 46 c 602 1 0 0 0 0 lookup 46 skill 602
+use row 47 c 601 1 1 1 -1 0 lookup 47 skill 601
+use row 48 c 656 1 0 0 7 0 lookup 48 skill 656
+use row 49 c 657 1 0 0 14 0 lookup 49 skill 657
+use row 50 c 701 0 0 0 14 0 lookup 50 skill 701
+use row 51 c 613 0 0 0 14 0 lookup 51 skill 613
+use row 52 c 681 0 0 0 14 0 lookup 52 skill 681
+use row 53 c 694 1 1 0 7 0 lookup 53 skill 694
+use row 54 c 691 1 1 0 7 0 lookup 54 skill 691
+use row 55 c 696 1 1 0 10 0 lookup 55 skill 696
+use row 56 c 721 1 1 0 7 0 lookup 56 skill 721
+use row 57 c 722 1 1 0 7 0 lookup 57 skill 722
+use row 58 c 723 1 1 0 7 0 lookup 58 skill 723
+use row 59 c 682 1 0 0 -1 1 lookup 59 skill 682
+use row 60 c 655 1 0 0 -1 1 lookup 60 skill 655
+use row 61 c 693 0 0 0 7 0 lookup 61 skill 693
+use row 62 c 702 1 0 0 -1 1 lookup 62 skill 702
+use row 63 c 703 1 0 0 -1 1 lookup 63 skill 703
+use row 64 c 997 1 1 0 10 0 lookup 64 skill 997
+use row 65 c 632 1 1 0 7 0 lookup 65 skill 632
+use row 66 c 633 1 1 0 7 0 lookup 66 skill 633
+use row 67 c 634 1 1 0 7 0 lookup 67 skill 634
+use row 68 c 692 1 1 0 7 0 lookup 68 skill 692
+use row 69 c 671 1 1 0 7 0 lookup 69 skill 671
+use row 70 c 658 1 0 0 1 0 lookup 70 skill 658
+use row 71 c 659 1 1 0 7 0 lookup 71 skill 659
+use row 72 c 707 1 1 0 7 0 lookup 72 skill 707
+use row 73 c 673 1 1 0 7 0 lookup 73 skill 673
+use row 74 c 674 1 1 0 7 0 lookup 74 skill 674
+use row 75 c 675 1 1 0 7 0 lookup 75 skill 675
+use row 76 c 651 1 1 0 3 0 lookup 76 skill 651
+use row 77 c 697 1 1 0 7 0 lookup 77 skill 697
+use row 78 c 901 1 0 0 -1 1 lookup 78 skill 901
+use row 79 c 904 1 1 0 7 0 lookup 79 skill 904
+use row 80 c 906 1 1 0 7 0 lookup 80 skill 906
+use row 81 c 905 1 1 0 7 0 lookup 81 skill 905
+use row 82 c 907 1 1 0 14 0 lookup 82 skill 907
+use row 83 c 908 1 1 0 1 0 lookup 83 skill 908
+use row 84 c 909 1 0 0 0 0 lookup 84 skill 909
+use row 85 c 825 1 1 0 7 0 lookup 85 skill 825
+use row 86 c 824 1 1 0 7 0 lookup 86 skill 824
+use row 87 c 826 1 1 0 7 0 lookup 87 skill 826
+use row 88 c 827 1 0 0 1 0 lookup 88 skill 827
+use row 89 c 829 1 1 0 3 0 lookup 89 skill 829
+use row 90 c 828 1 1 0 7 0 lookup 90 skill 828
+use row 91 c 831 1 1 0 7 0 lookup 91 skill 831
+use row 92 c 821 1 1 0 7 0 lookup 92 skill 821
+use row 93 c 832 1 1 0 7 0 lookup 93 skill 832
+use row 94 c 833 1 1 0 7 0 lookup 94 skill 833
+use row 95 c 852 1 1 0 7 0 lookup 95 skill 852
+use row 96 c 638 1 1 0 3 0 lookup 96 skill 638
+use row 97 c 639 1 1 0 3 0 lookup 97 skill 639
+use row 98 c 802 1 0 0 -1 1 lookup 98 skill 802
+use row 99 c 631 1 1 0 7 0 lookup 99 skill 631
+use row 100 c 803 1 0 0 1 0 lookup 100 skill 803
+use row 101 c 614 1 1 0 7 0 lookup 101 skill 614
+use row 102 c 615 1 1 0 7 0 lookup 102 skill 615
+use row 103 c 616 1 1 0 7 0 lookup 103 skill 616
+use row 104 c 751 1 1 0 10 0 lookup 104 skill 751
+use row 105 c 754 1 1 0 10 0 lookup 105 skill 754
+use row 106 c 753 1 1 0 3 0 lookup 106 skill 753
+use row 107 c 752 1 1 0 10 0 lookup 107 skill 752
+use row 108 c 755 1 1 0 10 0 lookup 108 skill 755
+use row 109 c 756 1 1 0 10 0 lookup 109 skill 756
+use row 110 c 636 1 1 0 7 0 lookup 110 skill 636
+use row 111 c 706 1 0 0 0 0 lookup 111 skill 706
+use row 112 c 676 1 0 0 0 0 lookup 112 skill 676
+use row 113 c 617 1 0 0 0 0 lookup 113 skill 617
+use row 114 c 635 1 0 0 0 0 lookup 114 skill 635
+use row 115 c 911 1 0 0 0 0 lookup 115 skill 911
+use row 116 c 704 1 0 0 0 0 lookup 116 skill 704
+use row 117 c 603 1 0 0 0 0 lookup 117 skill 603
+use row 118 c 902 1 0 0 0 0 lookup 118 skill 902
+use row 119 c 652 1 0 0 0 0 lookup 119 skill 652
+use row 120 c 653 1 0 0 0 0 lookup 120 skill 653
+use row 121 c 695 1 0 0 0 0 lookup 121 skill 695
+use row 122 c 637 1 1 0 7 0 lookup 122 skill 637
+use row 123 c 612 1 0 0 0 0 lookup 123 skill 612
+use row 124 c 654 1 1 0 7 0 lookup 124 skill 654
+use row 125 c 661 1 1 0 28 0 lookup 125 skill 661
+use row 126 c 672 1 1 0 7 0 lookup 126 skill 672
+use row 127 c 883 1 1 0 7 0 lookup 127 skill 883
+use row 128 c 884 1 1 0 7 0 lookup 128 skill 884
+use row 129 c 885 1 1 0 7 0 lookup 129 skill 885
+use row 130 c 921 1 1 0 28 0 lookup 130 skill 921
+use row 131 c 922 1 1 0 3 0 lookup 131 skill 922
+use row 132 c 808 1 1 0 7 0 lookup 132 skill 808
+use row 133 c 822 1 1 0 7 0 lookup 133 skill 822
+use row 134 c 732 1 1 0 21 0 lookup 134 skill 732
+use row 135 c 733 1 1 0 14 0 lookup 135 skill 733
+use row 136 NULL 0 0 0 0 0 0 lookup -1 skill 0
+> usemeta lookup -1
+use lookup -1 -1
+> usemeta lookup 0
+use lookup 0 -1
+> usemeta lookup 800
+use lookup 800 -1
+> usemeta lookup 821
+use lookup 821 92
+> usemeta lookup 9999
+use lookup 9999 -1
+stderr:
+
+exit 0
+stdout:
+section use prerequisites access uses last positive artifact before last scroll and known first
+> master 17
+> entity 60003 4 42
+> entity 60001 4 0
+> entity 60002 4 42
+> entity 60004 4 0
+> entity 60005 4 0
+> field 60003 may_use 638
+> field 60001 may_use 638
+> field 60002 may_use 638
+> field 60004 may_use 638
+> field 60005 may_use 638
+> inventory 1000 60003 1
+> inventory 1000 60004 1
+> inventory 1000 60002 1
+> inventory 1000 60001 2
+> inventory 1000 60005 0
+> inventory 1000 60006 7
+> usemeta may 1000 638
+use may 1000 638 60001
+> usemeta may 1000 639
+use may 1000 639 0
+> learn 1000 638 1 34
+> usemeta may 1000 638
+use may 1000 638 60001
+> learn 1001 638 2 4
+> inventory 1001 60004 1
+> usemeta may 1001 638
+use may 1001 638 638
+> usemeta state 1000 638
+use records 1000 1 0 0 0
+use experience 638 1 34 0 0
+use inventory 60003 1
+use inventory 60004 1
+use inventory 60002 1
+use inventory 60001 2
+use inventory 60005 0
+use inventory 60006 7
+1000 char 0
+il	60003 1 \
+	60004 1 \
+	60002 1 \
+	60001 2
+CH
+ lo 200
+ sl	638 1 0 34 0
+
+> save 60003
+60003 item scroll
+IT
+IM
+ mu 638 
+
+> usemeta legacy 1 10000
+use legacy 2303
+> newitem 1000 0
+created 62636
+> save_new
+62636 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section use prerequisites scroll fallback no grants no allocation
+> master 17
+> entity 60003 4 42
+> entity 60002 4 42
+> field 60003 may_use 638
+> field 60002 may_use 638
+> inventory 1000 60003 1
+> inventory 1000 60002 1
+> usemeta may 1000 638
+use may 1000 638 60002
+> entity 2000 2 0
+> usemeta may 2000 638
+use may 2000 638 0
+> usemeta experience 2000 638
+> usemeta state 2000 638
+use records 2000 0 0 0 0
+2000 char 0
+
+> usemeta legacy 1 10000
+use legacy 2303
+> newitem 1000 0
+created 62636
+> save_new
+62636 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section use prerequisites item correction first grant but real use key wins
+> entity 60000 4 42
+> entity 60001 4 0
+> entity 60002 4 0
+> field 60000 may_use 639
+> field 60000 may_use 638
+> field 60001 may_use 805
+> field 60001 use_key 4
+> usemeta correct 60000
+use correct 639 arg 639
+> usemeta correct 60001
+use correct 60001 arg 60001
+> field 60001 use_key 0
+> usemeta correct 60001
+use correct 805 arg 805
+> usemeta correct 60002
+use correct 60002 arg 60002
+> usemeta correct 638
+use correct 638 arg 638
+> usemeta state 60002 0
+use records 60002 0 0 0 0
+60002 item 0
+
+> save 60000
+60000 item scroll
+IT
+IM
+ mu 638 
+
+> save 60001
+60001 item 0
+IT
+IM
+
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 638 0 0 0 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+stderr:
+
+exit 0
+stdout:
+section use prerequisites requirements select first sufficient alternative terminal controls consumption
+> master 21
+> entity 610 5 0
+> entity 611 5 0
+> entity 612 5 0
+> entity 10 4 0
+> entity 11 4 0
+> entity 12 4 0
+> entity 13 4 0
+> entity 14 4 0
+> name 10 amber
+> name 11 ivory
+> inventory 1000 10 5
+> inventory 1000 11 7
+> inventory 1000 12 3
+> inventory 1000 13 9
+> inventory 1000 14 5
+> usemeta req 610 10 2 2
+> usemeta req 610 11 4 1
+> usemeta req 610 12 3 0
+> usemeta req 610 13 5 1
+> usemeta req 610 14 1 1
+> usemeta meets 1000 610
+use meets 1
+> usemeta consume 1000 610
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+use inventory 10 3
+use inventory 11 7
+use inventory 12 3
+use inventory 13 4
+use inventory 14 4
+1000 char 0
+il	10 3 \
+	11 7 \
+	12 3 \
+	13 4 \
+	14 4
+CH
+ lo 200
+
+> usemeta consume 1000 610
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+use inventory 10 1
+use inventory 11 7
+use inventory 12 3
+use inventory 13 4
+use inventory 14 3
+1000 char 0
+il	10 1 \
+	11 7 \
+	12 3 \
+	13 4 \
+	14 3
+CH
+ lo 200
+
+> usemeta meets 1000 610
+use meets 0
+> usemeta req 611 10 8 2
+> usemeta req 611 11 2 1
+> usemeta req 611 12 1 1
+> usemeta meets 1000 611
+use meets 1
+> usemeta consume 1000 611
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+use inventory 10 1
+use inventory 11 5
+use inventory 12 2
+use inventory 13 4
+use inventory 14 3
+1000 char 0
+il	10 1 \
+	11 5 \
+	12 2 \
+	13 4 \
+	14 3
+CH
+ lo 200
+
+> usemeta req 612 10 1 2
+> usemeta req 612 11 99 2
+> usemeta req 612 12 99 0
+> usemeta meets 1000 612
+use meets 1
+> usemeta consume 1000 612
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+use inventory 10 1
+use inventory 11 5
+use inventory 12 2
+use inventory 13 4
+use inventory 14 3
+1000 char 0
+il	10 1 \
+	11 5 \
+	12 2 \
+	13 4 \
+	14 3
+CH
+ lo 200
+
+> save 610
+610 skill 0
+SK
+ tl 0
+ rq	10 2 2 \
+	11 4 1 \
+	12 3 0 \
+	13 5 1 \
+	14 1 1
+
+> save 611
+611 skill 0
+SK
+ tl 0
+ rq	10 8 2 \
+	11 2 1 \
+	12 1 1
+
+> save 612
+612 skill 0
+SK
+ tl 0
+ rq	10 1 2 \
+	11 99 2 \
+	12 99 0
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind> does not have five~<no subkind>~[13].
+> usemeta legacy 1 10000
+use legacy 2508
+> newitem 1000 0
+created 70017
+> save_new
+70017 item 0
+IT
+ un 1000
+
+stderr:
+warning: plural name not set for item [13]
+
+exit 0
+stdout:
+section use prerequisites missing requirements no allocation and empty list
+> entity 610 5 0
+> usemeta meets 1000 610
+use meets 1
+> usemeta consume 1000 610
+> usemeta state 610 0
+use records 610 0 0 0 0
+610 skill 0
+
+> field 610 required 0
+> usemeta meets 1000 610
+use meets 1
+> usemeta consume 1000 610
+> usemeta state 610 0
+use records 610 0 0 1 0
+610 skill 0
+SK
+ tl 0
+
+stderr:
+
+exit 0
+stdout:
+section use prerequisites invalid unmet terminal OR checks assertion before later reads
+> entity 610 5 0
+> entity 10 4 0
+> usemeta req 610 10 1 2
+> usemeta meets 1000 610
+stderr:
+skill = 610
+assertion failure: olympia/use.c (412): FALSE
+
+exit 134
+stdout:
+section use prerequisites invalid unmet terminal OR consume assertion before later reads
+> entity 610 5 0
+> entity 10 4 0
+> usemeta req 610 10 1 2
+> usemeta consume 1000 610
+stderr:
+req list ends with REQ_OR, skill = 610
+assertion failure: olympia/use.c (463): FALSE
+
+exit 134
+stdout:
+section use prerequisites scroll consumption actual unique deletion and non-scroll preservation
+> master 41
+> entity 60000 4 42
+> entity 60001 4 0
+> field 60000 unique 1000
+> field 60000 may_use 638
+> name 60000 Last Page
+> inventory 1000 60000 1
+> inventory 1000 60001 2
+> usemeta scroll 1000 60001
+> usemeta scroll 1000 638
+> usemeta may 1000 638
+use may 1000 638 60000
+> usemeta scroll 1000 60000
+> usemeta may 1000 638
+use may 1000 638 0
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+use inventory 60000 0
+use inventory 60001 2
+1000 char 0
+il	60001 2
+CH
+ lo 200
+
+> save 60000
+> save 60001
+60001 item 0
+
+> readlog 200
+log 200:
+1000:0::0::Last Page~[b000] vanishes.
+> usemeta legacy 1 10000
+use legacy 5457
+> newitem 1000 42
+created 74182
+> save_new
+74182 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section use prerequisites experience duration complete boundaries
+> master 41
+> usemeta speeds
+use speed -1 before -1 after -1
+use speed -1 before 0 after 0
+use speed -1 before 1 after 1
+use speed -1 before 6 after 6
+use speed -1 before 7 after 7
+use speed -1 before 8 after 8
+use speed -1 before 9 after 9
+use speed -1 before 10 after 10
+use speed -1 before 11 after 11
+use speed -1 before 13 after 13
+use speed -1 before 14 after 14
+use speed -1 before 15 after 15
+use speed -1 before 28 after 28
+use speed 0 before -1 after -1
+use speed 0 before 0 after 0
+use speed 0 before 1 after 1
+use speed 0 before 6 after 6
+use speed 0 before 7 after 7
+use speed 0 before 8 after 8
+use speed 0 before 9 after 9
+use speed 0 before 10 after 10
+use speed 0 before 11 after 11
+use speed 0 before 13 after 13
+use speed 0 before 14 after 14
+use speed 0 before 15 after 15
+use speed 0 before 28 after 28
+use speed 1 before -1 after -1
+use speed 1 before 0 after 0
+use speed 1 before 1 after 1
+use speed 1 before 6 after 6
+use speed 1 before 7 after 7
+use speed 1 before 8 after 8
+use speed 1 before 9 after 9
+use speed 1 before 10 after 10
+use speed 1 before 11 after 11
+use speed 1 before 13 after 13
+use speed 1 before 14 after 14
+use speed 1 before 15 after 15
+use speed 1 before 28 after 28
+use speed 2 before -1 after -1
+use speed 2 before 0 after 0
+use speed 2 before 1 after 1
+use speed 2 before 6 after 6
+use speed 2 before 7 after 7
+use speed 2 before 8 after 8
+use speed 2 before 9 after 9
+use speed 2 before 10 after 10
+use speed 2 before 11 after 11
+use speed 2 before 13 after 13
+use speed 2 before 14 after 13
+use speed 2 before 15 after 14
+use speed 2 before 28 after 27
+use speed 3 before -1 after -1
+use speed 3 before 0 after 0
+use speed 3 before 1 after 1
+use speed 3 before 6 after 6
+use speed 3 before 7 after 6
+use speed 3 before 8 after 7
+use speed 3 before 9 after 8
+use speed 3 before 10 after 9
+use speed 3 before 11 after 10
+use speed 3 before 13 after 12
+use speed 3 before 14 after 12
+use speed 3 before 15 after 13
+use speed 3 before 28 after 26
+use speed 4 before -1 after -1
+use speed 4 before 0 after 0
+use speed 4 before 1 after 1
+use speed 4 before 6 after 6
+use speed 4 before 7 after 6
+use speed 4 before 8 after 7
+use speed 4 before 9 after 8
+use speed 4 before 10 after 9
+use speed 4 before 11 after 10
+use speed 4 before 13 after 12
+use speed 4 before 14 after 11
+use speed 4 before 15 after 12
+use speed 4 before 28 after 25
+use speed 5 before -1 after -1
+use speed 5 before 0 after 0
+use speed 5 before 1 after 1
+use speed 5 before 6 after 6
+use speed 5 before 7 after 6
+use speed 5 before 8 after 7
+use speed 5 before 9 after 8
+use speed 5 before 10 after 8
+use speed 5 before 11 after 9
+use speed 5 before 13 after 11
+use speed 5 before 14 after 10
+use speed 5 before 15 after 11
+use speed 5 before 28 after 24
+> usemeta legacy 1 10000
+use legacy 5457
+> newitem 1000 42
+created 74182
+> save_new
+74182 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section use prerequisites magical speed zero less equal greater negative and exclusions
+> master 33
+> entity 800 5 43
+> entity 801 5 0
+> entity 998 5 0
+> entity 921 5 0
+> field 801 required 800
+> field 998 required 800
+> field 921 required 800
+> usemeta magic 801 7
+use magic 7
+> usemeta state 1000 0
+use records 1000 1 0 0 0
+1000 char 0
+CH
+ lo 200
+
+> field 1000 quick_cast 3
+> usemeta magic 638 7
+use magic 7
+> usemeta magic 998 7
+use magic 7
+> usemeta magic 921 28
+use magic 28
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+CM
+ qc 3
+
+> usemeta magic 801 0
+use magic 0
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+CM
+ qc 3
+
+> usemeta magic 801 7
+use magic 4
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+
+> field 1000 quick_cast 7
+> usemeta magic 801 7
+use magic 1
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+
+> field 1000 quick_cast 9
+> usemeta magic 801 7
+use magic 1
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+
+> field 1000 quick_cast 3
+> usemeta magic 801 -1
+use magic 1
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+
+> field 1000 quick_cast -2
+> usemeta magic 801 7
+use magic 9
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+
+> field 1000 quick_cast 1
+> usemeta magic 801 2
+use magic 1
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+
+> field 1000 quick_cast 5
+> usemeta magic 801 1
+use magic 1
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+
+> usemeta magic 801 7
+use magic 7
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::(speeded cast by 0 days)
+1000:0::0::(speeded cast by 3 days)
+1000:0::0::(speeded cast by 6 days)
+1000:0::0::(speeded cast by 6 days)
+1000:0::0::(speeded cast by -2 days)
+1000:0::0::(speeded cast by -2 days)
+1000:0::0::(speeded cast by 1 day)
+1000:0::0::(speeded cast by 0 days)
+> usemeta legacy 1 10000
+use legacy 551
+> newitem 1000 42
+created 75482
+> save_new
+75482 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section use prerequisites experience only entry once per month regardless knowledge noexp school
+> master 33
+> entity 610 5 0
+> entity 611 5 0
+> field 610 skill_no_exp 1
+> field 611 required 610
+> usemeta experience 1000 610
+> usemeta state 1000 610
+use records 1000 1 0 0 0
+1000 char 0
+CH
+ lo 200
+
+> learn 1000 610 0 4
+> learn 1000 611 2 11
+> learn 1001 611 1 20
+> usemeta experience 1000 610
+> usemeta experience 1000 610
+> usemeta state 1000 610
+use records 1000 1 0 0 0
+use experience 610 0 5 1 0
+1000 char 0
+CH
+ lo 200
+ sl	610 0 0 5 0 \
+	611 2 0 11 0
+
+> usemeta experience 1000 611
+> usemeta experience 1000 611
+> usemeta state 1000 611
+use records 1000 1 0 0 0
+use experience 611 2 12 1 3
+1000 char 0
+CH
+ lo 200
+ sl	610 0 0 5 0 \
+	611 2 0 12 0
+
+> usemeta state 1000 610
+use records 1000 1 0 0 0
+use experience 610 0 5 1 0
+1000 char 0
+CH
+ lo 200
+ sl	610 0 0 5 0 \
+	611 2 0 12 0
+
+> set turn 2
+> usemeta experience 1000 611
+> usemeta state 1000 611
+use records 1000 1 0 0 0
+use experience 611 2 12 1 3
+1000 char 0
+CH
+ lo 200
+ sl	610 0 0 5 0 \
+	611 2 0 12 0
+
+> usemeta month 1000 611 0
+> usemeta experience 1000 611
+> usemeta state 1000 611
+use records 1000 1 0 0 0
+use experience 611 2 13 1 3
+1000 char 0
+CH
+ lo 200
+ sl	610 0 0 5 0 \
+	611 2 0 13 0
+
+> usemeta experience 1001 611
+> usemeta state 1001 611
+use records 1001 1 0 0 0
+use experience 611 1 21 1 0
+1001 char 0
+CH
+ lo 200
+ sl	611 1 0 21 0
+
+> usemeta month 1001 611 -1
+> usemeta experience 1001 611
+> usemeta state 1001 611
+use records 1001 1 0 0 0
+use experience 611 1 21 -1 0
+1001 char 0
+CH
+ lo 200
+ sl	611 1 0 21 0
+
+> learn 1001 610 2 34
+> usemeta experience 1001 610
+> usemeta state 1001 610
+use records 1001 1 0 0 0
+use experience 610 2 35 1 5
+1001 char 0
+CH
+ lo 200
+ sl	611 1 0 21 0 \
+	610 2 0 35 0
+
+> usemeta legacy 1 10000
+use legacy 551
+> newitem 1000 42
+created 78009
+> save_new
+78009 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0

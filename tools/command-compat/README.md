@@ -3,6 +3,130 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## USE metadata and shared prerequisites (#171)
+
+At **0.107.0-alpha**, existing use.go owns the complete original `use_tbl`
+**84–229**: **135 skill rows**, initial placeholder at **0**, separate zero
+sentinel at **136**, exact allow/time/poll and callback NULL bits. The older
+stage prose's 88–237 range includes part of `v_implicit`; actual table data
+ends at 229. `v_implicit` and `v_shipbuild` remain NYI, as do all other absent
+non-NULL gameplay callbacks. Only already implemented `v_hide`/`d_hide` and
+`v_bind_storm`/`d_bind_storm` are reused. Full SAIL is NOT implemented, so its
+three callbacks remain explicit NYI, not NULLs. A Go boundary test checks all
+non-NULL callbacks, the four reused function identities and all three still
+gated command-level USE callbacks. `--use-coverage` stays gated too.
+
+Complete unchanged pinned definitions newly extracted by this existing oracle:
+
+| use.c definition | Lines |
+|---|---|
+| `find_use_entry` | 251–261 |
+| `use_tbl_skill` | 269–274 |
+| `may_use_skill` | 287–323 |
+| `magically_speed_casting` | 326–359 |
+| `correct_use_item` | 369–385 |
+| `meets_requirements` | 388–433 |
+| `consume_requirements` | 436–482 |
+| `consume_scroll` | 485–499 |
+| `experience_use_speedup` | 502–521 |
+| `add_skill_experience` | 660–682 |
+
+The C oracle additionally retains the **18,205-byte unchanged original struct,
+callback declarations and table (9–229)**, SHA-256
+`0cc15e0524f80c711fb50f47243859b3fb73449a1b7e78653f1f1d1e74e222c3`.
+Full use.c is **53,389 bytes / 2,134 lines**, SHA-256
+`7582e5f81f26e6fe43c47c1e3444b4d4a2487edebb2dcb8908600b2a6a7bcd06`.
+Every extracted definition is byte-equal to the complete pinned definition,
+with original `#line` locations; all **100** archived lib/olympia regular
+sources equal the immutable archive. Symbol/callback-name/order checks
+supplement execution of all original table rows and numeric IDs. Absent C
+gameplay references retain abort-only dependency markers; no helper calls
+them, no successful callback overlay is used and no table row is replaced.
+
+Dependencies read/verified include complete shared USE callers, STUDY's
+scroll caller, coverage.c's sentinel walker, existing `rp_skill_ent`,
+`has_skill`, `exp_level`, `skill_school`, oly.h's actual field widths,
+REQ constants and magic/quick-cast/use-key macros, loop.h's copied/filtered
+inventory traversal, u.c `has_item`, `consume_item`/`sub_item` and
+`destroy_unique_item`, and existing item/skill/list allocation, output,
+deletion, serialization and shared mint owners. No new upstream source
+dependency or pin: all of these files were already tracked by affected.sh.
+
+Twelve appended sections exercise original metadata/lookup/sentinel; last
+positive inventory artifact before last scroll (opposing ID/list order),
+known-before-item grants and filtered invalid/zero inventory entries; first
+grant correction versus a real item use key, including non-scroll grants;
+absent/empty record nonallocation; first sufficient OR alternative and the
+terminal entry's consumption policy; repeated consumption and ignored failure
+before a later item; raw inventory/list order, skill and scroll/deleted-box
+effects; unique creation and legacy RNG aftermath; **91** experience/duration
+boundary pairs; magical speed zero/one-day/less/equal/greater/negative waits and
+quick-cast values plus nonmagic/save-quick/trance exemptions; and experience
+4→5, 11→12, 20→21, 34→35, unknown/learning/known, no_exp, school versus
+child and once-per-month flags. Advancing the calendar alone does NOT reset
+`exp_this_month`; this helper reads the flag and increments only the given
+entry, not its parent, despite C's comment. Actual unmet trailing-OR assertions
+at **412** and **463** compare status **134** and raw diagnostics. Original
+index-before-bound OR-loop order is preserved; successful trailing-OR
+out-of-bounds reads are not turned into UB expectations.
+
+Real C twice and Go match **1260 sections / 86711 output lines / 1703330 output
+bytes**, from **27307 input lines / 523069 input bytes**. All **1248** inherited
+sections and both inherited byte prefixes remain unchanged:
+
+| File | Prefix bytes | Prefix SHA-256 |
+|---|---:|---|
+| command-cases.txt | 517452 | `17250c35be656f2f61bce19409fe32e2cffb936f9b77fe2363c7b7a71b88469e` |
+| command-c-output.txt | 1682820 | `b211c52e66534520a987e79411e6916f8465e94412270f2c1462a0f158b3da95` |
+
+Full input SHA-256:
+`c0099469c48a560b66f8dbcb4e3d6131b9b94ed182011e15a5397ef4a521f0e5`.
+Full output SHA-256:
+`f77a1f488eb9ae4482777766d79a4ed2e4ebd36d4d574d29d4825e485ea25975`.
+The new literal C output preserves two intentional trailing-space `mu` list
+lines; unrestricted `git diff --check` reports those raw bytes. Source-only
+whitespace, gofmt and shell syntax checks pass.
+
+Before recording refresh, four temporary linker rejection controls wrap only
+the direct requirement helper observer at expected-abort section **1254**:
+emit the missing-C-dependency marker then either return **0** or abort **134**,
+in ordinary and `--update` modes. All reject with harness **2** BEFORE expected
+status/recording acceptance; recording hashes stay unchanged. Temporary probes
+and matching captures are removed. An exploratory nonexistent-owner call
+reached C's invalid `rp_char` dereference (**139**, violates the caller's
+valid-owner precondition), not a defined helper assertion; it was rejected
+before recording and removed rather than manufacturing a UB expectation.
+No valid-input upstream blocker or gameplay prerequisite was found.
+
+Validation: bounded vet and fresh bounded default tests pass (Olympia
+**1.780s** on final rerun). Sequential command, move, helper, RNG, code, loadsave,
+turn-driver and default-turn checks pass; CLI **92** vectors and both
+`rng-selftest` gates pass. EVERY compat call explicitly sets
+`G3_REPO=$PWD/tmp/upstream.git`; engines/tests use run_limited. CLI reuses only
+the pristine exact-pin C executable in `tmp/stage3-roundtrip/g3/build/debug`
+(SHA-256 `1f03220bac19c2b3fd3a75c3b3aac34cc0df56210472148b11fba82d8e05c8bf`),
+never its cached inputs. Logs: `tmp/issue171-source-audit.log`,
+`tmp/issue171-recording-integrity.log`, `tmp/issue171-{vet,tests}-final.log`,
+`tmp/issue171-command-{update,default}.log`,
+`tmp/issue171-negative-{return,abort}-{default,update}.log`,
+`tmp/issue171-*-default.log` and `tmp/issue171-cli.log`.
+
+Only metadata and shared helpers are implemented here. #172 owns v_use,
+d_use, i_use, shared item dispatch and USE accounting/CLI integration;
+remaining gameplay handlers, full-corpus reruns and stage exit are NOT claimed.
+
+Independent parent acceptance repeats bounded vet, fresh bounded tests,
+command/move/helper/RNG/code/loadsave/turn-driver/default-turn and CLI checks;
+all pass. The command oracle repeats real C twice before comparing Go:
+**1260 sections / 86711 lines**, with both inherited recording prefixes
+independently verified unchanged. Parent reviewed the complete pinned use.c,
+table, shared helpers and diff; missing gameplay remains explicitly NYI.
+Logs: `tmp/parent171-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn,cli}.log`.
+The all-open audit found new follow-C #179, attached to the stage: G3 #360
+is still unmerged and upstream main remains the immutable stage pin. Its
+trade-loader/name-truncation changes are pending upstream, not silently
+applied to this unrelated USE prerequisite. Recheck before the next task.
+
 ## Command coverage (#170)
 
 At **0.106.0-alpha**, coverage.go implements complete pinned coverage.c

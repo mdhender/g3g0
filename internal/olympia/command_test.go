@@ -1993,6 +1993,70 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			fmt.Fprintf(&stdout, "file bytes %s %d:\n", path, len(data))
 			stdout.Write(data)
 			fmt.Fprint(&stdout, "\nend file bytes\n")
+		case "usemeta":
+			switch action := args.word(); action {
+			case "table":
+				for i, e := range useTbl {
+					allow := "NULL"
+					if e.allow != nil {
+						allow = *e.allow
+					}
+					fmt.Fprintf(&stdout, "use row %d %s %d %d %d %d %d %d lookup %d skill %d\n", i, allow, e.skill, b2i(e.start != nil), b2i(e.finish != nil), b2i(e.interrupt != nil), e.time, e.poll, findUseEntry(e.skill), useTblSkill(i))
+				}
+			case "lookup":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "use lookup %d %d\n", n, findUseEntry(n))
+			case "may":
+				n, a := args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "use may %d %d %d\n", n, a, w.mayUseSkill(n, a))
+			case "correct":
+				c.a = int32(args.num(t))
+				result := w.correctUseItem(c)
+				fmt.Fprintf(&stdout, "use correct %d arg %d\n", result, c.a)
+			case "req":
+				n, a, b, d := args.num(t), args.num(t), args.num(t), args.num(t)
+				w.pSkill(n).req.Append(&reqEnt{item: int32(a), qty: int32(b), consume: int8(d)})
+			case "meets":
+				fmt.Fprintf(&stdout, "use meets %d\n", b2i(w.meetsRequirements(args.num(t), args.num(t))))
+			case "consume":
+				w.consumeRequirements(args.num(t), args.num(t))
+			case "scroll":
+				w.consumeScroll(args.num(t), args.num(t))
+			case "speeds":
+				for exp := int32(-1); exp <= 5; exp++ {
+					for _, wait := range []int32{-1, 0, 1, 6, 7, 8, 9, 10, 11, 13, 14, 15, 28} {
+						c.useExp, c.wait = exp, wait
+						experienceUseSpeedup(c)
+						fmt.Fprintf(&stdout, "use speed %d before %d after %d\n", exp, wait, c.wait)
+					}
+				}
+			case "legacy":
+				fmt.Fprintf(&stdout, "use legacy %d\n", w.rnd.Rnd(args.num(t), args.num(t)))
+			case "magic":
+				n := args.num(t)
+				c.wait = int32(args.num(t))
+				w.magicallySpeedCasting(c, n)
+				fmt.Fprintf(&stdout, "use magic %d\n", c.wait)
+			case "experience":
+				w.addSkillExperience(args.num(t), args.num(t))
+			case "month":
+				n, a, b := args.num(t), args.num(t), args.num(t)
+				w.rpSkillEnt(n, a).expThisMonth = int8(b)
+			case "state":
+				n, a := args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "use records %d %d %d %d %d\n", n, b2i(w.rpChar(n) != nil), b2i(w.rpMagic(n) != nil), b2i(w.rpSkill(n) != nil), b2i(w.rpItemMagic(n) != nil))
+				if s := w.rpSkillEnt(n, a); s != nil {
+					fmt.Fprintf(&stdout, "use experience %d %d %d %d %d\n", s.skill, s.know, s.experience, s.expThisMonth, w.hasSkill(n, a))
+				}
+				for _, e := range w.bx[n].items {
+					fmt.Fprintf(&stdout, "use inventory %d %d\n", e.item, e.qty)
+				}
+				if w.validBox(n) {
+					w.saveBox(&stdout, n)
+				}
+			default:
+				t.Fatalf("unknown USE metadata action %s", action)
+			}
 		case "coverage":
 			switch action := args.word(); action {
 			case "path":

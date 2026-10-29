@@ -144,7 +144,10 @@ functions = {
                 'update_weather_view_locs', 'new_storm', 'create_some_storms',
                 'natural_weather', 'v_bind_storm', 'd_bind_storm',
                 'move_storm', 'move_bound_storms', 'dissipate_storm', 'storm_report'],
-    'use.c': ['rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school',
+    'use.c': ['find_use_entry', 'use_tbl_skill', 'may_use_skill', 'magically_speed_casting',
+              'correct_use_item', 'meets_requirements', 'consume_requirements', 'consume_scroll',
+              'experience_use_speedup', 'add_skill_experience',
+              'rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school',
               'exp_s', 'rep_skill_comp', 'flat_skill_comp', 'list_skill_sup',
               'list_skills', 'fractional_skill_qualifier', 'list_partial_skills'],
     'report.c': ['char_rep_location', 'output_order_comp', 'sort_for_output',
@@ -301,6 +304,12 @@ int immed_see_all, month_done, show_combat_flag;
         if file == 'move.c':
             out.write('#line 8 "olympia/move.c"\n')
             out.write(re.search(r'^static ilist ocean_chars = NULL;\n', source, re.M).group(0))
+        if file == 'use.c':
+            # Complete original struct, callback declarations and table, unchanged.
+            # Missing callbacks are abort-only references, never invoked by helpers.
+            start, end = source.index('struct use_tbl_ent {'), source.index('\n\nint\nv_implicit(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/use.c"\n')
+            out.write(source[start:end])
         if file == 'storm.c':
             start = source.index('static rng_stream weather_rng;')
             end = source.index('int\nv_bind_storm(')
@@ -328,6 +337,21 @@ int immed_see_all, month_done, show_combat_flag;
         for _, text in sorted(matches):
             out.write(text)
     out.write('''
+void drv_use_table(void) {
+ int i;
+ for(i=0;i<(int)(sizeof(use_tbl)/sizeof(*use_tbl));i++) {
+  struct use_tbl_ent *e=&use_tbl[i];
+  printf("use row %d %s %d %d %d %d %d %d lookup %d skill %d\\n",i,e->allow?e->allow:"NULL",e->skill,
+   e->start!=NULL,e->finish!=NULL,e->interrupt!=NULL,e->time,e->poll,find_use_entry(e->skill),use_tbl_skill(i));
+ }
+}
+int drv_use_lookup(int sk) { return find_use_entry(sk); }
+int drv_use_may(int who,int sk) { return may_use_skill(who,sk); }
+int drv_use_correct(struct command *c) { return correct_use_item(c); }
+int drv_use_meets(int who,int sk) { return meets_requirements(who,sk); }
+void drv_use_consume(int who,int sk) { consume_requirements(who,sk); }
+void drv_use_scroll(int who,int basis) { consume_scroll(who,basis); }
+void drv_use_magic(struct command *c,int sk) { magically_speed_casting(c,sk); }
 void drv_gm_economy(char *part, int pl) {
  if (!strcmp(part,"attributes")) gm_show_interesting_attributes(pl);
  else if (!strcmp(part,"animate")) gm_list_animate_items(pl);
@@ -581,6 +605,10 @@ table = glob[glob.index('struct cmd_tbl_ent cmd_tbl[]'):glob.index('char *kind_s
 routines = set()
 for m in re.finditer(r'^\{[^,]*,[^,]*,\s*(\w+),\s*(\w+),\s*(\w+),', table, re.M):
     routines.update(n for n in m.groups() if n != 'NULL')
+source = open(f'{src}/use.c').read()
+table = source[source.index('struct use_tbl_ent use_tbl[]'):source.index('\n\nint\nv_implicit(')]
+for m in re.finditer(r'^\{[^,]*,[^,]*,\s*(\w+),\s*(\w+),\s*(\w+),', table, re.M):
+    routines.update(n for n in m.groups() if n not in ('NULL', '0'))
 with open(f'{dst}/stubs.c', 'w') as out:
     out.write('''#include <stdio.h>
 #include <stdlib.h>
@@ -645,6 +673,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not yet implemented|missing.*dependency:|C stub|AddressSanitizer|UndefinedBehaviorSanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section use prerequisites '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section use prerequisites invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected USE prerequisite status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section coverage '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

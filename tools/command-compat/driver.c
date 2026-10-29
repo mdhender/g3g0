@@ -99,6 +99,8 @@ int drv_admission(char *acct, FILE *fp);
 void drv_make_players(void);
 void drv_coverage_state(int cmd);
 void drv_coverage_seed(int cmd, int outcome, int value);
+void drv_use_table(void), drv_use_consume(int who,int sk), drv_use_scroll(int who,int basis), drv_use_magic(struct command *c,int sk);
+int drv_use_lookup(int sk), drv_use_may(int who,int sk), drv_use_correct(struct command *c), drv_use_meets(int who,int sk);
 
 /* Observe filesystem decisions, not deferred artifact bodies. In particular
  * atexit runs before stdio's exit flush: Times must flush press BEFORE a
@@ -1473,6 +1475,40 @@ int main(int argc, char **argv)
     fwrite(data,1,len,stdout);
     printf("\nend file bytes\n");
    }
+  }
+  else if (!strcmp(op, "usemeta")) {
+   n=a=b=d=0;
+   if(sscanf(line,"%*s %31s %d %d %d %d",text,&n,&a,&b,&d)<1) return 2;
+   if(!strcmp(text,"table")) drv_use_table();
+   else if(!strcmp(text,"lookup")) printf("use lookup %d %d\n",n,drv_use_lookup(n));
+   else if(!strcmp(text,"may")) printf("use may %d %d %d\n",n,a,drv_use_may(n,a));
+   else if(!strcmp(text,"correct")) { c->a=n; result=drv_use_correct(c); printf("use correct %d arg %d\n",result,c->a); }
+   else if(!strcmp(text,"req")) {
+    struct req_ent *r=my_malloc(sizeof(*r)); r->item=a; r->qty=b; r->consume=(schar)d;
+    req_ents_append(&p_skill(n)->req,r);
+   }
+   else if(!strcmp(text,"meets")) printf("use meets %d\n",drv_use_meets(n,a));
+   else if(!strcmp(text,"consume")) drv_use_consume(n,a);
+   else if(!strcmp(text,"scroll")) drv_use_scroll(n,a);
+   else if(!strcmp(text,"speeds")) {
+    int exp, j, waits[]={-1,0,1,6,7,8,9,10,11,13,14,15,28};
+    for(exp=-1;exp<=5;exp++) for(j=0;j<13;j++) {
+     c->use_exp=exp; c->wait=waits[j]; experience_use_speedup(c);
+     printf("use speed %d before %d after %d\n",exp,waits[j],c->wait);
+    }
+   }
+   else if(!strcmp(text,"legacy")) printf("use legacy %d\n",rnd(n,a));
+   else if(!strcmp(text,"magic")) { c->wait=a; drv_use_magic(c,n); printf("use magic %d\n",c->wait); }
+   else if(!strcmp(text,"experience")) add_skill_experience(n,a);
+   else if(!strcmp(text,"month")) { struct skill_ent *s=rp_skill_ent(n,a); if(!s) return 2; s->exp_this_month=(schar)b; }
+   else if(!strcmp(text,"state")) {
+    struct skill_ent *s=rp_skill_ent(n,a);
+    printf("use records %d %d %d %d %d\n",n,rp_char(n)!=NULL,rp_magic(n)!=NULL,rp_skill(n)!=NULL,rp_item_magic(n)!=NULL);
+    if(s) printf("use experience %d %d %d %d %d\n",s->skill,s->know,s->experience,s->exp_this_month,has_skill(n,a));
+    for(i=0;i<item_ents_len(bx[n]->items);i++) printf("use inventory %d %d\n",bx[n]->items[i]->item,bx[n]->items[i]->qty);
+    if(valid_box(n)) save_box(stdout,n);
+   }
+   else return 2;
   }
   else if (!strcmp(op, "coverage")) {
    if(sscanf(line,"%*s %31s",text)!=1) return 2;
