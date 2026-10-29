@@ -6,6 +6,74 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## State export primitives and faction roots (#175)
+
+**0.111.0-alpha** adds source-corresponding state_export.go: complete byte-string
+JSON, sort_ids, unit/faction traversal and root writer. Location rendering is
+an explicit NYI boundary for #176. **The state-export CLI gate and main wiring
+are untouched.** No new gameplay, filtering, G3 #114 format expansion or
+successful missing-dependency substitute. The command oracle compiles the
+entire unchanged original state_export.c, exposing its real static functions;
+faction/root cases require no locations, rather than replacing their callback.
+Only that actual new source dependency is added to affected.sh/the notes below.
+
+Unchanged real C twice and Go match **1329 sections / 100457 lines /
+2001138 output bytes**, SHA-256
+`22c85b5fb8598701ecd92b7fd304f8f01f4b62f7143c53fcd0388be4765bb540`.
+Input: **29184 lines / 556686 bytes**, SHA-256
+`cf2cfca1a439847fdb69d72003a9bc992071b7dc1bd2fc226f5d41857e4136a3`.
+The complete accepted **552971-byte input / 1983914-byte output** prefixes
+retain their hashes `deeb7928b106cd8bcdfa36102516dfe087f59c735b51290920e85a68d054ffca`
+and `7d7315f4335b7cf7ffa5c1fc710846204a9b4863d2d203974fceef131a8593e4`.
+All **100** archived command-tool source files and **574** full extracted
+definitions are audited unchanged. Complete state_export.c: **6496 bytes**,
+SHA-256 `2f710e5ec96c810996206c87efc7908fe50f75732b28f7119237e9ef1fb8210b`.
+[Exact byte/state/list/RNG/cache evidence and source closure](command-compat#state-export-byte-strings-units-and-faction-roots-175).
+Six actual negative linker controls reject markers in either stream before
+expected statuses (including expected 134) or recording replacement, without
+changing the recording hash. Probes and matching captures are removed.
+
+Sequential validation passes: bounded vet, fresh bounded full-enabled tests
+(**11 tested packages**, Olympia **1.877s**), all **15 engine/library defaults**,
+strict **233-entry** ordinary turn, **13 lifecycle / 10 command / 15 USE /
+23 phase** controls and their flag-free aftermath comparisons. Every raw
+status/stream and all cwd entries/types/modes/bytes match, without exclusions
+or normalization. Spec retains **23 pass / 102 fail / 0 error**; initialization
+still exits **2** at unsupported `-i`, golden **NO**. The six phase fixtures
+still need the complete export/CLI integration; no new fixture success is claimed.
+
+Every compat invocation explicitly sets `G3_REPO="$PWD/tmp/upstream.git"`.
+Every engine/test uses run_limited; the unchanged lists peripheral's C driver
+uses a temporary compiler launcher with the same supervisor (removed after
+the run), and its Go test uses bounded GOFLAGS. Read-only C_CACHE
+`tmp/issue179-roundtrip` is independently verified: **1212** original archive
+files equal the pin; executable SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+Engines run only on real disposable copies, never cached inputs or symlink
+sources. No pin changes or upstream harness edits.
+
+Logs: `tmp/issue175-{source-audit,bytes-aftermath,cache-audit,vet,tests,turn-full,spec}.log`,
+`tmp/issue175-command-{update,default}.log`, `tmp/issue175-*-default.log`,
+and six `tmp/issue175-negative-*.log`; strict summaries and the unchanged
+ordinary-turn phase TSV are under `tmp/issue175-turn/`. The full 201-world
+roundtrip/four corpora, genesis/mapgen/island/scanf, full C spec and native
+Darwin/Windows are not rerun for these local primitives. Accepted #179 corpus
+evidence and known platform exceptions remain disclosed, not relabeled green.
+No export CLI, integrated dump combinations or stage-exit acceptance is claimed.
+
+Independent parent pinned-source/diff review and acceptance repeat pass:
+bounded vet/fresh bounded tests, 14 relevant defaults (lists covered by the
+fresh Go suite and implementer's bounded C/C/Go default), command **1329
+sections / 100457 lines**, strict **233-entry** ordinary turn and all **13
+lifecycle / 10 command / 15 USE / 23 phase** controls. Spec retains **23/102/0**,
+initialization exit 2, golden NO. Parent separately checks every nonzero byte
+and NULL/empty/NUL boundaries, byte-identical before/after raw/saved/allocation
+snapshots for unit and faction cases, both complete inherited recording
+prefixes, original state_export.c, all **1212** cached C files and executable
+hash. Logs: `tmp/parent175-{vet,tests,turn-full,spec}.log`,
+`tmp/parent175-*-default.log`; strict summaries: `tmp/parent175-turn/`.
+Location/CLI integration remains explicitly deferred to #176.
+
 ## Monthly phase hooks and CLI integration (#174)
 
 **0.110.0-alpha** completes the remaining **84 monthly hook sites** in the
@@ -2050,8 +2118,8 @@ The scripts report a status of 124 as a timeout.
 ## Upstream files each tool reads
 
 Paths are in the G3 repository.
-`command-compat` additionally reads `olympia/coverage.c` for its complete
-command section; the inherited dependency row below lists its other sources.
+`command-compat` additionally reads complete `olympia/coverage.c` and
+`olympia/state_export.c`; the inherited dependency row below lists its other sources.
 A tool needs rerunning after a pin move if any file it reads changed; [`affected.sh`](affected.sh) applies this table to `git diff --name-only OLD NEW`.
 
 | tool | records | reads |

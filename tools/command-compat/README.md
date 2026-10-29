@@ -3,6 +3,120 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## State export byte strings, units and faction roots (#175)
+
+**0.111.0-alpha** adds `internal/olympia/state_export.go`, corresponding to
+the complete original `json_str` (49–67), `sort_ids` (70–75), `export_unit`
+(78–130), `export_faction` (192–253) and `write_state_export` (256–290).
+`exportLocation` is an explicit NYI boundary for #176, with a Go test proving
+that a faction with a location stops there. **The CLI gate and main integration
+are untouched.** No six-phase-fixture success, new format or G3 #114 expansion
+is claimed. There is no gameplay implementation or successful dependency substitute.
+
+The C wrapper includes the **entire unchanged original state_export.c**, then
+exposes its actual static functions. It does not extract/rewrite export bodies,
+replace `export_location`, or alter any callback. Direct unit cases may have a
+real location/ship; faction/root cases have actual `subloc == 0` for every
+listed unit and therefore never call the real location exporter. All required
+real dependencies were already compiled by this oracle. The only new source
+dependency is `olympia/state_export.c`, now tracked in affected.sh and the tools
+dependency notes. No tool pin changes.
+
+The whole file is **6496 bytes**, SHA-256
+`2f710e5ec96c810996206c87efc7908fe50f75732b28f7119237e9ef1fb8210b`.
+All **100** original archived command-tool files equal the immutable pin.
+All **574** extracted full definitions occur literally unchanged exactly once,
+including the complete subloc/stack_parent/has_item/int_comp/lord/player
+dependencies. The full original code/glob/z/sout/io and lib list/RNG modules
+remain directly compiled. Audit: `tmp/issue175-source-audit.log` (individual
+state-export definition ranges/hashes, declarations and callers included).
+The declarations remain oly.h:1286–1287/proto.h:275–276; main's only assignment
+is 835–840 and its call is 1036, after save_db/save_logdir. That integration
+belongs to #176, not this primitive closure.
+
+Nine appended sections cover NULL/empty strings, NUL at the start/in the
+middle, **every nonzero byte 0x01–0xff**, quote/backslash, all controls and DEL.
+UTF-8-looking bytes remain individual lowercase Latin-1 escapes, not decoded
+runes. They also cover empty/nonempty regular faction roots, absent player
+records, system/silent exclusion, signed-short turn endpoints, repeated writes,
+NULL paths and nonfatal empty/ENOENT/EISDIR destinations. Exact raw JSON bytes
+are compared, not parsed/normalized JSON.
+
+Unit tests retain insertion-order inventories/skills while sorting temporary
+IDs, including duplicate items (has_item returns the **first** quantity),
+zero/negative quantities, invalid inventory references, known versus learning/
+unknown skills, and a known valid non-skill ID (no extra kind filter). Direct
+sort_ids tests mutate the supplied original list, including empty/singleton/
+duplicate lists. Faction tests preserve unsorted original unit lists and
+duplicates: C walks the actual player units list, **not** a fresh lord scan,
+and adds no prisoner or character-kind filter. Thus a listed prisoner,
+wrong-lord unit and unformed entry appear; an unlisted owned character does
+not. Stacked_under follows the immediate character parent, while where walks
+through that parent to the real ship (or zero in root tests).
+
+The C “read-only” comment is not used as evidence. Before/after observations
+compare **all saved boxes plus raw inventory/skill/unit/here/output lists,
+record allocation presence, temp and output-order fields** byte for byte.
+The observer restores only save_box's own temp mark; it never resets exporter
+effects. Snapshot bytes/SHA-256:
+
+- unit/ship case: **1712**,
+  `e60e1c55dcf832e44ed8222a8821f4c55089f941303926b998ed2f476d15983b`;
+- faction/root case: **1381**,
+  `35992be9e3c1f4160aa597c78ea70cb224400a03542284e8bcf4b07f28b5b39a`.
+
+Absent player/character/magic records stay absent; no new entity IDs or lazy
+backlinks are created. The list source actually allocates/reclaims temporary
+copies using its ordinary heap allocator, not entity allocations; Go keeps
+the corresponding temporary copies, without reordering persistent lists.
+This is persistent-state/allocation-ownership evidence, not a cross-language
+total heap-allocation count. Independent no-export controls preserve the next
+legacy draw **62497**, then all four keyed entity draws: **701/2/1/1** at
+turn zero and **103/1/3/2** at turn 32767. A borrowed buffered log stream
+survives export and directory rename: both writes remain in the old **46-byte**
+inode, the replacement path stays absent until explicit close, and the later
+reopen produces a **23-byte** file. Full evidence:
+`tmp/issue175-bytes-aftermath.log`.
+
+Unchanged real C twice and Go match **1329 sections / 100457 lines /
+2001138 output bytes**, SHA-256
+`22c85b5fb8598701ecd92b7fd304f8f01f4b62f7143c53fcd0388be4765bb540`.
+Input is **29184 lines / 556686 bytes**, SHA-256
+`cf2cfca1a439847fdb69d72003a9bc992071b7dc1bd2fc226f5d41857e4136a3`.
+The complete accepted **1320-section / 99685-line** baseline remains a byte
+prefix: input **552971** bytes
+(`deeb7928b106cd8bcdfa36102516dfe087f59c735b51290920e85a68d054ffca`),
+output **1983914** bytes
+(`7d7315f4335b7cf7ffa5c1fc710846204a9b4863d2d203974fceef131a8593e4`).
+Literal trailing spaces/high bytes from the original writers are retained.
+
+Six temporary linker controls prove marker rejection before status acceptance
+or recording replacement: root write section **1323**, status **0/134**, each
+default/update; enabled negative-index expected-assertion section **1284**,
+status **134**, default/update. Both streams are exercised. Every run rejects
+with harness status **2**, preserving the output hash above. Probe sources,
+compiler wrapper and matching probe captures are removed. Logs:
+`tmp/issue175-negative-{root-{0,134},failure-134}-{default,update}.log`.
+
+Validation: bounded vet and fresh bounded full-enabled tests pass (Olympia
+**1.877s**), as do all **15** engine/library defaults, including a clean normal
+command run after probe removal. Strict full ordinary turn (**233 entries**),
+all **13 lifecycle / 10 command / 15 USE / 23 phase** controls and flag-free
+aftermath comparisons pass raw status/streams and complete cwd types/modes/
+bytes. The read-only `tmp/issue179-roundtrip` C cache is independently checked
+against **1212** original archived files and accepted binary SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+Spec retains **23/102/0**; initialization exits **2**, golden **NO**.
+All tools run sequentially with explicit isolated G3_REPO and bounded engines;
+the unchanged lists C driver uses a temporary bounded compiler launcher, then
+removes it. Logs: `tmp/issue175-command-{update,default}.log`,
+`tmp/issue175-{vet,tests,cache-audit,turn-full,spec}.log`,
+`tmp/issue175-*-default.log`; strict summaries: `tmp/issue175-turn/`.
+No full roundtrip/four-corpus repeat, peripheral genesis/mapgen/island/scanf,
+full C spec, native Darwin/Windows, export CLI or six-phase-fixture success
+is claimed. No new prerequisite or upstream blocker was found. Changes are
+uncommitted; no push, issue edit or checklist tick.
+
 ## Monthly phase hooks and CLI integration (#174)
 
 **0.110.0-alpha** adds the remaining **84 hook sites** (32 ran / 52 acted)

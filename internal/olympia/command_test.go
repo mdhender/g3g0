@@ -51,6 +51,24 @@ func TestCommandMatchesC(t *testing.T) {
 	}
 }
 
+// The unfinished location path must stop, never silently omit a location or
+// supply successful output to the complete faction/root implementations.
+func TestStateExportLocationBoundary(t *testing.T) {
+	w := newWorld()
+	w.allocBox(200, tPlayer, subPlRegular)
+	w.allocBox(1000, tChar, 0)
+	w.allocBox(5000, tLoc, subPlain)
+	w.pPlayer(200).units.Append(1000)
+	w.setWhere(1000, 5000)
+	defer func() {
+		if got := recover(); got != notImplemented("export_location") {
+			t.Fatalf("location boundary = %v", got)
+		}
+	}()
+	var out strings.Builder
+	w.exportFaction(&out, 200)
+}
+
 // Native directory order is not portable recording data. The tool supplies
 // two fresh real-C runs over this same unchanged directory before Go reads it.
 func TestCommandAdmissionNativeOrder(t *testing.T) {
@@ -183,6 +201,77 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		fmt.Fprintf(&stdout, "> %s\n", line)
 		args := &caseLine{rest: line}
 		switch op := args.word(); op {
+		case "export":
+			switch action := args.word(); action {
+			case "name":
+				n, value := args.num(t), args.word()
+				if value == "NULL" {
+					w.bx[n].name = nil
+				} else {
+					if value == "EMPTY" {
+						value = ""
+					}
+					data, err := hex.DecodeString(value)
+					if err != nil {
+						t.Fatal(err)
+					}
+					s := string(data)
+					w.bx[n].name = &s
+				}
+			case "json":
+				n := args.num(t)
+				s := ""
+				if w.bx[n].name != nil {
+					s = *w.bx[n].name
+				}
+				jsonStr(&stdout, s)
+				fmt.Fprintln(&stdout)
+			case "unit":
+				w.exportUnit(&stdout, args.num(t))
+				fmt.Fprintln(&stdout)
+			case "faction":
+				w.exportFaction(&stdout, args.num(t))
+				fmt.Fprintln(&stdout)
+			case "sort":
+				p := w.pPlayer(args.num(t))
+				sortIDs(p.units)
+				helperList(&stdout, "sorted", p.units)
+			case "path":
+				path := args.word()
+				if path == "NULL" {
+					w.stateExportPath = nil
+				} else {
+					if path == "EMPTY" {
+						path = ""
+					}
+					w.stateExportPath = &path
+				}
+			case "write":
+				w.writeStateExport()
+			case "state":
+				for n := range w.loopBoxes() {
+					fmt.Fprintf(&stdout, "export entity %d char %d player %d magic %d misc %d skill %d temp %d order %d\n", n,
+						b2i(w.rpChar(n) != nil), b2i(w.rpPlayer(n) != nil), b2i(w.rpMagic(n) != nil), b2i(w.rpMisc(n) != nil), b2i(w.rpSkill(n) != nil), w.bx[n].temp, w.bx[n].outputOrder)
+					helperList(&stdout, "here", w.rpLocInfo(n).hereList)
+					if p := w.rpPlayer(n); p != nil {
+						helperList(&stdout, "units", p.units)
+						helperList(&stdout, "output", p.output)
+					}
+					if p := w.rpChar(n); p != nil {
+						for _, s := range p.skills {
+							fmt.Fprintf(&stdout, "raw skill %d %d\n", s.skill, s.know)
+						}
+					}
+					for _, e := range w.bx[n].items {
+						fmt.Fprintf(&stdout, "raw item %d %d\n", e.item, e.qty)
+					}
+					temp := w.bx[n].temp // undo only saveBox's observer mark.
+					w.saveBox(&stdout, n)
+					w.bx[n].temp = temp
+				}
+			default:
+				t.Fatalf("unknown export action %s", action)
+			}
 		case "weather_map":
 			count := args.num(t)
 			w.allocBox(8000, tLoc, subRegion)

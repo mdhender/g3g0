@@ -661,6 +661,15 @@ cat >"${WORK}/io-wrapper.c" <<'C'
 #include "io.c"
 void drv_read_boxes(char *path) { read_boxes(path); }
 C
+# Keep the entire original translation unit, including export_location.
+# Direct faction/root cases below require no locations; nothing replaces it.
+cat >"${WORK}/state-export-wrapper.c" <<'C'
+#include "state_export.c"
+void drv_json(FILE *fp, char *s) { json_str(fp, s); }
+void drv_export_unit(FILE *fp, int who) { export_unit(fp, who); }
+void drv_export_faction(FILE *fp, int pl) { export_faction(fp, pl); }
+void drv_sort_ids(ilist l) { sort_ids(l); }
+C
 case "$(uname -s)" in
  Darwin) ldflags=(-Wl,-dead_strip) ;;
  *) ldflags=(-Wl,--gc-sections) ;;
@@ -668,7 +677,7 @@ esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -w -ffunction-sections -fdata-sections "${ldflags[@]}" \
  -I olympia -I lib -I "${WORK}" \
  "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" "${WORK}/hades-rng.c" "${WORK}/faery-rng.c" "${WORK}/npc-rng.c" \
- "${WORK}/coverage-command.c" \
+ "${WORK}/coverage-command.c" "${WORK}/state-export-wrapper.c" \
  olympia/{code,glob,z,sout}.c "${WORK}/io-wrapper.c" \
  lib/{checked_alloc,ilist,exit_views,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents,admits,trades,req_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
@@ -686,6 +695,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section state export '* ]]; then
+   [ "$status" = 0 ] || die "unexpected state export status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section phase coverage '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

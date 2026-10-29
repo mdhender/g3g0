@@ -105,6 +105,8 @@ void drv_ucov_state(void);
 void drv_ucov_seed(int ent, int outcome, int value);
 void drv_use_table(void), drv_use_consume(int who,int sk), drv_use_scroll(int who,int basis), drv_use_magic(struct command *c,int sk);
 int drv_use_lookup(int sk), drv_use_may(int who,int sk), drv_use_correct(struct command *c), drv_use_meets(int who,int sk);
+void drv_json(FILE *fp, char *s), drv_export_unit(FILE *fp, int who), drv_export_faction(FILE *fp, int pl);
+void drv_sort_ids(ilist l);
 
 /* Observe filesystem decisions, not deferred artifact bodies. In particular
  * atexit runs before stdio's exit flush: Times must flush press BEFORE a
@@ -216,6 +218,47 @@ int main(int argc, char **argv)
    for (i=0;i<16;i++) seed[i]=n+i;
    s=fopen(sout("%s/randseed",libdir),"wb"); if(!s) return 2;
    fwrite(seed,1,16,s); fclose(s); load_seed(sout("%s/randseed",libdir));
+  }
+  else if (!strcmp(op, "export")) {
+   n=0;
+   sscanf(line,"%*s %31s %d",label,&n);
+   if(!strcmp(label,"name")) {
+    unsigned byte; char *p, bytes[4096]; int len=0;
+    sscanf(line,"%*s %*s %d %8191s",&n,text);
+    if(!strcmp(text,"NULL")) bx[n]->name=NULL;
+    else {
+     if(strcmp(text,"EMPTY")) for(p=text;*p;p+=2) {
+      if(sscanf(p,"%2x",&byte)!=1) return 2;
+      bytes[len++]=(char)byte;
+     }
+     bx[n]->name=my_malloc(len+1); memcpy(bx[n]->name,bytes,len); bx[n]->name[len]=0;
+    }
+   }
+   else if(!strcmp(label,"json")) { drv_json(stdout,bx[n]->name); putchar('\n'); }
+   else if(!strcmp(label,"unit")) { drv_export_unit(stdout,n); putchar('\n'); }
+   else if(!strcmp(label,"faction")) { drv_export_faction(stdout,n); putchar('\n'); }
+   else if(!strcmp(label,"sort")) { drv_sort_ids(p_player(n)->units); list("sorted",p_player(n)->units); }
+   else if(!strcmp(label,"path")) {
+    sscanf(line,"%*s %*s %8191s",text);
+    state_export_path=!strcmp(text,"NULL") ? NULL : str_save(!strcmp(text,"EMPTY") ? "" : text);
+   }
+   else if(!strcmp(label,"write")) write_state_export();
+   else if(!strcmp(label,"state")) {
+    loop_boxes(n) {
+     printf("export entity %d char %d player %d magic %d misc %d skill %d temp %d order %d\n",n,
+      rp_char(n)!=NULL,rp_player(n)!=NULL,rp_magic(n)!=NULL,rp_misc(n)!=NULL,rp_skill(n)!=NULL,bx[n]->temp,bx[n]->output_order);
+     list("here",p_loc_info(n)->here_list);
+     if(rp_player(n)) { list("units",rp_player(n)->units); list("output",rp_player(n)->output); }
+     if(rp_char(n)) for(i=0;i<skill_ents_len(rp_char(n)->skills);i++)
+      printf("raw skill %d %d\n",rp_char(n)->skills[i]->skill,rp_char(n)->skills[i]->know);
+     for(i=0;i<item_ents_len(bx[n]->items);i++) printf("raw item %d %d\n",bx[n]->items[i]->item,bx[n]->items[i]->qty);
+     /* save_box marks temp; undo only this observer's mark, not export. */
+     a=bx[n]->temp;
+     save_box(stdout,n);
+     bx[n]->temp=a;
+    } next_box;
+   }
+   else return 2;
   }
   else if (!strcmp(op, "weather_map")) {
    sscanf(line,"%*s %d",&a);

@@ -99683,3 +99683,775 @@ stderr:
 warning: plural name not set for item [11]
 
 exit 0
+stdout:
+section state export byte strings NULL empty NUL all controls DEL and high bytes
+> export json 1000
+""
+> export name 1000 EMPTY
+> export json 1000
+""
+> export name 1000 004142
+> export json 1000
+""
+> export name 1000 410042
+> export json 1000
+"A"
+> export name 1000 0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff
+> export json 1000
+"\u0001\u0002\u0003\u0004\u0005\u0006\u0007\u0008\u0009\u000a\u000b\u000c\u000d\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u007f\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009a\u009b\u009c\u009d\u009e\u009f\u00a0\u00a1\u00a2\u00a3\u00a4\u00a5\u00a6\u00a7\u00a8\u00a9\u00aa\u00ab\u00ac\u00ad\u00ae\u00af\u00b0\u00b1\u00b2\u00b3\u00b4\u00b5\u00b6\u00b7\u00b8\u00b9\u00ba\u00bb\u00bc\u00bd\u00be\u00bf\u00c0\u00c1\u00c2\u00c3\u00c4\u00c5\u00c6\u00c7\u00c8\u00c9\u00ca\u00cb\u00cc\u00cd\u00ce\u00cf\u00d0\u00d1\u00d2\u00d3\u00d4\u00d5\u00d6\u00d7\u00d8\u00d9\u00da\u00db\u00dc\u00dd\u00de\u00df\u00e0\u00e1\u00e2\u00e3\u00e4\u00e5\u00e6\u00e7\u00e8\u00e9\u00ea\u00eb\u00ec\u00ed\u00ee\u00ef\u00f0\u00f1\u00f2\u00f3\u00f4\u00f5\u00f6\u00f7\u00f8\u00f9\u00fa\u00fb\u00fc\u00fd\u00fe\u00ff"
+> export name 1000 NULL
+> export json 1000
+""
+stderr:
+
+exit 0
+stdout:
+section state export direct sort mutates only supplied original list empty singleton duplicate
+> export sort 200
+sorted:
+> field 200 unit 1001
+> export sort 200
+sorted: 1001
+> field 200 unit 1000
+> field 200 unit 1001
+> field 200 unit 999
+> export sort 200
+sorted: 999 1000 1001 1001
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units: 999 1000 1001 1001
+200 player pl_regular
+PL
+ un 1000 1001 1001 
+
+stderr:
+
+exit 0
+stdout:
+section state export unit inventory skills copies and stack location ship
+> master 17
+> entity 300 4 0
+> entity 301 4 0
+> entity 302 4 0
+> entity 303 4 0
+> entity 900 5 0
+> entity 901 5 0
+> entity 902 5 0
+> entity 903 4 0
+> entity 5000 9 0
+> link 5000 1001
+> link 1001 1000
+> export name 1000 225c7f80c3a9ff
+> name 300 first
+> export name 301 EMPTY
+> export name 900 0a227f
+> inventory 1000 301 7
+> inventory 1000 300 5
+> inventory 1000 302 0
+> inventory 1000 303 -8
+> inventory 1000 9999 9
+> inventory 1000 300 12
+> report skill 1000 901 2 0
+> report skill 1000 900 2 0
+> report skill 1000 902 1 17
+> report skill 1000 903 0 0
+> report skill 1000 300 2 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 300 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+300 item 0
+na first
+
+export entity 301 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+301 item 0
+
+export entity 302 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+302 item 0
+
+export entity 303 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+303 item 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 900 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+900 skill 0
+na 
+"
+
+export entity 901 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+901 skill 0
+
+export entity 902 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+902 skill 0
+
+export entity 903 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+903 item 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 901 2
+raw skill 900 2
+raw skill 902 1
+raw skill 903 0
+raw skill 300 2
+raw item 301 7
+raw item 300 5
+raw item 302 0
+raw item 303 -8
+raw item 9999 9
+raw item 300 12
+1000 char 0
+na "\€Ã©ÿ
+il	301 7 \
+	300 5 \
+	300 12
+LI
+ wh 1001
+CH
+ lo 200
+ sl	901 2 0 0 0 \
+	900 2 0 0 0 \
+	902 1 17 0 0 \
+	903 0 0 0 0 \
+	300 2 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+1001 char 0
+LI
+ wh 5000
+ hl 1000 
+CH
+ lo 200
+
+export entity 5000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+5000 ship 0
+LI
+ hl 1001 
+
+> export unit 1000
+{"id": 1000, "name": "\"\\\u007f\u0080\u00c3\u00a9\u00ff", "where": 5000, "stacked_under": 1001,
+      "items": [{"id": 300, "name": "first", "qty": 5}, {"id": 300, "name": "first", "qty": 5}, {"id": 301, "name": "", "qty": 7}],
+      "skills": [{"id": 300, "name": "first"}, {"id": 900, "name": "\u000a\"\u007f"}, {"id": 901, "name": ""}]}
+> export unit 1000
+{"id": 1000, "name": "\"\\\u007f\u0080\u00c3\u00a9\u00ff", "where": 5000, "stacked_under": 1001,
+      "items": [{"id": 300, "name": "first", "qty": 5}, {"id": 300, "name": "first", "qty": 5}, {"id": 301, "name": "", "qty": 7}],
+      "skills": [{"id": 300, "name": "first"}, {"id": 900, "name": "\u000a\"\u007f"}, {"id": 901, "name": ""}]}
+> export unit 1001
+{"id": 1001, "name": "", "where": 5000, "stacked_under": 0,
+      "items": [],
+      "skills": []}
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 300 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+300 item 0
+na first
+
+export entity 301 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+301 item 0
+
+export entity 302 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+302 item 0
+
+export entity 303 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+303 item 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 900 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+900 skill 0
+na 
+"
+
+export entity 901 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+901 skill 0
+
+export entity 902 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+902 skill 0
+
+export entity 903 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+903 item 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 901 2
+raw skill 900 2
+raw skill 902 1
+raw skill 903 0
+raw skill 300 2
+raw item 301 7
+raw item 300 5
+raw item 302 0
+raw item 303 -8
+raw item 9999 9
+raw item 300 12
+1000 char 0
+na "\€Ã©ÿ
+il	301 7 \
+	300 5 \
+	300 12
+LI
+ wh 1001
+CH
+ lo 200
+ sl	901 2 0 0 0 \
+	900 2 0 0 0 \
+	902 1 17 0 0 \
+	903 0 0 0 0 \
+	300 2 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+1001 char 0
+LI
+ wh 5000
+ hl 1000 
+CH
+ lo 200
+
+export entity 5000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+5000 ship 0
+LI
+ hl 1001 
+
+> usemeta legacy 1 100000
+use legacy 62497
+> entity_rolls 1000 7 5000
+prison roll 701
+land dir99 2
+land dir98 1
+land pick 1
+stderr:
+
+exit 0
+stdout:
+section state export root faction list is authoritative ownership prisoner noncharacter and duplicates
+> lore_root
+> master 17
+> entity 202 1 49
+> entity 203 1 48
+> entity 204 1 62
+> entity 1100 2 0
+> entity 1101 2 0
+> entity 1102 2 0
+> entity 1103 12 0
+> field 1100 lord 201
+> field 1101 lord 200
+> field 1102 lord 200
+> field 1101 prisoner 1
+> field 200 unit 1101
+> field 200 unit 1100
+> field 200 unit 1103
+> field 200 unit 1000
+> field 200 unit 1101
+> field 203 unit 1001
+> link 1000 1101
+> name 200 faction
+> export name 201 EMPTY
+> export name 202 225c80
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1101 1100 1103 1000 1101
+output:
+200 player pl_regular
+na faction
+PL
+ un 1101 1100 1103 1000 1101 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+202 player pl_regular
+na "\€
+
+export entity 203 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001
+output:
+203 player pl_system
+PL
+ un 1001 
+
+export entity 204 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+204 player pl_silent
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1101
+1000 char 0
+LI
+ hl 1101 
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1100 char 0
+CH
+ lo 201
+
+export entity 1101 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1101 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pr 1
+
+export entity 1102 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1102 char 0
+CH
+ lo 200
+
+export entity 1103 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1103 unform 0
+
+> export faction 200
+{"id": 200, "name": "faction",
+   "units": [
+     {"id": 1000, "name": "", "where": 0, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1100, "name": "", "where": 0, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1101, "name": "", "where": 0, "stacked_under": 1000,
+      "items": [],
+      "skills": []},
+     {"id": 1101, "name": "", "where": 0, "stacked_under": 1000,
+      "items": [],
+      "skills": []},
+     {"id": 1103, "name": "", "where": 0, "stacked_under": 0,
+      "items": [],
+      "skills": []}],
+   "locations": []}
+> export faction 202
+{"id": 202, "name": "\"\\\u0080",
+   "units": [],
+   "locations": []}
+> set turn 32767
+> export path state.json
+> export write
+> readfile state.json
+file bytes state.json 752:
+{"turn": 32767, "factions": [
+  {"id": 200, "name": "faction",
+   "units": [
+     {"id": 1000, "name": "", "where": 0, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1100, "name": "", "where": 0, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1101, "name": "", "where": 0, "stacked_under": 1000,
+      "items": [],
+      "skills": []},
+     {"id": 1101, "name": "", "where": 0, "stacked_under": 1000,
+      "items": [],
+      "skills": []},
+     {"id": 1103, "name": "", "where": 0, "stacked_under": 0,
+      "items": [],
+      "skills": []}],
+   "locations": []},
+  {"id": 201, "name": "",
+   "units": [],
+   "locations": []},
+  {"id": 202, "name": "\"\\\u0080",
+   "units": [],
+   "locations": []}]}
+
+end file bytes
+> export write
+> readfile state.json
+file bytes state.json 752:
+{"turn": 32767, "factions": [
+  {"id": 200, "name": "faction",
+   "units": [
+     {"id": 1000, "name": "", "where": 0, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1100, "name": "", "where": 0, "stacked_under": 0,
+      "items": [],
+      "skills": []},
+     {"id": 1101, "name": "", "where": 0, "stacked_under": 1000,
+      "items": [],
+      "skills": []},
+     {"id": 1101, "name": "", "where": 0, "stacked_under": 1000,
+      "items": [],
+      "skills": []},
+     {"id": 1103, "name": "", "where": 0, "stacked_under": 0,
+      "items": [],
+      "skills": []}],
+   "locations": []},
+  {"id": 201, "name": "",
+   "units": [],
+   "locations": []},
+  {"id": 202, "name": "\"\\\u0080",
+   "units": [],
+   "locations": []}]}
+
+end file bytes
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1101 1100 1103 1000 1101
+output:
+200 player pl_regular
+na faction
+PL
+ un 1101 1100 1103 1000 1101 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+202 player pl_regular
+na "\€
+
+export entity 203 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001
+output:
+203 player pl_system
+PL
+ un 1001 
+
+export entity 204 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+204 player pl_silent
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1101
+1000 char 0
+LI
+ hl 1101 
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1100 char 0
+CH
+ lo 201
+
+export entity 1101 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1101 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pr 1
+
+export entity 1102 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1102 char 0
+CH
+ lo 200
+
+export entity 1103 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1103 unform 0
+
+> usemeta legacy 1 100000
+use legacy 62497
+> entity_rolls 1000 7 5000
+prison roll 103
+land dir99 1
+land dir98 3
+land pick 2
+stderr:
+
+exit 0
+stdout:
+section state export empty root absent faction records and no regular factions
+> lore_root
+> death subkind 200 48
+> death subkind 201 62
+> export path state.json
+> set turn -32768
+> export write
+> readfile state.json
+file bytes state.json 33:
+{"turn": -32768, "factions": []}
+
+end file bytes
+> entity 210 1 49
+> export faction 210
+{"id": 210, "name": "",
+   "units": [],
+   "locations": []}
+> export write
+> readfile state.json
+file bytes state.json 95:
+{"turn": -32768, "factions": [
+  {"id": 210, "name": "",
+   "units": [],
+   "locations": []}]}
+
+end file bytes
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_system
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_silent
+PL
+
+export entity 210 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+210 player pl_regular
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section state export NULL path suppression and nonfatal empty missing directory destinations
+> lore_root
+> export write
+> export path NULL
+> export write
+> export path EMPTY
+> export write
+> export path missing/state.json
+> export write
+> export path log
+> export write
+> export path state.json
+> export write
+> readfile state.json
+file bytes state.json 153:
+{"turn": 0, "factions": [
+  {"id": 200, "name": "",
+   "units": [],
+   "locations": []},
+  {"id": 201, "name": "",
+   "units": [],
+   "locations": []}]}
+
+end file bytes
+> export path NULL
+> export write
+> readfile state.json
+file bytes state.json 153:
+{"turn": 0, "factions": [
+  {"id": 200, "name": "",
+   "units": [],
+   "locations": []},
+  {"id": 201, "name": "",
+   "units": [],
+   "locations": []}]}
+
+end file bytes
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+Can't write !
+Can't write missing/state.json!
+Can't write log!
+
+exit 0
+stdout:
+section state export RNG no export control
+> master 17
+> usemeta legacy 1 100000
+use legacy 62497
+> entity_rolls 1000 7 5000
+prison roll 701
+land dir99 2
+land dir98 1
+land pick 1
+stderr:
+
+exit 0
+stdout:
+section state export output cache borrowed stream survives export and rename
+> lore_root
+> life open 0
+> set flush 0
+> emit 1000 1
+> life rename log log-held
+> lore_dir log
+> export path state.json
+> export write
+> readfile state.json
+file bytes state.json 153:
+{"turn": 0, "factions": [
+  {"id": 200, "name": "",
+   "units": [],
+   "locations": []},
+  {"id": 201, "name": "",
+   "units": [],
+   "locations": []}]}
+
+end file bytes
+> emit 1000 2
+> life flush
+> readfile log-held/200
+file bytes log-held/200 46:
+1000:0::0::routing 1  
+1000:0::0::routing 2  
+
+end file bytes
+> life path log/200
+path log/200 missing
+> life close
+> emit 1000 3
+> life flush
+> readfile log/200
+file bytes log/200 23:
+1000:0::0::routing 3  
+
+end file bytes
+stderr:
+
+exit 0
+stdout:
+section state export RNG root-turn control
+> master 17
+> set turn 32767
+> usemeta legacy 1 100000
+use legacy 62497
+> entity_rolls 1000 7 5000
+prison roll 103
+land dir99 1
+land dir98 3
+land pick 2
+stderr:
+
+exit 0
