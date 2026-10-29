@@ -3,6 +3,75 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Skill allocation/grant prerequisite (#196, stage 4 P4)
+
+**0.118.0-alpha** adds complete use.c **1016–1035** `p_skill_ent` and
+**1857–1892** `learn_skill` to existing use.go. The oracle extracts both
+unchanged definitions once (SHA-256, including return-type line:
+`ffc33e5389857f0268b8ffe15c02c557ff77a035fd3ea1c4a3887a8442fe928c` and
+`d80087723d13b92515bfe79651ff6fcf6654c906552b54991c1ab659ecd4e431`).
+use.c was already tracked; no new source dependency, pin or dispatch wiring.
+
+Allocation searches the original list for the **first** matching skill,
+regardless of knowledge, otherwise appending one zeroed row. Grant always
+prints Learned, sets only know in that row, adds **50** to missile only below
+50 (not set-to-50), and unconditionally allocates magic, even for nonmagic.
+Magic-school ancestry adds current/max aura and prints the maximum on **every
+grant**, including already-known skills; magician becomes 1, and weather's
+exact school ID sets knows_weather only inside that magic branch. No cost,
+validation, idempotence repair or sorting is introduced.
+
+Thirteen appended ordinary sections require status **0**, after rejecting
+dependency/NYI/stub/sanitizer markers. They distinguish missing/partial/known
+and duplicate-order rows, append order, retained signed study/experience/
+exp_this_month and skill-use counters, absent character/magic records, plain
+school/subskill, nested magic ancestry and weather subskill versus school,
+nonmagic weather ID, archery -73 repeats and 0/49/50/51/-32768/32767, negative
+aura and signed 32-bit wrap/repeated grants. Raw row/record observers supplement
+actual save_box and exact logs; player NP is unchanged. Independent no-call
+and grant controls have identical magic/entity/legacy/shared-mint aftermath.
+
+Cases preceded implementation; the preimplementation Go run rejects the new
+operations explicitly. Real pinned C ran twice before each C-only recording
+update, then Go matched **1410 sections / 108987 lines / 2164432 bytes**.
+Input is **30942 lines / 589000 bytes**. The entire inherited **584230-byte
+input / 2153045-byte output** prefixes remain identical, including all original
+stage-3 bytes and intentional trailing spaces. New additions are **215 input
+lines / 4770 bytes**, **615 output lines / 11387 bytes**.
+
+| file | SHA-256 |
+|---|---|
+| command-cases.txt | `631ccfa582ec096f232a36b8e3a8d8dfec3d06cfd511dad5f9798a1de454f262` |
+| command-c-output.txt | `5af45da01ac26f14906ad94078bf0d0adfbc9c7fd2623210a676713eb801f57e` |
+
+Evidence: `tmp/issue196-{before,c-first,after-final,prefix-proof,source-proof}.log`.
+Final command/move/helper/rng/code/loadsave/turn-driver/default-turn comparisons
+pass **sequentially**, each at its independent existing pin with explicit
+isolated G3_REPO (`tmp/issue196-*-final.log`). Final command repeats unchanged
+real C twice, then matches Go and the live native traversal control. Default
+turn compares the diagnostic's status, raw streams and **2 cwd entries**, not
+a world turn. Literal bounded vet and fresh full-enabled bounded tests pass
+all **11 test packages**, again after cleanup (Olympia **1.759s**;
+`tmp/issue196-{vet,tests}-clean.log`). Full `git diff --check` passes; raw C
+recording bytes are not normalized.
+
+Parent independently reviewed both complete C definitions, the magic-school
+macro and source/adapter/case changes, confirmed both inherited byte prefixes,
+and repeated all eight compatibility checks plus literal bounded vet/fresh
+full-enabled tests successfully (`tmp/parent196-*.log`; Olympia **2.380s**).
+
+Four temporary linker controls wrap p_skill_ent, emit a dependency marker and
+exit **0/134**, each in default/update mode. All reject at section **1397**
+with harness status **2**, before expected-status acceptance or recording
+replacement; both recording hashes remain unchanged. Direct bounded launches
+confirm both injected engine statuses. See `tmp/issue196-negative-*.log`.
+Probe sources, executables and matching captures/build trees were removed.
+ALL **104** open local issues, including unlabeled issues, were audited;
+none was bug/follow-C, and no new bug/blocker was found in this bounded task.
+
+This is only the shared skill-grant prerequisite for later STUDY/auraculum/
+eat-dead owners, not STUDY/research/USE-family or stage-exit completion.
+
 ## Potion allocation prerequisite (#195, stage 4 P3)
 
 **0.117.0-alpha** ports only complete alchem.c **8–42** `new_potion` into

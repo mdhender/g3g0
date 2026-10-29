@@ -693,6 +693,44 @@ func (w *world) rpSkillEnt(who, skill int) *skillEnt {
 	return nil
 }
 
+// pSkillEnt searches the original list, including unknown and duplicate rows.
+// A new zeroed row is appended only when no matching entry exists.
+func (w *world) pSkillEnt(who, skill int) *skillEnt {
+	p := w.pChar(who)
+	for _, e := range p.skills {
+		if int(e.skill) == skill {
+			return e
+		}
+	}
+	e := &skillEnt{skill: int32(skill)}
+	p.skills.Append(e)
+	return e
+}
+
+// learnSkill is use.c:1857–1892. Grants are not idempotent: every call
+// prints and applies the archery/magic effects, even to already-known skills.
+func (w *world) learnSkill(who, sk int) {
+	p := w.pSkillEnt(who, sk)
+	w.commandOut(who, "Learned %s.", w.boxName(sk))
+	p.know = skillKnow
+	if sk == skArchery {
+		pc := w.pChar(who)
+		if pc.missile < 50 {
+			pc.missile += 50
+		}
+	}
+	ch := w.pMagic(who) // Unconditional, including nonmagic skills.
+	if w.subkind(w.skillSchool(sk)) == subMagic {
+		ch.maxAura++
+		ch.curAura++
+		w.commandOut(who, "Maximum aura now %d.", ch.maxAura)
+		w.pMagic(who).magician = 1
+		if sk == skWeather {
+			w.pMagic(who).knowsWeather = 1
+		}
+	}
+}
+
 func (w *world) hasSkill(who, skill int) int {
 	p := w.rpSkillEnt(who, skill)
 	if p == nil || p.know != skillKnow {

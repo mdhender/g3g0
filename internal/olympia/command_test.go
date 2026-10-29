@@ -2120,6 +2120,31 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "rolls":
 				n, a := args.num(t), args.num(t)
 				fmt.Fprintf(&stdout, "magic rolls %d %d %d\n", w.streams.MagcOmen(n, a), w.streams.MagcMed(n, 0), w.streams.MagcScry(n, a))
+			case "allocate":
+				w.pSkillEnt(args.num(t), args.num(t))
+			case "grant":
+				w.learnSkill(args.num(t), args.num(t))
+			case "row_fields":
+				n, sk, days, month := args.num(t), args.num(t), args.num(t), args.num(t)
+				s := w.rpSkillEnt(n, sk)
+				s.daysStudied, s.expThisMonth = int32(days), int8(month)
+			case "skill_usage":
+				n := args.num(t)
+				p := w.rpSkill(n)
+				var count, who int32
+				if p != nil {
+					count, who = p.useCount, p.lastUseWho
+				}
+				fmt.Fprintf(&stdout, "grant usage %d record %d count %d who %d\n", n, b2i(p != nil), count, who)
+			case "rows":
+				n := args.num(t)
+				p := w.rpChar(n)
+				fmt.Fprintf(&stdout, "grant records %d char %d magic %d\n", n, b2i(p != nil), b2i(w.rpMagic(n) != nil))
+				if p != nil {
+					for _, s := range p.skills {
+						fmt.Fprintf(&stdout, "grant row %d %d %d %d %d\n", s.skill, s.know, s.daysStudied, s.experience, s.expThisMonth)
+					}
+				}
 			case "aura":
 				n := args.num(t)
 				fmt.Fprintf(&stdout, "aura cap %d held %d effective %d current %d\n", n, w.hasAuraculum(n), w.maxEffAura(n), w.maxCurrentAura(n))

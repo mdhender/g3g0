@@ -30725,3 +30725,218 @@ entity_range 59000 149999 4 0
 usemeta state 1000 0
 log
 newitem 1000 0
+
+section skill grant allocation missing character and append order
+entity 1002 2 0
+entity 610 5 0
+entity 611 5 0
+field 610 skill_np 3
+field 611 skill_np 7
+usemeta rows 1002
+usemeta allocate 1002 611
+usemeta allocate 1002 610
+usemeta allocate 1002 611
+usemeta rows 1002
+usemeta state 1002 611
+np_total 1002
+
+section skill grant allocation first duplicate retains partial and all fields
+entity 610 5 0
+entity 611 5 0
+learn 1000 611 1 -19
+learn 1000 610 2 23
+learn 1000 611 2 32767
+usemeta row_fields 1000 611 -2147483648 -128
+usemeta rows 1000
+usemeta allocate 1000 611
+usemeta allocate 1000 612
+usemeta rows 1000
+usemeta state 1000 611
+
+section skill grant plain school and subskill no cost or validation
+entity 610 5 0
+entity 611 5 0
+field 611 required 610
+field 610 skill_np 17
+field 611 skill_np -8
+field 611 use_count 12345
+field 611 last_use 1001
+field 200 np 29
+usemeta rows 1000
+usemeta grant 1000 611
+usemeta grant 1000 610
+usemeta grant 1000 611
+usemeta rows 1000
+usemeta state 1000 611
+usemeta skill_usage 611
+save 610
+save 611
+save 200
+np_total 1000
+log
+
+section skill grant plain missing character lazy magic allocation
+entity 1002 2 0
+entity 610 5 0
+usemeta state 1002 610
+usemeta grant 1002 610
+usemeta rows 1002
+usemeta state 1002 610
+log
+
+section skill grant first duplicate partial retains study experience and use flags
+entity 610 5 0
+entity 611 5 0
+field 611 skill_np 4
+learn 1000 611 1 -19
+learn 1000 610 2 23
+learn 1000 611 2 32767
+usemeta row_fields 1000 611 -2147483648 -128
+usemeta rows 1000
+usemeta grant 1000 611
+usemeta grant 1000 611
+usemeta rows 1000
+usemeta state 1000 611
+np_total 1000
+log
+
+section skill grant archery negative repeats add fifty until threshold
+entity 615 5 0
+field 1000 char_missile -73
+learn 1000 615 0 -32768
+usemeta row_fields 1000 615 2147483647 127
+usemeta grant 1000 615
+usemeta state 1000 615
+usemeta grant 1000 615
+usemeta state 1000 615
+usemeta grant 1000 615
+usemeta grant 1000 615
+usemeta rows 1000
+usemeta state 1000 615
+log
+
+section skill grant archery zero below equal above and signed short boundaries
+entity 615 5 0
+field 1000 char_missile 0
+usemeta grant 1000 615
+usemeta state 1000 615
+field 1000 char_missile 49
+usemeta grant 1000 615
+usemeta state 1000 615
+field 1000 char_missile 50
+usemeta grant 1000 615
+usemeta state 1000 615
+field 1000 char_missile 51
+usemeta grant 1000 615
+usemeta state 1000 615
+field 1000 char_missile 32767
+usemeta grant 1000 615
+usemeta state 1000 615
+field 1000 char_missile -32768
+usemeta grant 1000 615
+usemeta state 1000 615
+log
+
+section skill grant magic school nested subskill repeats and preserved records
+entity 800 5 43
+entity 801 5 0
+entity 802 5 0
+field 801 required 800
+field 802 required 801
+field 802 skill_np 9
+field 802 use_count -123
+field 802 last_use 1001
+field 200 np 29
+field 1000 max_aura -7
+field 1000 cur_aura -13
+field 1000 magician -9
+field 1000 weather_mage -3
+field 1000 quick_cast 1234
+field 1000 ability_shroud -123
+learn 1000 802 1 -32768
+usemeta row_fields 1000 802 2147483647 -128
+usemeta grant 1000 802
+usemeta grant 1000 800
+usemeta grant 1000 802
+usemeta rows 1000
+usemeta state 1000 802
+usemeta skill_usage 802
+save 802
+save 200
+np_total 1000
+log
+
+section skill grant weather school exact flag and repeated aura grants
+entity 820 5 43
+entity 821 5 0
+field 821 required 820
+usemeta grant 1000 821
+usemeta state 1000 821
+usemeta grant 1000 820
+usemeta grant 1000 820
+usemeta rows 1000
+usemeta state 1000 820
+log
+
+section skill grant weather id nonmagic does not set weather or aura
+entity 820 5 0
+field 1000 magician -3
+field 1000 weather_mage -7
+field 1000 max_aura 21
+field 1000 cur_aura -14
+usemeta grant 1000 820
+usemeta state 1000 820
+log
+
+section skill grant magic signed aura wrap and already known repeats
+entity 800 5 43
+field 1000 max_aura 2147483647
+field 1000 cur_aura 2147483646
+learn 1000 800 2 32767
+usemeta row_fields 1000 800 -2147483648 127
+usemeta grant 1000 800
+usemeta state 1000 800
+usemeta grant 1000 800
+usemeta rows 1000
+usemeta state 1000 800
+log
+
+section skill grant independent no call RNG and shared mint control
+master 37
+set turn 11
+entity 800 5 43
+entity 820 5 43
+entity 615 5 0
+field 200 np 29
+usemeta rows 1000
+usemeta state 1000 800
+save 200
+np_total 1000
+usemeta rolls 1000 1001
+entity_rolls 1000 7 5000
+usemeta legacy 1 100000
+newitem 1001 0
+save_new
+
+section skill grant magic weather archery allocation RNG and shared mint aftermath
+master 37
+set turn 11
+entity 800 5 43
+entity 820 5 43
+entity 615 5 0
+field 200 np 29
+usemeta allocate 1000 800
+usemeta grant 1000 800
+usemeta grant 1000 800
+usemeta grant 1000 820
+usemeta grant 1000 615
+usemeta rows 1000
+usemeta state 1000 800
+save 200
+np_total 1000
+log
+usemeta rolls 1000 1001
+entity_rolls 1000 7 5000
+usemeta legacy 1 100000
+newitem 1001 0
+save_new

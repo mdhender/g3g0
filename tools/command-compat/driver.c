@@ -1564,6 +1564,24 @@ int main(int argc, char **argv)
    }
    else if(!strcmp(text,"legacy")) printf("use legacy %d\n",rnd(n,a));
    else if(!strcmp(text,"rolls")) drv_magic_rolls(n,a);
+   else if(!strcmp(text,"allocate")) (void)p_skill_ent(n,a);
+   else if(!strcmp(text,"grant")) learn_skill(n,a);
+   else if(!strcmp(text,"row_fields")) {
+    struct skill_ent *s=rp_skill_ent(n,a); if(!s) return 2;
+    s->days_studied=b; s->exp_this_month=(schar)d;
+   }
+   else if(!strcmp(text,"skill_usage")) {
+    struct entity_skill *p=rp_skill(n);
+    printf("grant usage %d record %d count %d who %d\n",n,p!=NULL,p?p->use_count:0,p?p->last_use_who:0);
+   }
+   else if(!strcmp(text,"rows")) {
+    struct entity_char *p=rp_char(n);
+    printf("grant records %d char %d magic %d\n",n,p!=NULL,rp_magic(n)!=NULL);
+    if(p) for(i=0;i<skill_ents_len(p->skills);i++) {
+     struct skill_ent *s=p->skills[i];
+     printf("grant row %d %d %d %d %d\n",s->skill,s->know,s->days_studied,s->experience,s->exp_this_month);
+    }
+   }
    else if(!strcmp(text,"aura")) printf("aura cap %d held %d effective %d current %d\n",n,has_auraculum(n),max_eff_aura(n),max_current_aura(n));
    else if(!strcmp(text,"limit")) limit_cur_aura(n);
    else if(!strcmp(text,"callback_start") || !strcmp(text,"callback_finish")) {

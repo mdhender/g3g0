@@ -2003,6 +2003,17 @@ tools/<tool>/run.sh                  # each tool whose area the task touched, de
 
 For load and save work, add `tools/olympia-roundtrip/run.sh` (about 25 seconds once its C cache is built).
 `tools/box-compat/run.sh --games 10`, `tools/boxfile-compat/run.sh --games 10`, `tools/check-compat/run.sh --games 10` and `tools/loadsave-compat/run.sh --games 10` compare a fixed sample of saved games when a change could show only on real data.
+Skill allocation/grants (#196, stage-4 P4) extend the existing command oracle
+with complete unchanged use.c:1016–1035/1857–1892 and thirteen ordinary sections.
+Original first-match/append order, partial/duplicate row fields, unconditional
+magic allocation, archery's below-50 **addition**, repeated magic/weather
+effects and exact logs/state/NP/independent RNG/shared-mint controls are retained.
+No new source dependency, pin, dispatch or STUDY/research/USE-family completion.
+Run command/move/helper/rng/code/loadsave/turn-driver/default-turn sequentially,
+then literal bounded vet/fresh tests. Totals: **1410 sections / 108987 output
+lines / 2164432 output bytes**; input **589000 bytes**. Entire inherited
+**584230-byte input / 2153045-byte output** prefixes are unchanged. Full
+contracts, hashes and actual validation are in command-compat/README.md.
 Potion allocation (#195, stage-4 P3) extends this same oracle with complete
 alchem.c:8–42 `new_potion`, reusing actual mint/inventory/MagcPotion/province/
 item-magic/output owners. Only alchem.c is newly tracked in affected.sh; pins

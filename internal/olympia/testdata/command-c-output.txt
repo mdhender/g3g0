@@ -108370,3 +108370,618 @@ stderr:
 assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
 
 exit 134
+stdout:
+section skill grant allocation missing character and append order
+> entity 1002 2 0
+> entity 610 5 0
+> entity 611 5 0
+> field 610 skill_np 3
+> field 611 skill_np 7
+> usemeta rows 1002
+grant records 1002 char 0 magic 0
+> usemeta allocate 1002 611
+> usemeta allocate 1002 610
+> usemeta allocate 1002 611
+> usemeta rows 1002
+grant records 1002 char 1 magic 0
+grant row 611 0 0 0 0
+grant row 610 0 0 0 0
+> usemeta state 1002 611
+use records 1002 1 0 0 0
+use experience 611 0 0 0 0
+1002 char 0
+CH
+ sl	611 0 0 0 0 \
+	610 0 0 0 0
+
+> np_total 1002
+np 11
+stderr:
+
+exit 0
+stdout:
+section skill grant allocation first duplicate retains partial and all fields
+> entity 610 5 0
+> entity 611 5 0
+> learn 1000 611 1 -19
+> learn 1000 610 2 23
+> learn 1000 611 2 32767
+> usemeta row_fields 1000 611 -2147483648 -128
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 611 1 -2147483648 -19 -128
+grant row 610 2 0 23 0
+grant row 611 2 0 32767 0
+> usemeta allocate 1000 611
+> usemeta allocate 1000 612
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 611 1 -2147483648 -19 -128
+grant row 610 2 0 23 0
+grant row 611 2 0 32767 0
+grant row 612 0 0 0 0
+> usemeta state 1000 611
+use records 1000 1 0 0 0
+use experience 611 1 -19 -128 0
+1000 char 0
+CH
+ lo 200
+ sl	611 1 -2147483648 -19 0 \
+	610 2 0 23 0 \
+	611 2 0 32767 0
+
+stderr:
+
+exit 0
+stdout:
+section skill grant plain school and subskill no cost or validation
+> entity 610 5 0
+> entity 611 5 0
+> field 611 required 610
+> field 610 skill_np 17
+> field 611 skill_np -8
+> field 611 use_count 12345
+> field 611 last_use 1001
+> field 200 np 29
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+> usemeta grant 1000 611
+> usemeta grant 1000 610
+> usemeta grant 1000 611
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 611 2 0 0 0
+grant row 610 2 0 0 0
+> usemeta state 1000 611
+use records 1000 1 1 0 0
+use experience 611 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	611 2 0 0 0 \
+	610 2 0 0 0
+
+> usemeta skill_usage 611
+grant usage 611 record 1 count 12345 who 1001
+> save 610
+610 skill 0
+SK
+ tl 0
+ np 17
+
+> save 611
+611 skill 0
+SK
+ tl 0
+ rs 610
+ np -8
+
+> save 200
+200 player pl_regular
+PL
+ np 29
+
+> np_total 1000
+np 10
+> log
+log:
+1000:0::0::Learned <no subkind>~[611].
+1000:0::0::Learned <no subkind>~[610].
+1000:0::0::Learned <no subkind>~[611].
+stderr:
+
+exit 0
+stdout:
+section skill grant plain missing character lazy magic allocation
+> entity 1002 2 0
+> entity 610 5 0
+> usemeta state 1002 610
+use records 1002 0 0 0 0
+1002 char 0
+
+> usemeta grant 1002 610
+> usemeta rows 1002
+grant records 1002 char 1 magic 1
+grant row 610 2 0 0 0
+> usemeta state 1002 610
+use records 1002 1 1 0 0
+use experience 610 2 0 0 1
+1002 char 0
+CH
+ sl	610 2 0 0 0
+
+> log
+log:
+stderr:
+
+exit 0
+stdout:
+section skill grant first duplicate partial retains study experience and use flags
+> entity 610 5 0
+> entity 611 5 0
+> field 611 skill_np 4
+> learn 1000 611 1 -19
+> learn 1000 610 2 23
+> learn 1000 611 2 32767
+> usemeta row_fields 1000 611 -2147483648 -128
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 611 1 -2147483648 -19 -128
+grant row 610 2 0 23 0
+grant row 611 2 0 32767 0
+> usemeta grant 1000 611
+> usemeta grant 1000 611
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 611 2 -2147483648 -19 -128
+grant row 610 2 0 23 0
+grant row 611 2 0 32767 0
+> usemeta state 1000 611
+use records 1000 1 1 0 0
+use experience 611 2 -19 -128 1
+1000 char 0
+CH
+ lo 200
+ sl	611 2 -2147483648 -19 0 \
+	610 2 0 23 0 \
+	611 2 0 32767 0
+
+> np_total 1000
+np 9
+> log
+log:
+1000:0::0::Learned <no subkind>~[611].
+1000:0::0::Learned <no subkind>~[611].
+stderr:
+
+exit 0
+stdout:
+section skill grant archery negative repeats add fifty until threshold
+> entity 615 5 0
+> field 1000 char_missile -73
+> learn 1000 615 0 -32768
+> usemeta row_fields 1000 615 2147483647 127
+> usemeta grant 1000 615
+> usemeta state 1000 615
+use records 1000 1 1 0 0
+use experience 615 2 -32768 127 1
+1000 char 0
+CH
+ lo 200
+ sl	615 2 2147483647 -32768 0
+ mi -23
+
+> usemeta grant 1000 615
+> usemeta state 1000 615
+use records 1000 1 1 0 0
+use experience 615 2 -32768 127 1
+1000 char 0
+CH
+ lo 200
+ sl	615 2 2147483647 -32768 0
+ mi 27
+
+> usemeta grant 1000 615
+> usemeta grant 1000 615
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 615 2 2147483647 -32768 127
+> usemeta state 1000 615
+use records 1000 1 1 0 0
+use experience 615 2 -32768 127 1
+1000 char 0
+CH
+ lo 200
+ sl	615 2 2147483647 -32768 0
+ mi 77
+
+> log
+log:
+1000:0::0::Learned <no subkind>~[615].
+1000:0::0::Learned <no subkind>~[615].
+1000:0::0::Learned <no subkind>~[615].
+1000:0::0::Learned <no subkind>~[615].
+stderr:
+
+exit 0
+stdout:
+section skill grant archery zero below equal above and signed short boundaries
+> entity 615 5 0
+> field 1000 char_missile 0
+> usemeta grant 1000 615
+> usemeta state 1000 615
+use records 1000 1 1 0 0
+use experience 615 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	615 2 0 0 0
+ mi 50
+
+> field 1000 char_missile 49
+> usemeta grant 1000 615
+> usemeta state 1000 615
+use records 1000 1 1 0 0
+use experience 615 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	615 2 0 0 0
+ mi 99
+
+> field 1000 char_missile 50
+> usemeta grant 1000 615
+> usemeta state 1000 615
+use records 1000 1 1 0 0
+use experience 615 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	615 2 0 0 0
+ mi 50
+
+> field 1000 char_missile 51
+> usemeta grant 1000 615
+> usemeta state 1000 615
+use records 1000 1 1 0 0
+use experience 615 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	615 2 0 0 0
+ mi 51
+
+> field 1000 char_missile 32767
+> usemeta grant 1000 615
+> usemeta state 1000 615
+use records 1000 1 1 0 0
+use experience 615 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	615 2 0 0 0
+ mi 32767
+
+> field 1000 char_missile -32768
+> usemeta grant 1000 615
+> usemeta state 1000 615
+use records 1000 1 1 0 0
+use experience 615 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	615 2 0 0 0
+ mi -32718
+
+> log
+log:
+1000:0::0::Learned <no subkind>~[615].
+1000:0::0::Learned <no subkind>~[615].
+1000:0::0::Learned <no subkind>~[615].
+1000:0::0::Learned <no subkind>~[615].
+1000:0::0::Learned <no subkind>~[615].
+1000:0::0::Learned <no subkind>~[615].
+stderr:
+
+exit 0
+stdout:
+section skill grant magic school nested subskill repeats and preserved records
+> entity 800 5 43
+> entity 801 5 0
+> entity 802 5 0
+> field 801 required 800
+> field 802 required 801
+> field 802 skill_np 9
+> field 802 use_count -123
+> field 802 last_use 1001
+> field 200 np 29
+> field 1000 max_aura -7
+> field 1000 cur_aura -13
+> field 1000 magician -9
+> field 1000 weather_mage -3
+> field 1000 quick_cast 1234
+> field 1000 ability_shroud -123
+> learn 1000 802 1 -32768
+> usemeta row_fields 1000 802 2147483647 -128
+> usemeta grant 1000 802
+> usemeta grant 1000 800
+> usemeta grant 1000 802
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 802 2 2147483647 -32768 -128
+grant row 800 2 0 0 0
+> usemeta state 1000 802
+use records 1000 1 1 0 0
+use experience 802 2 -32768 -128 1
+1000 char 0
+CH
+ lo 200
+ sl	802 2 2147483647 -32768 0 \
+	800 2 0 0 0
+CM
+ im 1
+ ma -4
+ ca -10
+ as -123
+ qc 1234
+ kw -3
+
+> usemeta skill_usage 802
+grant usage 802 record 1 count -123 who 1001
+> save 802
+802 skill 0
+SK
+ tl 0
+ rs 801
+ np 9
+
+> save 200
+200 player pl_regular
+PL
+ np 29
+
+> np_total 1000
+np 10
+> log
+log:
+1000:0::0::Learned <no subkind>~[802].
+1000:0::0::Maximum aura now -6.
+1000:0::0::Learned Magic~[800].
+1000:0::0::Maximum aura now -5.
+1000:0::0::Learned <no subkind>~[802].
+1000:0::0::Maximum aura now -4.
+stderr:
+
+exit 0
+stdout:
+section skill grant weather school exact flag and repeated aura grants
+> entity 820 5 43
+> entity 821 5 0
+> field 821 required 820
+> usemeta grant 1000 821
+> usemeta state 1000 821
+use records 1000 1 1 0 0
+use experience 821 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	821 2 0 0 0
+CM
+ im 1
+ ma 1
+ ca 1
+
+> usemeta grant 1000 820
+> usemeta grant 1000 820
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 821 2 0 0 0
+grant row 820 2 0 0 0
+> usemeta state 1000 820
+use records 1000 1 1 0 0
+use experience 820 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	821 2 0 0 0 \
+	820 2 0 0 0
+CM
+ im 1
+ ma 3
+ ca 3
+ kw 1
+
+> log
+log:
+1000:0::0::Learned <no subkind>~[821].
+1000:0::0::Maximum aura now 1.
+1000:0::0::Learned Magic~[820].
+1000:0::0::Maximum aura now 2.
+1000:0::0::Learned Magic~[820].
+1000:0::0::Maximum aura now 3.
+stderr:
+
+exit 0
+stdout:
+section skill grant weather id nonmagic does not set weather or aura
+> entity 820 5 0
+> field 1000 magician -3
+> field 1000 weather_mage -7
+> field 1000 max_aura 21
+> field 1000 cur_aura -14
+> usemeta grant 1000 820
+> usemeta state 1000 820
+use records 1000 1 1 0 0
+use experience 820 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	820 2 0 0 0
+CM
+ im -3
+ ma 21
+ ca -14
+ kw -7
+
+> log
+log:
+1000:0::0::Learned <no subkind>~[820].
+stderr:
+
+exit 0
+stdout:
+section skill grant magic signed aura wrap and already known repeats
+> entity 800 5 43
+> field 1000 max_aura 2147483647
+> field 1000 cur_aura 2147483646
+> learn 1000 800 2 32767
+> usemeta row_fields 1000 800 -2147483648 127
+> usemeta grant 1000 800
+> usemeta state 1000 800
+use records 1000 1 1 0 0
+use experience 800 2 32767 127 5
+1000 char 0
+CH
+ lo 200
+ sl	800 2 -2147483648 32767 0
+CM
+ im 1
+ ma -2147483648
+ ca 2147483647
+
+> usemeta grant 1000 800
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 800 2 -2147483648 32767 127
+> usemeta state 1000 800
+use records 1000 1 1 0 0
+use experience 800 2 32767 127 5
+1000 char 0
+CH
+ lo 200
+ sl	800 2 -2147483648 32767 0
+CM
+ im 1
+ ma -2147483647
+ ca -2147483648
+
+> log
+log:
+1000:0::0::Learned Magic~[800].
+1000:0::0::Maximum aura now -2147483648.
+1000:0::0::Learned Magic~[800].
+1000:0::0::Maximum aura now -2147483647.
+stderr:
+
+exit 0
+stdout:
+section skill grant independent no call RNG and shared mint control
+> master 37
+> set turn 11
+> entity 800 5 43
+> entity 820 5 43
+> entity 615 5 0
+> field 200 np 29
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+> usemeta state 1000 800
+use records 1000 1 0 0 0
+1000 char 0
+CH
+ lo 200
+
+> save 200
+200 player pl_regular
+PL
+ np 29
+
+> np_total 1000
+np 1
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 5000
+prison roll 267
+land dir99 2
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 73265
+> save_new
+73265 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0
+stdout:
+section skill grant magic weather archery allocation RNG and shared mint aftermath
+> master 37
+> set turn 11
+> entity 800 5 43
+> entity 820 5 43
+> entity 615 5 0
+> field 200 np 29
+> usemeta allocate 1000 800
+> usemeta grant 1000 800
+> usemeta grant 1000 800
+> usemeta grant 1000 820
+> usemeta grant 1000 615
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 800 2 0 0 0
+grant row 820 2 0 0 0
+grant row 615 2 0 0 0
+> usemeta state 1000 800
+use records 1000 1 1 0 0
+use experience 800 2 0 0 1
+1000 char 0
+CH
+ lo 200
+ sl	800 2 0 0 0 \
+	820 2 0 0 0 \
+	615 2 0 0 0
+ mi 50
+CM
+ im 1
+ ma 3
+ ca 3
+ kw 1
+
+> save 200
+200 player pl_regular
+PL
+ np 29
+
+> np_total 1000
+np 1
+> log
+log:
+1000:0::0::Learned Magic~[800].
+1000:0::0::Maximum aura now 1.
+1000:0::0::Learned Magic~[800].
+1000:0::0::Maximum aura now 2.
+1000:0::0::Learned Magic~[820].
+1000:0::0::Maximum aura now 3.
+1000:0::0::Learned <no subkind>~[615].
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 5000
+prison roll 267
+land dir99 2
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 73265
+> save_new
+73265 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0

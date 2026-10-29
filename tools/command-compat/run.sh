@@ -150,7 +150,7 @@ functions = {
               'correct_use_item', 'meets_requirements', 'consume_requirements', 'consume_scroll',
               'experience_use_speedup', 'add_skill_experience',
               'v_use', 'd_use', 'i_use', 'v_use_item', 'd_use_item',
-              'rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school',
+              'rp_skill_ent', 'p_skill_ent', 'learn_skill', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school',
               'exp_s', 'rep_skill_comp', 'flat_skill_comp', 'list_skill_sup',
               'list_skills', 'fractional_skill_qualifier', 'list_partial_skills'],
     'report.c': ['char_rep_location', 'output_order_comp', 'sort_for_output',
@@ -711,6 +711,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section skill grant '* ]]; then
+   [ "$status" = 0 ] || die "unexpected skill grant status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section potion '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in
