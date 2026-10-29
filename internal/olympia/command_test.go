@@ -112,6 +112,7 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 	var savedPlayer *entityPlayer
 	var savedFullname *string
 	var watched []string
+	var cookieWatchWhere, cookieWatchItem, cookieWatchPlace int
 	fileState := func(path string) {
 		st, err := os.Stat(path)
 		kind := "missing"
@@ -163,6 +164,17 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		case assertion:
 			fmt.Fprint(&stderr, r.Error())
 			status = 134
+			if cookieWatchWhere != 0 {
+				fmt.Fprintf(&stdout, "cookie failure stock %d\n", w.hasItem(cookieWatchWhere, cookieWatchItem))
+				w.saveBox(&stdout, cookieWatchWhere)
+				w.saveBox(&stdout, cookieWatchPlace)
+				if p := w.rpPlayer(int(w.indepPlayer)); p != nil {
+					helperList(&stdout, "cookie failure units", p.units)
+				} else {
+					helperList(&stdout, "cookie failure units", nil)
+				}
+				fmt.Fprintf(&stdout, "cookie failure npc %d\n", w.streams.NPCQty(cookieWatchItem, 1000, -100000, 100000))
+			}
 		case exitStatus:
 			status = int(r)
 		case runtime.Error:
@@ -404,6 +416,35 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				}
 			default:
 				t.Fatalf("unknown garrison %s", action)
+			}
+		case "cookie":
+			switch action := args.word(); action {
+			case "table":
+				for i, r := range cookieMonster {
+					notHere, noCookies := "NULL", "NULL"
+					if r.notHere != nil {
+						notHere = *r.notHere
+					}
+					if r.noCookies != nil {
+						noCookies = *r.noCookies
+					}
+					fmt.Fprintf(&stdout, "cookie row %d %d %d %d %d %d %d %d %d [%s] [%s]\n", i, r.cookie, r.kind, r.sk, r.ni, r.terrain, r.manKind, r.low, r.high, notHere, noCookies)
+				}
+			case "find":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "cookie find %d %d\n", n, b2i(w.findCookie(n) != nil))
+			case "may":
+				fmt.Fprintf(&stdout, "cookie may %d\n", b2i(w.mayCookieNPC(args.num(t), args.num(t), args.num(t))))
+			case "do":
+				created = w.doCookieNPC(args.num(t), args.num(t), args.num(t), args.num(t))
+				fmt.Fprintf(&stdout, "cookie created %d\n", created)
+			case "qty":
+				fmt.Fprintf(&stdout, "cookie qty %d\n", w.streams.NPCQty(args.num(t), created, args.num(t), args.num(t)))
+			case "watch":
+				cookieWatchWhere, cookieWatchItem, cookieWatchPlace = args.num(t), args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "cookie watch npc %d\n", w.streams.NPCQty(cookieWatchItem, 1000, -100000, 100000))
+			default:
+				t.Fatalf("unknown cookie %s", action)
 			}
 		case "npc":
 			action, n := args.word(), args.num(t)

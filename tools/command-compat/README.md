@@ -3,6 +3,176 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Cookie NPC allocation prerequisite (#214, stage 4 N14a)
+
+**0.136.0-alpha** adds only the original cookie table/lookup/admission/spawn
+helpers to existing npc.go. No command or USE callback is wired. RAISE/RALLY,
+PILLAGE/combat, undead magic and weather summoning remain their later owners'
+explicit NYIs. Existing newChar/newEnt, setLord/joinStack/setWhere, inventory,
+output/cache and persistent RNG owners are reused without changes.
+
+The extractor adds **unchanged npc.c:406–590** (the task's 407–590 table/helpers
+plus PROV_OR_CITY at 406), including return-type lines, all five original rows
+and the NULL sentinel. Static lookup/table observers
+read that actual table, not a replacement. Source `#line` assertions remain
+474/491/548. npc.c was already read and tracked by command-compat and
+affected.sh: **no new upstream dependency**, provenance-table expansion, pin
+move or independent-tool repin. The isolated bare source and pristine archive
+are the only upstream sources used; no shared checkout is touched or built.
+
+| complete original definition | lines | SHA-256 |
+|---|---|---|
+| constant/table/sentinel | 406–466 | `4bc6a02bf50ed42ba9b272dcfe7d8758aae3d7726bb261a364bb57bc94b70104` |
+| find_cookie | 469–481 | `e463b48affc1b479e366c4eb87415f96eac6635c13af28dffee7de9184536592` |
+| may_cookie_npc | 484–534 | `180c6f8d6661ffc617fde1b693b0a90cd3956ce9d06f1471ec85afd1d68e0fa2` |
+| do_cookie_npc | 537–590 | `cb878278a95bafeee46d136e9e917adbc899d1307350111840405e946435dfc2` |
+
+Whole npc.c: **13145 bytes**, SHA-256
+`2496a569db9b92e69a70fb89af35a28269a2b9f287e59bd473a1bca6697ce6cf`.
+The complete **3500-byte** source range 406–590 has SHA-256
+`f6624e146b69957e3902e9ac8d8156d4de3352465b5ed43b1b469c07f2125c94`.
+Extraction omits the final newline before appending its own: **3499 bytes**,
+SHA-256 `d879136e86d0208c7521c7c6bf41cfbaf1727dd7a9d775cca9c1efab53ad4777`.
+`tmp/issue214-source-proof.log` verifies these original bytes in the generated
+translation unit, existing allocation/ownership/topology/inventory/RNG source
+owners, original fixture files/modes and the trusted executables below.
+
+**18 appended real-C sections** cover table/find including unknown items;
+every storm terrain whitelist and mob province/city versus building/graveyard;
+terrain-before-cookie diagnostics, depleted stock and who=0 silence; asymmetric
+source/summoner/place/faction identities; nested foreign character stacks and
+separate location placement; mob health=-1 versus undead health=100; exact
+home/cookie/summoner/created fields, including negative turns; repeated and
+next-turn creation; ordinary-noble versus NI allocation ranges and genuine
+range exhaustion/fallback. Negative stock is deliberately not treated as zero:
+the original helper can create a mob and ignore failed consumption, leaving
+the negative stock untouched. There is no independent inventory repair.
+
+Actual save_box bytes and raw entity/record flags, here/unit/output lists,
+pending trades, load/run queues and retained orders are observed. In the
+asymmetric seeded case the mob is **126033 / 23 troops**; undead **8720 / 23**
+then **9430 / 16**. Quantity probes use **(cookie,newID)**, not summoner/place.
+Storm IDs **126033/137778/118184** have no character/storm record allocation or
+independent unit membership. They retain the preexisting NPC stream at 9888:
+behavior probes stay **1/2/14/89199** across all three spawns. Storm creation
+does not seed the NPC stream or draw troops. Entity/economy/keyed NPC and legacy
+RNG aftermath plus subsequent real shared-mint allocations are compared.
+
+**Allocation failure is an assertion, not a successful zero return.** Complete
+exhaustion in this pin reaches original code.c:690 alloc_box(-1), status **134**,
+before any placement, misc allocation, troop generation or cookie consumption.
+No minter is mocked. Three explicitly armed test-only SIGABRT observers read
+the actual failed C state after asfail's flush, then restore/re-raise SIGABRT;
+they do not replace the allocator, assertion or gameplay definitions. Matching
+Go assertion observers compare source/place save bytes, unchanged stock **2**,
+empty independent units and identical pre/post NPC keyed values
+**-94523 / 13105 / 24611** for mob/undead/storm. The source's defensive <=0
+return remains translated, but is not claimed reachable through an exhausted
+real allocator. Four additional invalid-cookie probes assert at npc.c:474/491.
+
+Final unchanged real C **twice before update/Go**, and fresh Go, match
+**1777 sections / 147546 output lines / 2871636 bytes**. Input: **39620 lines /
+741400 bytes**. Appended: **18 sections / 409 input lines / 8476 input bytes /
+2112 output lines / 34672 output bytes**, statuses **11 × 0 / 7 × 134**.
+All statuses: **1498 × 0 / 265 × 134 / 3 × 139 / 11 × 1**. Entire HEAD
+**732924/2836964-byte** and stage-3 **578307/2134398-byte** prefixes remain
+exact, including authentic trailing spaces and all **21 input / 67 output
+high-bit bytes**. Evidence: `tmp/issue214-{command-record,prefix-proof}.log`.
+
+| file/prefix | SHA-256 |
+|---|---|
+| command-cases.txt | `f26495da6fd36b82f5e4d689127e5b22dd37a002fcfbe6a3d3da3380be91eff1` |
+| command-c-output.txt | `f6aa1223a57ad268e6b7aee2c24e2c7e4bf77181cc8f22ff7a9bd613ddc4f5e7` |
+| HEAD input | `67a3651f33a81e044387ec3ebff279bc673d7f46f1f072f0b2d892e3eb7319a4` |
+| HEAD output | `27f19d9176c0ed04910b353f39c7e54c056a9b8fa8cf4c730a65f6c8204f77c5` |
+| stage-3 input | `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` |
+| stage-3 output | `c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac` |
+
+Actual negative linker controls wrap **may_cookie_npc**, emit a missing-C-
+dependency marker, then exit **0** or abort **134**. All **0/134 × default/update**
+runs reject **section 1760 with harness status 2**, before expected-status
+acceptance or recording replacement; direct bounded driver runs verify both
+raw statuses. Every run leaves the final output hash above unchanged. To
+repeat, use a temporary CC wrapper appending `-Wl,--wrap=may_cookie_npc` and
+the deliberate probe source, a disposable WORK, and PROBE_STATUS=0/134; invoke
+run.sh normally/--update, then run that WORK/driver bounded on section 1760.
+The probe prints the marker to stderr, flushes, and calls exit(0)/abort(),
+never returns a fabricated gameplay result. Logs:
+`tmp/issue214-negative-proof.log`, `tmp/issue214-negative-STATUS-MODE.log`,
+`tmp/issue214-probe-STATUS-MODE.{stdout,stderr}`. Scratch controls are removed.
+
+Original family scripts run unchanged C/C **before freshly building Go**, via
+trusted bounded `tmp/stage4-capture` (SHA-256
+`816ad641b17c44bb2776d41dd7f2dc7c5f70cc5a3b05020658e4b036870f88b4`) and
+canonical C `tmp/stage4-source/build/issue201/olympia-g3` (SHA-256
+`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`).
+Use the N09 original-script replay recipe below with `_issue214`,
+`issue214-fixtures`, and these fourteen names. The strict comparator
+`tmp/stage4-turn/bin/compare` and tree-modes.py compare raw status/streams and
+**ALL pre-cleanup cwd types/modes/empty directories/bytes**, no exclusions.
+Diagnostics below are observed failures, not permitted successful references.
+
+| original fixture | C cwd entries; C engine/script | fresh Go result |
+|---|---|---|
+| production-harvest | 249; 0 / YES | strict C/C/Go PASS, script 0 |
+| production-refused | 237; 0 / YES | strict C/C/Go PASS, script 0 |
+| recruitment-raise / recruitment-refused | 241 / 239; 0 / YES | RAISE start NYI; engine 2 / script 1 |
+| use-weather / use-weather-refused | 249 / 238; 0 / YES | v_lightning / v_fierce_wind NYI; engine 2 / script 1 |
+| use-necro / use-necro-refused | 251 / 240; 0 / YES | v_keep_undead / v_write_spell NYI; engine 2 / script 1 |
+| combat-attack / combat-refused | 245 / 237; 0 / YES | BEHIND / ATTACK start NYI; engine 2 / script 1 |
+| guard-pillage | 238; 0 / YES | PILLAGE start NYI; engine 2 / script 1 |
+| player-settings | 237; 0 / YES | strict C/C/Go PASS, script 0 |
+| order-unrecognized | 243; 0 / YES | strict C/C/Go PASS, script 0 |
+| release-swear-np | 229; **134** / YES | strict C/C/Go PASS, script 0 |
+
+All fourteen C/C comparisons pass. The separate release-swear-np control is
+exact **olympia/swear.c (180): FALSE**, never a successful turn or +turn input.
+All 42 captures have no symlinks, linked files or shared inodes. Evidence:
+`tmp/issue214-{fixture-proof,capture-proof}.log`; raw streams/status and both
+manifests/diffs in `tmp/issue214-fixtures/FIXTURE/`; original script logs in
+`tmp/issue214-FIXTURE-{c1,c2,go}.log`. Disposable cwd captures and task-only
+helpers/probes/binaries are removed; protected caches are not written.
+
+Validation commands are the N13b block below with issue214 paths: bounded
+vet; fresh `G3G0_FULL=1 go test -count=1 -v -exec "bash
+$PWD/tools/lib/run-limited.sh" ./...`; all eight defaults **sequentially**
+with explicit `G3_REPO=$PWD/tmp/upstream.git`; then the unchanged full spec.
+Vet and tests pass (**11 test packages / 10 explicit opt-in/child-entry skips**,
+Olympia **2.969s**). Eight defaults pass: command **1777/147546**, move
+**135/7158**, helper **37/1487**, RNG **321**, code **43/969**, loadsave
+**61/3411**, turn-driver **7/152**, phase **5/484**, calendar **2/119**,
+schedule **4/1801**, default turn **2 cwd entries**. Logs:
+`tmp/issue214-{vet,tests,default-status}.log`, `tmp/issue214-TOOL-default.log`.
+Full spec: **56 pass / 69 fail / 0 error**, **127s**, preserving every prior
+56 name and the exact stage-3 36. Only the existing spec tool writes passing.txt;
+it stays byte-identical, SHA-256
+`5cc969d6ac893581b74ef73e8ee27ae041f89d6be744b8bd053f3c2880897150`.
+Golden is **NO**, initialization **2** at unsupported `-i`.
+See `tmp/issue214-{spec,spec-proof}.log`.
+
+Fresh ALL-open local audit: **86**, no bug/follow-C; unrelated upstream
+**G3 #364** remains open and unchanged (undefined missing-target GM inputs).
+No new blocker or oversized prerequisite was found. No family/stage acceptance,
+whole-corpus proof, new command/USE gameplay, stage 5, commit/push, issue change
+or tracker tick is claimed. Parent owns independent review and acceptance.
+
+Independent parent acceptance reviewed the complete original table/helpers,
+allocator and all engine/test/observer diffs. All four C blocks appear exactly
+once unchanged in npc-rng.c; HEAD and stage-3 input/output prefixes are exact.
+Bounded vet, fresh full-enabled tests and all eight sequential defaults pass
+again (`tmp/parent214-{vet,tests,TOOL}.log`), including **1777 sections /
+147546 lines**. Independent original scripts match all fourteen C/C trees
+and five C/Go controls, including both production fixtures and the separate
+exact **134** abort. The other nine Go runs stop at the same explicit NYIs
+above. Raw failed streams/statuses and manifests remain under
+`tmp/parent214-fixtures/`, script logs at `tmp/parent214-FIXTURE-ENGINE.log`;
+matching capture trees and scratch binaries were removed. Independent full
+spec confirms **56 pass / 69 fail / 0 error**, all names unchanged, golden
+**NO**, initialization **2** (`tmp/parent214-spec.log`). N14a alone is accepted
+at its original pin. A subsequent fresh audit found new follow-C **#288**;
+it takes priority before the next gameplay task, not an implicit pin change
+or fix within this prerequisite.
+
 ## MAKE/TRAIN completion and horse USE wrappers (#213, stage 4 N13b)
 
 **0.135.0-alpha** completes make.go with the original multiday start/finish,

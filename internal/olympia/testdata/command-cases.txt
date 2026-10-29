@@ -39209,3 +39209,412 @@ do
 dump
 save 1000
 readlog 200
+
+section N14a original five cookie rows sentinel and item lookup
+cookie table
+entity 101 4 0
+entity 273 4 0
+entity 274 4 0
+entity 275 4 0
+entity 276 4 0
+entity 99 4 0
+cookie find 101
+cookie find 273
+cookie find 276
+cookie find 275
+cookie find 274
+cookie find 99
+export state
+
+section N14a terrain matrix exact storm whitelist mob province or city and undead graveyard
+entity 101 4 0
+entity 273 4 0
+entity 274 4 0
+entity 275 4 0
+entity 276 4 0
+entity 9001 3 1
+entity 9002 3 2
+entity 9003 3 3
+entity 9004 3 4
+entity 9005 3 5
+entity 9006 3 6
+entity 9007 3 7
+entity 9014 3 14
+entity 9016 3 16
+entity 9032 3 32
+inventory 9001 101 1
+inventory 9002 101 1
+inventory 9003 101 1
+inventory 9014 101 1
+inventory 9016 101 1
+inventory 9032 101 1
+inventory 9001 273 1
+inventory 9014 273 1
+inventory 9016 273 1
+inventory 9001 276 1
+inventory 9002 276 1
+inventory 9003 276 1
+inventory 9004 276 1
+inventory 9005 276 1
+inventory 9006 276 1
+inventory 9007 276 1
+inventory 9014 276 1
+inventory 9001 275 1
+inventory 9002 275 1
+inventory 9003 275 1
+inventory 9004 275 1
+inventory 9005 275 1
+inventory 9006 275 1
+inventory 9007 275 1
+inventory 9014 275 1
+inventory 9001 274 1
+inventory 9002 274 1
+inventory 9003 274 1
+inventory 9004 274 1
+inventory 9005 274 1
+inventory 9006 274 1
+inventory 9007 274 1
+inventory 9014 274 1
+cookie may 0 9001 101
+cookie may 0 9002 101
+cookie may 0 9003 101
+cookie may 0 9014 101
+cookie may 0 9016 101
+cookie may 0 9032 101
+cookie may 0 9001 273
+cookie may 0 9014 273
+cookie may 0 9016 273
+cookie may 0 9001 276
+cookie may 0 9002 276
+cookie may 0 9003 276
+cookie may 0 9004 276
+cookie may 0 9005 276
+cookie may 0 9006 276
+cookie may 0 9007 276
+cookie may 0 9014 276
+cookie may 0 9001 275
+cookie may 0 9002 275
+cookie may 0 9003 275
+cookie may 0 9004 275
+cookie may 0 9005 275
+cookie may 0 9006 275
+cookie may 0 9007 275
+cookie may 0 9014 275
+cookie may 0 9001 274
+cookie may 0 9002 274
+cookie may 0 9003 274
+cookie may 0 9004 274
+cookie may 0 9005 274
+cookie may 0 9006 274
+cookie may 0 9007 274
+cookie may 0 9014 274
+export state
+readlog 200
+
+section N14a wrong terrain precedes missing cookie and zero summoner suppresses both diagnostics
+master 37
+place 9000
+entity 101 4 0
+entity 273 4 0
+entity 274 4 0
+entity 275 4 0
+entity 276 4 0
+entity 9014 3 14
+entity 9016 3 16
+entity 9032 3 32
+npc begin 9888
+npc probe 1000
+cookie do 1000 9032 101 9000
+cookie do 1000 9000 273 1000
+cookie do 1000 9014 276 9000
+cookie do 1000 9016 275 9000
+cookie do 1000 9000 274 9000
+cookie do 0 9032 101 9000
+cookie do 0 9000 273 9000
+cookie do 0 9014 276 9000
+cookie do 0 9016 275 9000
+cookie do 0 9000 274 9000
+cookie do 1000 9000 101 9000
+cookie do 1000 9016 273 1000
+cookie do 1000 9000 275 9000
+entity 9002 3 2
+cookie do 1000 9002 276 9000
+cookie do 1000 9002 274 9000
+cookie do 0 9000 101 9000
+cookie do 0 9016 273 1000
+cookie do 0 9000 275 9000
+cookie do 0 9002 276 9000
+cookie do 0 9002 274 9000
+npc probe 1000
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+readlog 200
+export state
+
+section N14a mob source summoner and foreign nested character place are independent
+master 37
+set turn 11
+set indep 210
+entity 210 1 52
+entity 23 4 0
+entity 101 4 0
+entity 9000 3 3
+entity 9001 3 2
+entity 9002 3 5
+link 9001 1000
+link 9002 1001
+field 201 np 10
+transfer 1001 201 1 2
+entity 1002 2 0
+transfer 1002 201 1 1
+link 1001 1002
+inventory 9000 101 2
+resolve_wait
+queue wait time 9
+load
+do
+cookie do 1000 9000 101 1002
+save_new
+cookie qty 101 12 36
+cookie qty 1000 12 36
+cookie qty 101 -100000 100000
+npc probe 1000
+entity_rolls 1000 7 9000
+market rolls 9000
+usemeta legacy 1 100000
+token_state 210
+report stored_orders 200
+report stored_orders 210
+export state
+readlog 200
+readlog 201
+
+section N14a silent city mob placed in other location keeps home and unlimited health
+master 41
+set turn -3
+set indep 210
+entity 210 1 52
+entity 23 4 0
+entity 101 4 0
+entity 9000 3 14
+entity 9001 3 32
+inventory 9000 101 1
+cookie do 0 9000 101 9001
+save_new
+cookie qty 101 12 36
+cookie do 0 9000 101 9001
+token_state 210
+export state
+readlog 200
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+
+section N14a undead graveyard source foreign stack place preserves independent lord and full health
+master 37
+set turn 11
+set indep 210
+entity 210 1 52
+entity 31 4 0
+entity 273 4 0
+entity 9000 3 16
+entity 9001 3 3
+entity 9002 3 2
+link 9001 1000
+link 9002 1001
+field 201 np 10
+transfer 1001 201 1 3
+inventory 9000 273 2
+cookie do 1000 9000 273 1001
+save_new
+cookie qty 273 15 25
+cookie qty 1000 15 25
+cookie qty 273 -100000 100000
+npc probe 1000
+entity_rolls 1000 7 9000
+market rolls 9000
+usemeta legacy 1 100000
+token_state 210
+export state
+cookie do 1001 9000 273 9001
+save_new
+cookie qty 273 15 25
+export state
+
+section N14a all three storms place directly under character without character ownership or troop stream
+master 37
+set turn 11
+set indep 210
+entity 210 1 52
+entity 274 4 0
+entity 275 4 0
+entity 276 4 0
+entity 9000 3 2
+entity 9001 3 4
+entity 9002 3 6
+entity 9003 3 3
+link 9003 1000
+link 9003 1001
+field 201 np 10
+transfer 1001 201 1 2
+inventory 9000 276 2
+inventory 9001 275 1
+inventory 9002 274 1
+npc begin 9888
+npc probe 1000
+cookie do 1000 9000 276 1001
+save_new
+cookie qty 276 -100000 100000
+npc probe 1000
+cookie do 1001 9001 275 9002
+save_new
+cookie qty 275 -100000 100000
+npc probe 1000
+cookie do 0 9002 274 9001
+save_new
+cookie qty 274 -100000 100000
+npc probe 1000
+entity_rolls 1000 7 9000
+market rolls 9000
+usemeta legacy 1 100000
+token_state 210
+export state
+newitem 1000 0
+save_new
+
+section N14a two same source mobs quantity keyed by cookie and allocated ID then next turn reseed
+master 37
+set turn 11
+set indep 210
+entity 210 1 52
+entity 23 4 0
+entity 101 4 0
+place 9000
+inventory 9000 101 3
+cookie do 1000 9000 101 9000
+save_new
+cookie qty 101 12 36
+cookie qty 101 -100000 100000
+cookie do 1001 9000 101 9000
+save_new
+cookie qty 101 12 36
+cookie qty 101 -100000 100000
+set turn 12
+cookie do 0 9000 101 1000
+save_new
+cookie qty 101 12 36
+cookie qty 101 -100000 100000
+cookie do 1000 9000 101 9000
+token_state 210
+export state
+readlog 200
+usemeta legacy 1 100000
+newitem 1001 0
+save_new
+
+section N14a negative stock is not zero and failed consumption does not undo creation
+master 37
+set indep 210
+entity 210 1 52
+entity 23 4 0
+entity 101 4 0
+place 9000
+inventory 9000 101 -2
+cookie may 1000 9000 101
+cookie do 1000 9000 101 9000
+save_new
+save 9000
+cookie qty 101 12 36
+export state
+
+section N14a undead allocation falls back from ordinary noble range to shared entity range
+master 37
+set indep 210
+entity 210 1 52
+entity 31 4 0
+entity 273 4 0
+entity 500 3 16
+inventory 500 273 1
+entity_range 1002 9999 4 0
+cookie do 1000 500 273 500
+save_new
+cookie qty 273 15 25
+save 500
+save 210
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+
+section N14a mob allocation falls back from NI range to shared entity range
+master 37
+set indep 210
+entity 210 1 52
+entity 23 4 0
+entity 101 4 0
+place 9000
+inventory 9000 101 1
+entity_range 79000 149999 4 0
+cookie do 1000 9000 101 9000
+save_new
+cookie qty 101 12 36
+save 9000
+save 210
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+
+section N14a exhausted mob real allocator asserts before consumption placement misc or NPC stream
+master 37
+set indep 210
+entity 210 1 52
+entity 23 4 0
+entity 101 4 0
+place 9000
+inventory 9000 101 2
+entity_range 59000 149999 4 0
+npc begin 9888
+cookie qty 101 -100000 100000
+cookie watch 9000 101 1000
+cookie do 1000 9000 101 1000
+
+section N14a exhausted undead real allocator asserts before consumption placement misc or NPC stream
+master 37
+set indep 210
+entity 210 1 52
+entity 31 4 0
+entity 273 4 0
+entity 500 3 16
+inventory 500 273 2
+entity_range 1002 9999 4 0
+entity_range 59000 149999 4 0
+npc begin 9888
+cookie qty 273 -100000 100000
+cookie watch 500 273 1000
+cookie do 1000 500 273 1000
+
+section N14a exhausted storm real allocator asserts before consumption placement misc or NPC stream
+master 37
+set indep 210
+entity 210 1 52
+entity 276 4 0
+entity 9000 3 2
+inventory 9000 276 2
+entity_range 79000 149999 4 0
+npc begin 9888
+cookie qty 276 -100000 100000
+cookie watch 9000 276 1000
+cookie do 1000 9000 276 1000
+
+section N14a invalid find nonitem asserts original item validation
+cookie find 1000
+
+section N14a invalid find missing item asserts original item validation
+cookie find 101
+
+section N14a invalid zero cookie asserts before terrain or inventory
+cookie do 1000 9999 0 1000
+
+section N14a invalid existing item absent from table asserts before terrain or inventory
+entity 99 4 0
+cookie do 1000 9999 99 1000

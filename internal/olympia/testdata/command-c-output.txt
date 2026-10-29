@@ -145432,3 +145432,2115 @@ warning: plural name not set for item [19]
 warning: plural name not set for item [74]
 
 exit 0
+stdout:
+section N14a original five cookie rows sentinel and item lookup
+> cookie table
+cookie row 0 101 2 54 23 -1 23 12 36 [Mobs can only be raised in provinces and cities.] [A mob has already been raised from this place.]
+cookie row 1 273 2 55 0 16 31 15 25 [Demon lords may only be summoned in graveyards.] [A demon lord has already been summoned from this graveyard.]
+cookie row 2 276 11 59 0 0 0 0 0 [Rain may not be summoned here.] [A storm has already been summoned from this province.]
+cookie row 3 275 11 58 0 0 0 0 0 [Wind may not be summoned here.] [A storm has already been summoned from this province.]
+cookie row 4 274 11 57 0 0 0 0 0 [Fog may not be summoned here.] [A storm has already been summoned from this province.]
+cookie row 5 0 0 0 0 0 0 0 0 [NULL] [NULL]
+> entity 101 4 0
+> entity 273 4 0
+> entity 274 4 0
+> entity 275 4 0
+> entity 276 4 0
+> entity 99 4 0
+> cookie find 101
+cookie find 101 1
+> cookie find 273
+cookie find 273 1
+> cookie find 276
+cookie find 276 1
+> cookie find 275
+cookie find 275 1
+> cookie find 274
+cookie find 274 1
+> cookie find 99
+cookie find 99 0
+> export state
+export entity 99 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+99 item 0
+
+export entity 101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+101 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 273 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+273 item 0
+
+export entity 274 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+274 item 0
+
+export entity 275 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+275 item 0
+
+export entity 276 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+276 item 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N14a terrain matrix exact storm whitelist mob province or city and undead graveyard
+> entity 101 4 0
+> entity 273 4 0
+> entity 274 4 0
+> entity 275 4 0
+> entity 276 4 0
+> entity 9001 3 1
+> entity 9002 3 2
+> entity 9003 3 3
+> entity 9004 3 4
+> entity 9005 3 5
+> entity 9006 3 6
+> entity 9007 3 7
+> entity 9014 3 14
+> entity 9016 3 16
+> entity 9032 3 32
+> inventory 9001 101 1
+> inventory 9002 101 1
+> inventory 9003 101 1
+> inventory 9014 101 1
+> inventory 9016 101 1
+> inventory 9032 101 1
+> inventory 9001 273 1
+> inventory 9014 273 1
+> inventory 9016 273 1
+> inventory 9001 276 1
+> inventory 9002 276 1
+> inventory 9003 276 1
+> inventory 9004 276 1
+> inventory 9005 276 1
+> inventory 9006 276 1
+> inventory 9007 276 1
+> inventory 9014 276 1
+> inventory 9001 275 1
+> inventory 9002 275 1
+> inventory 9003 275 1
+> inventory 9004 275 1
+> inventory 9005 275 1
+> inventory 9006 275 1
+> inventory 9007 275 1
+> inventory 9014 275 1
+> inventory 9001 274 1
+> inventory 9002 274 1
+> inventory 9003 274 1
+> inventory 9004 274 1
+> inventory 9005 274 1
+> inventory 9006 274 1
+> inventory 9007 274 1
+> inventory 9014 274 1
+> cookie may 0 9001 101
+cookie may 1
+> cookie may 0 9002 101
+cookie may 1
+> cookie may 0 9003 101
+cookie may 1
+> cookie may 0 9014 101
+cookie may 1
+> cookie may 0 9016 101
+cookie may 0
+> cookie may 0 9032 101
+cookie may 0
+> cookie may 0 9001 273
+cookie may 0
+> cookie may 0 9014 273
+cookie may 0
+> cookie may 0 9016 273
+cookie may 1
+> cookie may 0 9001 276
+cookie may 1
+> cookie may 0 9002 276
+cookie may 1
+> cookie may 0 9003 276
+cookie may 0
+> cookie may 0 9004 276
+cookie may 0
+> cookie may 0 9005 276
+cookie may 0
+> cookie may 0 9006 276
+cookie may 0
+> cookie may 0 9007 276
+cookie may 0
+> cookie may 0 9014 276
+cookie may 0
+> cookie may 0 9001 275
+cookie may 1
+> cookie may 0 9002 275
+cookie may 0
+> cookie may 0 9003 275
+cookie may 1
+> cookie may 0 9004 275
+cookie may 1
+> cookie may 0 9005 275
+cookie may 1
+> cookie may 0 9006 275
+cookie may 0
+> cookie may 0 9007 275
+cookie may 0
+> cookie may 0 9014 275
+cookie may 0
+> cookie may 0 9001 274
+cookie may 1
+> cookie may 0 9002 274
+cookie may 1
+> cookie may 0 9003 274
+cookie may 0
+> cookie may 0 9004 274
+cookie may 0
+> cookie may 0 9005 274
+cookie may 0
+> cookie may 0 9006 274
+cookie may 1
+> cookie may 0 9007 274
+cookie may 0
+> cookie may 0 9014 274
+cookie may 0
+> export state
+export entity 101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+101 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 273 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+273 item 0
+
+export entity 274 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+274 item 0
+
+export entity 275 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+275 item 0
+
+export entity 276 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+276 item 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 101 1
+raw item 273 1
+raw item 276 1
+raw item 275 1
+raw item 274 1
+9001 loc ocean
+il	101 1 \
+	273 1 \
+	276 1 \
+	275 1 \
+	274 1
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 101 1
+raw item 276 1
+raw item 275 1
+raw item 274 1
+9002 loc forest
+il	101 1 \
+	276 1 \
+	275 1 \
+	274 1
+
+export entity 9003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 101 1
+raw item 276 1
+raw item 275 1
+raw item 274 1
+9003 loc plain
+il	101 1 \
+	276 1 \
+	275 1 \
+	274 1
+
+export entity 9004 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 276 1
+raw item 275 1
+raw item 274 1
+9004 loc mountain
+il	276 1 \
+	275 1 \
+	274 1
+
+export entity 9005 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 276 1
+raw item 275 1
+raw item 274 1
+9005 loc desert
+il	276 1 \
+	275 1 \
+	274 1
+
+export entity 9006 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 276 1
+raw item 275 1
+raw item 274 1
+9006 loc swamp
+il	276 1 \
+	275 1 \
+	274 1
+
+export entity 9007 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 276 1
+raw item 275 1
+raw item 274 1
+9007 loc underground
+il	276 1 \
+	275 1 \
+	274 1
+
+export entity 9014 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 101 1
+raw item 273 1
+raw item 276 1
+raw item 275 1
+raw item 274 1
+9014 loc city
+il	101 1 \
+	273 1 \
+	276 1 \
+	275 1 \
+	274 1
+
+export entity 9016 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 101 1
+raw item 273 1
+9016 loc graveyard
+il	101 1 \
+	273 1
+
+export entity 9032 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 101 1
+9032 loc castle
+il	101 1
+
+> readlog 200
+log 200:
+stderr:
+
+exit 0
+stdout:
+section N14a wrong terrain precedes missing cookie and zero summoner suppresses both diagnostics
+> master 37
+> place 9000
+> entity 101 4 0
+> entity 273 4 0
+> entity 274 4 0
+> entity 275 4 0
+> entity 276 4 0
+> entity 9014 3 14
+> entity 9016 3 16
+> entity 9032 3 32
+> npc begin 9888
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 12
+behavior wide -69421
+> cookie do 1000 9032 101 9000
+cookie created 0
+> cookie do 1000 9000 273 1000
+cookie created 0
+> cookie do 1000 9014 276 9000
+cookie created 0
+> cookie do 1000 9016 275 9000
+cookie created 0
+> cookie do 1000 9000 274 9000
+cookie created 0
+> cookie do 0 9032 101 9000
+cookie created 0
+> cookie do 0 9000 273 9000
+cookie created 0
+> cookie do 0 9014 276 9000
+cookie created 0
+> cookie do 0 9016 275 9000
+cookie created 0
+> cookie do 0 9000 274 9000
+cookie created 0
+> cookie do 1000 9000 101 9000
+cookie created 0
+> cookie do 1000 9016 273 1000
+cookie created 0
+> cookie do 1000 9000 275 9000
+cookie created 0
+> entity 9002 3 2
+> cookie do 1000 9002 276 9000
+cookie created 0
+> cookie do 1000 9002 274 9000
+cookie created 0
+> cookie do 0 9000 101 9000
+cookie created 0
+> cookie do 0 9016 273 1000
+cookie created 0
+> cookie do 0 9000 275 9000
+cookie created 0
+> cookie do 0 9002 276 9000
+cookie created 0
+> cookie do 0 9002 274 9000
+cookie created 0
+> npc probe 1000
+behavior zero 2
+behavior one 1
+behavior wait 12
+behavior wide -69421
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1000 0
+created 72804
+> save_new
+72804 item 0
+IT
+ un 1000
+
+> readlog 200
+log 200:
+1000:0::0::Mobs can only be raised in provinces and cities.
+1000:0::0::Demon lords may only be summoned in graveyards.
+1000:0::0::Rain may not be summoned here.
+1000:0::0::Wind may not be summoned here.
+1000:0::0::Fog may not be summoned here.
+1000:0::0::A mob has already been raised from this place.
+1000:0::0::A demon lord has already been summoned from this graveyard.
+1000:0::0::A storm has already been summoned from this province.
+1000:0::0::A storm has already been summoned from this province.
+1000:0::0::A storm has already been summoned from this province.
+> export state
+export entity 101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+101 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 273 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+273 item 0
+
+export entity 274 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+274 item 0
+
+export entity 275 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+275 item 0
+
+export entity 276 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+276 item 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 72804 1
+1000 char 0
+il	72804 1
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9002 loc forest
+
+export entity 9014 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9014 loc city
+
+export entity 9016 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9016 loc graveyard
+
+export entity 9032 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9032 loc castle
+
+export entity 72804 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+72804 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N14a mob source summoner and foreign nested character place are independent
+> master 37
+> set turn 11
+> set indep 210
+> entity 210 1 52
+> entity 23 4 0
+> entity 101 4 0
+> entity 9000 3 3
+> entity 9001 3 2
+> entity 9002 3 5
+> link 9001 1000
+> link 9002 1001
+> field 201 np 10
+> transfer 1001 201 1 2
+> entity 1002 2 0
+> transfer 1002 201 1 1
+> link 1001 1002
+> inventory 9000 101 2
+> resolve_wait
+> queue wait time 9
+> load
+load 1
+> do
+> cookie do 1000 9000 101 1002
+cookie created 126033
+> save_new
+126033 char ni
+il	23 23
+LI
+ wh 1002
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 101
+
+> cookie qty 101 12 36
+cookie qty 23
+> cookie qty 1000 12 36
+cookie qty 31
+> cookie qty 101 -100000 100000
+cookie qty 34365
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 13
+behavior wide -83945
+> entity_rolls 1000 7 9000
+prison roll 267
+land dir99 3
+land dir98 2
+land pick 1
+> market rolls 9000
+ring rolls 3 1 11
+> usemeta legacy 1 100000
+use legacy 82291
+> token_state 210
+210 player pl_npc
+PL
+ un 126033 
+
+token row 126033
+126033 char ni
+il	23 23
+LI
+ wh 1002
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 101
+
+pending trades:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+token output 200
+bits: 200 1000
+token output 201
+bits: 201 1002
+token output 210
+bits: 126033
+> report stored_orders 200
+stored orders 1000:
+> report stored_orders 210
+> export state
+export entity 23 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+23 item 0
+
+export entity 101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+101 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 200 1000
+200 player pl_regular
+PL
+ np 1
+ lt 11
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001 1002
+output: 201 1002
+201 player pl_regular
+PL
+ np 9
+ un 1001 1002 
+
+export entity 210 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units: 126033
+output: 126033
+210 player pl_npc
+PL
+ un 126033 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+CO
+ li wait time 9
+ ar 0 9 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1002
+1001 char 0
+LI
+ wh 9002
+ hl 1002 
+CH
+ lo 201
+ pl 200
+ lk 1
+ lr 2
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 126033
+1002 char 0
+LI
+ wh 1001
+ hl 126033 
+CH
+ lo 201
+ lk 1
+ lr 1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 101 1
+9000 loc plain
+il	101 1
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9001 loc forest
+LI
+ hl 1000 
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9002 loc desert
+LI
+ hl 1001 
+
+export entity 126033 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 23 23
+126033 char ni
+il	23 23
+LI
+ wh 1002
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 101
+
+> readlog 200
+log 200:
+200:0::0::Received 1 NP for <no subkind>~[1001].
+1000:0::0::> wait time 9
+> readlog 201
+log 201:
+201:0::0::Paid 1 NP for <no subkind>~[1001].
+1002:0::0::<no subkind>~[126033] stacks beneath us.
+stderr:
+
+exit 0
+stdout:
+section N14a silent city mob placed in other location keeps home and unlimited health
+> master 41
+> set turn -3
+> set indep 210
+> entity 210 1 52
+> entity 23 4 0
+> entity 101 4 0
+> entity 9000 3 14
+> entity 9001 3 32
+> inventory 9000 101 1
+> cookie do 0 9000 101 9001
+cookie created 141375
+> save_new
+141375 char ni
+il	23 36
+LI
+ wh 9001
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ mc -3
+ mh 9000
+ co 101
+
+> cookie qty 101 12 36
+cookie qty 36
+> cookie do 0 9000 101 9001
+cookie created 0
+> token_state 210
+210 player pl_npc
+PL
+ un 141375 
+
+token row 141375
+141375 char ni
+il	23 36
+LI
+ wh 9001
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ mc -3
+ mh 9000
+ co 101
+
+pending trades:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+token output 200
+bits:
+token output 201
+bits:
+token output 210
+bits:
+> export state
+export entity 23 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+23 item 0
+
+export entity 101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+101 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 210 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units: 141375
+output:
+210 player pl_npc
+PL
+ un 141375 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 101 0
+9000 loc city
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 141375
+9001 loc castle
+LI
+ hl 141375 
+
+export entity 141375 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 23 36
+141375 char ni
+il	23 36
+LI
+ wh 9001
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ mc -3
+ mh 9000
+ co 101
+
+> readlog 200
+log 200:
+> usemeta legacy 1 100000
+use legacy 46141
+> newitem 1000 0
+created 66076
+> save_new
+66076 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N14a undead graveyard source foreign stack place preserves independent lord and full health
+> master 37
+> set turn 11
+> set indep 210
+> entity 210 1 52
+> entity 31 4 0
+> entity 273 4 0
+> entity 9000 3 16
+> entity 9001 3 3
+> entity 9002 3 2
+> link 9001 1000
+> link 9002 1001
+> field 201 np 10
+> transfer 1001 201 1 3
+> inventory 9000 273 2
+> cookie do 1000 9000 273 1001
+cookie created 8720
+> save_new
+8720 char demon lord
+il	31 23
+LI
+ wh 1001
+CH
+ lo 210
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 273
+
+> cookie qty 273 15 25
+cookie qty 23
+> cookie qty 1000 15 25
+cookie qty 15
+> cookie qty 273 -100000 100000
+cookie qty 43901
+> npc probe 1000
+behavior zero 2
+behavior one 2
+behavior wait 13
+behavior wide -83945
+> entity_rolls 1000 7 9000
+prison roll 267
+land dir99 3
+land dir98 2
+land pick 1
+> market rolls 9000
+ring rolls 3 1 11
+> usemeta legacy 1 100000
+use legacy 82291
+> token_state 210
+210 player pl_npc
+PL
+ un 8720 
+
+token row 8720
+8720 char demon lord
+il	31 23
+LI
+ wh 1001
+CH
+ lo 210
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 273
+
+pending trades:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+token output 200
+bits: 200
+token output 201
+bits: 201 1001
+token output 210
+bits: 8720
+> export state
+export entity 31 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+31 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 200
+200 player pl_regular
+PL
+ np 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001
+output: 201 1001
+201 player pl_regular
+PL
+ np 9
+ un 1001 
+
+export entity 210 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units: 8720
+output: 8720
+210 player pl_npc
+PL
+ un 8720 
+
+export entity 273 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+273 item 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 8720
+1001 char 0
+LI
+ wh 9002
+ hl 8720 
+CH
+ lo 201
+ pl 200
+ lk 1
+ lr 3
+
+export entity 8720 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 31 23
+8720 char demon lord
+il	31 23
+LI
+ wh 1001
+CH
+ lo 210
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 273
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 273 1
+9000 loc graveyard
+il	273 1
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9001 loc plain
+LI
+ hl 1000 
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9002 loc forest
+LI
+ hl 1001 
+
+> cookie do 1001 9000 273 9001
+cookie created 9430
+> save_new
+9430 char demon lord
+il	31 16
+LI
+ wh 9001
+CH
+ lo 210
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1001
+ mc 11
+ mh 9000
+ co 273
+
+> cookie qty 273 15 25
+cookie qty 16
+> export state
+export entity 31 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+31 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 200
+200 player pl_regular
+PL
+ np 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001
+output: 201 1001
+201 player pl_regular
+PL
+ np 9
+ un 1001 
+
+export entity 210 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units: 8720 9430
+output: 8720
+210 player pl_npc
+PL
+ un 8720 9430 
+
+export entity 273 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+273 item 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 8720
+1001 char 0
+LI
+ wh 9002
+ hl 8720 
+CH
+ lo 201
+ pl 200
+ lk 1
+ lr 3
+
+export entity 8720 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 31 23
+8720 char demon lord
+il	31 23
+LI
+ wh 1001
+CH
+ lo 210
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 273
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 273 0
+9000 loc graveyard
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 9430
+9001 loc plain
+LI
+ hl 1000 9430 
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9002 loc forest
+LI
+ hl 1001 
+
+export entity 9430 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 31 16
+9430 char demon lord
+il	31 16
+LI
+ wh 9001
+CH
+ lo 210
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1001
+ mc 11
+ mh 9000
+ co 273
+
+stderr:
+
+exit 0
+stdout:
+section N14a all three storms place directly under character without character ownership or troop stream
+> master 37
+> set turn 11
+> set indep 210
+> entity 210 1 52
+> entity 274 4 0
+> entity 275 4 0
+> entity 276 4 0
+> entity 9000 3 2
+> entity 9001 3 4
+> entity 9002 3 6
+> entity 9003 3 3
+> link 9003 1000
+> link 9003 1001
+> field 201 np 10
+> transfer 1001 201 1 2
+> inventory 9000 276 2
+> inventory 9001 275 1
+> inventory 9002 274 1
+> npc begin 9888
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 14
+behavior wide 89199
+> cookie do 1000 9000 276 1001
+cookie created 126033
+> save_new
+126033 storm rain
+LI
+ wh 1001
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 276
+
+> cookie qty 276 -100000 100000
+cookie qty 27710
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 14
+behavior wide 89199
+> cookie do 1001 9001 275 9002
+cookie created 137778
+> save_new
+137778 storm wind
+LI
+ wh 9002
+MI
+ sb 1001
+ mc 11
+ mh 9001
+ co 275
+
+> cookie qty 275 -100000 100000
+cookie qty -74853
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 14
+behavior wide 89199
+> cookie do 0 9002 274 9001
+cookie created 118184
+> save_new
+118184 storm fog
+LI
+ wh 9001
+MI
+ mc 11
+ mh 9002
+ co 274
+
+> cookie qty 274 -100000 100000
+cookie qty 46492
+> npc probe 1000
+behavior zero 1
+behavior one 2
+behavior wait 14
+behavior wide 89199
+> entity_rolls 1000 7 9000
+prison roll 267
+land dir99 3
+land dir98 2
+land pick 1
+> market rolls 9000
+ring rolls 3 1 11
+> usemeta legacy 1 100000
+use legacy 82291
+> token_state 210
+210 player pl_npc
+
+pending trades:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+token output 200
+bits: 200
+token output 201
+bits: 201
+token output 210
+bits:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 200
+200 player pl_regular
+PL
+ np 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001
+output: 201
+201 player pl_regular
+PL
+ np 9
+ un 1001 
+
+export entity 210 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output:
+210 player pl_npc
+PL
+
+export entity 274 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+274 item 0
+
+export entity 275 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+275 item 0
+
+export entity 276 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+276 item 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9003
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 126033
+1001 char 0
+LI
+ wh 9003
+ hl 126033 
+CH
+ lo 201
+ pl 200
+ lk 1
+ lr 2
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 276 1
+9000 loc forest
+il	276 1
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 118184
+raw item 275 0
+9001 loc mountain
+LI
+ hl 118184 
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 137778
+raw item 274 0
+9002 loc swamp
+LI
+ hl 137778 
+
+export entity 9003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001
+9003 loc plain
+LI
+ hl 1000 1001 
+
+export entity 118184 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+118184 storm fog
+LI
+ wh 9001
+MI
+ mc 11
+ mh 9002
+ co 274
+
+export entity 126033 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+126033 storm rain
+LI
+ wh 1001
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 276
+
+export entity 137778 char 0 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+137778 storm wind
+LI
+ wh 9002
+MI
+ sb 1001
+ mc 11
+ mh 9001
+ co 275
+
+> newitem 1000 0
+created 65068
+> save_new
+65068 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N14a two same source mobs quantity keyed by cookie and allocated ID then next turn reseed
+> master 37
+> set turn 11
+> set indep 210
+> entity 210 1 52
+> entity 23 4 0
+> entity 101 4 0
+> place 9000
+> inventory 9000 101 3
+> cookie do 1000 9000 101 9000
+cookie created 126033
+> save_new
+126033 char ni
+il	23 23
+LI
+ wh 9000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 101
+
+> cookie qty 101 12 36
+cookie qty 23
+> cookie qty 101 -100000 100000
+cookie qty 34365
+> cookie do 1001 9000 101 9000
+cookie created 137778
+> save_new
+137778 char ni
+il	23 15
+LI
+ wh 9000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1001
+ mc 11
+ mh 9000
+ co 101
+
+> cookie qty 101 12 36
+cookie qty 15
+> cookie qty 101 -100000 100000
+cookie qty 86627
+> set turn 12
+> cookie do 0 9000 101 1000
+cookie created 136367
+> save_new
+136367 char ni
+il	23 34
+LI
+ wh 1000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ mc 12
+ mh 9000
+ co 101
+
+> cookie qty 101 12 36
+cookie qty 34
+> cookie qty 101 -100000 100000
+cookie qty 78966
+> cookie do 1000 9000 101 9000
+cookie created 0
+> token_state 210
+210 player pl_npc
+PL
+ un 126033 136367 137778 
+
+token row 126033
+126033 char ni
+il	23 23
+LI
+ wh 9000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 101
+
+token row 136367
+136367 char ni
+il	23 34
+LI
+ wh 1000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ mc 12
+ mh 9000
+ co 101
+
+token row 137778
+137778 char ni
+il	23 15
+LI
+ wh 9000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1001
+ mc 11
+ mh 9000
+ co 101
+
+pending trades:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+token output 200
+bits: 1000
+token output 201
+bits:
+token output 210
+bits: 136367
+> export state
+export entity 23 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+23 item 0
+
+export entity 101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+101 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 210 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units: 126033 136367 137778
+output: 136367
+210 player pl_npc
+PL
+ un 126033 136367 137778 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 136367
+1000 char 0
+LI
+ wh 9000
+ hl 136367 
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 126033 137778
+raw item 101 0
+9000 loc plain
+LI
+ hl 1000 126033 137778 
+
+export entity 126033 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 23 23
+126033 char ni
+il	23 23
+LI
+ wh 9000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mc 11
+ mh 9000
+ co 101
+
+export entity 136367 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 23 34
+136367 char ni
+il	23 34
+LI
+ wh 1000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ mc 12
+ mh 9000
+ co 101
+
+export entity 137778 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 23 15
+137778 char ni
+il	23 15
+LI
+ wh 9000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1001
+ mc 11
+ mh 9000
+ co 101
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[136367] stacks beneath us.
+1000:0::0::A mob has already been raised from this place.
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 60589
+> save_new
+60589 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0
+stdout:
+section N14a negative stock is not zero and failed consumption does not undo creation
+> master 37
+> set indep 210
+> entity 210 1 52
+> entity 23 4 0
+> entity 101 4 0
+> place 9000
+> inventory 9000 101 -2
+> cookie may 1000 9000 101
+cookie may 1
+> cookie do 1000 9000 101 9000
+cookie created 107045
+> save_new
+107045 char ni
+il	23 17
+LI
+ wh 9000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mh 9000
+ co 101
+
+> save 9000
+9000 loc plain
+LI
+ hl 1000 107045 
+
+> cookie qty 101 12 36
+cookie qty 17
+> export state
+export entity 23 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+23 item 0
+
+export entity 101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+101 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 210 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 107045
+output:
+210 player pl_npc
+PL
+ un 107045 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000 107045
+raw item 101 -2
+9000 loc plain
+LI
+ hl 1000 107045 
+
+export entity 107045 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 23 17
+107045 char ni
+il	23 17
+LI
+ wh 9000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mh 9000
+ co 101
+
+stderr:
+
+exit 0
+stdout:
+section N14a undead allocation falls back from ordinary noble range to shared entity range
+> master 37
+> set indep 210
+> entity 210 1 52
+> entity 31 4 0
+> entity 273 4 0
+> entity 500 3 16
+> inventory 500 273 1
+> entity_range 1002 9999 4 0
+> cookie do 1000 500 273 500
+cookie created 77763
+> save_new
+77763 char demon lord
+il	31 24
+LI
+ wh 500
+CH
+ lo 210
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mh 500
+ co 273
+
+> cookie qty 273 15 25
+cookie qty 24
+> save 500
+500 loc graveyard
+LI
+ hl 77763 
+
+> save 210
+210 player pl_npc
+PL
+ un 77763 
+
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1000 0
+created 61946
+> save_new
+61946 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N14a mob allocation falls back from NI range to shared entity range
+> master 37
+> set indep 210
+> entity 210 1 52
+> entity 23 4 0
+> entity 101 4 0
+> place 9000
+> inventory 9000 101 1
+> entity_range 79000 149999 4 0
+> cookie do 1000 9000 101 9000
+cookie created 77763
+> save_new
+77763 char ni
+il	23 28
+LI
+ wh 9000
+CH
+ ni 23
+ lo 210
+ he -1
+ lk 4
+ at 60
+ df 60
+MI
+ sb 1000
+ mh 9000
+ co 101
+
+> cookie qty 101 12 36
+cookie qty 28
+> save 9000
+9000 loc plain
+LI
+ hl 1000 77763 
+
+> save 210
+210 player pl_npc
+PL
+ un 77763 
+
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1000 0
+created 61946
+> save_new
+61946 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N14a exhausted mob real allocator asserts before consumption placement misc or NPC stream
+> master 37
+> set indep 210
+> entity 210 1 52
+> entity 23 4 0
+> entity 101 4 0
+> place 9000
+> inventory 9000 101 2
+> entity_range 59000 149999 4 0
+> npc begin 9888
+> cookie qty 101 -100000 100000
+cookie qty -38640
+> cookie watch 9000 101 1000
+cookie watch npc -94523
+> cookie do 1000 9000 101 1000
+cookie failure stock 2
+9000 loc plain
+il	101 2
+LI
+ hl 1000 
+
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+cookie failure units:
+cookie failure npc -94523
+stderr:
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+
+exit 134
+stdout:
+section N14a exhausted undead real allocator asserts before consumption placement misc or NPC stream
+> master 37
+> set indep 210
+> entity 210 1 52
+> entity 31 4 0
+> entity 273 4 0
+> entity 500 3 16
+> inventory 500 273 2
+> entity_range 1002 9999 4 0
+> entity_range 59000 149999 4 0
+> npc begin 9888
+> cookie qty 273 -100000 100000
+cookie qty 58234
+> cookie watch 500 273 1000
+cookie watch npc 13105
+> cookie do 1000 500 273 1000
+cookie failure stock 2
+500 loc graveyard
+il	273 2
+
+1000 char 0
+CH
+ lo 200
+
+cookie failure units:
+cookie failure npc 13105
+stderr:
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+
+exit 134
+stdout:
+section N14a exhausted storm real allocator asserts before consumption placement misc or NPC stream
+> master 37
+> set indep 210
+> entity 210 1 52
+> entity 276 4 0
+> entity 9000 3 2
+> inventory 9000 276 2
+> entity_range 79000 149999 4 0
+> npc begin 9888
+> cookie qty 276 -100000 100000
+cookie qty 61793
+> cookie watch 9000 276 1000
+cookie watch npc 24611
+> cookie do 1000 9000 276 1000
+cookie failure stock 2
+9000 loc forest
+il	276 2
+
+1000 char 0
+CH
+ lo 200
+
+cookie failure units:
+cookie failure npc 24611
+stderr:
+assertion failure: olympia/code.c (690): n > 0 && n < MAX_BOXES
+
+exit 134
+stdout:
+section N14a invalid find nonitem asserts original item validation
+> cookie find 1000
+stderr:
+assertion failure: olympia/npc.c (474): kind(k) == T_item
+
+exit 134
+stdout:
+section N14a invalid find missing item asserts original item validation
+> cookie find 101
+stderr:
+assertion failure: olympia/npc.c (474): kind(k) == T_item
+
+exit 134
+stdout:
+section N14a invalid zero cookie asserts before terrain or inventory
+> cookie do 1000 9999 0 1000
+stderr:
+assertion failure: olympia/npc.c (474): kind(k) == T_item
+
+exit 134
+stdout:
+section N14a invalid existing item absent from table asserts before terrain or inventory
+> entity 99 4 0
+> cookie do 1000 9999 99 1000
+stderr:
+assertion failure: olympia/npc.c (491): t
+
+exit 134

@@ -690,6 +690,22 @@ source = open(f'{src}/npc.c').read()
 with open(f'{dst}/npc-rng.c', 'w') as out:
     out.write('#line 1 "olympia/npc.c"\n')
     out.write(source[:source.index('int\ncontrolled_humans_here(')])
+    start = source.index('#define\tPROV_OR_CITY')
+    end = source.index('\n\n\nint\ncreate_peasant_mob(', start)
+    line = source.count('\n', 0, start) + 1
+    out.write(f'#line {line} "olympia/npc.c"\n{source[start:end]}\n')
+    out.write('''
+void drv_cookie_table(void) {
+ int i;
+ for(i=0;i<(int)(sizeof(cookie_monster)/sizeof(cookie_monster[0]));i++) {
+  struct cookie_monster_tbl *t=&cookie_monster[i];
+  printf("cookie row %d %d %d %d %d %d %d %d %d [%s] [%s]\\n",i,
+   t->cookie,t->kind,t->sk,t->ni,t->terrain,t->man_kind,t->low,t->high,
+   t->not_here ? t->not_here : "NULL",t->no_cookies ? t->no_cookies : "NULL");
+ }
+}
+int drv_cookie_find(int k) { return find_cookie(k)!=NULL; }
+''')
     for name in ['auto_unsworn', 'auto_mob', 'auto_bandit', 'queue_npc_orders']:
         m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
         if not m:
@@ -816,6 +832,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N14a '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N14a invalid '*|'section N14a exhausted '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N14a status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N13b '* ]]; then
    [ "$status" = 0 ] || die "unexpected N13b status $status in section $i"
   fi

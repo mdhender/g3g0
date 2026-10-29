@@ -7,6 +7,7 @@
 #include <string.h>
 #include <errno.h>
 #include <dirent.h>
+#include <signal.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include "z.h"
@@ -42,6 +43,8 @@ void drv_harvest_bump(int where, int item);
 void drv_make_table(void);
 int drv_make_find(int item), drv_make_call(struct command *c, int action, int item, int number);
 void drv_make_raw(int item, int worker, int inp1, int inp2, int aura, int factor, int pub, int where, int skill);
+void drv_cookie_table(void);
+int drv_cookie_find(int cookie);
 void drv_evening(void), drv_daily(void), drv_players(void), drv_sort_run(void);
 void drv_sort_load(int pri);
 int drv_fort_covers(int n);
@@ -162,6 +165,22 @@ static void list(char *label, ilist l)
  printf("%s:", label);
  for (i = 0; i < ilist_len(l); i++) printf(" %d", l[i]);
  printf("\n");
+}
+
+/* Only explicitly armed exhausted-allocation probes use this observer.
+ * Original asfail has flushed all IO before SIGABRT. Observe that state,
+ * then restore the real abort, never catch it as a successful allocation. */
+static int cookie_watch_where, cookie_watch_item, cookie_watch_place;
+static void cookie_abort(int sig)
+{
+ printf("cookie failure stock %d\n",has_item(cookie_watch_where,cookie_watch_item));
+ save_box(stdout,cookie_watch_where);
+ save_box(stdout,cookie_watch_place);
+ list("cookie failure units",rp_player(indep_player) ? rp_player(indep_player)->units : NULL);
+ printf("cookie failure npc %d\n",npc_qty(cookie_watch_item,1000,-100000,100000));
+ fflush(NULL);
+ signal(sig,SIG_DFL);
+ raise(sig);
 }
 
 int drv_loc_barrier(int who, int where);
@@ -373,6 +392,20 @@ int main(int argc, char **argv)
       n,stack_leader(n),default_garrison(n),is_prisoner(n),is_npc(n),char_guard(n),has_item(n,item_gold));
     } next_char;
     loop_player(n) { printf("player %d\n",n); list("output",p_player(n)->output); } next_player;
+   }
+   else return 2;
+  }
+  else if (!strcmp(op, "cookie")) {
+   sscanf(line,"%*s %31s %d %d %d %d",text,&n,&a,&b,&d);
+   if(!strcmp(text,"table")) drv_cookie_table();
+   else if(!strcmp(text,"find")) printf("cookie find %d %d\n",n,drv_cookie_find(n));
+   else if(!strcmp(text,"may")) printf("cookie may %d\n",may_cookie_npc(n,a,b));
+   else if(!strcmp(text,"do")) { created=do_cookie_npc(n,a,b,d); printf("cookie created %d\n",created); }
+   else if(!strcmp(text,"qty")) printf("cookie qty %d\n",npc_qty(n,created,a,b));
+   else if(!strcmp(text,"watch")) {
+    cookie_watch_where=n; cookie_watch_item=a; cookie_watch_place=b;
+    printf("cookie watch npc %d\n",npc_qty(cookie_watch_item,1000,-100000,100000));
+    signal(SIGABRT,cookie_abort);
    }
    else return 2;
   }

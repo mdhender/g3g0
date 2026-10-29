@@ -5,6 +5,112 @@ package olympia
 
 import "fmt"
 
+const provOrCity = -1
+
+// npc.c:407–466, including the original NULL sentinel.
+type cookieMonsterEntry struct {
+	cookie, kind, sk, ni, terrain, manKind, low, high int
+	notHere, noCookies                                *string
+}
+
+var cookieMonster = [...]cookieMonsterEntry{
+	{itemMobCookie, tChar, subNi, itemAngryPeasant, provOrCity, itemAngryPeasant, 12, 36,
+		strSave("Mobs can only be raised in provinces and cities."), strSave("A mob has already been raised from this place.")},
+	{itemUndeadCookie, tChar, subUndead, 0, subGraveyard, itemCorpse, 15, 25,
+		strSave("Demon lords may only be summoned in graveyards."), strSave("A demon lord has already been summoned from this graveyard.")},
+	{itemRainCookie, tStorm, subRain, 0, 0, 0, 0, 0,
+		strSave("Rain may not be summoned here."), strSave("A storm has already been summoned from this province.")},
+	{itemWindCookie, tStorm, subWind, 0, 0, 0, 0, 0,
+		strSave("Wind may not be summoned here."), strSave("A storm has already been summoned from this province.")},
+	{itemFogCookie, tStorm, subFog, 0, 0, 0, 0, 0,
+		strSave("Fog may not be summoned here."), strSave("A storm has already been summoned from this province.")},
+	{},
+}
+
+// npc.c:469–481.
+func (w *world) findCookie(k int) *cookieMonsterEntry {
+	assert(w.kind(k) == tItem, "olympia/npc.c", 474, "kind(k) == T_item")
+	for i := range cookieMonster {
+		if cookieMonster[i].cookie == 0 {
+			break
+		}
+		if cookieMonster[i].cookie == k {
+			return &cookieMonster[i]
+		}
+	}
+	return nil
+}
+
+// npc.c:484–534. Terrain diagnostics precede depleted-cookie diagnostics;
+// a zero summoner suppresses both messages, not validation.
+func (w *world) mayCookieNPC(who, where, cookie int) bool {
+	t := w.findCookie(cookie)
+	assert(t != nil, "olympia/npc.c", 491, "t")
+	sk := w.subkind(where)
+	badPlace := t.terrain > 0 && sk != t.terrain
+	if t.terrain == 0 {
+		if cookie == itemWindCookie && sk != subPlain && sk != subMountain && sk != subDesert && sk != subOcean {
+			badPlace = true
+		}
+		if cookie == itemRainCookie && sk != subForest && sk != subOcean {
+			badPlace = true
+		}
+		if cookie == itemFogCookie && sk != subForest && sk != subSwamp && sk != subOcean {
+			badPlace = true
+		}
+	}
+	if t.terrain == provOrCity && sk != subCity && w.locDepth(where) != locProvince {
+		badPlace = true
+	}
+	if badPlace {
+		if who != 0 {
+			w.commandOut(who, "%s", *t.notHere)
+		}
+		return false
+	}
+	if w.hasItem(where, cookie) == 0 {
+		if who != 0 {
+			w.commandOut(who, "%s", *t.noCookies)
+		}
+		return false
+	}
+	return true
+}
+
+// npc.c:537–590. Character placement uses newChar's independent ownership
+// and stack semantics; storms instead use plain setWhere, with no troop draw.
+func (w *world) doCookieNPC(who, where, cookie, place int) int {
+	if !w.mayCookieNPC(who, where, cookie) {
+		return 0
+	}
+	t := w.findCookie(cookie)
+	assert(t != nil, "olympia/npc.c", 548, "t")
+	var n int
+	if t.kind == tChar {
+		n = w.newChar(t.sk, t.ni, place, 100, int(w.indepPlayer), loyNpc, 0, "")
+	} else {
+		n = w.newEnt(t.kind, t.sk)
+		if n > 0 {
+			w.setWhere(n, place)
+		}
+	}
+	if n <= 0 {
+		return 0
+	}
+	if t.sk == subNi {
+		w.pChar(n).health = -1
+	}
+	p := w.pMisc(n)
+	p.npcHome, p.npcCookie = int32(where), int32(cookie)
+	p.summonedBy, p.npcCreated = int32(who), int32(w.sysclock.turn)
+	if t.manKind != 0 {
+		w.streams.BeginNPC(where)
+		w.genItem(n, t.manKind, w.streams.NPCQty(cookie, n, t.low, t.high))
+	}
+	w.consumeItem(where, cookie, 1)
+	return n
+}
+
 // Complete npc.c:351–403. All direct children get queued UNSTACK orders;
 // victim order is the saved here order, with a keyed index, not a shuffle.
 func (w *world) autoBandit(who, prog int) {
