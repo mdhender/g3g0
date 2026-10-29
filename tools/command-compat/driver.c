@@ -460,6 +460,21 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "land")) {
    sscanf(line,"%*s %d",&n); printf("land %d\n",find_nearest_land(n));
   }
+  else if (!strcmp(op, "los")) {
+   sscanf(line,"%*s %d %d",&n,&a);
+   printf("los %d\n",los_province_distance(n,a));
+  }
+  else if (!strcmp(op, "los_state")) {
+   loop_province(n) {
+    struct entity_loc *p = rp_loc(n);
+    printf("los province %d temp %d loc %d next %d\n",n,bx[n]->temp,p!=NULL,p ? p->next : 0);
+    list("destinations",p ? p->prov_dest : NULL);
+   } next_province;
+  }
+  else if (!strcmp(op, "route_append")) {
+   sscanf(line,"%*s %d %d",&n,&a);
+   ilist_append(&p_loc(n)->prov_dest,a);
+  }
   else if (!strcmp(op, "routes")) {
    int west, up, down, fields;
    fields=sscanf(line,"%*s %d %d %d %d %d %d %d",&n,&a,&b,&d,&west,&up,&down);
@@ -1875,6 +1890,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"opium")) p_subloc(n)->opium_econ = a;
    else if (!strcmp(text,"double")) p_misc(n)->opium_double = (schar)a;
    else if (!strcmp(text,"temp")) bx[n]->temp = a;
+   else if (!strcmp(text,"loc_next")) p_loc(n)->next = a;
    else if (!strcmp(text,"output_order")) bx[n]->output_order = a;
    else if (!strcmp(text,"garr_tax")) p_misc(n)->garr_tax = a;
    else if (!strcmp(text,"garr_forward")) p_misc(n)->garr_forward = a;

@@ -11,7 +11,6 @@ import (
 )
 
 // Ported from olympia/dir.c: map initialization and exit topology/selection.
-// LOS distance is left for later stages.
 //
 // A province's box number gives its place on the map: 10101 is row 1,
 // column 1, and [10199] row 1, column 99.
@@ -53,6 +52,39 @@ func (w *world) determineMapEdges() {
 	}
 
 	w.maxMapInit = true
+}
+
+// losProvinceDistance is dir.c:128–169's directed graph search. The queue
+// lives in the province records: even a same-province query resets/allocates
+// every province, and finding the target leaves its frontier unexpanded.
+func (w *world) losProvinceDistance(a, b int) int32 {
+	a, b = w.province(a), w.province(b)
+	for here := range w.loopProvince() {
+		w.bx[here].temp = -1
+		w.pLoc(here).next = 0
+	}
+
+	here := a
+	w.bx[here].temp = 0
+	end := here
+	for {
+		if here == b {
+			return w.bx[here].temp
+		}
+		p := w.rpLoc(here)
+		for _, dest := range p.provDest {
+			if dest != 0 && w.bx[dest].temp == -1 {
+				w.rpLoc(end).next = int32(dest)
+				end = dest
+				w.bx[end].temp = w.bx[here].temp + 1
+			}
+		}
+		here = int(w.rpLoc(here).next)
+		if here == 0 {
+			break
+		}
+	}
+	return -1
 }
 
 // exitView is dir.h's struct exit_view, in declaration order and C int widths.

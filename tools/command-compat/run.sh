@@ -75,7 +75,7 @@ functions = {
                 'check_prisoner_escape', 'prisoner_escapes', 'prisoner_movement_escape_check',
                 'weekly_prisoner_escape_check',
                 'drop_stack', 'extract_stacked_unit', 'move_prisoner', 'v_stack'],
-    'dir.c': ['location_direction', 'exit_distance', 'is_port_city',
+    'dir.c': ['los_province_distance', 'location_direction', 'exit_distance', 'is_port_city',
               'province_has_port_city', 'summer_uldim_open_now', 'add_province_exit',
               'extra_routes', 'province_exits', 'province_sub_exits', 'subloc_exits',
               'ship_exits', 'building_exits', 'exits_from_loc', 'exits_from_loc_nsew',
@@ -711,6 +711,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section los '* ]]; then
+   [ "$status" = 0 ] || die "unexpected LOS status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section skill grant '* ]]; then
    [ "$status" = 0 ] || die "unexpected skill grant status $status in section $i"
   fi

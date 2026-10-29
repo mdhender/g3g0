@@ -521,6 +521,26 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			}
 		case "land":
 			fmt.Fprintf(&stdout, "land %d\n", w.findNearestLand(args.num(t)))
+		case "los":
+			a, b := args.num(t), args.num(t)
+			fmt.Fprintf(&stdout, "los %d\n", w.losProvinceDistance(a, b))
+		case "los_state":
+			for n := range w.loopProvince() {
+				p := w.rpLoc(n)
+				next := int32(0)
+				if p != nil {
+					next = p.next
+				}
+				fmt.Fprintf(&stdout, "los province %d temp %d loc %d next %d\n", n, w.bx[n].temp, b2i(p != nil), next)
+				if p != nil {
+					helperList(&stdout, "destinations", p.provDest)
+				} else {
+					helperList(&stdout, "destinations", nil)
+				}
+			}
+		case "route_append":
+			n, dest := args.num(t), args.num(t)
+			w.pLoc(n).provDest.Append(dest)
 		case "routes":
 			p := w.pLoc(args.num(t))
 			p.provDest.Clear()
@@ -2675,6 +2695,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pMisc(n).opiumDouble = int8(a)
 			case "temp":
 				w.bx[n].temp = int32(a)
+			case "loc_next":
+				w.pLoc(n).next = int32(a)
 			case "output_order":
 				w.bx[n].outputOrder = int32(a)
 			case "garr_tax":

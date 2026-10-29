@@ -108985,3 +108985,1394 @@ IT
 stderr:
 
 exit 0
+stdout:
+section los same endpoint resets all provinces and allocates absent records
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 19999 3 3
+> entity 5000 3 50
+> field 10101 temp 91
+> field 10102 temp -72
+> field 19999 temp 37
+> field 10102 loc_next 19999
+> field 5000 temp 53
+> field 1000 temp 64
+> los_state
+los province 10101 temp 91 loc 0 next 0
+destinations:
+los province 10102 temp -72 loc 1 next 19999
+destinations:
+los province 19999 temp 37 loc 0 next 0
+destinations:
+> los 10101 10101
+los 0
+> los_state
+los province 10101 temp 0 loc 1 next 0
+destinations:
+los province 10102 temp -1 loc 1 next 0
+destinations:
+los province 19999 temp -1 loc 1 next 0
+destinations:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 64 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 5000 char 0 player 0 magic 0 misc 0 skill 0 temp 53 order 0
+here:
+5000 loc region
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10101 loc plain
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+10102 loc plain
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+19999 loc plain
+
+stderr:
+
+exit 0
+stdout:
+section los disconnected directed reverse fully exhausts queue
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 19999 3 3
+> routes 10101 10102 0 0 0
+> routes 10102 19999 0 0 0
+> los 19999 10101
+los -1
+> los_state
+los province 10101 temp -1 loc 1 next 0
+destinations: 10102 0 0 0
+los province 10102 temp -1 loc 1 next 0
+destinations: 19999 0 0 0
+los province 19999 temp 0 loc 1 next 0
+destinations:
+> los 10102 10101
+los -1
+> los_state
+los province 10101 temp -1 loc 1 next 0
+destinations: 10102 0 0 0
+los province 10102 temp 0 loc 1 next 19999
+destinations: 19999 0 0 0
+los province 19999 temp 1 loc 1 next 0
+destinations:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+10101 loc plain
+LO
+ pd 10102 0 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10102 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+19999 loc plain
+
+stderr:
+
+exit 0
+stdout:
+section los graph beats adjacent coordinates and wraps distant geometry
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 19999 3 3
+> entity 10201 3 3
+> routes 10101 19999 0 0 0
+> routes 19999 10201 0 0 0
+> routes 10201 10102 0 0 0
+> los 10101 10102
+los 3
+> los_state
+los province 10101 temp 0 loc 1 next 19999
+destinations: 19999 0 0 0
+los province 10102 temp 3 loc 1 next 0
+destinations:
+los province 10201 temp 2 loc 1 next 10102
+destinations: 10102 0 0 0
+los province 19999 temp 1 loc 1 next 10201
+destinations: 10201 0 0 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10101 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 3 order 0
+here:
+10102 loc plain
+
+export entity 10201 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here:
+10201 loc plain
+LO
+ pd 10102 0 0 0 
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+19999 loc plain
+LO
+ pd 10201 0 0 0 
+
+stderr:
+
+exit 0
+stdout:
+section los nested character ship building and sublocation normalization
+> entity 10101 3 3
+> entity 19999 3 3
+> entity 5000 3 14
+> entity 5001 3 32
+> entity 5002 9 30
+> link 10101 5000
+> link 5000 5001
+> link 5001 1000
+> link 1000 1001
+> link 19999 5002
+> routes 10101 19999 0 0 0
+> los 1001 5002
+los 1
+> los_state
+los province 10101 temp 0 loc 1 next 19999
+destinations: 19999 0 0 0
+los province 19999 temp 1 loc 1 next 0
+destinations:
+> los 5001 1000
+los 0
+> los_state
+los province 10101 temp 0 loc 1 next 0
+destinations: 19999 0 0 0
+los province 19999 temp -1 loc 1 next 0
+destinations:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+1000 char 0
+LI
+ wh 5001
+ hl 1001 
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+export entity 5000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 5001
+5000 loc city
+LI
+ wh 10101
+ hl 5001 
+
+export entity 5001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+5001 loc castle
+LI
+ wh 5000
+ hl 1000 
+
+export entity 5002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+5002 ship galley
+LI
+ wh 19999
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 5000
+10101 loc plain
+LI
+ hl 5000 
+LO
+ pd 19999 0 0 0 
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here: 5002
+19999 loc plain
+LI
+ hl 5002 
+
+stderr:
+
+exit 0
+stdout:
+section los unequal alternate routes use shortest graph path
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 10103 3 3
+> entity 10104 3 3
+> entity 10105 3 3
+> entity 19999 3 3
+> routes 10101 10102 10105 0 0
+> routes 10102 10103 0 0 0
+> routes 10103 10104 0 0 0
+> routes 10104 19999 0 0 0
+> routes 10105 19999 0 0 0
+> los 10101 19999
+los 2
+> los_state
+los province 10101 temp 0 loc 1 next 10102
+destinations: 10102 10105 0 0
+los province 10102 temp 1 loc 1 next 10105
+destinations: 10103 0 0 0
+los province 10103 temp 2 loc 1 next 19999
+destinations: 10104 0 0 0
+los province 10104 temp 3 loc 1 next 0
+destinations: 19999 0 0 0
+los province 10105 temp 1 loc 1 next 10103
+destinations: 19999 0 0 0
+los province 19999 temp 2 loc 1 next 10104
+destinations:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10101 loc plain
+LO
+ pd 10102 10105 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10102 loc plain
+LO
+ pd 10103 0 0 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here:
+10103 loc plain
+LO
+ pd 10104 0 0 0 
+
+export entity 10104 char 0 player 0 magic 0 misc 0 skill 0 temp 3 order 0
+here:
+10104 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 10105 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10105 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here:
+19999 loc plain
+LO
+
+stderr:
+
+exit 0
+stdout:
+section los equal routes preserve first neighbor insertion and unexpanded target
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 10103 3 3
+> entity 10104 3 3
+> entity 10105 3 3
+> entity 19999 3 3
+> routes 10101 10103 10102 0 0
+> routes 10103 19999 0 0 0
+> routes 10102 10104 0 0 0
+> routes 19999 10105 0 0 0
+> los 10101 19999
+los 2
+> los_state
+los province 10101 temp 0 loc 1 next 10103
+destinations: 10103 10102 0 0
+los province 10102 temp 1 loc 1 next 19999
+destinations: 10104 0 0 0
+los province 10103 temp 1 loc 1 next 10102
+destinations: 19999 0 0 0
+los province 10104 temp 2 loc 1 next 0
+destinations:
+los province 10105 temp -1 loc 1 next 0
+destinations:
+los province 19999 temp 2 loc 1 next 10104
+destinations: 10105 0 0 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10101 loc plain
+LO
+ pd 10103 10102 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10102 loc plain
+LO
+ pd 10104 0 0 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10103 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 10104 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here:
+10104 loc plain
+
+export entity 10105 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+10105 loc plain
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here:
+19999 loc plain
+LO
+ pd 10105 0 0 0 
+
+stderr:
+
+exit 0
+stdout:
+section los swapped tie expands earlier frontier but not target
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 10103 3 3
+> entity 10104 3 3
+> entity 10105 3 3
+> entity 19999 3 3
+> routes 10101 10102 10103 0 0
+> routes 10103 19999 0 0 0
+> routes 10102 10104 0 0 0
+> routes 10104 10105 0 0 0
+> routes 19999 10105 0 0 0
+> los 10101 19999
+los 2
+> los_state
+los province 10101 temp 0 loc 1 next 10102
+destinations: 10102 10103 0 0
+los province 10102 temp 1 loc 1 next 10103
+destinations: 10104 0 0 0
+los province 10103 temp 1 loc 1 next 10104
+destinations: 19999 0 0 0
+los province 10104 temp 2 loc 1 next 19999
+destinations: 10105 0 0 0
+los province 10105 temp 3 loc 1 next 0
+destinations:
+los province 19999 temp 2 loc 1 next 10105
+destinations: 10105 0 0 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10101 loc plain
+LO
+ pd 10102 10103 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10102 loc plain
+LO
+ pd 10104 0 0 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10103 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 10104 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here:
+10104 loc plain
+LO
+ pd 10105 0 0 0 
+
+export entity 10105 char 0 player 0 magic 0 misc 0 skill 0 temp 3 order 0
+here:
+10105 loc plain
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here:
+19999 loc plain
+LO
+ pd 10105 0 0 0 
+
+stderr:
+
+exit 0
+stdout:
+section los full neighbor list beyond six duplicates zeros and cycles
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 10103 3 3
+> entity 19999 3 3
+> entity 19998 3 3
+> routes 10101 0 10102 10102 0 10101 0
+> route_append 10101 10103
+> route_append 10101 0
+> route_append 10101 19999
+> route_append 10101 10102
+> routes 10102 10101 10103 10102 0
+> routes 10103 10101 0 0 0
+> routes 19999 19998 0 0 0
+> los 10101 19999
+los 1
+> los_state
+los province 10101 temp 0 loc 1 next 10102
+destinations: 0 10102 10102 0 10101 0 10103 0 19999 10102
+los province 10102 temp 1 loc 1 next 10103
+destinations: 10101 10103 10102 0
+los province 10103 temp 1 loc 1 next 19999
+destinations: 10101 0 0 0
+los province 19998 temp -1 loc 1 next 0
+destinations:
+los province 19999 temp 1 loc 1 next 0
+destinations: 19998 0 0 0
+> los 10101 19998
+los 2
+> los_state
+los province 10101 temp 0 loc 1 next 10102
+destinations: 0 10102 10102 0 10101 0 10103 0 19999 10102
+los province 10102 temp 1 loc 1 next 10103
+destinations: 10101 10103 10102 0
+los province 10103 temp 1 loc 1 next 19999
+destinations: 10101 0 0 0
+los province 19998 temp 2 loc 1 next 0
+destinations:
+los province 19999 temp 1 loc 1 next 19998
+destinations: 19998 0 0 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10101 loc plain
+LO
+ pd 0 10102 10102 0 10101 0 10103 0 19999 \
+	10102 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10102 loc plain
+LO
+ pd 10101 10103 10102 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10103 loc plain
+LO
+ pd 10101 0 0 0 
+
+export entity 19998 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here:
+19998 loc plain
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+19999 loc plain
+LO
+ pd 19998 0 0 0 
+
+stderr:
+
+exit 0
+stdout:
+section los early success keeps later frontier unexpanded
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 10103 3 3
+> entity 10104 3 3
+> entity 19999 3 3
+> routes 10101 10102 10103 0 0
+> routes 10102 10104 0 0 0
+> routes 10103 19999 0 0 0
+> los 10101 10102
+los 1
+> los_state
+los province 10101 temp 0 loc 1 next 10102
+destinations: 10102 10103 0 0
+los province 10102 temp 1 loc 1 next 10103
+destinations: 10104 0 0 0
+los province 10103 temp 1 loc 1 next 0
+destinations: 19999 0 0 0
+los province 10104 temp -1 loc 1 next 0
+destinations:
+los province 19999 temp -1 loc 1 next 0
+destinations:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10101 loc plain
+LO
+ pd 10102 10103 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10102 loc plain
+LO
+ pd 10104 0 0 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10103 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 10104 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+10104 loc plain
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+19999 loc plain
+
+stderr:
+
+exit 0
+stdout:
+section los unreachable target exhausts the same frontier
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 10103 3 3
+> entity 10104 3 3
+> entity 19999 3 3
+> entity 19998 3 3
+> routes 10101 10102 10103 0 0
+> routes 10102 10104 0 0 0
+> routes 10103 19999 0 0 0
+> routes 10104 10101 0 0 0
+> routes 19999 10103 0 0 0
+> los 10101 19998
+los -1
+> los_state
+los province 10101 temp 0 loc 1 next 10102
+destinations: 10102 10103 0 0
+los province 10102 temp 1 loc 1 next 10103
+destinations: 10104 0 0 0
+los province 10103 temp 1 loc 1 next 10104
+destinations: 19999 0 0 0
+los province 10104 temp 2 loc 1 next 19999
+destinations: 10101 0 0 0
+los province 19998 temp -1 loc 1 next 0
+destinations:
+los province 19999 temp 2 loc 1 next 0
+destinations: 10103 0 0 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10101 loc plain
+LO
+ pd 10102 10103 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10102 loc plain
+LO
+ pd 10104 0 0 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10103 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 10104 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here:
+10104 loc plain
+LO
+ pd 10101 0 0 0 
+
+export entity 19998 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+19998 loc plain
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here:
+19999 loc plain
+LO
+ pd 10103 0 0 0 
+
+stderr:
+
+exit 0
+stdout:
+section los repeated changed topology clears stale distance and linked queue
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 10103 3 3
+> entity 19999 3 3
+> routes 10101 10102 0 0 0
+> routes 10102 10103 0 0 0
+> routes 10103 19999 0 0 0
+> los 10101 19999
+los 3
+> los_state
+los province 10101 temp 0 loc 1 next 10102
+destinations: 10102 0 0 0
+los province 10102 temp 1 loc 1 next 10103
+destinations: 10103 0 0 0
+los province 10103 temp 2 loc 1 next 19999
+destinations: 19999 0 0 0
+los province 19999 temp 3 loc 1 next 0
+destinations:
+> routes 10101 19999 0 0 0
+> routes 10102 0 0 0 0
+> los 10101 19999
+los 1
+> los_state
+los province 10101 temp 0 loc 1 next 19999
+destinations: 19999 0 0 0
+los province 10102 temp -1 loc 1 next 0
+destinations: 0 0 0 0
+los province 10103 temp -1 loc 1 next 0
+destinations: 19999 0 0 0
+los province 19999 temp 1 loc 1 next 0
+destinations:
+> routes 10101 0 0 0 0
+> los 10101 19999
+los -1
+> los_state
+los province 10101 temp 0 loc 1 next 0
+destinations: 0 0 0 0
+los province 10102 temp -1 loc 1 next 0
+destinations: 0 0 0 0
+los province 10103 temp -1 loc 1 next 0
+destinations: 19999 0 0 0
+los province 19999 temp -1 loc 1 next 0
+destinations:
+> los 10103 10103
+los 0
+> los_state
+los province 10101 temp -1 loc 1 next 0
+destinations: 0 0 0 0
+los province 10102 temp -1 loc 1 next 0
+destinations: 0 0 0 0
+los province 10103 temp 0 loc 1 next 0
+destinations: 19999 0 0 0
+los province 19999 temp -1 loc 1 next 0
+destinations:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+10101 loc plain
+LO
+ pd 0 0 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+10102 loc plain
+LO
+ pd 0 0 0 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10103 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+19999 loc plain
+
+stderr:
+
+exit 0
+stdout:
+section los independent no call allocation lists RNG and shared mint control
+> master 37
+> set turn 11
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 10103 3 3
+> entity 19999 3 3
+> entity 19998 3 3
+> field 1000 temp 71
+> field 19998 temp 93
+> field 10102 loc_next 19998
+> routes 10101 10102 10103 0 0
+> routes 10102 19999 0 0 0
+> link 10101 1000
+> link 19999 1001
+> los_state
+los province 10101 temp 0 loc 1 next 0
+destinations: 10102 10103 0 0
+los province 10102 temp 0 loc 1 next 19998
+destinations: 19999 0 0 0
+los province 10103 temp 0 loc 0 next 0
+destinations:
+los province 19998 temp 93 loc 0 next 0
+destinations:
+los province 19999 temp 0 loc 0 next 0
+destinations:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 71 order 0
+here:
+1000 char 0
+LI
+ wh 10101
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 19999
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+10101 loc plain
+LI
+ hl 1000 
+LO
+ pd 10102 10103 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10102 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10103 loc plain
+
+export entity 19998 char 0 player 0 magic 0 misc 0 skill 0 temp 93 order 0
+here:
+19998 loc plain
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+19999 loc plain
+LI
+ hl 1001 
+
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 10101
+prison roll 267
+land dir99 4
+land dir98 1
+land pick 1
+> shuffle 1000 10101
+exitdir 1 10102
+exitdir 2 10103
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 73265
+> save_new
+73265 item 0
+IT
+ un 1001
+
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 71 order 0
+here:
+1000 char 0
+LI
+ wh 10101
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 73265 1
+1001 char 0
+il	73265 1
+LI
+ wh 19999
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+10101 loc plain
+LI
+ hl 1000 
+LO
+ pd 10102 10103 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10102 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10103 loc plain
+
+export entity 19998 char 0 player 0 magic 0 misc 0 skill 0 temp 93 order 0
+here:
+19998 loc plain
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+19999 loc plain
+LI
+ hl 1001 
+
+export entity 73265 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+73265 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0
+stdout:
+section los allocation lists RNG and shared mint aftermath
+> master 37
+> set turn 11
+> entity 10101 3 3
+> entity 10102 3 3
+> entity 10103 3 3
+> entity 19999 3 3
+> entity 19998 3 3
+> field 1000 temp 71
+> field 19998 temp 93
+> field 10102 loc_next 19998
+> routes 10101 10102 10103 0 0
+> routes 10102 19999 0 0 0
+> link 10101 1000
+> link 19999 1001
+> los_state
+los province 10101 temp 0 loc 1 next 0
+destinations: 10102 10103 0 0
+los province 10102 temp 0 loc 1 next 19998
+destinations: 19999 0 0 0
+los province 10103 temp 0 loc 0 next 0
+destinations:
+los province 19998 temp 93 loc 0 next 0
+destinations:
+los province 19999 temp 0 loc 0 next 0
+destinations:
+> los 1000 1001
+los 2
+> los_state
+los province 10101 temp 0 loc 1 next 10102
+destinations: 10102 10103 0 0
+los province 10102 temp 1 loc 1 next 10103
+destinations: 19999 0 0 0
+los province 10103 temp 1 loc 1 next 19999
+destinations:
+los province 19998 temp -1 loc 1 next 0
+destinations:
+los province 19999 temp 2 loc 1 next 0
+destinations:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 71 order 0
+here:
+1000 char 0
+LI
+ wh 10101
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 19999
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+10101 loc plain
+LI
+ hl 1000 
+LO
+ pd 10102 10103 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10102 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10103 loc plain
+LO
+
+export entity 19998 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+19998 loc plain
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here: 1001
+19999 loc plain
+LI
+ hl 1001 
+
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 10101
+prison roll 267
+land dir99 4
+land dir98 1
+land pick 1
+> shuffle 1000 10101
+exitdir 1 10102
+exitdir 2 10103
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 73265
+> save_new
+73265 item 0
+IT
+ un 1001
+
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 71 order 0
+here:
+1000 char 0
+LI
+ wh 10101
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 73265 1
+1001 char 0
+il	73265 1
+LI
+ wh 19999
+CH
+ lo 200
+
+export entity 10101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+10101 loc plain
+LI
+ hl 1000 
+LO
+ pd 10102 10103 0 0 
+
+export entity 10102 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10102 loc plain
+LO
+ pd 19999 0 0 0 
+
+export entity 10103 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+10103 loc plain
+LO
+
+export entity 19998 char 0 player 0 magic 0 misc 0 skill 0 temp -1 order 0
+here:
+19998 loc plain
+
+export entity 19999 char 0 player 0 magic 0 misc 0 skill 0 temp 2 order 0
+here: 1001
+19999 loc plain
+LI
+ hl 1001 
+
+export entity 73265 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+73265 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0

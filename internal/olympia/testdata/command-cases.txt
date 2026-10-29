@@ -30940,3 +30940,230 @@ entity_rolls 1000 7 5000
 usemeta legacy 1 100000
 newitem 1001 0
 save_new
+
+section los same endpoint resets all provinces and allocates absent records
+entity 10101 3 3
+entity 10102 3 3
+entity 19999 3 3
+entity 5000 3 50
+field 10101 temp 91
+field 10102 temp -72
+field 19999 temp 37
+field 10102 loc_next 19999
+field 5000 temp 53
+field 1000 temp 64
+los_state
+los 10101 10101
+los_state
+export state
+
+section los disconnected directed reverse fully exhausts queue
+entity 10101 3 3
+entity 10102 3 3
+entity 19999 3 3
+routes 10101 10102 0 0 0
+routes 10102 19999 0 0 0
+los 19999 10101
+los_state
+los 10102 10101
+los_state
+export state
+
+section los graph beats adjacent coordinates and wraps distant geometry
+entity 10101 3 3
+entity 10102 3 3
+entity 19999 3 3
+entity 10201 3 3
+routes 10101 19999 0 0 0
+routes 19999 10201 0 0 0
+routes 10201 10102 0 0 0
+los 10101 10102
+los_state
+export state
+
+section los nested character ship building and sublocation normalization
+entity 10101 3 3
+entity 19999 3 3
+entity 5000 3 14
+entity 5001 3 32
+entity 5002 9 30
+link 10101 5000
+link 5000 5001
+link 5001 1000
+link 1000 1001
+link 19999 5002
+routes 10101 19999 0 0 0
+los 1001 5002
+los_state
+los 5001 1000
+los_state
+export state
+
+section los unequal alternate routes use shortest graph path
+entity 10101 3 3
+entity 10102 3 3
+entity 10103 3 3
+entity 10104 3 3
+entity 10105 3 3
+entity 19999 3 3
+routes 10101 10102 10105 0 0
+routes 10102 10103 0 0 0
+routes 10103 10104 0 0 0
+routes 10104 19999 0 0 0
+routes 10105 19999 0 0 0
+los 10101 19999
+los_state
+export state
+
+section los equal routes preserve first neighbor insertion and unexpanded target
+entity 10101 3 3
+entity 10102 3 3
+entity 10103 3 3
+entity 10104 3 3
+entity 10105 3 3
+entity 19999 3 3
+routes 10101 10103 10102 0 0
+routes 10103 19999 0 0 0
+routes 10102 10104 0 0 0
+routes 19999 10105 0 0 0
+los 10101 19999
+los_state
+export state
+
+section los swapped tie expands earlier frontier but not target
+entity 10101 3 3
+entity 10102 3 3
+entity 10103 3 3
+entity 10104 3 3
+entity 10105 3 3
+entity 19999 3 3
+routes 10101 10102 10103 0 0
+routes 10103 19999 0 0 0
+routes 10102 10104 0 0 0
+routes 10104 10105 0 0 0
+routes 19999 10105 0 0 0
+los 10101 19999
+los_state
+export state
+
+section los full neighbor list beyond six duplicates zeros and cycles
+entity 10101 3 3
+entity 10102 3 3
+entity 10103 3 3
+entity 19999 3 3
+entity 19998 3 3
+routes 10101 0 10102 10102 0 10101 0
+route_append 10101 10103
+route_append 10101 0
+route_append 10101 19999
+route_append 10101 10102
+routes 10102 10101 10103 10102 0
+routes 10103 10101 0 0 0
+routes 19999 19998 0 0 0
+los 10101 19999
+los_state
+los 10101 19998
+los_state
+export state
+
+section los early success keeps later frontier unexpanded
+entity 10101 3 3
+entity 10102 3 3
+entity 10103 3 3
+entity 10104 3 3
+entity 19999 3 3
+routes 10101 10102 10103 0 0
+routes 10102 10104 0 0 0
+routes 10103 19999 0 0 0
+los 10101 10102
+los_state
+export state
+
+section los unreachable target exhausts the same frontier
+entity 10101 3 3
+entity 10102 3 3
+entity 10103 3 3
+entity 10104 3 3
+entity 19999 3 3
+entity 19998 3 3
+routes 10101 10102 10103 0 0
+routes 10102 10104 0 0 0
+routes 10103 19999 0 0 0
+routes 10104 10101 0 0 0
+routes 19999 10103 0 0 0
+los 10101 19998
+los_state
+export state
+
+section los repeated changed topology clears stale distance and linked queue
+entity 10101 3 3
+entity 10102 3 3
+entity 10103 3 3
+entity 19999 3 3
+routes 10101 10102 0 0 0
+routes 10102 10103 0 0 0
+routes 10103 19999 0 0 0
+los 10101 19999
+los_state
+routes 10101 19999 0 0 0
+routes 10102 0 0 0 0
+los 10101 19999
+los_state
+routes 10101 0 0 0 0
+los 10101 19999
+los_state
+los 10103 10103
+los_state
+export state
+
+section los independent no call allocation lists RNG and shared mint control
+master 37
+set turn 11
+entity 10101 3 3
+entity 10102 3 3
+entity 10103 3 3
+entity 19999 3 3
+entity 19998 3 3
+field 1000 temp 71
+field 19998 temp 93
+field 10102 loc_next 19998
+routes 10101 10102 10103 0 0
+routes 10102 19999 0 0 0
+link 10101 1000
+link 19999 1001
+los_state
+export state
+usemeta rolls 1000 1001
+entity_rolls 1000 7 10101
+shuffle 1000 10101
+usemeta legacy 1 100000
+newitem 1001 0
+save_new
+export state
+
+section los allocation lists RNG and shared mint aftermath
+master 37
+set turn 11
+entity 10101 3 3
+entity 10102 3 3
+entity 10103 3 3
+entity 19999 3 3
+entity 19998 3 3
+field 1000 temp 71
+field 19998 temp 93
+field 10102 loc_next 19998
+routes 10101 10102 10103 0 0
+routes 10102 19999 0 0 0
+link 10101 1000
+link 19999 1001
+los_state
+los 1000 1001
+los_state
+export state
+usemeta rolls 1000 1001
+entity_rolls 1000 7 10101
+shuffle 1000 10101
+usemeta legacy 1 100000
+newitem 1001 0
+save_new
+export state

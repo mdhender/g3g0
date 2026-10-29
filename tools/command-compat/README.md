@@ -3,6 +3,86 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Province line-of-sight prerequisite (#197, stage 4 P5)
+
+**0.119.0-alpha** adds complete dir.c **128–169**
+`los_province_distance` to existing dir.go. The oracle extracts the unchanged
+705-byte definition once, including its return-type line (SHA-256
+`fd65deb03d868bc1bf03baf7d9c663afa6ce549163ad251d7c792440abf1d5b4`).
+dir.c and the source callers (projection, FIND BUY and immediate distance)
+were already tracked: no source dependency, pin or callback wiring changes.
+
+Both endpoints normalize through province. Every province's temp/next resets
+to -1/0, lazily allocating location records, even for distance zero. The BFS
+uses those original next fields, full prov_dest length and insertion order;
+only zero/already-visited neighbors skip. The target is tested on dequeue,
+before expansion, preserving all queue/frontier aftermath. No coordinate
+approximation, cardinal limit, separate queue, endpoint validation or guards.
+
+Thirteen appended ordinary sections require status **0** after marker
+rejection: same endpoint with global reset/allocation and untouched
+nonprovinces; directed/disconnected reverse paths; graph versus wrapped/nearby
+coordinates; nested character/stack/city/building/ship normalization; unequal
+alternate lengths; swapped equal-path neighbor order; ten-entry adjacency
+with zeros/duplicates/self-links/cycles; early success versus exhaustion;
+changed topology/repeated queries; independent no-call versus call aftermath.
+Parent review corrected the normalization fixture's original `5002 4 30`
+(T_item) to **`5002 9 30` (T_ship/sub_galley)**, as pinned oly.h defines.
+The actual ship links to province 19999; `los 1001 5002` normalizes the nested
+stack/castle/city source to 10101 and the ship destination to 19999 (distance
+1). `los 5001 1000` retains building/character same-province coverage (0).
+The recording now explicitly saves **`5002 ship galley`**, not `item galley`.
+Thin adapters expose the helper, append one graph edge, seed next, and observe
+every province's raw temp/next/record presence/neighbor list. Existing export
+state/save_box observers compare every box's saved bytes, raw lists and
+allocations. The independent controls' keyed/entity/exitdir/legacy RNG and
+shared mint/create/save_new tail is identical; complete final states retain
+the authentic C temp differences and newly allocated bare LO section.
+
+Cases preceded implementation; bounded preimplementation tests rejected the
+new operations. Real pinned C ran twice before the C-only recording update,
+then the final comparison repeated C/C and matched Go: **1423 sections /
+110378 lines / 2192669 output bytes**. Input: **31169 lines / 593540 bytes**.
+Additions: **227 input lines / 4540 bytes**, **1391 output lines / 28237 bytes**.
+Both entire inherited HEAD prefixes (**589000 / 2164432 bytes**) and stage-3
+prefixes (**578307 / 2134398 bytes**) are byte-identical, including non-UTF8
+and intentional trailing spaces. No expected bytes originate from Go.
+
+| file | SHA-256 |
+|---|---|
+| command-cases.txt | `5f831281ac27b0fb8466927bcbf7e3a80caa0d8b6fe22e67576d0c9a6cb1126c` |
+| command-c-output.txt | `cb222a7c00a01ed7be22b0166e938a497eeef3e578d24668563c13ceab6cbb5a` |
+
+Initial red evidence: `tmp/issue197-{before,c-first}.log`. After the ship
+fixture correction, unchanged C ran twice before refreshing the unaccepted
+P5 recording suffix, then Go matched, including live native traversal.
+Current evidence: `tmp/issue197-corrected-{command,source-proof,prefix-proof}.log`.
+Command/move/helper/rng/code/loadsave/turn-driver/default-turn pass sequentially
+at their unchanged independent pins with explicit isolated G3_REPO
+(`tmp/issue197-corrected-{command,move,helper,rng,code,loadsave,turn-driver,turn}.log`).
+Default turn checks the diagnostic's raw status/streams and **2 cwd entries**,
+not a world turn. Literal bounded `go vet ./...` and fresh full-enabled
+`go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...` pass
+after cleanup, all **11 test packages** (Olympia **2.223s**;
+`tmp/issue197-corrected-{vet,tests}-clean.log`), with no package exclusions.
+
+Four temporary linker controls wrap the real LOS entry, emit a rejected
+dependency marker and exit **0/134**, each in default/update mode. All stop
+with harness status **2** at section **1410**, before status acceptance or
+recording replacement; the recording hash stays unchanged
+(`tmp/issue197-negative-{0,134}-{default,update}.log`). Temporary helpers,
+executables and matching captures are removed. Source/docs diff-check is
+clean; the full check flags only authentic new C recording trailing spaces,
+which are deliberately retained. No bug/follow-C appeared in the all-open
+local audit. The parent-identified fixture-kind defect is corrected; no
+engine defect or blocker was discovered, and the engine code is unchanged
+by this correction. Version remains **0.119.0-alpha**.
+Parent independently reviewed the complete pinned definition and adapters,
+confirmed the corrected ship record and both accepted byte prefixes, and
+reran bounded vet, fresh full-enabled tests and all eight sequential defaults
+successfully (`tmp/parent197-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn}.log`).
+No family/projection/trade/whole-world/stage-exit acceptance is implied.
+
 ## Skill allocation/grant prerequisite (#196, stage 4 P4)
 
 **0.118.0-alpha** adds complete use.c **1016–1035** `p_skill_ent` and
