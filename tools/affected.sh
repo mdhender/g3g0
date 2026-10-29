@@ -90,6 +90,7 @@ reads() {
 		# from c2.c; all three source dependencies are already listed here.
 		case "$2" in
 		olympia/*.h | lib/*.h) return 0 ;;
+		olympia/coverage.c) return 0 ;;
 		olympia/code.c | olympia/glob.c | olympia/z.c | olympia/sout.c | olympia/input.c) return 0 ;;
 		olympia/combat.c | olympia/dir.c | olympia/gm.c) return 0 ;;
 		olympia/art.c | olympia/display.c | lib/exit_views.c) return 0 ;;

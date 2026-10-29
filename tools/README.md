@@ -6,6 +6,23 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Command coverage (#170)
+
+Stage 3 adds only `--coverage`: world-owned lazy int32 counters, the complete
+command TSV writer and the real start-time dispatch hooks, with writing before
+check/save. The other three dumps and later modes remain explicitly gated.
+The command oracle now reads the complete unchanged command section of
+`olympia/coverage.c` (including its static state/comparator); this is an actual
+source dependency tracked in `affected.sh`, not an instrumentation stub.
+USE/phase boundaries and gameplay callbacks are unchanged.
+
+Run the command/move/helper/RNG/code/loadsave/turn-driver/default-turn checks,
+CLI matrix, bounded vet and fresh bounded tests. Actual CLI/state acceptance
+reuses `turn-compat --full --command-coverage`, with unchanged full C twice,
+strict C/Go whole-entry comparisons and four flag-free aftermath controls.
+See [command coverage contracts and evidence](command-compat#command-coverage-170)
+and [the CLI matrix](turn-compat#command-coverage-cli-controls-170).
+
 ## Auxiliary files and saved report lifecycle (#165)
 
 Existing olympia.go replaces all five post-writer projections directly in
@@ -1740,6 +1757,7 @@ stage 2. No unresolved stage-1 blocker is currently known.
 | `G3G0_FULL=1` | lets the whole-game Go tests (`TestBoxWorlds`, `TestBoxfileWorlds`, `TestCheckWorlds`, `TestLoadSaveWorlds`) run; `-short` always skips them. They compare nothing on their own: they need the game list that `box-compat`, `boxfile-compat`, `check-compat` or `loadsave-compat` hands them, and skip without it. |
 | `--full` | `box-compat`, `boxfile-compat`, `check-compat`, `loadsave-compat`: also compare every saved game (`world.tgz` and each game cached by `olympia-roundtrip`). |
 | `--full` | `turn-compat`: repeat pinned C world turns, then compare Go's complete cwd (paths/types/modes/empty directories/regular bytes, reports included) and raw stdout/stderr/status; then all 13 artifact-inclusive lifecycle controls. |
+| `--full --command-coverage` | `turn-compat`: also run ten real CLI command-coverage cases and four flag-free aftermath controls through the same strict comparator. |
 | `--games N` | `box-compat`, `boxfile-compat`, `check-compat`, `loadsave-compat`: compare `N` saved games, always the same ones: `world.tgz` and cached games spread evenly over the sorted list. |
 | `--determinism-all` | `olympia-roundtrip`: check that C gives the same result twice on every selected case, not just the fixed sample. |
 
@@ -1762,6 +1780,8 @@ The scripts report a status of 124 as a timeout.
 ## Upstream files each tool reads
 
 Paths are in the G3 repository.
+`command-compat` additionally reads `olympia/coverage.c` for its complete
+command section; the inherited dependency row below lists its other sources.
 A tool needs rerunning after a pin move if any file it reads changed; [`affected.sh`](affected.sh) applies this table to `git diff --name-only OLD NEW`.
 
 | tool | records | reads |

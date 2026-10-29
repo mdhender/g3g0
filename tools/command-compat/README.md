@@ -3,6 +3,109 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## Command coverage (#170)
+
+At **0.106.0-alpha**, coverage.go implements complete pinned coverage.c
+**28–117**, with world-owned optional path and lazy `[COV_MAX]int32` rows.
+The oracle compiles the **2627-byte unchanged prefix (lines 1–119)**, including
+globals, cov_num_cmds, coverage_count, cov_name_comp and write_coverage. Its
+SHA-256 is `ded3432cf53cda5786bbc7d0913227d6cf91b24b9e3aa853abd56daefea472b8`.
+Existing complete input.c check_allow and do_command remain unchanged in the
+C reference; Go inserts hooks at the identical branches and retains the
+original command index across reparsing. Definitions/dependencies verified:
+oly.h COV constants, proto.h declarations, whole glob.c table, z.c
+str_save/safe_qsort/asfail, checked_alloc.c zero-initializing allocator and
+main.c long option parsing plus write-before-check/save lifecycle. The full
+coverage.c USE/phase definitions were read but remain outside this task.
+All 100 exported lib/olympia regular source files match the immutable archive.
+
+The actual table has **148** named rows (empty-name placeholder included)
+and a terminal NULL-name/allow/start row at index **148**. The sentinel is
+excluded from counters/TSV membership, not replaced with another verb. Direct
+dispatch of this real C sentinel supplies the genuine NULL-start path:
+check_allow(NULL) succeeds, start is NULL, and coverage maps index 148 to row
+0's unimplemented cell. No C table or callback is changed for the test.
+Go preserves that implicit terminal-row dispatch, including fuzzy NULL-name
+output. The mail-only NULL-start rows have empty (not NULL) allow strings and
+are rejected earlier, as the real `begin` case proves. Go NYI callbacks still
+panic before any C start outcome is recorded; a dedicated test protects that
+boundary without pretending to be a C success/failure expectation.
+
+Fourteen appended cases cover disabled/immediate guards before invalid-outcome
+assertions/allocation, NULL versus empty paths, zero-inclusive byte-sorted
+rows, first/last/sentinel/out-of-range indexes and all outcomes, signed 32-bit
+boundary values (no C signed-overflow UB expectation), repeated/truncating
+writes, retained counters across path changes, nonfatal ENOENT/ENOTDIR/EISDIR,
+real unknown/empty/allow rejection, start success/failure, start-only timed
+accounting (not finishes/interrupts), successful/failed cardinal reparsing and
+the actual sentinel NULL-start. Two invalid outcomes abort at the unchanged
+coverage.c **62** assertion. USE/phase instrumentation and gameplay callbacks
+are untouched; other dumps/later modes remain explicitly gated.
+
+Pinned real C twice and Go match **1248 sections / 85822 lines / 1682820 output
+bytes**. Inputs are **27052 lines / 517452 bytes**. Exact inherited prefixes:
+
+| File | Unchanged prefix bytes | Prefix SHA-256 |
+|---|---:|---|
+| command-cases.txt | 513156 | `6a711d79ca5d5a65ca2184b430766037e89df591c6caf1c662bdd7498c174c27` |
+| command-c-output.txt | 1635428 | `d08f0a35fbcd021dc44470da263bf483302cd070c31a8ea3bcfe54321b6b4336` |
+
+Full input SHA-256: `17250c35be656f2f61bce19409fe32e2cffb936f9b77fe2363c7b7a71b88469e`.
+Full C-only output SHA-256: `b211c52e66534520a987e79411e6916f8465e94412270f2c1462a0f158b3da95`.
+The initial timed fixture attempted WAIT interruption one day too early and
+correctly failed with real C SIGSEGV; it was not recorded or accepted. Adding
+the real third HIDE finish reaches the intended WAIT callback in both engines.
+
+Before any recording refresh, four temporary linker controls wrapped
+coverage_count only at the enabled negative-outcome assertion section **1240**:
+emit a missing-dependency marker and either return **0** or abort **134**, in
+both ordinary and `--update` modes. Every run rejects with harness **2** before
+expected-status/recording acceptance, preserving the recording hash. Temporary
+probe source/compiler wrapper and captures were removed. Logs:
+`tmp/issue170-negative-{return,abort}-{default,update}.log`.
+Both command and whole-engine harnesses reject dependency/NYI/stub/sanitizer
+markers before accepting results; whole-engine tests exercise either stream
+and missing streams too.
+
+Validation, Linux amd64, unchanged pin, all changes left uncommitted:
+
+- Bounded `go vet ./...` and fresh `go test -count=1 -exec "bash
+  $PWD/tools/lib/run-limited.sh" ./...` pass (Olympia **1.757s**).
+- Sequential command, move (**135/7158**), helper (**37/1487**), RNG (**321**),
+  code (**43/969**), loadsave (**61/3411**), turn-driver (**7/152**, phase
+  **5/484**, calendar **2/119**, schedule **4/1801**) and default-turn pass.
+- CLI matrix: all **92** vectors pass and both real rng-selftest gates say YES.
+- `turn-compat --full --command-coverage`: unchanged full C twice and Go
+  match status **0**, raw streams and all **233** ordinary cwd entries;
+  all ten coverage CLI cases and four independent flag-free controls pass,
+  followed by all **13** inherited strict lifecycle controls. Zero/nonzero
+  C dump hashes are respectively
+  `be13a1dbbe7c01a22b3a822960e3e2fa53794211ba1d9829ebc61b168fc0118f`
+  and `5fc30138c641ccedbb73dd510ae33cac4a6f230ab17c13b203a4285a3a73af77`.
+
+Every compat invocation explicitly sets `G3_REPO=$PWD/tmp/upstream.git`;
+whole-engine tools reuse only the pristine read-only `tmp/stage3-roundtrip`
+C binary, running on real directory copies. Engines/tests use run_limited.
+No shared upstream checkout, cached input, C source pin, unrelated recording
+or gameplay callback is changed. Source-only whitespace, gofmt and shell
+syntax checks pass; the new literal C recording intentionally retains one
+trailing-space command echo (`> `), so unrestricted `git diff --check` reports
+that raw reference byte. Logs: `tmp/issue170-{source-prefix,vet,tests}.log`,
+`tmp/issue170-command-{update,default}.log`, the seven other
+`tmp/issue170-*-default.log`, `tmp/issue170-cli.log`, and
+`tmp/issue170-turn-full.log` / `tmp/issue170-turn/command-coverage.txt`.
+No new bug, blocking upstream defect or oversized prerequisite was found.
+No native Darwin/Windows run or stage-3 final-corpus/spec acceptance is claimed.
+
+Independent parent complete-source/diff review confirms the command prefix and
+both inherited recording byte prefixes unchanged. Bounded vet, fresh bounded
+tests and all nine routine tools above pass again. The parent also repeats
+`turn-compat --full --command-coverage`: strict 233-entry flag-free turn,
+all ten coverage CLI cases, four independent flag-free aftermath controls and
+all thirteen lifecycle controls pass. No C cache or input changes. Evidence:
+`tmp/parent170-{vet,tests}.log`, `tmp/parent170-*-default.log`,
+`tmp/parent170-turn-full.log` and `tmp/parent170-turn/command-coverage.txt`.
+
 ## Auxiliary files and saved report lifecycle (#165)
 
 Existing olympia.go replaces its five writer projections directly in main

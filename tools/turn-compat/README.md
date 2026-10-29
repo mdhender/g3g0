@@ -108,6 +108,27 @@ plumbing, not engine output: only their exact bytes are compared. In the
 manifest these observations have the sentinel mode `----------`; cwd entries
 carry their real modes. Directory rows have `-` instead of a byte digest.
 
+## Command coverage CLI controls (#170)
+
+`--full --command-coverage` uses this same full engine runner and strict
+comparator, not an alternate engine harness. Ten cases run unchanged pinned C
+twice before Go: load and load/save, turn with and without save, repeated
+`--coverage` options (last path wins), ENOENT/ENOTDIR/EISDIR nonfatal opens,
+and collisions with `lib/system` and the post-turn `lib/players` report.
+Dump paths outside lib, all raw streams/status and every entry/type/mode/byte
+are compared. `lib/system` is written by coverage before save overwrites it;
+`lib/players` retains its coverage bytes through the subsequent lifecycle.
+
+The first four cases independently repeat flag-free C and compare flag-free
+Go. Only after strict C/C/Go comparison of the coverage captures is the one
+requested new `cov.tsv` removed from those disposable captures, then all
+remaining state/RNG/report/filesystem/stream observations must equal the
+flag-free reference. This secondary side-effect control is not an exclusion
+from the strict primary comparison. Matching captures are removed promptly;
+`command-coverage.txt` retains C dump hashes and the passing summary.
+The ordinary world turn and all 13 inherited lifecycle controls still run.
+Defaults remain fast and do not run any world engine.
+
 ## Cache, prerequisites and evidence
 
 Requires Go, Bash, Python 3, Perl, `mkfifo`, `diff`, `tar`, `shasum`; full mode also needs a

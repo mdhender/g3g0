@@ -224,7 +224,7 @@ func Run(args []string, stdout, stderr io.Writer, stdoutIsTTY bool) int {
 func (o *options) unported() bool {
 	return o.eatFlag || o.startlocFlag || o.addFlag ||
 		o.immedAfter || o.mailNow || o.htmlFlag ||
-		o.coveragePath != "" || o.useCoveragePath != "" ||
+		o.useCoveragePath != "" ||
 		o.phaseCoveragePath != "" || o.stateExportPath != ""
 }
 
@@ -257,6 +257,9 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	w.tradeRouteSeedPending = o.tradeRouteSeedPending
 	w.tradeRouteSeedValue = o.tradeRouteSeedValue
 	w.testUseConstReportDate = o.testUseConstReportDate
+	if o.coveragePath != "" {
+		w.coveragePath = &o.coveragePath
+	}
 
 	defer func() {
 		// Process termination closes open stdio files, including at an NYI.
@@ -291,7 +294,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 
 	w.loadDb()
 
-	// -e, -E, -s, -a and -i, and the coverage dumps, stop before
+	// -e, -E, -s, -a and -i, and the later dump modes, stop before
 	// load_db() (unported). immediate is never set without them.
 	if o.runFlag {
 		w.openLogfile(o.winFlag)
@@ -327,6 +330,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 		w.writeFactions()
 	}
 
+	w.writeCoverage()
 	w.checkDb() // check database integrity
 
 	if o.saveFlag {

@@ -26813,3 +26813,240 @@ lore_root
 lore_dir times_rumor
 life watch times_press
 life times_open
+
+section coverage disabled and immediate guards precede validation and allocation
+lore_root
+coverage state 0
+coverage count -2147483648 -1
+coverage count 2147483647 4
+coverage write
+coverage state 0
+coverage path EMPTY
+set immediate 1
+coverage count 148 -1
+coverage count 0 4
+coverage state 0
+coverage path cov.tsv
+coverage write
+coverage state 0
+readfile cov.tsv
+
+section coverage zero rows repeated writes truncate without allocating counters
+lore_root
+coverage path cov.tsv
+coverage write
+coverage state 0
+readfile cov.tsv
+lore_file cov.tsv replace-long-existing-data
+coverage write
+readfile cov.tsv
+coverage path NULL
+coverage write
+coverage state 0
+readfile cov.tsv
+
+section coverage direct bounds all outcomes placeholder last row and 32 bit values
+lore_root
+coverage path cov.tsv
+coverage count 0 0
+coverage count 1 1
+coverage count 147 2
+coverage count 147 3
+coverage count -1 1
+coverage count 148 2
+coverage count 149 3
+coverage count -2147483648 0
+coverage count 2147483647 0
+coverage state 0
+coverage state 1
+coverage state 147
+coverage state 148
+coverage seed 1 0 2147483646
+coverage count 1 0
+coverage seed 1 3 -2147483648
+coverage count 1 3
+coverage state 1
+coverage write
+readfile cov.tsv
+coverage write
+readfile cov.tsv
+
+section coverage empty path counts and nonfatal fopen failure retains counters
+lore_root
+coverage path EMPTY
+coverage count 1 0
+coverage state 1
+coverage write
+coverage count 1 3
+coverage path cov.tsv
+coverage write
+readfile cov.tsv
+
+section coverage failed opens preserve zero allocation and later counters
+lore_root
+coverage path missing/cov.tsv
+coverage write
+coverage state 0
+lore_file blocked not-a-directory
+coverage path blocked/cov.tsv
+coverage write
+coverage path log
+coverage write
+coverage count 1 2
+coverage state 1
+coverage path cov.tsv
+coverage write
+readfile cov.tsv
+
+section coverage disabled and immediate calls retain existing counts while writes still run
+lore_root
+coverage path cov.tsv
+coverage count 1 2
+coverage path NULL
+coverage count 1 -1
+coverage write
+coverage state 1
+coverage path cov.tsv
+set immediate 1
+coverage count 1 4
+coverage write
+readfile cov.tsv
+set immediate 0
+coverage count 1 3
+coverage state 1
+coverage write
+readfile cov.tsv
+
+section coverage invalid negative outcome asserts in original definition
+coverage path EMPTY
+coverage count 0 -1
+
+section coverage invalid upper outcome asserts in original definition
+coverage path EMPTY
+coverage count 148 4
+
+section coverage real unknown rejection empty allow NULL start rows and real starts
+lore_root
+coverage path cov.tsv
+queue unknown-command
+queue # comment only
+queue begin
+queue format 6
+queue hide 1
+queue stop
+load
+do
+do
+do
+do
+do
+dump
+readlog 200
+coverage write
+readfile cov.tsv
+
+section coverage restricted rejection and immediate implemented start suppression
+lore_root
+coverage path cov.tsv
+set restrict 114
+queue format 6
+queue stop
+load
+do
+do
+coverage write
+readfile cov.tsv
+set immediate 1
+parse stop
+do
+coverage write
+readfile cov.tsv
+
+section coverage timed start only not finish or interrupt
+lore_root
+coverage path cov.tsv
+skill 2 0
+queue hide 1
+queue wait time 1
+load
+do
+set day 1
+finish
+set day 2
+finish
+set day 3
+finish
+do
+interrupt
+dump
+coverage write
+readfile cov.tsv
+
+section coverage cardinal reparse retains original index on real success and failure
+lore_root
+coverage path cov.tsv
+master 0
+set day 1
+set epoch 21
+entity 10 4 0
+field 10 weight 100
+field 10 land_cap 100
+field 10 ride_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+link 8000 9000
+link 8000 9001
+link 9000 1000
+routes 9000 9001 9001 9001 9001
+routes 9001 9000 9000 9000 9000
+queue north ignored
+queue south
+queue wait time 1
+load
+do
+dump
+set wait 0
+finish
+do
+dump
+set wait 0
+finish
+do
+dump
+coverage write
+readfile cov.tsv
+
+section coverage failed cardinal reparse still belongs to original verb
+lore_root
+coverage path cov.tsv
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+queue north
+queue stop
+load
+do
+dump
+coverage write
+readfile cov.tsv
+
+section coverage real terminal sentinel NULL start maps to placeholder without table mutation
+lore_root
+coverage path cov.tsv
+set cmd 148
+do
+coverage state 0
+set cmd 148
+set fuzzy 1
+do
+readlog 200
+coverage write
+readfile cov.tsv
+set immediate 1
+set cmd 148
+do
+coverage state 0
+coverage write
+readfile cov.tsv

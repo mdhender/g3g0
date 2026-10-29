@@ -468,17 +468,27 @@ func (w *world) doCommand(c *command) {
 	if !w.immediate {
 		w.commandOut(int(c.who), "> %s", clib.Str(c.line))
 		if c.fuzzy != 0 {
-			w.commandOut(int(c.who), "(assuming you meant '%s')", cmdTbl[c.cmd].name)
+			var name *string
+			if int(c.cmd) != len(cmdTbl) {
+				name = &cmdTbl[c.cmd].name
+			}
+			w.commandOut(int(c.who), "(assuming you meant '%s')", clib.Str(name))
 		}
 	}
 	if c.state == stateError {
 		w.commandOut(int(c.who), "Unrecognized command.")
 		c.status = 0
-	} else if !w.checkAllow(c, &cmdTbl[c.cmd].allow) {
+		w.coverageCount(0, covRejected)
+	} else if int(c.cmd) != len(cmdTbl) && !w.checkAllow(c, &cmdTbl[c.cmd].allow) {
 		c.status = 0
-	} else if cmdTbl[c.cmd].start == nil {
+		w.coverageCount(int(c.cmd), covRejected)
+	} else if int(c.cmd) == len(cmdTbl) || cmdTbl[c.cmd].start == nil {
+		// cmdTbl omits C's terminal row (NULL name/allow/start). A direct
+		// dispatch of that real sentinel passes check_allow(NULL), then takes
+		// NULL-start. It has no dump row: coverage_count maps its index to 0.
 		w.commandOut(int(c.who), "Unimplemented command.")
 		c.status = 0
+		w.coverageCount(int(c.cmd), covUnimpl)
 	} else {
 		w.pPlayer(w.player(int(c.who))).cmdCount++
 		w.setState(c, stateRun, 0)
@@ -487,10 +497,14 @@ func (w *world) doCommand(c *command) {
 		c.inhibitFinish = 0
 		cmd := c.cmd // start may re-parse c
 		c.status = int8(cmdTbl[cmd].start(w, c))
+		outcome := covFail
+		if c.status != 0 {
+			outcome = covOk
+		}
+		w.coverageCount(int(cmd), outcome)
 	}
 	// As in the pinned C, conditional is parsed and saved but not consulted
 	// here: neither '&' nor '?' suppresses execution based on old status.
-	// coverage_count is the stage-3 instrumentation boundary, not game state.
 	if c.status == 0 {
 		w.commandDone(c)
 	} else if c.wait == 0 && c.state == stateRun {

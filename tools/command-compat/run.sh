@@ -591,11 +591,26 @@ with open(f'{dst}/stubs.c', 'w') as out:
     for name in sorted(routines - real):
         out.write(f'int {name}(struct command *c) STUB("{name}")\n')
     out.write('''
-/* Instrumentation only; coverage artifacts belong to stage 3. */
-void coverage_count(int cmd, int result) { (void)cmd; (void)result; }
 int immediate, flush_always = 1, pretty_data_files, time_self;
 int win_flag;
 ilist trades_to_check;
+''')
+# The complete unchanged command coverage prefix, including declarations and
+# comparators. USE/phase accounting stays at its existing task boundary.
+source = open(f'{src}/coverage.c').read()
+with open(f'{dst}/coverage-command.c', 'w') as out:
+    out.write('#line 1 "olympia/coverage.c"\n')
+    out.write(source[:source.index('/*\n *  Ultron use coverage dump')])
+    out.write('''
+void drv_coverage_state(int cmd) {
+ printf("coverage allocated %d ncmds %d table %d\\n", cov_counts != NULL, cov_ncmds, cov_num_cmds());
+ if (cov_counts && cmd >= 0 && cmd < cov_ncmds)
+  printf("coverage row %d %d %d %d %d\\n", cmd, cov_counts[cmd][0], cov_counts[cmd][1], cov_counts[cmd][2], cov_counts[cmd][3]);
+}
+void drv_coverage_seed(int cmd, int outcome, int value) {
+ assert(cov_counts && cmd >= 0 && cmd < cov_ncmds && outcome >= 0 && outcome < COV_MAX);
+ cov_counts[cmd][outcome] = value;
+}
 ''')
 PY
 
@@ -612,6 +627,7 @@ esac
 (cd "${WORK}/g3" && "${CC}" -std=c11 -w -ffunction-sections -fdata-sections "${ldflags[@]}" \
  -I olympia -I lib -I "${WORK}" \
  "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" "${WORK}/hades-rng.c" "${WORK}/faery-rng.c" "${WORK}/npc-rng.c" \
+ "${WORK}/coverage-command.c" \
  olympia/{code,glob,z,sout}.c "${WORK}/io-wrapper.c" \
  lib/{checked_alloc,ilist,exit_views,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents,admits,trades,req_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
@@ -625,7 +641,17 @@ for run in run1 run2; do
   (run_limited "${RUN_TIMEOUT}" command-driver "${WORK}/driver" "${CASES}" "$i" "${WORK}/${run}/${i}") \
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
-  ! grep -q 'out-of-scope C dependency:' "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" || die "section $i reached a C stub"
+  marker_status=0
+  grep -Ei 'out-of-scope|not yet implemented|missing.*dependency:|C stub|AddressSanitizer|UndefinedBehaviorSanitizer|runtime error:' \
+   "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
+  [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section coverage '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section coverage invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected command coverage status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section include assembly '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in
@@ -963,7 +989,10 @@ for run in run1 run2; do
  status=0
  run_limited "${RUN_TIMEOUT}" command-driver "${WORK}/driver" "${native}/cases.txt" 0 "${native}/input" \
   >"${native}/${run}.stdout" 2>"${native}/${run}.stderr" || status=$?
- ! grep -q 'out-of-scope C dependency:' "${native}/${run}.stdout" "${native}/${run}.stderr" || die "native traversal reached a C stub"
+ marker_status=0
+ grep -Ei 'out-of-scope|not yet implemented|missing.*dependency:|C stub|AddressSanitizer|UndefinedBehaviorSanitizer|runtime error:' \
+  "${native}/${run}.stdout" "${native}/${run}.stderr" >&2 || marker_status=$?
+ [ "$marker_status" = 1 ] || die "invalid native C reference or unreadable streams"
  [ "$status" = 0 ] || die "unexpected native traversal C status $status"
  printf '%d\n' "$status" >"${native}/${run}.status"
  native_snapshot >"${native}/after.json"

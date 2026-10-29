@@ -97,6 +97,8 @@ int drv_hunt_loc(int slot, int retry, int size), drv_hunt_qty(int slot);
 char *drv_fetch(FILE *fp);
 int drv_admission(char *acct, FILE *fp);
 void drv_make_players(void);
+void drv_coverage_state(int cmd);
+void drv_coverage_seed(int cmd, int outcome, int value);
 
 /* Observe filesystem decisions, not deferred artifact bodies. In particular
  * atexit runs before stdio's exit flush: Times must flush press BEFORE a
@@ -1472,6 +1474,28 @@ int main(int argc, char **argv)
     printf("\nend file bytes\n");
    }
   }
+  else if (!strcmp(op, "coverage")) {
+   if(sscanf(line,"%*s %31s",text)!=1) return 2;
+   if(!strcmp(text,"path")) {
+    char path[8192];
+    if(sscanf(line,"%*s %*s %8191s",path)!=1) return 2;
+    coverage_path = !strcmp(path,"NULL") ? NULL : str_save(!strcmp(path,"EMPTY") ? "" : path);
+   }
+   else if(!strcmp(text,"count")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    coverage_count(n,a);
+   }
+   else if(!strcmp(text,"state")) {
+    if(sscanf(line,"%*s %*s %d",&n)!=1) return 2;
+    drv_coverage_state(n);
+   }
+   else if(!strcmp(text,"seed")) {
+    if(sscanf(line,"%*s %*s %d %d %d",&n,&a,&b)!=3) return 2;
+    drv_coverage_seed(n,a,b);
+   }
+   else if(!strcmp(text,"write")) write_coverage();
+   else return 2;
+  }
   else if (!strcmp(op, "load")) printf("load %d\n", drv_load(c));
   else if (!strcmp(op, "do")) do_command(c);
   else if (!strcmp(op, "finish")) printf("finish %d\n", finish_command(c));
@@ -1809,6 +1833,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "health")) p_char(c->who)->health = (schar)n;
    else if (!strcmp(text, "second")) c->second_wait = (schar)n;
    else if (!strcmp(text, "cmdpri")) c->pri = (schar)n;
+   else if (!strcmp(text, "cmd")) c->cmd = n;
+   else if (!strcmp(text, "fuzzy")) c->fuzzy = (schar)n;
    else if (!strcmp(text, "state")) c->state = (schar)n;
    else if (!strcmp(text, "auto")) auto_attack_flag = n;
    else return 2;

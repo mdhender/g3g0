@@ -9,16 +9,18 @@ PINNED_REV=e733acb63bacb21167a1f2589d8dcdc023364896
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 WORK="${WORK:-${ROOT}/tmp/turn-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
-full=0 record=0
+full=0 record=0 command_coverage=0
 die() { echo "error: $*" >&2; exit 2; }
 for arg in "$@"; do
 	case "$arg" in
 	--full) full=1 ;;
 	--record) record=1 ;;
-	*) die "usage: $0 [--full [--record]]" ;;
+	--command-coverage) command_coverage=1 ;;
+	*) die "usage: $0 [--full [--record] [--command-coverage]]" ;;
 	esac
 done
 [ "$record" = 0 ] || [ "$full" = 1 ] || die "--record requires --full and two real pinned C runs"
+[ "$command_coverage" = 0 ] || [ "$full" = 1 ] || die "--command-coverage requires --full"
 mkdir -p "${WORK}/bin"
 WORK="$(cd "${WORK}" && pwd -P)"
 (cd "${ROOT}" && go build -o "${WORK}/bin/compare" ./tools/turn-compat &&
@@ -48,7 +50,7 @@ run_c_engine() {
 	run_engine "$@"
 	local out="$3" marker_status=0
 	# Never bless a missing C dependency, even on an expected diagnostic/failure.
-	grep -Ei 'out-of-scope|not yet implemented|missing.*dependency|C stub' \
+	grep -Ei 'out-of-scope|not yet implemented|missing.*dependency|C stub|AddressSanitizer|UndefinedBehaviorSanitizer|runtime error:' \
 		"${out}/stdout" "${out}/stderr" >&2 || marker_status=$?
 	[ "$marker_status" = 1 ] || die "invalid C reference or unreadable streams; see ${out}"
 }
@@ -152,6 +154,69 @@ else
 	[ "$(cat "${WORK}/go/status")" != "$TIMEOUT_STATUS" ] || echo "Go timed out after ${RUN_TIMEOUT}s"
 fi
 [ "$status" = 0 ] || exit "$status"
+
+if [ "$command_coverage" = 1 ]; then
+	: >"${WORK}/command-coverage.txt"
+	for case_name in load load-save turn turn-nosave duplicate missing directory blocked saved-system report; do
+		base="${WORK}/command-coverage/${case_name}"
+		rm -rf "${base}"
+		mkdir -p "${base}/input"
+		cp -a "${WORK}/input/." "${base}/input/"
+		ARGS=(-l ./lib test-use-const-report-date)
+		path=cov.tsv
+		case "$case_name" in
+		load-save) ARGS+=(-S) ;;
+		turn|duplicate|missing|directory|blocked|saved-system|report) ARGS+=(-r -S) ;;
+		turn-nosave) ARGS+=(-r) ;;
+		esac
+		case "$case_name" in
+		missing) path=missing/cov.tsv ;;
+		directory) path=lib/log ;;
+		blocked) path=blocked/cov.tsv; printf 'not a directory\n' >"${base}/input/blocked" ;;
+		saved-system) path=lib/system ;;
+		report) path=lib/players ;;
+		esac
+		# Baseline controls use the exact same full-engine/comparator owners.
+		# They establish no flag-free state/RNG/report/stream effect, not just
+		# agreement between two implementations that both changed their state.
+		case "$case_name" in
+		load|load-save|turn|turn-nosave)
+			run_c_engine "${C_BIN}" "${base}/input" "${base}/plain-c"
+			run_c_engine "${C_BIN}" "${base}/input" "${base}/plain-again"
+			[ "$(cat "${base}/plain-c/status")" = 0 ] || die "${case_name}: flag-free C failed"
+			compare_captures "${base}/plain-c" "${base}/plain-again" >"${base}/plain-determinism.diff" || die "${case_name}: flag-free C nondeterminism"
+			rm -rf "${base}/plain-again"
+			run_engine "${GO_BIN}" "${base}/input" "${base}/plain-go"
+			compare_captures "${base}/plain-c" "${base}/plain-go" >"${base}/plain.diff" || die "${case_name}: flag-free Go differs"
+			rm -rf "${base}/plain-go"
+			;;
+		esac
+		[ "$case_name" != duplicate ] || ARGS+=(--coverage ignored.tsv)
+		ARGS+=(--coverage "$path")
+		run_c_engine "${C_BIN}" "${base}/input" "${base}/c"
+		run_c_engine "${C_BIN}" "${base}/input" "${base}/c-again"
+		[ "$(cat "${base}/c/status")" = 0 ] || die "${case_name}: coverage C failed"
+		compare_captures "${base}/c" "${base}/c-again" >"${base}/determinism.diff" || die "${case_name}: coverage C nondeterminism"
+		rm -rf "${base}/c-again"
+		run_engine "${GO_BIN}" "${base}/input" "${base}/go"
+		compare_captures "${base}/c" "${base}/go" >"${base}/diff.txt" || die "${case_name}: coverage Go differs; see ${base}"
+		printf '%s: C/C/Go status 0, exact streams and all entries/types/modes/bytes\n' "$case_name" | tee -a "${WORK}/command-coverage.txt"
+		case "$case_name" in
+		load|load-save|turn|turn-nosave)
+			printf '%s: C dump ' "$case_name" >>"${WORK}/command-coverage.txt"
+			shasum -a 256 "${base}/c/cwd/cov.tsv" | cut -d' ' -f1 >>"${WORK}/command-coverage.txt"
+			# Only after strict C/C/Go byte comparison, remove the one requested
+			# new dump from these disposable captures to check flag-free aftermath.
+			rm "${base}/c/cwd/cov.tsv" "${base}/go/cwd/cov.tsv"
+			compare_captures "${base}/plain-c" "${base}/c" >"${base}/effect-c.diff" || die "${case_name}: C coverage changed other observations"
+			compare_captures "${base}/plain-c" "${base}/go" >"${base}/effect-go.diff" || die "${case_name}: Go coverage changed other observations"
+			echo "${case_name}: flag-free aftermath identical except requested dump" | tee -a "${WORK}/command-coverage.txt"
+			;;
+		esac
+		rm -rf "${base}"
+	done
+	rm -rf "${WORK}/command-coverage"
+fi
 
 # Exercise main's actual composition as well as the component recordings in
 # command-compat. These opt-in controls change only lifecycle inputs on the

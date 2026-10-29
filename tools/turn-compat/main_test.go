@@ -252,7 +252,7 @@ func TestShellComparisonStatuses(t *testing.T) {
 func TestCReferenceMarkers(t *testing.T) {
 	function := shellFunction(t, "run_c_engine")
 	for _, stream := range []string{"stdout", "stderr"} {
-		for _, marker := range []string{"ordinary rejected-option diagnostic", "out-of-scope C dependency: helper", "not yet implemented", "missing C dependency", "C stub", "missing stream"} {
+		for _, marker := range []string{"ordinary rejected-option diagnostic", "out-of-scope C dependency: helper", "not yet implemented", "missing C dependency", "C stub", "AddressSanitizer", "UndefinedBehaviorSanitizer", "runtime error: signed integer overflow", "missing stream"} {
 			t.Run(stream+"/"+marker, func(t *testing.T) {
 				dir := t.TempDir()
 				for _, name := range []string{"stdout", "stderr"} {

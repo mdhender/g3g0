@@ -1993,6 +1993,35 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			fmt.Fprintf(&stdout, "file bytes %s %d:\n", path, len(data))
 			stdout.Write(data)
 			fmt.Fprint(&stdout, "\nend file bytes\n")
+		case "coverage":
+			switch action := args.word(); action {
+			case "path":
+				path := args.word()
+				if path == "NULL" {
+					w.coveragePath = nil
+				} else {
+					if path == "EMPTY" {
+						path = ""
+					}
+					w.coveragePath = &path
+				}
+			case "count":
+				w.coverageCount(args.num(t), args.num(t))
+			case "state":
+				cmd := args.num(t)
+				fmt.Fprintf(&stdout, "coverage allocated %d ncmds %d table %d\n", b2i(w.covCounts != nil), len(w.covCounts), len(cmdTbl))
+				if w.covCounts != nil && cmd >= 0 && cmd < len(w.covCounts) {
+					row := w.covCounts[cmd]
+					fmt.Fprintf(&stdout, "coverage row %d %d %d %d %d\n", cmd, row[0], row[1], row[2], row[3])
+				}
+			case "seed":
+				cmd, outcome, value := args.num(t), args.num(t), args.num(t)
+				w.covCounts[cmd][outcome] = int32(value)
+			case "write":
+				w.writeCoverage()
+			default:
+				t.Fatalf("unknown coverage action %s", action)
+			}
 		case "load":
 			fmt.Fprintf(&stdout, "load %d\n", b2i(w.loadCommand(c)))
 		case "do":
@@ -2560,6 +2589,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				c.secondWait = int8(n)
 			case "cmdpri":
 				c.pri = int8(n)
+			case "cmd":
+				c.cmd = int32(n)
+			case "fuzzy":
+				c.fuzzy = int8(n)
 			case "state":
 				c.state = int8(n)
 			case "auto":
