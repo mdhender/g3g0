@@ -4,6 +4,33 @@
 G3 is the reference.
 Expected output comes only from G3's committed files, which its C engine wrote; nothing here re-baselines.
 
+## Final-tier no-loss repeat (#178)
+
+At unchanged **0.115.1-alpha**, immutable
+**f73e48118805ffe8ff5e763bfa4f20ae00c3a705**, the original full spec repeats
+**36 pass / 89 fail / 0 error**, **125 fixtures / 119s**. The no-loss tool
+exits **0**, with **no recorded-list change**; this is not whole-spec parity.
+The complete **876-byte** passing.txt remains SHA-256
+`6d2080c29961395d8387364983b6543a6d05c7277b63bdfd16f9025a91736b67`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue178-spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  tools/olympia-spec/run.sh
+```
+
+All six phase fixtures and savage-cap also independently pass their original
+scripts with strict pre-cleanup C/C/Go capture; see [the current turn evidence](../turn-compat#final-tier-turn-and-original-fixtures-178).
+Golden remains **NO**, initialization **2** at unsupported `-i`, explicitly
+not a stage-3 blocker. No expected bytes or harnesses are changed. Logs:
+`tmp/issue178-spec.log`, `tmp/issue178-spec/{run-all,olympia-g3,golden}.log`.
+The initially withheld full-box gate now passes using parent's verified
+physical copies and the existing GAMES override; no fix or exemption was
+needed. Parent's independent spec repeat again gives **36 pass / 89 fail /
+0 error**, **121s**, no passing-list change and golden **NO**. See [accepted
+stage-3 evidence](../README.md#final-tier-validation-178). Stage 3 is accepted
+and paused; the **89 failures and golden NO remain disclosed**.
+
 ## Drum prerequisite progress (#182)
 
 At **0.115.0-alpha**, the unchanged complete spec records **36 pass / 89 fail /

@@ -3,8 +3,151 @@
 Each directory here holds a `run.sh` that checks part of the Go port against G3's C code at a pinned revision, and a README that says what it checks.
 This page says which checks to run when, and which upstream files each tool reads, so that moving the pin re-records only the tools whose sources changed.
 
-Task notes below retain their original acceptance scope and temporary boundaries;
-the current integration evidence and stage-exit status are under **Stage exit**.
+Task notes below retain their original acceptance scope and temporary boundaries.
+Current final-tier status is under **Final-tier validation (#178)**; the
+**Stage exit** section gives the command order and historical integration evidence.
+
+## Final-tier validation (#178)
+
+Validation starts from clean main/origin **584e33d012e071440c2d8d5c1d9c85ccf897817c**,
+version **0.115.1-alpha**, on Linux amd64, GCC **12.2.0**, Go **1.26.4**.
+The immutable stage reference remains **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**;
+other tools retain their own pins (`tmp/issue178-tool-pins.log`). No engine,
+harness, expected bytes, progress-list names or version changes are made.
+Historical task acceptance notes below retain their original scope.
+
+Full box was initially withheld because its read-only serializers directly
+read the supplied GAMES directory; `tmp/issue178-box-input-policy.log` records
+that initial concern, not a current blocker. Parent resolved it with the
+**existing GAMES override**, pointing it at physical `cp -a` copies of every
+`cases/*/input` under `tmp/parent178-box-inputs/cases`, outside the tool's WORK.
+Verification finds **201 worlds / 41938 files / 5228 directories**, exact
+modes/bytes and **no symlinks or shared inodes**. No issue, harness fix or
+policy exemption is needed.
+
+Parent's actual invocation:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" GAMES="$PWD/tmp/parent178-box-inputs/cases" \
+  WORK="$PWD/tmp/parent178-box" bash tools/box-compat/run.sh --full
+```
+
+It passes **202 worlds / 8,146,800 boxes, plain and pretty**, with identical
+C/Go output. Evidence: `tmp/parent178-box-full.log`,
+`tmp/parent178-box-inputs.log`, `tmp/parent178-box-inputs.manifest`;
+the separate copy manifest has SHA-256
+`dc9294a5409c9935dcb0012eb63b0359bba9304f4eb3870329d0660efc568a6e`.
+
+Implementer's completed final-tier evidence follows; the initial full-box
+gap is now covered by that actual parent result:
+
+- Bounded vet and fresh bounded `G3G0_FULL=1` tests pass: **11 test packages**,
+  Olympia **1.952s**, **10** explicit opt-in/child-entry skips. The four
+  whole-corpus suites require their tools' game lists, not just G3G0_FULL.
+- All **15 engine/library defaults** pass, including lists (**899**
+  deterministic results). Genesis passes **131 cases / 84 mapgen
+  cross-checks / 13 gates**; mapgen passes **126 comparisons / 11 gates**.
+  Every invocation explicitly selects the isolated bare G3_REPO and leaves
+  each tool's own pin intact. Lists alone uses temporary compiler/native/
+  test launchers: the compiler moves the real driver aside and builds a
+  native argv[0]-preserving launcher calling existing run_limited; an
+  executable test adapter calls existing run-limited.sh. All are removed
+  after the unchanged original script passes; there is no lists-tool fix.
+- Known platform exceptions remain **red/status 1**, not rebaselined:
+  island **114/119**, five case differences / seven failed checks, all
+  **17** upstream gates passing for both engines; scanf **78** deterministic
+  glibc probes / **11** macOS numeric-width differences.
+- The original roundtrip tool passes **201 / 0 fail / 0 error**, plus
+  **1 separate EXPECTED_ABORT**, **144s**, reusing the verified cache without
+  --fresh. A supplementary fresh strict replay runs real C twice before Go
+  on **every one of the 201 inputs**, then compares cached C too, using the
+  unchanged turn comparator and tree-modes.py. All raw streams/status and
+  all entries/types/modes/empty directories/bytes match. The separate fresh
+  abort replay matches C/C, status **134**, exact `swear.c (180): FALSE`;
+  no successful +turn snapshot is manufactured. **36** injected marker
+  controls reject invalid references from actual status-0/134 captures
+  before status acceptance; probes and matching captures are removed.
+
+After the initial full-box withholding, the remaining gates ran sequentially:
+
+- Full **boxfile/check/loadsave each pass 202 worlds**. Boxfile passes all
+  **three variants**, **8,146,800 boxes** per variant; check compares
+  **8,146,800**, loadsave saves **8,146,791**. Check/loadsave report **zero**
+  check_db messages; raw C/Go streams/status and complete lib trees/modes match.
+- Strict ordinary turn passes **233 cwd entries / status 0**, all **13
+  lifecycle / 10 command / 15 USE / 23 phase / 13 export** controls, and
+  all **84** integration controls (**74 status 0 / 10 status 1**) with **20**
+  flag-free aftermath comparisons. Full TSV/JSON bytes retain #177's hashes.
+- All **six original phase scripts**, plus **savage-cap**, pass real C twice
+  before Go with full pre-cleanup raw/cwd parity, script/engine status **0**:
+  **252 / 245 / 242 / 241 / 246 / 242 / 238 entries**, respectively. The
+  native capture method is documented in turn-compat; no script edits or
+  callback overlays. No further gameplay prerequisite appears.
+- Full spec's no-loss gate exits **0**: **36 pass / 89 fail / 0 error**,
+  **119s**, the entire recorded set unchanged. Golden remains **NO**,
+  unsupported `-i` initialization **2**, not a stage-3 blocker or full parity.
+
+Before reuse and after all completed checks, all **1212** original archived
+files equal the pin, including
+executable bits. C executable SHA-256:
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+The exact **201-world / 41938-file / 5228-directory** input corpus equals
+the preserved `tmp/stage3-roundtrip` names/types/modes/bytes; its full
+mode/type/content manifest has SHA-256
+`a1207a76ba2a7374d339a22eec21d9ade625fc1e309c0d540c393d1cbc8f1f91`.
+All actual engine turns/load-saves above use real disposable copies, never
+cache inputs or symlink sources. Cache originals and old stage3 are retained.
+The entire command input/output remain **578307 / 2134398 bytes**, SHA-256
+`3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` /
+`c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac`;
+the default oracle remains **1380 sections / 107214 lines**.
+
+ALL-open local audit finds only **#178/#169/#19**, no bug/follow-C.
+Current upstream **G3 #309** remains open/won't-fix: pinned lib/rng.c still
+subtracts signed bounds without validating the range. No accepted input
+here reaches an invalid range. **G3 #358/#359 are closed**, fixed by merged
+**G3 #360**, already followed in accepted #179: pinned io.c drops positive
+quantity/cost-less-than-one loaded trades and report.c guards `t` before
+the next prev_word call. The old stage-2 defect disclosures below are
+historical, not current-pin failures. **G3 #114** remains an open enhancement,
+not an expansion of this pin's accepted state-export format or an acceptance
+prerequisite. Audit/source evidence: `tmp/issue178-open-audit.log`.
+No native macOS/Windows or sanitizer validation is claimed; only Linux amd64
+with the compiler/Go versions above. Known peripheral failures remain red;
+unsupported initialization and remaining spec failures are not full parity.
+
+Evidence: `tmp/issue178-{vet,tests,default-status,default-counts}.log`,
+`tmp/issue178-*-default.log`, `tmp/issue178-*-{results,gates}.tsv`,
+`tmp/issue178-integrity-{before,after}.log`, `tmp/issue178-input-manifest.txt`,
+`tmp/issue178-roundtrip{,-strict}.log`, `tmp/issue178-roundtrip-results.tsv`,
+`tmp/issue178-roundtrip-strict/*/{manifest.txt,*.diff}` and its separate
+`expected-abort/{stdout,stderr,status,manifest.txt}`,
+`tmp/issue178-marker-controls.log`, `tmp/issue178-{full-status,boxfile-full,check-full,loadsave-full}.log`,
+`tmp/issue178-{turn-full,turn-summary,fixtures,spec,open-final}.log`,
+`tmp/issue178-{turn,fixture-captures,spec}/`. Implementer's digest index:
+`tmp/issue178-evidence.sha256`. Matching replays and scratch sources/
+launchers/probes are removed.
+
+**Stage 3 accepted after independent parent review and validation.** Parent
+verified all **949** evidence digests, all **1212** original source files and
+the executable hash, all **201** protected inputs against both the preserved
+stage3 corpus and the post-box disposable copies, and the complete inherited
+command recordings. Disposable box inputs were removed after verification.
+Bounded vet and fresh bounded full-enabled tests pass (**11 packages**,
+Olympia **2.207s**). Parent also repeated the strict **233-entry** turn, every
+**13/10/15/23/13** lifecycle/command/USE/phase/export control, all **84**
+integration controls and **20** aftermath comparisons. All four full dump
+files retain the accepted #177 hashes. The independent spec repeat is
+**36 pass / 89 fail / 0 error**, **121s**, with no passing-list change;
+golden remains **NO**, unsupported initialization **2**.
+
+Parent evidence: `tmp/parent178-{integrity,vet,tests,box-full,turn-full,turn-summary,spec}.log`,
+`tmp/parent178-box-inputs.{log,manifest}`, `tmp/parent178-turn/` and
+`tmp/parent178-spec/`. The final acceptance changes only these existing
+documentation files; engine, harness, pins, version and expectations remain
+unchanged. No local bug/follow-C or observed blocking gameplay prerequisite
+remains. Known upstream/platform/unsupported-mode limits above remain.
+**Paused after stage 3; stage 4 is not authorized.**
 
 ## Four-dump integration harness closure (#177)
 
@@ -2363,30 +2506,66 @@ determinism metadata; review those bytes. The full Go turn succeeds after
 **Stage exit.**
 Everything, sequentially, with the whole-game comparisons. Use the isolated
 bare source, never a shared upstream checkout. Keep each tool's own pin.
+For a fresh rerun, copy the verified cached inputs before all four full
+corpus tools and use those disposable inputs via GAMES. Keep that directory
+outside every tool's WORK, which the scripts may empty. Verify exact modes/
+bytes, no symlinks and no shared inodes before running engines; parent's
+completed copy/full-box proof is above. Lists' command records the temporary
+compiler/native/test launcher method described above;
+those launchers must be recreated before rerunning it, not omitted to run an
+unbounded native driver. They are removed after use, not tool changes.
 
 ```sh
 . tools/lib/timeout.sh
-run_limited 120 go go vet ./...
-G3G0_FULL=1 go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
 for tool in rng lists entity code helper io box boxfile check loadsave \
     olympia-cli turn-driver move command turn genesis island mapgen scanf; do
-    G3_REPO="$PWD/tmp/upstream.git" \
-      GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
-      bash "tools/$tool-compat/run.sh"
+    if [ "$tool" = lists ]; then
+        G3_REPO="$PWD/tmp/upstream.git" CC="$PWD/tmp/issue178-cc.sh" \
+          GOFLAGS="-exec=$PWD/tmp/issue178-test-exec.sh" \
+          bash tools/lists-compat/run.sh
+    else
+        G3_REPO="$PWD/tmp/upstream.git" \
+          GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+          bash "tools/$tool-compat/run.sh"
+    fi
     # Inspect each exit status: island/scanf have disclosed Linux exceptions.
 done
-G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/stage2-roundtrip" \
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue179-roundtrip" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
   tools/olympia-roundtrip/run.sh --determinism-all
+# Then #178's supplementary fresh strict 201-world/abort replay, described above.
+# Fresh disposable corpus, outside all tool WORK directories; never link inputs.
+INPUTS="$PWD/tmp/stage3-final-inputs/cases"
+[ ! -e "$INPUTS" ] || { echo "choose a fresh disposable INPUTS directory" >&2; exit 2; }
+mkdir -p "$INPUTS"
+for game in "$PWD"/tmp/issue179-roundtrip/cases/*; do
+    [ -d "$game/input" ] && [ ! -L "$game/input" ] || exit 2
+    mkdir "$INPUTS/${game##*/}"
+    cp -a "$game/input" "$INPUTS/${game##*/}/" || exit 2
+done
+# Verify all 201 worlds / 41938 files / 5228 directories, modes/bytes,
+# and no symlinks/shared inodes, as in parent178-box-inputs.log/.manifest.
 for tool in box boxfile check loadsave; do
-    G3_REPO="$PWD/tmp/upstream.git" GAMES="$PWD/tmp/stage2-roundtrip/cases" \
+    G3_REPO="$PWD/tmp/upstream.git" GAMES="$INPUTS" \
+      GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
       "tools/$tool-compat/run.sh" --full
 done
-G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/stage2-roundtrip" \
-  WORK="$PWD/tmp/issue166-turn" tools/turn-compat/run.sh --full
-G3_REPO="$PWD/tmp/upstream.git" tools/olympia-spec/run.sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue179-roundtrip" \
+  WORK="$PWD/tmp/issue178-turn" GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  tools/turn-compat/run.sh --full --command-coverage --use-coverage \
+  --phase-coverage --state-export --dump-integration
+# Then all six original phase scripts plus savage-cap, C twice before Go,
+# using turn-compat/README.md's native pre-cleanup raw/cwd capture method.
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue178-spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" tools/olympia-spec/run.sh
 ```
 
-Run these one at a time: `box-compat`, `boxfile-compat`, `check-compat` and `loadsave-compat` read the games `olympia-roundtrip` caches, so do not run them while `olympia-roundtrip --fresh` rebuilds that cache.
+Run these one at a time. Copy inputs only from the verified, idle roundtrip
+cache, never while `olympia-roundtrip --fresh` rebuilds it. All four full
+tools use the disposable GAMES corpus above, not protected cached inputs.
 
 **Accepted stage-2 integration (#166, 2026-10-28).**
 Linux amd64, GCC 12.2.0, Go 1.26.4; immutable stage pin

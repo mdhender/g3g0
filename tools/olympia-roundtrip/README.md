@@ -7,6 +7,50 @@ Expected results always come from running the pinned C build on the same input; 
 This is the exit check for stage 0 (#20): load and save must match on every case before the turn is ported.
 Since `load_db` and `save_db` were ported (#28), every case passes.
 
+## Final-tier replay (#178)
+
+At **0.115.1-alpha**, the unchanged tool reuses the verified exact-pin
+`tmp/issue179-roundtrip` cache, without --fresh, and passes **201 / 0 fail /
+0 error / 1 separate EXPECTED_ABORT**, **144s**:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue179-roundtrip" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  tools/olympia-roundtrip/run.sh --determinism-all
+```
+
+Before reuse, all **1212** original archived files equal
+**f73e48118805ffe8ff5e763bfa4f20ae00c3a705**, C binary SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+All **201** input names/types/modes/bytes equal the preserved old stage3
+corpus: **41938 files / 5228 directories**; no symlinks or manufactured
+`release-swear-np+turn`. Full input-manifest SHA-256:
+`a1207a76ba2a7374d339a22eec21d9ade625fc1e309c0d540c393d1cbc8f1f91`.
+
+Supplementary replay additionally runs **fresh unchanged C twice then Go on
+all 201 inputs**, each on a real disposable copy, through
+`run_limited 120 olympia-g3 BIN -l ./lib -S test-use-const-report-date`.
+The existing strict turn comparator plus tree-modes.py compare C/C, C/Go
+and cached-C/fresh-C, including unfiltered status/streams and every cwd
+entry/type/mode/empty directory/byte. Every comparison matches. The separate
+fresh C/C `-r` control again gives exact **134 / swear.c (180): FALSE**;
+it supplies no successful post-turn input. **36** marker-injection controls
+using actual status-0/134 captures reject invalid references before status
+acceptance. Matching captures and temporary scripts/probes are removed.
+
+Evidence: `tmp/issue178-{integrity-before,roundtrip,roundtrip-strict,marker-controls}.log`,
+`tmp/issue178-input-manifest.txt`, `tmp/issue178-roundtrip-results.tsv`
+(SHA-256 `96cafa5021e93976c9e1c0de550fb0a100aa7003251c5570e57595f090adb2e2`),
+`tmp/issue178-roundtrip-strict/*/{manifest.txt,*.diff}` and separate abort
+raw streams/status/manifest. Parent also completed the initially withheld
+full-box gate using physical disposable input copies via the existing GAMES
+override: **202 worlds / 8,146,800 boxes, plain and pretty, PASS**. No harness
+fix or exemption was needed. Parent independently verified all **949**
+evidence digests and protected-input/source integrity, and repeated bounded
+vet/tests, the strict turn and spec no-loss checks. See [accepted stage-3
+evidence and the copy workflow](../README.md#final-tier-validation-178).
+Stage 3 is accepted; paused without starting stage 4.
+
 ## Cases
 
 A case is a saved game.

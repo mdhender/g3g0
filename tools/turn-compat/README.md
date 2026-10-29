@@ -16,6 +16,70 @@ tools/turn-compat/run.sh --full          # real C/C/Go world turns and lifecycle
 tools/turn-compat/run.sh --full --record # explicitly refresh C-only recordings, then compare Go
 ```
 
+## Final-tier turn and original fixtures (#178)
+
+At unchanged **0.115.1-alpha / f73e48118805ffe8ff5e763bfa4f20ae00c3a705**:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue179-roundtrip" \
+  WORK="$PWD/tmp/issue178-turn" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  tools/turn-compat/run.sh --full --command-coverage --use-coverage \
+  --phase-coverage --state-export --dump-integration
+```
+
+The ordinary turn passes **233 cwd entries / status 0**. All **13 lifecycle /
+10 command / 15 USE / 23 phase / 13 export** controls pass, as do all **84**
+integration controls (**74 status 0 / 10 status 1**) and their **20** flag-free
+aftermath comparisons. Unchanged real C repeats before Go; unfiltered raw
+streams/status and every cwd entry/type/mode/empty directory/regular byte
+match, without normalization or exclusions. The four entire reference dumps
+are byte-identical to accepted parent #177, retaining the **2116 / 5100 /
+2523 / 16422-byte** sizes and hashes in the [four-dump table below](#four-dump-integration-closure-177).
+
+All **six original phase scripts** also run themselves, real C twice before
+Go, from a separate pristine bare-pin export, using the [native pre-cleanup
+capture method](#drum-fixture-rerun-182): **phase-day0 252 / phase-daily 245 /
+phase-month-open 242 / phase-month-gold 241 / phase-month-decay 246 /
+phase-month-close 242** cwd entries. Original **savage-cap** likewise passes
+C/C/Go, **238 entries**. Every script prints YES and every script/engine exits
+**0**. Raw captures pass the same strict comparator and tree-modes.py before
+deletion; no upstream script, fixture, EXPECT.json or expected manifest is
+edited. Savage's script-owned stderr file is captured after raw stderr replay.
+Native helper sources/launchers and matching captures are removed.
+
+For each fixture in the order above and engine in `c1 c2 go` order, the
+temporary launcher invocation was:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" I178_CAPTURE="$capture" I178_ENGINE="$bin" \
+  OLYMPIA_ENGINE_BIN="$PWD/tmp/issue178-fixture-launch" \
+  bash "$source/tests/olympia/regress/$fixture/check.sh"
+```
+
+`source` was `tmp/issue178-fixture-source`, exported with git archive at the
+pin; `capture` was the absolute `tmp/issue178-fixture-captures/$fixture/$engine`.
+`bin` selected the verified cached C executable for c1/c2 and the turn work's
+Go executable for go. The native helper preserves raw streams/status, uses
+existing run_limited with **120s**, replays streams to the script's original
+descriptors, then copies the complete cwd before returning. The source export
+is removed after all seven comparisons.
+
+Evidence: `tmp/issue178-turn-full.log`, `tmp/issue178-turn-summary.log`,
+`tmp/issue178-turn/{c-determinism,lifecycle,command-coverage,use-coverage,phase-coverage,state-coverage,integration-coverage}.txt`,
+the four full integration dump files, `tmp/issue178-fixtures.log` and
+`tmp/issue178-fixture-captures/*/{*-script.log,*-manifest.txt,*.diff}`.
+Linux amd64/GCC 12.2.0/Go 1.26.4 only; no native macOS/Windows claim.
+These gates pass, and parent completed the initially withheld full-box gate
+with verified physical copies via the existing GAMES override, without a
+harness fix or exemption. Parent independently repeated the strict ordinary
+turn, every coverage/export/lifecycle control, all **84** integration
+controls and **20** aftermath comparisons; all four complete dump hashes
+are unchanged. Evidence: `tmp/parent178-turn-full.log`,
+`tmp/parent178-turn-summary.log`, `tmp/parent178-turn/`. See [accepted
+stage-3 evidence](../README.md#final-tier-validation-178). Stage 3 is accepted
+and paused; no stage-4 work is authorized.
+
 ## Four-dump integration closure (#177)
 
 **0.115.1-alpha**, unchanged immutable reference
