@@ -713,6 +713,7 @@ func (w *world) interruptOrder(who int) {
 }
 
 func (w *world) processInterruptedUnits() {
+	w.phaseRan(phStopInterrupt)
 	for who := range w.loopKind(tChar) {
 		if !w.stopOrder(w.player(who), who) {
 			continue
@@ -723,8 +724,10 @@ func (w *world) processInterruptedUnits() {
 		if c != nil && c.cmd != 0 && c.wait != 0 {
 			w.commandOut(who, "Interrupt current order.")
 			w.interruptOrder(who)
+			w.phaseActed(phStopInterrupt)
 		} else {
 			w.commandOut(who, "No order is currently executing.")
+			w.phaseActed(phStopIdle)
 		}
 	}
 }

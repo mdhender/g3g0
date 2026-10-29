@@ -177,17 +177,20 @@ func (w *world) moveToken(item, from, to int) {
 }
 
 // checkTokenUnits is art.c:1200–1262. Both processOrders and postMonth
-// already call this at their original C positions. Phase counters alone
-// are omitted; all token and ownership effects use the shared real closure.
+// call this at their original C positions, so both calls count in the
+// day0-labeled row. Attempted melt/add counts even when it has no effect.
 func (w *world) checkTokenUnits() {
+	w.phaseRan(phTokenMelt)
 	for item := range w.loopSubkind(subNpcToken) {
 		owner := w.itemUnique(item)
 		assert(owner != 0, "olympia/art.c", 1218, "owner")
 		pl := w.tokenPlayer(owner)
 		if pl == int(w.indepPlayer) {
 			w.meltTokenUnits(item)
+			w.phaseActed(phTokenMelt)
 		} else {
 			w.addTokenUnits(item)
+			w.phaseActed(phTokenAdd)
 		}
 		for unit := range w.loopUnits(item) {
 			if w.kind(unit) != tChar {

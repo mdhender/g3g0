@@ -38,6 +38,7 @@ func (w *world) autoBandit(who, prog int) {
 // snapshot of independent units dispatches without executing queued orders.
 func (w *world) queueNpcOrders() {
 	w.stage("queue_npc_orders()")
+	w.phaseRan(phNpcUnsworn)
 	w.initSavageAttacks()
 	w.autoHades()
 	for who := range w.loopUnits(int(w.indepPlayer)) {
@@ -63,22 +64,28 @@ func (w *world) queueNpcOrders() {
 			switch w.subkind(who) {
 			case 0:
 				w.autoUnsworn(who)
+				w.phaseActed(phNpcUnsworn)
 			case subUndead:
 				w.autoUndead(who)
+				w.phaseActed(phNpcUndead)
 			case subNi:
 				switch w.nobleItem(who) {
 				case itemSavage:
 					w.autoSavage(who)
+					w.phaseActed(phNpcSavage)
 				case itemPeasant, itemAngryPeasant:
 					w.autoMob(who)
+					w.phaseActed(phNpcMob)
 				}
 			}
 		case progBandit, progHadesBandit, progFaeryBandit:
 			w.autoBandit(who, prog)
+			w.phaseActed(phNpcBandit)
 		case progSublocMonster:
 			// Intentional C no-op, not an unfinished program.
 		case progNpcToken:
 			w.npcMove(who)
+			w.phaseActed(phNpcToken)
 		default:
 			assert(false, "olympia/npc.c", 687, "FALSE")
 		}

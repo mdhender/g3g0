@@ -294,6 +294,7 @@ func (w *world) garrisonStrength(garr int) int32 {
 // garrisons that are not the first character in their province.
 func (w *world) pingGarrisons() {
 	w.showToGarrison = true
+	w.phaseRan(phGarrGuard)
 	for garr := range w.loopSubkind(subGarrison) {
 		where := w.subloc(garr)
 		p := w.rpChar(garr)
@@ -304,6 +305,7 @@ func (w *world) pingGarrisons() {
 		}
 		w.commandOut(where, "%s guards %s.", w.linerDesc(garr), w.boxName(where))
 		p.guard = 1
+		w.phaseActed(phGarrGuard)
 	}
 	w.showToGarrison = false
 }

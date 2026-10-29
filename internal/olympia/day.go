@@ -25,6 +25,7 @@ func (w *world) healCharSup(who int) {
 		w.commandOut(who, "%s defeated illness and is now recovering.", w.boxName(who))
 		w.pChar(who).sick = 0
 		sick = false
+		w.phaseActed(phHealRecover)
 	}
 	amount := w.streams.UpHeal(who, 1, 3, 15)
 	if sick {
@@ -33,6 +34,7 @@ func (w *world) healCharSup(who int) {
 		}
 		w.commandOut(who, "%s lost %s health.", w.boxName(who), niceNum(amount))
 		w.pChar(who).health -= int8(amount)
+		w.phaseActed(phHealSicken)
 		if w.pChar(who).health <= 0 {
 			w.killChar(who, mates)
 		}
@@ -42,6 +44,7 @@ func (w *world) healCharSup(who int) {
 		}
 		w.commandOut(who, "%s gained %s health.", w.boxName(who), niceNum(amount))
 		w.pChar(who).health += int8(amount)
+		w.phaseActed(phHealHeal)
 		if h+amount >= 100 {
 			w.commandOut(who, "%s is fully healed.", w.boxName(who))
 		}
@@ -50,6 +53,7 @@ func (w *world) healCharSup(who int) {
 
 // healCharacters is day.c:616–632, retaining the deletion-safe kind chain.
 func (w *world) healCharacters() {
+	w.phaseRan(phHealHeal)
 	for who := range w.loopKind(tChar) {
 		n := 0
 		if p := w.rpChar(who); p != nil {
@@ -64,6 +68,7 @@ func (w *world) healCharacters() {
 // defaultGarrisonPay is day.c:581–613, including payments to non-immediate
 // descendants, zero-pay output and gen_item's negative-pay assertion.
 func (w *world) defaultGarrisonPay() {
+	w.phaseRan(phGarrPay)
 	for who := range w.loopKind(tChar) {
 		if w.isPrisoner(who) {
 			continue
@@ -80,6 +85,7 @@ func (w *world) defaultGarrisonPay() {
 			w.goldGarrison += w.garrisonPay
 		}
 		w.commandOut(who, "Received %s from %s.", goldS(int(w.garrisonPay)), w.boxName(parent))
+		w.phaseActed(phGarrPay)
 	}
 }
 

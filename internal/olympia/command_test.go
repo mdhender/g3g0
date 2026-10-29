@@ -2091,6 +2091,84 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			default:
 				t.Fatalf("unknown ucov action %s", action)
 			}
+		case "phcov":
+			switch action := args.word(); action {
+			case "metadata":
+				for _, row := range []struct {
+					name  string
+					index int
+				}{
+					{"PH_SAVAGE_SPAWN", phSavageSpawn}, {"PH_HADES_SPAWN", phHadesSpawn},
+					{"PH_HADES_UNIT", phHadesUnit}, {"PH_NPC_UNSWORN", phNpcUnsworn},
+					{"PH_NPC_UNDEAD", phNpcUndead}, {"PH_NPC_SAVAGE", phNpcSavage},
+					{"PH_NPC_MOB", phNpcMob}, {"PH_NPC_BANDIT", phNpcBandit},
+					{"PH_NPC_TOKEN", phNpcToken}, {"PH_GARR_GUARD", phGarrGuard},
+					{"PH_TOKEN_MELT", phTokenMelt}, {"PH_TOKEN_ADD", phTokenAdd},
+					{"PH_STOP_INTERRUPT", phStopInterrupt}, {"PH_STOP_IDLE", phStopIdle},
+					{"PH_TRADE_MATCH", phTradeMatch}, {"PH_GARR_PAY", phGarrPay},
+					{"PH_COAST_DAMAGE", phCoastDamage}, {"PH_COAST_OMEN", phCoastOmen},
+					{"PH_LOC_MINE", phLocMine}, {"PH_LOC_INN", phLocInn},
+					{"PH_OCEAN_PLUNGE", phOceanPlunge}, {"PH_HEAL_HEAL", phHealHeal},
+					{"PH_HEAL_SICKEN", phHealSicken}, {"PH_HEAL_RECOVER", phHealRecover},
+					{"PH_PRISONER_ESCAPE", phPrisonerEscape}, {"PH_CURSE_ERODE", phCurseErode},
+					{"PH_RING_AURA", phRingAura}, {"PH_DOGS_BARK", phDogsBark},
+					{"PH_WEATHER_STORM", phWeatherStorm}, {"PH_FAERY_SPAWN", phFaerySpawn},
+					{"PH_FAERY_UNIT", phFaeryUnit}, {"PH_SPECIAL_OPEN", phSpecialOpen},
+					{"PH_SPECIAL_CLOSE", phSpecialClose}, {"PH_CITY_GOLD", phCityGold},
+					{"PH_GARR_TAX", phGarrTax}, {"PH_GARR_CASTLE", phGarrCastle},
+					{"PH_GARR_OWNER", phGarrOwner}, {"PH_TAXES", phTaxes},
+					{"PH_CLAIM", phClaim}, {"PH_NP", phNp},
+					{"PH_UNFORMED", phUnformed}, {"PH_AURA", phAura},
+					{"PH_ABILITY_SHROUD", phAbilityShroud}, {"PH_REGION_SHROUD", phRegionShroud},
+					{"PH_MED_HINDER", phMedHinder}, {"PH_BARRIER_DEC", phBarrierDec},
+					{"PH_BARRIER_GONE", phBarrierGone}, {"PH_LOY_DECAY", phLoyDecay},
+					{"PH_LOY_RELEASE", phLoyRelease}, {"PH_LOY_DESERT", phLoyDesert},
+					{"PH_PILLAGE", phPillage}, {"PH_RELIC_DECAY", phRelicDecay},
+					{"PH_RELIC_VANISH", phRelicVanish}, {"PH_HIDE_MAGE", phHideMage},
+					{"PH_INN_INCOME", phInnIncome}, {"PH_INN_TRAVELLER", phInnTraveller},
+					{"PH_TEMPLE", phTemple}, {"PH_MAINT_PAID", phMaintPaid},
+					{"PH_MAINT_STARVE", phMaintStarve}, {"PH_ANIMAL", phAnimal},
+					{"PH_GHOST", phGhost}, {"PH_CORPSE", phCorpse},
+					{"PH_BODY", phBody}, {"PH_STORM_WEAKEN", phStormWeaken},
+					{"PH_STORM_GONE", phStormGone}, {"PH_STORM_MOVE", phStormMove},
+					{"PH_MINE_DEC", phMineDec}, {"PH_MINE_CLEAR", phMineClear},
+					{"PH_PRODUCTION", phProduction}, {"PH_AUTO_DROP", phAutoDrop},
+					{"PH_LINK_DEC", phLinkDec}, {"PH_LINK_OPEN", phLinkOpen},
+					{"PH_QUEST", phQuest}, {"PH_RANKS", phRanks}, {"PH_MAX", phMax},
+				} {
+					fmt.Fprintf(&stdout, "%s %d\n", row.name, row.index)
+				}
+			case "path":
+				path := args.word()
+				if path == "NULL" {
+					w.phaseCoveragePath = nil
+				} else {
+					if path == "EMPTY" {
+						path = ""
+					}
+					w.phaseCoveragePath = &path
+				}
+			case "ran":
+				w.phaseRan(args.num(t))
+			case "acted":
+				w.phaseActed(args.num(t))
+			case "seed":
+				row, ran, acted := args.num(t), args.num(t), args.num(t)
+				w.phRan[row], w.phActed[row] = int32(ran), int32(acted)
+			case "sweep":
+				for row := 0; row < phMax; row++ {
+					for n := 0; n < row+1; n++ {
+						w.phaseRan(row)
+					}
+					for n := 0; n < phMax-row; n++ {
+						w.phaseActed(row)
+					}
+				}
+			case "write":
+				w.writePhaseCoverage()
+			default:
+				t.Fatalf("unknown phcov action %s", action)
+			}
 		case "coverage":
 			switch action := args.word(); action {
 			case "path":

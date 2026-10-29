@@ -6,6 +6,7 @@ package olympia
 // weeklyPrisonerEscapeCheck is the complete stack.c:345–375. The outer
 // character chain is live; each direct here-list is copied before escapes.
 func (w *world) weeklyPrisonerEscapeCheck() {
+	w.phaseRan(phPrisonerEscape)
 	for who := range w.loopKind(tChar) {
 		if w.isPrisoner(who) || w.subkind(w.subloc(who)) == subOcean {
 			continue
@@ -20,7 +21,9 @@ func (w *world) weeklyPrisonerEscapeCheck() {
 				if w.locDepth(w.subloc(who)) >= locBuild {
 					chance = 1
 				}
-				w.checkPrisonerEscape(i, chance, 0) // stack.h ESC_WEEKLY
+				if w.checkPrisonerEscape(i, chance, 0) { // stack.h ESC_WEEKLY
+					w.phaseActed(phPrisonerEscape)
+				}
 			}
 		}
 	}
@@ -29,6 +32,7 @@ func (w *world) weeklyPrisonerEscapeCheck() {
 // dogsBarkAtHiddenChars is day.c:489–516. Only directly present, really
 // hidden characters trigger the location; nested characters alone do not.
 func (w *world) dogsBarkAtHiddenChars() {
+	w.phaseRan(phDogsBark)
 	for where := range w.loopKind(tLoc) {
 		flag := false
 		assert(w.validBox(where), "olympia/day.c", 502, "valid_box(where)")
@@ -39,6 +43,7 @@ func (w *world) dogsBarkAtHiddenChars() {
 		}
 		if flag {
 			w.barkDogs(where)
+			w.phaseActed(phDogsBark)
 		}
 	}
 }
@@ -74,6 +79,7 @@ func (w *world) barkDogs(where int) {
 // incrementStoneRingAura is day.c:777–803, using the existing effective
 // maximum contract (auraculum and per-entry artifact bonuses included).
 func (w *world) incrementStoneRingAura() {
+	w.phaseRan(phRingAura)
 	for who := range w.loopKind(tChar) {
 		if p := w.rpMagic(who); p == nil || p.magician == 0 {
 			continue
@@ -86,6 +92,7 @@ func (w *world) incrementStoneRingAura() {
 		if p.curAura < ma {
 			p.curAura++
 			w.commandOut(who, "Current aura is now %d.", p.curAura)
+			w.phaseActed(phRingAura)
 		}
 	}
 }
@@ -94,6 +101,7 @@ func (w *world) incrementStoneRingAura() {
 // loyalty implementation. Erosion still only logs NOTYET after G3 #357;
 // the unported USE 886 validator now refuses the curse (stage 4).
 func (w *world) noncreatorCurseErode() {
+	w.phaseRan(phCurseErode)
 	for who := range w.loopKind(tChar) {
 		assert(w.validBox(who), "olympia/day.c", 914, "valid_box(who)")
 		for e := range w.loopInv(who) {
@@ -105,6 +113,7 @@ func (w *world) noncreatorCurseErode() {
 				continue
 			}
 			w.logWrite(10, "noncreator_curse_erode: NOTYET!")
+			w.phaseActed(phCurseErode)
 		}
 	}
 }

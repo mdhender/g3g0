@@ -57,15 +57,18 @@ func (w *world) autoFaerySup(who int) {
 
 func (w *world) autoFaery() {
 	n := 0
+	w.phaseRan(phFaerySpawn)
 	// C counts every faction unit, regardless of kind or current location.
 	for range w.loopUnits(int(w.faeryPlayer)) {
 		n++
 	}
 	for n < 15 {
 		w.createElvenHunt(n)
+		w.phaseActed(phFaerySpawn)
 		n++
 	}
 	for i := range w.loopUnits(int(w.faeryPlayer)) {
 		w.autoFaerySup(i)
+		w.phaseActed(phFaeryUnit)
 	}
 }

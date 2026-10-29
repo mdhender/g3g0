@@ -45,6 +45,7 @@ func (w *world) createSomeStorms(num, sk int) {
 	w.streams.WthrShuffle(l)
 	for i := 0; i < len(l) && i < num; i++ {
 		w.newStorm(0, sk, w.streams.WthrStorm(l[i], int(w.sysclock.day)*256+sk, 2, 3), l[i])
+		w.phaseActed(phWeatherStorm)
 	}
 }
 
@@ -52,6 +53,7 @@ func (w *world) createSomeStorms(num, sk int) {
 // Unrelated weather magic remains an explicit boundary.
 func (w *world) naturalWeather() {
 	n := w.nprovinces() / 4 / 2 / 4
+	w.phaseRan(phWeatherStorm)
 	switch olyMonth(w.sysclock) {
 	case 0:
 		w.createSomeStorms(n, subFog)

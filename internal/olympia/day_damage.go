@@ -3,7 +3,7 @@
 
 package olympia
 
-// Complete day.c:237–486 at the stage pin; phase counters alone are omitted.
+// Complete day.c:237–486 at the stage pin.
 func (w *world) nearRockyCoast(where int) int {
 	if w.subkind(where) != subOcean {
 		return 0
@@ -21,6 +21,7 @@ func (w *world) nearRockyCoast(where int) int {
 }
 
 func (w *world) shipCoastalDamage() {
+	w.phaseRan(phCoastDamage)
 	for ship := range w.loopKind(tShip) {
 		if !w.isShip(ship) {
 			continue
@@ -33,18 +34,22 @@ func (w *world) shipCoastalDamage() {
 			if w.streams.WthrWreck(ship, sub, 1, 75) == 1 {
 				w.commandOut(ship, "%s struck a coastal reef.  There is minor damage to the ship.", w.boxName(ship))
 				w.addStructureDamage(ship, w.streams.WthrWreck(ship, sub+1, 3, 5), true)
+				w.phaseActed(phCoastDamage)
 			}
 		case 2:
 			if w.streams.WthrWreck(ship, sub+2, 1, 50) == 1 {
 				w.commandOut(ship, "%s struck some submerged rocks.  There is minor damage to the ship.", w.boxName(ship))
 				w.addStructureDamage(ship, w.streams.WthrWreck(ship, sub+3, 6, 9), true)
+				w.phaseActed(phCoastDamage)
 			}
 		case 3:
 			switch w.streams.WthrWreck(ship, sub+4, 1, 200) {
 			case 1, 2:
 				w.commandOut(ship, "Hungry looking birds circle overhead.")
+				w.phaseActed(phCoastOmen)
 			case 3:
 				w.commandOut(ship, "Sharks circle in the water a short distance from the ship.")
+				w.phaseActed(phCoastOmen)
 			}
 		default:
 			assert(false, "olympia/day.c", 323, "FALSE")
@@ -108,16 +113,19 @@ func (w *world) innCalamity(where int) {
 }
 
 func (w *world) randomLocDamage() {
+	w.phaseRan(phLocMine)
 	for where := range w.loopKind(tLoc) {
 		switch w.subkind(where) {
 		case subMine:
 			depth := w.mineDepth(where)
 			if w.streams.WthrWreck(where, int(w.sysclock.day)*16+8, 1, 90) <= depth {
 				w.mineCalamity(where)
+				w.phaseActed(phLocMine)
 			}
 		case subInn:
 			if w.streams.WthrWreck(where, int(w.sysclock.day)*16+9, 1, 100) == 1 {
 				w.innCalamity(where)
+				w.phaseActed(phLocInn)
 			}
 		}
 	}

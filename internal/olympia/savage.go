@@ -100,6 +100,7 @@ func (w *world) autoSavage(who int) {
 }
 
 func (w *world) initSavageAttacks() {
+	w.phaseRan(phSavageSpawn)
 	w.numSavages = 0
 	for i := range w.loopKind(tChar) {
 		if w.nobleItem(i) == itemSavage {
@@ -131,6 +132,7 @@ func (w *world) initSavageAttacks() {
 		}
 		for _, e := range l {
 			if w.callSavage(int(e.destination), where, fort, 2) {
+				w.phaseActed(phSavageSpawn)
 				break
 			}
 		}

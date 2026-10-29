@@ -68,15 +68,18 @@ func (w *world) autoHadesSup(who int) {
 
 func (w *world) autoHades() {
 	n := 0
+	w.phaseRan(phHadesSpawn)
 	for range w.loopUnits(int(w.hadesPlayer)) {
 		n++
 	}
 	for n < 25 {
 		w.createHadesNasty(n)
+		w.phaseActed(phHadesSpawn)
 		n++
 	}
 	for i := range w.loopUnits(int(w.hadesPlayer)) {
 		w.autoHadesSup(i)
+		w.phaseActed(phHadesUnit)
 	}
 }
 

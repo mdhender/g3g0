@@ -431,8 +431,9 @@ func (w *world) matchTrades(who int) {
 	}
 }
 
-// matchAllTrades is buy.c:698–729 (phase instrumentation omitted).
+// matchAllTrades is buy.c:698–729. Count each reduced buyer, not settlements.
 func (w *world) matchAllTrades() {
+	w.phaseRan(phTradeMatch)
 	for where := range w.loopKind(tLoc) {
 		if w.marketHere(where) == 0 {
 			continue
@@ -443,7 +444,11 @@ func (w *world) matchAllTrades() {
 			continue
 		}
 		for _, buyer := range buyers {
+			qty := buyer.qty
 			w.scanTrades(buyer, sellers)
+			if buyer.qty < qty {
+				w.phaseActed(phTradeMatch)
+			}
 		}
 	}
 }

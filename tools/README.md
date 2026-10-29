@@ -6,6 +6,48 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Phase primitives and day-zero/daily hooks (#173)
+
+**0.109.0-alpha** ports all 74 phase enum/metadata rows, world-owned int32
+counters and the exact writer, plus 51 hook sites in the existing real
+day0/day1/daily gameplay owners. No new gameplay or monthly-only hooks;
+shared token reconciliation counts at both original caller positions.
+**Phase CLI/main writing and state export stay gated.** Phase fixtures are
+not yet passing acceptance: #174/#176 complete their missing integration.
+
+The existing command oracle removes all four phase-macro substitutions and
+links complete unchanged coverage.c at immutable
+`f73e48118805ffe8ff5e763bfa4f20ae00c3a705`. Its 25 new sections cover every
+one of the 31 day0/day1/daily event rows with nonzero actual gameplay, the
+actual order/day pipeline, direct all-row/asymmetric/group/overflow contracts,
+immediate/NULL/empty handling, original assertions and open failures. Real C
+twice and Go match **1308 sections / 96599 lines / 1902639 output bytes**;
+all inherited **530718 input / 1769914 output bytes** are exact prefixes.
+Four marker probes reject before expected-assertion/update acceptance with
+recording hashes unchanged. Read [source audit, hashes, controls and limits](command-compat#phase-primitives-and-real-day-zerodaily-hooks-173).
+
+Sequential checks: all 15 engine/library defaults, bounded vet/fresh bounded
+tests, strict 233-entry ordinary turn, all 13 lifecycle / 10 command / 15 USE
+controls, and spec **23 pass / 102 fail / 0 error**, losing no accepted pass.
+The read-only C cache is verified against all 1212 original archived files
+and its accepted executable hash before use; engines use real disposable
+directory copies. Logs: `tmp/issue173-{source-audit,hook-coverage,cache-audit}.log`,
+`tmp/issue173-*-default.log`, `tmp/issue173-{vet,tests,turn-full,spec}.log` and
+strict summaries under `tmp/issue173-turn/`. Every compat invocation sets
+isolated G3_REPO, every engine/test is bounded, and tools run sequentially.
+No full corpus/roundtrip, stage exit, golden-init or platform-exception success
+is claimed; inherited #179 evidence and disclosed island/scanf limits remain.
+
+Independent parent pinned-source/diff review and acceptance repeat pass:
+bounded vet, fresh bounded tests, all 15 engine/library defaults, command
+**1308 sections / 96599 lines**, strict **233-entry** ordinary turn and all
+**13 lifecycle / 10 command / 15 USE** controls. Spec retains **23/102/0**
+with golden still NO (initialization exit 2). Parent verifies both complete
+inherited recording prefixes, all **1212** original archived files and the
+accepted C executable hash before delivery. No monthly/CLI phase integration
+or export completion is claimed. Logs: `tmp/parent173-{vet,tests,turn-full,spec}.log`,
+`tmp/parent173-*-default.log`; strict summaries: `tmp/parent173-turn/`.
+
 ## Follow-C pin gate (#179)
 
 **0.108.1-alpha** follows merged G3 #360 at immutable

@@ -205,8 +205,6 @@ int evening, auto_attack_flag;
 ilist wait_list, second_wait_list;
 int pledge_backlinks;
 int immed_see_all, month_done, show_combat_flag;
-#define phase_ran(x) ((void)0)
-#define phase_acted(x) ((void)0)
 ''')
     gm = open(f'{src}/gm.c').read()
     for name in ['gold_garrison', 'gold_combat', 'gold_combat_indep',
@@ -565,7 +563,6 @@ for region in ['hades', 'faery']:
         out.write(f'#line 1 "olympia/{region}.c"\n')
         out.write(source[:source.index(f'void\ncreate_{region}(void)')])
         if region == 'hades':
-            out.write('#define phase_ran(x) ((void)0)\n#define phase_acted(x) ((void)0)\n')
             for name in ['create_hades_nasty', 'auto_hades_sup', 'auto_hades', 'random_hades_loc']:
                 m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
                 if not m:
@@ -576,7 +573,6 @@ for region in ['hades', 'faery']:
             out.write('void drv_hades_unit(int who) { auto_hades_sup(who); }\n')
             out.write('int drv_nasty_roll(int slot, int sub, int low, int high) { return hads_nasty(slot, sub, low, high); }\n')
         else:
-            out.write('#define phase_ran(x) ((void)0)\n#define phase_acted(x) ((void)0)\n')
             for name in ['create_elven_hunt', 'warn_human', 'auto_faery_sup', 'auto_faery']:
                 m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
                 if not m:
@@ -591,7 +587,6 @@ source = open(f'{src}/npc.c').read()
 with open(f'{dst}/npc-rng.c', 'w') as out:
     out.write('#line 1 "olympia/npc.c"\n')
     out.write(source[:source.index('int\ncontrolled_humans_here(')])
-    out.write('#define phase_ran(x) ((void)0)\n#define phase_acted(x) ((void)0)\n')
     for name in ['auto_unsworn', 'auto_mob', 'auto_bandit', 'queue_npc_orders']:
         m = re.search(rf'^(?:static )?[^\n(]*\n{name}\(.*?^\}}\n', source, re.M | re.S)
         if not m:
@@ -627,12 +622,13 @@ int immediate, flush_always = 1, pretty_data_files, time_self;
 int win_flag;
 ilist trades_to_check;
 ''')
-# Complete unchanged command and USE coverage, including all static owners.
+# Complete unchanged coverage.c, including all three families and static owners.
 source = open(f'{src}/coverage.c').read()
 with open(f'{dst}/coverage-command.c', 'w') as out:
     out.write('#line 1 "olympia/coverage.c"\n')
-    out.write(source[:source.index('/*\n *  Ultron phase coverage dump')])
+    out.write(source)
     out.write('''
+void drv_ph_seed(int row, int ran, int acted) { ph_ran[row] = ran; ph_acted[row] = acted; }
 void drv_coverage_state(int cmd) {
  printf("coverage allocated %d ncmds %d table %d\\n", cov_counts != NULL, cov_ncmds, cov_num_cmds());
  if (cov_counts && cmd >= 0 && cmd < cov_ncmds)
@@ -647,6 +643,16 @@ void drv_ucov_state(void) {
 }
 void drv_ucov_seed(int ent, int outcome, int value) { ucov_skills[ent][outcome] = value; }
 ''')
+    # Names and evaluated enum values come from the original C header, never Go.
+    header = open(f'{src}/oly.h').read()
+    enum = header[header.index('PH_SAVAGE_SPAWN'):header.index('PH_MAX')]
+    names = re.findall(r'\bPH_[A-Z_]+\b', enum)
+    if len(names) != 74 or len(set(names)) != 74:
+        sys.exit('unexpected phase enum')
+    out.write('void drv_ph_metadata(void) {\n')
+    for name in names:
+        out.write(f'printf("{name} %d\\n", {name});\n')
+    out.write('printf("PH_MAX %d\\n", PH_MAX);\n}\n')
 PY
 
 # Expose only the existing static reader; all parsing and command loading
@@ -680,6 +686,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section phase coverage '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section phase coverage invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected phase coverage status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section use coverage '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

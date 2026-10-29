@@ -90476,3 +90476,6124 @@ trunc name [Buyer One]
 stderr:
 
 exit 0
+stdout:
+section phase coverage direct NULL empty zero rows repeated groups and overflow
+> lore_root
+> phcov metadata
+PH_SAVAGE_SPAWN 0
+PH_HADES_SPAWN 1
+PH_HADES_UNIT 2
+PH_NPC_UNSWORN 3
+PH_NPC_UNDEAD 4
+PH_NPC_SAVAGE 5
+PH_NPC_MOB 6
+PH_NPC_BANDIT 7
+PH_NPC_TOKEN 8
+PH_GARR_GUARD 9
+PH_TOKEN_MELT 10
+PH_TOKEN_ADD 11
+PH_STOP_INTERRUPT 12
+PH_STOP_IDLE 13
+PH_TRADE_MATCH 14
+PH_GARR_PAY 15
+PH_COAST_DAMAGE 16
+PH_COAST_OMEN 17
+PH_LOC_MINE 18
+PH_LOC_INN 19
+PH_OCEAN_PLUNGE 20
+PH_HEAL_HEAL 21
+PH_HEAL_SICKEN 22
+PH_HEAL_RECOVER 23
+PH_PRISONER_ESCAPE 24
+PH_CURSE_ERODE 25
+PH_RING_AURA 26
+PH_DOGS_BARK 27
+PH_WEATHER_STORM 28
+PH_FAERY_SPAWN 29
+PH_FAERY_UNIT 30
+PH_SPECIAL_OPEN 31
+PH_SPECIAL_CLOSE 32
+PH_CITY_GOLD 33
+PH_GARR_TAX 34
+PH_GARR_CASTLE 35
+PH_GARR_OWNER 36
+PH_TAXES 37
+PH_CLAIM 38
+PH_NP 39
+PH_UNFORMED 40
+PH_AURA 41
+PH_ABILITY_SHROUD 42
+PH_REGION_SHROUD 43
+PH_MED_HINDER 44
+PH_BARRIER_DEC 45
+PH_BARRIER_GONE 46
+PH_LOY_DECAY 47
+PH_LOY_RELEASE 48
+PH_LOY_DESERT 49
+PH_PILLAGE 50
+PH_RELIC_DECAY 51
+PH_RELIC_VANISH 52
+PH_HIDE_MAGE 53
+PH_INN_INCOME 54
+PH_INN_TRAVELLER 55
+PH_TEMPLE 56
+PH_MAINT_PAID 57
+PH_MAINT_STARVE 58
+PH_ANIMAL 59
+PH_GHOST 60
+PH_CORPSE 61
+PH_BODY 62
+PH_STORM_WEAKEN 63
+PH_STORM_GONE 64
+PH_STORM_MOVE 65
+PH_MINE_DEC 66
+PH_MINE_CLEAR 67
+PH_PRODUCTION 68
+PH_AUTO_DROP 69
+PH_LINK_DEC 70
+PH_LINK_OPEN 71
+PH_QUEST 72
+PH_RANKS 73
+PH_MAX 74
+> phcov ran -1
+> phcov acted 74
+> phcov write
+> phcov path phase.tsv
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> phcov sweep
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2633:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	1	74
+day0	auto_hades	spawn	2	73
+day0	auto_hades	unit	2	72
+day0	queue_npc_orders	unsworn	4	71
+day0	queue_npc_orders	undead	4	70
+day0	queue_npc_orders	savage	4	69
+day0	queue_npc_orders	mob	4	68
+day0	queue_npc_orders	bandit	4	67
+day0	queue_npc_orders	token	4	66
+day0	ping_garrisons	guard	10	65
+day0	check_token_units	melt	11	64
+day0	check_token_units	add	11	63
+day0	process_interrupted_units	interrupt	13	62
+day0	process_interrupted_units	idle	13	61
+day1	match_all_trades	trade	15	60
+daily	default_garrison_pay	pay	16	59
+daily	ship_coastal_damage	damage	17	58
+daily	ship_coastal_damage	omen	17	57
+daily	random_loc_damage	mine	19	56
+daily	random_loc_damage	inn	19	55
+daily	check_ocean_chars	plunge	21	54
+daily	heal_characters	heal	22	53
+daily	heal_characters	sicken	22	52
+daily	heal_characters	recover	22	51
+daily	weekly_prisoner_escape_check	escape	25	50
+daily	noncreator_curse_erode	erode	26	49
+daily	increment_stone_ring_aura	aura	27	48
+daily	dogs_bark_at_hidden_chars	bark	28	47
+daily	natural_weather	storm	29	46
+daily	auto_faery	spawn	30	45
+daily	auto_faery	unit	30	44
+month	special_locs_open	open	32	43
+month	special_locs_close	close	33	42
+month	move_city_gold	move	34	41
+month	garrison_gold	tax	35	40
+month	garrison_gold	castle	35	39
+month	garrison_gold	owner	35	38
+month	collect_taxes	collect	38	37
+month	add_claim_gold	grant	39	36
+month	add_noble_points	point	40	35
+month	add_unformed	mint	41	34
+month	increment_current_aura	aura	42	33
+month	decrement_ability_shroud	decrement	43	32
+month	decrement_region_shroud	decrement	44	31
+month	decrement_meditation_hinder	decrement	45	30
+month	decrement_loc_barrier	decrement	46	29
+month	decrement_loc_barrier	dissipate	46	28
+month	loyalty_decay	decay	48	27
+month	loyalty_decay	release	48	26
+month	loyalty_decay	desert	48	25
+month	pillage_decay	decay	51	24
+month	relic_decay	decay	52	23
+month	relic_decay	vanish	52	22
+month	hide_mage_decay	decrement	54	21
+month	inn_income	income	55	20
+month	inn_income	traveller	55	19
+month	temple_income	offering	57	18
+month	charge_maint_costs	paid	58	17
+month	charge_maint_costs	starve	58	16
+month	animal_deaths	death	60	15
+month	ghost_warrior_decay	evaporate	61	14
+month	corpse_decay	decompose	62	13
+month	dead_body_rot	rot	63	12
+month	storm_decay	weaken	64	11
+month	storm_decay	dissipate	64	10
+month	storm_move	move	66	9
+month	collapsed_mine_decay	decrement	67	8
+month	collapsed_mine_decay	clear	67	7
+month	post_production	run	69	6
+month	auto_drop	drop	70	5
+month	link_decay	decrement	71	4
+month	link_decay	open	71	3
+month	quest_decay	decrement	73	2
+month	determine_noble_ranks	rank	74	1
+
+end file bytes
+> phcov path NULL
+> phcov ran -1
+> phcov acted 74
+> phcov sweep
+> phcov write
+> phcov path EMPTY
+> phcov ran 0
+> phcov acted 73
+> phcov write
+> phcov path phase.tsv
+> phcov seed 1 2147483647 2147483647
+> phcov seed 2 123 2147483647
+> phcov ran 1
+> phcov ran 2
+> phcov acted 1
+> phcov acted 2
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2671:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	2	74
+day0	auto_hades	spawn	-2147483648	-2147483648
+day0	auto_hades	unit	-2147483648	-2147483648
+day0	queue_npc_orders	unsworn	4	71
+day0	queue_npc_orders	undead	4	70
+day0	queue_npc_orders	savage	4	69
+day0	queue_npc_orders	mob	4	68
+day0	queue_npc_orders	bandit	4	67
+day0	queue_npc_orders	token	4	66
+day0	ping_garrisons	guard	10	65
+day0	check_token_units	melt	11	64
+day0	check_token_units	add	11	63
+day0	process_interrupted_units	interrupt	13	62
+day0	process_interrupted_units	idle	13	61
+day1	match_all_trades	trade	15	60
+daily	default_garrison_pay	pay	16	59
+daily	ship_coastal_damage	damage	17	58
+daily	ship_coastal_damage	omen	17	57
+daily	random_loc_damage	mine	19	56
+daily	random_loc_damage	inn	19	55
+daily	check_ocean_chars	plunge	21	54
+daily	heal_characters	heal	22	53
+daily	heal_characters	sicken	22	52
+daily	heal_characters	recover	22	51
+daily	weekly_prisoner_escape_check	escape	25	50
+daily	noncreator_curse_erode	erode	26	49
+daily	increment_stone_ring_aura	aura	27	48
+daily	dogs_bark_at_hidden_chars	bark	28	47
+daily	natural_weather	storm	29	46
+daily	auto_faery	spawn	30	45
+daily	auto_faery	unit	30	44
+month	special_locs_open	open	32	43
+month	special_locs_close	close	33	42
+month	move_city_gold	move	34	41
+month	garrison_gold	tax	35	40
+month	garrison_gold	castle	35	39
+month	garrison_gold	owner	35	38
+month	collect_taxes	collect	38	37
+month	add_claim_gold	grant	39	36
+month	add_noble_points	point	40	35
+month	add_unformed	mint	41	34
+month	increment_current_aura	aura	42	33
+month	decrement_ability_shroud	decrement	43	32
+month	decrement_region_shroud	decrement	44	31
+month	decrement_meditation_hinder	decrement	45	30
+month	decrement_loc_barrier	decrement	46	29
+month	decrement_loc_barrier	dissipate	46	28
+month	loyalty_decay	decay	48	27
+month	loyalty_decay	release	48	26
+month	loyalty_decay	desert	48	25
+month	pillage_decay	decay	51	24
+month	relic_decay	decay	52	23
+month	relic_decay	vanish	52	22
+month	hide_mage_decay	decrement	54	21
+month	inn_income	income	55	20
+month	inn_income	traveller	55	19
+month	temple_income	offering	57	18
+month	charge_maint_costs	paid	58	17
+month	charge_maint_costs	starve	58	16
+month	animal_deaths	death	60	15
+month	ghost_warrior_decay	evaporate	61	14
+month	corpse_decay	decompose	62	13
+month	dead_body_rot	rot	63	12
+month	storm_decay	weaken	64	11
+month	storm_decay	dissipate	64	10
+month	storm_move	move	66	9
+month	collapsed_mine_decay	decrement	67	8
+month	collapsed_mine_decay	clear	67	7
+month	post_production	run	69	6
+month	auto_drop	drop	70	5
+month	link_decay	decrement	71	4
+month	link_decay	open	71	3
+month	quest_decay	decrement	73	2
+month	determine_noble_ranks	rank	74	2
+
+end file bytes
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2671:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	2	74
+day0	auto_hades	spawn	-2147483648	-2147483648
+day0	auto_hades	unit	-2147483648	-2147483648
+day0	queue_npc_orders	unsworn	4	71
+day0	queue_npc_orders	undead	4	70
+day0	queue_npc_orders	savage	4	69
+day0	queue_npc_orders	mob	4	68
+day0	queue_npc_orders	bandit	4	67
+day0	queue_npc_orders	token	4	66
+day0	ping_garrisons	guard	10	65
+day0	check_token_units	melt	11	64
+day0	check_token_units	add	11	63
+day0	process_interrupted_units	interrupt	13	62
+day0	process_interrupted_units	idle	13	61
+day1	match_all_trades	trade	15	60
+daily	default_garrison_pay	pay	16	59
+daily	ship_coastal_damage	damage	17	58
+daily	ship_coastal_damage	omen	17	57
+daily	random_loc_damage	mine	19	56
+daily	random_loc_damage	inn	19	55
+daily	check_ocean_chars	plunge	21	54
+daily	heal_characters	heal	22	53
+daily	heal_characters	sicken	22	52
+daily	heal_characters	recover	22	51
+daily	weekly_prisoner_escape_check	escape	25	50
+daily	noncreator_curse_erode	erode	26	49
+daily	increment_stone_ring_aura	aura	27	48
+daily	dogs_bark_at_hidden_chars	bark	28	47
+daily	natural_weather	storm	29	46
+daily	auto_faery	spawn	30	45
+daily	auto_faery	unit	30	44
+month	special_locs_open	open	32	43
+month	special_locs_close	close	33	42
+month	move_city_gold	move	34	41
+month	garrison_gold	tax	35	40
+month	garrison_gold	castle	35	39
+month	garrison_gold	owner	35	38
+month	collect_taxes	collect	38	37
+month	add_claim_gold	grant	39	36
+month	add_noble_points	point	40	35
+month	add_unformed	mint	41	34
+month	increment_current_aura	aura	42	33
+month	decrement_ability_shroud	decrement	43	32
+month	decrement_region_shroud	decrement	44	31
+month	decrement_meditation_hinder	decrement	45	30
+month	decrement_loc_barrier	decrement	46	29
+month	decrement_loc_barrier	dissipate	46	28
+month	loyalty_decay	decay	48	27
+month	loyalty_decay	release	48	26
+month	loyalty_decay	desert	48	25
+month	pillage_decay	decay	51	24
+month	relic_decay	decay	52	23
+month	relic_decay	vanish	52	22
+month	hide_mage_decay	decrement	54	21
+month	inn_income	income	55	20
+month	inn_income	traveller	55	19
+month	temple_income	offering	57	18
+month	charge_maint_costs	paid	58	17
+month	charge_maint_costs	starve	58	16
+month	animal_deaths	death	60	15
+month	ghost_warrior_decay	evaporate	61	14
+month	corpse_decay	decompose	62	13
+month	dead_body_rot	rot	63	12
+month	storm_decay	weaken	64	11
+month	storm_decay	dissipate	64	10
+month	storm_move	move	66	9
+month	collapsed_mine_decay	decrement	67	8
+month	collapsed_mine_decay	clear	67	7
+month	post_production	run	69	6
+month	auto_drop	drop	70	5
+month	link_decay	decrement	71	4
+month	link_decay	open	71	3
+month	quest_decay	decrement	73	2
+month	determine_noble_ranks	rank	74	2
+
+end file bytes
+> set immediate 1
+> phcov ran -1
+> phcov acted 74
+> phcov sweep
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2671:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	2	74
+day0	auto_hades	spawn	-2147483648	-2147483648
+day0	auto_hades	unit	-2147483648	-2147483648
+day0	queue_npc_orders	unsworn	4	71
+day0	queue_npc_orders	undead	4	70
+day0	queue_npc_orders	savage	4	69
+day0	queue_npc_orders	mob	4	68
+day0	queue_npc_orders	bandit	4	67
+day0	queue_npc_orders	token	4	66
+day0	ping_garrisons	guard	10	65
+day0	check_token_units	melt	11	64
+day0	check_token_units	add	11	63
+day0	process_interrupted_units	interrupt	13	62
+day0	process_interrupted_units	idle	13	61
+day1	match_all_trades	trade	15	60
+daily	default_garrison_pay	pay	16	59
+daily	ship_coastal_damage	damage	17	58
+daily	ship_coastal_damage	omen	17	57
+daily	random_loc_damage	mine	19	56
+daily	random_loc_damage	inn	19	55
+daily	check_ocean_chars	plunge	21	54
+daily	heal_characters	heal	22	53
+daily	heal_characters	sicken	22	52
+daily	heal_characters	recover	22	51
+daily	weekly_prisoner_escape_check	escape	25	50
+daily	noncreator_curse_erode	erode	26	49
+daily	increment_stone_ring_aura	aura	27	48
+daily	dogs_bark_at_hidden_chars	bark	28	47
+daily	natural_weather	storm	29	46
+daily	auto_faery	spawn	30	45
+daily	auto_faery	unit	30	44
+month	special_locs_open	open	32	43
+month	special_locs_close	close	33	42
+month	move_city_gold	move	34	41
+month	garrison_gold	tax	35	40
+month	garrison_gold	castle	35	39
+month	garrison_gold	owner	35	38
+month	collect_taxes	collect	38	37
+month	add_claim_gold	grant	39	36
+month	add_noble_points	point	40	35
+month	add_unformed	mint	41	34
+month	increment_current_aura	aura	42	33
+month	decrement_ability_shroud	decrement	43	32
+month	decrement_region_shroud	decrement	44	31
+month	decrement_meditation_hinder	decrement	45	30
+month	decrement_loc_barrier	decrement	46	29
+month	decrement_loc_barrier	dissipate	46	28
+month	loyalty_decay	decay	48	27
+month	loyalty_decay	release	48	26
+month	loyalty_decay	desert	48	25
+month	pillage_decay	decay	51	24
+month	relic_decay	decay	52	23
+month	relic_decay	vanish	52	22
+month	hide_mage_decay	decrement	54	21
+month	inn_income	income	55	20
+month	inn_income	traveller	55	19
+month	temple_income	offering	57	18
+month	charge_maint_costs	paid	58	17
+month	charge_maint_costs	starve	58	16
+month	animal_deaths	death	60	15
+month	ghost_warrior_decay	evaporate	61	14
+month	corpse_decay	decompose	62	13
+month	dead_body_rot	rot	63	12
+month	storm_decay	weaken	64	11
+month	storm_decay	dissipate	64	10
+month	storm_move	move	66	9
+month	collapsed_mine_decay	decrement	67	8
+month	collapsed_mine_decay	clear	67	7
+month	post_production	run	69	6
+month	auto_drop	drop	70	5
+month	link_decay	decrement	71	4
+month	link_decay	open	71	3
+month	quest_decay	decrement	73	2
+month	determine_noble_ranks	rank	74	2
+
+end file bytes
+> set immediate 0
+> phcov path absent/phase.tsv
+> phcov write
+> lore_file blocker bytes
+> phcov path blocker/phase.tsv
+> phcov write
+> lore_dir directory
+> phcov path directory
+> phcov write
+> phcov path phase.tsv
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2671:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	2	74
+day0	auto_hades	spawn	-2147483648	-2147483648
+day0	auto_hades	unit	-2147483648	-2147483648
+day0	queue_npc_orders	unsworn	4	71
+day0	queue_npc_orders	undead	4	70
+day0	queue_npc_orders	savage	4	69
+day0	queue_npc_orders	mob	4	68
+day0	queue_npc_orders	bandit	4	67
+day0	queue_npc_orders	token	4	66
+day0	ping_garrisons	guard	10	65
+day0	check_token_units	melt	11	64
+day0	check_token_units	add	11	63
+day0	process_interrupted_units	interrupt	13	62
+day0	process_interrupted_units	idle	13	61
+day1	match_all_trades	trade	15	60
+daily	default_garrison_pay	pay	16	59
+daily	ship_coastal_damage	damage	17	58
+daily	ship_coastal_damage	omen	17	57
+daily	random_loc_damage	mine	19	56
+daily	random_loc_damage	inn	19	55
+daily	check_ocean_chars	plunge	21	54
+daily	heal_characters	heal	22	53
+daily	heal_characters	sicken	22	52
+daily	heal_characters	recover	22	51
+daily	weekly_prisoner_escape_check	escape	25	50
+daily	noncreator_curse_erode	erode	26	49
+daily	increment_stone_ring_aura	aura	27	48
+daily	dogs_bark_at_hidden_chars	bark	28	47
+daily	natural_weather	storm	29	46
+daily	auto_faery	spawn	30	45
+daily	auto_faery	unit	30	44
+month	special_locs_open	open	32	43
+month	special_locs_close	close	33	42
+month	move_city_gold	move	34	41
+month	garrison_gold	tax	35	40
+month	garrison_gold	castle	35	39
+month	garrison_gold	owner	35	38
+month	collect_taxes	collect	38	37
+month	add_claim_gold	grant	39	36
+month	add_noble_points	point	40	35
+month	add_unformed	mint	41	34
+month	increment_current_aura	aura	42	33
+month	decrement_ability_shroud	decrement	43	32
+month	decrement_region_shroud	decrement	44	31
+month	decrement_meditation_hinder	decrement	45	30
+month	decrement_loc_barrier	decrement	46	29
+month	decrement_loc_barrier	dissipate	46	28
+month	loyalty_decay	decay	48	27
+month	loyalty_decay	release	48	26
+month	loyalty_decay	desert	48	25
+month	pillage_decay	decay	51	24
+month	relic_decay	decay	52	23
+month	relic_decay	vanish	52	22
+month	hide_mage_decay	decrement	54	21
+month	inn_income	income	55	20
+month	inn_income	traveller	55	19
+month	temple_income	offering	57	18
+month	charge_maint_costs	paid	58	17
+month	charge_maint_costs	starve	58	16
+month	animal_deaths	death	60	15
+month	ghost_warrior_decay	evaporate	61	14
+month	corpse_decay	decompose	62	13
+month	dead_body_rot	rot	63	12
+month	storm_decay	weaken	64	11
+month	storm_decay	dissipate	64	10
+month	storm_move	move	66	9
+month	collapsed_mine_decay	decrement	67	8
+month	collapsed_mine_decay	clear	67	7
+month	post_production	run	69	6
+month	auto_drop	drop	70	5
+month	link_decay	decrement	71	4
+month	link_decay	open	71	3
+month	quest_decay	decrement	73	2
+month	determine_noble_ranks	rank	74	2
+
+end file bytes
+stderr:
+Can't write !
+Can't write absent/phase.tsv!
+Can't write blocker/phase.tsv!
+Can't write directory!
+
+exit 0
+stdout:
+section phase coverage invalid ran negative
+> phcov path EMPTY
+> phcov ran -1
+stderr:
+assertion failure: olympia/coverage.c (405): row >= 0 && row < PH_MAX
+
+exit 134
+stdout:
+section phase coverage invalid ran upper bound
+> phcov path EMPTY
+> phcov ran 74
+stderr:
+assertion failure: olympia/coverage.c (405): row >= 0 && row < PH_MAX
+
+exit 134
+stdout:
+section phase coverage invalid acted negative
+> phcov path EMPTY
+> phcov acted -1
+stderr:
+assertion failure: olympia/coverage.c (417): row >= 0 && row < PH_MAX
+
+exit 134
+stdout:
+section phase coverage invalid acted upper bound
+> phcov path EMPTY
+> phcov acted 74
+stderr:
+assertion failure: olympia/coverage.c (417): row >= 0 && row < PH_MAX
+
+exit 134
+stdout:
+section phase coverage real stops interrupt idle repeat and retained successor
+> lore_root
+> phcov path phase.tsv
+> place 9000
+> link 9000 1001
+> resolve_wait
+> set show_day 1
+> set day 0
+> queue wait time 100
+> load
+load 1
+> do
+> queue STOP extra
+> queue format 21
+> orders 200 1001 stop
+> orders 200 1001 stop
+> field 1000 moving 5
+> stops
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	1	1
+day0	process_interrupted_units	idle	1	1
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li format 21
+ ar 21 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 21 0 0 0 0 0 0 0; parse [format] [21]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> wait_dump
+wait args 1
+wait arg 0 100 0 [NULL]
+> lists
+wait_list:
+collectors:
+second_wait_list:
+second_wait 0
+> stops
+> stops
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	3	1
+day0	process_interrupted_units	idle	3	2
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 1 touched 0 0
+orders 1000:
+orders 1001:
+> readlog 200
+log 200:
+1000:0::0:0:> wait time 100
+1000:0::0:0:> stop
+1000:0::0:0:Interrupt current order.
+1001:0::0:0:> stop
+1001:0::0:0:No order is currently executing.
+1001:0::0:0:> stop
+1001:0::0:0:No order is currently executing.
+stderr:
+
+exit 0
+stdout:
+section phase coverage real multiple seller settlements count reduced buyers not settlements
+> lore_root
+> phcov path phase.tsv
+> entity 1 4 0
+> entity 500 4 0
+> entity 1002 2 0
+> field 1002 lord 201
+> entity 9000 3 14
+> link 9000 1000
+> link 9000 1002
+> link 9000 1001
+> inventory 1000 1 100
+> inventory 1001 500 2
+> inventory 1002 500 2
+> trade 1000 1 500 5 10 1000 0
+> trade 1001 2 500 2 5 1001 99
+> trade 1002 2 500 2 5 1002 99
+> trade 9000 2 500 5 1 9000 99
+> economy all
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	1	1
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> economy all
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	2	1
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> save 1000
+1000 char 0
+il	1 79 \
+	500 5
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+il	1 10
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 1002
+1002 char 0
+il	1 10
+LI
+ wh 9000
+CH
+ lo 201
+
+> save 9000
+9000 loc city
+tl	2 500 4 1 0 0 0 0
+LI
+ hl 1000 1002 1001 
+
+> economy state
+trade gold 0 pot basket 0 opium 0
+pending trades:
+> readlog 200
+log 200:
+1000:0::0::Bought two~<no subkind>~[500] from <no subkind>~[1002] for 10~gold.
+1000:0::0::Bought two~<no subkind>~[500] from <no subkind>~[1001] for 10~gold.
+1001:0::0::Sold two~<no subkind>~[500] to <no subkind>~[1000] for 10~gold.
+1000:0::0::Bought one~<no subkind>~[500] from City~[9000] for 1~gold.
+> readlog 201
+log 201:
+1002:0::0::Sold two~<no subkind>~[500] to <no subkind>~[1000] for 10~gold.
+stderr:
+warning: plural name not set for item [500]
+warning: plural name not set for item [500]
+warning: plural name not set for item [500]
+warning: plural name not set for item [500]
+warning: plural name not set for item [500]
+warning: plural name not set for item [500]
+
+exit 0
+stdout:
+section phase coverage real token attempts with no effects and successful shared mint
+> lore_root
+> phcov path phase.tsv
+> set gm 200
+> master 0
+> set turn 1
+> set indep 202
+> entity 202 1 52
+> place 9000
+> field 200 touched 9000
+> entity 22 4 0
+> name 22 Wolf
+> field 22 capturable 1
+> entity 60000 4 63
+> field 60000 unique 1000
+> field 60000 token_num 2
+> field 60000 token_ni 22
+> inventory 1000 60000 1
+> entity 60001 4 63
+> field 60001 unique 9000
+> field 60001 token_num 5
+> inventory 9000 60001 1
+> reconcile
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	1	1
+day0	check_token_units	add	1	1
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> reconcile
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	2	2
+day0	check_token_units	add	2	2
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> token_state 60000
+60000 item npc_token
+IT
+ un 1000
+IM
+ tn 2
+ ti 22
+PL
+ un 110158 140449 
+
+token row 110158
+110158 char ni
+LI
+ wh 9000
+CH
+ ni 22
+ lo 200
+ he -1
+ lk 4
+ at 60
+ df 60
+CM
+ ot 60000
+MI
+ ca r
+
+token row 140449
+140449 char ni
+LI
+ wh 9000
+CH
+ ni 22
+ lo 200
+ he -1
+ lk 4
+ at 60
+ df 60
+CM
+ ot 60000
+MI
+ ca r
+
+pending trades:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+token output 200
+bits: 13 9000
+token output 201
+bits:
+token output 202
+bits:
+> token_state 60001
+60001 item npc_token
+IT
+ un 9000
+IM
+ tn 1
+
+pending trades:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+token output 200
+bits: 13 9000
+token output 201
+bits:
+token output 202
+bits:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units: 110158 140449
+output 0 0 0 0 0 touched 1 0
+> save 9000
+9000 loc plain
+il	60001 1
+LI
+ hl 1000 110158 140449 
+
+> orders_file 200
+orders file 200:
+> readlog 200
+log 200:
+13:0::0::add_token_units(Npc_token~[b000])
+13:0::0::  adding Wolf~[110158] to Npc_token~[b000]
+9000:0::0::Wolf~[110158] appears.
+13:0::0::  adding Wolf~[140449] to Npc_token~[b000]
+9000:0::0::Wolf~[140449] appears.
+13:0::0::add_token_units(Npc_token~[b000])
+> newitem 1000 42
+created 64258
+> save_new
+64258 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section phase coverage real guards payroll zero repeats and healthy skips
+> lore_root
+> phcov path phase.tsv
+> entity 1 4 0
+> entity 12 4 0
+> field 12 man 1
+> field 12 attack 20
+> field 12 defense 30
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 1010 2 64
+> entity 1011 2 64
+> field 1010 lord 200
+> field 1011 lord 201
+> field 1010 default_garrison 1
+> inventory 1010 12 10
+> inventory 1011 12 9
+> link 9000 1010
+> link 9001 1011
+> link 1010 1000
+> link 1000 1001
+> field 1001 prisoner 1
+> set garrison_pay 7
+> garrison ping
+> garrison pay
+> set garrison_pay 0
+> garrison pay
+> garrison ping
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	2	2
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	2	2
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> garrison state
+garrison pay 0 gold 7 show 0
+vector:
+garrison char 1000 leader 1010 default 0 prisoner 0 npc 0 guard 0 gold 7
+garrison char 1001 leader 1010 default 0 prisoner 1 npc 0 guard 0 gold 0
+garrison char 1010 leader 1010 default 1 prisoner 0 npc 1 guard 1 gold 0
+garrison char 1011 leader 1011 default 0 prisoner 0 npc 1 guard 0 gold 0
+player 200
+output: 1000
+player 201
+output:
+> save 1000
+1000 char 0
+il	1 7
+LI
+ wh 1010
+ hl 1001 
+CH
+ lo 200
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pr 1
+
+> save 1010
+1010 char garrison
+il	12 10
+LI
+ wh 9000
+ hl 1000 
+CH
+ lo 200
+ gu 1
+CM
+ dg 1
+
+> save 1011
+1011 char garrison
+il	12 9
+LI
+ wh 9001
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Received 7~gold from Garrison~[1010].
+1000:0::0::Received 0~gold from Garrison~[1010].
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section phase coverage real healing recovery sick death clamp and unchanged RNG siblings
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 1
+> set day 7
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 3
+> entity 9100 3 37
+> entity 10 4 0
+> entity 1 4 0
+> entity 1103 2 0
+> entity 1020 2 0
+> entity 1161 2 0
+> entity 1040 2 0
+> link 10000 9000
+> link 9000 9100
+> link 9000 1000
+> link 9000 1001
+> link 9100 1103
+> link 9100 1020
+> link 9100 1161
+> link 9100 1040
+> field 1103 lord 200
+> field 1020 lord 200
+> field 1161 lord 200
+> field 1040 lord 200
+> field 1103 sick 1
+> field 1020 sick 1
+> field 1161 sick 1
+> field 1040 sick 1
+> field 1103 health 50
+> field 1020 health 50
+> field 1161 health 50
+> field 1040 health 50
+> field 1000 health 0
+> field 1000 sick 1
+> field 1001 health 99
+> heal
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	1	4
+daily	heal_characters	sicken	1	2
+daily	heal_characters	recover	1	3
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> heal
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	2	7
+daily	heal_characters	sicken	2	3
+daily	heal_characters	recover	2	3
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> save 1000
+1000 item dead body
+na dead body
+CH
+ si 1
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ he 100
+
+> save 1103
+1103 char 0
+LI
+ wh 9100
+CH
+ lo 200
+ he 62
+
+> save 1020
+1020 char 0
+LI
+ wh 9100
+CH
+ lo 200
+ he 80
+
+> save 1161
+1161 char 0
+LI
+ wh 9100
+CH
+ lo 200
+ he 68
+
+> save 1040
+1040 char 0
+LI
+ wh 9100
+CH
+ lo 200
+ he 22
+ si 1
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] lost zero health.
+1000:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1000] died in Plain~[9000].
+1001:0::0::<no subkind>~[1001] gained one health.
+1001:0::0::<no subkind>~[1001] is fully healed.
+1020:0::0::<no subkind>~[1020] defeated illness and is now recovering.
+1020:0::0::<no subkind>~[1020] gained 15 health.
+1040:0::0::<no subkind>~[1040] lost 14 health.
+1103:0::0::<no subkind>~[1103] defeated illness and is now recovering.
+1103:0::0::<no subkind>~[1103] gained six health.
+1161:0::0::<no subkind>~[1161] defeated illness and is now recovering.
+1161:0::0::<no subkind>~[1161] gained nine health.
+1020:0::0::<no subkind>~[1020] gained 15 health.
+1040:0::0::<no subkind>~[1040] lost 14 health.
+1103:0::0::<no subkind>~[1103] gained six health.
+1161:0::0::<no subkind>~[1161] gained nine health.
+> weather probe 9000 257
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> newitem 9000 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section phase coverage real coast reef rock and both omen branches
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 1
+> set day 1
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 9002 3 4
+> entity 9003 3 1
+> link 10000 9000
+> link 10000 9001
+> link 10000 9002
+> link 10000 9003
+> routes 9000 0 9001 0 0
+> routes 9003 0 9003 0 0
+> entity 9203 9 30
+> entity 9124 9 31
+> entity 9422 9 66
+> entity 9133 9 30
+> entity 9135 9 31
+> entity 9344 9 66
+> entity 9473 9 30
+> entity 9230 9 31
+> entity 9143 9 66
+> entity 9100 9 30
+> link 9000 9203
+> link 9000 9124
+> link 9000 9422
+> link 9000 9133
+> link 9000 9135
+> link 9000 9344
+> link 9003 9473
+> link 9003 9230
+> link 9003 9143
+> link 9003 9100
+> link 9473 1000
+> link 9230 1001
+> field 200 touched 9000
+> field 200 touched 9003
+> damage ships
+> routes 9000 0 9002 0 0
+> damage ships
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	2	6
+daily	ship_coastal_damage	omen	2	6
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> save 9203
+9203 ship galley
+LI
+ wh 9000
+SL
+ da 3
+
+> save 9133
+9133 ship galley
+LI
+ wh 9000
+SL
+ da 6
+
+> save 9000
+9000 loc ocean
+LI
+ wh 10000
+ hl 9203 9124 9422 9133 9135 9344 
+LO
+ pd 0 9002 0 0 
+
+> save 9003
+9003 loc ocean
+LI
+ wh 10000
+ hl 9473 9230 9143 9100 
+LO
+ pd 0 9003 0 0 
+
+> readlog 200
+log 200:
+9000:0::0::Roundship~[9124] struck a coastal reef.  There is minor damage to the ship.
+9003:0::0::Sharks circle in the water a short distance from the ship.
+9000:0::0::Galley~[9203] struck a coastal reef.  There is minor damage to the ship.
+9003:0::0::Hungry looking birds circle overhead.
+9000:0::0::Raft~[9422] struck a coastal reef.  There is minor damage to the ship.
+9003:0::0::Hungry looking birds circle overhead.
+9000:0::0::Galley~[9133] struck some submerged rocks.  There is minor damage to the ship.
+9000:0::0::Roundship~[9135] struck some submerged rocks.  There is minor damage to the ship.
+9003:0::0::Sharks circle in the water a short distance from the ship.
+9003:0::0::Hungry looking birds circle overhead.
+9000:0::0::Raft~[9344] struck some submerged rocks.  There is minor damage to the ship.
+9003:0::0::Hungry looking birds circle overhead.
+> weather probe 9000 257
+weather shuffle: 300 314 328 349 370 321 363 356 342 307 335
+weather strength 2
+> newitem 9001 0
+created 65748
+> save_new
+65748 item 0
+IT
+ un 9001
+
+stderr:
+
+exit 0
+stdout:
+section phase coverage real mine threshold and inn trigger repeats nontrigger
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 1
+> set day 1
+> entity 11 4 0
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> entity 9100 3 40
+> entity 9128 3 37
+> entity 9101 3 37
+> entity 9102 3 38
+> link 9000 9100
+> link 9000 9128
+> link 9000 9101
+> link 9000 9102
+> link 9100 1000
+> field 9100 shaft_depth 26
+> damage locations
+> field 9100 shaft_depth 27
+> damage locations
+> field 9100 shaft_depth 30
+> damage locations
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	3	2
+daily	random_loc_damage	inn	3	3
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> save 9100
+9100 loc mine
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 6
+ sd 30
+
+> save 9128
+9128 loc inn
+LI
+ wh 9000
+SL
+ da 36
+
+> save 9101
+9101 loc inn
+LI
+ wh 9000
+
+> save 9102
+9102 loc inn-in-progress
+LI
+ wh 9000
+
+> readlog 200
+log 200:
+1000:0::0::A roof has collapsed in a shaft in Mine~[9100]!
+1000:0::0::A roof has collapsed in a shaft in Mine~[9100]!
+stderr:
+
+exit 0
+stdout:
+section phase coverage real weekly escape failure skips and repeat
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 1
+> set day 7
+> entity 295 4 0
+> entity 9000 3 3
+> entity 9100 3 37
+> entity 1163 2 0
+> entity 1026 2 0
+> link 9000 9100
+> link 9100 1000
+> link 9000 1001
+> link 1000 1163
+> link 1000 1026
+> field 1163 lord 201
+> field 1026 lord 201
+> field 1163 prisoner 1
+> field 1026 prisoner 1
+> field 1026 moving 8
+> weekly
+> weekly
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	2	1
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> escape_state
+vector:
+escape char 1000 where 9100 prisoner 0 moving 0 magic 0 release 0
+here: 1163
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1026 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1163 where 1000 prisoner 1 moving 0 magic 0 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1026 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1163 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known: 9000
+touched: 9000
+weather:
+output: 1026
+> save 9100
+9100 loc inn
+LI
+ wh 9000
+ hl 1000 
+
+> save 9000
+9000 loc plain
+LI
+ hl 9100 1001 1026 
+
+> save 1026
+1026 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1026] escaped!
+> readlog 201
+log 201:
+1026:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section phase coverage real daily pipeline scheduled branches not callback overlays
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 1
+> event_days
+curse day 8
+faery day 25
+dog day 15
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 3 10
+> entity 1026 2 0
+> entity 295 4 0
+> entity 6000 4 0
+> link 8000 9000
+> link 9000 9100
+> link 9100 1000
+> link 9100 1001
+> link 1000 1026
+> field 1000 health 100
+> field 1001 health 100
+> field 1026 health 100
+> field 1026 lord 201
+> field 1026 prisoner 1
+> field 1000 magician 1
+> field 1000 max_aura 4
+> field 1000 cur_aura 2
+> field 1001 hidden 1
+> field 1000 loyal 1
+> field 1000 rate 37
+> field 6000 curse 5
+> field 6000 creator 1001
+> inventory 1000 6000 1
+> inventory 1000 295 2
+> set day 6
+> events
+> set day 7
+> events
+> set day 8
+> events
+> set day 14
+> events
+> set day 15
+> events
+> set day 16
+> events
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	6	0
+daily	ship_coastal_damage	damage	6	0
+daily	ship_coastal_damage	omen	6	0
+daily	random_loc_damage	mine	6	0
+daily	random_loc_damage	inn	6	0
+daily	check_ocean_chars	plunge	6	0
+daily	heal_characters	heal	2	0
+daily	heal_characters	sicken	2	0
+daily	heal_characters	recover	2	0
+daily	weekly_prisoner_escape_check	escape	2	1
+daily	noncreator_curse_erode	erode	1	1
+daily	increment_stone_ring_aura	aura	1	1
+daily	dogs_bark_at_hidden_chars	bark	1	1
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> escape_state
+vector: 1000 1001 9100
+escape char 1000 where 9100 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1001 where 9100 prisoner 0 moving 0 magic 1 release 0
+here:
+escape char 1026 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1026 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000 10 1001
+arrival player 201 allocated 1
+known: 9000
+touched: 9000
+weather:
+output: 1026 9000
+> save 1000
+1000 char 0
+il	6000 1 \
+	295 2
+LI
+ wh 9100
+CH
+ lo 200
+ he 100
+ lk 1
+ lr 37
+CM
+ im 1
+ ma 4
+ ca 3
+
+> save 1001
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+ he 100
+CM
+ hs 1
+
+> save 1026
+1026 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ he 100
+
+> readlog 0
+log 0:
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1026] escaped!
+10:0::0::noncreator_curse_erode: NOTYET!
+1000:0::0::Current aura is now 3.
+1000:0::0::A hound is barking.
+1001:0::0::A hound is barking.
+> readlog 201
+log 201:
+1026:0::0::We escaped!
+9000:0::0::A hound is barking.
+stderr:
+
+exit 0
+stdout:
+section phase coverage real weather repeated same day next day and mint
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 1
+> set day 3
+> weather_map 64
+> weather natural
+> weather natural
+> set day 17
+> weather natural
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2504:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	3	12
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> weather state
+storm 79711
+79711 storm wind
+LI
+ wh 9032
+MI
+ ss 3
+
+storm 80382
+80382 storm wind
+LI
+ wh 9029
+MI
+ ss 2
+
+storm 87726
+87726 storm wind
+LI
+ wh 9040
+MI
+ ss 2
+
+storm 88591
+88591 storm fog
+LI
+ wh 9038
+MI
+ ss 3
+
+storm 110158
+110158 storm fog
+LI
+ wh 9000
+MI
+ ss 3
+
+storm 114259
+114259 storm wind
+LI
+ wh 9034
+MI
+ ss 3
+
+storm 121151
+121151 storm fog
+LI
+ wh 9051
+MI
+ ss 3
+
+storm 136539
+136539 storm wind
+LI
+ wh 9060
+MI
+ ss 2
+
+storm 139413
+139413 storm fog
+LI
+ wh 9056
+MI
+ ss 2
+
+storm 140449
+140449 storm fog
+LI
+ wh 9044
+MI
+ ss 3
+
+storm 144422
+144422 storm fog
+LI
+ wh 9025
+MI
+ ss 2
+
+storm 149794
+149794 storm wind
+LI
+ wh 9016
+MI
+ ss 3
+
+province 9000
+here: 110158
+province 9001
+here:
+province 9002
+here:
+province 9003
+here:
+province 9004
+here:
+province 9005
+here:
+province 9006
+here:
+province 9007
+here:
+province 9008
+here:
+province 9009
+here:
+province 9010
+here:
+province 9011
+here:
+province 9012
+here:
+province 9013
+here:
+province 9014
+here:
+province 9015
+here:
+province 9016
+here: 149794
+province 9017
+here:
+province 9018
+here:
+province 9019
+here:
+province 9020
+here:
+province 9021
+here:
+province 9022
+here:
+province 9023
+here:
+province 9024
+here:
+province 9025
+here: 144422
+province 9026
+here:
+province 9027
+here:
+province 9028
+here:
+province 9029
+here: 80382
+province 9030
+here:
+province 9031
+here:
+province 9032
+here: 79711
+province 9033
+here:
+province 9034
+here: 114259
+province 9035
+here:
+province 9036
+here:
+province 9037
+here:
+province 9038
+here: 88591
+province 9039
+here:
+province 9040
+here: 87726
+province 9041
+here:
+province 9042
+here:
+province 9043
+here:
+province 9044
+here: 140449
+province 9045
+here:
+province 9046
+here:
+province 9047
+here:
+province 9048
+here:
+province 9049
+here:
+province 9050
+here:
+province 9051
+here: 121151
+province 9052
+here:
+province 9053
+here:
+province 9054
+here:
+province 9055
+here:
+province 9056
+here: 139413
+province 9057
+here:
+province 9058
+here:
+province 9059
+here:
+province 9060
+here: 136539
+province 9061
+here:
+province 9062
+here:
+province 9063
+here:
+show_garrison 0
+output: 9000 9044 9016 9032 9051 9025 9060 9040 9056 9038 9034 9029
+> weather probe 9013 4409
+weather shuffle: 370 321 342 363 356 307 314 328 349 335 300
+weather strength 3
+> newitem 1000 42
+created 63603
+> save_new
+63603 item scroll
+IT
+ un 1000
+
+> readlog 200
+log 200:
+9000:0::0::It has become quite foggy.
+9044:0::0::It has become quite foggy.
+9016:0::0::It has become quite windy.
+9032:0::0::It has become quite windy.
+9051:0::0::It has become quite foggy.
+9025:0::0::It has become quite foggy.
+9060:0::0::It has become quite windy.
+9040:0::0::It has become quite windy.
+9056:0::0::It has become quite foggy.
+9038:0::0::It has become quite foggy.
+9034:0::0::It has become quite windy.
+9029:0::0::It has become quite windy.
+stderr:
+
+exit 0
+stdout:
+section phase coverage real faery creates fifteen then units run twice
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 7
+> set day 17
+> set epoch 227
+> set gm 201
+> resolve_wait
+> entity 205 1 52
+> set faery_player 205
+> entity 25 4 0
+> name 25 elf
+> field 25 man 1
+> entity 8000 3 50
+> set faery_region 8000
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9002 3 2
+> entity 9003 3 1
+> link 8000 9003
+> link 8000 9002
+> link 8000 9001
+> link 8000 9000
+> link 9000 1001
+> routes 9000 9002 0 0 0
+> routes 9002 0 0 9000 0
+> faery auto
+> faery auto
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2505:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	2	15
+daily	auto_faery	unit	2	30
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> faery_state
+faery unit 80818
+80818 char ni
+na Faery Hunt
+il	25 73
+LI
+ wh 9000
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 81056
+81056 char ni
+na Faery Hunt
+il	25 25
+LI
+ wh 9000
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 85578
+85578 char ni
+na Faery Hunt
+il	25 82
+LI
+ wh 9000
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 94785
+94785 char ni
+na Faery Hunt
+il	25 31
+LI
+ wh 9002
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 3
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 100961
+100961 char ni
+na Faery Hunt
+il	25 74
+LI
+ wh 9002
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 3
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 101471
+101471 char ni
+na Faery Hunt
+il	25 39
+LI
+ wh 9000
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 109320
+109320 char ni
+na Faery Hunt
+il	25 71
+LI
+ wh 9000
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 110741
+110741 char ni
+na Faery Hunt
+il	25 52
+LI
+ wh 9000
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 120118
+120118 char ni
+na Faery Hunt
+il	25 95
+LI
+ wh 9000
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 131268
+131268 char ni
+na Faery Hunt
+il	25 45
+LI
+ wh 9000
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 133192
+133192 char ni
+na Faery Hunt
+il	25 46
+LI
+ wh 9002
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 3
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 133827
+133827 char ni
+na Faery Hunt
+il	25 67
+LI
+ wh 9000
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 138145
+138145 char ni
+na Faery Hunt
+il	25 56
+LI
+ wh 9002
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 3
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 142788
+142788 char ni
+na Faery Hunt
+il	25 76
+LI
+ wh 9002
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+MI
+ di 3
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+faery unit 143688
+143688 char ni
+na Faery Hunt
+il	25 94
+LI
+ wh 9000
+CH
+ ni 25
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+load_q 0:
+load_q 1: 142788 133827 80818 85578 101471 131268 143688 120118 94785 109320 138145 100961 81056 133192 110741
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 80818 81056 85578 94785 100961 101471 109320 110741 120118 131268 133192 133827 138145 142788 143688
+output 0 0 0 0 0 touched 1 0
+orders 142788: [move south] [move south]
+orders 133827: [attack 1001] [attack 1001]
+orders 80818: [message 1 1001] [You are not welcome in Faery.  Leave, or you will be killed.] [attack 1001]
+orders 85578: [attack 1001] [attack 1001]
+orders 101471: [attack 1001] [attack 1001]
+orders 131268: [attack 1001] [attack 1001]
+orders 143688: [attack 1001] [attack 1001]
+orders 120118: [attack 1001] [attack 1001]
+orders 94785: [move south] [move south]
+orders 109320: [attack 1001] [attack 1001]
+orders 138145: [move south] [move south]
+orders 100961: [move south] [move south]
+orders 81056: [attack 1001] [attack 1001]
+orders 133192: [move south] [move south]
+orders 110741: [attack 1001] [attack 1001]
+> orders_file 205
+orders file 205:
+142788:move south
+142788:move south
+133827:attack 1001
+133827:attack 1001
+80818:message 1 1001
+80818:You are not welcome in Faery.  Leave, or you will be killed.
+80818:attack 1001
+85578:attack 1001
+85578:attack 1001
+101471:attack 1001
+101471:attack 1001
+131268:attack 1001
+131268:attack 1001
+143688:attack 1001
+143688:attack 1001
+120118:attack 1001
+120118:attack 1001
+94785:move south
+94785:move south
+109320:attack 1001
+109320:attack 1001
+138145:move south
+138145:move south
+100961:move south
+100961:move south
+81056:attack 1001
+81056:attack 1001
+133192:move south
+133192:move south
+110741:attack 1001
+110741:attack 1001
+> save 205
+205 player pl_npc
+PL
+ lt 7
+ un 80818 81056 85578 94785 100961 101471 109320 110741 120118 \
+	131268 133192 133827 138145 142788 143688 
+MI
+ nm 1001 
+
+> save 9000
+9000 loc plain
+LI
+ wh 8000
+ hl 1001 133827 80818 85578 101471 131268 143688 120118 109320 \
+	81056 110741 
+LO
+ pd 9002 0 0 0 
+
+> readlog 201
+log 201:
+11:0::0::Faery hunt warned <no subkind>~[1001].
+> shuffle 1000 9000
+exitdir 1 9002
+> newitem 9000 0
+created 67445
+> save_new
+67445 item 0
+IT
+ un 9000
+
+stderr:
+
+exit 0
+stdout:
+section phase coverage real independent dispatcher all branches and saved order multiplicity
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 10
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 206 1 52
+> set hades_player 206
+> entity 26 4 0
+> entity 8000 3 50
+> set hades_region 8000
+> entity 9100 3 7
+> link 8000 9100
+> entity 9000 3 3
+> entity 9001 3 3
+> routes 9000 9001 0 0 0
+> entity 32 4 0
+> entity 10 4 0
+> entity 23 4 0
+> entity 1002 2 55
+> entity 1003 2 54
+> entity 1004 2 54
+> entity 1005 2 54
+> entity 1006 2 54
+> entity 1007 2 0
+> entity 1008 2 0
+> entity 1009 2 0
+> entity 1010 2 0
+> entity 1011 2 0
+> entity 1012 2 55
+> entity 1013 2 16
+> field 1000 lord 205
+> field 1001 lord 205
+> field 1002 lord 205
+> field 1003 lord 205
+> field 1004 lord 205
+> field 1005 lord 205
+> field 1006 lord 205
+> field 1007 lord 205
+> field 1008 lord 205
+> field 1009 lord 205
+> field 1010 lord 205
+> field 1011 lord 205
+> field 1012 lord 205
+> field 1013 lord 205
+> field 1003 noble_item 32
+> field 1004 noble_item 10
+> field 1005 noble_item 23
+> field 1006 noble_item 26
+> field 1007 npc 1
+> field 1008 npc 4
+> field 1009 npc 5
+> field 1007 loyal 4
+> field 1008 loyal 4
+> field 1009 loyal 4
+> field 1010 npc 2
+> field 1011 npc 3
+> field 1002 summoner 1001
+> field 1004 npc_home 9001
+> field 1005 npc_home 9001
+> field 1005 npc_created 6
+> field 205 unit 1009
+> field 205 unit 1002
+> field 205 unit 1004
+> field 205 unit 1000
+> field 205 unit 1003
+> field 205 unit 1001
+> field 205 unit 1005
+> field 205 unit 1006
+> field 205 unit 1007
+> field 205 unit 1008
+> field 205 unit 1010
+> field 205 unit 1011
+> field 205 unit 1012
+> field 205 unit 1013
+> link 9000 1000
+> link 9000 1001
+> link 9000 1002
+> link 9000 1003
+> link 9000 1004
+> link 9000 1005
+> link 9000 1006
+> link 9000 1007
+> link 9000 1008
+> link 9000 1009
+> link 9000 1010
+> link 9000 1011
+> link 9000 1012
+> link 9000 1013
+> who 1007
+> npc dispatch 0
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2505:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	1	0
+day0	auto_hades	spawn	1	25
+day0	auto_hades	unit	1	25
+day0	queue_npc_orders	unsworn	1	2
+day0	queue_npc_orders	undead	1	2
+day0	queue_npc_orders	savage	1	1
+day0	queue_npc_orders	mob	1	2
+day0	queue_npc_orders	bandit	1	3
+day0	queue_npc_orders	token	1	1
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> npc dispatch 0
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2505:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	2	0
+day0	auto_hades	spawn	2	25
+day0	auto_hades	unit	2	50
+day0	queue_npc_orders	unsworn	2	3
+day0	queue_npc_orders	undead	2	2
+day0	queue_npc_orders	savage	2	1
+day0	queue_npc_orders	mob	2	2
+day0	queue_npc_orders	bandit	2	3
+day0	queue_npc_orders	token	2	1
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 1009 1002 1004 1000 1003 1001 1005 1006 1007 1008 1010 1011 1012 1013
+output 0 0 0 0 0 touched 0 0
+orders 1009: [attack 1000]
+orders 1002: [attack 1001]
+orders 1004: [wait time 15] [reclaim "disperses."]
+orders 1003: [move north]
+orders 1001: [move north]
+orders 1005: [wait time 12] [reclaim "disperses."]
+orders 1007: [attack 1000]
+orders 1008: [attack 1000]
+orders 1011: [move north]
+orders 1012: [pillage 1]
+> orders_file 205
+orders file 205:
+1009:attack 1000
+1002:attack 1001
+1004:wait time 15
+1004:reclaim "disperses."
+1003:move north
+1001:move north
+1005:wait time 12
+1005:reclaim "disperses."
+1007:attack 1000
+1008:attack 1000
+1011:move north
+1012:pillage 1
+> savage_state
+savage unit 1009
+1009 char 0
+LI
+ wh 9000
+CH
+ lo 205
+ lk 4
+ po 5
+
+savage output 0
+savage unit 1002
+1002 char demon lord
+LI
+ wh 9000
+CH
+ lo 205
+
+savage output 0
+savage unit 1004
+1004 char ni
+LI
+ wh 9000
+CH
+ ni 10
+ lo 205
+MI
+ mh 9001
+
+savage output 0
+savage unit 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 205
+
+savage output 0
+savage unit 1003
+1003 char ni
+LI
+ wh 9000
+CH
+ ni 32
+ lo 205
+MI
+ di 1
+
+savage output 0
+savage unit 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 205
+MI
+ di 1
+
+savage output 0
+savage unit 1005
+1005 char ni
+LI
+ wh 9000
+CH
+ ni 23
+ lo 205
+MI
+ mc 6
+ mh 9001
+
+savage output 0
+savage unit 1006
+1006 char ni
+LI
+ wh 9000
+CH
+ ni 26
+ lo 205
+
+savage output 0
+savage unit 1007
+1007 char 0
+LI
+ wh 9000
+CH
+ lo 205
+ lk 4
+ po 1
+
+savage output 0
+savage unit 1008
+1008 char 0
+LI
+ wh 9000
+CH
+ lo 205
+ lk 4
+ po 4
+
+savage output 0
+savage unit 1010
+1010 char 0
+LI
+ wh 9000
+CH
+ lo 205
+ po 2
+
+savage output 0
+savage unit 1011
+1011 char 0
+LI
+ wh 9000
+CH
+ lo 205
+ po 3
+MI
+ di 1
+
+savage output 0
+savage unit 1012
+1012 char demon lord
+LI
+ wh 9000
+CH
+ lo 205
+
+savage output 0
+savage unit 1013
+1013 char graveyard
+LI
+ wh 9000
+CH
+ lo 205
+
+savage output 0
+load_q 0:
+load_q 1: 3691 129830 4328 2033 8805 5171 123347 130926 9438 9263 145356 1934 4605 9741 147334 1763 1927 1261 5195 1811 4294 1282 9531 8334 107479
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> hades_state
+hades unit 1261
+1261 char 0
+na Lesser Demon
+il	26 66
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 1282
+1282 char 0
+na Greater Demon
+il	26 163
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 1763
+1763 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 1811
+1811 char 0
+na Greater Demon
+il	26 143
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 1927
+1927 char 0
+na Greater Demon
+il	26 132
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 1934
+1934 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 2033
+2033 char 0
+na Lesser Demon
+il	26 60
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 3691
+3691 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 4294
+4294 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 4328
+4328 char 0
+na Lesser Demon
+il	26 104
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 4605
+4605 char 0
+na Lesser Demon
+il	26 134
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 5171
+5171 char 0
+na Greater Demon
+il	26 208
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 5195
+5195 char 0
+na Greater Demon
+il	26 186
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 8334
+8334 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 8805
+8805 char 0
+na Greater Demon
+il	26 182
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 9263
+9263 char 0
+na Lesser Demon
+il	26 103
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 9438
+9438 char 0
+na Greater Demon
+il	26 148
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 9531
+9531 char 0
+na Lesser Demon
+il	26 97
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 9741
+9741 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 107479
+107479 char ni
+na Tortured spirits
+il	26 27
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 123347
+123347 char ni
+na Tortured spirits
+il	26 42
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 129830
+129830 char ni
+na Tortured spirits
+il	26 70
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 130926
+130926 char ni
+na Tortured spirits
+il	26 68
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 145356
+145356 char ni
+na Tortured spirits
+il	26 54
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 147334
+147334 char ni
+na Tortured spirits
+il	26 35
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+load_q 0:
+load_q 1: 3691 129830 4328 2033 8805 5171 123347 130926 9438 9263 145356 1934 4605 9741 147334 1763 1927 1261 5195 1811 4294 1282 9531 8334 107479
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> orders_file 206
+orders file 206:
+> save 9000
+9000 loc plain
+LI
+ hl 1000 1001 1002 1003 1004 1005 1006 1007 1008 \
+	1009 1010 1011 1012 1013 
+LO
+ pd 9001 0 0 0 
+
+> save 9100
+9100 loc underground
+LI
+ wh 8000
+ hl 3691 129830 4328 2033 8805 5171 123347 130926 9438 \
+	9263 145356 1934 4605 9741 147334 1763 1927 1261 5195 1811 \
+	4294 1282 9531 8334 107479 
+
+> npc probe 1012
+behavior zero 2
+behavior one 2
+behavior wait 15
+behavior wide -4005
+> shuffle 1000 9000
+exitdir 1 9001
+> newitem 9000 0
+created 74592
+> save_new
+74592 item 0
+IT
+ un 9000
+
+stderr:
+queue_npc_orders()
+queue_npc_orders()
+
+exit 0
+stdout:
+section phase coverage real savage spawn before hades mint
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 1
+> resolve_wait
+> entity 205 1 52
+> set indep 205
+> entity 206 1 52
+> set hades_player 206
+> entity 26 4 0
+> entity 32 4 0
+> entity 98 4 0
+> entity 8000 3 50
+> set hades_region 8000
+> entity 9100 3 7
+> link 8000 9100
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9409 3 32
+> link 9000 9409
+> routes 9000 9001 0 0 0
+> npc dispatch 0
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2505:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	1	1
+day0	auto_hades	spawn	1	25
+day0	auto_hades	unit	1	25
+day0	queue_npc_orders	unsworn	1	0
+day0	queue_npc_orders	undead	1	0
+day0	queue_npc_orders	savage	1	0
+day0	queue_npc_orders	mob	1	0
+day0	queue_npc_orders	bandit	1	0
+day0	queue_npc_orders	token	1	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> savage_state
+savage unit 110158
+110158 char ni
+il	98 1 \
+	32 6
+LI
+ wh 9001
+CH
+ ni 32
+ lo 205
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li move 9000
+ ar 9000 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ pr 2
+
+savage output 0
+load_q 0:
+load_q 1: 4857 6258 5457 121151 144422 9387 6814 1327 88591 3491 5825 7957 2262 5791 132521 143294 108041 9983 2708 3618 123045 6319 6793 85394 1369
+load_q 2: 110158
+load_q 3:
+load_q 4:
+run_q:
+> hades_state
+hades unit 1327
+1327 char 0
+na Lesser Demon
+il	26 142
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 1369
+1369 char 0
+na Lesser Demon
+il	26 119
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 2262
+2262 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 2708
+2708 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 3491
+3491 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 3618
+3618 char 0
+na Lesser Demon
+il	26 141
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 4857
+4857 char 0
+na Greater Demon
+il	26 119
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 5457
+5457 char 0
+na Greater Demon
+il	26 189
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 5791
+5791 char 0
+na Lesser Demon
+il	26 58
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 5825
+5825 char 0
+na Lesser Demon
+il	26 63
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 6258
+6258 char 0
+na Lesser Demon
+il	26 105
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 6319
+6319 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 6793
+6793 char 0
+na Ghostly presence
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 100
+ df 100
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 6814
+6814 char 0
+na Greater Demon
+il	26 165
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 7957
+7957 char 0
+na Lesser Demon
+il	26 92
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 9387
+9387 char 0
+na Lesser Demon
+il	26 96
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 250
+ df 250
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 9983
+9983 char 0
+na Greater Demon
+il	26 149
+LI
+ wh 9100
+CH
+ lo 206
+ he 100
+ lk 4
+ at 500
+ df 500
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 85394
+85394 char ni
+na Tortured spirits
+il	26 73
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 88591
+88591 char ni
+na Tortured spirits
+il	26 29
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 108041
+108041 char ni
+na Tortured spirits
+il	26 34
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 121151
+121151 char ni
+na Tortured spirits
+il	26 30
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 123045
+123045 char ni
+na Tortured spirits
+il	26 59
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 132521
+132521 char ni
+na Tortured spirits
+il	26 68
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 143294
+143294 char ni
+na Tortured spirits
+il	26 48
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+hades unit 144422
+144422 char ni
+na Tortured spirits
+il	26 54
+LI
+ wh 9100
+CH
+ ni 26
+ lo 206
+ he 100
+ lk 4
+ at 60
+ df 60
+CO
+ li wait time 0
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ wa -1
+ po 1
+ pr 1
+
+hades output 0
+load_q 0:
+load_q 1: 4857 6258 5457 121151 144422 9387 6814 1327 88591 3491 5825 7957 2262 5791 132521 143294 108041 9983 2708 3618 123045 6319 6793 85394 1369
+load_q 2: 110158
+load_q 3:
+load_q 4:
+run_q:
+> pstate 205
+player 205 np 0 gained 0 spent 0 backlinks 0
+units: 110158
+output 0 0 0 0 0 touched 0 1
+orders 110158: [use 98 1] [wait time 37] [attack 9409]
+> pstate 206
+player 206 np 0 gained 0 spent 0 backlinks 0
+units: 1327 1369 2262 2708 3491 3618 4857 5457 5791 5825 6258 6319 6793 6814 7957 9387 9983 85394 88591 108041 121151 123045 132521 143294 144422
+output 0 0 0 0 0 touched 0 0
+orders 4857:
+orders 6258:
+orders 5457:
+orders 121151:
+orders 144422:
+orders 9387:
+orders 6814:
+orders 1327:
+orders 88591:
+orders 3491:
+orders 5825:
+orders 7957:
+orders 2262:
+orders 5791:
+orders 132521:
+orders 143294:
+orders 108041:
+orders 9983:
+orders 2708:
+orders 3618:
+orders 123045:
+orders 6319:
+orders 6793:
+orders 85394:
+orders 1369:
+> orders_file 205
+orders file 205:
+110158:use 98 1
+110158:wait time 37
+110158:attack 9409
+> orders_file 206
+orders file 206:
+> save 9001
+9001 loc plain
+LI
+ hl 110158 
+
+> save 9100
+9100 loc underground
+LI
+ wh 8000
+ hl 4857 6258 5457 121151 144422 9387 6814 1327 88591 \
+	3491 5825 7957 2262 5791 132521 143294 108041 9983 2708 3618 \
+	123045 6319 6793 85394 1369 
+
+> readlog 205
+log 205:
+> newitem 9000 0
+created 77870
+> save_new
+77870 item 0
+IT
+ un 9000
+
+stderr:
+queue_npc_orders()
+
+exit 0
+stdout:
+section phase coverage real ocean snapshot fifteen plunge cleanup and repeat
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 1
+> set day 7
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 1
+> entity 9001 3 3
+> entity 10 4 0
+> link 10000 9000
+> link 10000 9001
+> routes 9000 0 9001 0 0
+> link 9000 1000
+> link 9000 1001
+> field 1000 health 100
+> field 1001 health 100
+> field 1000 time_flying 14
+> field 1001 time_flying 14
+> ocean_init
+> ocean_check
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	1	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> ocean_check
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	2	2
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> ocean_check
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	3	2
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> arrival_state
+ocean:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000 12 1001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 1000
+1000 item dead body
+na dead body
+CH
+ he 100
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9001
+MI
+ ol 200
+
+> save 1001
+1001 item dead body
+na dead body
+CH
+ he 100
+ dt 1 7 0
+IT
+ pl dead bodies
+ un 9001
+MI
+ ol 200
+
+> readlog 200
+log 200:
+1000:0::0::Flight can no longer be maintained.  <no subkind>~[1000] plunges into the sea.
+1000:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1000] died in Ocean~[9000].
+1001:0::0::Flight can no longer be maintained.  <no subkind>~[1001] plunges into the sea.
+1001:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1001] died in Ocean~[9000].
+stderr:
+
+exit 0
+stdout:
+section phase coverage real process orders whole day zero day one daily pipeline only
+> lore_root
+> phcov path phase.tsv
+> master 0
+> entity 205 1 52
+> entity 206 1 52
+> entity 207 1 52
+> set indep 205
+> set hades_player 206
+> set faery_player 207
+> entity 25 4 0
+> entity 26 4 0
+> entity 8100 3 50
+> entity 8200 3 50
+> entity 9100 3 7
+> entity 9200 3 3
+> set hades_region 8100
+> set faery_region 8200
+> link 8100 9100
+> link 8200 9200
+> entity 1 4 0
+> entity 500 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 14
+> link 8000 9000
+> link 9000 9001
+> link 9001 1000
+> link 9001 1001
+> field 1000 health 100
+> field 1001 health 100
+> inventory 1000 1 20
+> inventory 1001 500 4
+> trade 1000 1 500 3 6 1000 0
+> trade 1001 2 500 4 5 1001 0
+> process
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2513:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	1	0
+day0	auto_hades	spawn	1	25
+day0	auto_hades	unit	1	25
+day0	queue_npc_orders	unsworn	1	0
+day0	queue_npc_orders	undead	1	0
+day0	queue_npc_orders	savage	1	0
+day0	queue_npc_orders	mob	1	0
+day0	queue_npc_orders	bandit	1	0
+day0	queue_npc_orders	token	1	0
+day0	ping_garrisons	guard	1	0
+day0	check_token_units	melt	1	0
+day0	check_token_units	add	1	0
+day0	process_interrupted_units	interrupt	1	0
+day0	process_interrupted_units	idle	1	0
+day1	match_all_trades	trade	1	1
+daily	default_garrison_pay	pay	30	0
+daily	ship_coastal_damage	damage	30	0
+daily	ship_coastal_damage	omen	30	0
+daily	random_loc_damage	mine	30	0
+daily	random_loc_damage	inn	30	0
+daily	check_ocean_chars	plunge	30	0
+daily	heal_characters	heal	4	0
+daily	heal_characters	sicken	4	0
+daily	heal_characters	recover	4	0
+daily	weekly_prisoner_escape_check	escape	4	0
+daily	noncreator_curse_erode	erode	1	0
+daily	increment_stone_ring_aura	aura	1	0
+daily	dogs_bark_at_hidden_chars	bark	1	0
+daily	natural_weather	storm	4	0
+daily	auto_faery	spawn	1	15
+daily	auto_faery	unit	1	15
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> save 1000
+1000 char 0
+il	1 5 \
+	500 3
+LI
+ wh 9001
+CH
+ lo 200
+ he 100
+
+> save 1001
+1001 char 0
+il	500 1 \
+	1 15
+tl	2 500 1 5 0 0 0 0
+LI
+ wh 9001
+CH
+ lo 200
+ he 100
+
+> economy state
+trade gold 0 pot basket 0 opium 0
+pending trades:
+> readlog 200
+log 200:
+1000:0::0::Bought three~<no subkind>~[500] from <no subkind>~[1001] for 15~gold.
+1001:0::0::Sold three~<no subkind>~[500] to <no subkind>~[1000] for 15~gold.
+9001:0::0::<no subkind>~[1000] bought three~<no subkind>~[500] from <no subkind>~[1001] for 15~gold.
+stderr:
+process_orders()
+queue_npc_orders()
+
+warning: plural name not set for item [500]
+warning: plural name not set for item [500]
+warning: plural name not set for item [500]
+   ..............................
+
+exit 0
+stdout:
+section phase coverage real hidden dogs attempted without hounds ring cap curse multiplicity
+> lore_root
+> phcov path phase.tsv
+> entity 9000 3 10
+> entity 295 4 0
+> entity 6000 4 0
+> entity 6001 4 0
+> entity 6002 4 0
+> link 9000 1000
+> link 9000 1001
+> field 1001 hidden 1
+> field 1000 magician 1
+> field 1000 max_aura 3
+> field 1000 cur_aura 2
+> field 6000 curse 3
+> field 6000 creator 1001
+> field 6001 curse 4
+> field 6001 creator 1001
+> field 6002 curse 5
+> field 6002 creator 1000
+> inventory 1000 6000 1
+> inventory 1000 6001 7
+> inventory 1000 6002 1
+> field 1000 loyal 1
+> dogs
+> ring
+> ring
+> curse
+> curse
+> field 1000 loyal 3
+> curse
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	3	6
+daily	increment_stone_ring_aura	aura	2	1
+daily	dogs_bark_at_hidden_chars	bark	1	1
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> save 1000
+1000 char 0
+il	6000 1 \
+	6001 7 \
+	6002 1
+LI
+ wh 9000
+CH
+ lo 200
+ lk 3
+CM
+ im 1
+ ma 3
+ ca 3
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hs 1
+
+> save 6000
+6000 item 0
+IT
+IM
+ cl 3
+ ct 1001
+
+> readlog 0
+log 0:
+> readlog 200
+log 200:
+1000:0::0::Current aura is now 3.
+10:0::0::noncreator_curse_erode: NOTYET!
+10:0::0::noncreator_curse_erode: NOTYET!
+10:0::0::noncreator_curse_erode: NOTYET!
+10:0::0::noncreator_curse_erode: NOTYET!
+10:0::0::noncreator_curse_erode: NOTYET!
+10:0::0::noncreator_curse_erode: NOTYET!
+stderr:
+
+exit 0
+stdout:
+section phase coverage real immediate suppression does not suppress payroll gameplay or writer
+> lore_root
+> phcov path phase.tsv
+> entity 1 4 0
+> entity 9000 3 3
+> link 9000 1000
+> link 1000 1001
+> field 1000 default_garrison 1
+> set garrison_pay 3
+> set immediate 1
+> garrison pay
+1001:0::0::Received 3~gold from <no subkind>~[1000].
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> save 1001
+1001 char 0
+il	1 3
+LI
+ wh 1000
+CH
+ lo 200
+
+> set immediate 0
+> garrison pay
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	1	1
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	0	0
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> save 1001
+1001 char 0
+il	1 6
+LI
+ wh 1000
+CH
+ lo 200
+
+> garrison state
+garrison pay 3 gold 6 show 0
+vector:
+garrison char 1000 leader 1000 default 1 prisoner 0 npc 0 guard 0 gold 0
+garrison char 1001 leader 1000 default 0 prisoner 0 npc 0 guard 0 gold 6
+player 200
+output: 1001
+player 201
+output:
+> readlog 200
+log 200:
+1001:0::0::Received 3~gold from <no subkind>~[1000].
+stderr:
+
+exit 0
+stdout:
+section phase coverage real weekly outdoor escape counts once after actual relocation
+> lore_root
+> phcov path phase.tsv
+> master 0
+> set turn 1
+> set day 7
+> entity 295 4 0
+> entity 9000 3 3
+> entity 1163 2 0
+> link 9000 1000
+> link 9000 1001
+> link 1000 1163
+> field 1163 lord 201
+> field 1163 prisoner 1
+> field 1163 moving 8
+> field 1163 contact 1001
+> weekly
+> weekly
+> phcov write
+> readfile phase.tsv
+file bytes phase.tsv 2503:
+phase	routine	event	ran	acted
+day0	init_savage_attacks	spawn	0	0
+day0	auto_hades	spawn	0	0
+day0	auto_hades	unit	0	0
+day0	queue_npc_orders	unsworn	0	0
+day0	queue_npc_orders	undead	0	0
+day0	queue_npc_orders	savage	0	0
+day0	queue_npc_orders	mob	0	0
+day0	queue_npc_orders	bandit	0	0
+day0	queue_npc_orders	token	0	0
+day0	ping_garrisons	guard	0	0
+day0	check_token_units	melt	0	0
+day0	check_token_units	add	0	0
+day0	process_interrupted_units	interrupt	0	0
+day0	process_interrupted_units	idle	0	0
+day1	match_all_trades	trade	0	0
+daily	default_garrison_pay	pay	0	0
+daily	ship_coastal_damage	damage	0	0
+daily	ship_coastal_damage	omen	0	0
+daily	random_loc_damage	mine	0	0
+daily	random_loc_damage	inn	0	0
+daily	check_ocean_chars	plunge	0	0
+daily	heal_characters	heal	0	0
+daily	heal_characters	sicken	0	0
+daily	heal_characters	recover	0	0
+daily	weekly_prisoner_escape_check	escape	2	1
+daily	noncreator_curse_erode	erode	0	0
+daily	increment_stone_ring_aura	aura	0	0
+daily	dogs_bark_at_hidden_chars	bark	0	0
+daily	natural_weather	storm	0	0
+daily	auto_faery	spawn	0	0
+daily	auto_faery	unit	0	0
+month	special_locs_open	open	0	0
+month	special_locs_close	close	0	0
+month	move_city_gold	move	0	0
+month	garrison_gold	tax	0	0
+month	garrison_gold	castle	0	0
+month	garrison_gold	owner	0	0
+month	collect_taxes	collect	0	0
+month	add_claim_gold	grant	0	0
+month	add_noble_points	point	0	0
+month	add_unformed	mint	0	0
+month	increment_current_aura	aura	0	0
+month	decrement_ability_shroud	decrement	0	0
+month	decrement_region_shroud	decrement	0	0
+month	decrement_meditation_hinder	decrement	0	0
+month	decrement_loc_barrier	decrement	0	0
+month	decrement_loc_barrier	dissipate	0	0
+month	loyalty_decay	decay	0	0
+month	loyalty_decay	release	0	0
+month	loyalty_decay	desert	0	0
+month	pillage_decay	decay	0	0
+month	relic_decay	decay	0	0
+month	relic_decay	vanish	0	0
+month	hide_mage_decay	decrement	0	0
+month	inn_income	income	0	0
+month	inn_income	traveller	0	0
+month	temple_income	offering	0	0
+month	charge_maint_costs	paid	0	0
+month	charge_maint_costs	starve	0	0
+month	animal_deaths	death	0	0
+month	ghost_warrior_decay	evaporate	0	0
+month	corpse_decay	decompose	0	0
+month	dead_body_rot	rot	0	0
+month	storm_decay	weaken	0	0
+month	storm_decay	dissipate	0	0
+month	storm_move	move	0	0
+month	collapsed_mine_decay	decrement	0	0
+month	collapsed_mine_decay	clear	0	0
+month	post_production	run	0	0
+month	auto_drop	drop	0	0
+month	link_decay	decrement	0	0
+month	link_decay	open	0	0
+month	quest_decay	decrement	0	0
+month	determine_noble_ranks	rank	0	0
+
+end file bytes
+> escape_state
+vector:
+escape char 1000 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1001 where 9000 prisoner 0 moving 0 magic 0 release 0
+here:
+escape char 1163 where 9000 prisoner 0 moving 0 magic 1 release 0
+here:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1163 allocated 1 time 0 contacts_alloc 1
+contacts: 1001
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched: 9000
+weather:
+output: 1163
+> save 9000
+9000 loc plain
+LI
+ hl 1000 1163 1001 
+
+> save 1163
+1163 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ ct 1001 
+
+> readlog 200
+log 200:
+1000:0::0::Prisoner <no subkind>~[1163] escaped!
+> readlog 201
+log 201:
+1163:0::0::We escaped!
+stderr:
+
+exit 0
+stdout:
+section phase coverage invalid token owner retains original assertion
+> phcov path EMPTY
+> entity 60000 4 63
+> reconcile
+stderr:
+assertion failure: olympia/art.c (1218): owner
+
+exit 134
+stdout:
+section phase coverage invalid payroll negative pay retains generation assertion
+> phcov path EMPTY
+> entity 1 4 0
+> set garrison_pay -3
+> entity 9000 3 3
+> link 9000 1000
+> field 1000 default_garrison 1
+> link 1000 1001
+> garrison pay
+stderr:
+assertion failure: olympia/u.c (1851): qty >= 0
+
+exit 134

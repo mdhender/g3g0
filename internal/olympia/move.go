@@ -661,6 +661,7 @@ func (w *world) initOceanChars() {
 // checkOceanChars is move.c:852–898. The snapshot survives deaths and
 // removals from oceanChars; even dead entries allocate char state before cleanup.
 func (w *world) checkOceanChars() {
+	w.phaseRan(phOceanPlunge)
 	for _, who := range w.oceanChars.Copy() {
 		where := w.subloc(who)
 		p := w.pChar(who)
@@ -676,5 +677,6 @@ func (w *world) checkOceanChars() {
 		w.vectorStack(who, true)
 		w.commandOut(vect, "Flight can no longer be maintained.  %s plunges into the sea.", w.boxName(who))
 		w.killStackOcean(who)
+		w.phaseActed(phOceanPlunge)
 	}
 }

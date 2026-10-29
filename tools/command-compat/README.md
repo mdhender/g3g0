@@ -3,6 +3,100 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Phase primitives and real day-zero/daily hooks (#173)
+
+At **0.109.0-alpha**, coverage.go adds the complete **74-row** PH enum,
+fixed row metadata, world-owned int32 ran/acted arrays and exact TSV writer.
+The phase CLI gate and main's phase writer remain unwired until #174;
+state export remains gated. No monthly-only hook is ported here. Shared
+`checkTokenUnits` counts wherever its existing real caller invokes it, including
+the month-end call; its rows remain labeled `day0`, as in C. No new gameplay,
+phase callback replacement, RNG adapter, upstream dependency or pin move.
+
+The four phase-macro substitutions are removed from the main extracted prefix
+and the separate Hades/Faery/NPC translation units. The driver links the
+**entire unchanged coverage.c**, not a phase model or edited function body:
+**12,597 bytes**, SHA-256
+`5730dc2b64b817a6ee1a1d9c250856a400f6aaf54b6ac50251b5f37e5e5ded5a`.
+All **100** archived original files match the immutable bare-repository pin.
+The source audit checks these **22 complete definitions** unchanged exactly
+once, including the two actual scheduling owners:
+
+| Original C source | Complete definitions / inclusive lines |
+|---|---|
+| art.c | check_token_units 1200–1262 |
+| buy.c | match_all_trades 698–729 |
+| day.c | ship_coastal_damage 261–327; random_loc_damage 454–486; dogs_bark_at_hidden_chars 489–516; heal_char_sup 519–578; default_garrison_pay 581–613; heal_characters 616–632; increment_stone_ring_aura 777–803; noncreator_curse_erode 901–963; daily_events 2206–2271 |
+| faery.c / hades.c | auto_faery 607–634 / auto_hades 499–526 |
+| garr.c / input.c | ping_garrisons 1064–1093 / process_interrupted_units 1021–1052; process_orders 1057–1102 |
+| move.c / npc.c | check_ocean_chars 852–898 / queue_npc_orders 613–691 |
+| savage.c / stack.c | init_savage_attacks 353–409 / weekly_prisoner_escape_check 345–374 |
+| storm.c | create_some_storms 1525–1553; natural_weather 1556–1613 |
+
+These contain **51 hook sites**: 18 ran calls and 33 acted calls, for **31
+day0/day1/daily event rows** across 18 routines. Each has nonzero actual-C
+gameplay evidence in the appended cases. Group rows reuse the first contiguous
+routine's ran index, even if direct accounting increments a later row's ran.
+Trade actions count reduced buyers, not settlements; token melt/add, hidden
+dog checks, and NPC creation/unit attempts count after the original call even
+when it changes nothing. C assertion locations and branch multiplicity remain.
+
+The **25 appended sections** include 18 real-gameplay sections, one direct
+accounting section and six expected assertions (status **134**). Direct tests
+compare all original C enum names/evaluated values (generated from oly.h),
+all zero and asymmetric rows, every contiguous group, int32 overflow, repeats,
+NULL versus empty paths, suppression before invalid-index assertions, immediate
+writing and ENOENT/ENOTDIR/EISDIR/empty-path failures. Assertions retain
+coverage.c **405/417**, token owner **art.c:1218**, and real gen_item failure.
+
+Real cases exercise both stop branches with retained successors; multi-seller
+settlement; token successful creation and zero-effect attempts; nine/ten guards,
+zero/positive payroll and immediate gameplay; healing/recovery/sick deaths;
+reef/rock damage and both omen branches; mine thresholds and repeated inn
+triggers; building/outdoor prisoner escapes; ring cap, curse inventory-entry
+multiplicity and hidden dogs without hounds; natural weather; repeated Faery
+and Hades population/unit passes; every independent NPC dispatch branch; savage
+spawn before Hades mint; ocean plunge/cleanup; and the **actual process_orders
+day-zero/day-one/daily pipeline**. Saved boxes, real logs, retained orders,
+mint IDs and independent RNG probes are compared as applicable. No enabled
+case calls post_month or claims complete monthly phase parity. Schedule-only
+callback overlays remain scheduling evidence, not gameplay evidence.
+
+Real C twice and Go match **1308 sections / 96599 lines / 1902639 output
+bytes**, SHA-256
+`a93ea34d069efd3a47ada8bf71f4ee75bfe0b9636335b589793b6dfcbe15c90e`.
+Input: **28560 lines / 544674 bytes**, SHA-256
+`c0d27f47c17ef533051667df155fa4b96c6377b1d87da67c2614cc8932214572`.
+All inherited **1283 sections / 530718 input bytes** (SHA-256
+`3184d7795bd11f7d527f2c4e5ac7212fa4d379798015f5c41c2398ae2244127a`)
+and **1769914 output bytes** (SHA-256
+`5a3d7d10790885c7045e4d52f46e3f7754341c1fb63a6273a66dac5190b303dc`)
+remain exact prefixes, including original C whitespace. Native traversal also
+matches raw C/C/Go. No expectation is computed from Go or modeled totals.
+
+Negative linker probes wrap phase_ran only for the enabled negative-index
+input in expected-assertion section **1284**, emitting a dependency marker and
+exiting either **0** or **134**. Normal and `--update` modes reject all four
+with harness status **2**, before expected-status acceptance or any recording
+replacement. The recording checksum is unchanged. Temporary probe sources and
+compiler wrapper are removed before the final ordinary oracle run.
+Logs: `tmp/issue173-negative-{0,134}-{default,update}.log`,
+`tmp/issue173-command-{update,default}.log`, `tmp/issue173-source-audit.log`
+and `tmp/issue173-hook-coverage.log`.
+
+All 15 engine/library defaults, bounded vet and fresh bounded tests pass.
+Strict ordinary full turn, 13 lifecycle, 10 command and 15 USE controls pass
+at the same pin; no phase CLI is enabled. The 1212 original cached C files
+and accepted C executable hash are verified before read-only cache reuse;
+engines run only on actual disposable copies. Spec preserves **23/102/0**;
+golden initialization remains unsupported, not passing. No full-corpus or
+roundtrip rerun is claimed here; the inherited #179 pin gate remains evidence.
+All compat invocations explicitly set `G3_REPO="$PWD/tmp/upstream.git"`;
+engines/tests use shared run_limited, with tools run sequentially. Logs:
+`tmp/issue173-{vet,tests,cache-audit,turn-full,spec}.log`,
+`tmp/issue173-*-default.log`; strict summaries in `tmp/issue173-turn/`.
+Phase fixture success remains for #174/#176, not this partial integration.
+
 ## Follow-C load validation and summary traversal (#179)
 
 At **0.108.1-alpha**, the affected pin moves to merged G3 #360. The complete

@@ -27733,3 +27733,828 @@ name 1000 Sword of Kings Forever
 report trunc_name 1000
 name 1000 Buyer One
 report trunc_name 1000
+
+section phase coverage direct NULL empty zero rows repeated groups and overflow
+lore_root
+phcov metadata
+phcov ran -1
+phcov acted 74
+phcov write
+phcov path phase.tsv
+phcov write
+readfile phase.tsv
+phcov sweep
+phcov write
+readfile phase.tsv
+phcov path NULL
+phcov ran -1
+phcov acted 74
+phcov sweep
+phcov write
+phcov path EMPTY
+phcov ran 0
+phcov acted 73
+phcov write
+phcov path phase.tsv
+phcov seed 1 2147483647 2147483647
+phcov seed 2 123 2147483647
+phcov ran 1
+phcov ran 2
+phcov acted 1
+phcov acted 2
+phcov write
+readfile phase.tsv
+phcov write
+readfile phase.tsv
+set immediate 1
+phcov ran -1
+phcov acted 74
+phcov sweep
+phcov write
+readfile phase.tsv
+set immediate 0
+phcov path absent/phase.tsv
+phcov write
+lore_file blocker bytes
+phcov path blocker/phase.tsv
+phcov write
+lore_dir directory
+phcov path directory
+phcov write
+phcov path phase.tsv
+phcov write
+readfile phase.tsv
+
+section phase coverage invalid ran negative
+phcov path EMPTY
+phcov ran -1
+
+section phase coverage invalid ran upper bound
+phcov path EMPTY
+phcov ran 74
+
+section phase coverage invalid acted negative
+phcov path EMPTY
+phcov acted -1
+
+section phase coverage invalid acted upper bound
+phcov path EMPTY
+phcov acted 74
+
+section phase coverage real stops interrupt idle repeat and retained successor
+lore_root
+phcov path phase.tsv
+place 9000
+link 9000 1001
+resolve_wait
+set show_day 1
+set day 0
+queue wait time 100
+load
+do
+queue STOP extra
+queue format 21
+orders 200 1001 stop
+orders 200 1001 stop
+field 1000 moving 5
+stops
+phcov write
+readfile phase.tsv
+save 1000
+save 1001
+dump
+wait_dump
+lists
+stops
+stops
+phcov write
+readfile phase.tsv
+pstate 200
+readlog 200
+
+section phase coverage real multiple seller settlements count reduced buyers not settlements
+lore_root
+phcov path phase.tsv
+entity 1 4 0
+entity 500 4 0
+entity 1002 2 0
+field 1002 lord 201
+entity 9000 3 14
+link 9000 1000
+link 9000 1002
+link 9000 1001
+inventory 1000 1 100
+inventory 1001 500 2
+inventory 1002 500 2
+trade 1000 1 500 5 10 1000 0
+trade 1001 2 500 2 5 1001 99
+trade 1002 2 500 2 5 1002 99
+trade 9000 2 500 5 1 9000 99
+economy all
+phcov write
+readfile phase.tsv
+economy all
+phcov write
+readfile phase.tsv
+save 1000
+save 1001
+save 1002
+save 9000
+economy state
+readlog 200
+readlog 201
+
+section phase coverage real token attempts with no effects and successful shared mint
+lore_root
+phcov path phase.tsv
+set gm 200
+master 0
+set turn 1
+set indep 202
+entity 202 1 52
+place 9000
+field 200 touched 9000
+entity 22 4 0
+name 22 Wolf
+field 22 capturable 1
+entity 60000 4 63
+field 60000 unique 1000
+field 60000 token_num 2
+field 60000 token_ni 22
+inventory 1000 60000 1
+entity 60001 4 63
+field 60001 unique 9000
+field 60001 token_num 5
+inventory 9000 60001 1
+reconcile
+phcov write
+readfile phase.tsv
+reconcile
+phcov write
+readfile phase.tsv
+token_state 60000
+token_state 60001
+pstate 200
+save 9000
+orders_file 200
+readlog 200
+newitem 1000 42
+save_new
+
+section phase coverage real guards payroll zero repeats and healthy skips
+lore_root
+phcov path phase.tsv
+entity 1 4 0
+entity 12 4 0
+field 12 man 1
+field 12 attack 20
+field 12 defense 30
+entity 9000 3 3
+entity 9001 3 3
+entity 1010 2 64
+entity 1011 2 64
+field 1010 lord 200
+field 1011 lord 201
+field 1010 default_garrison 1
+inventory 1010 12 10
+inventory 1011 12 9
+link 9000 1010
+link 9001 1011
+link 1010 1000
+link 1000 1001
+field 1001 prisoner 1
+set garrison_pay 7
+garrison ping
+garrison pay
+set garrison_pay 0
+garrison pay
+garrison ping
+phcov write
+readfile phase.tsv
+garrison state
+save 1000
+save 1001
+save 1010
+save 1011
+readlog 200
+readlog 201
+
+section phase coverage real healing recovery sick death clamp and unchanged RNG siblings
+lore_root
+phcov path phase.tsv
+master 0
+set turn 1
+set day 7
+set gm 200
+entity 10000 3 50
+entity 9000 3 3
+entity 9100 3 37
+entity 10 4 0
+entity 1 4 0
+entity 1103 2 0
+entity 1020 2 0
+entity 1161 2 0
+entity 1040 2 0
+link 10000 9000
+link 9000 9100
+link 9000 1000
+link 9000 1001
+link 9100 1103
+link 9100 1020
+link 9100 1161
+link 9100 1040
+field 1103 lord 200
+field 1020 lord 200
+field 1161 lord 200
+field 1040 lord 200
+field 1103 sick 1
+field 1020 sick 1
+field 1161 sick 1
+field 1040 sick 1
+field 1103 health 50
+field 1020 health 50
+field 1161 health 50
+field 1040 health 50
+field 1000 health 0
+field 1000 sick 1
+field 1001 health 99
+heal
+phcov write
+readfile phase.tsv
+heal
+phcov write
+readfile phase.tsv
+save 1000
+save 1001
+save 1103
+save 1020
+save 1161
+save 1040
+readlog 200
+weather probe 9000 257
+newitem 9000 0
+save_new
+
+section phase coverage real coast reef rock and both omen branches
+lore_root
+phcov path phase.tsv
+master 0
+set turn 1
+set day 1
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 9002 3 4
+entity 9003 3 1
+link 10000 9000
+link 10000 9001
+link 10000 9002
+link 10000 9003
+routes 9000 0 9001 0 0
+routes 9003 0 9003 0 0
+entity 9203 9 30
+entity 9124 9 31
+entity 9422 9 66
+entity 9133 9 30
+entity 9135 9 31
+entity 9344 9 66
+entity 9473 9 30
+entity 9230 9 31
+entity 9143 9 66
+entity 9100 9 30
+link 9000 9203
+link 9000 9124
+link 9000 9422
+link 9000 9133
+link 9000 9135
+link 9000 9344
+link 9003 9473
+link 9003 9230
+link 9003 9143
+link 9003 9100
+link 9473 1000
+link 9230 1001
+field 200 touched 9000
+field 200 touched 9003
+damage ships
+routes 9000 0 9002 0 0
+damage ships
+phcov write
+readfile phase.tsv
+save 9203
+save 9133
+save 9000
+save 9003
+readlog 200
+weather probe 9000 257
+newitem 9001 0
+save_new
+
+section phase coverage real mine threshold and inn trigger repeats nontrigger
+lore_root
+phcov path phase.tsv
+master 0
+set turn 1
+set day 1
+entity 11 4 0
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+entity 9100 3 40
+entity 9128 3 37
+entity 9101 3 37
+entity 9102 3 38
+link 9000 9100
+link 9000 9128
+link 9000 9101
+link 9000 9102
+link 9100 1000
+field 9100 shaft_depth 26
+damage locations
+field 9100 shaft_depth 27
+damage locations
+field 9100 shaft_depth 30
+damage locations
+phcov write
+readfile phase.tsv
+save 9100
+save 9128
+save 9101
+save 9102
+readlog 200
+
+section phase coverage real weekly escape failure skips and repeat
+lore_root
+phcov path phase.tsv
+master 0
+set turn 1
+set day 7
+entity 295 4 0
+entity 9000 3 3
+entity 9100 3 37
+entity 1163 2 0
+entity 1026 2 0
+link 9000 9100
+link 9100 1000
+link 9000 1001
+link 1000 1163
+link 1000 1026
+field 1163 lord 201
+field 1026 lord 201
+field 1163 prisoner 1
+field 1026 prisoner 1
+field 1026 moving 8
+weekly
+weekly
+phcov write
+readfile phase.tsv
+escape_state
+arrival_state
+save 9100
+save 9000
+save 1026
+readlog 200
+readlog 201
+
+section phase coverage real daily pipeline scheduled branches not callback overlays
+lore_root
+phcov path phase.tsv
+master 0
+set turn 1
+event_days
+entity 8000 3 50
+entity 9000 3 3
+entity 9100 3 10
+entity 1026 2 0
+entity 295 4 0
+entity 6000 4 0
+link 8000 9000
+link 9000 9100
+link 9100 1000
+link 9100 1001
+link 1000 1026
+field 1000 health 100
+field 1001 health 100
+field 1026 health 100
+field 1026 lord 201
+field 1026 prisoner 1
+field 1000 magician 1
+field 1000 max_aura 4
+field 1000 cur_aura 2
+field 1001 hidden 1
+field 1000 loyal 1
+field 1000 rate 37
+field 6000 curse 5
+field 6000 creator 1001
+inventory 1000 6000 1
+inventory 1000 295 2
+set day 6
+events
+set day 7
+events
+set day 8
+events
+set day 14
+events
+set day 15
+events
+set day 16
+events
+phcov write
+readfile phase.tsv
+escape_state
+arrival_state
+save 1000
+save 1001
+save 1026
+readlog 0
+readlog 200
+readlog 201
+
+section phase coverage real weather repeated same day next day and mint
+lore_root
+phcov path phase.tsv
+master 0
+set turn 1
+set day 3
+weather_map 64
+weather natural
+weather natural
+set day 17
+weather natural
+phcov write
+readfile phase.tsv
+weather state
+weather probe 9013 4409
+newitem 1000 42
+save_new
+readlog 200
+
+section phase coverage real faery creates fifteen then units run twice
+lore_root
+phcov path phase.tsv
+master 0
+set turn 7
+set day 17
+set epoch 227
+set gm 201
+resolve_wait
+entity 205 1 52
+set faery_player 205
+entity 25 4 0
+name 25 elf
+field 25 man 1
+entity 8000 3 50
+set faery_region 8000
+entity 9000 3 3
+entity 9001 3 1
+entity 9002 3 2
+entity 9003 3 1
+link 8000 9003
+link 8000 9002
+link 8000 9001
+link 8000 9000
+link 9000 1001
+routes 9000 9002 0 0 0
+routes 9002 0 0 9000 0
+faery auto
+faery auto
+phcov write
+readfile phase.tsv
+faery_state
+pstate 205
+orders_file 205
+save 205
+save 9000
+readlog 201
+shuffle 1000 9000
+newitem 9000 0
+save_new
+
+section phase coverage real independent dispatcher all branches and saved order multiplicity
+lore_root
+phcov path phase.tsv
+master 0
+set turn 10
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 206 1 52
+set hades_player 206
+entity 26 4 0
+entity 8000 3 50
+set hades_region 8000
+entity 9100 3 7
+link 8000 9100
+entity 9000 3 3
+entity 9001 3 3
+routes 9000 9001 0 0 0
+entity 32 4 0
+entity 10 4 0
+entity 23 4 0
+entity 1002 2 55
+entity 1003 2 54
+entity 1004 2 54
+entity 1005 2 54
+entity 1006 2 54
+entity 1007 2 0
+entity 1008 2 0
+entity 1009 2 0
+entity 1010 2 0
+entity 1011 2 0
+entity 1012 2 55
+entity 1013 2 16
+field 1000 lord 205
+field 1001 lord 205
+field 1002 lord 205
+field 1003 lord 205
+field 1004 lord 205
+field 1005 lord 205
+field 1006 lord 205
+field 1007 lord 205
+field 1008 lord 205
+field 1009 lord 205
+field 1010 lord 205
+field 1011 lord 205
+field 1012 lord 205
+field 1013 lord 205
+field 1003 noble_item 32
+field 1004 noble_item 10
+field 1005 noble_item 23
+field 1006 noble_item 26
+field 1007 npc 1
+field 1008 npc 4
+field 1009 npc 5
+field 1007 loyal 4
+field 1008 loyal 4
+field 1009 loyal 4
+field 1010 npc 2
+field 1011 npc 3
+field 1002 summoner 1001
+field 1004 npc_home 9001
+field 1005 npc_home 9001
+field 1005 npc_created 6
+field 205 unit 1009
+field 205 unit 1002
+field 205 unit 1004
+field 205 unit 1000
+field 205 unit 1003
+field 205 unit 1001
+field 205 unit 1005
+field 205 unit 1006
+field 205 unit 1007
+field 205 unit 1008
+field 205 unit 1010
+field 205 unit 1011
+field 205 unit 1012
+field 205 unit 1013
+link 9000 1000
+link 9000 1001
+link 9000 1002
+link 9000 1003
+link 9000 1004
+link 9000 1005
+link 9000 1006
+link 9000 1007
+link 9000 1008
+link 9000 1009
+link 9000 1010
+link 9000 1011
+link 9000 1012
+link 9000 1013
+who 1007
+npc dispatch 0
+phcov write
+readfile phase.tsv
+npc dispatch 0
+phcov write
+readfile phase.tsv
+pstate 205
+orders_file 205
+savage_state
+hades_state
+orders_file 206
+save 9000
+save 9100
+npc probe 1012
+shuffle 1000 9000
+newitem 9000 0
+save_new
+
+section phase coverage real savage spawn before hades mint
+lore_root
+phcov path phase.tsv
+master 0
+set turn 1
+resolve_wait
+entity 205 1 52
+set indep 205
+entity 206 1 52
+set hades_player 206
+entity 26 4 0
+entity 32 4 0
+entity 98 4 0
+entity 8000 3 50
+set hades_region 8000
+entity 9100 3 7
+link 8000 9100
+entity 9000 3 3
+entity 9001 3 3
+entity 9409 3 32
+link 9000 9409
+routes 9000 9001 0 0 0
+npc dispatch 0
+phcov write
+readfile phase.tsv
+savage_state
+hades_state
+pstate 205
+pstate 206
+orders_file 205
+orders_file 206
+save 9001
+save 9100
+readlog 205
+newitem 9000 0
+save_new
+
+section phase coverage real ocean snapshot fifteen plunge cleanup and repeat
+lore_root
+phcov path phase.tsv
+master 0
+set turn 1
+set day 7
+set gm 200
+entity 10000 3 50
+entity 9000 3 1
+entity 9001 3 3
+entity 10 4 0
+link 10000 9000
+link 10000 9001
+routes 9000 0 9001 0 0
+link 9000 1000
+link 9000 1001
+field 1000 health 100
+field 1001 health 100
+field 1000 time_flying 14
+field 1001 time_flying 14
+ocean_init
+ocean_check
+phcov write
+readfile phase.tsv
+ocean_check
+phcov write
+readfile phase.tsv
+ocean_check
+phcov write
+readfile phase.tsv
+arrival_state
+save 1000
+save 1001
+readlog 200
+
+section phase coverage real process orders whole day zero day one daily pipeline only
+lore_root
+phcov path phase.tsv
+master 0
+entity 205 1 52
+entity 206 1 52
+entity 207 1 52
+set indep 205
+set hades_player 206
+set faery_player 207
+entity 25 4 0
+entity 26 4 0
+entity 8100 3 50
+entity 8200 3 50
+entity 9100 3 7
+entity 9200 3 3
+set hades_region 8100
+set faery_region 8200
+link 8100 9100
+link 8200 9200
+entity 1 4 0
+entity 500 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 14
+link 8000 9000
+link 9000 9001
+link 9001 1000
+link 9001 1001
+field 1000 health 100
+field 1001 health 100
+inventory 1000 1 20
+inventory 1001 500 4
+trade 1000 1 500 3 6 1000 0
+trade 1001 2 500 4 5 1001 0
+process
+phcov write
+readfile phase.tsv
+save 1000
+save 1001
+economy state
+readlog 200
+
+section phase coverage real hidden dogs attempted without hounds ring cap curse multiplicity
+lore_root
+phcov path phase.tsv
+entity 9000 3 10
+entity 295 4 0
+entity 6000 4 0
+entity 6001 4 0
+entity 6002 4 0
+link 9000 1000
+link 9000 1001
+field 1001 hidden 1
+field 1000 magician 1
+field 1000 max_aura 3
+field 1000 cur_aura 2
+field 6000 curse 3
+field 6000 creator 1001
+field 6001 curse 4
+field 6001 creator 1001
+field 6002 curse 5
+field 6002 creator 1000
+inventory 1000 6000 1
+inventory 1000 6001 7
+inventory 1000 6002 1
+field 1000 loyal 1
+dogs
+ring
+ring
+curse
+curse
+field 1000 loyal 3
+curse
+phcov write
+readfile phase.tsv
+save 1000
+save 1001
+save 6000
+readlog 0
+readlog 200
+
+section phase coverage real immediate suppression does not suppress payroll gameplay or writer
+lore_root
+phcov path phase.tsv
+entity 1 4 0
+entity 9000 3 3
+link 9000 1000
+link 1000 1001
+field 1000 default_garrison 1
+set garrison_pay 3
+set immediate 1
+garrison pay
+phcov write
+readfile phase.tsv
+save 1001
+set immediate 0
+garrison pay
+phcov write
+readfile phase.tsv
+save 1001
+garrison state
+readlog 200
+
+section phase coverage real weekly outdoor escape counts once after actual relocation
+lore_root
+phcov path phase.tsv
+master 0
+set turn 1
+set day 7
+entity 295 4 0
+entity 9000 3 3
+entity 1163 2 0
+link 9000 1000
+link 9000 1001
+link 1000 1163
+field 1163 lord 201
+field 1163 prisoner 1
+field 1163 moving 8
+field 1163 contact 1001
+weekly
+weekly
+phcov write
+readfile phase.tsv
+escape_state
+arrival_state
+save 9000
+save 1163
+readlog 200
+readlog 201
+
+section phase coverage invalid token owner retains original assertion
+phcov path EMPTY
+entity 60000 4 63
+reconcile
+
+section phase coverage invalid payroll negative pay retains generation assertion
+phcov path EMPTY
+entity 1 4 0
+set garrison_pay -3
+entity 9000 3 3
+link 9000 1000
+field 1000 default_garrison 1
+link 1000 1001
+garrison pay

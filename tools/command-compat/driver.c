@@ -99,6 +99,8 @@ int drv_admission(char *acct, FILE *fp);
 void drv_make_players(void);
 void drv_coverage_state(int cmd);
 void drv_coverage_seed(int cmd, int outcome, int value);
+void drv_ph_seed(int row, int ran, int acted);
+void drv_ph_metadata(void);
 void drv_ucov_state(void);
 void drv_ucov_seed(int ent, int outcome, int value);
 void drv_use_table(void), drv_use_consume(int who,int sk), drv_use_scroll(int who,int basis), drv_use_magic(struct command *c,int sk);
@@ -1533,6 +1535,31 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"start")) printf("use start %d\n",v_use(c));
    else if(!strcmp(text,"finish")) printf("use finish %d\n",d_use(c));
    else if(!strcmp(text,"interrupt")) printf("use interrupt %d\n",i_use(c));
+   else return 2;
+  }
+  else if (!strcmp(op, "phcov")) {
+   if(sscanf(line,"%*s %31s",text)!=1) return 2;
+   if(!strcmp(text,"path")) {
+    char path[8192];
+    if(sscanf(line,"%*s %*s %8191s",path)!=1) return 2;
+    phase_coverage_path = !strcmp(path,"NULL") ? NULL : str_save(!strcmp(path,"EMPTY") ? "" : path);
+   }
+   else if(!strcmp(text,"ran") || !strcmp(text,"acted")) {
+    if(sscanf(line,"%*s %*s %d",&n)!=1) return 2;
+    if(!strcmp(text,"ran")) phase_ran(n); else phase_acted(n);
+   }
+   else if(!strcmp(text,"seed")) {
+    if(sscanf(line,"%*s %*s %d %d %d",&n,&a,&b)!=3) return 2;
+    drv_ph_seed(n,a,b);
+   }
+   else if(!strcmp(text,"sweep")) {
+    for(n=0;n<PH_MAX;n++) {
+     for(a=0;a<n+1;a++) phase_ran(n);
+     for(a=0;a<PH_MAX-n;a++) phase_acted(n);
+    }
+   }
+   else if(!strcmp(text,"metadata")) drv_ph_metadata();
+   else if(!strcmp(text,"write")) write_phase_coverage();
    else return 2;
   }
   else if (!strcmp(op, "coverage")) {
