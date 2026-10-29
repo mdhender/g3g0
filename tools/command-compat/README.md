@@ -3,6 +3,121 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Prisoner capture and transfer prerequisites (#202, stage 4 N05)
+
+**0.124.0-alpha** adds the complete pinned stack.c `take_prisoner`
+**561–612** (void), `has_prisoner` **615–632** (int),
+`prisoner_gives_today` **662–681** (static int), `give_prisoner`
+**684–700** (int), and u.c `my_prisoner` **2530–2544** (int).
+These ranges include the actual return-type lines. All five definitions are
+extracted unchanged exactly once (**1997 bytes**), plus stack.c's actual
+`gives_today/gives_turn/gives_day` declarations **658–660**. Individual
+hashes and an **859-file** source/fixture byte and executable-bit audit are
+in `tmp/issue202-source-proof.log`. No new source dependency, pin, table,
+affected.sh, command callback, package or RNG owner is needed.
+
+Existing stack.go/u.go and world.go own this port. Capture uses the real
+vector/output before suppressing the target, TAKE_NI versus TAKE_ALL inventory
+and prisoner inheritance, copied-list extraction/reparenting, interruption,
+desertion/cookie return and dead-character conversion. Shared movePrisoner,
+unstack/stack and escape owners retain release/moving effects. Restoring a
+captor's own faction prisoner happens in takeUnitItems; a simple give does
+not release it. hasPrisoner searches the direct copied here list without a
+kind test; myPrisoner tests character/prisoner/direct location instead.
+Neither is a recursive stack predicate. No combat/capture callback or
+GIVE/GET/ACCEPT handler is wired; those callers remain later tasks.
+
+Eighteen appended cases compare complete raw statuses/streams, original
+save_box bytes, unsaved allocations and list order, running/queued WAIT
+interruption, output-cache inode reuse, inventory/ownership and keyed/entity,
+mint and legacy RNG aftermath. **15** require **0**, **3** require the exact
+original capture assertions and **134**, not successful turns. Cases include
+beast disband with an extra noble item and cookie return versus noncapturable
+NI/ordinary human capture; adjacent captive transfers, restored own faction,
+and ordinary child reparenting. The initial capture reaches the captive's
+old output file; subsequent captive output is suppressed, and the renamed
+cached inode retains **96 bytes** without reopening log/201.
+
+Give history starts nil with **-1/-1** guards, retains its allocated list
+on clear, counts each prisoner's previous entries, and resets lazily on
+**either** clock change. Same-day three gives, next day/next turn, asymmetric
+prisoners and negative sentinel clocks are recorded. Actual keyed controls:
+master 0/turn 1/day 44 yields **68/438/9**, so only the third give escapes;
+day 37's other prisoner uses **871**, not the global-count leaf **2**.
+Day 18 escape **16** refuses transfer but still appends history; real recapture
+and the next give use **596** and succeed. That path then mints **65748**;
+entity/land and legacy aftermath are recorded without replacement RNG draws.
+
+Discriminating cases ran unchanged real C twice before the first C-only
+update and the unchanged Go failure (`unknown operation "prisoner"`,
+`tmp/issue202-command-before-final.log`), before implementation. Final C/C/
+update/Go passes in `tmp/issue202-command-update-final.log`:
+**1521 sections / 119784 output lines / 2376647 output bytes**; input
+**33310 lines / 632588 bytes**. Additions: **18 sections / 420 input lines /
+8154 input bytes / 1841 output lines / 39311 output bytes**. Complete HEAD
+prefixes **624434 / 2337336** and stage-3 prefixes **578307 / 2134398**
+are byte-exact, including all **13 high-bit bytes** (9 invalid UTF-8 bytes)
+and original trailing spaces (`tmp/issue202-prefix-proof.log`). The 30 new
+trailing-space lines are authentic C output and intentionally retained.
+
+| file | SHA-256 |
+|---|---|
+| command-cases.txt | `4233c4f1b690238fa8179df36419cee07bade9b736d4b2ef4a6650f59f12962c` |
+| command-c-output.txt | `e685790bf695242f7a33cac8dc3ef6689571c0b64f8665224e7eff9b484c75ed` |
+
+Four temporary linker controls emit a dependency marker from has_prisoner
+and actually exit **0/134** in default/update modes. All reject section
+**1503** with harness **2** before status acceptance or recording replacement;
+the complete recording hash remains unchanged. Evidence:
+`tmp/issue202-negative-{0,134}-{default,update}.log` and
+`tmp/issue202-negative-statuses.log`. Temporary probes/helpers and matching
+fixture captures are removed.
+
+Original token-swear, inventory-give and inventory-refused scripts ran real
+C twice then fresh Go. C/C raw status/streams and complete **238/241/239**
+cwd entries match; C scripts print **YES**, engine **0**. Go's observed first
+missing callbacks are respectively **ACCEPT/ACCEPT/GIVE start**, engine **2**,
+script **1/NO**. No later dependency is inferred or implemented from these
+failures. release-swear-np independently prints **YES / script 0**, with
+matching C/C/Go engine **134**, exact `olympia/swear.c (180): FALSE`, and
+**229** identical cwd entries. This is an expected abort, not a successful
+turn. The unchanged canonical C executable SHA-256 remains
+`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`;
+no output filtering. Commands use the existing bounded native pre-cleanup
+capture method. Logs/manifests: `tmp/issue202-fixtures-proof.log`,
+`tmp/issue202-FIXTURE-{c1,c2,go}.log`, `tmp/issue202-fixtures/FIXTURE/`.
+
+Bounded vet, fresh full-enabled tests (**11 packages / 10 explicit opt-in/
+child-entry skips**) and eight sequential defaults command/move/helper/rng/
+code/loadsave/turn-driver/turn pass. Reproduce with explicit isolated source:
+
+```sh
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh" || exit "$?"
+done
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue202-spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Logs: `tmp/issue202-{vet,tests}.log`, `tmp/issue202-TOOL-final.log` and
+`tmp/issue202-spec.log`. Full spec remains **41 pass / 84 fail / 0 error**,
+all **41** earlier names (including the earlier **38** and stage-3 **36**)
+retained; golden **NO**, initialization **2** at unsupported -i. No full
+family, whole-spec, golden, corpus, stage-exit or non-Linux acceptance is
+claimed. No new oversized prerequisite or engine blocker was observed.
+Parent independently reviewed all five complete pinned definitions, their
+shared owners and the full engine/state/adapter/case diff, verified both
+complete inherited byte prefixes and the unchanged 41-pass list, and passed
+bounded vet, fresh full-enabled tests and all eight sequential defaults
+(`tmp/parent202-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn}.log`).
+
 ## Stack commands (#201, stage 4 N04)
 
 **0.123.0-alpha** adds complete stack.c `here_precedes` **30–51**,

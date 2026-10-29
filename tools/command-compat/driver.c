@@ -47,6 +47,8 @@ void drv_ocean(int who);
 ilist drv_oceans(void);
 trades_list drv_offers(int seller, int where, int except);
 void drv_entity_rolls(int who, int sub, int where);
+int drv_prisoner_count(int pris);
+void drv_prisoner_state(void);
 int drv_sick_roll(int who, int health);
 void drv_nasty(int slot), drv_hades_unit(int who);
 int drv_nasty_roll(int slot, int sub, int low, int high);
@@ -1139,6 +1141,17 @@ int main(int argc, char **argv)
      printf("\n");
     }
    }
+   else return 2;
+  }
+  else if (!strcmp(op, "prisoner")) {
+   sscanf(line,"%*s %31s %d %d %d",text,&n,&a,&b);
+   if(!strcmp(text,"take")) take_prisoner(n,a);
+   else if(!strcmp(text,"has")) printf("has prisoner %d\n",has_prisoner(n,a));
+   else if(!strcmp(text,"mine")) printf("my prisoner %d\n",my_prisoner(n,a));
+   else if(!strcmp(text,"give")) printf("give prisoner %d\n",give_prisoner(n,a,b));
+   else if(!strcmp(text,"count")) printf("previous gives %d\n",drv_prisoner_count(n));
+   else if(!strcmp(text,"roll")) printf("give roll %d\n",ent_prisoner(n,ESC_GIVE+a));
+   else if(!strcmp(text,"state")) drv_prisoner_state();
    else return 2;
   }
   else if (!strcmp(op, "inherit")) {

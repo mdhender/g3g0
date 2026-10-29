@@ -260,6 +260,11 @@ type world struct {
 	outVector lists.IList // sout.c out_vector
 	nprov     int         // u.c nprovinces: cached once nonzero
 
+	// stack.c's process-lifetime prisoner give history and lazy clock guard.
+	givesToday lists.IList
+	givesTurn  int32
+	givesDay   int32
+
 	// testUseConstReportDate is test_use_const_report_date in main.c,
 	// which times_masthead() reads.
 	testUseConstReportDate bool
@@ -284,9 +289,11 @@ type world struct {
 // %d, so any value round-trips.
 func newWorld() *world {
 	w := &world{
-		bx:      make([]*box, maxBoxes),
-		cmdWait: -1,
-		cmdSail: -1,
+		bx:        make([]*box, maxBoxes),
+		cmdWait:   -1,
+		cmdSail:   -1,
+		givesTurn: -1,
+		givesDay:  -1,
 
 		fromHost:       "g3@olympia.v-labs.be",
 		replyHost:      "g3@olympia.v-labs.be",

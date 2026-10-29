@@ -418,3 +418,77 @@ func (w *world) movePrisoner(who, target, pris int) int {
 	assert(w.rpChar(pris).prisoner != 0, "olympia/stack.c", 646, "rp_char(pris)->prisoner")
 	return 0
 }
+
+// takePrisoner is stack.c:561–612. Announce before suppressing the target's
+// output; inheritance moves its prisoners before extraction reparents children.
+func (w *world) takePrisoner(who, target int) {
+	assert(who != target, "olympia/stack.c", 566, "who != target")
+	assert(w.kind(who) == tChar, "olympia/stack.c", 567, "kind(who) == T_char")
+	assert(w.kind(target) == tChar, "olympia/stack.c", 568, "kind(target) == T_char")
+	ni := w.subkind(target) == subNi && w.beastCapturable(target)
+	w.vectorStack(w.stackLeader(target), true)
+	w.vectorAdd(who)
+	if ni {
+		w.commandOut(vect, "%s disbands.", w.boxName(target))
+	} else {
+		w.commandOut(vect, "%s is %s by %s.", w.boxName(target), "taken prisoner", w.boxName(who))
+	}
+	w.pChar(target).prisoner = 1
+	howMany := takeAll
+	if ni {
+		howMany = takeNI
+	}
+	w.takeUnitItems(target, who, howMany)
+	w.extractStackedUnit(target)
+	w.interruptOrder(target)
+	if ni {
+		w.unitDeserts(target, 0, true, loyUnsworn, 0)
+		w.putBackCookie(target)
+		w.setWhere(target, 0)
+		w.changeBoxKind(target, tDeadchar)
+	} else {
+		w.stack(target, who)
+	}
+}
+
+// hasPrisoner is stack.c:615–632: direct here-list membership, not a recursive
+// stack search, and unlike myPrisoner it does not explicitly test kind.
+func (w *world) hasPrisoner(who, pris int) bool {
+	for i := range w.loopHere(who) {
+		if i == pris && w.isPrisoner(i) {
+			return true
+		}
+	}
+	return false
+}
+
+// prisonerGivesToday is stack.c:662–681. Append even when the ensuing escape
+// check refuses transfer. Clear retains the allocated list across either clock
+// change; each prisoner counts only its own earlier entries.
+func (w *world) prisonerGivesToday(pris int) int {
+	var n int32
+	if w.givesTurn != int32(w.sysclock.turn) || w.givesDay != int32(w.sysclock.day) {
+		w.givesToday.Clear()
+		w.givesTurn = int32(w.sysclock.turn)
+		w.givesDay = int32(w.sysclock.day)
+	}
+	for _, i := range w.givesToday {
+		if i == pris {
+			n++
+		}
+	}
+	w.givesToday.Append(pris)
+	return int(n)
+}
+
+// givePrisoner is stack.c:684–700. ESC_GIVE+n selects the keyed leaf for
+// this prisoner's previous-give count, not the global length of givesToday.
+func (w *world) givePrisoner(who, target, pris int) bool {
+	if w.checkPrisonerEscape(pris, 2, int(int32(2)+int32(w.prisonerGivesToday(pris)))) {
+		return false
+	}
+	w.movePrisoner(who, target, pris)
+	w.commandOut(who, "Transferred prisoner %s to %s.", w.boxName(pris), w.boxName(target))
+	w.commandOut(target, "%s transferred the prisoner %s to us.", w.boxName(who), w.boxName(pris))
+	return true
+}

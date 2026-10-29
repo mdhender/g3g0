@@ -76,7 +76,8 @@ functions = {
                 'check_prisoner_escape', 'prisoner_escapes', 'prisoner_movement_escape_check',
                 'weekly_prisoner_escape_check',
                 'drop_stack', 'extract_stacked_unit', 'move_prisoner', 'v_stack',
-                'here_precedes', 'promote_stack', 'v_unstack', 'promote_after', 'v_promote'],
+                'here_precedes', 'promote_stack', 'v_unstack', 'promote_after', 'v_promote',
+                'take_prisoner', 'has_prisoner', 'prisoner_gives_today', 'give_prisoner'],
     'dir.c': ['los_province_distance', 'location_direction', 'exit_distance', 'is_port_city',
               'province_has_port_city', 'summer_uldim_open_now', 'add_province_exit',
               'extra_routes', 'province_exits', 'province_sub_exits', 'subloc_exits',
@@ -115,7 +116,7 @@ functions = {
             'check_char_gone', 'check_still_here', 'add_char_damage', 'count_man_items',
             'diff_region', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'loyal_s', 'add_np', 'deduct_np',
-            'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
+            'new_char', 'beast_capturable', 'my_prisoner', 'create_unique_item', 'create_unique_item_alloc',
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
             'consume_item', 'move_item', 'drop_item',
             'stackmate_inheritor', 'take_unit_items', 'put_back_cookie',
@@ -235,6 +236,10 @@ int immed_see_all, month_done, show_combat_flag;
     for file, names in functions.items():
         source = open(f'{src}/{file}').read()
         # Original data declarations too: no copied or modeled tag/number table.
+        if file == 'stack.c':
+            for pattern in [r'^static ilist gives_today = NULL;\n',
+                            r'^static int gives_turn = -1;\n', r'^static int gives_day = -1;\n']:
+                out.write(re.search(pattern, source, re.M).group(0))
         if file == 'c2.c':
             start, end = source.index('#define DASH_LINE'), source.index('char *months[]')
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/c2.c"\n')
@@ -575,6 +580,12 @@ trades_list drv_offers(int seller, int where, int except) {
  return seller ? seller_list(where, except) : buyer_list(where, except);
 }
 char *drv_wait_check(struct command *c) { return check_wait_conditions(c); }
+int drv_prisoner_count(int pris) { return prisoner_gives_today(pris); }
+void drv_prisoner_state(void) {
+ printf("gives allocated %d turn %d day %d:",gives_today != NULL,gives_turn,gives_day);
+ for(int i=0;i<ilist_len(gives_today);i++) printf(" %d",gives_today[i]);
+ printf("\\n");
+}
 void drv_signal(int who, char *flag) {
  struct flag_ent *p = my_malloc(sizeof(*p));
  p->who = who; p->flag = str_save(flag); flag_ents_append(&flags, p);
@@ -738,6 +749,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N05 '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N05 invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N05 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N04 '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

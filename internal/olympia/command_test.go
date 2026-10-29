@@ -1484,6 +1484,29 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			default:
 				t.Fatalf("unknown death %s", action)
 			}
+		case "prisoner":
+			switch action := args.word(); action {
+			case "take":
+				w.takePrisoner(args.num(t), args.num(t))
+			case "has":
+				fmt.Fprintf(&stdout, "has prisoner %d\n", b2i(w.hasPrisoner(args.num(t), args.num(t))))
+			case "mine":
+				fmt.Fprintf(&stdout, "my prisoner %d\n", b2i(w.myPrisoner(args.num(t), args.num(t))))
+			case "give":
+				fmt.Fprintf(&stdout, "give prisoner %d\n", b2i(w.givePrisoner(args.num(t), args.num(t), args.num(t))))
+			case "count":
+				fmt.Fprintf(&stdout, "previous gives %d\n", w.prisonerGivesToday(args.num(t)))
+			case "roll":
+				fmt.Fprintf(&stdout, "give roll %d\n", w.streams.EntPrisoner(args.num(t), 2+args.num(t)))
+			case "state":
+				fmt.Fprintf(&stdout, "gives allocated %d turn %d day %d:", b2i(w.givesToday != nil), w.givesTurn, w.givesDay)
+				for _, i := range w.givesToday {
+					fmt.Fprintf(&stdout, " %d", i)
+				}
+				fmt.Fprintln(&stdout)
+			default:
+				t.Fatalf("unknown prisoner %s", action)
+			}
 		case "inherit":
 			switch action := args.word(); action {
 			case "take":

@@ -890,6 +890,20 @@ func (w *world) newChar(sk, ni, where, health, pl, loyKind, loyLev int, name str
 	return n
 }
 
+// myPrisoner is u.c:2530–2544: a character prisoner directly located in who.
+func (w *world) myPrisoner(who, pris int) bool {
+	if w.kind(pris) != tChar {
+		return false
+	}
+	if !w.isPrisoner(pris) {
+		return false
+	}
+	if w.loc(pris) != who {
+		return false
+	}
+	return true
+}
+
 func (w *world) beastCapturable(who int) bool {
 	if w.subkind(who) != subNi {
 		return false
