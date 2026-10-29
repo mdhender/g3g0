@@ -30429,3 +30429,176 @@ npc probe 1000
 usemeta legacy 1 100000
 newitem 9000 0
 save_new
+
+section aura cap positive held artifact bonuses per entry not quantity
+master 37
+set turn 11
+entity 410 4 0
+entity 411 4 0
+entity 412 4 0
+entity 413 4 0
+field 1000 max_aura 7
+field 1000 auraculum 410
+field 410 item_aura 11
+field 410 aura_bonus 3
+field 411 aura_bonus 5
+field 412 aura_bonus -2
+field 413 aura_bonus 29
+inventory 1000 412 3
+inventory 1000 410 4
+inventory 1000 411 19
+inventory 1000 413 0
+usemeta aura 1000
+field 1000 cur_aura 119
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 cur_aura 120
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 cur_aura 121
+usemeta limit 1000
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 cur_aura -17
+usemeta limit 1000
+export state
+usemeta rolls 1000 1001
+entity_rolls 1000 7 5000
+usemeta legacy 1 100000
+newitem 1001 0
+save_new
+
+section aura cap innate negative clamps before positive bonus
+master 37
+set turn 11
+entity 411 4 0
+field 1000 max_aura -2147483648
+field 411 aura_bonus 13
+inventory 1000 411 7
+field 1000 cur_aura 66
+usemeta aura 1000
+usemeta limit 1000
+export state
+usemeta rolls 1000 1001
+entity_rolls 1000 7 5000
+usemeta legacy 1 100000
+newitem 1001 0
+save_new
+
+section aura cap negative effective aura floors without recorded artifact
+entity 411 4 0
+field 1000 max_aura 3
+field 411 aura_bonus -8
+inventory 1000 411 9
+field 1000 cur_aura 2
+usemeta aura 1000
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 cur_aura -7
+usemeta limit 1000
+export state
+
+section aura cap raw recorded artifact floor held unheld missing invalid and negative
+entity 410 4 0
+field 410 item_aura -4
+field 1000 max_aura 4
+field 1000 auraculum 410
+inventory 1000 410 3
+usemeta aura 1000
+field 1000 cur_aura 2
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 max_aura 0
+usemeta aura 1000
+inventory 1000 410 0
+usemeta aura 1000
+field 1000 cur_aura 1
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 auraculum 419
+usemeta aura 1000
+field 1000 cur_aura 0
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 auraculum -123
+usemeta aura 1000
+field 1000 cur_aura -9
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 auraculum 0
+usemeta aura 1000
+export state
+
+section aura cap unheld artifact does not add aura or cause positive floor
+entity 410 4 0
+field 410 item_aura 17
+field 1000 max_aura 9
+field 1000 auraculum 410
+field 1000 cur_aura 46
+usemeta aura 1000
+usemeta limit 1000
+export state
+
+section aura cap missing magic and item records stay absent
+entity 1002 2 0
+entity 410 4 0
+inventory 1002 410 5
+usemeta state 1002 0
+usemeta aura 1002
+usemeta limit 1002
+usemeta limit 1002
+usemeta state 1002 0
+field 1000 auraculum 410
+inventory 1000 410 2
+field 1000 cur_aura 7
+usemeta aura 1000
+usemeta limit 1000
+export state
+
+section aura cap signed multiplication boundary and wrapped zero fallback
+field 1000 max_aura 429496729
+field 1000 cur_aura 2147483647
+usemeta aura 1000
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 max_aura 429496730
+field 1000 cur_aura 19
+usemeta aura 1000
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 auraculum 419
+field 1000 cur_aura 19
+usemeta aura 1000
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 max_aura 2147483647
+field 1000 cur_aura 2147483647
+usemeta aura 1000
+usemeta limit 1000
+usemeta state 1000 0
+field 1000 max_aura 858993460
+field 1000 cur_aura 5
+usemeta aura 1000
+usemeta limit 1000
+export state
+
+section aura cap effective addition wraps negative before multiplication floor
+entity 411 4 0
+field 1000 max_aura 2147483647
+field 411 aura_bonus 1
+inventory 1000 411 7
+usemeta aura 1000
+field 411 aura_bonus 32767
+usemeta aura 1000
+field 1000 cur_aura 2147483647
+usemeta limit 1000
+export state
+
+section aura cap independent no call RNG allocation control
+master 37
+set turn 11
+usemeta rolls 1000 1001
+entity_rolls 1000 7 5000
+usemeta legacy 1 100000
+newitem 1001 0
+save_new

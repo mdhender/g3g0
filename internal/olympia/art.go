@@ -67,6 +67,33 @@ func (w *world) maxEffAura(who int) int32 {
 	return a
 }
 
+// maxCurrentAura is art.c:54–67. Multiply at C int width before clamping;
+// the one-aura fallback tests the raw recorded auraculum, not possession.
+func (w *world) maxCurrentAura(who int) int32 {
+	aura := w.maxEffAura(who) * 5
+	if aura < 0 {
+		aura = 0
+	}
+	if aura == 0 {
+		if p := w.rpMagic(who); p != nil && p.auraculum != 0 {
+			aura = 1
+		}
+	}
+	return aura
+}
+
+// limitCurAura is art.c:71–75. Keep the second cap evaluation and allocate
+// only in the lowering branch; negative current aura is not repaired.
+func (w *world) limitCurAura(who int) {
+	var current int32
+	if p := w.rpMagic(who); p != nil {
+		current = p.curAura
+	}
+	if current > w.maxCurrentAura(who) {
+		w.pMagic(who).curAura = w.maxCurrentAura(who)
+	}
+}
+
 // tokenPlayer is art.c:1019–1032. Nonregular owners share the independent
 // token faction, including noncharacter holders and NPC players.
 func (w *world) tokenPlayer(owner int) int {

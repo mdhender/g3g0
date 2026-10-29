@@ -2115,6 +2115,11 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			case "rolls":
 				n, a := args.num(t), args.num(t)
 				fmt.Fprintf(&stdout, "magic rolls %d %d %d\n", w.streams.MagcOmen(n, a), w.streams.MagcMed(n, 0), w.streams.MagcScry(n, a))
+			case "aura":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "aura cap %d held %d effective %d current %d\n", n, w.hasAuraculum(n), w.maxEffAura(n), w.maxCurrentAura(n))
+			case "limit":
+				w.limitCurAura(args.num(t))
 			case "callback_start", "callback_finish":
 				sk := args.num(t)
 				c.a, c.b, c.d = int32(args.num(t)), int32(args.num(t)), int32(args.num(t))

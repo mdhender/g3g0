@@ -3,6 +3,60 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Current aura cap prerequisite (#194, stage 4 P2)
+
+**0.116.0-alpha** ports complete art.c **54–75** `max_current_aura` and
+`limit_cur_aura` into the existing art.go, reusing maxEffAura/hasAuraculum.
+The C definitions are extracted literally unchanged, once each (SHA-256
+`31dc267a7e18dd8f822ed28de91efaa1801a725eca46534e290f0d7764095a9f`,
+`0104eb8b11ec9e47a599a042f13eaa08a6020ebdce606d8a0d442931b433956d`).
+No new source dependency, pin move, gameplay callback wiring or RNG adapter.
+
+Multiply effective aura by five at C int width **before** the negative clamp.
+Only a zero result gets the one-aura fallback, and that checks the **raw**
+recorded auraculum even when unheld, absent or invalid. Limiting only lowers
+strictly excessive current aura, evaluates the cap again in that branch,
+and leaves negative current aura and absent magic records alone.
+
+**Nine appended sections** cover asymmetric held artifact/per-entry bonuses
+(quantities 4/19/3 and a zero entry), below/equal/above/repeated limiting,
+negative innate versus negative effective aura, held/unheld/missing/invalid
+recorded artifacts and exact zero fallback, missing character/item magic
+records, signed addition/multiplication boundaries and a no-call RNG/mint
+control. Boundaries include INT_MIN/INT_MAX, 429496729/429496730 and
+858993460: the last gives cap **4**, not a wide-integer product. Raw record
+flags/inventory/list observers and complete real save_box bytes accompany
+magic/entity/legacy RNG and shared allocation aftermath. All nine require
+status **0**, after marker rejection.
+
+Cases were appended before implementation; unchanged real C ran twice before
+the C-only recording update. The then-unextended Go adapter failed explicitly
+on the new operations; subsequent real C/C/Go comparisons pass. Final totals:
+**1389 sections / 107961 output lines / 2147299 output bytes**, input
+**30604 lines / 582083 bytes**. Entire inherited **578307-byte input** and
+**2134398-byte output** prefixes equal HEAD byte-for-byte, including C spaces.
+
+| file | SHA-256 |
+|---|---|
+| command-cases.txt | `da5596ea0a46567db3f26e0ff6738c06938f13e13ea7749180eb730fc9ab3401` |
+| command-c-output.txt | `3e20877343c1ca2c0261fb8af315dc8e06076c62daa807e1c6bb3d18966232ae` |
+
+Temporary linker controls wrapped max_current_aura, emitted a dependency
+marker and exited **0/134** in both ordinary and `--update` runs. All four
+reject at section **1380** with tool status **2**, before status acceptance
+or recording replacement; expected bytes remain unchanged. Controls removed.
+Final normal command/move/helper/rng/code/loadsave/turn-driver/default-turn
+checks pass sequentially, explicitly using `G3_REPO=$PWD/tmp/upstream.git`
+and each tool's existing pin and run_limited supervision. Evidence:
+`tmp/issue194-*-final.log`, `tmp/issue194-negative-{0,134}-{default,update}.log`.
+Parent removed its completed baseline launcher sources after an initial
+scratch-package setup failure. Literal bounded `go vet ./...` and fresh
+full-enabled bounded `go test -count=1 ./...` then pass all **11 test packages**
+(Olympia **2.225s**), without excluding package trees. Parent independently
+repeated all eight compatibility checks and confirmed both inherited byte
+prefixes. Evidence: `tmp/parent194-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn}.log`.
+No whole-world repeat, magic/USE family exit or stage completion is claimed.
+
 ## Drum USE item prerequisite (#182)
 
 **0.115.0-alpha** ports complete original savage.c `v_use_drum` **70–146**

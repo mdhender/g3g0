@@ -1555,6 +1555,8 @@ int main(int argc, char **argv)
    }
    else if(!strcmp(text,"legacy")) printf("use legacy %d\n",rnd(n,a));
    else if(!strcmp(text,"rolls")) drv_magic_rolls(n,a);
+   else if(!strcmp(text,"aura")) printf("aura cap %d held %d effective %d current %d\n",n,has_auraculum(n),max_eff_aura(n),max_current_aura(n));
+   else if(!strcmp(text,"limit")) limit_cur_aura(n);
    else if(!strcmp(text,"callback_start") || !strcmp(text,"callback_finish")) {
     c->a=a; c->b=b; c->d=d;
     printf("use callback %d\n",drv_use_callback(c,n,!strcmp(text,"callback_finish")));

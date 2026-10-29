@@ -107212,3 +107212,750 @@ IT
 stderr:
 
 exit 0
+stdout:
+section aura cap positive held artifact bonuses per entry not quantity
+> master 37
+> set turn 11
+> entity 410 4 0
+> entity 411 4 0
+> entity 412 4 0
+> entity 413 4 0
+> field 1000 max_aura 7
+> field 1000 auraculum 410
+> field 410 item_aura 11
+> field 410 aura_bonus 3
+> field 411 aura_bonus 5
+> field 412 aura_bonus -2
+> field 413 aura_bonus 29
+> inventory 1000 412 3
+> inventory 1000 410 4
+> inventory 1000 411 19
+> inventory 1000 413 0
+> usemeta aura 1000
+aura cap 1000 held 410 effective 24 current 120
+> field 1000 cur_aura 119
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+use inventory 412 3
+use inventory 410 4
+use inventory 411 19
+use inventory 413 0
+1000 char 0
+il	412 3 \
+	410 4 \
+	411 19
+CH
+ lo 200
+CM
+ ma 7
+ ca 119
+ ar 410
+
+> field 1000 cur_aura 120
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+use inventory 412 3
+use inventory 410 4
+use inventory 411 19
+use inventory 413 0
+1000 char 0
+il	412 3 \
+	410 4 \
+	411 19
+CH
+ lo 200
+CM
+ ma 7
+ ca 120
+ ar 410
+
+> field 1000 cur_aura 121
+> usemeta limit 1000
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+use inventory 412 3
+use inventory 410 4
+use inventory 411 19
+use inventory 413 0
+1000 char 0
+il	412 3 \
+	410 4 \
+	411 19
+CH
+ lo 200
+CM
+ ma 7
+ ca 120
+ ar 410
+
+> field 1000 cur_aura -17
+> usemeta limit 1000
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 410 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+410 item 0
+IT
+IM
+ au 11
+ ba 3
+
+export entity 411 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+411 item 0
+IT
+IM
+ ba 5
+
+export entity 412 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+412 item 0
+IT
+IM
+ ba -2
+
+export entity 413 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+413 item 0
+IT
+IM
+ ba 29
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw item 412 3
+raw item 410 4
+raw item 411 19
+raw item 413 0
+1000 char 0
+il	412 3 \
+	410 4 \
+	411 19
+CH
+ lo 200
+CM
+ ma 7
+ ca -17
+ ar 410
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 5000
+prison roll 267
+land dir99 2
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 73265
+> save_new
+73265 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0
+stdout:
+section aura cap innate negative clamps before positive bonus
+> master 37
+> set turn 11
+> entity 411 4 0
+> field 1000 max_aura -2147483648
+> field 411 aura_bonus 13
+> inventory 1000 411 7
+> field 1000 cur_aura 66
+> usemeta aura 1000
+aura cap 1000 held 0 effective 13 current 65
+> usemeta limit 1000
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 411 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+411 item 0
+IT
+IM
+ ba 13
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 0 order 0
+here:
+raw item 411 7
+1000 char 0
+il	411 7
+CH
+ lo 200
+CM
+ ma -2147483648
+ ca 65
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 5000
+prison roll 267
+land dir99 2
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 73265
+> save_new
+73265 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0
+stdout:
+section aura cap negative effective aura floors without recorded artifact
+> entity 411 4 0
+> field 1000 max_aura 3
+> field 411 aura_bonus -8
+> inventory 1000 411 9
+> field 1000 cur_aura 2
+> usemeta aura 1000
+aura cap 1000 held 0 effective -5 current 0
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+use inventory 411 9
+1000 char 0
+il	411 9
+CH
+ lo 200
+CM
+ ma 3
+
+> field 1000 cur_aura -7
+> usemeta limit 1000
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 411 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+411 item 0
+IT
+IM
+ ba -8
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw item 411 9
+1000 char 0
+il	411 9
+CH
+ lo 200
+CM
+ ma 3
+ ca -7
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section aura cap raw recorded artifact floor held unheld missing invalid and negative
+> entity 410 4 0
+> field 410 item_aura -4
+> field 1000 max_aura 4
+> field 1000 auraculum 410
+> inventory 1000 410 3
+> usemeta aura 1000
+aura cap 1000 held 410 effective 0 current 1
+> field 1000 cur_aura 2
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+use inventory 410 3
+1000 char 0
+il	410 3
+CH
+ lo 200
+CM
+ ma 4
+ ca 1
+ ar 410
+
+> field 1000 max_aura 0
+> usemeta aura 1000
+aura cap 1000 held 410 effective -4 current 1
+> inventory 1000 410 0
+> usemeta aura 1000
+aura cap 1000 held 410 effective -4 current 1
+> field 1000 cur_aura 1
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+use inventory 410 3
+use inventory 410 0
+1000 char 0
+il	410 3
+CH
+ lo 200
+CM
+ ca 1
+ ar 410
+
+> field 1000 auraculum 419
+> usemeta aura 1000
+aura cap 1000 held 0 effective 0 current 1
+> field 1000 cur_aura 0
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+use inventory 410 3
+use inventory 410 0
+1000 char 0
+il	410 3
+CH
+ lo 200
+CM
+
+> field 1000 auraculum -123
+> usemeta aura 1000
+aura cap 1000 held 0 effective 0 current 1
+> field 1000 cur_aura -9
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+use inventory 410 3
+use inventory 410 0
+1000 char 0
+il	410 3
+CH
+ lo 200
+CM
+ ca -9
+
+> field 1000 auraculum 0
+> usemeta aura 1000
+aura cap 1000 held 0 effective 0 current 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 410 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+410 item 0
+IT
+IM
+ au -4
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw item 410 3
+raw item 410 0
+1000 char 0
+il	410 3
+CH
+ lo 200
+CM
+ ca -9
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section aura cap unheld artifact does not add aura or cause positive floor
+> entity 410 4 0
+> field 410 item_aura 17
+> field 1000 max_aura 9
+> field 1000 auraculum 410
+> field 1000 cur_aura 46
+> usemeta aura 1000
+aura cap 1000 held 0 effective 9 current 45
+> usemeta limit 1000
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 410 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+410 item 0
+IT
+IM
+ au 17
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CM
+ ma 9
+ ca 45
+ ar 410
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section aura cap missing magic and item records stay absent
+> entity 1002 2 0
+> entity 410 4 0
+> inventory 1002 410 5
+> usemeta state 1002 0
+use records 1002 0 0 0 0
+use inventory 410 5
+1002 char 0
+il	410 5
+
+> usemeta aura 1002
+aura cap 1002 held 0 effective 0 current 0
+> usemeta limit 1002
+> usemeta limit 1002
+> usemeta state 1002 0
+use records 1002 0 0 0 0
+use inventory 410 5
+1002 char 0
+il	410 5
+
+> field 1000 auraculum 410
+> inventory 1000 410 2
+> field 1000 cur_aura 7
+> usemeta aura 1000
+aura cap 1000 held 410 effective 0 current 1
+> usemeta limit 1000
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 410 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+410 item 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 0 order 0
+here:
+raw item 410 2
+1000 char 0
+il	410 2
+CH
+ lo 200
+CM
+ ca 1
+ ar 410
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1002 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 410 5
+1002 char 0
+il	410 5
+
+stderr:
+
+exit 0
+stdout:
+section aura cap signed multiplication boundary and wrapped zero fallback
+> field 1000 max_aura 429496729
+> field 1000 cur_aura 2147483647
+> usemeta aura 1000
+aura cap 1000 held 0 effective 429496729 current 2147483645
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+CM
+ ma 429496729
+ ca 2147483645
+
+> field 1000 max_aura 429496730
+> field 1000 cur_aura 19
+> usemeta aura 1000
+aura cap 1000 held 0 effective 429496730 current 0
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+CM
+ ma 429496730
+
+> field 1000 auraculum 419
+> field 1000 cur_aura 19
+> usemeta aura 1000
+aura cap 1000 held 0 effective 429496730 current 1
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+CM
+ ma 429496730
+ ca 1
+
+> field 1000 max_aura 2147483647
+> field 1000 cur_aura 2147483647
+> usemeta aura 1000
+aura cap 1000 held 0 effective 2147483647 current 2147483643
+> usemeta limit 1000
+> usemeta state 1000 0
+use records 1000 1 1 0 0
+1000 char 0
+CH
+ lo 200
+CM
+ ma 2147483647
+ ca 2147483643
+
+> field 1000 max_aura 858993460
+> field 1000 cur_aura 5
+> usemeta aura 1000
+aura cap 1000 held 0 effective 858993460 current 4
+> usemeta limit 1000
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CM
+ ma 858993460
+ ca 4
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section aura cap effective addition wraps negative before multiplication floor
+> entity 411 4 0
+> field 1000 max_aura 2147483647
+> field 411 aura_bonus 1
+> inventory 1000 411 7
+> usemeta aura 1000
+aura cap 1000 held 0 effective -2147483648 current 0
+> field 411 aura_bonus 32767
+> usemeta aura 1000
+aura cap 1000 held 0 effective -2147450882 current 0
+> field 1000 cur_aura 2147483647
+> usemeta limit 1000
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 411 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+411 item 0
+IT
+IM
+ ba 32767
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 0 order 0
+here:
+raw item 411 7
+1000 char 0
+il	411 7
+CH
+ lo 200
+CM
+ ma 2147483647
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section aura cap independent no call RNG allocation control
+> master 37
+> set turn 11
+> usemeta rolls 1000 1001
+magic rolls 4 76 13
+> entity_rolls 1000 7 5000
+prison roll 267
+land dir99 2
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 82291
+> newitem 1001 0
+created 73265
+> save_new
+73265 item 0
+IT
+ un 1001
+
+stderr:
+
+exit 0

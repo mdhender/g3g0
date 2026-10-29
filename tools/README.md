@@ -2003,6 +2003,18 @@ tools/<tool>/run.sh                  # each tool whose area the task touched, de
 
 For load and save work, add `tools/olympia-roundtrip/run.sh` (about 25 seconds once its C cache is built).
 `tools/box-compat/run.sh --games 10`, `tools/boxfile-compat/run.sh --games 10`, `tools/check-compat/run.sh --games 10` and `tools/loadsave-compat/run.sh --games 10` compare a fixed sample of saved games when a change could show only on real data.
+Current aura cap/limiting (#194, stage-4 P2) extends the existing command
+oracle with complete art.c:54–75 and nine small sections, not callback wiring.
+The cap multiplies at C int width before clamping; its one-aura floor checks
+the raw recorded auraculum, while limiting preserves negative current aura
+and missing records. Command/move/helper/rng/code/loadsave/turn-driver/default
+turn pass sequentially at their existing pins with isolated G3_REPO; command
+now has **1389 sections / 107961 lines / 2147299 bytes**, with both inherited
+prefixes preserved. Parent independently repeated these checks plus literal
+bounded `go vet ./...` and fresh full-enabled bounded `go test ./...`, after
+removing completed baseline launcher sources that caused a scratch setup error.
+See command-compat/README.md for hashes, negative marker controls and logs.
+This is a helper prerequisite, not magic/USE family or stage acceptance.
 For turn work, add `tools/turn-compat/run.sh`: small C recordings, comparator
 contracts and a byte-identical diagnostic run, never a whole-world turn by default.
 For clock/calendar or progress output work, also run `tools/turn-driver-compat/run.sh`.

@@ -93,7 +93,7 @@ functions = {
                'det_noble_rank_sup', 'determine_noble_ranks', 'may_rule_here',
                'garr_own_s', 'garrison_summary'],
     'build.c': ['province_subloc'],
-    'art.c': ['has_auraculum', 'max_eff_aura', 'token_player', 'swear_token_units',
+    'art.c': ['has_auraculum', 'max_eff_aura', 'max_current_aura', 'limit_cur_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
     'display.c': ['loc_inside_string', 'show_loc_barrier', 'safe_haven_s', 'ship_cap_s',
                   'loc_civ_s', 'show_loc_header',
@@ -709,6 +709,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section aura cap '* ]]; then
+   [ "$status" = 0 ] || die "unexpected aura cap status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section drum '* ]]; then
    [ "$status" = 0 ] || die "unexpected drum status $status in section $i"
   fi
