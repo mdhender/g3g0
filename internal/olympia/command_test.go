@@ -1625,6 +1625,29 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			w.joinStack(args.num(t), args.num(t))
 		case "leave":
 			w.leaveStack(args.num(t))
+		case "stack_probe":
+			action := args.word()
+			n, a := 0, 0
+			if action != "state" {
+				n, a = args.num(t), args.num(t)
+			}
+			switch action {
+			case "precedes":
+				fmt.Fprintf(&stdout, "precedes %d\n", b2i(w.herePrecedes(n, a)))
+			case "after":
+				fmt.Fprintf(&stdout, "after %d\n", b2i(w.promoteAfter(n, a)))
+			case "remove":
+				w.pLocInfo(n).hereList.RemValue(a)
+			case "promote":
+				w.promoteStack(n, a)
+			case "state":
+				for n := range w.loopBoxes() {
+					fmt.Fprintf(&stdout, "stack entity %d loc %d char %d magic %d command %d moving %d\n", n, w.loc(n), b2i(w.rpChar(n) != nil), b2i(w.rpMagic(n) != nil), b2i(w.rpCommand(n) != nil), w.charMoving(n))
+					helperList(&stdout, "here", w.rpLocInfo(n).hereList)
+				}
+			default:
+				t.Fatalf("unknown stack probe %s", action)
+			}
 		case "queue":
 			w.pOrderHead(w.player(int(c.who)), int(c.who)).l.Append(strings.TrimPrefix(line, "queue "))
 		case "orders":

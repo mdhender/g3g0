@@ -5,7 +5,7 @@ package olympia
 
 // Ported from olympia/stack.c: stack lookup, positioning, join/leave and
 // their small dependencies, also used by new_char(), and movement escapes.
-// v_stack is implemented; the other stack commands remain for later stages.
+// STACK, UNSTACK and PROMOTE share these same topology owners.
 
 func (w *world) herePos(who int) int {
 	p := w.rpLocInfo(w.loc(who))
@@ -13,6 +13,25 @@ func (w *world) herePos(who int) int {
 	ret := p.hereList.Lookup(who)
 	assert(ret >= 0, "olympia/stack.c", 20, "ret >= 0")
 	return ret
+}
+
+// herePrecedes is stack.c:30–51. The a test intentionally comes first:
+// equal operands return true, and finding either operand is sufficient.
+func (w *world) herePrecedes(a, b int) bool {
+	if w.loc(a) != w.loc(b) {
+		return false
+	}
+	p := w.rpLocInfo(w.loc(a))
+	assert(p != nil, "olympia/stack.c", 40, "p != NULL")
+	for _, i := range p.hereList {
+		if i == a {
+			return true
+		} else if i == b {
+			return false
+		}
+	}
+	assert(false, "olympia/stack.c", 48, "FALSE")
+	return false
 }
 
 // stackParent is stack_parent(): the unit who is stacked under, or 0.
@@ -143,6 +162,107 @@ func (w *world) vStack(c *command) int {
 	}
 	w.joinStack(who, target)
 	return 1
+}
+
+// vUnstack is the complete stack.c:744–787. Explicit self extraction leaves
+// the rest of the stack behind; an argumentless leave takes its children.
+func (w *world) vUnstack(c *command) int {
+	who, target := int(c.who), int(c.a)
+	if c.parse.Len()-1 < 1 {
+		if w.stackParent(who) <= 0 {
+			w.commandOut(who, "Not stacked under anyone.")
+			return 0
+		}
+		w.leaveStack(who)
+		return 1
+	}
+	if who == target {
+		w.extractStackedUnit(who)
+		return 1
+	}
+	if !w.validBox(target) || w.stackParent(target) != who {
+		w.commandOut(who, "%s is not stacked beneath us.", c.parse[1])
+		return 0
+	}
+	w.dropStack(who, target)
+	return 1
+}
+
+// promoteAfter is stack.c:828–861: depth-first location order, not just
+// siblings. Snapshot traversal and a-before-b tests are the original order.
+func (w *world) promoteAfter(a, b int) bool {
+	where := w.subloc(a)
+	ret := 0
+	assert(w.subloc(b) == where, "olympia/stack.c", 835, "subloc(b) == where")
+	for _, i := range w.allCharHere(where) {
+		if i == a {
+			ret = a
+			break
+		} else if i == b {
+			ret = b
+			break
+		}
+	}
+	if ret == a {
+		return true
+	}
+	if ret == b {
+		return false
+	}
+	assert(false, "olympia/stack.c", 858, "FALSE")
+	return false
+}
+
+// vPromote is the complete stack.c:864–925. Foreign targets must be direct
+// children or later siblings; own targets only need later location order.
+func (w *world) vPromote(c *command) int {
+	who, target := int(c.who), int(c.a)
+	if c.parse.Len()-1 < 1 {
+		w.commandOut(who, "Must specify which character to promote.")
+		return 0
+	}
+	if w.kind(target) != tChar {
+		w.commandOut(who, "%s is not a character.", c.parse[1])
+		return 0
+	}
+	if w.isPrisoner(target) {
+		w.commandOut(who, "Can't promote prisoners.")
+		return 0
+	}
+	targPar := w.stackParent(target)
+	if !w.checkCharHere(who, target) {
+		return 0
+	}
+	if target == who {
+		w.commandOut(who, "Can't promote oneself.")
+		return 0
+	}
+	if w.player(who) == w.player(target) {
+		if !w.promoteAfter(who, target) {
+			w.commandOut(who, "%s already comes before us in location order.", w.boxName(target))
+			return 0
+		}
+	} else if targPar != who && !w.herePrecedes(who, target) {
+		w.commandOut(who, "Characters to be promoted must be stacked immediately beneath the promoter, or be listed after the promoter at the same level.")
+		return 0
+	}
+	w.promoteStack(target, who)
+	return 1
+}
+
+// promoteStack is the complete stack.c:527–558. setWhere appends the target
+// before promote moves it, even when both units already have the same parent.
+// Unlike unstack this does not restore moving flags or summon loyalty.
+func (w *world) promoteStack(lower, higher int) {
+	assert(!w.stackedBeneath(lower, higher), "olympia/stack.c", 533, "!stacked_beneath(lower, higher)")
+	w.setWhere(lower, w.loc(higher))
+	p := w.rpLocInfo(w.loc(higher))
+	assert(p != nil, "olympia/stack.c", 544, "p != NULL")
+	assert(p.hereList[len(p.hereList)-1] == lower, "olympia/stack.c", 546, "p->here_list[ilist_len(p->here_list)-1] == lower")
+	pos := p.hereList.Lookup(higher)
+	w.promote(lower, pos)
+	w.commandOut(higher, "Promoted %s.", w.boxName(lower))
+	w.commandOut(lower, "%s promoted us.", w.boxName(higher))
 }
 
 func (w *world) joinStack(who, target int) {

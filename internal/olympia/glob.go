@@ -366,6 +366,10 @@ func init() {
 			cmdTbl[i].start = (*world).vGuard
 		case "stack":
 			cmdTbl[i].start = (*world).vStack
+		case "unstack":
+			cmdTbl[i].start = (*world).vUnstack
+		case "promote":
+			cmdTbl[i].start = (*world).vPromote
 		case "hide":
 			cmdTbl[i].start = (*world).vHide
 			cmdTbl[i].finish = (*world).dHide

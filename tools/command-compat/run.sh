@@ -75,7 +75,8 @@ functions = {
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
                 'check_prisoner_escape', 'prisoner_escapes', 'prisoner_movement_escape_check',
                 'weekly_prisoner_escape_check',
-                'drop_stack', 'extract_stacked_unit', 'move_prisoner', 'v_stack'],
+                'drop_stack', 'extract_stacked_unit', 'move_prisoner', 'v_stack',
+                'here_precedes', 'promote_stack', 'v_unstack', 'promote_after', 'v_promote'],
     'dir.c': ['los_province_distance', 'location_direction', 'exit_distance', 'is_port_city',
               'province_has_port_city', 'summer_uldim_open_now', 'add_province_exit',
               'extra_routes', 'province_exits', 'province_sub_exits', 'subloc_exits',
@@ -406,6 +407,7 @@ void drv_summary_totals(void) { printf("summary totals %d %d %d %d %d\\n", sum_g
 char *drv_loc_ind(int where) { return loc_ind_s(where); }
 void drv_loc_catchup(int pl, int where) { loc_stack_catchup(pl, where); }
 void drv_loc_stack_sup(int pl, int where, int who) { loc_stack_rep_sup(pl, where, who); }
+int drv_promote_after(int a, int b) { return promote_after(a,b); }
 int drv_loc_barrier(int who, int where) { return show_loc_barrier(who, where); }
 void drv_chars_here(int who, int where) { show_chars_here(who, where); }
 void drv_inner_locs(int who, int where) { show_inner_locs(who, where); }
@@ -736,6 +738,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N04 '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N04 invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N04 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N03 '* ]]; then
    [ "$status" = 0 ] || die "unexpected N03 status $status in section $i"
   fi

@@ -17,6 +17,7 @@ void glob_init(void);
 void init_lower(void);
 void drv_read_boxes(char *path);
 void drv_persist_command(int who);
+int drv_promote_after(int a, int b);
 void drv_list_player(int pl);
 void drv_gm_economy(char *part, int pl);
 int drv_gm_pct(int n, int d);
@@ -1516,6 +1517,20 @@ int main(int argc, char **argv)
   }
   else if (!strcmp(op, "join")) { sscanf(line,"%*s %d %d",&n,&a); join_stack(n,a); }
   else if (!strcmp(op, "leave")) { sscanf(line,"%*s %d",&n); leave_stack(n); }
+  else if (!strcmp(op, "stack_probe")) {
+   sscanf(line,"%*s %31s %d %d",text,&n,&a);
+   if(!strcmp(text,"precedes")) printf("precedes %d\n",here_precedes(n,a));
+   else if(!strcmp(text,"after")) printf("after %d\n",drv_promote_after(n,a));
+   else if(!strcmp(text,"remove")) ilist_rem_value(&p_loc_info(n)->here_list,a);
+   else if(!strcmp(text,"promote")) promote_stack(n,a);
+   else if(!strcmp(text,"state")) {
+    loop_boxes(n) {
+     printf("stack entity %d loc %d char %d magic %d command %d moving %d\n",n,loc(n),rp_char(n)!=NULL,rp_magic(n)!=NULL,rp_command(n)!=NULL,char_moving(n));
+     list("here",rp_loc_info(n)->here_list);
+    } next_box;
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "queue"))
    cstrings_append(&drv_orders(player(c->who), c->who)->l, str_save(line + 6));
   else if (!strcmp(op, "orders")) {

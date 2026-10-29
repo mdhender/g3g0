@@ -4,6 +4,37 @@
 G3 is the reference.
 Expected output comes only from G3's committed files, which its C engine wrote; nothing here re-baselines.
 
+## Stack command progress (#201, stage 4 N04)
+
+At **0.123.0-alpha**, unchanged pin **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**,
+the full original spec records **41 pass / 84 fail / 0 error**, **125 fixtures /
+122s**, preserving every previous **38** pass and adding only
+**stacking-stack, stacking-refused, release-swear-np**. The existing tool
+generated passing.txt; no upstream scenario, script or expected bytes change.
+Its SHA-256 is
+`6771ff03ab00bd8b9f3b6b85482b1891f04800c18be96fceefb2108895cb464f`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue201-spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Parent independently repeats both stacking scripts, move-go, move-out-first
+and release-swear-np with unchanged real C twice then fresh Go. Every original
+script prints **YES / exits 0**. Complete pre-cleanup raw status/streams and
+cwd types/modes/empty directories/bytes match **241/239/237/240/229 entries**.
+The last script expects engine **134**, exact `olympia/swear.c (180): FALSE`;
+its success does **not** create a successful turn/roundtrip snapshot. C source
+paths are canonicalized at compilation, not by filtering capture output.
+See [stack acceptance](../command-compat/README.md#stack-commands-201-stage-4-n04).
+
+Logs: `tmp/issue201-spec.log`, `tmp/issue201-spec/{run-all,olympia-g3,golden}.log`,
+`tmp/parent201-FIXTURE-{c1,c2,go}.log`; strict manifests remain under
+`tmp/parent201-fixtures/`. Golden remains **NO**, unsupported initialization
+exits **2**. The **84 remaining failures**, mixed family #185 and stage 4
+remain unaccepted.
+
 ## Attitude command progress (#199, stage 4 N02)
 
 At **0.121.0-alpha**, unchanged pin **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**,

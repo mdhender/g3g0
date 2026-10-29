@@ -30,11 +30,14 @@ phase-month-decay
 phase-month-gold
 phase-month-open
 player-refused
+release-swear-np
 rng-selftest
 savage-cap
 save-fly-cap
 save-libdir-space
 save-seed-unwritable
+stacking-refused
+stacking-stack
 summary-trunc-name
 token-vanish
 trade-route-seed-parse

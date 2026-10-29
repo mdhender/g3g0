@@ -3,6 +3,114 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Stack commands (#201, stage 4 N04)
+
+**0.123.0-alpha** adds complete stack.c `here_precedes` **30–51**,
+`promote_stack` **527–558**, `v_unstack` **744–787**, `promote_after`
+**828–861**, and `v_promote` **864–925**. The supplied 862 endpoint is
+blank; v_promote's return type starts at 864. All five original definitions
+are extracted unchanged exactly once (**3255 bytes**; individual hashes in
+`tmp/issue201-source-proof.log`). glob.c's two actual start slots are wired
+in existing glob.go; finish/interrupt stay genuinely NULL. Existing vStack,
+checkCharHere/charWhere/contact visibility, depth-first topology/snapshot
+walks, setWhere/promote, leave/drop/extract, death/desertion/release, movement,
+output/save/allocation and entity/mint/legacy RNG owners are reused, not
+replaced. No new source dependency, pin, package or affected.sh change.
+
+Twenty-nine appended cases compare original save_box bytes, raw list order,
+record allocations, command arguments/queues/status, moving flags and RNG
+aftermath. They distinguish own/foreign earlier/later positions, same-level
+versus direct/nested children, prisoner/hidden/contact/remote/self targets,
+bare leave versus self extraction, child/prisoner reparenting and release,
+and signed moving boundaries. Equal a/b tests preserve a-before-b precedence;
+one missing list member still decides, while both missing, differing locations,
+ancestor promotion and a noncharacter direct UNSTACK target assert at the
+original source lines. Six new cases require **134**, not successful turns;
+the other **23** require **0**. The existing insufficient-NP swear.c:180
+assertion is also retained, with a separate sufficient-NP keyed oath control.
+No prisoner capture/inventory command implementation or C behavior fix.
+
+Actual dispatch composes STACK/PROMOTE/UNSTACK/WAIT. A real four-day MOVE
+retains leader/follower moving **71** through an outside unit's successful
+PROMOTE before arrival; the follower's queued UNSTACK is correctly suspended
+until arrival. Direct UNSTACK clears inherited moving state recursively,
+whereas PROMOTE does not. Loaded NULL-interrupt controls retain subsequent
+WAITs, including original print_command/read_boxes command persistence.
+HEAD's unchanged Go fails the first new case explicitly at
+`command promote start` (`tmp/issue201-go-before.log`).
+
+Unchanged real C ran twice before every C-only update/Go comparison. Final:
+**1503 sections / 117943 output lines / 2337336 output bytes**; input
+**32890 lines / 624434 bytes**. Additions: **29 sections / 556 input lines /
+9542 input bytes / 2525 output lines / 51972 output bytes**. Entire HEAD
+prefixes **614892 / 2285364 bytes** and stage-3 prefixes **578307 / 2134398**
+are unchanged, including all **13 non-UTF8 bytes** and original trailing
+spaces. New trailing spaces are authentic C output, not whitespace defects
+to strip. Proof: `tmp/issue201-prefix-proof.log`; final C/C/update/Go:
+`tmp/issue201-command-update-final.log`.
+
+| file | SHA-256 |
+|---|---|
+| command-cases.txt | `395a7567c3b0b501a9dadfa05c7e0606106ff83ae244531337486275b4894ca8` |
+| command-c-output.txt | `21ea55770c881b7ca6e6c4e88484f2d39194410dbfa1c4c4437e20dd663305b7` |
+
+Four temporary linker controls wrap actual v_unstack, emit a dependency marker
+and exit **0/134**, in default/update modes. Each is rejected at section
+**1483**, harness **2**, before status acceptance/record replacement. Bounded
+direct executions confirm both statuses; the recording hash remains unchanged.
+Logs: `tmp/issue201-negative-STATUS-MODE.log` and
+`tmp/issue201-negative-direct-STATUS-MODE.log`. Temporary probes/helpers and
+matching captures are removed.
+
+The unchanged original scripts run real C twice, then fresh Go, through the
+existing bounded pre-cleanup capture launcher and strict turn comparator plus
+tree-modes.py. Every script exits **0 / YES**; raw status/streams and every
+cwd entry/type/mode/empty directory/byte match without exclusions:
+
+| original fixture | engine status | cwd entries |
+|---|---:|---:|
+| stacking-stack | 0 | 241 |
+| stacking-refused | 0 | 239 |
+| move-go | 0 | 237 |
+| move-out-first | 0 | 240 |
+| release-swear-np | 134 | 229 |
+
+The last script correctly passes its expected abort, not a successful turn or
+roundtrip. Its initial cached C build embedded an absolute __FILE__ path;
+strict comparison correctly rejected that diagnostic difference. Rebuild
+unchanged source in the isolated `tmp/stage4-source` with
+`cmake -S tmp/stage4-source -B tmp/stage4-source/build/issue201 -G Ninja -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_C_FLAGS=-ffile-prefix-map=$PWD/tmp/stage4-source/="`,
+then bounded `cmake --build ... --target olympia-g3 -j 4`. This makes source
+names canonical at compilation, not by filtering either captured stream.
+C/C/Go were all freshly repeated; evidence is
+`tmp/issue201-fixtures-proof-final.log`, `tmp/issue201-c-build.log` and
+`tmp/issue201-fixtures/*/c-manifest.txt`. The C executable SHA-256 is
+`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`.
+
+Bounded vet, fresh full-enabled tests (**11 packages / 10 explicit opt-in/
+child-entry skips**) and eight sequential defaults command/move/helper/rng/
+code/loadsave/turn-driver/turn pass at their own pins, with explicit
+`G3_REPO="$PWD/tmp/upstream.git"` on every compatibility invocation. Logs:
+`tmp/issue201-{vet,tests}.log`, `tmp/issue201-TOOL-final.log`.
+The existing full spec tool records **41 pass / 84 fail / 0 error**, adding
+only **release-swear-np, stacking-refused, stacking-stack**; all inherited
+**38** names (including the stage-3 **36**) remain. Golden stays **NO**,
+initialization **2** at unsupported -i. Run:
+`G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue201-spec" GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" bash tools/olympia-spec/run.sh`
+(`tmp/issue201-spec.log`). No newly discovered oversized prerequisite or
+verified engine blocker. This is bounded N04/stacking evidence, not full
+stage-4, whole-spec, golden, corpus or non-Linux/sanitizer acceptance.
+Parent independently reviewed all five complete pinned definitions and the
+full engine/adapter/case diff, verified complete inherited byte prefixes and
+the no-loss passing list, then passed bounded vet, fresh full-enabled tests
+and all eight sequential defaults (`tmp/parent201-TOOL.log`). Parent also
+freshly repeated all five original scripts with C twice then Go, matching
+the raw status/streams and complete **241/239/237/240/229** cwd entries above,
+including the exact **134** abort and `olympia/swear.c (180): FALSE` diagnostic.
+Logs: `tmp/parent201-FIXTURE-{c1,c2,go}.log`; retained strict manifests:
+`tmp/parent201-fixtures/FIXTURE/manifest.txt`. Matching captures and the fresh
+temporary Go binary are removed after comparison.
+
 ## Form nobles (#200, stage 4 N03)
 
 **0.122.0-alpha** adds the three complete c1.c definitions
