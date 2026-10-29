@@ -2458,6 +2458,21 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			}
 		case "load":
 			fmt.Fprintf(&stdout, "load %d\n", b2i(w.loadCommand(c)))
+		case "transfer_probe":
+			switch action := args.word(); action {
+			case "args":
+				c.a, c.b, c.c, c.d = int32(args.num(t)), int32(args.num(t)), int32(args.num(t)), int32(args.num(t))
+			case "state":
+				n := args.num(t)
+				q := w.rpCommand(n)
+				fmt.Fprintf(&stdout, "transfer %d men %d command %d\n", n, w.countManItems(n), b2i(q != nil))
+				if q != nil {
+					entry := cmdTbl[q.cmd]
+					fmt.Fprintf(&stdout, "transfer command %d state %d wait %d callbacks %d %d %d\n", q.cmd, q.state, q.wait, b2i(entry.start != nil), b2i(entry.finish != nil), b2i(entry.interrupt != nil))
+				}
+			default:
+				t.Fatalf("unknown transfer %s", action)
+			}
 		case "rawargs":
 			c.a, c.b, c.c = int32(args.num(t)), int32(args.num(t)), int32(args.num(t))
 		case "callback_start":

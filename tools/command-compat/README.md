@@ -3,6 +3,180 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## GIVE, PAY, GET and TAKE (#204, stage 4 N06b)
+
+**0.126.0-alpha** ports the complete pinned c1.c definitions, including
+return-type lines: `v_give` **658–760**, `v_pay` **763–775**, static
+`may_take` **778–806**, and `v_get` **813–874**. The extractor retains all
+four unchanged exactly once (**3887 bytes**; individual hashes in
+`tmp/issue204-source-proof.log`). The actual GIVE/PAY/GET/TAKE starts are
+bound in glob.go; all four genuine NULL finish/interrupt slots remain NULL.
+No new source dependency or pin: c1.c and the entire reused closure were
+already tracked by affected.sh. No duplicate quantity, acceptance, prisoner,
+visibility, garrison, inventory/token/NP, parser/accounting or captain owner.
+
+Thirty-two appended sections (**30 status 0 / 2 exact quantity assertions
+134**) use real dispatch, raw streams/status, save_box and unsaved allocation,
+list, queue, cache and entity/keyed/mint/legacy RNG observers. They distinguish:
+
+- GIVE's saved `a/b` mutation from CLAIM's local-only correction, with
+  two/three/four-plus arguments and unchanged original line/parse fields;
+  visibility/contact, moving, prisoner, summoned and item validation order;
+- finite, wildcard and all four ordered unit/faction acceptance alternatives,
+  exact depletion's unlimited-zero sentinel, same-faction/gold bypass, cached
+  refusal output, and allowance consumption **before** a prisoner escapes and
+  the transfer fails; direct rather than recursive prisoner membership;
+- qty=0, asymmetric have-left/shortage, negative raw fields and signed-int
+  subtraction; GET's same-faction/direct-prisoner versus foreign permission,
+  controlled garrisons with mixed **13+4** man inventory (withdraw **8** refuses
+  at nine, **7** succeeds at ten), and unrestricted non-man withdrawal;
+- actual GET/TAKE sailor/pirate losses accumulating a running captain's wait
+  penalties; GIVE does not call that withdrawal-only helper. SAIL execution
+  itself remains outside this task;
+- PAY's real reparse to GIVE with new saved args/line, one original PAY command
+  count, **PAY row 54 ok/fail** accounting and **GIVE row 36 unchanged**;
+- save/reload of actual **STATE_RUN** records and generic NULL interruption
+  for all four verbs (automatically loading the next queued order without
+  executing a start), retained next WAIT, and queued
+  ACCEPT → GIVE → PAY → GET → TAKE → DISCARD → CLAIM → WAIT;
+- token GIVE on day 8, immediate existing-NPC ownership change and **0 NP**
+  refund/payment, new token-unit creation, lore, order reset and mint aftermath.
+
+The first 26 valid sections ran unchanged C twice before implementation or
+updating expected bytes; unchanged Go then failed at **GIVE start**
+(`tmp/issue204-before-valid.log`). Two earlier local setup errors (a probe-name
+collision and an unowned test recipient) produced status 139 and were rejected,
+not recorded as accepted behavior. Only the local driver/cases were corrected;
+the C definitions, upstream fixtures and EXPECT files were never edited.
+Final additional cases likewise run C twice before any update/Go comparison.
+
+Final oracle: **1583 sections / 126324 output lines / 2498243 output bytes**;
+input **34707 lines / 656126 bytes**. Additions: **793 input lines / 12903
+input bytes / 3725 output lines / 70682 output bytes**. Complete accepted
+**643223 / 2427561** byte prefixes and original stage-3 **578307 / 2134398**
+prefixes are unchanged. All **13 high-bit/non-UTF8 output bytes** survive;
+the **54** appended trailing-whitespace lines are authentic raw C bytes.
+Proof: `tmp/issue204-prefix-proof.log`; final C/C/update/Go:
+`tmp/issue204-update-final.log`; fresh separate default:
+`tmp/issue204-command-final.log`.
+
+| file or prefix | SHA-256 |
+|---|---|
+| command-cases.txt | `062d8683d8fb6e92e97328c304d1c256264e7f1d5602dccab014aea798a1335e` |
+| command-c-output.txt | `f4afb956fd6e88cbbad9164cf34eda9387d07f625aebd07bd2dc5d3979d6ba84` |
+| accepted 643223-byte input prefix | `5f6e920ecb3efdcb03f5b23b8f0d130ef786cf48c6bbb685308cba9b2585b860` |
+| accepted 2427561-byte output prefix | `f64558e8e92259482a783a99b060c081bd9e7b492252093fed446459446d3029` |
+| stage-3 578307-byte input prefix | `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` |
+| stage-3 2134398-byte output prefix | `c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac` |
+
+Four temporary linker controls wrap only v_give, emit the rejected dependency
+marker, and actually exit **0/134** in default/update modes. Every harness
+rejects **section 1551 with status 2**, before accepting status or replacing
+recordings. The then-current recording hash stays unchanged:
+`20ecf609bf856549dde04c68cce77d4f6bf8da4e0a24f884d97750ccae0d87a8`.
+The later strengthened STATE_RUN persistence case is recorded from two fresh
+unchanged C runs, not from the negative probes. Separate bounded
+direct executions confirm both actual process statuses and raw streams.
+Logs: `tmp/issue204-negative-{0,134}-{default,update}.log`,
+`tmp/issue204-probe-STATUS-MODE.{stdout,stderr,status}` and
+`tmp/issue204-negative-proof.log`. Temporary probes/helpers/binaries are removed.
+
+All five original scripts ran unchanged real C twice, then freshly built Go,
+using the trusted bounded native pre-cleanup `tmp/stage4-capture` launcher
+(`S4_ENGINE`, `S4_CAPTURE`, `OLYMPIA_ENGINE_BIN=$PWD/tmp/stage4-capture`).
+Each script prints **YES / script 0**. Strict comparator plus tree-modes.py
+match raw status/streams and **ALL** cwd entries/types/modes/empty dirs/bytes,
+without exclusions/normalization:
+
+| original fixture | engine status C/C/Go | cwd entries |
+|---|---|---|
+| inventory-give | 0 | 241 |
+| inventory-refused | 0 | 239 |
+| token-swear | 0 | 238 |
+| token-vanish (retained regression) | 0 | 236 |
+| release-swear-np (separate expected abort) | 134 | 229 |
+
+The abort is exact **`olympia/swear.c (180): FALSE`**, not a successful turn.
+Canonical unchanged C binary `tmp/stage4-source/build/issue201/olympia-g3`
+SHA-256: `6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`.
+No older absolute-path C binary was used. Each script unpacks fresh physical
+disposable scenario inputs; protected cached inputs are untouched. Matching
+captures are removed. Retained manifests/assertion evidence:
+`tmp/issue204-fixtures/FIXTURE/`; exact fixture-source hashes:
+`tmp/issue204-fixture-source-proof.log`; provenance/results:
+`tmp/issue204-fixtures-proof.log` and `tmp/issue204-FIXTURE-{c1,c2,go}.log`.
+
+Fixture command recipe (build Go freshly into an ignored underscore scratch
+directory; for each table fixture, run engines in **c1, c2, go** order):
+
+```sh
+mkdir -p tmp/_issue204
+go build -o tmp/_issue204/olympia-g3 ./cmd/olympia
+# bin = canonical C path above for c1/c2; $PWD/tmp/_issue204/olympia-g3 for go.
+# base=$PWD/tmp/issue204-fixtures/$fixture; capture=$base/$engine.
+G3_REPO="$PWD/tmp/upstream.git" S4_ENGINE="$bin" S4_CAPTURE="$capture" \
+  OLYMPIA_ENGINE_BIN="$PWD/tmp/stage4-capture" \
+  bash "tmp/stage4-source/tests/olympia/regress/$fixture/check.sh"
+# Reject dependency/NYI/stub/sanitizer markers in both captured streams first;
+# then require engine status 0 (134 only for release-swear-np), script 0 / YES.
+for engine in c2 go; do
+  run_limited 120 compare "$PWD/tmp/stage4-turn/bin/compare" "$base/c1" "$base/$engine"
+  python3 tools/lib/tree-modes.py "$base/c1/cwd" "$base/$engine/cwd"
+done
+run_limited 120 compare "$PWD/tmp/stage4-turn/bin/compare" --manifest "$base/c1"
+# Retain manifest and decisive abort stderr, then remove matching captures
+# and the temporary scratch helper/binary; never remove the trusted launcher.
+```
+
+Validation commands (every engine/test uses shared run_limited/adapter):
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" tools/command-compat/run.sh --update
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    "tools/$tool-compat/run.sh" # sequential; inspect every status
+done
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue204-spec" \
+  tools/olympia-spec/run.sh
+```
+
+Bounded vet and fresh full-enabled tests pass (**11 packages / 10 explicit
+opt-in/child-entry skips**, Olympia **2.006s**). All eight sequential defaults
+pass: command **1583/126324**, move **135/7158**, helper **37/1487**, RNG **321**,
+code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase **5/484**,
+calendar **2/119**, schedule **4/1801**, default turn strict **2 cwd entries**.
+Logs: `tmp/issue204-{vet,tests}.log`, `tmp/issue204-TOOL-final.log`.
+The existing full spec tool discovers exactly **inventory-give,
+inventory-refused, token-swear**: **44 pass / 81 fail / 0 error**, all previous
+**41 names** (including all accepted stage-3 names) retained. passing.txt is
+tool-generated, SHA-256 `3bec2492ece25c808075a6d4083297b6e11d65ff6235a551a7dc939e178f5e1b`.
+Golden remains **NO**, initialization **2** at unsupported `-i`.
+
+The parent-provided all-open audit has **96 issues**, no bug/follow-C candidate;
+no new verified blocker was found. This implements/tests only the bounded N06b closure,
+not a wider family/stage exit, sanitizer/non-Linux/full-corpus claim or stage-5
+initialization. Parent independently reviewed all four complete pinned C
+definitions, the engine/adapter/case diff and shared owners, and verified the
+entire HEAD and stage-3 byte prefixes. Independent bounded vet, fresh
+full-enabled tests and all eight sequential defaults pass
+(`tmp/parent204-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn}.log`);
+the command default repeats unchanged real C twice and matches Go on all
+**1583 sections / 126324 lines**. Parent also independently ran all five
+original scripts in C/C/Go order: **241/239/238/236/229** cwd entries match
+under both strict comparators, with raw status/streams and no normalization.
+Every script prints **YES**; release-swear-np remains the separate exact
+**134** abort, not a successful turn. Parent fixture logs/manifests and the
+decisive abort stderr are retained in `tmp/parent204-fixtures/`; matching
+captures and the fresh parent Go binary were removed.
+The independent parent full spec confirms **44 pass / 81 fail / 0 error**,
+the same three new names and no losses; golden stays **NO**, initialization
+**2** (`tmp/parent204-spec.log`).
+
 ## ACCEPT, DISCARD/DROP, CLAIM and RECLAIM (#203, stage 4 N06a)
 
 **0.125.0-alpha** ports the complete pinned **int** definitions, including

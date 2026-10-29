@@ -144,7 +144,8 @@ functions = {
               'list_market_items', 'market_report'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait', 'next_np_turn', 'print_hiring_status', 'print_unformed',
-             'form_new_noble', 'v_form', 'd_form', 'v_accept', 'will_accept_sup', 'will_accept', 'how_many'],
+             'form_new_noble', 'v_form', 'd_form', 'v_accept', 'will_accept_sup', 'will_accept', 'how_many',
+             'v_give', 'v_pay', 'may_take', 'v_get'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
     'perm.c': ['is_hostile', 'is_defend', 'clear_all_att', 'rp_admit', 'p_admit', 'will_admit',
                'v_admit', 'set_att', 'v_set_att', 'v_hostile', 'v_defend', 'v_neutral', 'v_att_clear',
@@ -750,6 +751,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N06b '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N06b invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N06b status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N06a '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

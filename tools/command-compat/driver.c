@@ -1759,6 +1759,23 @@ int main(int argc, char **argv)
    else return 2;
   }
   else if (!strcmp(op, "load")) printf("load %d\n", drv_load(c));
+  else if (!strcmp(op, "transfer_probe")) {
+   if(sscanf(line,"%*s %31s",text)!=1) return 2;
+   if(!strcmp(text,"args")) {
+    if(sscanf(line,"%*s %*s %d %d %d %d",&c->a,&c->b,&c->c,&c->d)!=4) return 2;
+   }
+   else if(!strcmp(text,"state")) {
+    if(sscanf(line,"%*s %*s %d",&n)!=1) return 2;
+    printf("transfer %d men %d command %d\n",n,count_man_items(n),rp_command(n)!=NULL);
+    if(rp_command(n)) {
+     struct command *q=rp_command(n);
+     printf("transfer command %d state %d wait %d callbacks %d %d %d\n",
+      q->cmd,q->state,q->wait,cmd_tbl[q->cmd].start!=NULL,
+      cmd_tbl[q->cmd].finish!=NULL,cmd_tbl[q->cmd].interrupt!=NULL);
+    }
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "rawargs")) {
    sscanf(line,"%*s %d %d %d",&c->a,&c->b,&c->c);
   }

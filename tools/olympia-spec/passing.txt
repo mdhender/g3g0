@@ -8,6 +8,8 @@ attitude-refused
 attitude-set
 cli-options
 coast-rocks
+inventory-give
+inventory-refused
 load-bad-master
 load-box-usage
 load-comment-lines
@@ -39,6 +41,7 @@ save-seed-unwritable
 stacking-refused
 stacking-stack
 summary-trunc-name
+token-swear
 token-vanish
 trade-route-seed-parse
 wait-ferry-range

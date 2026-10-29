@@ -335,6 +335,12 @@ func init() {
 		switch cmdTbl[i].name {
 		case "accept":
 			cmdTbl[i].start = (*world).vAccept
+		case "give":
+			cmdTbl[i].start = (*world).vGive
+		case "pay":
+			cmdTbl[i].start = (*world).vPay
+		case "get", "take":
+			cmdTbl[i].start = (*world).vGet
 		case "discard", "drop":
 			cmdTbl[i].start = (*world).vDiscard
 		case "claim":

@@ -33912,3 +33912,796 @@ dump
 save 1000
 pstate 200
 export state
+
+section N06b swapped GIVE two arguments mutates saved args unlike CLAIM
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+entity 10 4 0
+inventory 1000 10 17
+queue give 10 1001
+load
+do
+dump
+save 1000
+save 1001
+transfer_probe state 1000
+readlog 200
+export state
+
+section N06b swapped GIVE three arguments clips quantity without rewriting qty
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+entity 10 4 0
+inventory 1000 10 17
+queue give 10 1001 29
+load
+do
+dump
+readlog 200
+export state
+
+section N06b swapped GIVE four plus arguments preserves have left and extra fields
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+entity 10 4 0
+inventory 1000 10 17
+queue give 10 1001 13 7 61
+load
+do
+dump
+readlog 200
+export state
+
+section N06b target validation visibility moving prisoner summon before invalid item
+entity 9000 3 3
+entity 9100 3 3
+link 9000 1000
+link 9100 1001
+field 1001 lord 201
+field 1001 moving 9
+field 1001 prisoner 1
+field 1001 loyal 5
+queue give 1001 9999
+load
+do
+link 9000 1001
+queue give 1001 9999
+load
+do
+field 1001 moving 0
+queue give 1001 9999
+load
+do
+field 1001 prisoner 0
+queue give 1001 9999
+load
+do
+field 1001 loyal 0
+queue give 1001 9999
+load
+do
+readlog 200
+export state
+
+section N06b hidden foreign target needs target contact not giver contact
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+field 1001 hidden 1
+field 1000 contact 1001
+entity 1 4 0
+inventory 1000 1 19
+queue give 1001 1 3
+load
+do
+field 1001 contact 200
+queue give 1001 1 3
+load
+do
+readlog 200
+readlog 201
+export state
+
+section N06b GIVE no item empty inventory have left order and exact qty zero
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+entity 10 4 0
+queue give 1001 10 0 99
+load
+do
+inventory 1000 10 17
+queue give 1001 10 0 17
+load
+do
+queue give 1001 10 0 7
+load
+do
+queue give 1001 10 19 6
+load
+do
+dump
+readlog 200
+export state
+
+section N06b finite unit allowance consumed exactly then zero becomes unlimited
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+entity 10 4 0
+inventory 1000 10 17
+who 1001
+queue accept 1000 10 4
+load
+do
+who 1000
+queue give 1001 10 5
+load
+do
+queue give 1001 10 4
+load
+do
+acceptance state 1001
+queue give 1001 10 7
+load
+do
+acceptance state 1001
+readlog 200
+readlog 201
+export state
+
+section N06b faction allowance ordered before unit from faction and wildcard
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+entity 10 4 0
+inventory 1000 10 31
+who 201
+queue accept 1000 10 7
+load
+do
+who 1001
+queue accept 200 10 11
+load
+do
+who 1000
+queue give 1001 10 5
+load
+do
+acceptance state 201
+acceptance state 1001
+queue give 1001 10 8
+load
+do
+acceptance state 1001
+who 201
+queue accept 0 0 0
+load
+do
+who 1000
+queue give 1001 10 9
+load
+do
+acceptance state 201
+readlog 200
+readlog 201
+export state
+
+section N06b gold bypass preserves allowance and cached refusal output inode
+lore_root
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+entity 1 4 0
+entity 10 4 0
+inventory 1000 1 17
+inventory 1000 10 17
+who 1001
+queue accept 1000 1 3
+load
+do
+who 1000
+emit 1000 7
+life flush
+life rename log/200 held
+queue give 1001 10 3
+load
+do
+queue give 1001 1 9
+load
+do
+life flush
+life path log/200
+readfile held
+acceptance state 1001
+sout state
+readlog 201
+export state
+
+section N06b prisoner acceptance consumed before escaped GIVE refuses transfer
+master 0
+set turn 1
+set day 18
+entity 9000 3 3
+entity 295 4 0
+entity 1002 2 0
+field 1001 lord 201
+field 1002 lord 201
+link 9000 1000
+link 9000 1002
+link 1000 1001
+field 1001 prisoner 1
+field 1001 release 1
+who 1002
+queue accept 1000 1001 3
+load
+do
+who 1000
+prisoner roll 1001 0
+queue give 1002 1001 77 99
+load
+do
+acceptance state 1002
+prisoner state
+stack_probe state
+readlog 200
+readlog 201
+entity_rolls 1001 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
+
+section N06b swapped prisoner GIVE ignores quantity and cannot swap two prisoners
+master 13
+set turn 4
+set day 3
+entity 9000 3 3
+entity 295 4 0
+entity 1002 2 0
+entity 1003 2 0
+field 1002 lord 200
+link 9000 1000
+link 9000 1002
+link 1000 1001
+link 1000 1003
+field 1001 prisoner 1
+field 1003 prisoner 1
+field 1001 lord 201
+field 1003 lord 201
+queue give 1001 1003 4
+load
+do
+queue give 1001 1002 4 99
+load
+do
+dump
+prisoner state
+stack_probe state
+readlog 200
+readlog 201
+export state
+
+section N06b GET foreign versus direct prisoner versus nested prisoner
+entity 9000 3 3
+entity 1002 2 0
+entity 10 4 0
+field 1002 lord 200
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+inventory 1001 10 17
+queue get 1001 9999
+load
+do
+link 1000 1001
+field 1001 prisoner 1
+queue get 1001 10 3
+load
+do
+link 1000 1002
+link 1002 1001
+queue get 1001 10 3
+load
+do
+readlog 200
+readlog 201
+export state
+
+section N06b GET validates visibility moving before same faction or prisoner permission
+entity 9000 3 3
+entity 9100 3 3
+link 9000 1000
+link 9100 1001
+field 1001 moving 9
+queue get 1001 9999
+load
+do
+link 9000 1001
+queue get 1001 9999
+load
+do
+field 1001 moving 0
+queue take 1001 9999
+load
+do
+readlog 200
+export state
+
+section N06b TAKE prisoner from same faction carrier reuses release and keyed counts
+master 13
+set turn 4
+set day 3
+entity 9000 3 3
+entity 295 4 0
+entity 1002 2 0
+link 9000 1000
+link 9000 1001
+link 1001 1002
+field 1002 lord 201
+field 1002 prisoner 1
+field 1002 release 1
+queue take 1001 1002 99 99
+load
+do
+dump
+prisoner state
+stack_probe state
+readlog 200
+readlog 201
+export state
+
+section N06b garrison controlled mixed man inventory exact ten allowed nine refused
+entity 9000 3 3
+entity 9300 3 32
+entity 1002 2 64
+entity 10 4 0
+entity 11 4 0
+entity 12 4 0
+field 10 man 1
+field 11 man 1
+field 1002 lord 201
+field 1002 castle 9300
+link 9000 9300
+link 9300 1001
+link 9000 1002
+inventory 1002 10 13
+inventory 1002 11 4
+inventory 1002 12 19
+link 9000 1000
+queue get 1002 10 8
+load
+do
+queue get 1002 10 7
+load
+do
+queue take 1002 12 0
+load
+do
+transfer_probe state 1002
+readlog 200
+readlog 201
+export state
+
+section N06b garrison foreign control refusal precedes item and cannot use acceptance
+entity 9000 3 3
+entity 9300 3 32
+entity 1002 2 64
+field 1001 lord 201
+field 1002 lord 201
+field 1002 castle 9300
+link 9000 9300
+link 9300 1001
+link 9000 1000
+link 9000 1002
+who 1002
+queue accept 0 0 0
+load
+do
+who 1000
+queue get 1002 9999
+load
+do
+acceptance state 1002
+readlog 200
+export state
+
+section N06b GET qty zero have left and shortage before quantity checks
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+entity 10 4 0
+queue get 1001 10 0 99
+load
+do
+inventory 1001 10 17
+queue get 1001 10 0 17
+load
+do
+queue take 1001 10 0 7
+load
+do
+dump
+transfer_probe state 1000
+readlog 200
+export state
+
+section N06b moving captain GET sailors then pirates incurs actual accumulated penalties
+entity 19 4 0
+entity 24 4 0
+entity 9000 3 2
+entity 9100 9 31
+link 9000 9100
+link 9100 1000
+link 9100 1001
+inventory 1001 19 7
+inventory 1001 24 3
+who 1001
+parse sail east
+set state 2
+set wait 4
+who 1000
+queue get 1001 19 4
+load
+do
+transfer_probe state 1001
+queue take 1001 24 2
+load
+do
+transfer_probe state 1001
+save 1001
+readlog 200
+readlog 11
+export state
+
+section N06b GIVE sailors does not impose GET captain side effects
+entity 19 4 0
+entity 9000 3 2
+entity 9100 9 31
+link 9000 9100
+link 9100 1000
+link 9100 1001
+inventory 1000 19 8
+parse sail east
+set state 2
+set wait 4
+queue give 1001 19 3
+load
+do
+transfer_probe state 1000
+readlog 200
+readlog 11
+export state
+
+section N06b PAY actual reparse saved arguments and original verb coverage accounting
+coverage path coverage.tsv
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+entity 1 4 0
+inventory 1000 1 41
+queue pay 1001 31 17
+load
+do
+dump
+coverage state 54
+coverage state 36
+transfer_probe state 1000
+queue pay 9999 4
+load
+do
+dump
+coverage state 54
+coverage state 36
+readlog 200
+readlog 201
+export state
+
+section N06b loaded transfer verbs genuine NULL interrupt survive persistence without executing
+queue give 1001 10 3
+queue pay 1001 17
+queue get 1001 10 3
+queue take 1001 10 3
+queue wait day 4
+load
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+run 0 0 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+save 1000
+export state
+
+section N06b queued cross owner ACCEPT GIVE PAY GET TAKE DISCARD CLAIM WAIT composition
+coverage path coverage.tsv
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+link 9000 1001
+entity 1 4 0
+entity 10 4 0
+inventory 1000 10 17
+inventory 1000 1 41
+inventory 200 1 23
+orders 200 1000 accept 0 0 7
+orders 200 1000 give 10 1001 9 3
+orders 200 1000 pay 1001 13 7
+orders 200 1000 get 1001 10 4
+orders 200 1000 take 1001 1 3
+orders 200 1000 discard 10 0 5
+orders 200 1000 claim 11
+orders 200 1000 wait day 3
+orders 200 1001 wait day 3
+resolve_wait
+initial
+day 1
+day 2
+day 3
+coverage state 54
+coverage state 36
+coverage state 35
+coverage state 84
+prisoner state
+sout state
+readlog 200
+readlog 10
+export state
+
+section N06b token GIVE day eight creates units lore mint and NPC NP zero
+lore_root
+set gm 200
+master 0
+set turn 1
+set day 8
+set indep 202
+entity 202 1 52
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+entity 22 4 0
+name 22 Wolf
+field 22 capturable 1
+entity 60000 4 63
+name 60000 Wolf token
+field 60000 unique 1000
+field 60000 token_num 3
+field 60000 token_ni 22
+field 60000 lore 22
+inventory 1000 60000 1
+who 201
+queue accept 200 60000 1
+load
+do
+who 1000
+queue give 1001 60000
+load
+do
+token_state 60000
+lore_state 201
+pstate 200
+pstate 201
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+readlog 200
+readlog 201
+readlog 13
+export state
+
+section N06b independent no transfer mint entity keyed and legacy RNG control
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+link 9000 1001
+newitem 200 42
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
+
+section N06b invalid GIVE negative qty reaches quantity assertion after validation
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+entity 10 4 0
+inventory 1000 10 17
+queue give 1001 10 3
+load
+transfer_probe args 1001 10 -3 2
+do
+
+section N06b invalid GET C int leave subtraction wraps before min
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+entity 10 4 0
+inventory 1001 10 17
+queue get 1001 10
+load
+transfer_probe args 1001 10 1 -2147483648
+do
+
+section N06b token GIVE existing NPC units swear immediately on day eight with zero NP cost
+lore_root
+master 0
+set turn 1
+set day 8
+set indep 202
+entity 202 1 52
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+entity 22 4 0
+field 22 capturable 1
+entity 60000 4 63
+field 60000 unique 1000
+field 60000 token_num 2
+field 60000 token_ni 22
+field 60000 lore 22
+inventory 1000 60000 1
+entity 1002 2 54
+field 1002 lord 200
+field 1002 loyal 4
+field 1002 noble_item 22
+field 1002 token 60000
+field 200 unit 1002
+field 60000 unit 1002
+link 9000 1002
+orders 200 1002 wait day 11
+who 1001
+queue accept 0 0 0
+load
+do
+who 1000
+queue give 1001 60000
+load
+do
+token_state 60000
+np_total 1002
+save 1002
+lore_state 201
+pstate 200
+pstate 201
+entity_rolls 1002 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+readlog 200
+readlog 201
+readlog 13
+export state
+
+section N06b GIVE same faction bypasses finite rows GET allows summoned carriers
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+entity 10 4 0
+inventory 1000 10 17
+who 1001
+queue accept 1000 10 3
+load
+do
+who 1000
+queue give 1001 10 7
+load
+do
+acceptance state 1001
+field 1001 loyal 5
+queue get 1001 10 4
+load
+do
+queue give 1001 10 1
+load
+do
+readlog 200
+export state
+
+section N06b GIVE faction from faction fourth alternative without unit rows
+entity 9000 3 3
+link 9000 1000
+link 9000 1001
+field 1001 lord 201
+entity 10 4 0
+inventory 1000 10 17
+who 201
+queue accept 200 10 9
+load
+do
+who 1000
+queue give 1001 10 4
+load
+do
+acceptance state 1001
+acceptance state 201
+readlog 200
+readlog 201
+export state
+
+section N06b GIVE garrison control skips rows and permits gold without control
+entity 9000 3 3
+entity 9300 3 32
+entity 1002 2 64
+entity 1 4 0
+entity 10 4 0
+field 1002 lord 201
+field 1002 castle 9300
+link 9000 9300
+link 9300 1001
+link 9000 1000
+link 9000 1002
+inventory 1000 10 17
+inventory 1000 1 19
+queue give 1002 10 7
+load
+do
+field 1001 lord 201
+queue give 1002 10 1
+load
+do
+queue pay 1002 3
+load
+do
+acceptance state 1002
+readlog 200
+readlog 201
+export state
+
+section N06b GET self transfer preserves balance but real output and quantity work
+entity 9000 3 3
+link 9000 1000
+entity 10 4 0
+inventory 1000 10 17
+queue get 1000 10 9 3
+load
+do
+dump
+save 1000
+readlog 200
+export state
+
+section N06b missing garrison magic and absent targets diagnosed before item checks
+entity 9000 3 3
+link 9000 1000
+queue give garrison 9999
+load
+do
+queue get garrison 9999
+load
+do
+queue give
+load
+do
+queue get
+load
+do
+readlog 200
+export state

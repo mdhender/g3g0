@@ -71,6 +71,135 @@ func (w *world) howMany(who, fromWho, item, qty, haveLeft int) int {
 	return int(q)
 }
 
+// Complete c1.c:658–760. Unlike CLAIM's local correction, GIVE swaps the
+// saved numeric command fields, but leaves its original line and parse list.
+func (w *world) vGive(c *command) int {
+	who, target, item := int(c.who), int(c.a), int(c.b)
+	qty, haveLeft := int(c.c), int(c.d)
+	if c.parse.Len()-1 >= 2 && (w.kind(target) == tItem || w.hasPrisoner(who, target)) &&
+		w.kind(item) == tChar && w.subloc(who) == w.subloc(item) && !w.hasPrisoner(who, item) {
+		c.a, c.b = c.b, c.a
+		target, item = int(c.a), int(c.b)
+		switch c.parse.Len() - 1 {
+		case 2:
+			w.commandOut(who, "(assuming you meant 'give %d %d')", target, item)
+		case 3:
+			w.commandOut(who, "(assuming you meant 'give %d %d %d')", target, item, qty)
+		default:
+			w.commandOut(who, "(assuming you meant 'give %d %d %d %d')", target, item, qty, haveLeft)
+		}
+	}
+	if !w.checkCharHere(who, target) || !w.checkCharGone(who, target) {
+		return 0
+	}
+	if w.isPrisoner(target) {
+		w.commandOut(who, "Prisoners may not be given anything.")
+		return 0
+	}
+	if p := w.rpChar(target); p != nil && p.loyKind == loySummon {
+		w.commandOut(who, "Summoned entities may not be given anything.")
+		return 0
+	}
+	if w.hasPrisoner(who, item) {
+		if !w.willAccept(target, item, who, 1) {
+			return 0
+		}
+		if w.givePrisoner(who, target, item) {
+			return 1
+		}
+		return 0
+	}
+	if w.kind(item) != tItem {
+		w.commandOut(who, "%s is not an item or a prisoner.", w.boxCode(item))
+		return 0
+	}
+	if w.hasItem(who, item) < 1 {
+		w.commandOut(who, "%s does not have any %s.", w.boxName(who), w.boxCode(item))
+		return 0
+	}
+	qty = w.howMany(who, who, item, qty, haveLeft)
+	if qty <= 0 || !w.willAccept(target, item, who, qty) {
+		return 0
+	}
+	ret := w.moveItem(who, target, item, qty)
+	assert(ret, "olympia/c1.c", 751, "ret")
+	w.commandOut(who, "Gave %s to %s.", w.justNameQty(item, qty), w.boxName(target))
+	w.commandOut(target, "Received %s from %s.", w.boxNameQty(item, qty), w.boxName(who))
+	return 1
+}
+
+// Complete c1.c:763–775. Use the real parser; doCommand owns accounting
+// against its saved pre-reparse PAY index, not the resulting GIVE index.
+func (w *world) vPay(c *command) int {
+	line := sout("give %d 1 %d %d", c.a, c.b, c.c)
+	ret := w.olyParse(c, &line)
+	assert(ret, "olympia/c1.c", 772, "ret")
+	return w.vGive(c)
+}
+
+// Complete static c1.c:778–806 prerequisite; garrison control takes
+// precedence over the ordinary same-faction/direct-prisoner alternatives.
+func (w *world) mayTake(who, target int) bool {
+	if !w.checkCharHere(who, target) || !w.checkCharGone(who, target) {
+		return false
+	}
+	if w.subkind(target) == subGarrison {
+		if w.mayRuleHere(who, target) {
+			return true
+		}
+		w.commandOut(who, "%s is not under your control.", w.boxName(target))
+		return false
+	}
+	if !w.myPrisoner(who, target) && w.player(target) != w.player(who) {
+		w.commandOut(who, "May only take items from other units in your faction.")
+		return false
+	}
+	return true
+}
+
+// Complete c1.c:813–874, shared by GET and TAKE. Only this withdrawal path
+// enforces the ten-man remainder and notifies a running captain of crew loss.
+func (w *world) vGet(c *command) int {
+	who, target, item := int(c.who), int(c.a), int(c.b)
+	qty, haveLeft := int(c.c), int(c.d)
+	if !w.mayTake(who, target) {
+		return 0
+	}
+	if w.hasPrisoner(target, item) {
+		if w.givePrisoner(target, who, item) {
+			return 1
+		}
+		return 0
+	}
+	if w.kind(item) != tItem {
+		w.commandOut(who, "%s is not an item or a prisoner.", w.boxCode(item))
+		return 0
+	}
+	if w.hasItem(target, item) < 1 {
+		w.commandOut(who, "%s does not have any %s.", w.boxName(target), w.boxCode(item))
+		return 0
+	}
+	qty = w.howMany(who, target, item, qty, haveLeft)
+	if qty <= 0 {
+		return 0
+	}
+	if p := w.rpItem(item); w.subkind(target) == subGarrison && p != nil && p.isManItem != 0 {
+		men := w.countManItems(target) - int32(qty)
+		if men < 10 {
+			w.commandOut(who, "Garrisons must be left with a minimum of ten men.")
+			return 0
+		}
+	}
+	ret := w.moveItem(target, who, item, qty)
+	assert(ret, "olympia/c1.c", 862, "ret")
+	w.commandOut(who, "Took %s from %s.", w.justNameQty(item, qty), w.boxName(target))
+	w.commandOut(target, "%s took %s from us.", w.boxName(who), w.boxNameQty(item, qty))
+	if item == itemSailor || item == itemPirate {
+		w.checkCaptainLosesSailors(int32(qty), target, who)
+	}
+	return 1
+}
+
 // Complete c1.c:947–974. Ownership initializes the new noble's queued command
 // before joinStack moves it beneath the forming noble; do not use newChar,
 // which allocates a different entity and has different initialization.
