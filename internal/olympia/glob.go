@@ -333,6 +333,10 @@ func init() {
 	}
 	for i := range cmdTbl {
 		switch cmdTbl[i].name {
+		case "make", "train":
+			cmdTbl[i].start = (*world).vMake
+			cmdTbl[i].finish = (*world).dMake
+			cmdTbl[i].interrupt = (*world).iMake
 		case "collect":
 			cmdTbl[i].start = (*world).vCollect
 			cmdTbl[i].finish = (*world).dCollect

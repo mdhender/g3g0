@@ -25,6 +25,8 @@ func TestCommandUseCallbackBoundaries(t *testing.T) {
 		skRaiseCorpses:  {(*world).vRaiseCorpses, nil},
 		skMageMenial:    {(*world).vMageMenial, nil},
 		skFishing:       {(*world).vFish, nil},
+		skTrainWild:     {(*world).vUseTrainRiding, nil},
+		skTrainWarmount: {(*world).vUseTrainWar, nil},
 	}
 	for i, row := range useTbl {
 		for phase, callback := range []func(*world, *command) int{row.start, row.finish, row.interrupt} {
@@ -66,7 +68,8 @@ func TestCommandUseSharedNYIBoundaries(t *testing.T) {
 			continue
 		}
 		switch row.skill {
-		case skQuarryStone, skCatchHorse, skHarvestLumber, skHarvestYew, skRaiseCorpses, skMageMenial, skFishing:
+		case skQuarryStone, skCatchHorse, skHarvestLumber, skHarvestYew, skRaiseCorpses, skMageMenial, skFishing,
+			skTrainWild, skTrainWarmount:
 			continue // Real reparse/dispatch outcomes are covered by the C oracle.
 		}
 		t.Run(fmt.Sprint(row.skill), func(t *testing.T) {

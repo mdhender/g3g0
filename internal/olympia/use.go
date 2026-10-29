@@ -22,6 +22,10 @@ var useAllow = "c"
 // its gameplay is not ported.
 func useCallback(name string) func(*world, *command) int {
 	switch name {
+	case "v_use_train_riding":
+		return (*world).vUseTrainRiding
+	case "v_use_train_war":
+		return (*world).vUseTrainWar
 	case "v_quarry":
 		return (*world).vQuarry
 	case "v_catch":

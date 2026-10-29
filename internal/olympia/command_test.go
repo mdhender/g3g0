@@ -2594,6 +2594,14 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				fmt.Fprintf(&stdout, "make daily %d\n", w.dGenericMake(c, r))
 			case "summary":
 				fmt.Fprintf(&stdout, "make summary %d\n", w.iGenericMake(c, r))
+			case "second_start":
+				fmt.Fprintf(&stdout, "make second start %d\n", w.vSecondMake(c, args.num(t), r))
+			case "second_finish":
+				fmt.Fprintf(&stdout, "make second finish %d\n", w.dSecondMake(c, r))
+			case "finish":
+				fmt.Fprintf(&stdout, "make finish %d\n", w.dMake(c))
+			case "interrupt":
+				fmt.Fprintf(&stdout, "make interrupt %d\n", w.iMake(c))
 			default:
 				t.Fatalf("unknown make action %s", action)
 			}

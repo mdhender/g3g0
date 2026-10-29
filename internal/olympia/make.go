@@ -3,10 +3,11 @@
 
 package olympia
 
+import "fmt"
+
 const whereShip = -1
 
-// make.c:34–173. Keep the multiday rows too; their callbacks and command
-// wiring belong to N13b. No original recipe uses worker or public one-day
+// make.c:34–173. No original recipe uses worker or public one-day
 // production, but the generic helpers retain those contracts.
 type makeRecipe struct {
 	item, inp1, inp2, reqSkill, worker int
@@ -158,4 +159,116 @@ func (w *world) iGenericMake(c *command, t *makeRecipe) int {
 		return 1
 	}
 	return 0
+}
+
+// make.c:357–393. Only the initial delay receives the experience speedup.
+func (w *world) vSecondMake(c *command, number int, t *makeRecipe) int {
+	who := int(c.who)
+	c.c, c.d = int32(number), 0
+	if t.reqSkill != 0 && w.hasSkill(who, t.reqSkill) < 1 {
+		w.commandOut(who, "Requires %s.", w.boxName(t.reqSkill))
+		return 0
+	}
+	if t.inp1 != 0 && w.hasItem(who, t.inp1) < 1 {
+		w.commandOut(who, "Don't have any %s.", w.pluralItemBox(t.inp1, 2))
+		return 0
+	}
+	if t.inp2 != 0 && w.hasItem(who, t.inp2) < 1 {
+		w.commandOut(who, "Don't have any %s.", w.pluralItemBox(t.inp2, 2))
+		return 0
+	}
+	c.wait, c.poll = int32(t.days), 0
+	if t.reqSkill != 0 {
+		c.useExp = int32(w.hasSkill(who, t.reqSkill))
+		experienceUseSpeedup(c)
+	}
+	return 1
+}
+
+// make.c:396–442. Revalidate inputs only, consuming and producing one each.
+func (w *world) dSecondMake(c *command, t *makeRecipe) int {
+	who := int(c.who)
+	if t.inp1 != 0 && w.hasItem(who, t.inp1) < 1 {
+		w.commandOut(who, "Don't have %s.", w.boxNameQty(t.inp1, 2))
+		return 0
+	}
+	if t.inp2 != 0 && w.hasItem(who, t.inp2) < 1 {
+		w.commandOut(who, "Don't have %s.", w.boxNameQty(t.inp2, 2))
+		return 0
+	}
+	if t.inp1 != 0 {
+		w.consumeItem(who, t.inp1, 1)
+	}
+	if t.inp2 != 0 {
+		w.consumeItem(who, t.inp2, 1)
+	}
+	w.genItem(who, t.item, 1)
+	w.commandOut(who, "%s %s.", capitalize(*t.gotEm), w.justNameQty(t.item, 1))
+	if t.public {
+		w.commandOut(w.subloc(who), "%s %s %s.", w.boxName(who), *t.gotEm, w.justNameQty(t.item, 1))
+	}
+	c.d++
+	if (t.inp1 == 0 || w.hasItem(who, t.inp1) > 0) &&
+		(t.inp2 == 0 || w.hasItem(who, t.inp2) > 0) &&
+		!(c.c > 0 && c.d >= c.c) {
+		c.wait = int32(t.days)
+	}
+	if t.reqSkill != 0 {
+		w.addSkillExperience(who, t.reqSkill)
+	}
+	return 1
+}
+
+// make.c:445–509. Both MAKE and TRAIN use these same callbacks.
+func (w *world) vMake(c *command) int {
+	t := findMake(int(c.a))
+	if t == nil {
+		w.commandOut(int(c.who), "Don't know how to make %s.", w.boxCode(int(c.a)))
+		return 0
+	}
+	if t.days == 1 {
+		return w.vGenericMake(c, int(c.b), t)
+	}
+	return w.vSecondMake(c, int(c.b), t)
+}
+
+func (w *world) dMake(c *command) int {
+	t := findMake(int(c.a))
+	if t == nil {
+		w.commandOut(int(c.who), "Internal error.")
+		w.logWrite(10, "d_make: t is NULL, who=%d", c.who)
+		return 0
+	}
+	if t.days == 1 {
+		return w.dGenericMake(c, t)
+	}
+	return w.dSecondMake(c, t)
+}
+
+func (w *world) iMake(c *command) int {
+	t := findMake(int(c.a))
+	if t == nil {
+		w.commandOut(int(c.who), "Internal error.")
+		w.logWrite(10, "i_make: t is NULL, who=%d", c.who)
+		return 0
+	}
+	if t.days == 1 {
+		return w.iGenericMake(c, t)
+	}
+	return 1
+}
+
+// make.c:512–535. Reparse replaces USE with MAKE; keep USE table metadata.
+func (w *world) vUseTrainRiding(c *command) int {
+	s := fmt.Sprintf("make %s %d", boxCodeLess(itemRidingHorse), c.a)
+	ret := w.olyParse(c, &s)
+	assert(ret, "olympia/make.c", 519, "ret")
+	return w.vMake(c)
+}
+
+func (w *world) vUseTrainWar(c *command) int {
+	s := fmt.Sprintf("make %s %d", boxCodeLess(itemWarmount), c.a)
+	ret := w.olyParse(c, &s)
+	assert(ret, "olympia/make.c", 532, "ret")
+	return w.vMake(c)
 }

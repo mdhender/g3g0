@@ -42,6 +42,8 @@ player-press
 player-quit
 player-refused
 player-settings
+production-harvest
+production-refused
 release-swear-np
 rng-selftest
 savage-cap

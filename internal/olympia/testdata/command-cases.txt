@@ -38576,3 +38576,636 @@ make daily 18
 dump
 save 1000
 readlog 200
+
+section N13b every actual one day recipe through MAKE TRAIN scheduler with asymmetric inputs
+place 9000
+entity_range 10 24 4 0
+entity_range 51 53 4 0
+entity_range 64 85 4 0
+entity_range 94 99 4 0
+entity 690 5 0
+entity 610 5 0
+entity 615 5 0
+entity 616 5 0
+entity 617 5 0
+entity 676 5 0
+entity 750 5 0
+entity 902 5 0
+entity 658 5 0
+entity 601 5 0
+learn 1000 690 2 0
+learn 1000 610 2 0
+learn 1000 615 2 0
+learn 1000 616 2 0
+learn 1000 617 2 0
+learn 1000 676 2 0
+learn 1000 750 2 0
+learn 1000 902 2 0
+learn 1000 658 2 0
+learn 1000 601 2 0
+inventory 1000 10 13
+inventory 1000 12 11
+inventory 1000 13 3
+inventory 1000 14 3
+inventory 1000 19 4
+inventory 1000 20 5
+inventory 1000 23 3
+inventory 1000 53 3
+inventory 1000 64 3
+inventory 1000 68 4
+inventory 1000 70 5
+inventory 1000 72 3
+inventory 1000 73 3
+inventory 1000 74 4
+inventory 1000 75 3
+inventory 1000 76 3
+inventory 1000 77 5
+inventory 1000 79 7
+inventory 1000 85 3
+field 1000 cur_aura 3
+coverage path coverage.tsv
+queue make 84 1
+load
+do
+day 1
+field 9000 subkind 32
+queue train 22 1
+load
+do
+day 2
+queue train 23 1
+load
+do
+day 3
+queue train 10 1
+load
+do
+day 4
+queue train 13 1
+load
+do
+day 5
+queue train 15 1
+load
+do
+day 6
+queue train 14 1
+load
+do
+day 7
+field 9000 subkind 29
+queue train 17 1
+load
+do
+day 8
+queue make 18 1
+load
+do
+day 9
+queue train 20 1
+load
+do
+day 10
+entity 9002 9 30
+link 9000 9002
+place 9002
+queue train 24 1
+load
+do
+day 11
+queue train 16 1
+load
+do
+day 12
+queue train 12 1
+load
+do
+day 13
+queue train 21 1
+load
+do
+day 14
+queue train 19 1
+load
+do
+day 15
+queue train 11 1
+load
+do
+day 16
+queue make 94 1
+load
+do
+day 17
+queue make 95 1
+load
+do
+day 18
+queue make 85 1
+load
+do
+day 19
+queue make 75 1
+load
+do
+day 20
+queue make 74 1
+load
+do
+day 21
+queue make 73 1
+load
+do
+day 22
+queue make 72 1
+load
+do
+day 23
+queue make 98 1
+load
+do
+day 24
+queue make 99 1
+load
+do
+day 25
+dump
+save 1000
+coverage write
+readfile coverage.tsv
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section N13b multiday warmount initial experience speedup only rearm seven and exact once experience
+lore_root
+place 9000
+arrival touch 1000 9000
+entity 51 4 0
+entity 53 4 0
+entity 657 5 0
+learn 1000 657 2 180
+inventory 1000 51 4
+queue train 53 2
+queue guard 1
+load
+do
+dump
+day 1
+day 2
+day 3
+day 4
+day 5
+save 1000
+day 6
+dump
+save 1000
+usemeta state 1000 657
+day 7
+day 8
+day 9
+day 10
+day 11
+day 12
+save 1000
+day 13
+dump
+save 1000
+usemeta state 1000 657
+readlog 200
+readlog 10
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section N13b riding training persisted STATE_RUN reload resumes actual scheduler not start
+place 9000
+arrival touch 1000 9000
+entity 51 4 0
+entity 52 4 0
+entity 656 5 0
+learn 1000 656 2 0
+inventory 1000 51 3
+queue make 52 2
+queue guard 1
+load
+do
+day 1
+save 1000
+persist_command
+initial
+dump
+day 2
+save 1000
+day 3
+save 1000
+day 4
+day 5
+day 6
+day 7
+dump
+save 1000
+usemeta state 1000 656
+readlog 200
+
+section N13b STOP generic zero summary failure retains next queued order
+place 9000
+entity 94 4 0
+queue make 94 4
+load
+do
+queue stop
+queue guard 1
+stops
+dump
+save 1000
+day 1
+dump
+save 1000
+readlog 200
+
+section N13b STOP generic partial reload summary failure retains next queued order
+place 9000
+entity 94 4 0
+queue make 94 4
+load
+do
+day 1
+persist_command
+initial
+queue stop
+queue guard 1
+stops
+dump
+save 1000
+day 2
+dump
+save 1000
+readlog 200
+
+section N13b STOP multiday partial after reload TRUE without generic summary retains next order
+place 9000
+entity 51 4 0
+entity 52 4 0
+entity 656 5 0
+learn 1000 656 2 0
+inventory 1000 51 4
+queue make 52 3
+load
+do
+day 1
+day 2
+day 3
+persist_command
+initial
+queue stop
+queue guard 1
+stops
+dump
+save 1000
+day 4
+dump
+save 1000
+usemeta state 1000 656
+readlog 200
+
+section N13b STOP multiday zero output TRUE and no experience or summary
+place 9000
+entity 51 4 0
+entity 53 4 0
+entity 657 5 0
+learn 1000 657 2 0
+inventory 1000 51 2
+queue train 53 0
+load
+do
+queue stop
+queue guard 1
+stops
+dump
+day 1
+save 1000
+usemeta state 1000 657
+readlog 200
+
+section N13b USE both horse starts reparse MAKE preserving original accounting and NULL metadata
+lore_root
+place 9000
+entity 650 5 0
+entity 656 5 0
+entity 657 5 0
+field 656 required 650
+field 657 required 650
+learn 1000 650 2 0
+learn 1000 656 2 0
+learn 1000 657 2 180
+entity 51 4 0
+entity 52 4 0
+entity 53 4 0
+inventory 1000 51 5
+coverage path coverage.tsv
+ucov path use.tsv
+queue use 656 1
+load
+do
+ucov command
+save 1000
+day 1
+day 2
+day 3
+queue use 657 2
+load
+do
+ucov command
+save 1000
+day 4
+day 5
+day 6
+day 7
+day 8
+day 9
+dump
+persist_command
+initial
+day 10
+day 11
+day 12
+day 13
+day 14
+day 15
+day 16
+day 17
+coverage write
+ucov write
+readfile coverage.tsv
+readfile use.tsv
+usemeta state 1000 656
+usemeta state 1000 657
+usemeta skill_usage 656
+usemeta skill_usage 657
+save 1000
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section N13b USE both refused callbacks reparse before material failure and do not count MAKE starts
+place 9000
+entity 650 5 0
+entity 656 5 0
+entity 657 5 0
+field 656 required 650
+field 657 required 650
+learn 1000 650 2 0
+learn 1000 656 2 0
+learn 1000 657 2 180
+entity 51 4 0
+entity 52 4 0
+entity 53 4 0
+coverage path coverage.tsv
+ucov path use.tsv
+queue use 656 2
+load
+do
+ucov command
+queue use 657 1
+load
+do
+ucov command
+coverage write
+ucov write
+readfile coverage.tsv
+readfile use.tsv
+save 1000
+usemeta state 1000 657
+readlog 200
+
+section N13b delayed material loss fails before experience output with retained queued next order
+place 9000
+entity 51 4 0
+entity 52 4 0
+entity 656 5 0
+learn 1000 656 2 0
+inventory 1000 51 1
+queue make 52 1
+queue guard 1
+load
+do
+day 1
+subitem 1000 51 1
+day 2
+save 1000
+day 3
+dump
+save 1000
+usemeta state 1000 656
+readlog 200
+
+section N13b delayed completion does not revalidate lost skill or location
+place 9000
+entity 9001 3 29
+entity 51 4 0
+entity 52 4 0
+entity 656 5 0
+learn 1000 656 2 0
+inventory 1000 51 2
+queue make 52 0
+load
+do
+day 1
+death forget 1000 656
+place 9001
+arrival touch 1000 9001
+day 2
+day 3
+save 1000
+day 4
+day 5
+day 6
+dump
+save 1000
+readlog 200
+
+section N13b generic zero ends after remaining month delay positive stays indefinite negative text parses zero
+place 9000
+entity 94 4 0
+entity 95 4 0
+set day 28
+queue make 94 0
+load
+do
+dump
+day 28
+day 29
+day 30
+dump
+save 1000
+queue make 95 4
+load
+do
+day 30
+dump
+queue stop
+stops
+save 1000
+set day 30
+queue make 95 -1
+load
+do
+day 30
+dump
+readlog 200
+
+section N13b dual input exhaustion generic actual scheduler stops at shorter input
+place 9000
+entity 12 4 0
+entity 16 4 0
+entity 75 4 0
+entity 610 5 0
+learn 1000 610 2 0
+inventory 1000 12 4
+inventory 1000 75 2
+queue train 16 5
+load
+do
+day 1
+day 2
+dump
+save 1000
+genitem 1000 75 4
+queue train 16 0
+load
+do
+day 3
+day 4
+dump
+save 1000
+readlog 200
+
+section N13b common missing recipe start finish interrupt diagnostics preserve saved fields
+place 9000
+parse make 9999 2
+callback_start
+dump
+make finish 0
+make interrupt 0
+dump
+save 1000
+readlog 200
+readlog 10
+
+section N13b raw multiday validation order no worker location aura gate and input two delay failure
+place 9000
+entity 51 4 0
+entity 52 4 0
+entity 75 4 0
+entity 656 5 0
+make_raw 52 11 51 75 9 4 1 32 656
+set wait 19
+make second_start -1 7
+dump
+learn 1000 656 2 0
+make second_start -1 7
+inventory 1000 51 3
+make second_start -1 7
+inventory 1000 75 2
+make second_start -1 7
+dump
+subitem 1000 75 2
+set wait 0
+make second_finish -1
+dump
+save 1000
+genitem 1000 75 1
+make second_finish -1
+dump
+save 1000
+usemeta state 1000 656
+readlog 200
+
+section N13b raw multiday C32 obtained wrap and original rearm ignores factor aura worker location
+place 9000
+entity 51 4 0
+entity 52 4 0
+entity 656 5 0
+learn 1000 656 2 0
+inventory 1000 51 3
+make_raw 52 11 51 0 9 2147483647 1 32 656
+make second_start -1 -2
+transfer_probe args 52 0 -2 2147483647
+set wait 0
+make second_finish -1
+dump
+save 1000
+usemeta state 1000 656
+readlog 200
+
+section N13b raw multiday without inputs or skill preserves use experience and rearm even with target nonpositive
+place 9000
+entity 52 4 0
+make_raw 52 11 0 0 9 4 0 32 0
+make second_start -1 0
+dump
+set wait 0
+make second_finish -1
+dump
+save 1000
+readlog 200
+
+section N13b real generic STOP summary uses cached inode after directory rename
+lore_root
+place 9000
+entity 94 4 0
+name 94 basket
+plural 94 baskets
+queue make 94 4
+load
+do
+day 1
+life rename log/200 log/moved
+life rename log log.old
+queue stop
+queue guard 1
+stops
+dump
+save 1000
+life path log
+life close
+readfile log.old/moved
+export state
+
+section N13b actual MAKE TRAIN validation skill input location aura sequence
+place 9000
+entity 51 4 0
+entity 52 4 0
+entity 656 5 0
+queue make 52 1
+load
+do
+learn 1000 656 2 0
+queue train 52 1
+load
+do
+entity 24 4 0
+entity 19 4 0
+entity 74 4 0
+entity 616 5 0
+learn 1000 616 2 0
+queue train 24 1
+load
+do
+genitem 1000 19 2
+queue make 24 1
+load
+do
+genitem 1000 74 3
+queue make 24 1
+load
+do
+entity 18 4 0
+entity 902 5 0
+learn 1000 902 2 0
+queue make 18 1
+load
+do
+dump
+save 1000
+readlog 200

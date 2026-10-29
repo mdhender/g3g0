@@ -68,7 +68,9 @@ functions = {
               'collapsed_mine_decay', 'ghost_warrior_decay', 'corpse_decay', 'dead_body_rot',
               'auto_drop', 'link_decay', 'quest_decay', 'post_month'],
     'scry.c': ['notify_loc_shroud', 'reset_cast_where'],
-    'make.c': ['find_make', 'v_generic_make', 'd_generic_make', 'i_generic_make'],
+    'make.c': ['find_make', 'v_generic_make', 'd_generic_make', 'i_generic_make',
+               'v_second_make', 'd_second_make', 'v_make', 'd_make', 'i_make',
+               'v_use_train_riding', 'v_use_train_war'],
     'basic.c': ['v_hinder_med', 'hinder_med_omen', 'd_hinder_med'],
     'alchem.c': ['new_potion'],
     'seed.c': ['int_comp', 'seed_taxes'],
@@ -582,6 +584,10 @@ int drv_make_call(struct command *c, int action, int item, int number) {
  struct make *t=item == -1 ? &drv_raw_make : find_make(item);
  if(action==0) return v_generic_make(c,number,t);
  if(action==1) return d_generic_make(c,t);
+ if(action==3) return v_second_make(c,number,t);
+ if(action==4) return d_second_make(c,t);
+ if(action==5) return d_make(c);
+ if(action==6) return i_make(c);
  return i_generic_make(c,t);
 }
 ilist drv_collectors(void) { return collectors; }
@@ -810,6 +816,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N13b '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N13b status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N13a '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

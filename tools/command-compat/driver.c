@@ -1860,6 +1860,10 @@ int main(int argc, char **argv)
    else if(!strcmp(text,"start")) printf("make start %d\n",drv_make_call(c,0,n,a));
    else if(!strcmp(text,"daily")) printf("make daily %d\n",drv_make_call(c,1,n,0));
    else if(!strcmp(text,"summary")) printf("make summary %d\n",drv_make_call(c,2,n,0));
+   else if(!strcmp(text,"second_start")) printf("make second start %d\n",drv_make_call(c,3,n,a));
+   else if(!strcmp(text,"second_finish")) printf("make second finish %d\n",drv_make_call(c,4,n,0));
+   else if(!strcmp(text,"finish")) printf("make finish %d\n",drv_make_call(c,5,n,0));
+   else if(!strcmp(text,"interrupt")) printf("make interrupt %d\n",drv_make_call(c,6,n,0));
    else return 2;
   }
   else if (!strcmp(op, "harvest")) {

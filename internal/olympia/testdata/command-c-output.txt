@@ -142605,3 +142605,2830 @@ warning: plural name not set for item [18]
 warning: plural name not set for item [18]
 
 exit 0
+stdout:
+section N13b every actual one day recipe through MAKE TRAIN scheduler with asymmetric inputs
+> place 9000
+> entity_range 10 24 4 0
+> entity_range 51 53 4 0
+> entity_range 64 85 4 0
+> entity_range 94 99 4 0
+> entity 690 5 0
+> entity 610 5 0
+> entity 615 5 0
+> entity 616 5 0
+> entity 617 5 0
+> entity 676 5 0
+> entity 750 5 0
+> entity 902 5 0
+> entity 658 5 0
+> entity 601 5 0
+> learn 1000 690 2 0
+> learn 1000 610 2 0
+> learn 1000 615 2 0
+> learn 1000 616 2 0
+> learn 1000 617 2 0
+> learn 1000 676 2 0
+> learn 1000 750 2 0
+> learn 1000 902 2 0
+> learn 1000 658 2 0
+> learn 1000 601 2 0
+> inventory 1000 10 13
+> inventory 1000 12 11
+> inventory 1000 13 3
+> inventory 1000 14 3
+> inventory 1000 19 4
+> inventory 1000 20 5
+> inventory 1000 23 3
+> inventory 1000 53 3
+> inventory 1000 64 3
+> inventory 1000 68 4
+> inventory 1000 70 5
+> inventory 1000 72 3
+> inventory 1000 73 3
+> inventory 1000 74 4
+> inventory 1000 75 3
+> inventory 1000 76 3
+> inventory 1000 77 5
+> inventory 1000 79 7
+> inventory 1000 85 3
+> field 1000 cur_aura 3
+> coverage path coverage.tsv
+> queue make 84 1
+> load
+load 1
+> do
+> day 1
+> field 9000 subkind 32
+> queue train 22 1
+> load
+load 1
+> do
+> day 2
+> queue train 23 1
+> load
+load 1
+> do
+> day 3
+> queue train 10 1
+> load
+load 1
+> do
+> day 4
+> queue train 13 1
+> load
+load 1
+> do
+> day 5
+> queue train 15 1
+> load
+load 1
+> do
+> day 6
+> queue train 14 1
+> load
+load 1
+> do
+> day 7
+> field 9000 subkind 29
+> queue train 17 1
+> load
+load 1
+> do
+> day 8
+> queue make 18 1
+> load
+load 1
+> do
+> day 9
+> queue train 20 1
+> load
+load 1
+> do
+> day 10
+> entity 9002 9 30
+> link 9000 9002
+> place 9002
+> queue train 24 1
+> load
+load 1
+> do
+> day 11
+> queue train 16 1
+> load
+load 1
+> do
+> day 12
+> queue train 12 1
+> load
+load 1
+> do
+> day 13
+> queue train 21 1
+> load
+load 1
+> do
+> day 14
+> queue train 19 1
+> load
+load 1
+> do
+> day 15
+> queue train 11 1
+> load
+load 1
+> do
+> day 16
+> queue make 94 1
+> load
+load 1
+> do
+> day 17
+> queue make 95 1
+> load
+load 1
+> do
+> day 18
+> queue make 85 1
+> load
+load 1
+> do
+> day 19
+> queue make 75 1
+> load
+load 1
+> do
+> day 20
+> queue make 74 1
+> load
+load 1
+> do
+> day 21
+> queue make 73 1
+> load
+load 1
+> do
+> day 22
+> queue make 72 1
+> load
+load 1
+> do
+> day 23
+> queue make 98 1
+> load
+load 1
+> do
+> day 24
+> queue make 99 1
+> load
+load 1
+> do
+> day 25
+> dump
+cmd 45 who 1000 state 0 status 1 wait 0 poll 1 pri 3 cond 0 fuzzy 0 days 1 debug 25 inhibit 0 cur 99
+args 99 1 1 1 0 0 0 0; parse [make] [99] [1]
+player 200 count 25 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	10 9 \
+	12 8 \
+	13 3 \
+	14 3 \
+	19 4 \
+	20 5 \
+	23 3 \
+	53 2 \
+	64 2 \
+	68 3 \
+	70 4 \
+	72 3 \
+	73 3 \
+	74 3 \
+	75 3 \
+	76 2 \
+	77 3 \
+	79 5 \
+	85 3 \
+	84 1 \
+	22 1 \
+	15 1 \
+	17 1 \
+	18 2 \
+	24 1 \
+	16 1 \
+	21 1 \
+	11 1 \
+	94 1 \
+	95 1 \
+	98 1 \
+	99 1
+LI
+ wh 9002
+CH
+ lo 200
+ sl	690 2 0 1 0 \
+	610 2 0 1 0 \
+	615 2 0 1 0 \
+	616 2 0 1 0 \
+	617 2 0 1 0 \
+	676 2 0 1 0 \
+	750 2 0 1 0 \
+	902 2 0 1 0 \
+	658 2 0 1 0 \
+	601 2 0 1 0
+CM
+ ca 2
+CO
+ li make 99 1
+ ar 99 1 1 1 0 0 0 0
+ st 1
+ de 1
+ po 1
+ pr 3
+
+> coverage write
+> readfile coverage.tsv
+file bytes coverage.tsv 2116:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	11	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	14	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	0	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::> make 84 1
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> train 22 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 23 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 10 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 13 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 15 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 14 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 17 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> make 18 1
+1000:0::0::Summoned two~<no subkind>.
+1000:0::0::> train 20 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 24 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 16 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 12 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 21 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 19 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> train 11 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> make 94 1
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> make 95 1
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> make 85 1
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> make 75 1
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> make 74 1
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> make 73 1
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> make 72 1
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> make 98 1
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> make 99 1
+1000:0::0::Made one~<no subkind>.
+> entity_rolls 1000 7 9000
+prison roll 439
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+stderr:
+warning: plural name not set for item [18]
+
+exit 0
+stdout:
+section N13b multiday warmount initial experience speedup only rearm seven and exact once experience
+> lore_root
+> place 9000
+> arrival touch 1000 9000
+> entity 51 4 0
+> entity 53 4 0
+> entity 657 5 0
+> learn 1000 657 2 180
+> inventory 1000 51 4
+> queue train 53 2
+> queue guard 1
+> load
+load 1
+> do
+> dump
+cmd 86 who 1000 state 2 status 1 wait 6 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 53 2 2 0 0 0 0 0; parse [train] [53] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> day 1
+> day 2
+> day 3
+> day 4
+> day 5
+> save 1000
+1000 char 0
+il	51 4
+LI
+ wh 9000
+CH
+ lo 200
+ sl	657 2 0 180 0
+CO
+ li train 53 2
+ ar 53 2 2 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ ue 5
+ de 5
+ pr 3
+
+> day 6
+> dump
+cmd 86 who 1000 state 2 status 1 wait 7 poll 0 pri 3 cond 0 fuzzy 0 days 6 debug 6 inhibit 0 cur 99
+args 53 2 2 1 0 0 0 0; parse [train] [53] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> save 1000
+1000 char 0
+il	51 3 \
+	53 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	657 2 0 181 0
+CO
+ li train 53 2
+ ar 53 2 2 1 0 0 0 0
+ cs 2
+ wa 7
+ st 1
+ ue 5
+ de 6
+ pr 3
+
+> usemeta state 1000 657
+use records 1000 1 0 0 0
+use experience 657 2 181 1 5
+use inventory 51 3
+use inventory 53 1
+1000 char 0
+il	51 3 \
+	53 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	657 2 0 181 0
+CO
+ li train 53 2
+ ar 53 2 2 1 0 0 0 0
+ cs 2
+ wa 7
+ st 1
+ ue 5
+ de 6
+ pr 3
+
+> day 7
+> day 8
+> day 9
+> day 10
+> day 11
+> day 12
+> save 1000
+1000 char 0
+il	51 3 \
+	53 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	657 2 0 181 0
+CO
+ li train 53 2
+ ar 53 2 2 1 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ ue 5
+ de 12
+ pr 3
+
+> day 13
+> dump
+cmd 38 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 13 inhibit 0 cur 1
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	51 2 \
+	53 2
+LI
+ wh 9000
+CH
+ lo 200
+ sl	657 2 0 181 0
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ ue 5
+ pr 1
+
+> usemeta state 1000 657
+use records 1000 1 0 0 0
+use experience 657 2 181 1 5
+use inventory 51 2
+use inventory 53 2
+1000 char 0
+il	51 2 \
+	53 2
+LI
+ wh 9000
+CH
+ lo 200
+ sl	657 2 0 181 0
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ ue 5
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> train 53 2
+1000:0::0::Trained one~<no subkind>.
+9000:0::0::<no subkind>~[1000] trained one~<no subkind>.
+1000:0::0::Trained one~<no subkind>.
+9000:0::0::<no subkind>~[1000] trained one~<no subkind>.
+> readlog 10
+log 10:
+> entity_rolls 1000 7 9000
+prison roll 64
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+stderr:
+
+exit 0
+stdout:
+section N13b riding training persisted STATE_RUN reload resumes actual scheduler not start
+> place 9000
+> arrival touch 1000 9000
+> entity 51 4 0
+> entity 52 4 0
+> entity 656 5 0
+> learn 1000 656 2 0
+> inventory 1000 51 3
+> queue make 52 2
+> queue guard 1
+> load
+load 1
+> do
+> day 1
+> save 1000
+1000 char 0
+il	51 3
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 0 0
+CO
+ li make 52 2
+ ar 52 2 2 0 0 0 0 0
+ cs 2
+ wa 2
+ st 1
+ ue 1
+ de 1
+ pr 3
+
+> persist_command
+> initial
+> dump
+cmd 45 who 1000 state 2 status 1 wait 2 poll 0 pri 3 cond 0 fuzzy 0 days 1 debug 0 inhibit 0 cur 99
+args 52 2 2 0 0 0 0 0; parse [make] [52] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> day 2
+> save 1000
+1000 char 0
+il	51 3
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 0 0
+CO
+ li make 52 2
+ ar 52 2 2 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ ue 1
+ de 2
+ pr 3
+
+> day 3
+> save 1000
+1000 char 0
+il	51 2 \
+	52 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 1 0
+CO
+ li make 52 2
+ ar 52 2 2 1 0 0 0 0
+ cs 2
+ wa 3
+ st 1
+ ue 1
+ de 3
+ pr 3
+
+> day 4
+> day 5
+> day 6
+> day 7
+> dump
+cmd 38 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 99
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	51 1 \
+	52 2
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 1 0
+ gu 1
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ st 1
+ ue 1
+ pr 1
+
+> usemeta state 1000 656
+use records 1000 1 0 0 0
+use experience 656 2 1 1 1
+use inventory 51 1
+use inventory 52 2
+1000 char 0
+il	51 1 \
+	52 2
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 1 0
+ gu 1
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ st 1
+ ue 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> make 52 2
+1000:0::0::Trained one~<no subkind>.
+9000:0::0::<no subkind>~[1000] trained one~<no subkind>.
+1000:0::0::Trained one~<no subkind>.
+9000:0::0::<no subkind>~[1000] trained one~<no subkind>.
+1000:0::0::> guard 1
+1000:0::0::Will guard Plain~[9000].
+stderr:
+
+exit 0
+stdout:
+section N13b STOP generic zero summary failure retains next queued order
+> place 9000
+> entity 94 4 0
+> queue make 94 4
+> load
+load 1
+> do
+> queue stop
+> queue guard 1
+> stops
+> dump
+cmd 38 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+> day 1
+> dump
+cmd 38 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 99
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ gu 1
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> make 94 4
+1000:0::0::> stop
+1000:0::0::Interrupt current order.
+1000:0::0::Made zero~<no subkind>.
+1000:0::0::> guard 1
+1000:0::0::Will guard Plain~[9000].
+stderr:
+warning: plural name not set for item [94]
+
+exit 0
+stdout:
+section N13b STOP generic partial reload summary failure retains next queued order
+> place 9000
+> entity 94 4 0
+> queue make 94 4
+> load
+load 1
+> do
+> day 1
+> persist_command
+> initial
+> queue stop
+> queue guard 1
+> stops
+> dump
+cmd 38 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 1
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	94 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+> day 2
+> dump
+cmd 38 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 2 inhibit 0 cur 99
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	94 1
+LI
+ wh 9000
+CH
+ lo 200
+ gu 1
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> make 94 4
+1000:0::0::> stop
+1000:0::0::Interrupt current order.
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> guard 1
+1000:0::0::Will guard Plain~[9000].
+stderr:
+
+exit 0
+stdout:
+section N13b STOP multiday partial after reload TRUE without generic summary retains next order
+> place 9000
+> entity 51 4 0
+> entity 52 4 0
+> entity 656 5 0
+> learn 1000 656 2 0
+> inventory 1000 51 4
+> queue make 52 3
+> load
+load 1
+> do
+> day 1
+> day 2
+> day 3
+> persist_command
+> initial
+> queue stop
+> queue guard 1
+> stops
+> dump
+cmd 38 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 1
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	51 3 \
+	52 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 1 0
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ ue 1
+ pr 1
+
+> day 4
+> dump
+cmd 38 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 4 inhibit 0 cur 99
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	51 3 \
+	52 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 1 0
+ gu 1
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ st 1
+ ue 1
+ pr 1
+
+> usemeta state 1000 656
+use records 1000 1 0 0 0
+use experience 656 2 1 1 1
+use inventory 51 3
+use inventory 52 1
+1000 char 0
+il	51 3 \
+	52 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 1 0
+ gu 1
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ st 1
+ ue 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> make 52 3
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> stop
+1000:0::0::Interrupt current order.
+1000:0::0::> guard 1
+1000:0::0::Will guard Plain~[9000].
+stderr:
+
+exit 0
+stdout:
+section N13b STOP multiday zero output TRUE and no experience or summary
+> place 9000
+> entity 51 4 0
+> entity 53 4 0
+> entity 657 5 0
+> learn 1000 657 2 0
+> inventory 1000 51 2
+> queue train 53 0
+> load
+load 1
+> do
+> queue stop
+> queue guard 1
+> stops
+> dump
+cmd 38 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> day 1
+> save 1000
+1000 char 0
+il	51 2
+LI
+ wh 9000
+CH
+ lo 200
+ sl	657 2 0 0 0
+ gu 1
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ st 1
+ ue 1
+ pr 1
+
+> usemeta state 1000 657
+use records 1000 1 0 0 0
+use experience 657 2 0 0 1
+use inventory 51 2
+1000 char 0
+il	51 2
+LI
+ wh 9000
+CH
+ lo 200
+ sl	657 2 0 0 0
+ gu 1
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ st 1
+ ue 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> train 53 0
+1000:0::0::> stop
+1000:0::0::Interrupt current order.
+1000:0::0::> guard 1
+1000:0::0::Will guard Plain~[9000].
+stderr:
+
+exit 0
+stdout:
+section N13b USE both horse starts reparse MAKE preserving original accounting and NULL metadata
+> lore_root
+> place 9000
+> entity 650 5 0
+> entity 656 5 0
+> entity 657 5 0
+> field 656 required 650
+> field 657 required 650
+> learn 1000 650 2 0
+> learn 1000 656 2 0
+> learn 1000 657 2 180
+> entity 51 4 0
+> entity 52 4 0
+> entity 53 4 0
+> inventory 1000 51 5
+> coverage path coverage.tsv
+> ucov path use.tsv
+> queue use 656 1
+> load
+load 1
+> do
+> ucov command
+use command 0 48 1 0 3 0 0
+> save 1000
+1000 char 0
+il	51 5
+LI
+ wh 9000
+CH
+ lo 200
+ sl	650 2 0 0 0 \
+	656 2 0 0 0 \
+	657 2 0 180 0
+CO
+ li make 52 1
+ ar 52 1 1 0 0 0 0 0
+ cs 2
+ wa 3
+ st 1
+ ue 1
+ pr 3
+
+> day 1
+> day 2
+> day 3
+> queue use 657 2
+> load
+load 1
+> do
+> ucov command
+use command 0 49 5 0 6 0 0
+> save 1000
+1000 char 0
+il	51 4 \
+	52 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	650 2 0 0 0 \
+	656 2 0 1 0 \
+	657 2 0 180 0
+CO
+ li make 53 2
+ ar 53 2 2 0 0 0 0 0
+ cs 2
+ wa 6
+ st 1
+ ue 5
+ pr 3
+
+> day 4
+> day 5
+> day 6
+> day 7
+> day 8
+> day 9
+> dump
+cmd 45 who 1000 state 2 status 1 wait 7 poll 0 pri 3 cond 0 fuzzy 0 days 6 debug 9 inhibit 0 cur 99
+args 53 2 2 1 0 0 0 0; parse [make] [53] [2]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> persist_command
+> initial
+> day 10
+> day 11
+> day 12
+> day 13
+> day 14
+> day 15
+> day 16
+> day 17
+> coverage write
+> ucov write
+> readfile coverage.tsv
+file bytes coverage.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	2	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readfile use.tsv
+file bytes use.tsv 2748:
+kind	key	name	checks	ok	fail
+invalid	0	(invalid)	0	0	0
+skill	601		0	0	0
+skill	602		0	0	0
+skill	603		0	0	0
+skill	612		0	0	0
+skill	613		0	0	0
+skill	614		0	0	0
+skill	615		0	0	0
+skill	616		0	0	0
+skill	617		0	0	0
+skill	631		0	0	0
+skill	632		0	0	0
+skill	633		0	0	0
+skill	634		0	0	0
+skill	635		0	0	0
+skill	636		0	0	0
+skill	637		0	0	0
+skill	638	<no subkind>	0	0	0
+skill	639		0	0	0
+skill	651		0	0	0
+skill	652		0	0	0
+skill	653		0	0	0
+skill	654		0	0	0
+skill	655		0	0	0
+skill	656	<no subkind>	0	1	0
+skill	657	<no subkind>	0	1	0
+skill	658		0	0	0
+skill	659		0	0	0
+skill	661		0	0	0
+skill	671		0	0	0
+skill	672		0	0	0
+skill	673		0	0	0
+skill	674		0	0	0
+skill	675		0	0	0
+skill	676		0	0	0
+skill	681		0	0	0
+skill	682		0	0	0
+skill	691		0	0	0
+skill	692		0	0	0
+skill	693		0	0	0
+skill	694		0	0	0
+skill	695		0	0	0
+skill	696		0	0	0
+skill	697		0	0	0
+skill	701		0	0	0
+skill	702		0	0	0
+skill	703		0	0	0
+skill	704		0	0	0
+skill	706		0	0	0
+skill	707		0	0	0
+skill	721		0	0	0
+skill	722		0	0	0
+skill	723		0	0	0
+skill	732		0	0	0
+skill	733		0	0	0
+skill	751		0	0	0
+skill	752		0	0	0
+skill	753		0	0	0
+skill	754		0	0	0
+skill	755		0	0	0
+skill	756		0	0	0
+skill	801		0	0	0
+skill	802		0	0	0
+skill	803		0	0	0
+skill	804		0	0	0
+skill	805		0	0	0
+skill	806		0	0	0
+skill	807		0	0	0
+skill	808		0	0	0
+skill	809		0	0	0
+skill	811		0	0	0
+skill	812		0	0	0
+skill	813		0	0	0
+skill	814		0	0	0
+skill	821		0	0	0
+skill	822		0	0	0
+skill	823		0	0	0
+skill	824		0	0	0
+skill	825		0	0	0
+skill	826		0	0	0
+skill	827		0	0	0
+skill	828		0	0	0
+skill	829		0	0	0
+skill	831		0	0	0
+skill	832		0	0	0
+skill	833		0	0	0
+skill	841		0	0	0
+skill	842		0	0	0
+skill	843		0	0	0
+skill	844		0	0	0
+skill	845		0	0	0
+skill	846		0	0	0
+skill	847		0	0	0
+skill	848		0	0	0
+skill	849		0	0	0
+skill	851		0	0	0
+skill	852		0	0	0
+skill	861		0	0	0
+skill	862		0	0	0
+skill	863		0	0	0
+skill	864		0	0	0
+skill	865		0	0	0
+skill	866		0	0	0
+skill	867		0	0	0
+skill	868		0	0	0
+skill	869		0	0	0
+skill	871		0	0	0
+skill	872		0	0	0
+skill	881		0	0	0
+skill	882		0	0	0
+skill	883		0	0	0
+skill	884		0	0	0
+skill	885		0	0	0
+skill	886		0	0	0
+skill	887		0	0	0
+skill	888		0	0	0
+skill	889		0	0	0
+skill	891		0	0	0
+skill	892		0	0	0
+skill	893		0	0	0
+skill	894		0	0	0
+skill	901		0	0	0
+skill	902		0	0	0
+skill	903		0	0	0
+skill	904		0	0	0
+skill	905		0	0	0
+skill	906		0	0	0
+skill	907		0	0	0
+skill	908		0	0	0
+skill	909		0	0	0
+skill	911		0	0	0
+skill	921		0	0	0
+skill	922		0	0	0
+skill	997		0	0	0
+skill	998		0	0	0
+skill	999		0	0	0
+item	1	death_potion	0	0	0
+item	2	heal_potion	0	0	0
+item	3	slave_potion	0	0	0
+item	4	palantir	0	0	0
+item	5	proj_cast	0	0	0
+item	6	quick_cast	0	0	0
+item	7	drum	0	0	0
+item	8	faery_stone	0	0	0
+item	9	orb	0	0	0
+item	10	barbarian_kill	0	0	0
+item	11	savage_kill	0	0	0
+item	12	corpse_kill	0	0	0
+item	13	orc_kill	0	0	0
+item	14	skeleton_kill	0	0	0
+item	15	bta_skull	0	0	0
+
+end file bytes
+> usemeta state 1000 656
+use records 1000 1 0 0 0
+use experience 656 2 1 1 1
+use inventory 51 2
+use inventory 52 1
+use inventory 53 2
+1000 char 0
+il	51 2 \
+	52 1 \
+	53 2
+LI
+ wh 9000
+CH
+ lo 200
+ sl	650 2 0 0 0 \
+	656 2 0 1 0 \
+	657 2 0 181 0
+CO
+ li make 53 2
+ ar 53 2 2 2 0 0 0 0
+ st 1
+ ue 5
+ de 13
+ pr 3
+
+> usemeta state 1000 657
+use records 1000 1 0 0 0
+use experience 657 2 181 1 5
+use inventory 51 2
+use inventory 52 1
+use inventory 53 2
+1000 char 0
+il	51 2 \
+	52 1 \
+	53 2
+LI
+ wh 9000
+CH
+ lo 200
+ sl	650 2 0 0 0 \
+	656 2 0 1 0 \
+	657 2 0 181 0
+CO
+ li make 53 2
+ ar 53 2 2 2 0 0 0 0
+ st 1
+ ue 5
+ de 13
+ pr 3
+
+> usemeta skill_usage 656
+grant usage 656 record 1 count 0 who 0
+> usemeta skill_usage 657
+grant usage 657 record 1 count 0 who 0
+> save 1000
+1000 char 0
+il	51 2 \
+	52 1 \
+	53 2
+LI
+ wh 9000
+CH
+ lo 200
+ sl	650 2 0 0 0 \
+	656 2 0 1 0 \
+	657 2 0 181 0
+CO
+ li make 53 2
+ ar 53 2 2 2 0 0 0 0
+ st 1
+ ue 5
+ de 13
+ pr 3
+
+> readlog 200
+log 200:
+1000:0::0::> use 656 1
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::> use 657 2
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::Trained one~<no subkind>.
+> entity_rolls 1000 7 9000
+prison roll 591
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+stderr:
+
+exit 0
+stdout:
+section N13b USE both refused callbacks reparse before material failure and do not count MAKE starts
+> place 9000
+> entity 650 5 0
+> entity 656 5 0
+> entity 657 5 0
+> field 656 required 650
+> field 657 required 650
+> learn 1000 650 2 0
+> learn 1000 656 2 0
+> learn 1000 657 2 180
+> entity 51 4 0
+> entity 52 4 0
+> entity 53 4 0
+> coverage path coverage.tsv
+> ucov path use.tsv
+> queue use 656 2
+> load
+load 1
+> do
+> ucov command
+use command 0 48 1 0 7 0 0
+> queue use 657 1
+> load
+load 1
+> do
+> ucov command
+use command 0 49 5 0 10 0 0
+> coverage write
+> ucov write
+> readfile coverage.tsv
+file bytes coverage.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	0	2
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readfile use.tsv
+file bytes use.tsv 2748:
+kind	key	name	checks	ok	fail
+invalid	0	(invalid)	0	0	0
+skill	601		0	0	0
+skill	602		0	0	0
+skill	603		0	0	0
+skill	612		0	0	0
+skill	613		0	0	0
+skill	614		0	0	0
+skill	615		0	0	0
+skill	616		0	0	0
+skill	617		0	0	0
+skill	631		0	0	0
+skill	632		0	0	0
+skill	633		0	0	0
+skill	634		0	0	0
+skill	635		0	0	0
+skill	636		0	0	0
+skill	637		0	0	0
+skill	638	<no subkind>	0	0	0
+skill	639		0	0	0
+skill	651		0	0	0
+skill	652		0	0	0
+skill	653		0	0	0
+skill	654		0	0	0
+skill	655		0	0	0
+skill	656	<no subkind>	0	0	1
+skill	657	<no subkind>	0	0	1
+skill	658		0	0	0
+skill	659		0	0	0
+skill	661		0	0	0
+skill	671		0	0	0
+skill	672		0	0	0
+skill	673		0	0	0
+skill	674		0	0	0
+skill	675		0	0	0
+skill	676		0	0	0
+skill	681		0	0	0
+skill	682		0	0	0
+skill	691		0	0	0
+skill	692		0	0	0
+skill	693		0	0	0
+skill	694		0	0	0
+skill	695		0	0	0
+skill	696		0	0	0
+skill	697		0	0	0
+skill	701		0	0	0
+skill	702		0	0	0
+skill	703		0	0	0
+skill	704		0	0	0
+skill	706		0	0	0
+skill	707		0	0	0
+skill	721		0	0	0
+skill	722		0	0	0
+skill	723		0	0	0
+skill	732		0	0	0
+skill	733		0	0	0
+skill	751		0	0	0
+skill	752		0	0	0
+skill	753		0	0	0
+skill	754		0	0	0
+skill	755		0	0	0
+skill	756		0	0	0
+skill	801		0	0	0
+skill	802		0	0	0
+skill	803		0	0	0
+skill	804		0	0	0
+skill	805		0	0	0
+skill	806		0	0	0
+skill	807		0	0	0
+skill	808		0	0	0
+skill	809		0	0	0
+skill	811		0	0	0
+skill	812		0	0	0
+skill	813		0	0	0
+skill	814		0	0	0
+skill	821		0	0	0
+skill	822		0	0	0
+skill	823		0	0	0
+skill	824		0	0	0
+skill	825		0	0	0
+skill	826		0	0	0
+skill	827		0	0	0
+skill	828		0	0	0
+skill	829		0	0	0
+skill	831		0	0	0
+skill	832		0	0	0
+skill	833		0	0	0
+skill	841		0	0	0
+skill	842		0	0	0
+skill	843		0	0	0
+skill	844		0	0	0
+skill	845		0	0	0
+skill	846		0	0	0
+skill	847		0	0	0
+skill	848		0	0	0
+skill	849		0	0	0
+skill	851		0	0	0
+skill	852		0	0	0
+skill	861		0	0	0
+skill	862		0	0	0
+skill	863		0	0	0
+skill	864		0	0	0
+skill	865		0	0	0
+skill	866		0	0	0
+skill	867		0	0	0
+skill	868		0	0	0
+skill	869		0	0	0
+skill	871		0	0	0
+skill	872		0	0	0
+skill	881		0	0	0
+skill	882		0	0	0
+skill	883		0	0	0
+skill	884		0	0	0
+skill	885		0	0	0
+skill	886		0	0	0
+skill	887		0	0	0
+skill	888		0	0	0
+skill	889		0	0	0
+skill	891		0	0	0
+skill	892		0	0	0
+skill	893		0	0	0
+skill	894		0	0	0
+skill	901		0	0	0
+skill	902		0	0	0
+skill	903		0	0	0
+skill	904		0	0	0
+skill	905		0	0	0
+skill	906		0	0	0
+skill	907		0	0	0
+skill	908		0	0	0
+skill	909		0	0	0
+skill	911		0	0	0
+skill	921		0	0	0
+skill	922		0	0	0
+skill	997		0	0	0
+skill	998		0	0	0
+skill	999		0	0	0
+item	1	death_potion	0	0	0
+item	2	heal_potion	0	0	0
+item	3	slave_potion	0	0	0
+item	4	palantir	0	0	0
+item	5	proj_cast	0	0	0
+item	6	quick_cast	0	0	0
+item	7	drum	0	0	0
+item	8	faery_stone	0	0	0
+item	9	orb	0	0	0
+item	10	barbarian_kill	0	0	0
+item	11	savage_kill	0	0	0
+item	12	corpse_kill	0	0	0
+item	13	orc_kill	0	0	0
+item	14	skeleton_kill	0	0	0
+item	15	bta_skull	0	0	0
+
+end file bytes
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	650 2 0 0 0 \
+	656 2 0 0 0 \
+	657 2 0 180 0
+CO
+ li make 53 1
+ ar 53 1 1 0 0 0 0 0
+ wa 10
+ ue 5
+ pr 3
+
+> usemeta state 1000 657
+use records 1000 1 0 0 0
+use experience 657 2 180 0 5
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	650 2 0 0 0 \
+	656 2 0 0 0 \
+	657 2 0 180 0
+CO
+ li make 53 1
+ ar 53 1 1 0 0 0 0 0
+ wa 10
+ ue 5
+ pr 3
+
+> readlog 200
+log 200:
+1000:0::0::> use 656 2
+1000:0::0::Don't have any <no subkind>~[51].
+1000:0::0::> use 657 1
+1000:0::0::Don't have any <no subkind>~[51].
+stderr:
+warning: plural name not set for item [51]
+warning: plural name not set for item [51]
+
+exit 0
+stdout:
+section N13b delayed material loss fails before experience output with retained queued next order
+> place 9000
+> entity 51 4 0
+> entity 52 4 0
+> entity 656 5 0
+> learn 1000 656 2 0
+> inventory 1000 51 1
+> queue make 52 1
+> queue guard 1
+> load
+load 1
+> do
+> day 1
+> subitem 1000 51 1
+subitem 1
+> day 2
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 0 0
+CO
+ li make 52 1
+ ar 52 1 1 0 0 0 0 0
+ cs 2
+ wa 1
+ st 1
+ ue 1
+ de 2
+ pr 3
+
+> day 3
+> dump
+cmd 38 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 3 inhibit 0 cur 1
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 0 0
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ ue 1
+ pr 1
+
+> usemeta state 1000 656
+use records 1000 1 0 0 0
+use experience 656 2 0 0 1
+use inventory 51 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 0 0
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ ue 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> make 52 1
+1000:0::0::Don't have two~<no subkind>~[51].
+stderr:
+warning: plural name not set for item [51]
+
+exit 0
+stdout:
+section N13b delayed completion does not revalidate lost skill or location
+> place 9000
+> entity 9001 3 29
+> entity 51 4 0
+> entity 52 4 0
+> entity 656 5 0
+> learn 1000 656 2 0
+> inventory 1000 51 2
+> queue make 52 0
+> load
+load 1
+> do
+> day 1
+> death forget 1000 656
+forget 1
+> place 9001
+> arrival touch 1000 9001
+> day 2
+> day 3
+> save 1000
+1000 char 0
+il	51 1 \
+	52 1
+LI
+ wh 9001
+CH
+ lo 200
+CO
+ li make 52 0
+ ar 52 0 0 1 0 0 0 0
+ cs 2
+ wa 3
+ st 1
+ ue 1
+ de 3
+ pr 3
+
+> day 4
+> day 5
+> day 6
+> dump
+cmd 45 who 1000 state 0 status 1 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 6 debug 6 inhibit 0 cur 99
+args 52 0 0 2 0 0 0 0; parse [make] [52] [0]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	52 2
+LI
+ wh 9001
+CH
+ lo 200
+CO
+ li make 52 0
+ ar 52 0 0 2 0 0 0 0
+ st 1
+ ue 1
+ de 6
+ pr 3
+
+> readlog 200
+log 200:
+1000:0::0::> make 52 0
+1000:0::0::Trained one~<no subkind>.
+1000:0::0::Trained one~<no subkind>.
+stderr:
+
+exit 0
+stdout:
+section N13b generic zero ends after remaining month delay positive stays indefinite negative text parses zero
+> place 9000
+> entity 94 4 0
+> entity 95 4 0
+> set day 28
+> queue make 94 0
+> load
+load 1
+> do
+> dump
+cmd 45 who 1000 state 2 status 1 wait 3 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 94 0 0 0 0 0 0 0; parse [make] [94] [0]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> day 28
+> day 29
+> day 30
+> dump
+cmd 45 who 1000 state 0 status 1 wait 0 poll 1 pri 3 cond 0 fuzzy 0 days 3 debug 30 inhibit 0 cur 99
+args 94 0 0 3 0 0 0 0; parse [make] [94] [0]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	94 3
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li make 94 0
+ ar 94 0 0 3 0 0 0 0
+ st 1
+ de 3
+ po 1
+ pr 3
+
+> queue make 95 4
+> load
+load 1
+> do
+> day 30
+> dump
+cmd 45 who 1000 state 2 status 1 wait -1 poll 1 pri 3 cond 0 fuzzy 0 days 1 debug 30 inhibit 0 cur 99
+args 95 4 4 1 0 0 0 0; parse [make] [95] [4]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> queue stop
+> stops
+> save 1000
+1000 char 0
+il	94 3 \
+	95 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li make 95 4
+ ar 95 4 4 1 0 0 0 0
+ de 1
+ po 1
+ pr 3
+
+> set day 30
+> queue make 95 -1
+> load
+load 1
+> do
+> day 30
+> dump
+cmd 45 who 1000 state 0 status 1 wait 0 poll 1 pri 3 cond 0 fuzzy 0 days 1 debug 30 inhibit 0 cur 99
+args 95 0 0 1 0 0 0 0; parse [make] [95] [-1]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> make 94 0
+1000:0::0::Made three~<no subkind>.
+1000:0::0::> make 95 4
+1000:0::0::> stop
+1000:0::0::Interrupt current order.
+1000:0::0::Made one~<no subkind>.
+1000:0::0::> make 95 -1
+1000:0::0::Made one~<no subkind>.
+stderr:
+warning: plural name not set for item [94]
+
+exit 0
+stdout:
+section N13b dual input exhaustion generic actual scheduler stops at shorter input
+> place 9000
+> entity 12 4 0
+> entity 16 4 0
+> entity 75 4 0
+> entity 610 5 0
+> learn 1000 610 2 0
+> inventory 1000 12 4
+> inventory 1000 75 2
+> queue train 16 5
+> load
+load 1
+> do
+> day 1
+> day 2
+> dump
+cmd 86 who 1000 state 0 status 0 wait 0 poll 1 pri 3 cond 0 fuzzy 0 days 2 debug 2 inhibit 0 cur 99
+args 16 5 5 2 0 0 0 0; parse [train] [16] [5]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	12 2 \
+	16 2
+LI
+ wh 9000
+CH
+ lo 200
+ sl	610 2 0 1 0
+CO
+ li train 16 5
+ ar 16 5 5 2 0 0 0 0
+ de 2
+ po 1
+ pr 3
+
+> genitem 1000 75 4
+> queue train 16 0
+> load
+load 1
+> do
+> day 3
+> day 4
+> dump
+cmd 86 who 1000 state 0 status 1 wait 0 poll 1 pri 3 cond 0 fuzzy 0 days 2 debug 4 inhibit 0 cur 99
+args 16 0 0 2 0 0 0 0; parse [train] [16] [0]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	75 2 \
+	16 4
+LI
+ wh 9000
+CH
+ lo 200
+ sl	610 2 0 1 0
+CO
+ li train 16 0
+ ar 16 0 0 2 0 0 0 0
+ st 1
+ de 2
+ po 1
+ pr 3
+
+> readlog 200
+log 200:
+1000:0::0::> train 16 5
+1000:0::0::Trained two~<no subkind>.
+1000:0::0::> train 16 0
+1000:0::0::Trained two~<no subkind>.
+stderr:
+warning: plural name not set for item [16]
+warning: plural name not set for item [16]
+
+exit 0
+stdout:
+section N13b common missing recipe start finish interrupt diagnostics preserve saved fields
+> place 9000
+> parse make 9999 2
+parse 1
+> callback_start
+callback start 0
+> dump
+cmd 45 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9999 2 0 0 0 0 0 0; parse [make] [9999] [2]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> make finish 0
+make finish 0
+> make interrupt 0
+make interrupt 0
+> dump
+cmd 45 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9999 2 0 0 0 0 0 0; parse [make] [9999] [2]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li make 9999 2
+ ar 9999 2 0 0 0 0 0 0
+
+> readlog 200
+log 200:
+1000:0::0::Don't know how to make [9999].
+1000:0::0::Internal error.
+10:0::0::d_make: t is NULL, who=1000
+1000:0::0::Internal error.
+10:0::0::i_make: t is NULL, who=1000
+> readlog 10
+log 10:
+stderr:
+
+exit 0
+stdout:
+section N13b raw multiday validation order no worker location aura gate and input two delay failure
+> place 9000
+> entity 51 4 0
+> entity 52 4 0
+> entity 75 4 0
+> entity 656 5 0
+> make_raw 52 11 51 75 9 4 1 32 656
+> set wait 19
+> make second_start -1 7
+make second start 0
+> dump
+cmd 0 who 1000 state 0 status 0 wait 19 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 7 0 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> learn 1000 656 2 0
+> make second_start -1 7
+make second start 0
+> inventory 1000 51 3
+> make second_start -1 7
+make second start 0
+> inventory 1000 75 2
+> make second_start -1 7
+make second start 1
+> dump
+cmd 0 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 7 0 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> subitem 1000 75 2
+subitem 1
+> set wait 0
+> make second_finish -1
+make second finish 0
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 7 0 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	51 3
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 0 0
+
+> genitem 1000 75 1
+> make second_finish -1
+make second finish 1
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 7 1 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	51 2 \
+	52 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 1 0
+
+> usemeta state 1000 656
+use records 1000 1 0 0 0
+use experience 656 2 1 1 1
+use inventory 51 2
+use inventory 75 0
+use inventory 52 1
+1000 char 0
+il	51 2 \
+	52 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 1 0
+
+> readlog 200
+log 200:
+1000:0::0::Requires <no subkind>~[656].
+1000:0::0::Don't have any <no subkind>~[51].
+1000:0::0::Don't have any <no subkind>~[75].
+1000:0::0::Don't have two~<no subkind>~[75].
+1000:0::0::Trained one~<no subkind>.
+stderr:
+warning: plural name not set for item [51]
+warning: plural name not set for item [75]
+warning: plural name not set for item [75]
+
+exit 0
+stdout:
+section N13b raw multiday C32 obtained wrap and original rearm ignores factor aura worker location
+> place 9000
+> entity 51 4 0
+> entity 52 4 0
+> entity 656 5 0
+> learn 1000 656 2 0
+> inventory 1000 51 3
+> make_raw 52 11 51 0 9 2147483647 1 32 656
+> make second_start -1 -2
+make second start 1
+> transfer_probe args 52 0 -2 2147483647
+> set wait 0
+> make second_finish -1
+make second finish 1
+> dump
+cmd 0 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 52 0 -2 -2147483648 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	51 2 \
+	52 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 1 0
+
+> usemeta state 1000 656
+use records 1000 1 0 0 0
+use experience 656 2 1 1 1
+use inventory 51 2
+use inventory 52 1
+1000 char 0
+il	51 2 \
+	52 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 1 0
+
+> readlog 200
+log 200:
+1000:0::0::Trained one~<no subkind>.
+stderr:
+
+exit 0
+stdout:
+section N13b raw multiday without inputs or skill preserves use experience and rearm even with target nonpositive
+> place 9000
+> entity 52 4 0
+> make_raw 52 11 0 0 9 4 0 32 0
+> make second_start -1 0
+make second start 1
+> dump
+cmd 0 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> set wait 0
+> make second_finish -1
+make second finish 1
+> dump
+cmd 0 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 1 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	52 1
+LI
+ wh 9000
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::Trained one~<no subkind>.
+stderr:
+
+exit 0
+stdout:
+section N13b real generic STOP summary uses cached inode after directory rename
+> lore_root
+> place 9000
+> entity 94 4 0
+> name 94 basket
+> plural 94 baskets
+> queue make 94 4
+> load
+load 1
+> do
+> day 1
+> life rename log/200 log/moved
+> life rename log log.old
+> queue stop
+> queue guard 1
+> stops
+> dump
+cmd 38 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 1
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	94 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+> life path log
+path log missing
+> life close
+> readfile log.old/moved
+file bytes log.old/moved 105:
+1000:0::0::> make 94 4
+1000:0::0::> stop
+1000:0::0::Interrupt current order.
+1000:0::0::Made one~basket.
+
+end file bytes
+> export state
+export entity 94 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+94 item 0
+na basket
+IT
+ pl baskets
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 94 1
+1000 char 0
+il	94 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N13b actual MAKE TRAIN validation skill input location aura sequence
+> place 9000
+> entity 51 4 0
+> entity 52 4 0
+> entity 656 5 0
+> queue make 52 1
+> load
+load 1
+> do
+> learn 1000 656 2 0
+> queue train 52 1
+> load
+load 1
+> do
+> entity 24 4 0
+> entity 19 4 0
+> entity 74 4 0
+> entity 616 5 0
+> learn 1000 616 2 0
+> queue train 24 1
+> load
+load 1
+> do
+> genitem 1000 19 2
+> queue make 24 1
+> load
+load 1
+> do
+> genitem 1000 74 3
+> queue make 24 1
+> load
+load 1
+> do
+> entity 18 4 0
+> entity 902 5 0
+> learn 1000 902 2 0
+> queue make 18 1
+> load
+load 1
+> do
+> dump
+cmd 45 who 1000 state 0 status 0 wait -1 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 18 1 1 0 0 0 0 0; parse [make] [18] [1]
+player 200 count 6 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	19 2 \
+	74 3
+LI
+ wh 9000
+CH
+ lo 200
+ sl	656 2 0 0 0 \
+	616 2 0 0 0 \
+	902 2 0 0 0
+CO
+ li make 18 1
+ ar 18 1 1 0 0 0 0 0
+ wa -1
+ po 1
+ pr 3
+
+> readlog 200
+log 200:
+1000:0::0::> make 52 1
+1000:0::0::Requires <no subkind>~[656].
+1000:0::0::> train 52 1
+1000:0::0::Don't have any <no subkind>~[51].
+1000:0::0::> train 24 1
+1000:0::0::Don't have any <no subkind>~[19].
+1000:0::0::> make 24 1
+1000:0::0::Don't have any <no subkind>~[74].
+1000:0::0::> make 24 1
+1000:0::0::Must be on a ship.
+1000:0::0::> make 18 1
+1000:0::0::Need at least 1 aura.
+stderr:
+warning: plural name not set for item [51]
+warning: plural name not set for item [19]
+warning: plural name not set for item [74]
+
+exit 0
