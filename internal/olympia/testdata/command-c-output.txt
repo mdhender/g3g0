@@ -135461,3 +135461,1485 @@ unformed:
 stderr:
 
 exit 0
+stdout:
+section N11 CREDIT default gold explicit item faction inventory and real dispatch coverage
+> lore_root
+> set gm 200
+> entity 1 4 0
+> entity 10 4 0
+> name 10 worker
+> plural 10 workers
+> field 1001 lord 201
+> field 200 unit 1000
+> field 201 unit 1001
+> coverage path coverage.tsv
+> queue credit 1001 17
+> queue credit 201 9 10
+> load
+load 1
+> do
+> do
+> save 1001
+1001 char 0
+il	1 17
+CH
+ lo 201
+
+> save 201
+201 player pl_regular
+il	10 9
+PL
+ un 1001 
+
+> gm_state 200
+gm state 200 player 1 paid 0 gold times 0
+> gm_state 201
+gm state 201 player 1 paid 0 gold times 0
+> lore_state 201
+known:
+lore:
+touched:
+weather:
+> readlog 200
+log 200:
+1000:0::0::> credit 1001 17
+1000:0::0::Credited <no subkind>~[1001] 17~<no subkind>~[1].
+1000:0::0::> credit 201 9 10
+1000:0::0::Credited Player~[201] nine~workers~[10].
+> readlog 201
+log 201:
+1001:0::0::Received CLAIM credit of 17~<no subkind>~[1].
+201:0::0::Received CLAIM credit of nine~workers~[10].
+> coverage write
+> readfile coverage.tsv
+file bytes coverage.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	2	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	0	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 77542
+> save_new
+77542 item scroll
+IT
+ un 1000
+
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+na worker
+IT
+ pl workers
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1000
+output: 1000
+200 player pl_regular
+PL
+ un 1000 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units: 1001
+output: 1001 201
+raw item 10 9
+201 player pl_regular
+il	10 9
+PL
+ un 1001 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 77542 1
+1000 char 0
+il	77542 1
+CH
+ lo 200
+CO
+ li credit 201 9 10
+ ar 201 9 10 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 17
+1001 char 0
+il	1 17
+CH
+ lo 201
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+warning: plural name not set for item [1]
+warning: plural name not set for item [1]
+
+exit 0
+stdout:
+section N11 CREDIT NP case insensitive signed widths and original NP gained bookkeeping
+> field 201 np 32760
+> parse credit 201 19 nP
+parse 1
+> callback_start
+callback start 1
+> pstate 201
+player 201 np -32757 gained 19 spent 0 backlinks 0
+units:
+output 0 0 1 0 0 touched 0 0
+> parse credit 201 -7 NP
+parse 1
+> dump
+cmd 16 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 201 0 0 0 0 0 0 0; parse [credit] [201] [-7] [NP]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> callback_start
+callback start 0
+> pstate 201
+player 201 np -32757 gained 19 spent 0 backlinks 0
+units:
+output 0 0 1 0 0 touched 0 0
+> parse credit 201 1 np
+parse 1
+> rawargs 201 -23 0
+> callback_start
+callback start 1
+> pstate 201
+player 201 np 32756 gained -4 spent 0 backlinks 0
+units:
+output 0 0 1 0 0 touched 0 0
+> save 201
+201 player pl_regular
+PL
+ np 32756
+
+> gm_state 201
+gm state 201 player 1 paid 0 gold times 0
+> readlog 200
+log 200:
+1000:0::0::Credited Player~[201] 19 NP.
+1000:0::0::201 not a character.
+1000:0::0::Credited Player~[201] -23 NP.
+> readlog 201
+log 201:
+201:0::0::Received GM credit of 19 NP.
+201:0::0::Received GM credit of -23 NP.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 201
+201 player pl_regular
+PL
+ np 32756
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li credit 201 1 np
+ ar 201 -23 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N11 CREDIT target validation precedes NP or inventory validation
+> parse credit 9999 3 np
+parse 1
+> callback_start
+callback start 0
+> parse credit 9000 3 9999
+parse 1
+> callback_start
+callback start 0
+> parse credit 1001 3 NP
+parse 1
+> callback_start
+callback start 0
+> parse credit 201 0 np
+parse 1
+> callback_start
+callback start 0
+> parse credit 9999
+parse 1
+> callback_start
+callback start 0
+> save 1001
+1001 char 0
+CH
+ lo 200
+
+> save 201
+201 player pl_regular
+PL
+
+> gm_state 201
+gm state 201 player 1 paid 0 gold times 0
+> readlog 200
+log 200:
+1000:0::0::9999 not a character or player.
+1000:0::0::9000 not a character or player.
+1000:0::0::[1001] not a player.
+1000:0::0::201 not a character.
+1000:0::0::9999 not a character.
+stderr:
+
+exit 0
+stdout:
+section N11 CREDIT amount zero pays exactly once per faction ignoring requested item NP
+> entity 1 4 0
+> entity 10 4 0
+> entity 1002 2 0
+> field 1002 lord 201
+> field 1001 lord 201
+> inventory 1001 1 7
+> inventory 1002 1 43
+> gm_gold 0 0 0 0 0 0 0 17 0 0 0 0 0 0 0 0
+> parse credit 1001 0 10
+parse 1
+> callback_start
+callback start 1
+> gm_state 201
+gm state 201 player 1 paid 1 gold times 42
+> parse credit 1002 0 NP
+parse 1
+> callback_start
+callback start 0
+> gm_state 201
+gm state 201 player 1 paid 1 gold times 42
+> parse credit 1000
+parse 1
+> callback_start
+callback start 1
+> gm_state 200
+gm state 200 player 1 paid 1 gold times 67
+> parse credit 1001 8
+parse 1
+> callback_start
+callback start 1
+> gm_state 201
+gm state 201 player 1 paid 1 gold times 67
+> save 1000
+1000 char 0
+il	1 25
+CH
+ lo 200
+CO
+ li credit 1001 8
+ ar 1001 8 0 0 0 0 0 0
+
+> save 1001
+1001 char 0
+il	1 40
+CH
+ lo 201
+
+> save 1002
+1002 char 0
+il	1 43
+CH
+ lo 201
+
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_regular
+PL
+
+> readlog 200
+log 200:
+1000:0::0::Already paid faction Player~[201].
+1000:0::0::The Times pays <no subkind>~[1000] 25~gold.
+1000:0::0::Credited <no subkind>~[1001] eight~<no subkind>~[1].
+> readlog 201
+log 201:
+1001:0::0::The Times pays <no subkind>~[1001] 25~gold.
+1001:0::0::Received CLAIM credit of eight~<no subkind>~[1].
+> entity_rolls 1001 7 9000
+prison roll 390
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 77542
+> save_new
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+warning: plural name not set for item [1]
+warning: plural name not set for item [1]
+
+exit 0
+stdout:
+section N11 CREDIT missing player allocated only by successful payment
+> entity 202 1 49
+> field 1001 lord 202
+> entity 1 4 0
+> gm_state 202
+gm state 202 player 0 paid 0 gold times 0
+> parse credit 202 0
+parse 1
+> callback_start
+callback start 0
+> gm_state 202
+gm state 202 player 0 paid 0 gold times 0
+> parse credit 1001
+parse 1
+> callback_start
+callback start 1
+> gm_state 202
+gm state 202 player 1 paid 1 gold times 25
+> callback_start
+callback start 0
+> gm_state 202
+gm state 202 player 1 paid 1 gold times 25
+> save 202
+202 player pl_regular
+PL
+
+> save 1001
+1001 char 0
+il	1 25
+CH
+ lo 202
+
+> readlog 202
+log 202:
+1001:0::0::The Times pays <no subkind>~[1001] 25~gold.
+stderr:
+
+exit 0
+stdout:
+stderr:
+
+exit 139
+stdout:
+section N11 invalid CREDIT negative amount reaches add item assertion not debit
+> entity 1 4 0
+> parse credit 1001 1
+parse 1
+> rawargs 1001 -5 0
+> callback_start
+stderr:
+assertion failure: olympia/u.c (1851): qty >= 0
+
+exit 134
+stdout:
+section N11 invalid CREDIT unique item reaches gen item assertion before inventory
+> entity 500 4 42
+> field 500 unique 1000
+> parse credit 1001 1 500
+parse 1
+> callback_start
+stderr:
+assertion failure: olympia/u.c (1889): !item_unique(item)
+
+exit 134
+stdout:
+section N11 RELORE known-only not learning prisoner silent foreign or known-bit filtered
+> entity 600 5 0
+> entity 601 5 0
+> entity 1002 2 0
+> entity 1003 2 0
+> entity 1004 2 0
+> entity 1005 2 0
+> entity 202 1 62
+> field 1002 lord 201
+> field 1003 lord 201
+> field 1004 lord 202
+> field 1005 lord 201
+> field 1001 prisoner 1
+> learn 1000 600 2 0
+> learn 1001 600 2 -1
+> learn 1002 600 1 35
+> learn 1003 600 0 35
+> learn 1004 600 2 35
+> learn 1005 601 2 21
+> field 200 known 600
+> field 202 known 600
+> field 200 queued_lore 601
+> parse relore 600
+parse 1
+> callback_start
+callback start 1
+> lore_state 200
+known: 600
+lore: 601 600 600
+touched:
+weather:
+> lore_state 201
+known:
+lore:
+touched:
+weather:
+> lore_state 202
+known: 600
+lore: 600
+touched:
+weather:
+> callback_start
+callback start 1
+> lore_state 200
+known: 600
+lore: 601 600 600 600 600
+touched:
+weather:
+> lore_state 201
+known:
+lore:
+touched:
+weather:
+> lore_state 202
+known: 600
+lore: 600 600
+touched:
+weather:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	600 2 0 0 0
+CO
+ li relore 600
+ ar 600 0 0 0 0 0 0 0
+
+> save 1001
+1001 char 0
+CH
+ lo 200
+ sl	600 2 0 -1 0
+ pr 1
+
+> save 1002
+1002 char 0
+CH
+ lo 201
+ sl	600 1 0 35 0
+
+> save 1003
+1003 char 0
+CH
+ lo 201
+ sl	600 0 0 35 0
+
+> save 1004
+1004 char 0
+CH
+ lo 202
+ sl	600 2 0 35 0
+
+> save 1005
+1005 char 0
+CH
+ lo 201
+ sl	601 2 0 21 0
+
+> save 200
+200 player pl_regular
+PL
+ kn 600 
+
+> save 201
+201 player pl_regular
+PL
+
+> save 202
+202 player pl_silent
+PL
+ kn 600 
+
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 77542
+> save_new
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N11 RELORE invalid skill preserves queues and absent character allocation
+> entity 600 5 0
+> entity 1002 2 0
+> field 200 queued_lore 600
+> parse relore 9999
+parse 1
+> callback_start
+callback start 0
+> parse relore 1000
+parse 1
+> callback_start
+callback start 0
+> parse relore 600
+parse 1
+> callback_start
+callback start 1
+> lore_state 200
+known:
+lore: 600
+touched:
+weather:
+> formation_state 1002
+formation 1002 kind 2 char 0 command 0 loc 0 name 0
+> readlog 200
+log 200:
+1000:0::0::9999 is not a skill.
+1000:0::0::1000 is not a skill.
+stderr:
+
+exit 0
+stdout:
+section N11 EMOTE ignores unused name formats strings percent byte widths and precisions
+> field 1001 lord 201
+> name 1001 é雪Omega
+> parse emote 1001 "plain text without conversion"
+parse 1
+> callback_start
+callback start 1
+> parse emote 1001 "100%% complete"
+parse 1
+> callback_start
+callback start 1
+> parse emote 1001 "[%s] %%"
+parse 1
+> callback_start
+callback start 1
+> parse emote 1001 "[%20.4s]"
+parse 1
+> callback_start
+callback start 1
+> parse emote 1001 "[%-12.3s]"
+parse 1
+> callback_start
+callback start 1
+> parse emote 1001 "[%.s]"
+parse 1
+> callback_start
+callback start 1
+> parse emote 1001 "[%1$18.5s] [%1$-13.2s] %%"
+parse 1
+> callback_start
+callback start 1
+> parse emote 1001 ""
+parse 1
+> callback_start
+callback start 1
+> readlog 201
+log 201:
+1001:0::0::plain text without conversion
+1001:0::0::100% complete
+1001:0::0::[é雪Omega~[1001]] %
+1001:0::0::[                é�]
+1001:0::0::[é�         ]
+1001:0::0::[]
+1001:0::0::[             é雪] [é           ] %
+1001:0::0::
+> readlog 200
+log 200:
+> save 1001
+1001 char 0
+na é雪Omega
+CH
+ lo 201
+
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li emote 1001 ""
+ ar 1001 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+na é雪Omega
+CH
+ lo 201
+
+stderr:
+
+exit 0
+stdout:
+section N11 EMOTE usage no target validation location player and prisoner routing
+> field 1001 lord 201
+> place 9000
+> link 9000 1000
+> link 9000 1001
+> parse emote 1001
+parse 1
+> callback_start
+callback start 0
+> parse emote
+parse 1
+> callback_start
+callback start 0
+> parse emote 201 "player [%s]"
+parse 1
+> callback_start
+callback start 1
+> parse emote 9000 "location [%s]"
+parse 1
+> callback_start
+callback start 1
+> field 1001 prisoner 1
+> parse emote 1001 "hidden [%s]"
+parse 1
+> callback_start
+callback start 1
+> readlog 200
+log 200:
+1000:0::0::Usage: EMOTE <target> <message>
+1000:0::0::Usage: EMOTE <target> <message>
+> readlog 201
+log 201:
+201:0::0::player [Player~[201]]
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 201
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li emote 1001 "hidden [%s]"
+ ar 1001 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ pr 1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001
+9000 loc plain
+LI
+ hl 1000 1001 
+
+stderr:
+
+exit 0
+stdout:
+stderr:
+
+exit 139
+stdout:
+section N11 GM starts real scheduler refusal success failed accounting and zero time order
+> lore_root
+> set gm 200
+> entity 1 4 0
+> entity 600 5 0
+> learn 1001 600 2 0
+> coverage path coverage.tsv
+> field 1001 lord 201
+> who 1001
+> queue credit 1001 7
+> queue emote 1001 "refused"
+> queue relore 600
+> load
+load 1
+> do
+> do
+> do
+> who 1000
+> queue credit 1001 11
+> queue emote 1001 "delivered to %s"
+> queue relore 600
+> queue credit 9000 1
+> queue emote 1001
+> queue relore 9999
+> load
+load 1
+> do
+> do
+> do
+> do
+> do
+> do
+> coverage write
+> readfile coverage.tsv
+file bytes coverage.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	1	0	1	1
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	1	0	1	1
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	1	0	1	1
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	0	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> save 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li relore 9999
+ ar 9999 0 0 0 0 0 0 0
+ pr 1
+
+> save 1001
+1001 char 0
+il	1 11
+CH
+ lo 201
+ sl	600 2 0 0 0
+CO
+ li relore 600
+ ar 600 0 0 0 0 0 0 0
+ pr 1
+
+> gm_state 201
+gm state 201 player 1 paid 0 gold times 0
+> lore_state 201
+known: 600
+lore: 600
+touched:
+weather:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 1 touched 0 0
+orders 1001:
+> readlog 200
+log 200:
+1000:0::0::> credit 1001 11
+1000:0::0::Credited <no subkind>~[1001] 11~<no subkind>~[1].
+1000:0::0::> emote 1001 "delivered to %s"
+1000:0::0::> relore 600
+1000:0::0::> credit 9000 1
+1000:0::0::9000 not a character or player.
+1000:0::0::> emote 1001
+1000:0::0::Usage: EMOTE <target> <message>
+1000:0::0::> relore 9999
+1000:0::0::9999 is not a skill.
+> readlog 201
+log 201:
+1001:0::0::> credit 1001 7
+1001:0::0::<no subkind>~[1001] may not issue that order.
+1001:0::0::> emote 1001 "refused"
+1001:0::0::<no subkind>~[1001] may not issue that order.
+1001:0::0::> relore 600
+1001:0::0::<no subkind>~[1001] may not issue that order.
+1001:0::0::Received CLAIM credit of 11~<no subkind>~[1].
+1001:0::0::delivered to <no subkind>~[1001]
+stderr:
+warning: plural name not set for item [1]
+warning: plural name not set for item [1]
+
+exit 0
+stdout:
+section N11 NULL finish interrupt and saved command reload never repeat GM resource effects
+> set gm 200
+> entity 1 4 0
+> entity 600 5 0
+> learn 1001 600 2 0
+> resolve_wait
+> parse credit 1001
+parse 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> generic_interrupt 1000
+> gm_state 200
+gm state 200 player 1 paid 1 gold times 25
+> save 1001
+1001 char 0
+il	1 25
+CH
+ lo 200
+ sl	600 2 0 0 0
+
+> parse credit 1001
+parse 1
+> run 0 0 1 0
+> finish
+finish 1
+> gm_state 200
+gm state 200 player 1 paid 1 gold times 25
+> save 1001
+1001 char 0
+il	1 25
+CH
+ lo 200
+ sl	600 2 0 0 0
+
+> parse relore 600
+parse 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> generic_interrupt 1000
+> lore_state 200
+known: 600
+lore: 600
+touched:
+weather:
+> parse relore 600
+parse 1
+> run 0 0 1 0
+> finish
+finish 1
+> lore_state 200
+known: 600
+lore: 600
+touched:
+weather:
+> parse emote 1001 "once %s"
+parse 1
+> callback_start
+callback start 1
+> run 0 0 1 0
+> persist_command
+> generic_interrupt 1000
+> parse emote 1001 "never %s"
+parse 1
+> run 0 0 1 0
+> finish
+finish 1
+> readlog 200
+log 200:
+1001:0::0::The Times pays <no subkind>~[1001] 25~gold.
+1001:0::0::once <no subkind>~[1001]
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 77542
+> save_new
+77542 item scroll
+IT
+ un 1000
+
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+200 player pl_regular
+PL
+ kn 600 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 600 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+600 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 77542 1
+1000 char 0
+il	77542 1
+CH
+ lo 200
+CO
+ li emote 1001 "never %s"
+ ar 1001 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 600 2
+raw item 1 25
+1001 char 0
+il	1 25
+CH
+ lo 200
+ sl	600 2 0 0 0
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N11 CREDIT real item lore queues characters only and accepts valid nonitem entity
+> entity 10 4 0
+> name 10 worker
+> plural 10 workers
+> entity 600 5 0
+> name 600 Singing
+> field 10 lore 600
+> parse credit 1001 7 10
+parse 1
+> callback_start
+callback start 1
+> callback_start
+callback start 1
+> parse credit 201 13 10
+parse 1
+> callback_start
+callback start 1
+> lore_state 200
+known: 10
+lore: 10
+touched:
+weather:
+> lore_state 201
+known:
+lore:
+touched:
+weather:
+> parse credit 1001 3 600
+parse 1
+> callback_start
+callback start 1
+> save 1001
+1001 char 0
+il	10 14 \
+	600 3
+CH
+ lo 200
+
+> save 201
+201 player pl_regular
+il	10 13
+PL
+
+> readlog 200
+log 200:
+1000:0::0::Credited <no subkind>~[1001] seven~workers~[10].
+1001:0::0::Received CLAIM credit of seven~workers~[10].
+1000:0::0::Credited <no subkind>~[1001] seven~workers~[10].
+1001:0::0::Received CLAIM credit of seven~workers~[10].
+1000:0::0::Credited Player~[201] 13~workers~[10].
+1000:0::0::Credited <no subkind>~[1001] three~Singing~[600].
+1001:0::0::Received CLAIM credit of three~Singing~[600].
+> readlog 201
+log 201:
+201:0::0::Received CLAIM credit of 13~workers~[10].
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+na worker
+IT
+ pl workers
+IM
+ lo 600
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+ kn 10 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 201
+raw item 10 13
+201 player pl_regular
+il	10 13
+PL
+
+export entity 600 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+600 skill 0
+na Singing
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li credit 1001 3 600
+ ar 1001 3 600 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 10 14
+raw item 600 3
+1001 char 0
+il	10 14 \
+	600 3
+CH
+ lo 200
+
+stderr:
+warning: plural name not set for item [600]
+warning: plural name not set for item [600]
+
+exit 0
+stdout:
+section N11 explicit empty target raw parse diagnostics are not missing arguments
+> parse credit ""
+parse 1
+> callback_start
+callback start 0
+> parse relore ""
+parse 1
+> callback_start
+callback start 0
+> readlog 200
+log 200:
+1000:0::0:: not a character.
+1000:0::0:: is not a skill.
+stderr:
+
+exit 0
+stdout:
+section N11 EMOTE and CREDIT borrow same buffered output inode and original close owner
+> lore_root
+> set flush 0
+> entity 1 4 0
+> parse emote 1001 "plain output"
+parse 1
+> callback_start
+callback start 1
+> life path log/200
+path log/200 empty
+> parse credit 1001
+parse 1
+> callback_start
+callback start 1
+> gm_state 200
+gm state 200 player 1 paid 1 gold times 25
+> life path log/200
+path log/200 empty
+> life close
+> life path log/200
+path log/200 nonempty
+> readfile log/200
+file bytes log/200 79:
+1001:0::0::plain output
+1001:0::0::The Times pays <no subkind>~[1001] 25~gold.
+
+end file bytes
+> save 1001
+1001 char 0
+il	1 25
+CH
+ lo 200
+
+stderr:
+
+exit 0

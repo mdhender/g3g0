@@ -359,6 +359,12 @@ func init() {
 			cmdTbl[i].start = (*world).vDie
 		case "quit":
 			cmdTbl[i].start = (*world).vQuit
+		case "credit":
+			cmdTbl[i].start = (*world).vCredit
+		case "relore":
+			cmdTbl[i].start = (*world).vRelore
+		case "emote":
+			cmdTbl[i].start = (*world).vEmote
 		case "admit":
 			cmdTbl[i].start = (*world).vAdmit
 		case "form":

@@ -146,7 +146,7 @@ functions = {
              'v_wait', 'd_wait', 'i_wait', 'next_np_turn', 'print_hiring_status', 'print_unformed',
              'form_new_noble', 'v_form', 'd_form', 'v_accept', 'will_accept_sup', 'will_accept', 'how_many',
              'v_give', 'v_pay', 'may_take', 'v_get', 'may_name', 'v_name', 'v_times',
-             'v_fullname', 'v_banner', 'v_flag', 'v_split'],
+             'v_fullname', 'v_banner', 'v_flag', 'v_split', 'v_emote'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
     'perm.c': ['is_hostile', 'is_defend', 'clear_all_att', 'rp_admit', 'p_admit', 'will_admit',
                'v_admit', 'set_att', 'v_set_att', 'v_hostile', 'v_defend', 'v_neutral', 'v_att_clear',
@@ -190,7 +190,7 @@ functions = {
              'v_discard', 'v_claim', 'v_public', 'text_list_free', 'line_length_check',
              'parse_text_list', 'v_post', 'v_message', 'v_rumor', 'v_press',
              'drop_player', 'v_quit', 'v_die'],
-    'immed.c': ['v_xyzzy', 'v_plugh'],
+    'immed.c': ['v_xyzzy', 'v_plugh', 'v_credit', 'v_relore'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts', 'add_contact', 'v_contact', 'cloak_lord'],
     'main.c': ['write_totimes', 'write_email', 'list_a_player', 'write_player_list',
                'write_forward_sup', 'write_forwards', 'write_faction_sup', 'write_factions'],
@@ -760,6 +760,15 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N11 '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N11 invalid CREDIT nonzero invalid item '*|\
+    'section N11 invalid EMOTE absent target '*) expected_status=139 ;;
+    'section N11 invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N11 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N10 '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

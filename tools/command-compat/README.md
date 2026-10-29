@@ -3,6 +3,204 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Normal GM turn commands (#209, stage 4 N11)
+
+**0.131.0-alpha** ports complete original `int v_credit`, immed.c
+**423–486**, `int v_relore`, immed.c **489–509**, and `int v_emote`, c1.c
+**1739–1753**, including their actual return-type lines. The extractor compiles
+these unchanged definitions exactly once (**1794 bytes**). No new dependency
+or pin: both sources and the complete shared closure were already tracked.
+`tmp/issue209-source-proof.log` verifies original bytes and fixture modes:
+
+| definition | SHA-256 |
+|---|---|
+| v_credit | `d482601aeec47afa03fb6f375d9f4c14fbb35962e97577c57c248b5a4d745191` |
+| v_relore | `3576ee36ac312c0505c5db3836cfeb21569d8d2586268af41d05a8e0b8bb9d36` |
+| v_emote | `0927ac2d1898cd3a289065b59efb79b14c97a5ace88566320929ecb983441925` |
+
+The three starts live in c1.go, not report-only gm.go. All genuine NULL finish
+and interrupt slots, `m` permissions, timing, polling and priorities remain
+unchanged. addNP, genItem, queueLore, hasSkill and existing scheduler, inventory,
+output/cache, serialization and RNG owners retain the effects. There is no
+immediate-mode loop, report refactor, new resource/output layer or later CLI,
+mail, HTML or initialization pipeline.
+
+EMOTE passes the user's message as C's printf format with one target-name
+argument. No target validation is added. Existing Go fmt is unsuitable:
+unused names add EXTRA diagnostics and string widths/precision count runes.
+The narrowly scoped emoteText handles the defined string/percent forms:
+literal text, `%%`, `%s`, byte width/precision, left alignment, empty precision,
+and POSIX `%1$s` reuse. The result still goes through the original commandOut
+truncation/routing/cache owner. Other argument types, stars needing integer
+arguments and excess sequential conversions have no defined C result; no
+new command validation or claim of deterministic parity is made for them.
+
+**18 appended sections: 14 status 0 / 2 status 134 / 2 status 139**, distinguish:
+
+- Nonzero CREDIT validates target kind before NP/item work; NP is
+  case-insensitive, player-only, uses the original signed/narrow NP/gained
+  accounting and accepts raw negative callback amounts. Ordinary textual
+  negative quantities parse to **zero** before the callback: the recorded
+  `credit 201 -7 NP` therefore takes the Times branch and refuses the player,
+  rather than deducting NP. Default gold and explicit items
+  go to the exact character/faction inventory, not a separate CLAIM account.
+  Real item lore queues only characters; repeat credits do not duplicate known
+  lore. A valid nonitem entity is not rejected by an invented item-kind check.
+- Amount zero ignores the requested item/NP and pays exactly **25** gold once
+  per faction, across different nobles. Times-paid is set before output and
+  inventory generation; goldTimes changes only for that payment. Missing player
+  records stay absent on refusal and allocate on success. Nonzero later credit
+  remains independent. The raw gm_state observer reads records without allocation.
+- RELORE checks actual hasSkill: only `SKILL_know` rows qualify, including
+  novice experience zero/negative. Learning/don't-know and absent rows do not.
+  Prisoners, foreign and silent owners are not filtered. Force queues retain
+  duplicates/order despite preexisting known bits; missing character records
+  do not allocate. Wrong-kind/absent skills leave queues untouched.
+- EMOTE plain/percent/empty messages, right/left byte widths and precisions
+  split UTF-8 exactly like C, including repeated positional name reuse. Player,
+  location and prisoner routing use existing output owners. Both insufficient
+  argument usage paths fail before formatting; explicit empty CREDIT/RELORE
+  target arguments have their own deterministic diagnostics.
+- Real dispatch records **rejected/ok/fail** for all three verbs (each row
+  **1/0/1/1**), with actual zero-time following orders and command accounting.
+  Actual command writer/reader reload and generic NULL interruption/completion
+  do not rerun starts or duplicate gold, Times, lore or messages. The buffered
+  output FILE stays empty until the shared close owner flushes it. Real saved
+  state, allocation/list/cache observers and keyed/entity, mint and legacy RNG
+  aftermath are compared, not just report snippets.
+- Raw negative item amount reaches original add_item assertion at u.c **1851**;
+  unique credit asserts at u.c **1889**. An absent explicit item and absent
+  EMOTE target instead reach the original unchecked shared owners and exit
+  **139** deterministically on this host. They are not successful turns or
+  callback replacements. The marker gate still precedes all status checks.
+
+Unchanged original fixtures ran C twice before implementation; the inherited
+command comparison also matched C/C/unchanged Go
+(`tmp/issue209-baseline-command.log`). All final oracle updates came only
+after unchanged real C/C equality. Construction runs first exposed the two
+unchecked status-139 paths, not new validation requirements. A missing-target
+RELORE probe then exposed **nondeterministic freed parse-slot bytes** after
+reparse. The gate rejected it before replacing recordings. This is reported as
+[G3 #364](https://github.com/playbymail/olympia-g3/issues/364), with source-linked
+port comments; `tmp/issue209-undefined-repro.log` retains escaped byte evidence
+and `tmp/issue209-update-final.log` the rejection. No arbitrary bytes or made-up
+missing-argument validation were accepted. Defined target/message contracts
+are not blocked; stable missing-target diagnostics await upstream. The final
+cases also use lore_root for cwd-relative coverage files, avoiding repository
+scratch files (`tmp/issue209-update-cwd.log`). A final construction correction
+uses actual `sub_pl_silent` **62**, not savage **51**; unchanged C/C and Go
+pass again (`tmp/issue209-update-silent.log`).
+
+Final oracle: **1679 sections / 136945 output lines / 2688195 output bytes**;
+input **36846 lines / 694355 bytes**. Additions: **369 input lines / 6821
+input bytes / 1482 output lines / 25106 output bytes**. Both entire inherited
+HEAD prefixes (**687534 / 2663089**) and stage-3 prefixes (**578307 / 2134398**)
+are exact, including all **33** inherited high-bit output bytes. Eight new
+trailing-space lines are authentic C output, not whitespace to normalize.
+Proof: `tmp/issue209-prefix-proof.log`.
+
+| file or prefix | SHA-256 |
+|---|---|
+| command-cases.txt | `b2d8c2505893be0263ea212a522a91d432a100f60176c13a3c64ab4fdb4f2a61` |
+| command-c-output.txt | `05bebae07c628464d47a085142a8f3b005ba74915442ebb35cec0133e81bdc73` |
+| HEAD 687534-byte input | `72832bf6c377bb33a1a7d470eebabc0bccaf8d6660252d8a5d7f67e74db7a6e0` |
+| HEAD 2663089-byte output | `160ff72c2016126a7487f1efcde72834560a6e6f077328c9cdf279c9b6e11cd8` |
+| stage-3 578307-byte input | `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` |
+| stage-3 2134398-byte output | `c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac` |
+
+Temporary real linker probes wrap v_credit with a dependency marker and actual
+**0/134 × default/update**. All four reject section **1661**, harness **2**,
+before accepting status or replacing the final recording above. Separate bounded
+direct executions confirm actual **0/134**. Proof/logs:
+`tmp/issue209-negative-final-proof.log`,
+`tmp/issue209-negative-final-STATUS-MODE.log` and
+`tmp/issue209-probe-final-STATUS-MODE.{stdout,stderr}`. Probes are removed before
+the final ordinary comparisons. Earlier identical controls are retained too.
+
+Unmodified original scripts pass C/C/fresh Go using trusted bounded launcher
+`tmp/stage4-capture` (SHA-256
+`816ad641b17c44bb2776d41dd7f2dc7c5f70cc5a3b05020658e4b036870f88b4`)
+and canonical unchanged `tmp/stage4-source/build/issue201/olympia-g3`
+(`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`).
+The existing strict comparator and tree-modes.py match raw streams/status and
+ALL cwd types/modes/empty directories/bytes, without exclusions:
+
+| original fixture | engine status; script result/status | cwd entries |
+|---|---|---|
+| gm-credit | 0; YES / 0 | 237 |
+| gm-refused | 0; YES / 0 | 237 |
+| player-settings | 0; YES / 0 | 237 |
+| player-press | 0; YES / 0 | 239 |
+| order-unrecognized | 0; YES / 0 | 243 |
+| release-swear-np, separate expected abort | **134**; YES / 0 | 229 |
+
+The abort remains exact `olympia/swear.c (180): FALSE`, never a successful turn
+or +turn snapshot. Original fixture bytes/modes are pristine. Scripts unpack
+physical disposable inputs; protected worlds are never run in place or linked.
+Manifests: `tmp/issue209-fixtures/FIXTURE/manifest.txt`; strict proof:
+`tmp/issue209-fixtures-proof.log`; script logs:
+`tmp/issue209-FIXTURE-{c1,c2,go,go-final}.log`. N09's replay recipe below applies
+with `_issue209`, `issue209-fixtures` and these six names; S4_ENGINE/S4_CAPTURE
+and OLYMPIA_ENGINE_BIN are unchanged. Matching captures are removed.
+
+Validation commands (every engine/test bounded; no blanket pin override):
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" tools/command-compat/run.sh --update
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    "tools/$tool-compat/run.sh" # sequential, inspect every status
+done
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue209-spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" tools/olympia-spec/run.sh
+```
+
+Bounded vet and fresh full-enabled tests pass (**11 packages / 10 explicit
+opt-in/child-entry skips**). All eight sequential defaults pass: command
+**1679/136945** and live native traversal; move **135/7158**, helper **37/1487**,
+RNG **321**, code **43/969**, loadsave **61/3411**, turn-driver **7/152**,
+phase **5/484**, calendar **2/119**, schedule **4/1801**, default turn **2 cwd
+entries**. Complete command statuses: **1410 × 0 / 255 × 134 / 3 × 139 / 11 × 1**,
+with every inherited case/status unchanged. Engine limits remain the tools'
+default **10s** for the seven small command/shared comparisons; turn, fixture
+replays, spec, vet and fresh tests use **120s**. Standalone full-enabled tests
+without supplied lists do not execute the four corpus gates.
+
+Full spec: **54 pass / 71 fail / 0 error**, retaining every **52** inherited
+name, including stage-3's **36**. Only the tool adds `gm-credit` and `gm-refused`;
+passing.txt is not hand-edited (**1142 bytes**, SHA-256
+`b12af8c9bf79671930d351451e9f81ca0430896de3c86f1b5b06a5b547b99b4b`).
+Golden remains **NO**, unsupported `-i` exits **2**. Evidence:
+`tmp/issue209-{vet,tests,default-status,spec,spec-proof}.log`,
+`tmp/issue209-TOOL-default.log` and final reruns with `-final` suffixes.
+
+Fresh ALL-open audit inspected all **91** local entries, only stage tasks,
+trackers and root #19, no bug/follow-C (`tmp/issue209-open-audit.json`). New
+G3 #364 concerns undefined missing-target input, not a hidden successful path.
+No defined-input blocker, new prerequisite or source pin change was needed.
+Task helpers/probes/binaries and matching captures are removed; logs/manifests
+remain. N11 only: no whole-family, full-corpus, full-spec/golden, stage-exit,
+non-Linux/sanitizer or stage-5 claim.
+
+Independent parent acceptance reviewed the complete pinned callbacks, shared
+NP/inventory/lore/output owners, EMOTE byte formatting and adapter/case diffs,
+and verified HEAD and stage-3 prefixes. Bounded vet, fresh full-enabled tests
+and all eight sequential defaults pass again (`tmp/parent209-{vet,tests,TOOL}.log`).
+The independent full spec confirms **54 pass / 71 fail / 0 error**, with no
+change to the tool-generated list; golden remains **NO**, initialization **2**
+(`tmp/parent209-spec.log`). All six original fixtures above independently match
+C/C/fresh Go on raw status/streams and complete cwd types/modes/empty
+directories/bytes, including the separate exact **134** abort. Manifests and
+script logs remain under `tmp/parent209-fixtures/` and
+`tmp/parent209-FIXTURE-ENGINE.log`; matching captures and scratch binary were
+removed. G3 #364 remains an explicit undefined-input limitation, not an accepted
+nondeterministic recording or a local validation fix. This accepts N11 only.
+
 ## DIE and QUIT (#208, stage 4 N10)
 
 **0.130.0-alpha** ports the complete pinned c2.c definitions, including their

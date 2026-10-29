@@ -1245,6 +1245,14 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		case "gm_pct":
 			n, d := int32(args.num(t)), int32(args.num(t))
 			fmt.Fprintf(&stdout, "pct %d\n", pct(n, d))
+		case "gm_state":
+			n := args.num(t)
+			p := w.rpPlayer(n)
+			paid := int8(0)
+			if p != nil {
+				paid = p.timesPaid
+			}
+			fmt.Fprintf(&stdout, "gm state %d player %d paid %d gold times %d\n", n, b2i(p != nil), paid, w.goldTimes)
 		case "gm_gold":
 			for _, p := range []*int32{&w.goldCommonMagic, &w.goldLeadToGold, &w.goldPotBasket, &w.goldTrade, &w.goldInn, &w.goldTaxes, &w.goldProvinces, &w.goldTimes, &w.goldCombat, &w.goldCombatIndep, &w.goldPettyThief, &w.goldTemple, &w.goldPillage, &w.goldFerry, &w.goldOpium, &w.goldGarrison} {
 				*p = int32(args.num(t))

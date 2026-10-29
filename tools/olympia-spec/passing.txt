@@ -8,6 +8,8 @@ attitude-refused
 attitude-set
 cli-options
 coast-rocks
+gm-credit
+gm-refused
 inventory-give
 inventory-refused
 load-bad-master

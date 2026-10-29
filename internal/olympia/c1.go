@@ -3,7 +3,145 @@
 
 package olympia
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+// Normal turn orders from immed.c:423–509; this does not enter immediate mode.
+// Missing-target raw parse slots are undefined in C (G3 #364); do not add a
+// validation rule or promise a deterministic diagnostic for stale pointers.
+// https://github.com/playbymail/olympia-g3/issues/364
+func (w *world) vCredit(c *command) int {
+	target, amount, item := int(c.a), int(c.b), int(c.c)
+	if amount != 0 {
+		if w.kind(target) != tChar && w.kind(target) != tPlayer {
+			w.commandOut(int(c.who), "%s not a character or player.", c.parse[1])
+			return 0
+		}
+		if c.parse.Len()-1 >= 3 && strings.EqualFold(c.parse[3], "np") {
+			if w.kind(target) != tPlayer {
+				w.commandOut(int(c.who), "%s not a player.", w.boxCode(target))
+				return 0
+			}
+			w.addNP(target, amount)
+			w.commandOut(int(c.who), "Credited %s %d NP.", w.boxName(target), amount)
+			w.commandOut(target, "Received GM credit of %d NP.", amount)
+			return 1
+		}
+		if item == 0 {
+			item = itemGold
+		}
+		w.genItem(target, item, amount)
+		w.commandOut(int(c.who), "Credited %s %s.", w.boxName(target), w.boxNameQty(item, amount))
+		w.commandOut(target, "Received CLAIM credit of %s.", w.boxNameQty(item, amount))
+		return 1
+	}
+	if w.kind(target) != tChar {
+		w.commandOut(int(c.who), "%s not a character.", c.parse[1])
+		return 0
+	}
+	pl := w.player(target)
+	if p := w.rpPlayer(pl); p != nil && p.timesPaid != 0 {
+		w.commandOut(int(c.who), "Already paid faction %s.", w.boxName(pl))
+		return 0
+	}
+	w.pPlayer(pl).timesPaid = 1
+	w.commandOut(target, "The Times pays %s %s.", w.boxName(target), goldS(25))
+	w.genItem(target, itemGold, 25)
+	w.goldTimes += 25
+	return 1
+}
+
+func (w *world) vRelore(c *command) int {
+	skill := int(c.a)
+	if !w.validBox(skill) || w.kind(skill) != tSkill {
+		w.commandOut(int(c.who), "%s is not a skill.", c.parse[1])
+		return 0
+	}
+	for i := range w.loopKind(tChar) {
+		if w.hasSkill(i, skill) != 0 {
+			w.queueLore(i, skill, true)
+		}
+	}
+	return 1
+}
+
+// emoteText models printf with its single char* argument, not Go's rune-based
+// string formatting. Defined conversions are %s (optional byte width/precision,
+// left alignment) and %%; POSIX %1$s may reuse that same argument. Unused
+// arguments are ignored by C. Other argument types or missing arguments are
+// undefined in the original call, not new command validation rules.
+func emoteText(format, name string) string {
+	var out strings.Builder
+	used := false
+	for i := 0; i < len(format) && out.Len() < lenMax-1; {
+		if format[i] != '%' {
+			out.WriteByte(format[i])
+			i++
+			continue
+		}
+		i++
+		if i < len(format) && format[i] == '%' {
+			out.WriteByte('%')
+			i++
+			continue
+		}
+		positional := strings.HasPrefix(format[i:], "1$")
+		if positional {
+			i += 2
+		}
+		left := false
+		for i < len(format) && format[i] == '-' {
+			left = true
+			i++
+		}
+		number := func() int {
+			start := i
+			for i < len(format) && format[i] >= '0' && format[i] <= '9' {
+				i++
+			}
+			n, err := strconv.Atoi(format[start:i])
+			if err != nil && start != i {
+				return lenMax
+			}
+			return n
+		}
+		width := number()
+		s := name
+		if i < len(format) && format[i] == '.' {
+			i++
+			s = s[:min(len(s), number())]
+		}
+		if i >= len(format) || format[i] != 's' || (used && !positional) {
+			// No defined C result exists for this format/argument combination.
+			return fmt.Sprintf(format, name)
+		}
+		used = true
+		i++
+		pad := strings.Repeat(" ", min(max(width-len(s), 0), lenMax))
+		if !left {
+			out.WriteString(pad)
+		}
+		out.WriteString(s)
+		if left {
+			out.WriteString(pad)
+		}
+	}
+	return out.String()
+}
+
+// Complete c1.c:1739–1753. The target is deliberately not validated.
+func (w *world) vEmote(c *command) int {
+	if c.parse.Len()-1 < 2 {
+		w.commandOut(int(c.who), "Usage: EMOTE <target> <message>")
+		return 0
+	}
+	target := int(c.a)
+	w.commandOut(target, "%s", emoteText(c.parse[2], w.boxName(target)))
+	return 1
+}
 
 // Complete c1.c:314–359, including the static permission helper. Item
 // naming deliberately does not require possession except for an auraculum.

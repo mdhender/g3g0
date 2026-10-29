@@ -36475,3 +36475,372 @@ life path log/201
 readfile log/201
 readlog 200
 formation_state 201
+
+section N11 CREDIT default gold explicit item faction inventory and real dispatch coverage
+lore_root
+set gm 200
+entity 1 4 0
+entity 10 4 0
+name 10 worker
+plural 10 workers
+field 1001 lord 201
+field 200 unit 1000
+field 201 unit 1001
+coverage path coverage.tsv
+queue credit 1001 17
+queue credit 201 9 10
+load
+do
+do
+save 1001
+save 201
+gm_state 200
+gm_state 201
+lore_state 201
+readlog 200
+readlog 201
+coverage write
+readfile coverage.tsv
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+save_new
+export state
+
+section N11 CREDIT NP case insensitive signed widths and original NP gained bookkeeping
+field 201 np 32760
+parse credit 201 19 nP
+callback_start
+pstate 201
+parse credit 201 -7 NP
+dump
+callback_start
+pstate 201
+parse credit 201 1 np
+rawargs 201 -23 0
+callback_start
+pstate 201
+save 201
+gm_state 201
+readlog 200
+readlog 201
+export state
+
+section N11 CREDIT target validation precedes NP or inventory validation
+parse credit 9999 3 np
+callback_start
+parse credit 9000 3 9999
+callback_start
+parse credit 1001 3 NP
+callback_start
+parse credit 201 0 np
+callback_start
+parse credit 9999
+callback_start
+save 1001
+save 201
+gm_state 201
+readlog 200
+
+section N11 CREDIT amount zero pays exactly once per faction ignoring requested item NP
+entity 1 4 0
+entity 10 4 0
+entity 1002 2 0
+field 1002 lord 201
+field 1001 lord 201
+inventory 1001 1 7
+inventory 1002 1 43
+gm_gold 0 0 0 0 0 0 0 17 0 0 0 0 0 0 0 0
+parse credit 1001 0 10
+callback_start
+gm_state 201
+parse credit 1002 0 NP
+callback_start
+gm_state 201
+parse credit 1000
+callback_start
+gm_state 200
+parse credit 1001 8
+callback_start
+gm_state 201
+save 1000
+save 1001
+save 1002
+save 200
+save 201
+readlog 200
+readlog 201
+entity_rolls 1001 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+save_new
+
+section N11 CREDIT missing player allocated only by successful payment
+entity 202 1 49
+field 1001 lord 202
+entity 1 4 0
+gm_state 202
+parse credit 202 0
+callback_start
+gm_state 202
+parse credit 1001
+callback_start
+gm_state 202
+callback_start
+gm_state 202
+save 202
+save 1001
+readlog 202
+
+section N11 invalid CREDIT nonzero invalid item reaches real gen item assertion
+entity 1 4 0
+parse credit 1001 5 9999
+callback_start
+
+section N11 invalid CREDIT negative amount reaches add item assertion not debit
+entity 1 4 0
+parse credit 1001 1
+rawargs 1001 -5 0
+callback_start
+
+section N11 invalid CREDIT unique item reaches gen item assertion before inventory
+entity 500 4 42
+field 500 unique 1000
+parse credit 1001 1 500
+callback_start
+
+section N11 RELORE known-only not learning prisoner silent foreign or known-bit filtered
+entity 600 5 0
+entity 601 5 0
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+entity 202 1 62
+field 1002 lord 201
+field 1003 lord 201
+field 1004 lord 202
+field 1005 lord 201
+field 1001 prisoner 1
+learn 1000 600 2 0
+learn 1001 600 2 -1
+learn 1002 600 1 35
+learn 1003 600 0 35
+learn 1004 600 2 35
+learn 1005 601 2 21
+field 200 known 600
+field 202 known 600
+field 200 queued_lore 601
+parse relore 600
+callback_start
+lore_state 200
+lore_state 201
+lore_state 202
+callback_start
+lore_state 200
+lore_state 201
+lore_state 202
+save 1000
+save 1001
+save 1002
+save 1003
+save 1004
+save 1005
+save 200
+save 201
+save 202
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+save_new
+
+section N11 RELORE invalid skill preserves queues and absent character allocation
+entity 600 5 0
+entity 1002 2 0
+field 200 queued_lore 600
+parse relore 9999
+callback_start
+parse relore 1000
+callback_start
+parse relore 600
+callback_start
+lore_state 200
+formation_state 1002
+readlog 200
+
+section N11 EMOTE ignores unused name formats strings percent byte widths and precisions
+field 1001 lord 201
+name 1001 é雪Omega
+parse emote 1001 "plain text without conversion"
+callback_start
+parse emote 1001 "100%% complete"
+callback_start
+parse emote 1001 "[%s] %%"
+callback_start
+parse emote 1001 "[%20.4s]"
+callback_start
+parse emote 1001 "[%-12.3s]"
+callback_start
+parse emote 1001 "[%.s]"
+callback_start
+parse emote 1001 "[%1$18.5s] [%1$-13.2s] %%"
+callback_start
+parse emote 1001 ""
+callback_start
+readlog 201
+readlog 200
+save 1001
+export state
+
+section N11 EMOTE usage no target validation location player and prisoner routing
+field 1001 lord 201
+place 9000
+link 9000 1000
+link 9000 1001
+parse emote 1001
+callback_start
+parse emote
+callback_start
+parse emote 201 "player [%s]"
+callback_start
+parse emote 9000 "location [%s]"
+callback_start
+field 1001 prisoner 1
+parse emote 1001 "hidden [%s]"
+callback_start
+readlog 200
+readlog 201
+export state
+
+section N11 invalid EMOTE absent target reaches original output owner without validation
+parse emote 9999 "absent [%s]"
+callback_start
+
+section N11 GM starts real scheduler refusal success failed accounting and zero time order
+lore_root
+set gm 200
+entity 1 4 0
+entity 600 5 0
+learn 1001 600 2 0
+coverage path coverage.tsv
+field 1001 lord 201
+who 1001
+queue credit 1001 7
+queue emote 1001 "refused"
+queue relore 600
+load
+do
+do
+do
+who 1000
+queue credit 1001 11
+queue emote 1001 "delivered to %s"
+queue relore 600
+queue credit 9000 1
+queue emote 1001
+queue relore 9999
+load
+do
+do
+do
+do
+do
+do
+coverage write
+readfile coverage.tsv
+save 1000
+save 1001
+gm_state 201
+lore_state 201
+pstate 200
+pstate 201
+readlog 200
+readlog 201
+
+section N11 NULL finish interrupt and saved command reload never repeat GM resource effects
+set gm 200
+entity 1 4 0
+entity 600 5 0
+learn 1001 600 2 0
+resolve_wait
+parse credit 1001
+callback_start
+run 0 0 1 0
+persist_command
+generic_interrupt 1000
+gm_state 200
+save 1001
+parse credit 1001
+run 0 0 1 0
+finish
+gm_state 200
+save 1001
+parse relore 600
+callback_start
+run 0 0 1 0
+persist_command
+generic_interrupt 1000
+lore_state 200
+parse relore 600
+run 0 0 1 0
+finish
+lore_state 200
+parse emote 1001 "once %s"
+callback_start
+run 0 0 1 0
+persist_command
+generic_interrupt 1000
+parse emote 1001 "never %s"
+run 0 0 1 0
+finish
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+save_new
+export state
+
+section N11 CREDIT real item lore queues characters only and accepts valid nonitem entity
+entity 10 4 0
+name 10 worker
+plural 10 workers
+entity 600 5 0
+name 600 Singing
+field 10 lore 600
+parse credit 1001 7 10
+callback_start
+callback_start
+parse credit 201 13 10
+callback_start
+lore_state 200
+lore_state 201
+parse credit 1001 3 600
+callback_start
+save 1001
+save 201
+readlog 200
+readlog 201
+export state
+
+section N11 explicit empty target raw parse diagnostics are not missing arguments
+parse credit ""
+callback_start
+parse relore ""
+callback_start
+readlog 200
+
+section N11 EMOTE and CREDIT borrow same buffered output inode and original close owner
+lore_root
+set flush 0
+entity 1 4 0
+parse emote 1001 "plain output"
+callback_start
+life path log/200
+parse credit 1001
+callback_start
+gm_state 200
+life path log/200
+life close
+life path log/200
+readfile log/200
+save 1001

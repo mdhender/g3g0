@@ -914,6 +914,11 @@ int main(int argc, char **argv)
    if(sscanf(line,"%*s %d %d",&n,&a)!=2) return 2;
    printf("pct %d\n",drv_gm_pct(n,a));
   }
+  else if (!strcmp(op, "gm_state")) {
+   struct entity_player *p;
+   sscanf(line,"%*s %d",&n); p=rp_player(n);
+   printf("gm state %d player %d paid %d gold times %d\n",n,p!=NULL,p?p->times_paid:0,gold_times);
+  }
   else if (!strcmp(op, "gm_gold")) {
    if(sscanf(line,"%*s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
     &gold_common_magic,&gold_lead_to_gold,&gold_pot_basket,&gold_trade,&gold_inn,&gold_taxes,
