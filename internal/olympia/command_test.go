@@ -2030,6 +2030,15 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				n, a := args.num(t), args.num(t)
 				l := w.pPlayer(n).admits
 				l[len(l)-1].l.Append(a)
+			case "admit_flags":
+				n := args.num(t)
+				p := w.rpPlayer(n)
+				fmt.Fprintf(&stdout, "admit player %d allocated %d\n", n, b2i(p != nil))
+				if p != nil {
+					for i, a := range p.admits {
+						fmt.Fprintf(&stdout, "admit flag %d %d %d allocated %d\n", i, a.targ, a.flag, b2i(a.l != nil))
+					}
+				}
 			case "state":
 				n := args.num(t)
 				p, att := w.rpPlayer(n), w.rpDisp(n)
@@ -2728,6 +2737,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			default:
 				t.Fatalf("unknown field %s", field)
 			}
+		case "contact_add":
+			w.addContact(args.num(t), args.num(t))
 		case "predicate":
 			name := args.word()
 			n := args.num(t)
@@ -2742,6 +2753,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch name {
 			case "hostile":
 				result = b2i(w.isHostile(n, a))
+			case "defend":
+				result = b2i(w.isDefend(n, a))
+			case "admit":
+				result = b2i(w.willAdmit(n, a, b))
 			case "contacted":
 				result = b2i(w.contacted(n, a))
 			case "char_where":

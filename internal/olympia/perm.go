@@ -114,6 +114,115 @@ func (w *world) rpAdmit(pl, targ int) *admit {
 	return nil
 }
 
+func (w *world) pAdmit(pl, targ int) *admit {
+	assert(w.kind(pl) == tPlayer, "olympia/perm.c", 34, "kind(pl) == T_player")
+	p := w.pPlayer(pl)
+	for _, a := range p.admits {
+		if int(a.targ) == targ {
+			return a
+		}
+	}
+	a := &admit{targ: int32(targ)}
+	p.admits.Append(a)
+	return a
+}
+
+func (w *world) vAdmit(c *command) int {
+	targ, pl := int(c.a), w.player(int(c.who))
+	if !w.validBox(targ) {
+		w.commandOut(int(c.who), "Must specify an entity for admit.")
+		return 0
+	}
+	w.cmdShift(c)
+	p := w.pAdmit(pl, targ)
+	if p.flag == 0 {
+		p.sense = 0
+		p.l.Clear()
+		p.flag = 1
+	}
+	for c.parse.Len() > 1 {
+		if iStrcmp(c.parse[1], "all") == 0 {
+			p.sense = 1
+		} else if k := w.kind(int(c.a)); k == tChar || k == tPlayer || k == tUnform {
+			p.l.Append(int(c.a))
+		} else {
+			w.commandOut(int(c.who), "%s isn't a valid entity to admit.", c.parse[1])
+		}
+		w.cmdShift(c)
+	}
+	return 1
+}
+
+// setAtt uses ilist_rem_value's complete duplicate removal and sorts only
+// the selected destination, leaving the other two lists in their old order.
+func (w *world) setAtt(who, targ, disp int) {
+	p := w.pDisp(who)
+	p.neutral.RemValue(targ)
+	p.hostile.RemValue(targ)
+	p.defend.RemValue(targ)
+	var l *lists.IList
+	switch disp {
+	case attNeutral:
+		l = &p.neutral
+	case attHostile:
+		l = &p.hostile
+	case attDefend:
+		l = &p.defend
+	case attNone:
+		return
+	default:
+		assert(false, "olympia/perm.c", 273, "FALSE")
+	}
+	l.Append(targ)
+	safeQsort(*l, intComp)
+}
+
+func (w *world) isDefend(who, targ int) bool {
+	if w.isHostile(who, targ) {
+		return false
+	}
+	if w.defaultGarrison(who) != 0 {
+		return true
+	}
+	pl := w.player(who)
+	for _, n := range []int{who, pl} {
+		if p := w.rpDisp(n); p != nil {
+			if p.defend.Lookup(targ) >= 0 {
+				return true
+			}
+			if p.neutral.Lookup(targ) >= 0 {
+				return false
+			}
+			if p.defend.Lookup(w.player(targ)) >= 0 {
+				return true
+			}
+			if p.neutral.Lookup(w.player(targ)) >= 0 {
+				return false
+			}
+		}
+	}
+	return pl == w.player(targ) && pl != int(w.indepPlayer) && w.cloakLord(who) == 0
+}
+
+func (w *world) vSetAtt(c *command, k int) int {
+	for c.parse.Len() > 1 {
+		if !w.validBox(int(c.a)) {
+			w.commandOut(int(c.who), "%s is not a valid entity.", c.parse[1])
+		} else if k == attHostile && w.player(int(c.who)) == w.player(int(c.a)) && w.player(int(c.who)) != int(w.indepPlayer) {
+			w.commandOut(int(c.who), "Can't be hostile to a unit in the same faction.")
+		} else {
+			w.setAtt(int(c.who), int(c.a), k)
+		}
+		w.cmdShift(c)
+	}
+	return 1
+}
+
+func (w *world) vHostile(c *command) int  { return w.vSetAtt(c, attHostile) }
+func (w *world) vDefend(c *command) int   { return w.vSetAtt(c, attDefend) }
+func (w *world) vNeutral(c *command) int  { return w.vSetAtt(c, attNeutral) }
+func (w *world) vAttClear(c *command) int { return w.vSetAtt(c, attNone) }
+
 func (w *world) defaultGarrison(n int) int8 {
 	if p := w.rpMagic(n); p != nil {
 		return p.defaultGarr

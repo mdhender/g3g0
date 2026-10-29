@@ -143,7 +143,8 @@ functions = {
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait', 'next_np_turn', 'print_hiring_status', 'print_unformed'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
-    'perm.c': ['is_hostile', 'clear_all_att', 'rp_admit', 'will_admit',
+    'perm.c': ['is_hostile', 'is_defend', 'clear_all_att', 'rp_admit', 'p_admit', 'will_admit',
+               'v_admit', 'set_att', 'v_set_att', 'v_hostile', 'v_defend', 'v_neutral', 'v_att_clear',
                'admit_comp', 'print_admit_sup', 'print_admit', 'print_att_sup', 'print_att'],
     'storm.c': ['weather_here', 'can_see_weather_here', 'update_weather_view_loc_sup', 'init_weather_views',
                 'update_weather_view_locs', 'new_storm', 'create_some_storms',
@@ -182,7 +183,7 @@ functions = {
              'gm_player_details', 'list_all_notices', 'list_all_items', 'gm_report'],
     'c2.c': ['v_stop', 'v_format', 'v_notab', 'open_times', 'times_masthead', 'close_times'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
-    'stealth.c': ['v_hide', 'd_hide', 'clear_contacts'],
+    'stealth.c': ['v_hide', 'd_hide', 'clear_contacts', 'add_contact', 'v_contact', 'cloak_lord'],
     'main.c': ['write_totimes', 'write_email', 'list_a_player', 'write_player_list',
                'write_forward_sup', 'write_forwards', 'write_faction_sup', 'write_factions'],
     'add.c': ['fetch_inp', 'get_city_id', 'pick_starting_city', 'add_new_player',
@@ -446,6 +447,7 @@ int drv_admission(char *acct, FILE *fp) { return make_new_players_sup(acct, fp);
 void drv_make_players(void) { make_new_players(); }
 void drv_list_player(int pl) { int flag = 0; list_a_player(stdout, pl, &flag); }
 int drv_load(struct command *c) { return load_command(c); }
+void drv_add_contact(int a, int b) { add_contact(a,b); }
 void drv_summary_provinces(void) { summary_provinces(); }
 void drv_summary_parts(int mode, int total) {
  switch(mode) {
@@ -715,6 +717,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N02 '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N02 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N01 '* ]]; then
    [ "$status" = 0 ] || die "unexpected N01 status $status in section $i"
   fi

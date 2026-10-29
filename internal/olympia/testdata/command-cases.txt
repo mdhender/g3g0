@@ -31590,3 +31590,338 @@ predicate acquire_np 1000 1001
 predicate enough_np 1000 1001
 readlog 200
 export state
+
+section N02 admission invalid target leaves admissions absent and empty target reset
+entity 202 1 49
+field 1000 lord 202
+report admit_flags 202
+queue admit
+load
+do
+dump
+report admit_flags 202
+queue admit 1000
+load
+do
+dump
+report admit_flags 202
+report state 202
+readlog 202
+export state
+
+section N02 admission first match reset repeated append ALL exceptions and unformed
+field 1001 lord 201
+entity 1002 2 0
+field 1002 lord 201
+entity 1003 12 0
+entity 10 4 0
+report admit 200 1000 1 1001
+report member 200 201
+report admit 200 1000 1 1002
+queue admit 1000 bogus 10 1003 1001 1001 201 bogus 1003 1001 201
+load
+do
+dump
+report admit_flags 200
+report state 200
+predicate admit 1000 1001 1000
+predicate admit 1000 1002 1000
+queue admit 1000 ALL nonsense 1002 1003 1002
+load
+do
+dump
+report admit_flags 200
+report state 200
+predicate admit 1000 1001 1000
+predicate admit 1000 1002 1000
+field 1002 lord 200
+predicate admit 1000 1002 1000
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+export state
+
+section N02 admission ALL unit and faction exceptions independent targets
+field 1001 lord 201
+entity 1002 2 0
+field 1002 lord 201
+queue admit 1000 all 1001
+queue admit 1001 201
+load
+do
+dump
+do
+dump
+predicate admit 200 1001 1000
+predicate admit 200 1002 1000
+predicate admit 200 1001 1001
+predicate admit 200 1002 1001
+field 1001 default_garrison 1
+predicate admit 200 1001 1001
+report state 200
+report admit_flags 200
+readlog 200
+
+section N02 attitudes invalid then valid same faction refusal TRUE and duplicate removals
+field 1001 lord 201
+entity 1002 2 0
+field 1002 lord 200
+field 1000 neutral 1001
+field 1000 neutral 201
+field 1000 neutral 1001
+field 1000 neutral 200
+field 1000 hostile 1001
+field 1000 hostile 201
+field 1000 hostile 1001
+field 1000 hostile 200
+field 1000 defend 1001
+field 1000 defend 201
+field 1000 defend 1001
+field 1000 defend 200
+queue hostile bogus 1002 1001
+load
+do
+dump
+report state 1000
+queue defend 1001
+load
+do
+dump
+report state 1000
+queue neutral 1001
+load
+do
+dump
+report state 1000
+queue default 1001
+load
+do
+dump
+report state 1000
+queue default 1002
+load
+do
+dump
+report state 1000
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section N02 independently owned units hostile declaration accepted predicate still same faction
+set indep 200
+queue hostile 1001
+load
+do
+dump
+report state 1000
+predicate hostile 1000 1001
+predicate defend 1000 1001
+readlog 200
+
+section N02 defend target before target faction unit before faction hostile before default
+field 1001 lord 201
+field 200 defend 1001
+field 1000 neutral 201
+predicate defend 1000 1001
+field 1000 defend 1001
+predicate defend 1000 1001
+field 1000 neutral 1001
+predicate defend 1000 1001
+queue default 1001
+load
+do
+predicate defend 1000 1001
+queue default 201
+load
+do
+predicate defend 1000 1001
+field 200 neutral 1001
+predicate defend 1000 1001
+field 1000 default_garrison 1
+predicate defend 1000 1001
+field 1000 hostile 1001
+predicate defend 1000 1001
+report state 1000
+report state 200
+export state
+
+section N02 defend faction target precedence and hostile faction not expanded
+field 1001 lord 201
+field 200 neutral 201
+field 200 defend 1001
+predicate defend 1000 1001
+who 200
+queue default 1001
+load
+do
+predicate defend 1000 1001
+queue defend 201
+load
+do
+predicate defend 1000 1001
+field 1000 hostile 201
+predicate hostile 1000 1001
+predicate defend 1000 1001
+field 200 hostile 1001
+predicate defend 1000 1001
+report state 200
+report state 1000
+
+section N02 defend same faction cloak skill fallback explicit attitudes and independent
+entity 635 5 0
+predicate defend 1000 1001
+learn 1000 635 1 0
+predicate defend 1000 1001
+death forget 1000 635
+learn 1000 635 2 0
+predicate defend 1000 1001
+field 200 defend 1001
+predicate defend 1000 1001
+field 1000 neutral 1001
+predicate defend 1000 1001
+who 1000
+queue default 1001
+load
+do
+who 200
+queue default 1001
+load
+do
+set indep 200
+predicate defend 1001 1000
+field 1001 default_garrison 1
+predicate defend 1001 1000
+export state
+
+section N02 contact direction invalid continuation duplicates player output and visibility
+place 9000
+link 9000 1001
+field 1001 lord 201
+field 1000 hidden 1
+name 1000 Diplomat
+entity 10 4 0
+entity 1003 12 0
+predicate char_here 1001 1000
+queue contact bogus 10 1003 1001 201 1001
+load
+do
+dump
+predicate contacted 1001 1000
+predicate contacted 1000 1001
+predicate char_here 1001 1000
+predicate char_here 1000 1001
+arrival_state
+save 1000
+save 1001
+readlog 200
+readlog 201
+arrival clear 1000 0
+arrival_state
+predicate contacted 1000 1001
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+export state
+
+section N02 real scheduler admission enables foreign STACK and zero time wrappers
+lore_root
+place 9000
+link 9000 1001
+field 1001 lord 201
+coverage path command.tsv
+queue admit 1000 1001
+queue hostile 1001
+queue defend 201
+queue default 1001
+queue neutral 1001
+queue contact 1001
+queue wait time 1
+who 1001
+queue stack 1000
+queue wait time 1
+initial
+start
+dump
+who 1000
+dump
+save 1000
+save 1001
+report state 1000
+report state 200
+report admit_flags 200
+coverage write
+readfile command.tsv
+readlog 200
+readlog 201
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+export state
+
+section N02 actual permission rejections player contact and garrison attitudes
+entity 1002 2 64
+field 1002 lord 200
+who 1002
+queue admit 1002 1000
+queue default 1000
+queue defend 1000
+queue hostile 1000
+queue neutral 1000
+load
+do
+dump
+who 200
+queue contact 1000
+load
+do
+dump
+report state 200
+report state 1002
+readlog 200
+export state
+
+section N02 empty attitudes and contact allocate nothing default target allocates only disposition
+queue hostile
+queue defend
+queue neutral
+queue default
+queue contact
+load
+do
+do
+do
+do
+do
+report state 1000
+arrival_state
+queue default 1001
+load
+do
+dump
+report state 1000
+report state 1001
+readlog 200
+
+section N02 admission absent player lookup allocation and default garrison shortcut
+entity 202 1 49
+field 1000 lord 202
+field 1001 lord 201
+report admit_flags 202
+field 1001 default_garrison 1
+predicate admit 1000 1001 1001
+report admit_flags 202
+field 1001 default_garrison 0
+predicate admit 1000 1001 1001
+report admit_flags 202
+report state 202
+
+section N02 shared contact helper allocates only sender keeps duplicates and has no output
+entity 1002 2 0
+report state 1002
+contact_add 1002 1000
+contact_add 1002 1000
+contact_add 1002 9999
+arrival_state
+predicate contacted 1000 1002
+predicate contacted 1002 1000
+readlog 200
+readlog 201
+export state

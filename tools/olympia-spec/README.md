@@ -4,6 +4,37 @@
 G3 is the reference.
 Expected output comes only from G3's committed files, which its C engine wrote; nothing here re-baselines.
 
+## Attitude command progress (#199, stage 4 N02)
+
+At **0.121.0-alpha**, unchanged pin **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**,
+the full original spec reports **38 pass / 87 fail / 0 error**, **125 fixtures /
+121s**. The tool preserves all **36** accepted names and records only the two
+genuine new passes: **attitude-set** and **attitude-refused**. No upstream
+scenario, script, manifest, expected state or expected byte changes.
+passing.txt SHA-256:
+`ecdcdc06667ba5c2aea3b1d930ef5c01391e384f379cd2f3ca23c4c9a44c9923`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/parent199-spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Parent also runs both original scripts against unchanged real C twice then
+fresh Go, all **YES / status 0**. Strict pre-cleanup raw status/streams and
+whole-cwd comparison matches **239 entries** for attitude-set and **237** for
+attitude-refused, including types, modes, empty directories and bytes.
+The first scenario deliberately uses a safe haven; these fixtures do not
+require the still-pending general combat implementation. See
+[command acceptance evidence](../command-compat/README.md#admission-attitudes-and-contact-199-stage-4-n02).
+
+Logs: `tmp/parent199-spec.log`, `tmp/parent199-spec/{run-all,olympia-g3,golden}.log`,
+`tmp/parent199-attitude-{set,refused}-{c1,c2,go}.log`; retained strict manifests
+under `tmp/parent199-fixtures/`. Matching captures and temporary fresh binary
+are removed. Golden remains **NO**, initialization exits **2** at unsupported
+`-i`; **87 failing fixtures** remain unaccepted. Neither mixed family #185
+nor stage 4 is complete.
+
 ## Final-tier no-loss repeat (#178)
 
 At unchanged **0.115.1-alpha**, immutable

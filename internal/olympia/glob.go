@@ -333,6 +333,18 @@ func init() {
 	}
 	for i := range cmdTbl {
 		switch cmdTbl[i].name {
+		case "admit":
+			cmdTbl[i].start = (*world).vAdmit
+		case "contact":
+			cmdTbl[i].start = (*world).vContact
+		case "default":
+			cmdTbl[i].start = (*world).vAttClear
+		case "defend":
+			cmdTbl[i].start = (*world).vDefend
+		case "hostile":
+			cmdTbl[i].start = (*world).vHostile
+		case "neutral":
+			cmdTbl[i].start = (*world).vNeutral
 		case "use":
 			cmdTbl[i].start = (*world).vUse
 			cmdTbl[i].finish = (*world).dUse

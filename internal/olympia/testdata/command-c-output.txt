@@ -112288,3 +112288,1604 @@ CH
 stderr:
 
 exit 0
+stdout:
+section N02 admission invalid target leaves admissions absent and empty target reset
+> entity 202 1 49
+> field 1000 lord 202
+> report admit_flags 202
+admit player 202 allocated 0
+> queue admit
+> load
+load 1
+> do
+> dump
+cmd 2 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [admit]
+player 202 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report admit_flags 202
+admit player 202 allocated 1
+> queue admit 1000
+> load
+load 1
+> do
+> dump
+cmd 2 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [admit]
+player 202 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report admit_flags 202
+admit player 202 allocated 1
+admit flag 0 1000 1 allocated 0
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+raw admit 1000 0
+members:
+202 player pl_regular
+PL
+
+> readlog 202
+log 202:
+1000:0::0::> admit
+1000:0::0::Must specify an entity for admit.
+1000:0::0::> admit 1000
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+202 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 202
+CO
+ li admit 1000
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N02 admission first match reset repeated append ALL exceptions and unformed
+> field 1001 lord 201
+> entity 1002 2 0
+> field 1002 lord 201
+> entity 1003 12 0
+> entity 10 4 0
+> report admit 200 1000 1 1001
+> report member 200 201
+> report admit 200 1000 1 1002
+> queue admit 1000 bogus 10 1003 1001 1001 201 bogus 1003 1001 201
+> load
+load 1
+> do
+> dump
+cmd 2 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [admit]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report admit_flags 200
+admit player 200 allocated 1
+admit flag 0 1000 1 allocated 1
+admit flag 1 1000 0 allocated 1
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+raw admit 1000 0
+members: 1003 1001 1001 201 1003 1001 201
+raw admit 1000 1
+members: 1002
+200 player pl_regular
+PL
+ am 1000 0 1003 1001 1001 201 1003 1001 201 
+ am 1000 1 1002 
+
+> predicate admit 1000 1001 1000
+predicate 1
+> predicate admit 1000 1002 1000
+predicate 1
+> queue admit 1000 ALL nonsense 1002 1003 1002
+> load
+load 1
+> do
+> dump
+cmd 2 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [admit]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report admit_flags 200
+admit player 200 allocated 1
+admit flag 0 1000 1 allocated 1
+admit flag 1 1000 0 allocated 1
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+raw admit 1000 1
+members: 1003 1001 1001 201 1003 1001 201 1002 1003 1002
+raw admit 1000 1
+members: 1002
+200 player pl_regular
+PL
+ am 1000 1 1003 1001 1001 201 1003 1001 201 \
+	1002 1003 1002 
+ am 1000 1 1002 
+
+> predicate admit 1000 1001 1000
+predicate 0
+> predicate admit 1000 1002 1000
+predicate 0
+> field 1002 lord 200
+> predicate admit 1000 1002 1000
+predicate 1
+> readlog 200
+log 200:
+1000:0::0::> admit 1000 bogus 10 1003 1001 1001 201 bogus 1003 1001 201
+1000:0::0::bogus isn't a valid entity to admit.
+1000:0::0::10 isn't a valid entity to admit.
+1000:0::0::bogus isn't a valid entity to admit.
+1000:0::0::> admit 1000 ALL nonsense 1002 1003 1002
+1000:0::0::nonsense isn't a valid entity to admit.
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ am 1000 1 1003 1001 1001 201 1003 1001 201 \
+	1002 1003 1002 
+ am 1000 1 1002 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li admit 1000 ALL nonsense 1002 1003 1002
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 201
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char 0
+CH
+ lo 200
+
+export entity 1003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1003 unform 0
+
+stderr:
+
+exit 0
+stdout:
+section N02 admission ALL unit and faction exceptions independent targets
+> field 1001 lord 201
+> entity 1002 2 0
+> field 1002 lord 201
+> queue admit 1000 all 1001
+> queue admit 1001 201
+> load
+load 1
+> do
+> dump
+cmd 2 who 1000 state 1 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 201 0 0 0 0 0 0; parse [admit] [1001] [201]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0: 1000
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 2 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [admit]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> predicate admit 200 1001 1000
+predicate 0
+> predicate admit 200 1002 1000
+predicate 1
+> predicate admit 200 1001 1001
+predicate 1
+> predicate admit 200 1002 1001
+predicate 1
+> field 1001 default_garrison 1
+> predicate admit 200 1001 1001
+predicate 1
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+raw admit 1000 1
+members: 1001
+raw admit 1001 0
+members: 201
+200 player pl_regular
+PL
+ am 1000 1 1001 
+ am 1001 0 201 
+
+> report admit_flags 200
+admit player 200 allocated 1
+admit flag 0 1000 1 allocated 1
+admit flag 1 1001 1 allocated 1
+> readlog 200
+log 200:
+1000:0::0::> admit 1000 all 1001
+1000:0::0::> admit 1001 201
+stderr:
+
+exit 0
+stdout:
+section N02 attitudes invalid then valid same faction refusal TRUE and duplicate removals
+> field 1001 lord 201
+> entity 1002 2 0
+> field 1002 lord 200
+> field 1000 neutral 1001
+> field 1000 neutral 201
+> field 1000 neutral 1001
+> field 1000 neutral 200
+> field 1000 hostile 1001
+> field 1000 hostile 201
+> field 1000 hostile 1001
+> field 1000 hostile 200
+> field 1000 defend 1001
+> field 1000 defend 201
+> field 1000 defend 1001
+> field 1000 defend 200
+> queue hostile bogus 1002 1001
+> load
+load 1
+> do
+> dump
+cmd 42 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [hostile]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 200 201 1001
+raw neutral: 201 200
+raw defend: 201 200
+1000 char 0
+an 201 200 
+ad 201 200 
+ah 200 201 1001 
+CH
+ lo 200
+CO
+ li hostile bogus 1002 1001
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> queue defend 1001
+> load
+load 1
+> do
+> dump
+cmd 19 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [defend]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 200 201
+raw neutral: 201 200
+raw defend: 200 201 1001
+1000 char 0
+an 201 200 
+ad 200 201 1001 
+ah 200 201 
+CH
+ lo 200
+CO
+ li defend 1001
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> queue neutral 1001
+> load
+load 1
+> do
+> dump
+cmd 50 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [neutral]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 200 201
+raw neutral: 200 201 1001
+raw defend: 200 201
+1000 char 0
+an 200 201 1001 
+ad 200 201 
+ah 200 201 
+CH
+ lo 200
+CO
+ li neutral 1001
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> queue default 1001
+> load
+load 1
+> do
+> dump
+cmd 18 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [default]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 200 201
+raw neutral: 200 201
+raw defend: 200 201
+1000 char 0
+an 200 201 
+ad 200 201 
+ah 200 201 
+CH
+ lo 200
+CO
+ li default 1001
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> queue default 1002
+> load
+load 1
+> do
+> dump
+cmd 18 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [default]
+player 200 count 5 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 200 201
+raw neutral: 200 201
+raw defend: 200 201
+1000 char 0
+an 200 201 
+ad 200 201 
+ah 200 201 
+CH
+ lo 200
+CO
+ li default 1002
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> readlog 200
+log 200:
+1000:0::0::> hostile bogus 1002 1001
+1000:0::0::bogus is not a valid entity.
+1000:0::0::Can't be hostile to a unit in the same faction.
+1000:0::0::> defend 1001
+1000:0::0::> neutral 1001
+1000:0::0::> default 1001
+1000:0::0::> default 1002
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+stderr:
+
+exit 0
+stdout:
+section N02 independently owned units hostile declaration accepted predicate still same faction
+> set indep 200
+> queue hostile 1001
+> load
+load 1
+> do
+> dump
+cmd 42 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [hostile]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 1001
+raw neutral:
+raw defend:
+1000 char 0
+ah 1001 
+CH
+ lo 200
+CO
+ li hostile 1001
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> predicate hostile 1000 1001
+predicate 0
+> predicate defend 1000 1001
+predicate 0
+> readlog 200
+log 200:
+1000:0::0::> hostile 1001
+stderr:
+
+exit 0
+stdout:
+section N02 defend target before target faction unit before faction hostile before default
+> field 1001 lord 201
+> field 200 defend 1001
+> field 1000 neutral 201
+> predicate defend 1000 1001
+predicate 0
+> field 1000 defend 1001
+> predicate defend 1000 1001
+predicate 1
+> field 1000 neutral 1001
+> predicate defend 1000 1001
+predicate 1
+> queue default 1001
+> load
+load 1
+> do
+> predicate defend 1000 1001
+predicate 0
+> queue default 201
+> load
+load 1
+> do
+> predicate defend 1000 1001
+predicate 1
+> field 200 neutral 1001
+> predicate defend 1000 1001
+predicate 1
+> field 1000 default_garrison 1
+> predicate defend 1000 1001
+predicate 1
+> field 1000 hostile 1001
+> predicate defend 1000 1001
+predicate 0
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 1
+raw hostile: 1001
+raw neutral:
+raw defend:
+1000 char 0
+ah 1001 
+CH
+ lo 200
+CM
+ dg 1
+CO
+ li default 201
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw units:
+raw hostile:
+raw neutral: 1001
+raw defend: 1001
+200 player pl_regular
+an 1001 
+ad 1001 
+PL
+
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+an 1001 
+ad 1001 
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+ah 1001 
+CH
+ lo 200
+CM
+ dg 1
+CO
+ li default 201
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 201
+
+stderr:
+
+exit 0
+stdout:
+section N02 defend faction target precedence and hostile faction not expanded
+> field 1001 lord 201
+> field 200 neutral 201
+> field 200 defend 1001
+> predicate defend 1000 1001
+predicate 1
+> who 200
+> queue default 1001
+> load
+load 1
+> do
+> predicate defend 1000 1001
+predicate 0
+> queue defend 201
+> load
+load 1
+> do
+> predicate defend 1000 1001
+predicate 1
+> field 1000 hostile 201
+> predicate hostile 1000 1001
+predicate 0
+> predicate defend 1000 1001
+predicate 1
+> field 200 hostile 1001
+> predicate defend 1000 1001
+predicate 0
+> report state 200
+report entity 200 order 0 player 1 attitudes 1 char 0 magic 0
+raw units:
+raw hostile: 1001
+raw neutral:
+raw defend: 201
+200 player pl_regular
+ad 201 
+ah 1001 
+PL
+CO
+ li defend 201
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile: 201
+raw neutral:
+raw defend:
+1000 char 0
+ah 201 
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N02 defend same faction cloak skill fallback explicit attitudes and independent
+> entity 635 5 0
+> predicate defend 1000 1001
+predicate 1
+> learn 1000 635 1 0
+> predicate defend 1000 1001
+predicate 1
+> death forget 1000 635
+forget 1
+> learn 1000 635 2 0
+> predicate defend 1000 1001
+predicate 0
+> field 200 defend 1001
+> predicate defend 1000 1001
+predicate 1
+> field 1000 neutral 1001
+> predicate defend 1000 1001
+predicate 0
+> who 1000
+> queue default 1001
+> load
+load 1
+> do
+> who 200
+> queue default 1001
+> load
+load 1
+> do
+> set indep 200
+> predicate defend 1001 1000
+predicate 0
+> field 1001 default_garrison 1
+> predicate defend 1001 1000
+predicate 1
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 200
+200 player pl_regular
+PL
+CO
+ li default 1001
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 635 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+635 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 635 2
+1000 char 0
+CH
+ lo 200
+ sl	635 2 0 0 0
+CO
+ li default 1001
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 1 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+CM
+ dg 1
+
+stderr:
+
+exit 0
+stdout:
+section N02 contact direction invalid continuation duplicates player output and visibility
+> place 9000
+> link 9000 1001
+> field 1001 lord 201
+> field 1000 hidden 1
+> name 1000 Diplomat
+> entity 10 4 0
+> entity 1003 12 0
+> predicate char_here 1001 1000
+predicate 0
+> queue contact bogus 10 1003 1001 201 1001
+> load
+load 1
+> do
+> dump
+cmd 15 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [contact]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 1 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> predicate contacted 1001 1000
+predicate 0
+> predicate contacted 1000 1001
+predicate 1
+> predicate char_here 1001 1000
+predicate 1
+> predicate char_here 1000 1001
+predicate 1
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 1
+contacts: 1001 201 1001
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output: 1001 201
+> save 1000
+1000 char 0
+na Diplomat
+LI
+ wh 9000
+CH
+ lo 200
+ ct 1001 201 1001 
+CM
+ hs 1
+CO
+ li contact bogus 10 1003 1001 201 1001
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::> contact bogus 10 1003 1001 201 1001
+1000:0::0::bogus is not a character or player entity.
+1000:0::0::10 is not a character or player entity.
+1000:0::0::1003 is not a character or player entity.
+> readlog 201
+log 201:
+1001:0::0::Diplomat~[1000] contacted us.
+201:0::0::Diplomat~[1000] contacted us.
+1001:0::0::Diplomat~[1000] contacted us.
+> arrival clear 1000 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output: 1001 201
+> predicate contacted 1000 1001
+predicate 0
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001 201
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+na Diplomat
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hs 1
+CO
+ li contact bogus 10 1003 1001 201 1001
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+export entity 1003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1003 unform 0
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001
+9000 loc plain
+LI
+ hl 1000 1001 
+
+stderr:
+
+exit 0
+stdout:
+section N02 real scheduler admission enables foreign STACK and zero time wrappers
+> lore_root
+> place 9000
+> link 9000 1001
+> field 1001 lord 201
+> coverage path command.tsv
+> queue admit 1000 1001
+> queue hostile 1001
+> queue defend 201
+> queue default 1001
+> queue neutral 1001
+> queue contact 1001
+> queue wait time 1
+> who 1001
+> queue stack 1000
+> queue wait time 1
+> initial
+> start
+> dump
+cmd 94 who 1001 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 201 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000 1001
+> who 1000
+> dump
+cmd 94 who 1000 state 0 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 7 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000 1001
+> save 1000
+1000 char 0
+an 1001 
+ad 201 
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+ ct 1001 
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 201
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile:
+raw neutral: 1001
+raw defend: 201
+1000 char 0
+an 1001 
+ad 201 
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+ ct 1001 
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+raw admit 1000 0
+members: 1001
+200 player pl_regular
+PL
+ am 1000 0 1001 
+
+> report admit_flags 200
+admit player 200 allocated 1
+admit flag 0 1000 1 allocated 1
+> coverage write
+> readfile command.tsv
+file bytes command.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	1	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	1	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	1	0
+defend	0	0	1	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	1	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	1	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	1	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	0	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	2	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::> admit 1000 1001
+1000:0::0::> hostile 1001
+1000:0::0::> defend 201
+1000:0::0::> default 1001
+1000:0::0::> neutral 1001
+1000:0::0::> contact 1001
+1000:0::0::> wait time 1
+1000:0::0::<no subkind>~[1001] stacks beneath us.
+> readlog 201
+log 201:
+1001:0::0::<no subkind>~[1000] contacted us.
+1001:0::0::> stack 1000
+1001:0::0::<no subkind>~[1001] stacks beneath <no subkind>~[1000].
+1001:0::0::> wait time 1
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ am 1000 0 1001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1001
+1000 char 0
+an 1001 
+ad 201 
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+ ct 1001 
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 201
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N02 actual permission rejections player contact and garrison attitudes
+> entity 1002 2 64
+> field 1002 lord 200
+> who 1002
+> queue admit 1002 1000
+> queue default 1000
+> queue defend 1000
+> queue hostile 1000
+> queue neutral 1000
+> load
+load 1
+> do
+> dump
+cmd 18 who 1002 state 1 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1000 0 0 0 0 0 0 0; parse [default] [1000]
+player 200 count 1 last 0 format 0 notab 0 output 0 hidden 0 orders 3
+load_q 0: 1002
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> who 200
+> queue contact 1000
+> load
+load 1
+> do
+> dump
+cmd 15 who 200 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1000 0 0 0 0 0 0 0; parse [contact] [1000]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0: 1002
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report state 200
+report entity 200 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+raw admit 1002 0
+members: 1000
+200 player pl_regular
+PL
+ am 1002 0 1000 
+CO
+ li contact 1000
+ ar 1000 0 0 0 0 0 0 0
+
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 1 magic 0
+1002 char garrison
+CH
+ lo 200
+CO
+ li default 1000
+ ar 1000 0 0 0 0 0 0 0
+ cs 1
+ st 1
+
+> readlog 200
+log 200:
+200:0::0::> contact 1000
+200:0::0::Player~[200] may not issue that order.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 200
+200 player pl_regular
+PL
+ am 1002 0 1000 
+CO
+ li contact 1000
+ ar 1000 0 0 0 0 0 0 0
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1002 char garrison
+CH
+ lo 200
+CO
+ li default 1000
+ ar 1000 0 0 0 0 0 0 0
+ cs 1
+ st 1
+
+stderr:
+
+exit 0
+stdout:
+section N02 empty attitudes and contact allocate nothing default target allocates only disposition
+> queue hostile
+> queue defend
+> queue neutral
+> queue default
+> queue contact
+> load
+load 1
+> do
+> do
+> do
+> do
+> do
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 0 char 1 magic 0
+1000 char 0
+CH
+ lo 200
+CO
+ li contact
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> queue default 1001
+> load
+load 1
+> do
+> dump
+cmd 18 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [default]
+player 200 count 6 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> report state 1000
+report entity 1000 order 0 player 0 attitudes 1 char 1 magic 0
+raw hostile:
+raw neutral:
+raw defend:
+1000 char 0
+CH
+ lo 200
+CO
+ li default 1001
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> report state 1001
+report entity 1001 order 0 player 0 attitudes 0 char 1 magic 0
+1001 char 0
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::> hostile
+1000:0::0::> defend
+1000:0::0::> neutral
+1000:0::0::> default
+1000:0::0::> contact
+1000:0::0::> default 1001
+stderr:
+
+exit 0
+stdout:
+section N02 admission absent player lookup allocation and default garrison shortcut
+> entity 202 1 49
+> field 1000 lord 202
+> field 1001 lord 201
+> report admit_flags 202
+admit player 202 allocated 0
+> field 1001 default_garrison 1
+> predicate admit 1000 1001 1001
+predicate 1
+> report admit_flags 202
+admit player 202 allocated 0
+> field 1001 default_garrison 0
+> predicate admit 1000 1001 1001
+predicate 0
+> report admit_flags 202
+admit player 202 allocated 1
+> report state 202
+report entity 202 order 0 player 1 attitudes 0 char 0 magic 0
+raw units:
+202 player pl_regular
+PL
+
+stderr:
+
+exit 0
+stdout:
+section N02 shared contact helper allocates only sender keeps duplicates and has no output
+> entity 1002 2 0
+> report state 1002
+report entity 1002 order 0 player 0 attitudes 0 char 0 magic 0
+1002 char 0
+
+> contact_add 1002 1000
+> contact_add 1002 1000
+> contact_add 1002 9999
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 1
+contacts: 1000 1000 9999
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output:
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> predicate contacted 1000 1002
+predicate 0
+> predicate contacted 1002 1000
+predicate 1
+> readlog 200
+log 200:
+> readlog 201
+log 201:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1002 char 0
+CH
+ ct 1000 1000 
+
+stderr:
+
+exit 0

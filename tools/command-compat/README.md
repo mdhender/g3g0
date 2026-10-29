@@ -3,6 +3,100 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Admission, attitudes and contact (#199, stage 4 N02)
+
+**0.121.0-alpha** adds complete perm.c `p_admit` **27–47**, `v_admit`
+**92–138**, `set_att` **241–275**, `is_defend` **319–367**, `v_set_att`
+**370–395** and its four wrappers **398–423**, plus stealth.c `add_contact`
+**301–308**, `v_contact` **311–332** and the `cloak_lord` **617–622** leaf.
+The existing perm.go/stealth.go/glob.go owners bind the six actual starts;
+their C NULL completion/interruption slots remain NULL. Existing parser,
+cmdShift, scheduler, admission/hostility/clear helpers, report routing,
+hasSkill and RNG remain authoritative. CONTACT appends directly as C does;
+it does not also call addContact or implement SEEK.
+
+**Source correction:** the task handoff's first-occurrence removal premise
+is not this pin. `lib/ilist.c:235–241` removes **all** matching values,
+backwards. setAtt therefore uses existing RemValue, not a new list variant.
+Only the selected destination sorts; the other lists retain their order.
+The original definitions are extracted unchanged exactly once, with hashes
+in `tmp/issue199-source-proof.log`. No new source dependency, pin or
+affected.sh/table change is needed (perm.c/stealth.c were already tracked).
+
+Fourteen appended status-0 cases distinguish first-match admission rows,
+first-use reset versus repeat append, ALL unit/faction exceptions, unformed
+members, duplicates/order, empty targets and arguments, absent allocations,
+invalid arguments followed by valid updates (including beyond argument 8),
+same-faction hostility refusal with TRUE return and the independent exemption.
+Raw disposition lists establish complete duplicate removal and selective
+sorting. Defence covers hostile-before-default, unit-before-faction,
+target-before-target-faction, learning/known cloak fallback and independence.
+Contact checks direction, duplicate retention, character/player recipient
+output, hidden-unit visibility, shared-helper allocation and actual
+clearContacts. Real queued dispatch composes all six verbs with foreign
+STACK and WAIT, and records actual permission rejections/coverage. Original
+save_box bytes, raw lists/flags/allocations, streams/status, entity and legacy
+RNG aftermath are compared; no model supplies expected bytes.
+
+Real C ran twice before each C-only recording update/Go comparison. Final:
+**1458 sections / 113891 output lines / 2256944 output bytes**; input
+**31927 lines / 608673 bytes**. Additions: **14 sections / 335 input lines /
+6444 input bytes / 1601 output lines / 29798 output bytes**. Entire inherited
+HEAD prefixes **602229 input / 2227146 output bytes** and stage-3 prefixes
+**578307 / 2134398 bytes** are unchanged, including non-UTF8/trailing spaces.
+Proof: `tmp/issue199-prefix-proof.log`; C observations:
+`tmp/issue199-discrimination.log`; C/C/update/Go:
+`tmp/issue199-after-final.log`.
+
+| file | SHA-256 |
+|---|---|
+| command-cases.txt | `86a170ab7e8c771ac83bf89033bb2d87e2f0eb609ef95c26bac983d550a2b508` |
+| command-c-output.txt | `fff1197f03348079b4cf703b8c113d33d5762a9c722aadca7139955a982944db` |
+
+Four temporary linker controls emit a dependency marker from actual v_admit
+and exit **0/134**, in both default/update modes. All reject section **1444**
+with harness status **2** before accepting status or replacing recordings;
+the inherited recording hash stays unchanged. Bounded direct executions
+confirm both injected statuses. Logs: `tmp/issue199-negative-STATUS-MODE.log`
+and `tmp/issue199-negative-statuses.log`. Probes/build helpers are removed.
+
+Bounded vet and fresh full-enabled tests pass (**11 packages**, **10 explicit
+opt-in/child-entry skips**); standalone whole-game skips are not corpus
+acceptance. Logs: `tmp/issue199-{vet,tests}-clean.log`. Eight sequential bounded
+defaults pass using the N01 reproduction command below, with explicit isolated
+G3_REPO: command **1458/113891**, move **135/7158**, helper **37/1487**, RNG
+**321**, code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase
+**5/484**, calendar **2/119**, schedule **4/1801**, default turn raw streams/
+status and **2 cwd entries**. Logs: `tmp/issue199-TOOL-final.log`.
+An interim fresh suite, started before
+the final C-only refresh added the cwd-localizing lore_root line, correctly
+rejected the one-line stale recording; final fresh checks use the refreshed
+real-C bytes (`tmp/issue199-tests-before-final-record.log`).
+
+Parent independently reviewed the complete pinned definitions, shared list
+semantics and full source/adapter/case diff, confirmed both inherited byte
+prefixes, and reran bounded vet, fresh full-enabled tests and all eight
+sequential defaults (`tmp/parent199-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn}.log`).
+
+**Original attitude fixture gate passed:** parent rejected the initial
+assumption that these fixtures required N28/combat. attitude-set explicitly
+places the nobles in a safe haven to prevent fighting; attitude-refused only
+exercises failed/rejected orders. Both unchanged original check.sh scripts
+ran against unchanged real C twice, then the fresh Go engine, all **YES /
+status 0**. Complete pre-cleanup raw streams/status and all cwd entries,
+types, modes, empty directories and bytes match: **239** entries for
+attitude-set, **237** for attitude-refused. The existing bounded native
+capture launcher, strict turn comparator and tree-modes.py were used, with
+the verified C executable SHA-256
+`565ca7fb46a07d733aaff3c46bde5d2b7d124d8c44a98d3842d82ff886d55ab0`.
+Logs: `tmp/parent199-attitude-{set,refused}-{c1,c2,go}.log`; retained manifests:
+`tmp/parent199-fixtures/attitude-{set,refused}/manifest.txt`.
+Matching captures and the temporary fresh Go binary are removed afterwards.
+Actual hostile auto-attacks outside safe havens still require N28/combat;
+no original script, expected byte, NYI or battle behavior is altered.
+This accepts N02 and its two original fixtures, not the remaining mixed
+attitude/inventory/loyalty family tasks or stage exit.
+
 ## Validation, acquisition and wounds prerequisite (#198, stage 4 N01)
 
 **0.120.0-alpha** adds the complete pinned u.c `check_char_here` **924–930**,

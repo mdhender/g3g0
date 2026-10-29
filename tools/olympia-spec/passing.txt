@@ -4,6 +4,8 @@
 # A name is a tests/olympia/regress fixture; "golden" is golden_check.sh
 # after run/olympia-g3.sh.
 assert-flush
+attitude-refused
+attitude-set
 cli-options
 coast-rocks
 load-bad-master

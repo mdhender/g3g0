@@ -3,6 +3,28 @@
 
 package olympia
 
+// addContact is the shared seek helper. CONTACT deliberately appends itself,
+// as in C; it must not also call a helper that adds a second side effect.
+func (w *world) addContact(a, b int) {
+	assert(w.kind(a) == tChar, "olympia/stealth.c", 305, "kind(a) == T_char")
+	w.pChar(a).contact.Append(b)
+}
+
+func (w *world) vContact(c *command) int {
+	for c.parse.Len() > 1 {
+		if k := w.kind(int(c.a)); k != tChar && k != tPlayer {
+			w.commandOut(int(c.who), "%s is not a character or player entity.", c.parse[1])
+		} else {
+			w.pChar(int(c.who)).contact.Append(int(c.a))
+			w.commandOut(int(c.a), "%s contacted us.", w.boxName(int(c.who)))
+		}
+		w.cmdShift(c)
+	}
+	return 1
+}
+
+func (w *world) cloakLord(n int) int { return w.hasSkill(n, skHideLord) }
+
 // vHide and dHide are the complete hide handlers from stealth.c. They
 // provide real failure, timed completion and zero-time inhibited completion
 // paths for dispatch without implementing any part of wait or scheduling.

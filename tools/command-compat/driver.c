@@ -22,6 +22,7 @@ int drv_gm_pct(int n, int d);
 extern int gold_common_magic, gold_lead_to_gold, gold_times, gold_petty_thief, gold_pillage, gold_ferry;
 void drv_lore_sheet(int who, int num, int display_num);
 int drv_load(struct command *c);
+void drv_add_contact(int a, int b);
 int find_command(char *s);
 void drv_state(struct command *c, int s);
 struct order_list *drv_orders(int pl, int who);
@@ -1487,6 +1488,12 @@ int main(int argc, char **argv)
     sscanf(line,"%*s %*s %d %d",&n,&a);
     ilist_append(&p_player(n)->admits[admits_len(p_player(n)->admits)-1]->l,a);
    }
+   else if(!strcmp(text,"admit_flags")) {
+    struct entity_player *p=rp_player(n);
+    printf("admit player %d allocated %d\n",n,p!=NULL);
+    if(p) for(i=0;i<admits_len(p->admits);i++)
+     printf("admit flag %d %d %d allocated %d\n",i,p->admits[i]->targ,p->admits[i]->flag,p->admits[i]->l!=NULL);
+   }
    else if(!strcmp(text,"state")) {
     struct entity_player *p=rp_player(n);
     struct att_ent *att=rp_disp(n);
@@ -1914,11 +1921,17 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"known")) set_bit(&p_player(n)->known,a);
    else return 2;
   }
+  else if (!strcmp(op, "contact_add")) {
+   sscanf(line,"%*s %d %d",&n,&a);
+   drv_add_contact(n,a);
+  }
   else if (!strcmp(op, "predicate"))
   {
    n = a = b = 0;
    sscanf(line,"%*s %31s %d %d %d",text,&n,&a,&b);
    if (!strcmp(text,"hostile")) result = is_hostile(n,a);
+   else if (!strcmp(text,"defend")) result = is_defend(n,a);
+   else if (!strcmp(text,"admit")) result = will_admit(n,a,b);
    else if (!strcmp(text,"contacted")) result = contacted(n,a);
    else if (!strcmp(text,"char_where")) result = char_where(n,a,b);
    else if (!strcmp(text,"char_here")) result = char_here(n,a);
