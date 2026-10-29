@@ -188,7 +188,8 @@ functions = {
              'gm_player_details', 'list_all_notices', 'list_all_items', 'gm_report'],
     'c2.c': ['v_stop', 'v_format', 'v_notab', 'open_times', 'times_masthead', 'close_times',
              'v_discard', 'v_claim', 'v_public', 'text_list_free', 'line_length_check',
-             'parse_text_list', 'v_post', 'v_message', 'v_rumor', 'v_press'],
+             'parse_text_list', 'v_post', 'v_message', 'v_rumor', 'v_press',
+             'drop_player', 'v_quit', 'v_die'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts', 'add_contact', 'v_contact', 'cloak_lord'],
     'main.c': ['write_totimes', 'write_email', 'list_a_player', 'write_player_list',
@@ -759,6 +760,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N10 '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N10 invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N10 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N09 '* ]]; then
    [ "$status" = 0 ] || die "unexpected N09 status $status in section $i"
   fi

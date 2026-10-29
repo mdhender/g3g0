@@ -1150,11 +1150,20 @@ int main(int argc, char **argv)
    sscanf(line,"%*s %31s %d %d",text,&n,&a);
    if(!strcmp(text,"kill")) kill_char(n,a);
    else if(!strcmp(text,"reclaim")) char_reclaim(n);
+   else if(!strcmp(text,"drop")) drop_player(n);
    else if(!strcmp(text,"subkind")) change_box_subkind(n,a);
    else if(!strcmp(text,"survive")) printf("survive %d\n",survive_fatal(n));
    else if(!strcmp(text,"forget")) printf("forget %d\n",forget_skill(n,a));
    else if(!strcmp(text,"location")) printf("location [%s]\n",char_rep_location(n));
    else if(!strcmp(text,"hades")) printf("hades location %d\n",random_hades_loc(n));
+   else if(!strcmp(text,"retained")) {
+    struct command *q=rp_command(n);
+    struct entity_player *p=rp_player(n);
+    printf("retained %d kind %d player %d count %d command %d\n",n,kind(n),p!=NULL,p ? p->cmd_count : 0,q!=NULL);
+    if(q) printf("retained command %d %d %d %d %d callbacks %d %d %d\n",
+     q->who,q->cmd,q->state,q->status,q->wait,cmd_tbl[q->cmd].start!=NULL,
+     cmd_tbl[q->cmd].finish!=NULL,cmd_tbl[q->cmd].interrupt!=NULL);
+   }
    else if(!strcmp(text,"state")) {
     int kinds[]={T_char,T_item,T_deadchar};
     for(i=0;i<3;i++) {

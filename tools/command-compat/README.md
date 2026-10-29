@@ -3,6 +3,186 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## DIE and QUIT (#208, stage 4 N10)
+
+**0.130.0-alpha** ports the complete pinned c2.c definitions, including their
+actual return-type lines: `void drop_player` **46–117**, `int v_quit`
+**120–147**, and `int v_die` **618–624**. The extractor compiles all three
+original definitions unchanged, exactly once (**1775 bytes**). Source proof
+and pristine fixture bytes/modes are in `tmp/issue208-source-proof.log`:
+
+| complete range | SHA-256 |
+|---|---|
+| drop_player, 46–117 | `0e232df95fc3f852339bd40faaa59bdd38d059536edf9d237eae49bfd1d9cea2` |
+| v_quit, 120–147 | `2db563c1f49aa88fd7d0b75edb3069c48b9053412801a919bfb56b1e9ad7a7d2` |
+| v_die, 618–624 | `1a27ffdea466d8c5b37ea7531e13b7604df254ffcde44e662e099834e073011c` |
+
+Only the two real starts are bound; both genuine NULL finish/interrupt pairs,
+permissions, timing and priority stay unchanged. The existing killChar,
+charReclaim, unitDeserts, deleteBox and logWrite own death, interruption,
+inheritance, NP, original-list/snapshot traversal, cached FILEs, deletion and
+RNG effects. Bodies retain their actual unique owners and only matching
+old_lord values change to independent. Neither the disabled body-destruction
+alternative nor the disabled external account CLI is implemented. No new
+source dependency, pin change, ownership/cache/RNG layer or later-stage work.
+
+**15 appended sections (13 status 0 / 2 status 134)** distinguish:
+
+- QUIT permission compares target with **the issuing entity**, not its player:
+  a noble cannot drop even its own faction through a direct start. Foreign
+  player refusal precedes target-kind checks; self-player and GM deletion work.
+  GM nonplayer/absent targets report the original failure. Player-issued DIE
+  is rejected by the real dispatcher, not by a replacement command handler.
+- Actual process_player_orders deletes the issuing faction, returns FALSE,
+  retains its allocated command/player records and unconsumed next order,
+  and never calls finish_command on the deleted entity. GM foreign deletion
+  leaves the caller alive. Raw observers establish count **1**, status **0**,
+  retained command identity and **1/0/0** callbacks, not just omitted save bytes.
+- Missing player records remain missing; NULL and empty identity fields log
+  empty strings. Mixed free nobles really reclaim, including a lower stacked
+  noble and survival/transcendence skills that reclamation must bypass.
+  Captives instead desert to independent with loyalty retained and queues
+  flushed; a foreign captor retains captivity, an independent captor clears it.
+- Four real unique bodies cover carried versus ground holders, matching and
+  foreign old_lord, and absent misc. They survive dropping unchanged except
+  for matching old_lord. Original subsequent age-13 rot and NP accounting,
+  complete save_box bytes, lists and raw record observers are compared.
+- Real DIE dispatch uses MATES inheritance, retains corpse identity/name,
+  clears future orders and counts one start while returning TRUE. Fatal
+  survival also returns TRUE, forgets the skill, retains inventory/stack and
+  loads the following WAIT. Prisoners are skipped by the real scheduler;
+  a direct DIE callback still uses the complete shared death owner.
+- Real command writer/reader reload, DIE's generic NULL interruption, and
+  both NULL completion paths do not execute their starts. Deleting a player
+  does not close its buffered output FILE: it stays empty until the original
+  close_logfile owner flushes it. Entity/keyed, legacy and shared mint RNG
+  aftermath, retained queues, NP and command accounting are observed.
+- Original assertions require status 134 at c2.c **57** for a nonplayer drop
+  and **80** for an unowned body, **before** misc/old-lord filtering.
+
+Unchanged original C fixtures ran twice before implementation; the inherited
+command default also ran real C twice and matched unchanged Go
+(`tmp/issue208-baseline-command.log`). All final new cases and observer changes
+ran real C twice before C-only recording updates. Early construction probes
+had incorrect kind constants, missing peasant/location setup and adapter
+spellings; these were corrected, never accepted as extra failure cases.
+The final recording exposed a real new-port NULL-name error (`clib.Str(nil)`
+prints `(null)`, while this C owner substitutes empty): c2.go now follows the
+original explicit pointer checks. The failing update log is retained at
+`tmp/issue208-update-final.log`; bounded `tmp/issue208-command-after-fix.log`
+passes after the correction. Expected bytes came only from unchanged C.
+
+Final oracle: **1661 sections / 135463 output lines / 2663089 output bytes**;
+input **36477 lines / 687534 bytes**. Additions are **348 input lines / 6042
+input bytes / 1577 output lines / 27359 output bytes**. Entire HEAD prefixes
+**681492 / 2635730** and stage-3 prefixes **578307 / 2134398** are exact,
+including all **33** inherited high-bit output bytes. The **25** new
+trailing-space lines are literal original C output; source-only whitespace
+checks pass, while the full recording diff correctly reports these spaces.
+Proof: `tmp/issue208-prefix-proof.log`.
+
+| file or prefix | SHA-256 |
+|---|---|
+| command-cases.txt | `72832bf6c377bb33a1a7d470eebabc0bccaf8d6660252d8a5d7f67e74db7a6e0` |
+| command-c-output.txt | `160ff72c2016126a7487f1efcde72834560a6e6f077328c9cdf279c9b6e11cd8` |
+| HEAD 681492-byte input | `7677f9a3e75821b0a59d5ddc3a13b2d863d419c6d6a29f4cee7134d4032f99f3` |
+| HEAD 2635730-byte output | `b6bf9af788cef08bb4c44eecf853f859a183dd5bd39cf75135d0145fa3b305c8` |
+| stage-3 578307-byte input | `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` |
+| stage-3 2134398-byte output | `c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac` |
+
+Four temporary real linker probes wrap v_die and emit the rejected dependency
+marker with actual **0/134 × default/update**. Every run rejects **section
+1654**, harness **2**, before expected-status checks or recording replacement;
+bounded direct runs confirm each actual status. The recording hash above is
+unchanged in all four runs. Evidence: `tmp/issue208-negative-proof.log`,
+`tmp/issue208-negative-STATUS-MODE.log` and
+`tmp/issue208-probe-STATUS-MODE.{stdout,stderr}`. Probes are removed before
+the final ordinary command comparison, not left in the reference engine.
+
+Original unmodified scripts pass C/C/fresh Go with trusted bounded
+`tmp/stage4-capture` (SHA-256
+`816ad641b17c44bb2776d41dd7f2dc7c5f70cc5a3b05020658e4b036870f88b4`)
+and canonical unchanged `tmp/stage4-source/build/issue201/olympia-g3`
+(`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`).
+The existing strict comparator plus tree-modes.py compare raw status/streams
+and **ALL** cwd paths/types/modes/empty directories/bytes, without exclusions:
+
+| original fixture | C/C/Go engine status; script result/status | cwd entries |
+|---|---|---|
+| player-die | 0; YES / 0 | 237 |
+| player-quit | 0; YES / 0 | 238 |
+| player-refused | 0; YES / 0 | 237 |
+| player-settings | 0; YES / 0 | 237 |
+| player-press | 0; YES / 0 | 239 |
+| order-unrecognized | 0; YES / 0 | 243 |
+| release-swear-np, separate expected abort | **134**; YES / 0 | 229 |
+
+The separate abort remains exact `olympia/swear.c (180): FALSE`, never a
+successful turn or +turn snapshot. Original source/fixture modes are preserved;
+scripts unpack fresh physical disposable inputs, never protected cache worlds.
+Manifests: `tmp/issue208-fixtures/FIXTURE/manifest.txt`. Proofs and script logs:
+`tmp/issue208-fixtures{,-final}-proof.log`,
+`tmp/issue208-FIXTURE-{c1,c2,go}.log`. Use N09's unchanged replay recipe below
+with `_issue208`, `issue208-fixtures` and the seven fixture names above;
+S4_ENGINE/S4_CAPTURE and OLYMPIA_ENGINE_BIN have the same meanings.
+
+Validation commands (isolated source is explicit for every tool; independent
+tool pins are unchanged, and every engine/test uses shared run_limited):
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" tools/command-compat/run.sh --update
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    "tools/$tool-compat/run.sh" # sequential; inspect every status
+done
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue208-spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" tools/olympia-spec/run.sh
+```
+
+Bounded vet and fresh full-enabled tests pass (**11 test packages / 10 explicit
+opt-in/child-entry skips**, Olympia **2.420s**). Eight sequential defaults
+pass: command **1661/135463** and live native traversal, move **135/7158**,
+helper **37/1487**, RNG **321**, code **43/969**, loadsave **61/3411**,
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**,
+default turn **2 cwd entries**. Full command status totals are **1396 × 0,
+253 × 134, 1 × 139, 11 × 1**; all inherited cases/statuses are unchanged.
+Logs: `tmp/issue208-{vet-final,tests,default-status}.log` and
+`tmp/issue208-TOOL-default.log`. Full-enabled tests without supplied game lists
+do not execute the four whole-corpus gates.
+
+Full spec is **52 pass / 73 fail / 0 error**, retaining **every 50** inherited
+name (and hence the accepted stage-3 **36**). The existing tool alone adds
+`player-die` and `player-quit` to passing.txt; no manual edits. New passing-list
+SHA-256: `ec634654a37f00992f105c26b382bd99b3f2bb3181dfd541dcae8d7f80eb3479`.
+Golden remains **NO**, initialization **2** at unsupported `-i`, not whole-spec
+parity. Evidence: `tmp/issue208-spec.log`, `tmp/issue208-spec-proof.log` and
+the original run-all/golden logs under `tmp/issue208-spec/`.
+
+The supplied fresh parent ALL-open audit has **92 entries**, only stage
+tasks/trackers and root #19, no bug/follow-C (`tmp/issue208-open-audit.log`).
+No blocker or oversized prerequisite was found. Matching fixture captures,
+temporary helpers, task binaries and dependency probes are removed; decisive
+logs/manifests remain. This is N10 evidence only: no player-family/stage exit,
+full-corpus, non-Linux/sanitizer or later-stage CLI claim.
+
+Independent parent acceptance reviewed the complete original definitions,
+shared death/desertion/deletion/scheduler owners and engine/adapter/case diffs,
+and verified both HEAD and stage-3 recording prefixes. Bounded vet, fresh
+full-enabled tests and all eight sequential defaults pass again
+(`tmp/parent208-{vet,tests,TOOL}.log`). The independent full spec confirms
+**52 pass / 73 fail / 0 error**, with no change to the generated passing list;
+golden remains **NO**, initialization **2** (`tmp/parent208-spec.log`). All seven
+original fixtures above independently match C/C/fresh Go on raw status/streams
+and complete cwd types/modes/empty directories/bytes, including the exact
+separate **134** abort. Manifests and script logs remain under
+`tmp/parent208-fixtures/` and `tmp/parent208-FIXTURE-ENGINE.log`; matching
+captures and the scratch binary were removed. This accepts N10 only.
+
 ## Text orders and press (#207, stage 4 N09)
 
 **0.129.0-alpha** ports complete pinned c2.c definitions, including actual

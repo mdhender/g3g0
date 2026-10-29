@@ -35,7 +35,9 @@ phase-month-close
 phase-month-decay
 phase-month-gold
 phase-month-open
+player-die
 player-press
+player-quit
 player-refused
 player-settings
 release-swear-np

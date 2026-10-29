@@ -1494,6 +1494,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.killChar(args.num(t), args.num(t))
 			case "reclaim":
 				w.charReclaim(args.num(t))
+			case "drop":
+				w.dropPlayer(args.num(t))
 			case "subkind":
 				w.changeBoxSubkind(args.num(t), args.num(t))
 			case "survive":
@@ -1504,6 +1506,18 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				fmt.Fprintf(&stdout, "location [%s]\n", w.charRepLocation(args.num(t)))
 			case "hades":
 				fmt.Fprintf(&stdout, "hades location %d\n", w.randomHadesLoc(args.num(t)))
+			case "retained":
+				n := args.num(t)
+				q, p := w.rpCommand(n), w.rpPlayer(n)
+				count := int16(0)
+				if p != nil {
+					count = p.cmdCount
+				}
+				fmt.Fprintf(&stdout, "retained %d kind %d player %d count %d command %d\n", n, w.kind(n), b2i(p != nil), count, b2i(q != nil))
+				if q != nil {
+					e := cmdTbl[q.cmd]
+					fmt.Fprintf(&stdout, "retained command %d %d %d %d %d callbacks %d %d %d\n", q.who, q.cmd, q.state, q.status, q.wait, b2i(e.start != nil), b2i(e.finish != nil), b2i(e.interrupt != nil))
+				}
 			case "state":
 				for _, kind := range []int{tChar, tItem, tDeadchar} {
 					fmt.Fprintf(&stdout, "kind chain %d:", kind)

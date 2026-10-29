@@ -11,6 +11,66 @@ import (
 	"github.com/mdhender/g3g0/internal/clib"
 )
 
+// Complete c2.c:46–117. The unit snapshot permits reclamation/desertion to
+// mutate the faction list. Bodies are retained, with their old lord changed;
+// the alternative destruction and external account command are disabled in C.
+func (w *world) dropPlayer(pl int) {
+	assert(w.kind(pl) == tPlayer, "olympia/c2.c", 57, "kind(pl) == T_player")
+	for who := range w.loopUnits(pl) {
+		if w.isPrisoner(who) {
+			w.unitDeserts(who, int(w.indepPlayer), true, loyUnchanged, 0)
+		} else {
+			w.commandOut(w.subloc(who), "%s melts into the ground and vanishes.", w.boxName(who))
+			w.charReclaim(who)
+		}
+	}
+	for i := range w.loopSubkind(subDeadBody) {
+		owner := w.itemUnique(i)
+		assert(owner != 0, "olympia/c2.c", 80, "owner")
+		if p := w.rpMisc(i); p == nil || int(p.oldLord) != pl {
+			continue
+		}
+		w.pMisc(i).oldLord = w.indepPlayer
+	}
+	name, email := "", ""
+	if p := w.rpPlayer(pl); p != nil {
+		if p.fullName != nil {
+			name = *p.fullName
+		}
+		if p.email != nil {
+			email = *p.email
+		}
+	}
+	w.logWrite(14, "Dropped player %s", w.boxName(pl))
+	w.logWrite(14, "    %s <%s>", name, email)
+	w.deleteBox(pl)
+}
+
+// Complete c2.c:120–147. Permission compares the target with the issuing
+// entity, not its faction. FALSE prevents finish_command after deletion.
+func (w *world) vQuit(c *command) int {
+	target, who := int(c.a), int(c.who)
+	if target == 0 {
+		target = w.player(who)
+	}
+	if target != who && who != int(w.gmPlayer) {
+		w.commandOut(who, "Not allowed to drop another player.")
+		return 0
+	}
+	if w.kind(target) != tPlayer {
+		w.commandOut(who, "%s is not a player.", w.boxName(target))
+		return 0
+	}
+	w.dropPlayer(target)
+	return 0
+}
+
+// Complete c2.c:618–624. Surviving fatal damage still returns TRUE.
+func (w *world) vDie(c *command) int {
+	w.killChar(int(c.who), mates)
+	return 1
+}
+
 // Complete c2.c:160–170. C measures bytes, not display columns or runes.
 func lineLengthCheck(lines []string) int {
 	n := 0

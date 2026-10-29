@@ -355,6 +355,10 @@ func init() {
 			cmdTbl[i].start = (*world).vClaim
 		case "reclaim":
 			cmdTbl[i].start = (*world).vReclaim
+		case "die":
+			cmdTbl[i].start = (*world).vDie
+		case "quit":
+			cmdTbl[i].start = (*world).vQuit
 		case "admit":
 			cmdTbl[i].start = (*world).vAdmit
 		case "form":
