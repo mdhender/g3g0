@@ -103696,3 +103696,1921 @@ land pick 1
 stderr:
 
 exit 0
+stdout:
+section hinder meditation clamp before aura failure preserves projection and saved destination
+> place 9000
+> entity 9100 3 3
+> field 1000 project_cast 9100
+> usemeta callback_start 814 1001 -2147483648 777
+use callback 0
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 1 0 777 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ pc 9100
+
+> usemeta callback_start 814 1001 2147483647 888
+use callback 0
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 3 0 888 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ pc 9100
+
+> usemeta state 1001 814
+use records 1001 1 0 0 0
+1001 char 0
+CH
+ lo 200
+
+> log
+log:
+1000:0::0::One aura required, current level is zero.
+1000:0::0::Three aura required, current level is zero.
+stderr:
+
+exit 0
+stdout:
+section hinder meditation aura exact clamp then reset before invalid target
+> place 9000
+> entity 9100 3 3
+> field 1000 project_cast 9100
+> field 1000 cur_aura 3
+> usemeta callback_start 814 9999 4 777
+use callback 0
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9999 3 0 9100 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ ca 3
+
+> usemeta callback_start 814 9000 0 777
+use callback 0
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9000 1 0 9000 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> usemeta callback_start 814 0 2 777
+use callback 0
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 0 9000 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> log
+log:
+1000:0::0::[9999] is not a character.
+1000:0::0::[9000] is not a character.
+1000:0::0::[0] is not a character.
+stderr:
+
+exit 0
+stdout:
+section hinder meditation missing garrison and missing target allocation
+> place 9000
+> field 1000 cur_aura 1
+> parse use 814 garrison 1
+parse 1
+> usemeta callback_start 814 999 1 0
+use callback 0
+> dump
+cmd 93 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 999 1 1 9000 0 0 0 0; parse [use] [814] [garrison] [1]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> usemeta state 1001 814
+use records 1001 1 0 0 0
+1001 char 0
+CH
+ lo 200
+
+> log
+log:
+1000:0::0::There is no garrison here.
+stderr:
+
+exit 0
+stdout:
+section hinder meditation invalid projection retained local success and narrow cap boundaries
+> master 17
+> place 9000
+> link 9000 1001
+> field 1000 cur_aura 20
+> field 1000 project_cast 1001
+> usemeta callback_start 814 1001 1 777
+use callback 1
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 1 0 9000 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> usemeta callback_finish 814 1001 1 9000
+use callback 1
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hm 1
+
+> field 1001 hinder 4
+> usemeta callback_finish 814 1001 1 9000
+use callback 1
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hm 5
+
+> field 1001 hinder 5
+> usemeta callback_finish 814 1001 1 9000
+use callback 1
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hm 5
+
+> field 1001 hinder 127
+> usemeta callback_finish 814 1001 1 9000
+use callback 1
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hm -128
+
+> field 1001 hinder -128
+> usemeta callback_finish 814 1001 3 9000
+use callback 1
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hm -125
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ ca 13
+ pc 1001
+
+> log
+log:
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+> who 1001
+> log
+log:
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+> usemeta rolls 1001 1000
+magic rolls 3 89 79
+> usemeta legacy 1 100000
+use legacy 62497
+> entity_rolls 1000 7 5000
+prison roll 701
+land dir99 2
+land dir98 1
+land pick 1
+stderr:
+
+exit 0
+stdout:
+section hinder meditation projected ship saved destination survives caster move and later projection
+> master 0
+> entity 800 5 43
+> entity 814 5 0
+> field 814 required 800
+> learn 1000 800 2 0
+> place 9000
+> entity 9100 9 18
+> entity 9200 3 3
+> link 9000 9100
+> link 9100 1001
+> field 1000 cur_aura 6
+> field 1000 project_cast 9100
+> learn 1000 814 2 0
+> parse use 814 1001 3
+parse 1
+> ucov start
+use start 1
+> dump
+cmd 93 who 1000 state 0 status 0 wait 10 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 3 0 9100 0 0 0 814; parse [use] [1001] [3]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> link 9200 1000
+> field 1000 project_cast 9200
+> set wait 0
+> ucov finish
+use finish 1
+> dump
+cmd 93 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 3 0 9100 0 0 0 814; parse [use] [1001] [3]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	800 2 0 0 0 \
+	814 2 0 1 0
+CM
+ ca 3
+ pc 9200
+CO
+ li use 814 1001 3
+ ar 1001 3 0 9100 0 0 0 814
+ us 814
+ ue 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CM
+ hm 3
+
+> log
+log:
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::Successfully cast <no subkind>~[814] on <no subkind>~[1001].
+1001:0::0::A disturbing image of <no subkind>~[1000] appeared last night in a dream.
+> who 1001
+> log
+log:
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::Successfully cast <no subkind>~[814] on <no subkind>~[1001].
+1001:0::0::A disturbing image of <no subkind>~[1000] appeared last night in a dream.
+> usemeta rolls 1001 1000
+magic rolls 1 45 11
+stderr:
+
+exit 0
+stdout:
+section hinder meditation charge before moved target revalidation and preserve absent magic
+> entity 800 5 43
+> entity 814 5 0
+> field 814 required 800
+> learn 1000 800 2 0
+> place 9000
+> entity 9100 3 3
+> link 9000 1001
+> field 1000 cur_aura 3
+> learn 1000 814 2 0
+> parse use 814 1001 2
+parse 1
+> ucov start
+use start 1
+> dump
+cmd 93 who 1000 state 0 status 0 wait 10 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 2 0 9000 0 0 0 814; parse [use] [1001] [2]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> link 9100 1001
+> set wait 0
+> ucov finish
+use finish 0
+> usemeta state 1001 814
+use records 1001 1 0 0 0
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	800 2 0 0 0 \
+	814 2 0 0 0
+CM
+ ca 1
+CO
+ li use 814 1001 2
+ ar 1001 2 0 9000 0 0 0 814
+ us 814
+ ue 1
+
+> log
+log:
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::[1001] cannot be seen here.
+stderr:
+
+exit 0
+stdout:
+section hinder meditation insufficient completion aura precedes invalid target and leaves projection
+> entity 800 5 43
+> entity 814 5 0
+> field 814 required 800
+> learn 1000 800 2 0
+> place 9000
+> link 9000 1001
+> field 1000 cur_aura 3
+> learn 1000 814 2 0
+> parse use 814 1001 3
+parse 1
+> ucov start
+use start 1
+> field 1000 cur_aura 2
+> who 1001
+> set kind 4
+> who 1000
+> field 1000 project_cast 9000
+> set wait 0
+> ucov finish
+use finish 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	800 2 0 0 0 \
+	814 2 0 0 0
+CM
+ ca 2
+ pc 9000
+CO
+ li use 814 1001 3
+ ar 1001 3 0 9000 0 0 0 814
+ us 814
+ ue 1
+
+> usemeta state 1001 814
+use records 1001 1 0 0 0
+1001 item 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> log
+log:
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::Three aura required, current level is two.
+stderr:
+
+exit 0
+stdout:
+section hinder meditation completion kind and garrison errors still charge
+> place 9000
+> field 1000 cur_aura 3
+> usemeta callback_finish 814 9999 1 9000
+use callback 0
+> usemeta callback_finish 814 9000 1 9000
+use callback 0
+> usemeta callback_finish 814 999 1 9000
+use callback 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> log
+log:
+1000:0::0::[9999] is not a character.
+1000:0::0::[9000] is not a character.
+1000:0::0::There is no garrison here.
+stderr:
+
+exit 0
+stdout:
+section hinder meditation foreign hidden visibility failure consumes projection not aura
+> place 9000
+> entity 9100 3 3
+> link 9100 1001
+> field 1001 lord 201
+> field 1001 hidden 1
+> field 1000 cur_aura 3
+> field 1000 project_cast 9100
+> usemeta callback_start 814 1001 2 0
+use callback 0
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 2 0 9100 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ ca 3
+
+> field 1001 contact 1000
+> field 1000 project_cast 9100
+> usemeta callback_start 814 1001 2 0
+use callback 1
+> dump
+cmd 0 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 2 0 9100 0 0 0 0; parse
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> field 1001 moving 1
+> usemeta callback_finish 814 1001 2 9100
+use callback 1
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ ca 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 201
+ mo 1
+ ct 1000 
+CM
+ hm 2
+ hs 1
+
+> log
+log:
+1000:0::0::[1001] cannot be seen here.
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+> who 1001
+> log
+log:
+> usemeta rolls 1001 1000
+magic rolls 4 13 9
+stderr:
+
+exit 0
+stdout:
+section hinder meditation fog contacts and completion hidden revalidation
+> master 1
+> place 9000
+> link 9000 1001
+> field 1001 lord 201
+> weather new 0 57 5 9000
+new storm 0
+> field 1000 cur_aura 4
+> usemeta callback_start 814 1001 2 0
+use callback 0
+> field 1001 contact 200
+> usemeta callback_start 814 1001 2 0
+use callback 1
+> field 1001 hidden 1
+> usemeta callback_finish 814 1001 2 9000
+use callback 1
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ ca 2
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ ct 200 
+CM
+ hm 2
+ hs 1
+
+> log
+log:
+1000:0::0::[1001] cannot be seen here.
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+> who 1001
+> log
+log:
+1001:0::0::A disturbing image of <no subkind>~[1000] appeared last night in a dream.
+stderr:
+
+exit 0
+stdout:
+section hinder meditation hidden after successful start loses aura without target magic
+> entity 800 5 43
+> entity 814 5 0
+> field 814 required 800
+> learn 1000 800 2 0
+> place 9000
+> link 9000 1001
+> field 1001 lord 201
+> field 1000 cur_aura 2
+> learn 1000 814 2 0
+> parse use 814 1001 2
+parse 1
+> ucov start
+use start 1
+> field 1001 hidden 1
+> set wait 0
+> ucov finish
+use finish 0
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	800 2 0 0 0 \
+	814 2 0 0 0
+CO
+ li use 814 1001 2
+ ar 1001 2 0 9000 0 0 0 814
+ us 814
+ ue 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 201
+CM
+ hs 1
+
+> log
+log:
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::[1001] cannot be seen here.
+stderr:
+
+exit 0
+stdout:
+section hinder meditation real queued ten days completion counters state and RNG
+> lore_root
+> master 2
+> entity 800 5 43
+> entity 814 5 0
+> field 814 required 800
+> learn 1000 800 2 0
+> place 9000
+> link 9000 1001
+> field 1000 cur_aura 3
+> learn 1000 814 2 0
+> coverage path command.tsv
+> ucov path use.tsv
+> queue use 814 1001 9
+> initial
+> start
+> dump
+cmd 93 who 1000 state 2 status 1 wait 10 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 1001 3 0 9000 0 0 0 814; parse [use] [1001] [9]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> evening
+> evening
+> evening
+> evening
+> evening
+> evening
+> evening
+> evening
+> evening
+> dump
+cmd 93 who 1000 state 2 status 1 wait 1 poll 0 pri 3 cond 0 fuzzy 0 days 9 debug 0 inhibit 0 cur 99
+args 1001 3 0 9000 0 0 0 814; parse [use] [1001] [9]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> evening
+> dump
+cmd 93 who 1000 state 0 status 1 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 10 debug 0 inhibit 0 cur 99
+args 1001 3 0 9000 0 0 0 814; parse [use] [1001] [9]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	800 2 0 0 0 \
+	814 2 0 1 0
+CO
+ li use 814 1001 9
+ ar 1001 3 0 9000 0 0 0 814
+ st 1
+ us 814
+ ue 1
+ de 10
+ pr 3
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hm 3
+
+> coverage write
+> ucov write
+> readfile command.tsv
+file bytes command.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	1	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readfile use.tsv
+file bytes use.tsv 2736:
+kind	key	name	checks	ok	fail
+invalid	0	(invalid)	0	0	0
+skill	601		0	0	0
+skill	602		0	0	0
+skill	603		0	0	0
+skill	612		0	0	0
+skill	613		0	0	0
+skill	614		0	0	0
+skill	615		0	0	0
+skill	616		0	0	0
+skill	617		0	0	0
+skill	631		0	0	0
+skill	632		0	0	0
+skill	633		0	0	0
+skill	634		0	0	0
+skill	635		0	0	0
+skill	636		0	0	0
+skill	637		0	0	0
+skill	638	<no subkind>	0	0	0
+skill	639		0	0	0
+skill	651		0	0	0
+skill	652		0	0	0
+skill	653		0	0	0
+skill	654		0	0	0
+skill	655		0	0	0
+skill	656		0	0	0
+skill	657		0	0	0
+skill	658		0	0	0
+skill	659		0	0	0
+skill	661		0	0	0
+skill	671		0	0	0
+skill	672		0	0	0
+skill	673		0	0	0
+skill	674		0	0	0
+skill	675		0	0	0
+skill	676		0	0	0
+skill	681		0	0	0
+skill	682		0	0	0
+skill	691		0	0	0
+skill	692		0	0	0
+skill	693		0	0	0
+skill	694		0	0	0
+skill	695		0	0	0
+skill	696		0	0	0
+skill	697		0	0	0
+skill	701		0	0	0
+skill	702		0	0	0
+skill	703		0	0	0
+skill	704		0	0	0
+skill	706		0	0	0
+skill	707		0	0	0
+skill	721		0	0	0
+skill	722		0	0	0
+skill	723		0	0	0
+skill	732		0	0	0
+skill	733		0	0	0
+skill	751		0	0	0
+skill	752		0	0	0
+skill	753		0	0	0
+skill	754		0	0	0
+skill	755		0	0	0
+skill	756		0	0	0
+skill	801		0	0	0
+skill	802		0	0	0
+skill	803		0	0	0
+skill	804		0	0	0
+skill	805		0	0	0
+skill	806		0	0	0
+skill	807		0	0	0
+skill	808		0	0	0
+skill	809		0	0	0
+skill	811		0	0	0
+skill	812		0	0	0
+skill	813		0	0	0
+skill	814	<no subkind>	0	1	0
+skill	821		0	0	0
+skill	822		0	0	0
+skill	823		0	0	0
+skill	824		0	0	0
+skill	825		0	0	0
+skill	826		0	0	0
+skill	827		0	0	0
+skill	828		0	0	0
+skill	829		0	0	0
+skill	831		0	0	0
+skill	832		0	0	0
+skill	833		0	0	0
+skill	841		0	0	0
+skill	842		0	0	0
+skill	843		0	0	0
+skill	844		0	0	0
+skill	845		0	0	0
+skill	846		0	0	0
+skill	847		0	0	0
+skill	848		0	0	0
+skill	849		0	0	0
+skill	851		0	0	0
+skill	852		0	0	0
+skill	861		0	0	0
+skill	862		0	0	0
+skill	863		0	0	0
+skill	864		0	0	0
+skill	865		0	0	0
+skill	866		0	0	0
+skill	867		0	0	0
+skill	868		0	0	0
+skill	869		0	0	0
+skill	871		0	0	0
+skill	872		0	0	0
+skill	881		0	0	0
+skill	882		0	0	0
+skill	883		0	0	0
+skill	884		0	0	0
+skill	885		0	0	0
+skill	886		0	0	0
+skill	887		0	0	0
+skill	888		0	0	0
+skill	889		0	0	0
+skill	891		0	0	0
+skill	892		0	0	0
+skill	893		0	0	0
+skill	894		0	0	0
+skill	901		0	0	0
+skill	902		0	0	0
+skill	903		0	0	0
+skill	904		0	0	0
+skill	905		0	0	0
+skill	906		0	0	0
+skill	907		0	0	0
+skill	908		0	0	0
+skill	909		0	0	0
+skill	911		0	0	0
+skill	921		0	0	0
+skill	922		0	0	0
+skill	997		0	0	0
+skill	998		0	0	0
+skill	999		0	0	0
+item	1	death_potion	0	0	0
+item	2	heal_potion	0	0	0
+item	3	slave_potion	0	0	0
+item	4	palantir	0	0	0
+item	5	proj_cast	0	0	0
+item	6	quick_cast	0	0	0
+item	7	drum	0	0	0
+item	8	faery_stone	0	0	0
+item	9	orb	0	0	0
+item	10	barbarian_kill	0	0	0
+item	11	savage_kill	0	0	0
+item	12	corpse_kill	0	0	0
+item	13	orc_kill	0	0	0
+item	14	skeleton_kill	0	0	0
+item	15	bta_skull	0	0	0
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::> use 814 1001 9
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::finish_command called twice, wait=9
+1000:0::0::finish_command called twice, wait=8
+1000:0::0::finish_command called twice, wait=7
+1000:0::0::finish_command called twice, wait=6
+1000:0::0::finish_command called twice, wait=5
+1000:0::0::finish_command called twice, wait=4
+1000:0::0::finish_command called twice, wait=3
+1000:0::0::finish_command called twice, wait=2
+1000:0::0::finish_command called twice, wait=1
+1000:0::0::Successfully cast <no subkind>~[814] on <no subkind>~[1001].
+1001:0::0::A disturbing image of <no subkind>~[1000] appeared last night in a dream.
+> usemeta rolls 1001 1000
+magic rolls 1 44 83
+> usemeta legacy 1 100000
+use legacy 28797
+> entity_rolls 1000 7 5000
+prison roll 57
+land dir99 2
+land dir98 4
+land pick 1
+stderr:
+
+exit 0
+stdout:
+section hinder meditation actual interrupt keeps spent projection but does not charge or allocate target
+> lore_root
+> master 2
+> entity 800 5 43
+> entity 814 5 0
+> field 814 required 800
+> learn 1000 800 2 0
+> place 9000
+> entity 9100 3 3
+> link 9100 1001
+> field 1000 project_cast 9100
+> field 1000 cur_aura 3
+> learn 1000 814 2 0
+> ucov path use.tsv
+> queue use 814 1001 2
+> initial
+> start
+> dump
+cmd 93 who 1000 state 2 status 1 wait 10 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 1001 2 0 9100 0 0 0 814; parse [use] [1001] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> interrupt
+interrupt 0
+> dump
+cmd 93 who 1000 state 2 status 1 wait 10 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 1001 2 0 9100 0 0 0 814; parse [use] [1001] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	800 2 0 0 0 \
+	814 2 0 0 0
+CM
+ ca 3
+CO
+ li use 814 1001 2
+ ar 1001 2 0 9100 0 0 0 814
+ cs 2
+ wa 10
+ st 1
+ us 814
+ ue 1
+ pr 3
+
+> usemeta state 1001 814
+use records 1001 1 0 0 0
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 200
+
+> ucov write
+> readfile use.tsv
+file bytes use.tsv 2736:
+kind	key	name	checks	ok	fail
+invalid	0	(invalid)	0	0	0
+skill	601		0	0	0
+skill	602		0	0	0
+skill	603		0	0	0
+skill	612		0	0	0
+skill	613		0	0	0
+skill	614		0	0	0
+skill	615		0	0	0
+skill	616		0	0	0
+skill	617		0	0	0
+skill	631		0	0	0
+skill	632		0	0	0
+skill	633		0	0	0
+skill	634		0	0	0
+skill	635		0	0	0
+skill	636		0	0	0
+skill	637		0	0	0
+skill	638	<no subkind>	0	0	0
+skill	639		0	0	0
+skill	651		0	0	0
+skill	652		0	0	0
+skill	653		0	0	0
+skill	654		0	0	0
+skill	655		0	0	0
+skill	656		0	0	0
+skill	657		0	0	0
+skill	658		0	0	0
+skill	659		0	0	0
+skill	661		0	0	0
+skill	671		0	0	0
+skill	672		0	0	0
+skill	673		0	0	0
+skill	674		0	0	0
+skill	675		0	0	0
+skill	676		0	0	0
+skill	681		0	0	0
+skill	682		0	0	0
+skill	691		0	0	0
+skill	692		0	0	0
+skill	693		0	0	0
+skill	694		0	0	0
+skill	695		0	0	0
+skill	696		0	0	0
+skill	697		0	0	0
+skill	701		0	0	0
+skill	702		0	0	0
+skill	703		0	0	0
+skill	704		0	0	0
+skill	706		0	0	0
+skill	707		0	0	0
+skill	721		0	0	0
+skill	722		0	0	0
+skill	723		0	0	0
+skill	732		0	0	0
+skill	733		0	0	0
+skill	751		0	0	0
+skill	752		0	0	0
+skill	753		0	0	0
+skill	754		0	0	0
+skill	755		0	0	0
+skill	756		0	0	0
+skill	801		0	0	0
+skill	802		0	0	0
+skill	803		0	0	0
+skill	804		0	0	0
+skill	805		0	0	0
+skill	806		0	0	0
+skill	807		0	0	0
+skill	808		0	0	0
+skill	809		0	0	0
+skill	811		0	0	0
+skill	812		0	0	0
+skill	813		0	0	0
+skill	814	<no subkind>	0	1	0
+skill	821		0	0	0
+skill	822		0	0	0
+skill	823		0	0	0
+skill	824		0	0	0
+skill	825		0	0	0
+skill	826		0	0	0
+skill	827		0	0	0
+skill	828		0	0	0
+skill	829		0	0	0
+skill	831		0	0	0
+skill	832		0	0	0
+skill	833		0	0	0
+skill	841		0	0	0
+skill	842		0	0	0
+skill	843		0	0	0
+skill	844		0	0	0
+skill	845		0	0	0
+skill	846		0	0	0
+skill	847		0	0	0
+skill	848		0	0	0
+skill	849		0	0	0
+skill	851		0	0	0
+skill	852		0	0	0
+skill	861		0	0	0
+skill	862		0	0	0
+skill	863		0	0	0
+skill	864		0	0	0
+skill	865		0	0	0
+skill	866		0	0	0
+skill	867		0	0	0
+skill	868		0	0	0
+skill	869		0	0	0
+skill	871		0	0	0
+skill	872		0	0	0
+skill	881		0	0	0
+skill	882		0	0	0
+skill	883		0	0	0
+skill	884		0	0	0
+skill	885		0	0	0
+skill	886		0	0	0
+skill	887		0	0	0
+skill	888		0	0	0
+skill	889		0	0	0
+skill	891		0	0	0
+skill	892		0	0	0
+skill	893		0	0	0
+skill	894		0	0	0
+skill	901		0	0	0
+skill	902		0	0	0
+skill	903		0	0	0
+skill	904		0	0	0
+skill	905		0	0	0
+skill	906		0	0	0
+skill	907		0	0	0
+skill	908		0	0	0
+skill	909		0	0	0
+skill	911		0	0	0
+skill	921		0	0	0
+skill	922		0	0	0
+skill	997		0	0	0
+skill	998		0	0	0
+skill	999		0	0	0
+item	1	death_potion	0	0	0
+item	2	heal_potion	0	0	0
+item	3	slave_potion	0	0	0
+item	4	palantir	0	0	0
+item	5	proj_cast	0	0	0
+item	6	quick_cast	0	0	0
+item	7	drum	0	0	0
+item	8	faery_stone	0	0	0
+item	9	orb	0	0	0
+item	10	barbarian_kill	0	0	0
+item	11	savage_kill	0	0	0
+item	12	corpse_kill	0	0	0
+item	13	orc_kill	0	0	0
+item	14	skeleton_kill	0	0	0
+item	15	bta_skull	0	0	0
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::> use 814 1001 2
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+> usemeta rolls 1001 1000
+magic rolls 1 44 83
+> usemeta legacy 1 100000
+use legacy 28797
+> entity_rolls 1000 7 5000
+prison roll 57
+land dir99 2
+land dir98 4
+land pick 1
+stderr:
+
+exit 0
+stdout:
+section hinder meditation omen repeats day independent same turn cached seed next turn resets
+> master 3
+> set turn 9
+> set day 1
+> place 9000
+> link 9000 1001
+> field 1000 cur_aura 20
+> usemeta callback_finish 814 1001 1 9000
+use callback 1
+> usemeta rolls 1001 1000
+magic rolls 2 77 68
+> set day 30
+> master 4
+> usemeta callback_finish 814 1001 1 9000
+use callback 1
+> usemeta rolls 1001 1000
+magic rolls 2 76 72
+> set turn 10
+> usemeta callback_finish 814 1001 1 9000
+use callback 1
+> usemeta rolls 1001 1000
+magic rolls 1 80 72
+> usemeta callback_finish 814 1000 1 9000
+use callback 1
+> usemeta rolls 1000 1000
+magic rolls 3 97 13
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ ca 16
+ hm 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hm 3
+
+> log
+log:
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::As a cloud drifts across the moon, it seems for an instant that it takes the shape of a ghoulish face, looking straight at you.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::As a cloud drifts across the moon, it seems for an instant that it takes the shape of a ghoulish face, looking straight at you.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::A disturbing image of <no subkind>~[1000] appeared last night in a dream.
+1000:0::0::Successfully cast [814] on <no subkind>~[1000].
+1000:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+> who 1001
+> log
+log:
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::As a cloud drifts across the moon, it seems for an instant that it takes the shape of a ghoulish face, looking straight at you.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::As a cloud drifts across the moon, it seems for an instant that it takes the shape of a ghoulish face, looking straight at you.
+1000:0::0::Successfully cast [814] on <no subkind>~[1001].
+1001:0::0::A disturbing image of <no subkind>~[1000] appeared last night in a dream.
+1000:0::0::Successfully cast [814] on <no subkind>~[1000].
+1000:0::0::You are shocked out of your slumber in the middle of the night by cold fingers touching your neck, but when you glance about, there is no one to be seen.
+stderr:
+
+exit 0
+stdout:
+section hinder meditation no callback independent magic legacy allocation control
+> master 2
+> place 9000
+> link 9000 1001
+> field 1000 cur_aura 3
+> usemeta state 1001 814
+use records 1001 1 0 0 0
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> usemeta rolls 1001 1000
+magic rolls 1 44 83
+> usemeta legacy 1 100000
+use legacy 28797
+> entity_rolls 1000 7 5000
+prison roll 57
+land dir99 2
+land dir98 4
+land pick 1
+stderr:
+
+exit 0
+stdout:
+section hinder meditation real queued checks and callback failures then hidden same faction success
+> lore_root
+> master 2
+> entity 800 5 43
+> entity 814 5 0
+> field 814 required 800
+> learn 1000 800 2 0
+> learn 1000 814 2 0
+> place 9000
+> entity 9100 3 3
+> link 9000 1001
+> coverage path command.tsv
+> ucov path use.tsv
+> field 1000 project_cast 9100
+> queue use 814 1001 3
+> queue use 814 1001 3
+> queue use 814 1001 0
+> load
+load 1
+> do
+> dump
+cmd 93 who 1000 state 1 status 0 wait -1 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 814 1001 3 0 0 0 0 0; parse [use] [814] [1001] [3]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	800 2 0 0 0 \
+	814 2 0 0 0
+CM
+ pc 9100
+CO
+ li use 814 1001 3
+ ar 814 1001 3 0 0 0 0 0
+ cs 1
+ wa -1
+ ue 1
+ po 1
+ pr 3
+
+> field 1000 cur_aura 3
+> do
+> dump
+cmd 93 who 1000 state 1 status 0 wait -1 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 814 1001 0 0 0 0 0 0; parse [use] [814] [1001] [0]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	800 2 0 0 0 \
+	814 2 0 0 0
+CM
+ ca 3
+CO
+ li use 814 1001 0
+ ar 814 1001 0 0 0 0 0 0
+ cs 1
+ wa -1
+ ue 1
+ po 1
+ pr 3
+
+> field 1001 hidden 1
+> do
+> dump
+cmd 93 who 1000 state 2 status 1 wait 10 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 1 0 9000 0 0 0 814; parse [use] [1001] [0]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set wait 0
+> finish
+finish 1
+> dump
+cmd 93 who 1000 state 0 status 1 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 1 0 9000 0 0 0 814; parse [use] [1001] [0]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	800 2 0 0 0 \
+	814 2 0 1 0
+CM
+ ca 2
+CO
+ li use 814 1001 0
+ ar 1001 1 0 9000 0 0 0 814
+ st 1
+ us 814
+ ue 1
+ pr 3
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hm 1
+ hs 1
+
+> save 814
+814 skill 0
+SK
+ tl 0
+ rs 800
+
+> coverage write
+> ucov write
+> readfile command.tsv
+file bytes command.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	1	2
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readfile use.tsv
+file bytes use.tsv 2736:
+kind	key	name	checks	ok	fail
+invalid	0	(invalid)	0	0	0
+skill	601		0	0	0
+skill	602		0	0	0
+skill	603		0	0	0
+skill	612		0	0	0
+skill	613		0	0	0
+skill	614		0	0	0
+skill	615		0	0	0
+skill	616		0	0	0
+skill	617		0	0	0
+skill	631		0	0	0
+skill	632		0	0	0
+skill	633		0	0	0
+skill	634		0	0	0
+skill	635		0	0	0
+skill	636		0	0	0
+skill	637		0	0	0
+skill	638	<no subkind>	0	0	0
+skill	639		0	0	0
+skill	651		0	0	0
+skill	652		0	0	0
+skill	653		0	0	0
+skill	654		0	0	0
+skill	655		0	0	0
+skill	656		0	0	0
+skill	657		0	0	0
+skill	658		0	0	0
+skill	659		0	0	0
+skill	661		0	0	0
+skill	671		0	0	0
+skill	672		0	0	0
+skill	673		0	0	0
+skill	674		0	0	0
+skill	675		0	0	0
+skill	676		0	0	0
+skill	681		0	0	0
+skill	682		0	0	0
+skill	691		0	0	0
+skill	692		0	0	0
+skill	693		0	0	0
+skill	694		0	0	0
+skill	695		0	0	0
+skill	696		0	0	0
+skill	697		0	0	0
+skill	701		0	0	0
+skill	702		0	0	0
+skill	703		0	0	0
+skill	704		0	0	0
+skill	706		0	0	0
+skill	707		0	0	0
+skill	721		0	0	0
+skill	722		0	0	0
+skill	723		0	0	0
+skill	732		0	0	0
+skill	733		0	0	0
+skill	751		0	0	0
+skill	752		0	0	0
+skill	753		0	0	0
+skill	754		0	0	0
+skill	755		0	0	0
+skill	756		0	0	0
+skill	801		0	0	0
+skill	802		0	0	0
+skill	803		0	0	0
+skill	804		0	0	0
+skill	805		0	0	0
+skill	806		0	0	0
+skill	807		0	0	0
+skill	808		0	0	0
+skill	809		0	0	0
+skill	811		0	0	0
+skill	812		0	0	0
+skill	813		0	0	0
+skill	814	<no subkind>	0	1	2
+skill	821		0	0	0
+skill	822		0	0	0
+skill	823		0	0	0
+skill	824		0	0	0
+skill	825		0	0	0
+skill	826		0	0	0
+skill	827		0	0	0
+skill	828		0	0	0
+skill	829		0	0	0
+skill	831		0	0	0
+skill	832		0	0	0
+skill	833		0	0	0
+skill	841		0	0	0
+skill	842		0	0	0
+skill	843		0	0	0
+skill	844		0	0	0
+skill	845		0	0	0
+skill	846		0	0	0
+skill	847		0	0	0
+skill	848		0	0	0
+skill	849		0	0	0
+skill	851		0	0	0
+skill	852		0	0	0
+skill	861		0	0	0
+skill	862		0	0	0
+skill	863		0	0	0
+skill	864		0	0	0
+skill	865		0	0	0
+skill	866		0	0	0
+skill	867		0	0	0
+skill	868		0	0	0
+skill	869		0	0	0
+skill	871		0	0	0
+skill	872		0	0	0
+skill	881		0	0	0
+skill	882		0	0	0
+skill	883		0	0	0
+skill	884		0	0	0
+skill	885		0	0	0
+skill	886		0	0	0
+skill	887		0	0	0
+skill	888		0	0	0
+skill	889		0	0	0
+skill	891		0	0	0
+skill	892		0	0	0
+skill	893		0	0	0
+skill	894		0	0	0
+skill	901		0	0	0
+skill	902		0	0	0
+skill	903		0	0	0
+skill	904		0	0	0
+skill	905		0	0	0
+skill	906		0	0	0
+skill	907		0	0	0
+skill	908		0	0	0
+skill	909		0	0	0
+skill	911		0	0	0
+skill	921		0	0	0
+skill	922		0	0	0
+skill	997		0	0	0
+skill	998		0	0	0
+skill	999		0	0	0
+item	1	death_potion	0	0	0
+item	2	heal_potion	0	0	0
+item	3	slave_potion	0	0	0
+item	4	palantir	0	0	0
+item	5	proj_cast	0	0	0
+item	6	quick_cast	0	0	0
+item	7	drum	0	0	0
+item	8	faery_stone	0	0	0
+item	9	orb	0	0	0
+item	10	barbarian_kill	0	0	0
+item	11	savage_kill	0	0	0
+item	12	corpse_kill	0	0	0
+item	13	orc_kill	0	0	0
+item	14	skeleton_kill	0	0	0
+item	15	bta_skull	0	0	0
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::> use 814 1001 3
+1000:0::0::Three aura required, current level is zero.
+1000:0::0::> use 814 1001 3
+1000:0::0::[1001] cannot be seen here.
+1000:0::0::> use 814 1001 0
+1000:0::0::Attempt to hinder attempts at meditation by [1001].
+1000:0::0::Successfully cast <no subkind>~[814] on <no subkind>~[1001].
+1001:0::0::A disturbing image of <no subkind>~[1000] appeared last night in a dream.
+> usemeta rolls 1001 1000
+magic rolls 1 44 83
+> usemeta legacy 1 100000
+use legacy 28797
+> entity_rolls 1000 7 5000
+prison roll 57
+land dir99 2
+land dir98 4
+land pick 1
+stderr:
+
+exit 0

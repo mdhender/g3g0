@@ -19,9 +19,13 @@ type useTblEnt struct {
 var useAllow = "c"
 
 // A non-NULL C callback must never become a nil Go callback merely because
-// its gameplay is not ported. Only these four callbacks already exist in Go.
+// its gameplay is not ported.
 func useCallback(name string) func(*world, *command) int {
 	switch name {
+	case "v_hinder_med":
+		return (*world).vHinderMed
+	case "d_hinder_med":
+		return (*world).dHinderMed
 	case "v_hide":
 		return (*world).vHide
 	case "d_hide":

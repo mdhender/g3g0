@@ -3,6 +3,87 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Hinder-meditation USE prerequisite (#181)
+
+**0.114.0-alpha** ports complete original basic.c `v_hinder_med` **331–357**,
+`hinder_med_omen` **360–390**, `d_hinder_med` **393–420**, scry.c
+`reset_cast_where` **37–51** and u.c `check_char_where` **898–921**. Only
+the two actual hinder-meditation USE callbacks are newly wired. Existing
+chargeAura/checkAura, charWhere/contact/visibility and Streams.MagcOmen remain
+the real owners. No other magic, drum support (#182), independent fix or
+stage-4 work is included.
+
+The original order is retained: clamp b to **1..3** before checking aura;
+only then consume a valid projected location/ship and save it in c.d, even
+when target validation fails. Completion charges aura before validating the
+target at that saved location. The signed-char addition is stored **before**
+the **5** cap, including **127 + 1 → -128**. Moving targets are not rejected
+merely for moving; visibility/location still govern. Invalid projected IDs
+remain stored. Omen's stream uses turn-root `turn` → `magc`, keyed target/
+caster and tag `omen` (**0x6f6d656e**), range **1..4**, without a day child
+or sequential draw. Same-turn master changes do not reseed it; next turn does.
+
+Every archived original (**100 files**) equals the immutable pin; all **582**
+extractor-listed complete definitions occur literally unchanged exactly once.
+The entire original magic RNG prefix is extracted unchanged (**4969 bytes**,
+SHA-256 `2d88d0f9ea8b08fdebc81aa062b489f6b7c84ace8ca851158dfb2667e6cf4134`).
+New complete-definition SHA-256 values:
+
+| definition | SHA-256 |
+|---|---|
+| v_hinder_med | `84ce74cad7fc370358a2f700857fca80d766cdf535bc0188039331f2dfc73a4c` |
+| hinder_med_omen | `768cd27170b038e09be9ccdde131e83375c02db60ab7b90d797743e7dbb4144a` |
+| d_hinder_med | `34ac1871a1aa81ad1849d8bc291d50342588006c0a1b0b5a0d2d7f64277a59e2` |
+| reset_cast_where | `0ed474847e6e200997192f5579de826296d9da33194ee10634c71337d4170320` |
+| check_char_where | `49cf90d1a614b2d8d1dc98850d2f772619f431785d5b74227b890dba20bb7000` |
+
+**basic.c is a new command-oracle dependency**, tracked in affected.sh and
+tools/README.md; the pin is unchanged. The original use table and real queues
+execute, not callback-success overlays. `usemeta callback_start/callback_finish`
+selects the actual table callback with raw arguments, alongside real parsed
+USE/start/evening/finish/interrupt paths. `usemeta rolls` observes real C magic
+leaves and Go's existing streams, not a replacement RNG model.
+
+**16 appended asymmetric sections** cover clamp extremes, absent/exact/lost
+aura, zero/noncharacter/missing/garrison targets, projected locations/ships,
+reset versus retention, saved destination after caster movement/new projection,
+target movement/kind/hidden completion revalidation, same-faction hidden and
+foreign hidden/fog contacts, all **four omen branches**, signed-char wrap/cap,
+actual ten-evening completion, interruption, command/USE accounting, target
+allocation, skill experience/state, logs and independent magic/legacy/entity
+RNG aftermath. No-call, interrupted and successful controls retain legacy
+**28797**, entity **57/2/4/1**, and magic **1/44/83** at seed 2. The silent
+fourth omen is independently observed as **4/13/9**, with no target log line.
+
+Unchanged C twice and Go match **1366 sections / 105616 lines / 2105533
+output bytes**, SHA-256
+`fe4b9575b0630d05abb40a63e18724f78266be65b41817a22e859d49c1194cd4`.
+Input is **30049 lines / 571691 bytes**, SHA-256
+`c5bbd288cc49cadc94ff68dde1315f8a67f359e271a265422e8be5be2a1e06b3`.
+The **entire** inherited **564972-byte input / 2068804-byte output** prefixes
+retain respectively `b778a5b247549f69da5dc81b3e29abb331c2175a5cdb0eb4940df3b0a6122975`
+and `ab33212cfdbf47c158a014c6c3d4ba25113e3c2f9f6d0234723f793a5c09146d`.
+Literal C whitespace is preserved. Every new section requires status **0**
+after dependency/NYI/stub/sanitizer rejection, not just equal failed runs.
+
+Six real linker controls wrap the direct actual-table entry adapter (status
+**0/134**, each default/update), then original **asfail** at inherited expected-
+abort section **27** (default/update). All reject with harness **2** at the
+marker check, **before** status acceptance or recording replacement; the
+recording is unchanged in all six. An initial attempt to wrap v_hinder_med
+could not interpose its same-translation-unit table reference and did not
+trigger a marker; it was not counted as a successful negative control.
+Probe sources/launchers/captures are deleted; final normal comparison passes.
+
+Logs: `tmp/issue181-{source-audit,final-integrity}.log`,
+`tmp/issue181-command-{update,default}-final.log`,
+`tmp/issue181-negative-{drv_use_callback,asfail}-*.log`.
+Bounded vet/fresh full-enabled tests, all fifteen defaults, strict full turn
+and all controls pass. Five of six unchanged phase fixtures now pass C/C/Go;
+only phase-month-decay is newly passing. phase-day0 still reaches separately
+filed #182's drum callback. [Full fixture evidence](../turn-compat#hinder-meditation-fixture-rerun-181).
+The final 201-world/four-corpus tier remains #178, not rerun here.
+
 ## GUARD and STACK command prerequisites (#180)
 
 **0.113.0-alpha** adds complete original combat.c `v_guard` **2947–2964**,

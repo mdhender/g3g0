@@ -444,6 +444,23 @@ func (w *world) charHere(who, target int) bool {
 	return w.charWhere(w.subloc(who), who, target)
 }
 
+// checkCharWhere is the complete olympia/u.c:898–921 validator.
+func (w *world) checkCharWhere(where, who, target int) bool {
+	if target == int(w.garrisonMagic) {
+		w.commandOut(who, "There is no garrison here.")
+		return false
+	}
+	if w.kind(target) != tChar {
+		w.commandOut(who, "%s is not a character.", w.boxCode(target))
+		return false
+	}
+	if !w.charWhere(where, who, target) {
+		w.commandOut(who, "%s cannot be seen here.", w.boxCode(target))
+		return false
+	}
+	return true
+}
+
 // checkCharGone is the complete u.c:933–962 validator. The active
 // char_gone macro tests moving itself, not elapsed days (oly.h:1008).
 func (w *world) checkCharGone(who, target int) bool {

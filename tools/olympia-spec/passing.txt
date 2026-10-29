@@ -23,6 +23,7 @@ move-go
 move-out-first
 phase-daily
 phase-month-close
+phase-month-decay
 phase-month-gold
 phase-month-open
 player-refused

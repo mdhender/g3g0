@@ -66,7 +66,8 @@ functions = {
               'men_starve', 'unit_maint_cost', 'charge_maint_sup', 'charge_maint_costs', 'animal_deaths',
               'collapsed_mine_decay', 'ghost_warrior_decay', 'corpse_decay', 'dead_body_rot',
               'auto_drop', 'link_decay', 'quest_decay', 'post_month'],
-    'scry.c': ['notify_loc_shroud'],
+    'scry.c': ['notify_loc_shroud', 'reset_cast_where'],
+    'basic.c': ['v_hinder_med', 'hinder_med_omen', 'd_hinder_med'],
     'seed.c': ['int_comp', 'seed_taxes'],
     'stack.c': ['stack_parent', 'stack_leader', 'here_pos', 'stacked_beneath',
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
@@ -107,7 +108,7 @@ functions = {
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
             'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
             'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
-            'contacted', 'char_where', 'char_here', 'check_char_gone', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
+            'contacted', 'char_where', 'char_here', 'check_char_where', 'check_char_gone', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'loyal_s', 'add_np', 'deduct_np',
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
@@ -303,6 +304,11 @@ int immed_see_all, month_done, show_combat_flag;
         if file == 'move.c':
             out.write('#line 8 "olympia/move.c"\n')
             out.write(re.search(r'^static ilist ocean_chars = NULL;\n', source, re.M).group(0))
+        if file == 'basic.c':
+            # Entire unchanged magic RNG prefix, including tags and turn guard.
+            start, end = source.index('#define\tTAG_TURN'), source.index('int\nv_meditate(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/basic.c"\n')
+            out.write(source[start:end])
         if file == 'use.c':
             # Complete original struct, callback declarations and table, unchanged.
             # Missing callbacks are abort-only references, never invoked by helpers.
@@ -336,6 +342,13 @@ int immed_see_all, month_done, show_combat_flag;
         for _, text in sorted(matches):
             out.write(text)
     out.write('''
+int drv_use_callback(struct command *c, int sk, int finish) {
+ struct use_tbl_ent *e = &use_tbl[find_use_entry(sk)];
+ return finish ? e->finish(c) : e->start(c);
+}
+void drv_magic_rolls(int who, int other) {
+ printf("magic rolls %d %d %d\\n",magc_omen(who,other),magc_med(who,0),magc_scry(who,other));
+}
 void drv_use_table(void) {
  int i;
  for(i=0;i<(int)(sizeof(use_tbl)/sizeof(*use_tbl));i++) {
@@ -696,6 +709,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section hinder meditation '* ]]; then
+   [ "$status" = 0 ] || die "unexpected hinder-meditation status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section guard stack '* ]]; then
    [ "$status" = 0 ] || die "unexpected GUARD/STACK status $status in section $i"
   fi

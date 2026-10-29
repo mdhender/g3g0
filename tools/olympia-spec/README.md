@@ -4,6 +4,35 @@
 G3 is the reference.
 Expected output comes only from G3's committed files, which its C engine wrote; nothing here re-baselines.
 
+## Hinder-meditation prerequisite progress (#181)
+
+At **0.114.0-alpha**, the unchanged complete spec records **34 pass / 91 fail /
+0 error** (**119s**), preserving all **33** accepted passes and adding only
+**phase-month-decay**. The existing tool writes that single new progress-list
+name; no upstream fixture, script, manifest, EXPECT.json or expected byte is
+edited. All six phase scripts separately run real C twice then Go under the
+strict raw-stream/status/all-cwd-entry comparison: month-decay newly matches
+all **246 entries**, and the other four previously passing phase fixtures
+remain identical. [Fixture evidence](../turn-compat#hinder-meditation-fixture-rerun-181).
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue181-spec" \
+  tools/olympia-spec/run.sh
+```
+
+phase-day0 still stops at separately filed **#182**, USE item key 7/drum;
+it is not accepted or implemented here. Five of six phase fixtures now pass,
+not six. Golden remains **NO**, initialization exits **2** at unsupported
+`load_db (-i)`. No whole-spec or stage-exit parity is claimed. Full 201-world/
+four-corpus acceptance is deferred to #178 as instructed.
+
+Logs: `tmp/issue181-spec.log`,
+`tmp/issue181-spec/{run-all,olympia-g3,golden}.log`,
+`tmp/issue181-fixtures.log`, `tmp/issue181-fixture-captures/`.
+Temporary fixture launchers/probes and matching captures are removed; the
+decisive phase-day0 C/Go captures are retained. No newly exposed callback
+beyond the already filed drum prerequisite was encountered.
+
 ## GUARD/STACK prerequisite progress (#180)
 
 At **0.113.0-alpha**, the unchanged complete spec records **33 pass / 92 fail /

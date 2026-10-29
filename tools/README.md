@@ -6,6 +6,83 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Hinder-meditation USE prerequisite (#181)
+
+**0.114.0-alpha**, immutable C **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**:
+complete original basic.c v_hinder_med/hinder_med_omen/d_hinder_med,
+scry.c reset_cast_where and u.c check_char_where now execute through only the
+real hinder-meditation USE starts/completions. Existing aura, visibility and
+keyed MagcOmen owners are reused. Clamp-before-aura, reset-after-aura, saved
+c.d, charge-before-revalidation and signed-char addition-before-cap remain C's
+actual behavior. No other magic, drum (#182), independent fix or stage 4.
+**basic.c** is newly tracked for command-compat in affected.sh; no pin move.
+[Exact source ranges/hashes and oracle evidence](command-compat#hinder-meditation-use-prerequisite-181).
+
+Unchanged C twice and Go match **1366 sections / 105616 output lines /
+2105533 bytes**, SHA-256
+`fe4b9575b0630d05abb40a63e18724f78266be65b41817a22e859d49c1194cd4`.
+Input: **30049 lines / 571691 bytes**, SHA-256
+`c5bbd288cc49cadc94ff68dde1315f8a67f359e271a265422e8be5be2a1e06b3`.
+The ENTIRE inherited **564972 / 2068804-byte** input/output prefixes retain
+`b778a5b247549f69da5dc81b3e29abb331c2175a5cdb0eb4940df3b0a6122975` /
+`ab33212cfdbf47c158a014c6c3d4ba25113e3c2f9f6d0234723f793a5c09146d`.
+All **100** archived originals and **582** complete extracted definitions are
+audited unchanged. Six actual linker controls reject markers before expected
+status/record replacement, including inherited expected-abort status **134**.
+All probes/launchers and matching captures are removed, preserving raw C
+whitespace and decisive failure/provenance logs.
+
+Sequential validation passes: bounded vet and fresh bounded **G3G0_FULL=1**
+tests (**11 packages**, Olympia **2.007s**, **10** explicit opt-in/child-entry
+skips), all **15 engine/library defaults**, strict **233-entry** ordinary turn
+and all **13 lifecycle / 10 command / 15 USE / 23 phase / 13 export** controls
+with four nonempty-export flag-free aftermath comparisons. Every C/Go engine
+and test uses the existing run_limited adapters. Lists uses a temporary native
+compiler launcher for its otherwise-unbounded C driver. Its initial Go-test
+adapter attempts failed on script permissions/GOFLAGS parsing, not engine
+parity; a temporary executable adapter then ran the real existing bounded
+runner successfully. Initial logs remain, final checks pass; no adapter is
+committed. Every compat invocation explicitly uses isolated G3_REPO.
+
+All **six original phase scripts** run real C twice then Go, with raw streams/
+status and every cwd entry/type/mode/byte captured before original cleanup.
+**phase-month-decay newly passes**, all **246 entries** identical; four prior
+phase passes remain green. phase-day0 still stops at separately filed **#182**
+USE drum (key 7), not a new callback boundary. C/C matches all **252 entries**;
+its decisive C/Go captures remain, not accepted as success. Spec preserves
+all **33** accepted passes and adds only **phase-month-decay**: **34 pass /
+91 fail / 0 error**, **119s**. Golden remains **NO** (unsupported -i, status 2).
+[Strict turn/fixture evidence](turn-compat#hinder-meditation-fixture-rerun-181).
+
+Verified read-only `tmp/issue179-roundtrip`: **1212** originals equal pin,
+executable SHA-256 `151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+Engines use disposable real copies, never cache inputs or symlink sources.
+Evidence: `tmp/issue181-{source-audit,final-integrity}.log`,
+`tmp/issue181-{vet,tests}-final.log`, `tmp/issue181-*-default.log`,
+`tmp/issue181-command-{update,default}-final.log`,
+`tmp/issue181-turn-full.log`, `tmp/issue181-spec.log`,
+`tmp/issue181-fixtures.log`, `tmp/issue181-fixture-captures/`.
+All-open local audit found only #181/#182/#177/#178 and trackers #169/#19,
+no bug/follow-C. No issues/checklists, commits or pushes are changed here.
+No final 201-world/four-corpus (#178), peripheral/native-platform reruns,
+all-six pass or stage-exit claim is made.
+
+Independent parent complete pinned-source/diff review and acceptance repeat
+passes: bounded vet, fresh bounded full-enabled tests (Olympia **2.135s**),
+14 relevant defaults, command **1366 sections / 105616 lines**, strict
+**233-entry** ordinary turn and all **13 lifecycle / 10 command / 15 USE /
+23 phase / 13 export** controls. Lists remains covered by fresh Go tests and
+the implementer's bounded native default. Spec repeats **34 pass / 91 fail /
+0 error** (**126s**), with no recorded names changed, retaining all prior 33;
+golden remains NO/initialization exit 2. Parent independently verifies both
+complete inherited recording prefixes, all **1212** cached originals and
+the accepted executable hash. Review confirms charge-before-revalidation,
+signed-byte wrap-before-cap and actual turn-keyed omen semantics. #182 remains
+the only observed missing phase-fixture callback; this accepts #181 only,
+not all-six or stage-exit parity. Parent logs:
+`tmp/parent181-{integrity,vet,tests,turn-full,spec}.log`,
+`tmp/parent181-*-default.log`; strict summaries: `tmp/parent181-turn/`.
+
 ## GUARD and STACK prerequisites (#180)
 
 **0.113.0-alpha**, immutable C **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**:
@@ -2304,7 +2381,9 @@ The scripts report a status of 124 as a timeout.
 
 Paths are in the G3 repository.
 `command-compat` additionally reads complete `olympia/coverage.c` and
-`olympia/state_export.c`; the inherited dependency row below lists its other sources.
+`olympia/state_export.c`, and the complete original magic RNG prefix and
+hinder-meditation closure from `olympia/basic.c`; the inherited dependency row
+below lists its other sources.
 A tool needs rerunning after a pin move if any file it reads changed; [`affected.sh`](affected.sh) applies this table to `git diff --name-only OLD NEW`.
 
 | tool | records | reads |

@@ -29693,3 +29693,357 @@ section guard stack no command RNG control
 master 17
 usemeta legacy 1 100000
 entity_rolls 1000 7 5000
+
+section hinder meditation clamp before aura failure preserves projection and saved destination
+place 9000
+entity 9100 3 3
+field 1000 project_cast 9100
+usemeta callback_start 814 1001 -2147483648 777
+dump
+save 1000
+usemeta callback_start 814 1001 2147483647 888
+dump
+save 1000
+usemeta state 1001 814
+log
+
+section hinder meditation aura exact clamp then reset before invalid target
+place 9000
+entity 9100 3 3
+field 1000 project_cast 9100
+field 1000 cur_aura 3
+usemeta callback_start 814 9999 4 777
+dump
+save 1000
+usemeta callback_start 814 9000 0 777
+dump
+usemeta callback_start 814 0 2 777
+dump
+log
+
+section hinder meditation missing garrison and missing target allocation
+place 9000
+field 1000 cur_aura 1
+parse use 814 garrison 1
+usemeta callback_start 814 999 1 0
+dump
+usemeta state 1001 814
+log
+
+section hinder meditation invalid projection retained local success and narrow cap boundaries
+master 17
+place 9000
+link 9000 1001
+field 1000 cur_aura 20
+field 1000 project_cast 1001
+usemeta callback_start 814 1001 1 777
+dump
+usemeta callback_finish 814 1001 1 9000
+save 1001
+field 1001 hinder 4
+usemeta callback_finish 814 1001 1 9000
+save 1001
+field 1001 hinder 5
+usemeta callback_finish 814 1001 1 9000
+save 1001
+field 1001 hinder 127
+usemeta callback_finish 814 1001 1 9000
+save 1001
+field 1001 hinder -128
+usemeta callback_finish 814 1001 3 9000
+save 1001
+save 1000
+log
+who 1001
+log
+usemeta rolls 1001 1000
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section hinder meditation projected ship saved destination survives caster move and later projection
+master 0
+entity 800 5 43
+entity 814 5 0
+field 814 required 800
+learn 1000 800 2 0
+place 9000
+entity 9100 9 18
+entity 9200 3 3
+link 9000 9100
+link 9100 1001
+field 1000 cur_aura 6
+field 1000 project_cast 9100
+learn 1000 814 2 0
+parse use 814 1001 3
+ucov start
+dump
+link 9200 1000
+field 1000 project_cast 9200
+set wait 0
+ucov finish
+dump
+save 1000
+save 1001
+log
+who 1001
+log
+usemeta rolls 1001 1000
+
+section hinder meditation charge before moved target revalidation and preserve absent magic
+entity 800 5 43
+entity 814 5 0
+field 814 required 800
+learn 1000 800 2 0
+place 9000
+entity 9100 3 3
+link 9000 1001
+field 1000 cur_aura 3
+learn 1000 814 2 0
+parse use 814 1001 2
+ucov start
+dump
+link 9100 1001
+set wait 0
+ucov finish
+usemeta state 1001 814
+save 1000
+log
+
+section hinder meditation insufficient completion aura precedes invalid target and leaves projection
+entity 800 5 43
+entity 814 5 0
+field 814 required 800
+learn 1000 800 2 0
+place 9000
+link 9000 1001
+field 1000 cur_aura 3
+learn 1000 814 2 0
+parse use 814 1001 3
+ucov start
+field 1000 cur_aura 2
+who 1001
+set kind 4
+who 1000
+field 1000 project_cast 9000
+set wait 0
+ucov finish
+save 1000
+usemeta state 1001 814
+log
+
+section hinder meditation completion kind and garrison errors still charge
+place 9000
+field 1000 cur_aura 3
+usemeta callback_finish 814 9999 1 9000
+usemeta callback_finish 814 9000 1 9000
+usemeta callback_finish 814 999 1 9000
+save 1000
+log
+
+section hinder meditation foreign hidden visibility failure consumes projection not aura
+place 9000
+entity 9100 3 3
+link 9100 1001
+field 1001 lord 201
+field 1001 hidden 1
+field 1000 cur_aura 3
+field 1000 project_cast 9100
+usemeta callback_start 814 1001 2 0
+dump
+save 1000
+field 1001 contact 1000
+field 1000 project_cast 9100
+usemeta callback_start 814 1001 2 0
+dump
+field 1001 moving 1
+usemeta callback_finish 814 1001 2 9100
+save 1000
+save 1001
+log
+who 1001
+log
+usemeta rolls 1001 1000
+
+section hinder meditation fog contacts and completion hidden revalidation
+master 1
+place 9000
+link 9000 1001
+field 1001 lord 201
+weather new 0 57 5 9000
+field 1000 cur_aura 4
+usemeta callback_start 814 1001 2 0
+field 1001 contact 200
+usemeta callback_start 814 1001 2 0
+field 1001 hidden 1
+usemeta callback_finish 814 1001 2 9000
+save 1000
+save 1001
+log
+who 1001
+log
+
+section hinder meditation hidden after successful start loses aura without target magic
+entity 800 5 43
+entity 814 5 0
+field 814 required 800
+learn 1000 800 2 0
+place 9000
+link 9000 1001
+field 1001 lord 201
+field 1000 cur_aura 2
+learn 1000 814 2 0
+parse use 814 1001 2
+ucov start
+field 1001 hidden 1
+set wait 0
+ucov finish
+save 1000
+save 1001
+log
+
+section hinder meditation real queued ten days completion counters state and RNG
+lore_root
+master 2
+entity 800 5 43
+entity 814 5 0
+field 814 required 800
+learn 1000 800 2 0
+place 9000
+link 9000 1001
+field 1000 cur_aura 3
+learn 1000 814 2 0
+coverage path command.tsv
+ucov path use.tsv
+queue use 814 1001 9
+initial
+start
+dump
+evening
+evening
+evening
+evening
+evening
+evening
+evening
+evening
+evening
+dump
+save 1001
+evening
+dump
+save 1000
+save 1001
+coverage write
+ucov write
+readfile command.tsv
+readfile use.tsv
+readlog 200
+usemeta rolls 1001 1000
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section hinder meditation actual interrupt keeps spent projection but does not charge or allocate target
+lore_root
+master 2
+entity 800 5 43
+entity 814 5 0
+field 814 required 800
+learn 1000 800 2 0
+place 9000
+entity 9100 3 3
+link 9100 1001
+field 1000 project_cast 9100
+field 1000 cur_aura 3
+learn 1000 814 2 0
+ucov path use.tsv
+queue use 814 1001 2
+initial
+start
+dump
+interrupt
+dump
+save 1000
+usemeta state 1001 814
+ucov write
+readfile use.tsv
+readlog 200
+usemeta rolls 1001 1000
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section hinder meditation omen repeats day independent same turn cached seed next turn resets
+master 3
+set turn 9
+set day 1
+place 9000
+link 9000 1001
+field 1000 cur_aura 20
+usemeta callback_finish 814 1001 1 9000
+usemeta rolls 1001 1000
+set day 30
+master 4
+usemeta callback_finish 814 1001 1 9000
+usemeta rolls 1001 1000
+set turn 10
+usemeta callback_finish 814 1001 1 9000
+usemeta rolls 1001 1000
+usemeta callback_finish 814 1000 1 9000
+usemeta rolls 1000 1000
+save 1000
+save 1001
+log
+who 1001
+log
+
+section hinder meditation no callback independent magic legacy allocation control
+master 2
+place 9000
+link 9000 1001
+field 1000 cur_aura 3
+usemeta state 1001 814
+usemeta rolls 1001 1000
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section hinder meditation real queued checks and callback failures then hidden same faction success
+lore_root
+master 2
+entity 800 5 43
+entity 814 5 0
+field 814 required 800
+learn 1000 800 2 0
+learn 1000 814 2 0
+place 9000
+entity 9100 3 3
+link 9000 1001
+coverage path command.tsv
+ucov path use.tsv
+field 1000 project_cast 9100
+queue use 814 1001 3
+queue use 814 1001 3
+queue use 814 1001 0
+load
+do
+dump
+save 1000
+field 1000 cur_aura 3
+do
+dump
+save 1000
+field 1001 hidden 1
+do
+dump
+set wait 0
+finish
+dump
+save 1000
+save 1001
+save 814
+coverage write
+ucov write
+readfile command.tsv
+readfile use.tsv
+readlog 200
+usemeta rolls 1001 1000
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000

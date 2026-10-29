@@ -105,6 +105,8 @@ void drv_ucov_state(void);
 void drv_ucov_seed(int ent, int outcome, int value);
 void drv_use_table(void), drv_use_consume(int who,int sk), drv_use_scroll(int who,int basis), drv_use_magic(struct command *c,int sk);
 int drv_use_lookup(int sk), drv_use_may(int who,int sk), drv_use_correct(struct command *c), drv_use_meets(int who,int sk);
+int drv_use_callback(struct command *c, int sk, int finish);
+void drv_magic_rolls(int who, int other);
 void drv_json(FILE *fp, char *s), drv_export_unit(FILE *fp, int who), drv_export_faction(FILE *fp, int pl);
 void drv_export_location(FILE *fp, int where, int viewer);
 void drv_sort_ids(ilist l);
@@ -1550,6 +1552,11 @@ int main(int argc, char **argv)
     }
    }
    else if(!strcmp(text,"legacy")) printf("use legacy %d\n",rnd(n,a));
+   else if(!strcmp(text,"rolls")) drv_magic_rolls(n,a);
+   else if(!strcmp(text,"callback_start") || !strcmp(text,"callback_finish")) {
+    c->a=a; c->b=b; c->d=d;
+    printf("use callback %d\n",drv_use_callback(c,n,!strcmp(text,"callback_finish")));
+   }
    else if(!strcmp(text,"magic")) { c->wait=a; drv_use_magic(c,n); printf("use magic %d\n",c->wait); }
    else if(!strcmp(text,"experience")) add_skill_experience(n,a);
    else if(!strcmp(text,"month")) { struct skill_ent *s=rp_skill_ent(n,a); if(!s) return 2; s->exp_this_month=(schar)b; }
