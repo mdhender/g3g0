@@ -44,6 +44,7 @@ void drv_ocean(int who);
 ilist drv_oceans(void);
 trades_list drv_offers(int seller, int where, int except);
 void drv_entity_rolls(int who, int sub, int where);
+int drv_sick_roll(int who, int health);
 void drv_nasty(int slot), drv_hades_unit(int who);
 int drv_nasty_roll(int slot, int sub, int low, int high);
 struct exit_view *choose_npc_direction(int who, int where, int dir);
@@ -1110,6 +1111,14 @@ int main(int argc, char **argv)
    }
    else return 2;
   }
+  else if (!strcmp(op, "wound")) {
+   sscanf(line,"%*s %d %d %d",&n,&a,&b);
+   add_char_damage(n,a,b);
+  }
+  else if (!strcmp(op, "sick_roll")) {
+   sscanf(line,"%*s %d %d",&n,&a);
+   printf("sick roll %d\n",drv_sick_roll(n,a));
+  }
   else if (!strcmp(op, "death")) {
    sscanf(line,"%*s %31s %d %d",text,&n,&a);
    if(!strcmp(text,"kill")) kill_char(n,a);
@@ -1913,6 +1922,13 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"contacted")) result = contacted(n,a);
    else if (!strcmp(text,"char_where")) result = char_where(n,a,b);
    else if (!strcmp(text,"char_here")) result = char_here(n,a);
+   else if (!strcmp(text,"check_here")) result = check_char_here(n,a);
+   else if (!strcmp(text,"check_gone")) result = check_char_gone(n,a);
+   else if (!strcmp(text,"still_here")) result = check_still_here(n,a);
+   else if (!strcmp(text,"man_items")) result = count_man_items(n);
+   else if (!strcmp(text,"diff_region")) result = diff_region(n,a);
+   else if (!strcmp(text,"acquire_np")) result = np_to_acquire(n,a);
+   else if (!strcmp(text,"enough_np")) result = enough_np_to_acquire(n,a);
    else if (!strcmp(text,"known")) result = test_known(n,a);
    else if (!strcmp(text,"loc_hidden")) result = loc_hidden(n);
    else if (!strcmp(text,"has_item")) result = has_item(n,a);

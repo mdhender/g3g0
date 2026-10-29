@@ -31167,3 +31167,426 @@ usemeta legacy 1 100000
 newitem 1001 0
 save_new
 export state
+
+section N01 validators missing garrison precedes kind and visibility
+place 9000
+name 1001 Named Target
+predicate check_here 1000 999
+predicate still_here 1000 999
+predicate check_here 1000 0
+predicate still_here 1000 0
+predicate check_here 1000 9000
+predicate still_here 1000 9000
+predicate check_here 1000 1999
+predicate still_here 1000 1999
+entity 999 2 0
+link 9000 999
+predicate check_here 1000 999
+predicate still_here 1000 999
+readlog 200
+export state
+
+section N01 validators invisible contact direction faction contact and moving
+place 9000
+link 9000 1001
+name 1001 Named Target
+field 1001 lord 201
+field 1001 hidden 1
+predicate check_here 1000 1001
+predicate still_here 1000 1001
+field 1000 contact 1001
+predicate check_here 1000 1001
+predicate still_here 1000 1001
+field 1001 contact 200
+predicate check_here 1000 1001
+predicate still_here 1000 1001
+field 1001 moving 7
+predicate check_here 1000 1001
+predicate check_gone 1000 1001
+predicate still_here 1000 1001
+entity 9001 3 3
+link 9001 1001
+predicate check_here 1000 1001
+predicate still_here 1000 1001
+readlog 200
+export state
+
+section N01 validators same faction hidden nested stack and fog revalidation
+place 9000
+link 9000 1001
+field 1001 hidden 1
+predicate check_here 1000 1001
+predicate still_here 1000 1001
+field 1001 lord 201
+link 1000 1001
+predicate check_here 1000 1001
+predicate still_here 1000 1001
+link 9000 1001
+field 1001 hidden 0
+entity 7000 11 57
+link 9000 7000
+field 7000 strength 2
+predicate check_here 1000 1001
+predicate still_here 1000 1001
+field 1001 contact 1000
+predicate check_here 1000 1001
+predicate still_here 1000 1001
+readlog 200
+export state
+
+section N01 man items noble garrison nonfighters fighters and C int sum
+entity 1002 2 64
+entity 1003 2 0
+entity 500 4 0
+entity 501 4 0
+entity 502 4 0
+field 500 man 1
+field 501 attack 90
+field 502 man -1
+predicate man_items 1000
+predicate man_items 1002
+predicate man_items 1003
+predicate char_alloc 1003
+inventory 1000 500 7
+inventory 1000 501 21
+inventory 1000 502 3
+inventory 1002 500 7
+inventory 1002 501 21
+inventory 1002 502 3
+predicate man_items 1000
+predicate man_items 1002
+inventory 1003 500 2147483647
+inventory 1003 502 3
+predicate man_items 1003
+export state
+
+section N01 greater regions ordinary continents collapse but six special realms differ
+entity 10000 3 50
+entity 10001 3 50
+entity 10002 3 50
+entity 10003 3 50
+entity 10004 3 50
+entity 10005 3 50
+entity 10006 3 50
+entity 10007 3 50
+set faery_region 10002
+set hades_region 10003
+set cloud_region 10004
+set tunnel_region 10005
+set under_region 10006
+set nowhere_region 10007
+place 9000
+entity 9001 3 3
+link 10000 9000
+link 10001 9001
+predicate diff_region 1000 9001
+predicate diff_region 10000 10001
+predicate diff_region 1000 0
+entity 5000 3 28
+entity 5001 9 30
+link 9001 5000
+link 5000 5001
+link 5001 1001
+predicate diff_region 1000 1001
+link 10002 9001
+predicate diff_region 1000 1001
+predicate diff_region 1001 10002
+predicate diff_region 10002 10003
+predicate diff_region 10003 10004
+predicate diff_region 10004 10005
+predicate diff_region 10005 10006
+predicate diff_region 10006 10007
+predicate diff_region 10007 10000
+predicate diff_region 10007 10007
+export state
+
+section N01 damage nonpositive does not allocate or initialize entity RNG
+master 37
+set turn 11
+entity 1002 2 0
+predicate char_alloc 1002
+wound 1002 0 -1
+wound 1002 -1 -1
+wound 1002 -2147483648 -1
+predicate char_alloc 1002
+wound 1999 0 0
+wound 1999 -1 0
+master 38
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+export state
+
+section N01 damage already sick does not initialize entity RNG
+master 37
+set turn 11
+field 1000 health 100
+field 1000 sick 1
+wound 1000 1 -1
+master 38
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+save 1000
+readlog 200
+export state
+
+section N01 damage RNG no call independent control
+master 37
+set turn 11
+master 38
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+export state
+
+section N01 damage wound uses post health keyed onset and retained turn guard
+master 37
+set turn 11
+field 1000 health 100
+wound 1000 1 -1
+save 1000
+wound 1000 49 -1
+save 1000
+wound 1000 49 -1
+save 1000
+master 38
+entity_rolls 1000 7 9000
+sick_roll 1000 99
+sick_roll 1000 50
+sick_roll 1000 1
+usemeta legacy 1 100000
+readlog 200
+export state
+
+section N01 damage keyed health repeat next turn and schar health
+master 37
+set turn 11
+field 1000 health 101
+wound 1000 1 -1
+save 1000
+field 1000 health 51
+field 1000 sick 0
+wound 1000 1 -1
+save 1000
+field 1000 health 51
+field 1000 sick 0
+wound 1000 1 -1
+save 1000
+set turn 12
+field 1000 health 51
+field 1000 sick 0
+wound 1000 1 -1
+save 1000
+field 1000 health 383
+field 1000 sick 0
+wound 1000 1 -1
+save 1000
+entity_rolls 1000 7 9000
+readlog 200
+export state
+
+section N01 damage health minus one 49 no wound death sickness or RNG
+master 37
+set turn 11
+field 1000 health -1
+wound 1000 49 -1
+master 38
+entity_rolls 1000 7 9000
+save 1000
+readlog 200
+export state
+
+section N01 damage health minus one 50 fatal real inheritance
+set gm 200
+master 37
+set turn 11
+entity 10000 3 50
+place 9000
+link 10000 9000
+entity 10 4 0
+entity 1 4 0
+inventory 1000 1 101
+field 1000 health -1
+wound 1000 50 1001
+death state
+inherit state
+save 1000
+save 1001
+save 9000
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+readlog 200
+export state
+
+section N01 damage health one exact fatal wound message before death
+set gm 200
+master 37
+set turn 11
+entity 10000 3 50
+place 9000
+link 10000 9000
+entity 10 4 0
+field 1000 health 1
+wound 1000 1 0
+death state
+save 1000
+readlog 200
+export state
+
+section N01 damage clamped huge wound fatal survive leaves running WAIT and inheritance intact
+set gm 200
+master 37
+set turn 11
+entity 10000 3 50
+place 9000
+link 10000 9000
+entity 611 5 43
+learn 1000 611 2 21
+entity 1 4 0
+inventory 1000 1 101
+field 1000 health 7
+field 1000 sick 1
+resolve_wait
+queue wait time 9
+queue wait time 8
+load
+do
+wound 1000 2147483647 1001
+dump
+save 1000
+save 1001
+inherit state
+entity_rolls 1000 7 9000
+readlog 200
+export state
+
+section N01 damage zero health no wounded message real WAIT interruption queues inheritance
+set gm 201
+master 37
+set turn 11
+entity 10000 3 50
+place 9000
+link 10000 9000
+field 1001 lord 201
+entity 10 4 0
+entity 1 4 0
+inventory 1000 1 101
+field 1000 health 0
+resolve_wait
+queue wait time 9
+queue wait time 8
+load
+do
+wound 1000 1 1001
+inherit state
+save 1000
+save 1001
+save 9000
+orders_file 200
+readlog 200
+readlog 201
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+export state
+
+section N01 damage negative health other than sentinel dies without wound
+set gm 200
+master 37
+set turn 11
+entity 10000 3 50
+place 9000
+link 10000 9000
+entity 10 4 0
+field 1000 health -2
+wound 1000 1 -2
+save 1000
+readlog 200
+export state
+
+section N01 damage sentinel fatal survival skips wound and sickness gate
+master 37
+set turn 11
+entity 611 5 43
+learn 1000 611 2 21
+field 1000 health -1
+field 1000 sick 1
+wound 1000 50 -1
+master 38
+entity_rolls 1000 7 9000
+save 1000
+readlog 200
+export state
+
+section N01 acquisition regular oath skills totals repeated exact and short NP
+place 9000
+field 1001 lord 201
+name 1001 Desirable Noble
+predicate acquire_np 1000 1001
+predicate enough_np 1000 1001
+field 200 np 1
+predicate enough_np 1000 1001
+field 1001 loyal 2
+field 1001 rate 3
+entity 600 5 0
+field 600 skill_np 2
+learn 1001 600 1 0
+predicate acquire_np 1000 1001
+field 200 np 5
+predicate enough_np 1000 1001
+field 200 np 6
+predicate enough_np 1000 1001
+predicate enough_np 1000 1001
+pstate 200
+pstate 201
+readlog 200
+export state
+
+section N01 acquisition independent exemption only for previous owner
+entity 202 1 52
+set indep 202
+field 1001 lord 202
+field 1001 prev 201
+field 1001 loyal 2
+field 1001 rate 2
+field 200 np 0
+predicate acquire_np 1000 1001
+predicate enough_np 1000 1001
+field 1001 prev 200
+predicate acquire_np 1000 1001
+predicate enough_np 1000 1001
+field 200 np -1
+predicate enough_np 1000 1001
+field 1001 lord 201
+predicate acquire_np 1000 1001
+predicate enough_np 1000 1001
+readlog 200
+export state
+
+section N01 acquisition NPC zero cost missing char and owner records allocation
+entity 202 1 52
+entity 203 1 49
+set indep 202
+entity 1002 2 0
+field 1000 lord 203
+field 1001 lord 202
+field 1001 loyal 4
+predicate acquire_np 1000 1001
+predicate enough_np 1000 1001
+predicate char_alloc 1002
+predicate acquire_np 1000 1002
+predicate char_alloc 1002
+field 1000 lord 200
+set indep 0
+predicate acquire_np 1000 1002
+predicate char_alloc 1002
+export state
+
+section N01 acquisition C width negative total and short player NP
+field 1001 loyal 2
+field 1001 rate 2147483647
+field 200 np 65535
+predicate acquire_np 1000 1001
+predicate enough_np 1000 1001
+field 1001 rate 0
+predicate acquire_np 1000 1001
+predicate enough_np 1000 1001
+readlog 200
+export state

@@ -33,6 +33,10 @@ func (w *world) greaterRegion(who int) int {
 	return reg
 }
 
+func (w *world) diffRegion(a, b int) bool {
+	return w.greaterRegion(a) != w.greaterRegion(b)
+}
+
 func (w *world) deductAura(who, amount int) bool {
 	p := w.rpMagic(who)
 	if p == nil || int(p.curAura) < amount {
@@ -181,6 +185,36 @@ func (w *world) addStructureDamage(fort, damage int, canDestroy bool) bool {
 		w.buildingCollapses(fort)
 	}
 	return true
+}
+
+// addCharDamage is u.c:541–579. Nonpositive damage must not allocate CH or
+// touch RNG; health -1 has its own fatal threshold and never rolls sickness.
+func (w *world) addCharDamage(who, amount, inherit int) {
+	amount = int(int32(amount))
+	if amount <= 0 {
+		return
+	}
+	p := w.pChar(who)
+	if p.health == -1 {
+		if amount >= 50 {
+			w.killChar(who, inherit)
+		}
+		return
+	}
+	if p.health > 0 {
+		if amount > int(p.health) {
+			amount = int(p.health)
+		}
+		p.health -= int8(amount)
+		assert(p.health >= 0, "olympia/u.c", 564, "p->health >= 0")
+		w.commandOut(who, "%s is wounded.  Health is now %d.", w.boxName(who), p.health)
+	}
+	if p.health <= 0 {
+		w.killChar(who, inherit)
+	} else if p.sick == 0 && w.streams.EntSick(who, int(p.health)) > int(p.health) {
+		p.sick = 1
+		w.commandOut(who, "%s has fallen ill.", w.boxName(who))
+	}
 }
 
 func (w *world) surviveFatal(who int) bool {
@@ -444,6 +478,10 @@ func (w *world) charHere(who, target int) bool {
 	return w.charWhere(w.subloc(who), who, target)
 }
 
+func (w *world) checkCharHere(who, target int) bool {
+	return w.checkCharWhere(w.subloc(who), who, target)
+}
+
 // checkCharWhere is the complete olympia/u.c:898–921 validator.
 func (w *world) checkCharWhere(where, who, target int) bool {
 	if target == int(w.garrisonMagic) {
@@ -456,6 +494,24 @@ func (w *world) checkCharWhere(where, who, target int) bool {
 	}
 	if !w.charWhere(where, who, target) {
 		w.commandOut(who, "%s cannot be seen here.", w.boxCode(target))
+		return false
+	}
+	return true
+}
+
+// checkStillHere is u.c:965–996. Its char_gone test is deliberately #if 0:
+// a moving target remains eligible until it can no longer be seen here.
+func (w *world) checkStillHere(who, target int) bool {
+	if target == int(w.garrisonMagic) {
+		w.commandOut(who, "There is no garrison here.")
+		return false
+	}
+	if w.kind(target) != tChar {
+		w.commandOut(who, "%s is not a character.", w.boxCode(target))
+		return false
+	}
+	if !w.charHere(who, target) {
+		w.commandOut(who, "%s can no longer be seen here.", w.boxName(target))
 		return false
 	}
 	return true
@@ -561,6 +617,21 @@ func (w *world) checkSkill(who, skill int) bool {
 		return false
 	}
 	return true
+}
+
+// countManItems includes every man item, not just fighters, and the noble
+// except for garrisons. Sum at C int width without allocating item records.
+func (w *world) countManItems(who int) int32 {
+	sum := int32(1)
+	if w.subkind(who) == subGarrison {
+		sum = 0
+	}
+	for e := range w.loopInv(who) {
+		if p := w.rpItem(int(e.item)); p != nil && p.isManItem != 0 {
+			sum += e.qty
+		}
+	}
+	return sum
 }
 
 // countAny and countStackAny are count_any and count_stack_any, used by

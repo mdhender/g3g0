@@ -120,6 +120,28 @@ func (w *world) setLord(who, newLord, k, lev int) {
 	}
 }
 
+// npToAcquire is swear.c:187–196. Only the independent unit's previous
+// owner is exempt; ordinary acquisitions still use the complete NP total.
+func (w *world) npToAcquire(who, target int) int {
+	if w.player(target) == int(w.indepPlayer) && int(w.pChar(target).prevLord) == w.player(who) {
+		return 0
+	}
+	return w.charNPTotal(target)
+}
+
+func (w *world) enoughNPToAcquire(who, target int) bool {
+	nps := w.npToAcquire(who, target)
+	np := 0
+	if p := w.rpPlayer(w.player(who)); p != nil {
+		np = int(p.noblePoints)
+	}
+	if np < nps {
+		w.commandOut(who, "Don't have %d NP%s to take control of %s.", nps, addS(nps), w.boxName(target))
+		return false
+	}
+	return true
+}
+
 // Dependents stay with the old direct lord, before who's own lord changes.
 func (w *world) reswearAllSworn(who int) {
 	pl, newLord := w.player(who), w.lord(who)

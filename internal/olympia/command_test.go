@@ -1453,6 +1453,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			default:
 				t.Fatalf("unknown structure %s", action)
 			}
+		case "wound":
+			w.addCharDamage(args.num(t), args.num(t), args.num(t))
+		case "sick_roll":
+			fmt.Fprintf(&stdout, "sick roll %d\n", w.streams.EntSick(args.num(t), args.num(t)))
 		case "death":
 			switch action := args.word(); action {
 			case "kill":
@@ -2744,6 +2748,20 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				result = b2i(w.charWhere(n, a, b))
 			case "char_here":
 				result = b2i(w.charHere(n, a))
+			case "check_here":
+				result = b2i(w.checkCharHere(n, a))
+			case "check_gone":
+				result = b2i(w.checkCharGone(n, a))
+			case "still_here":
+				result = b2i(w.checkStillHere(n, a))
+			case "man_items":
+				result = int(w.countManItems(n))
+			case "diff_region":
+				result = b2i(w.diffRegion(n, a))
+			case "acquire_np":
+				result = w.npToAcquire(n, a)
+			case "enough_np":
+				result = b2i(w.enoughNPToAcquire(n, a))
 			case "known":
 				result = b2i(w.testKnown(n, a))
 			case "loc_hidden":

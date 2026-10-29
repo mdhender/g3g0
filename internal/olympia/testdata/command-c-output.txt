@@ -110376,3 +110376,1915 @@ IT
 stderr:
 
 exit 0
+stdout:
+section N01 validators missing garrison precedes kind and visibility
+> place 9000
+> name 1001 Named Target
+> predicate check_here 1000 999
+predicate 0
+> predicate still_here 1000 999
+predicate 0
+> predicate check_here 1000 0
+predicate 0
+> predicate still_here 1000 0
+predicate 0
+> predicate check_here 1000 9000
+predicate 0
+> predicate still_here 1000 9000
+predicate 0
+> predicate check_here 1000 1999
+predicate 0
+> predicate still_here 1000 1999
+predicate 0
+> entity 999 2 0
+> link 9000 999
+> predicate check_here 1000 999
+predicate 0
+> predicate still_here 1000 999
+predicate 0
+> readlog 200
+log 200:
+1000:0::0::There is no garrison here.
+1000:0::0::There is no garrison here.
+1000:0::0::[0] is not a character.
+1000:0::0::[0] is not a character.
+1000:0::0::[9000] is not a character.
+1000:0::0::[9000] is not a character.
+1000:0::0::[1999] is not a character.
+1000:0::0::[1999] is not a character.
+1000:0::0::There is no garrison here.
+1000:0::0::There is no garrison here.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 999 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+999 char 0
+LI
+ wh 9000
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+na Named Target
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 999
+9000 loc plain
+LI
+ hl 1000 999 
+
+stderr:
+
+exit 0
+stdout:
+section N01 validators invisible contact direction faction contact and moving
+> place 9000
+> link 9000 1001
+> name 1001 Named Target
+> field 1001 lord 201
+> field 1001 hidden 1
+> predicate check_here 1000 1001
+predicate 0
+> predicate still_here 1000 1001
+predicate 0
+> field 1000 contact 1001
+> predicate check_here 1000 1001
+predicate 0
+> predicate still_here 1000 1001
+predicate 0
+> field 1001 contact 200
+> predicate check_here 1000 1001
+predicate 1
+> predicate still_here 1000 1001
+predicate 1
+> field 1001 moving 7
+> predicate check_here 1000 1001
+predicate 1
+> predicate check_gone 1000 1001
+predicate 0
+> predicate still_here 1000 1001
+predicate 1
+> entity 9001 3 3
+> link 9001 1001
+> predicate check_here 1000 1001
+predicate 0
+> predicate still_here 1000 1001
+predicate 0
+> readlog 200
+log 200:
+1000:0::0::[1001] cannot be seen here.
+1000:0::0::Named Target~[1001] can no longer be seen here.
+1000:0::0::[1001] cannot be seen here.
+1000:0::0::Named Target~[1001] can no longer be seen here.
+1000:0::0::Named Target~[1001] has left.
+1000:0::0::[1001] cannot be seen here.
+1000:0::0::Named Target~[1001] can no longer be seen here.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ ct 1001 
+
+export entity 1001 char 1 player 0 magic 1 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+na Named Target
+LI
+ wh 9001
+CH
+ lo 201
+ mo 7
+ ct 200 
+CM
+ hs 1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9001 loc plain
+LI
+ hl 1001 
+
+stderr:
+
+exit 0
+stdout:
+section N01 validators same faction hidden nested stack and fog revalidation
+> place 9000
+> link 9000 1001
+> field 1001 hidden 1
+> predicate check_here 1000 1001
+predicate 1
+> predicate still_here 1000 1001
+predicate 1
+> field 1001 lord 201
+> link 1000 1001
+> predicate check_here 1000 1001
+predicate 1
+> predicate still_here 1000 1001
+predicate 1
+> link 9000 1001
+> field 1001 hidden 0
+> entity 7000 11 57
+> link 9000 7000
+> field 7000 strength 2
+> predicate check_here 1000 1001
+predicate 0
+> predicate still_here 1000 1001
+predicate 0
+> field 1001 contact 1000
+> predicate check_here 1000 1001
+predicate 1
+> predicate still_here 1000 1001
+predicate 1
+> readlog 200
+log 200:
+1000:0::0::[1001] cannot be seen here.
+1000:0::0::<no subkind>~[1001] can no longer be seen here.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 1 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ ct 1000 
+
+export entity 7000 char 0 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+7000 storm fog
+LI
+ wh 9000
+MI
+ ss 2
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001 7000
+9000 loc plain
+LI
+ hl 1000 1001 7000 
+
+stderr:
+
+exit 0
+stdout:
+section N01 man items noble garrison nonfighters fighters and C int sum
+> entity 1002 2 64
+> entity 1003 2 0
+> entity 500 4 0
+> entity 501 4 0
+> entity 502 4 0
+> field 500 man 1
+> field 501 attack 90
+> field 502 man -1
+> predicate man_items 1000
+predicate 1
+> predicate man_items 1002
+predicate 0
+> predicate man_items 1003
+predicate 1
+> predicate char_alloc 1003
+predicate 0
+> inventory 1000 500 7
+> inventory 1000 501 21
+> inventory 1000 502 3
+> inventory 1002 500 7
+> inventory 1002 501 21
+> inventory 1002 502 3
+> predicate man_items 1000
+predicate 11
+> predicate man_items 1002
+predicate 10
+> inventory 1003 500 2147483647
+> inventory 1003 502 3
+> predicate man_items 1003
+predicate -2147483645
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 500 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+500 item 0
+IT
+ mu 1
+
+export entity 501 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+501 item 0
+IT
+ at 90
+
+export entity 502 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+502 item 0
+IT
+ mu -1
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 500 7
+raw item 501 21
+raw item 502 3
+1000 char 0
+il	500 7 \
+	501 21 \
+	502 3
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 500 7
+raw item 501 21
+raw item 502 3
+1002 char garrison
+il	500 7 \
+	501 21 \
+	502 3
+
+export entity 1003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 500 2147483647
+raw item 502 3
+1003 char 0
+il	500 2147483647 \
+	502 3
+
+stderr:
+
+exit 0
+stdout:
+section N01 greater regions ordinary continents collapse but six special realms differ
+> entity 10000 3 50
+> entity 10001 3 50
+> entity 10002 3 50
+> entity 10003 3 50
+> entity 10004 3 50
+> entity 10005 3 50
+> entity 10006 3 50
+> entity 10007 3 50
+> set faery_region 10002
+> set hades_region 10003
+> set cloud_region 10004
+> set tunnel_region 10005
+> set under_region 10006
+> set nowhere_region 10007
+> place 9000
+> entity 9001 3 3
+> link 10000 9000
+> link 10001 9001
+> predicate diff_region 1000 9001
+predicate 0
+> predicate diff_region 10000 10001
+predicate 0
+> predicate diff_region 1000 0
+predicate 0
+> entity 5000 3 28
+> entity 5001 9 30
+> link 9001 5000
+> link 5000 5001
+> link 5001 1001
+> predicate diff_region 1000 1001
+predicate 0
+> link 10002 9001
+> predicate diff_region 1000 1001
+predicate 1
+> predicate diff_region 1001 10002
+predicate 0
+> predicate diff_region 10002 10003
+predicate 1
+> predicate diff_region 10003 10004
+predicate 1
+> predicate diff_region 10004 10005
+predicate 1
+> predicate diff_region 10005 10006
+predicate 1
+> predicate diff_region 10006 10007
+predicate 1
+> predicate diff_region 10007 10000
+predicate 1
+> predicate diff_region 10007 10007
+predicate 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 5001
+CH
+ lo 200
+
+export entity 5000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 5001
+5000 loc poppy field
+LI
+ wh 9001
+ hl 5001 
+
+export entity 5001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+5001 ship galley
+LI
+ wh 5000
+ hl 1001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ wh 10000
+ hl 1000 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 5000
+9001 loc plain
+LI
+ wh 10002
+ hl 5000 
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+export entity 10001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10001 loc region
+LI
+
+export entity 10002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9001
+10002 loc region
+LI
+ hl 9001 
+
+export entity 10003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10003 loc region
+
+export entity 10004 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10004 loc region
+
+export entity 10005 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10005 loc region
+
+export entity 10006 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10006 loc region
+
+export entity 10007 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10007 loc region
+
+stderr:
+
+exit 0
+stdout:
+section N01 damage nonpositive does not allocate or initialize entity RNG
+> master 37
+> set turn 11
+> entity 1002 2 0
+> predicate char_alloc 1002
+predicate 0
+> wound 1002 0 -1
+> wound 1002 -1 -1
+> wound 1002 -2147483648 -1
+> predicate char_alloc 1002
+predicate 0
+> wound 1999 0 0
+> wound 1999 -1 0
+> master 38
+> entity_rolls 1000 7 9000
+prison roll 599
+land dir99 1
+land dir98 1
+land pick 2
+> usemeta legacy 1 100000
+use legacy 32937
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char 0
+
+stderr:
+
+exit 0
+stdout:
+section N01 damage already sick does not initialize entity RNG
+> master 37
+> set turn 11
+> field 1000 health 100
+> field 1000 sick 1
+> wound 1000 1 -1
+> master 38
+> entity_rolls 1000 7 9000
+prison roll 599
+land dir99 1
+land dir98 1
+land pick 2
+> usemeta legacy 1 100000
+use legacy 32937
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he 99
+ si 1
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 99.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ he 99
+ si 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N01 damage RNG no call independent control
+> master 37
+> set turn 11
+> master 38
+> entity_rolls 1000 7 9000
+prison roll 599
+land dir99 1
+land dir98 1
+land pick 2
+> usemeta legacy 1 100000
+use legacy 32937
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N01 damage wound uses post health keyed onset and retained turn guard
+> master 37
+> set turn 11
+> field 1000 health 100
+> wound 1000 1 -1
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he 99
+
+> wound 1000 49 -1
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he 50
+
+> wound 1000 49 -1
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he 1
+ si 1
+
+> master 38
+> entity_rolls 1000 7 9000
+prison roll 267
+land dir99 3
+land dir98 2
+land pick 1
+> sick_roll 1000 99
+sick roll 12
+> sick_roll 1000 50
+sick roll 30
+> sick_roll 1000 1
+sick roll 62
+> usemeta legacy 1 100000
+use legacy 32937
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 99.
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 50.
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 1.
+1000:0::0::<no subkind>~[1000] has fallen ill.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ he 1
+ si 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N01 damage keyed health repeat next turn and schar health
+> master 37
+> set turn 11
+> field 1000 health 101
+> wound 1000 1 -1
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he 100
+
+> field 1000 health 51
+> field 1000 sick 0
+> wound 1000 1 -1
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he 50
+
+> field 1000 health 51
+> field 1000 sick 0
+> wound 1000 1 -1
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he 50
+
+> set turn 12
+> field 1000 health 51
+> field 1000 sick 0
+> wound 1000 1 -1
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he 50
+ si 1
+
+> field 1000 health 383
+> field 1000 sick 0
+> wound 1000 1 -1
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he 126
+
+> entity_rolls 1000 7 9000
+prison roll 363
+land dir99 2
+land dir98 3
+land pick 1
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 100.
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 50.
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 50.
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 50.
+1000:0::0::<no subkind>~[1000] has fallen ill.
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 126.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ he 126
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N01 damage health minus one 49 no wound death sickness or RNG
+> master 37
+> set turn 11
+> field 1000 health -1
+> wound 1000 49 -1
+> master 38
+> entity_rolls 1000 7 9000
+prison roll 599
+land dir99 1
+land dir98 1
+land pick 2
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he -1
+
+> readlog 200
+log 200:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ he -1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N01 damage health minus one 50 fatal real inheritance
+> set gm 200
+> master 37
+> set turn 11
+> entity 10000 3 50
+> place 9000
+> link 10000 9000
+> entity 10 4 0
+> entity 1 4 0
+> inventory 1000 1 101
+> field 1000 health -1
+> wound 1000 50 1001
+> death state
+kind chain 2: 1001
+kind chain 4: 1 10 1000
+kind chain 8:
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1000 12 1001
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 item dead body
+na dead body
+CH
+ he -1
+ dt 11 0 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+
+> save 1001
+1001 char 0
+il	1 101
+CH
+ lo 200
+
+> save 9000
+9000 loc plain
+il	1000 1
+LI
+ wh 10000
+
+> entity_rolls 1000 7 9000
+prison roll 267
+land dir99 3
+land dir98 2
+land pick 1
+> usemeta legacy 1 100000
+use legacy 82291
+> readlog 200
+log 200:
+1000:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1000] died in Plain~[9000].
+1001:0::0::Taken from <no subkind>~[1000]:
+1001:0::3::101~<no subkind>~[1]
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 12 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 1 0
+1000 item dead body
+na dead body
+CH
+ he -1
+ dt 11 0 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 101
+1001 char 0
+il	1 101
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1000 1
+9000 loc plain
+il	1000 1
+LI
+ wh 10000
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+warning: plural name not set for item [1]
+
+exit 0
+stdout:
+section N01 damage health one exact fatal wound message before death
+> set gm 200
+> master 37
+> set turn 11
+> entity 10000 3 50
+> place 9000
+> link 10000 9000
+> entity 10 4 0
+> field 1000 health 1
+> wound 1000 1 0
+> death state
+kind chain 2: 1001
+kind chain 4: 10 1000
+kind chain 8:
+> save 1000
+1000 item dead body
+na dead body
+CH
+ dt 11 0 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 0.
+1000:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1000] died in Plain~[9000].
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 12
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+1000 item dead body
+na dead body
+CH
+ dt 11 0 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 1000 1
+9000 loc plain
+il	1000 1
+LI
+ wh 10000
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+
+exit 0
+stdout:
+section N01 damage clamped huge wound fatal survive leaves running WAIT and inheritance intact
+> set gm 200
+> master 37
+> set turn 11
+> entity 10000 3 50
+> place 9000
+> link 10000 9000
+> entity 611 5 43
+> learn 1000 611 2 21
+> entity 1 4 0
+> inventory 1000 1 101
+> field 1000 health 7
+> field 1000 sick 1
+> resolve_wait
+> queue wait time 9
+> queue wait time 8
+> load
+load 1
+> do
+> wound 1000 2147483647 1001
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 9 0 0 0 0 0 0; parse [wait] [time] [9]
+player 200 count 1 last 11 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> save 1000
+1000 char 0
+il	1 101
+LI
+ wh 9000
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+CO
+ li wait time 9
+ ar 0 9 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 1001
+1001 char 0
+CH
+ lo 200
+
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1000
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> entity_rolls 1000 7 9000
+prison roll 267
+land dir99 3
+land dir98 2
+land pick 1
+> readlog 200
+log 200:
+1000:0::0::> wait time 9
+1000:0::0::<no subkind>~[1000] is wounded.  Health is now 0.
+1000:0::0::<no subkind>~[1000] would have died, but survived a fatal wound!
+1000:0::0::Forgot [611].
+1000:0::0::Health is now 100.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ lt 11
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 611 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+611 skill magic
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 101
+1000 char 0
+il	1 101
+LI
+ wh 9000
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+CO
+ li wait time 9
+ ar 0 9 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ wh 10000
+ hl 1000 
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+
+exit 0
+stdout:
+section N01 damage zero health no wounded message real WAIT interruption queues inheritance
+> set gm 201
+> master 37
+> set turn 11
+> entity 10000 3 50
+> place 9000
+> link 10000 9000
+> field 1001 lord 201
+> entity 10 4 0
+> entity 1 4 0
+> inventory 1000 1 101
+> field 1000 health 0
+> resolve_wait
+> queue wait time 9
+> queue wait time 8
+> load
+load 1
+> do
+> wound 1000 1 1001
+> inherit state
+combat gold 101 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1000
+inherit player 201
+bits: 12 1001
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 item dead body
+na dead body
+CH
+ dt 11 0 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+CO
+ li wait time 9
+ ar 0 9 0 0 0 0 0 0
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 1001
+1001 char 0
+il	1 101
+CH
+ lo 201
+
+> save 9000
+9000 loc plain
+il	1000 1
+LI
+ wh 10000
+
+> orders_file 200
+orders file 200:
+> readlog 200
+log 200:
+1000:0::0::> wait time 9
+1000:0::0::*** <no subkind> has died ***
+> readlog 201
+log 201:
+12:0::0::<no subkind>~[1000] died in Plain~[9000].
+1001:0::0::Taken from <no subkind>~[1000]:
+1001:0::3::101~<no subkind>~[1]
+> entity_rolls 1000 7 9000
+prison roll 267
+land dir99 3
+land dir98 2
+land pick 1
+> usemeta legacy 1 100000
+use legacy 82291
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ lt 11
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 12 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+raw item 1 0
+1000 item dead body
+na dead body
+CH
+ dt 11 0 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+CO
+ li wait time 9
+ ar 0 9 0 0 0 0 0 0
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 101
+1001 char 0
+il	1 101
+CH
+ lo 201
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1000 1
+9000 loc plain
+il	1000 1
+LI
+ wh 10000
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+warning: plural name not set for item [1]
+
+exit 0
+stdout:
+section N01 damage negative health other than sentinel dies without wound
+> set gm 200
+> master 37
+> set turn 11
+> entity 10000 3 50
+> place 9000
+> link 10000 9000
+> entity 10 4 0
+> field 1000 health -2
+> wound 1000 1 -2
+> save 1000
+1000 item dead body
+na dead body
+CH
+ he -2
+ dt 11 0 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+
+> readlog 200
+log 200:
+1000:0::0::*** <no subkind> has died ***
+12:0::0::<no subkind>~[1000] died in Plain~[9000].
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 12
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+1000 item dead body
+na dead body
+CH
+ he -2
+ dt 11 0 0
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 1000 1
+9000 loc plain
+il	1000 1
+LI
+ wh 10000
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+
+exit 0
+stdout:
+section N01 damage sentinel fatal survival skips wound and sickness gate
+> master 37
+> set turn 11
+> entity 611 5 43
+> learn 1000 611 2 21
+> field 1000 health -1
+> field 1000 sick 1
+> wound 1000 50 -1
+> master 38
+> entity_rolls 1000 7 9000
+prison roll 599
+land dir99 1
+land dir98 1
+land pick 2
+> save 1000
+1000 char 0
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind>~[1000] would have died, but survived a fatal wound!
+1000:0::0::Forgot [611].
+1000:0::0::Health is now 100.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 611 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+611 skill magic
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ he 100
+CM
+ ma -1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N01 acquisition regular oath skills totals repeated exact and short NP
+> place 9000
+> field 1001 lord 201
+> name 1001 Desirable Noble
+> predicate acquire_np 1000 1001
+predicate 1
+> predicate enough_np 1000 1001
+predicate 0
+> field 200 np 1
+> predicate enough_np 1000 1001
+predicate 1
+> field 1001 loyal 2
+> field 1001 rate 3
+> entity 600 5 0
+> field 600 skill_np 2
+> learn 1001 600 1 0
+> predicate acquire_np 1000 1001
+predicate 6
+> field 200 np 5
+> predicate enough_np 1000 1001
+predicate 0
+> field 200 np 6
+> predicate enough_np 1000 1001
+predicate 1
+> predicate enough_np 1000 1001
+predicate 1
+> pstate 200
+player 200 np 6 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+> pstate 201
+player 201 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+> readlog 200
+log 200:
+1000:0::0::Don't have 1 NP to take control of Desirable Noble~[1001].
+1000:0::0::Don't have 6 NPs to take control of Desirable Noble~[1001].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ np 6
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 600 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+600 skill 0
+SK
+ tl 0
+ np 2
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 600 1
+1001 char 0
+na Desirable Noble
+CH
+ lo 201
+ lk 2
+ lr 3
+ sl	600 1 0 0 0
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N01 acquisition independent exemption only for previous owner
+> entity 202 1 52
+> set indep 202
+> field 1001 lord 202
+> field 1001 prev 201
+> field 1001 loyal 2
+> field 1001 rate 2
+> field 200 np 0
+> predicate acquire_np 1000 1001
+predicate 3
+> predicate enough_np 1000 1001
+predicate 0
+> field 1001 prev 200
+> predicate acquire_np 1000 1001
+predicate 0
+> predicate enough_np 1000 1001
+predicate 1
+> field 200 np -1
+> predicate enough_np 1000 1001
+predicate 0
+> field 1001 lord 201
+> predicate acquire_np 1000 1001
+predicate 3
+> predicate enough_np 1000 1001
+predicate 0
+> readlog 200
+log 200:
+1000:0::0::Don't have 3 NPs to take control of <no subkind>~[1001].
+1000:0::0::Don't have 0 NPs to take control of <no subkind>~[1001].
+1000:0::0::Don't have 3 NPs to take control of <no subkind>~[1001].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ np -1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+202 player pl_npc
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 201
+ pl 200
+ lk 2
+ lr 2
+
+stderr:
+
+exit 0
+stdout:
+section N01 acquisition NPC zero cost missing char and owner records allocation
+> entity 202 1 52
+> entity 203 1 49
+> set indep 202
+> entity 1002 2 0
+> field 1000 lord 203
+> field 1001 lord 202
+> field 1001 loyal 4
+> predicate acquire_np 1000 1001
+predicate 0
+> predicate enough_np 1000 1001
+predicate 1
+> predicate char_alloc 1002
+predicate 0
+> predicate acquire_np 1000 1002
+predicate 1
+> predicate char_alloc 1002
+predicate 0
+> field 1000 lord 200
+> set indep 0
+> predicate acquire_np 1000 1002
+predicate 1
+> predicate char_alloc 1002
+predicate 1
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+202 player pl_npc
+
+export entity 203 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+203 player pl_regular
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 202
+ lk 4
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char 0
+CH
+
+stderr:
+
+exit 0
+stdout:
+section N01 acquisition C width negative total and short player NP
+> field 1001 loyal 2
+> field 1001 rate 2147483647
+> field 200 np 65535
+> predicate acquire_np 1000 1001
+predicate -2147483648
+> predicate enough_np 1000 1001
+predicate 1
+> field 1001 rate 0
+> predicate acquire_np 1000 1001
+predicate 1
+> predicate enough_np 1000 1001
+predicate 0
+> readlog 200
+log 200:
+1000:0::0::Don't have 1 NP to take control of <no subkind>~[1001].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ np -1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+ lk 2
+
+stderr:
+
+exit 0

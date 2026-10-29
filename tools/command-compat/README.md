@@ -3,6 +3,112 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Validation, acquisition and wounds prerequisite (#198, stage 4 N01)
+
+**0.120.0-alpha** adds the complete pinned u.c `check_char_here` **924–930**,
+`check_still_here` **965–996**, `add_char_damage` **541–579**,
+`count_man_items` **1178–1197**, `diff_region` **2627–2631** and swear.c
+`np_to_acquire` **187–196** / `enough_np_to_acquire` **199–212** to existing
+u.go/swear.go. The oracle extracts each original definition unchanged exactly
+once, including return types. `tmp/issue198-source-proof.log` records their
+individual sizes/hashes and exact-pin checks. Complete direct callers were
+reviewed, including disabled SWEAR code and commented necro region checks;
+none is newly wired. Existing visibility/contact, greater-region, death,
+survival, inheritance, interruption, NP totals and entity RNG remain owners.
+No source dependency, pin, upstream harness or unrelated callback changes.
+
+Twenty-one appended status-0 sections compare raw streams/status, real
+save_box bytes and raw export allocation/list observations. They distinguish:
+999 before kind/visibility checks (even with a real box at 999); invisible
+versus contacted targets, contact direction, faction and same-stack visibility,
+fog, relocation and named revalidation diagnostics; moving targets accepted by
+still-here but rejected by check_char_gone; ordinary continents collapsed by
+greater_region versus all six special realms, including nested real ships;
+noble 1 / garrison 0, nonfighting man items versus nonman fighters, signed sums;
+nonpositive damage on absent records/boxes; health -1 at 49/50, health 1/0/-2,
+clamped INT_MAX wounds, exact message order, new/already-sick state, repeated
+post-health keyed draws and next-turn/schar boundaries. Real dispatched WAIT
+survives fatal-wound skill consumption, while actual death interrupts WAIT,
+flushes queued orders and transfers inheritance through accepted owners.
+
+Independent no-call versus nonpositive/already-sick/sentinel controls replace
+the master seed before the first entity observation: these detect an unwanted
+sickness draw's otherwise-hidden turn-guard initialization. Entity and legacy
+RNG aftermath are compared without replacing C draws. Acquisition cases cover
+base/oath/all-skill NP totals, short/exact/repeated checks without charging,
+the independent previous-owner exemption versus unrelated acquisitions,
+zero-cost NPCs, absent CH/player records, conditional CH allocation and C int/
+short wrapping. Thin adapters only call the original helpers/leaf and print
+results; no replacement gameplay or success adapters are added.
+
+Four temporary linker controls wrap check_char_here, emit a dependency marker
+and exit **0/134** in both default/update modes. Each is rejected at section
+**1423** with harness status **2**, before status acceptance or replacement;
+the recording hash stays unchanged. Direct bounded executions verify both
+injected statuses (`tmp/issue198-negative-statuses.log`), and rejection logs
+are `tmp/issue198-negative-{0,134}-{default,update}.log`. Probes/compiler
+wrapper and matching captures are removed before the final checks.
+
+Unchanged real C ran twice before each C-only recording update and Go
+comparison. Final corrected cases (explicit colocation for visibility checks)
+match **1444 sections / 112290 output lines / 2227146 output bytes**. Inputs:
+**31592 lines / 602229 bytes**. Additions: **21 sections, 423 input lines /
+8689 bytes, 1912 output lines / 34477 bytes**. Both entire inherited HEAD
+prefixes (**593540 input / 2192669 output bytes**) and stage-3 prefixes
+(**578307 / 2134398 bytes**) remain byte-exact, including non-UTF8 and real
+C trailing spaces. Prefix proof: `tmp/issue198-prefix-proof.log`.
+
+| file | SHA-256 |
+|---|---|
+| command-cases.txt | `c19193becde431c53dcddf2def85e56dd36e29cac6bc734a7754a69b628ce0d8` |
+| command-c-output.txt | `6d2ba0f66cc973df8660cb471a7118c4102eedcd4d1f949dcfe4391f2290317e` |
+
+The initial unknown-operation red test is `tmp/issue198-before.log`; final
+C/C/update/Go evidence is `tmp/issue198-c-corrected.log`. The extracted
+recording checks in `tmp/issue198-discrimination.log` show, in particular,
+moving **here=1 / gone=0 / still=1**, ordinary-region **0** versus special
+**1**, man totals **1/0/11/10/-2147483645**, no-draw control **599/1** versus
+initialized entity aftermath **267/3**, and unrelated independent acquisition
+**3 NP** versus the previous owner's **0**. These are observed original C
+results, not invented expectations.
+
+Final sequential defaults pass with explicit isolated G3_REPO and bounded
+test execution: command **1444/112290**, move **135/7158**, helper **37/1487**,
+RNG **321**, code **43/969**, loadsave **61/3411**, turn-driver **7/152**,
+phase **5/484**, calendar **2/119**, schedule **4/1801**, default turn raw
+status/streams and **2 cwd entries**. Logs: `tmp/issue198-TOOL-final.log`.
+Then bounded vet and fresh full-enabled tests pass, **11 test packages**,
+Olympia **1.942s**, no package exclusions (`tmp/issue198-{vet,tests}-clean.log`).
+Whole-game tests still require supplied corpora; their standalone skips are
+not full-corpus acceptance. Reproduction (from repository root):
+
+```sh
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh" || break
+done
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  run_limited 180 go "$(command -v go)" test -count=1 -v \
+    -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+```
+
+Source/docs diff-check passes. Full diff-check reports only **20 authentic
+C recording trailing-space lines**, intentionally untrimmed. Temporary
+matching command captures/build helpers are removed after validation.
+
+This is prerequisite-helper acceptance only. Original social/inventory/USE
+family scripts await their later callback tasks; no full family, full-world,
+whole-spec, native non-Linux or sanitizer acceptance is implied. The separate
+release-swear-np expected abort is unchanged, not a successful turn. The
+all-open local audit finds **102 issues / no bug or follow-C**; no new verified
+engine bug or oversized prerequisite was found. Parent independently reviewed
+all seven complete pinned definitions, existing shared owners and the full
+source/adapter/case diff, and confirmed both complete inherited byte prefixes.
+Parent bounded vet, fresh full-enabled tests (Olympia **2.074s**) and all eight
+sequential defaults pass (`tmp/parent198-{vet,tests,command,move,helper,rng,code,loadsave,turn-driver,turn}.log`).
+
 ## Province line-of-sight prerequisite (#197, stage 4 P5)
 
 **0.119.0-alpha** adds complete dir.c **128–169**

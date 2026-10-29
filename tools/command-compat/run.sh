@@ -43,7 +43,8 @@ functions = {
                 'daily_command_loop', 'process_player_orders', 'interrupt_order', 'process_interrupted_units', 'process_orders'],
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'prepend_order', 'queue', 'save_player_orders',
                 'orders_template_sup', 'orders_other', 'orders_template', 'list_order_templates'],
-    'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord', 'unit_deserts'],
+    'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord', 'unit_deserts',
+                'np_to_acquire', 'enough_np_to_acquire'],
     'move.c': ['check_captain_loses_sailors', 'restore_stack_actions', 'touch_loc_after_move', 'move_stack',
                'departure_message', 'arrival_message', 'discover_road', 'parse_exit_dir',
                'save_v_array', 'restore_v_array', 'move_exit_land', 'land_check',
@@ -109,7 +110,9 @@ functions = {
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
             'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
             'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
-            'contacted', 'char_where', 'char_here', 'check_char_where', 'check_char_gone', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
+            'contacted', 'char_where', 'char_here', 'check_char_where', 'check_char_here',
+            'check_char_gone', 'check_still_here', 'add_char_damage', 'count_man_items',
+            'diff_region', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'loyal_s', 'add_np', 'deduct_np',
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
@@ -555,6 +558,7 @@ void drv_entity_rolls(int who, int sub, int where) {
  printf("land dir98 %d\\n", ent_land_dir(where, 98));
  printf("land pick %d\\n", ent_land_pick(where, 3));
 }
+int drv_sick_roll(int who, int health) { return ent_sick(who, health); }
 void drv_inherit_rolls(int from, int item, int qty) {
  printf("take gate %d\\n", ent_take(from, item, 0, 1, 2));
  printf("take amount %d\\n", ent_take(from, item, 1, 0, qty));
@@ -711,6 +715,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N01 '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N01 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section los '* ]]; then
    [ "$status" = 0 ] || die "unexpected LOS status $status in section $i"
   fi
