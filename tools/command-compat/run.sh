@@ -147,7 +147,9 @@ functions = {
              'form_new_noble', 'v_form', 'd_form', 'v_accept', 'will_accept_sup', 'will_accept', 'how_many',
              'v_give', 'v_pay', 'may_take', 'v_get', 'may_name', 'v_name', 'v_times',
              'v_fullname', 'v_banner', 'v_flag', 'v_split', 'v_emote'],
-    'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
+    'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production',
+                  'item_gen_here', 'find_harv', 'v_generic_harvest', 'mage_menial_how',
+                  'i_generic_harvest', 'v_collect'],
     'perm.c': ['is_hostile', 'is_defend', 'clear_all_att', 'rp_admit', 'p_admit', 'will_admit',
                'v_admit', 'set_att', 'v_set_att', 'v_hostile', 'v_defend', 'v_neutral', 'v_att_clear',
                'admit_comp', 'print_admit_sup', 'print_admit', 'print_att_sup', 'print_att'],
@@ -312,6 +314,9 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/produce.c"\n')
             out.write(source[start:end])
             out.write(re.search(r'^static ilist collectors = NULL;\n', source, re.M).group(0))
+            start, end = source.index('struct harvest\n'), source.index('static struct harvest *\nfind_harv(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/produce.c"\n')
+            out.write(source[start:end])
         if file == 'day.c':
             start, end = source.index('static rng_stream upkeep_rng;'), source.index('/*\n *  issue #25 endgame Unit B:')
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/day.c"\n')
@@ -553,6 +558,22 @@ void drv_add_item(int who, int item, int qty) { add_item(who, item, qty); }
 void drv_sort_load(int pri) { sort_load_queue(load_q[pri]); }
 void drv_sort_run(void) { sort_run_queue(run_q); }
 ilist drv_collectors(void) { return collectors; }
+void drv_collect_add(int who) { ilist_append(&collectors, who); }
+void drv_harvest_table(void) {
+ for (int i=0; i<sizeof(harv_tbl)/sizeof(*harv_tbl); i++) {
+  struct harvest *t=&harv_tbl[i];
+  printf("harvest row %d %d %d %d %d %d %d %d\\n", i,t->item,t->vis_item,t->mult,t->skill,t->worker,t->chance,t->public);
+  printf("harvest text [%s] [%s] [%s] [%s]\\n", t->got_em ? t->got_em : "NULL",t->none_now ? t->none_now : "NULL",t->none_ever ? t->none_ever : "NULL",t->task_desc ? t->task_desc : "NULL");
+ }
+}
+int drv_harvest_find(int item) { return find_harv(item)!=NULL; }
+int drv_harvest_gen(int terr,int item) { return item_gen_here(terr,item); }
+int drv_harvest_start(struct command *c,int item,int number,int days) { return v_generic_harvest(c,number,days,find_harv(item)); }
+int drv_harvest_summary(struct command *c,int item) { return i_generic_harvest(c,find_harv(item)); }
+void drv_menial(int who) {
+ int roll=ent_menial(who);
+ printf("menial %d %d [%s]\\n",who,roll,mage_menial_how(who));
+}
 int drv_fort_covers(int n) { return fort_covers(n); }
 int drv_bandit(int faery, int who, int where) {
  return faery ? create_faery_bandit(who, where) : create_hades_bandit(who, where);
@@ -760,6 +781,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N12a '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N12a status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N11 '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

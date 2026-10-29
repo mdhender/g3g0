@@ -2562,6 +2562,46 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			}
 		case "rawargs":
 			c.a, c.b, c.c = int32(args.num(t)), int32(args.num(t)), int32(args.num(t))
+		case "harvest":
+			switch action := args.word(); action {
+			case "table":
+				text := func(s *string) string {
+					if s == nil {
+						return "NULL"
+					}
+					return *s
+				}
+				for i, h := range harvTbl {
+					fmt.Fprintf(&stdout, "harvest row %d %d %d %d %d %d %d %d\n", i, h.item, h.visItem, h.mult, h.skill, h.worker, h.chance, b2i(h.public))
+					fmt.Fprintf(&stdout, "harvest text [%s] [%s] [%s] [%s]\n", text(h.gotEm), text(h.noneNow), text(h.noneEver), text(h.taskDesc))
+				}
+			case "find":
+				n := args.num(t)
+				fmt.Fprintf(&stdout, "harvest find %d %d\n", n, b2i(findHarv(n) != nil))
+			case "gen":
+				n, item := args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "harvest gen %d %d %d\n", n, item, b2i(itemGenHere(n, item)))
+			case "add":
+				w.collectors.Append(args.num(t))
+			case "menial":
+				n := args.num(t)
+				roll := w.streams.EntMenial(n)
+				fmt.Fprintf(&stdout, "menial %d %d [%s]\n", n, roll, w.mageMenialHow(n))
+			case "start":
+				item, number, days := args.num(t), args.num(t), args.num(t)
+				fmt.Fprintf(&stdout, "harvest start %d\n", w.vGenericHarvest(c, number, days, findHarv(item)))
+			case "collect":
+				fmt.Fprintf(&stdout, "harvest collect %d\n", w.vCollect(c))
+			case "summary":
+				fmt.Fprintf(&stdout, "harvest summary %d\n", w.iGenericHarvest(c, findHarv(args.num(t))))
+			case "show":
+				w.showToGarrison = args.num(t) != 0
+			case "state":
+				fmt.Fprintf(&stdout, "harvest command %d %d %d %d wait %d show %d\n", c.a, c.b, c.c, c.d, c.wait, b2i(w.showToGarrison))
+				helperList(&stdout, "collectors", w.collectors)
+			default:
+				t.Fatalf("unknown harvest action %s", action)
+			}
 		case "callback_start":
 			if args.rest != "" {
 				c.a = int32(args.num(t))

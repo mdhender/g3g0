@@ -36844,3 +36844,534 @@ life close
 life path log/200
 readfile log/200
 save 1001
+
+section N12a complete original harvest table including NULL sentinel and absent lookup
+harvest table
+harvest find 10
+harvest find 31
+harvest find 70
+harvest find 93
+harvest find 78
+harvest find 87
+harvest find 77
+harvest find 68
+harvest find 51
+harvest find 65
+harvest find 66
+harvest find 64
+harvest find 67
+harvest find 71
+harvest find 277
+harvest find 0
+harvest find -1
+harvest find 9999
+harvest gen 2 77
+harvest gen 4 78
+harvest gen 1 87
+harvest gen 14 10
+harvest gen 16 31
+harvest gen 2 87
+harvest gen 1 10
+harvest gen 0 0
+harvest gen 0 10
+harvest gen 14 277
+
+section N12a missing item refuses without mutation and raw negative unknown item
+place 9000
+transfer_probe args 9999 -8 -3 91
+set wait 17
+harvest collect
+harvest state
+transfer_probe args -1 -8 -3 91
+harvest collect
+harvest state
+readlog 200
+save 1000
+
+section N12a skill refusal before saved argument mutation then empty stock before workers
+place 9000
+entity 78 4 0
+name 78 stone
+plural 78 stones
+entity 11 4 0
+name 11 worker
+entity 682 5 0
+name 682 Quarrying
+transfer_probe args 78 -5 -2 91
+set wait 17
+harvest add 1001
+harvest add 1000
+harvest add 1000
+harvest collect
+harvest state
+learn 1000 682 1 7
+harvest collect
+harvest state
+usemeta state 1000 682
+usemeta grant 1000 682
+harvest collect
+harvest state
+usemeta state 1000 682
+inventory 9000 78 9
+transfer_probe args 78 -5 0 92
+set wait 17
+harvest collect
+harvest state
+inventory 1000 11 1
+transfer_probe args 78 -5 0 92
+harvest collect
+harvest state
+harvest collect
+harvest state
+readlog 200
+save 9000
+save 1000
+
+section N12a peasant starts with no workers raw signed quantity and day boundaries
+place 9000
+entity 10 4 0
+name 10 peasant
+plural 10 peasants
+inventory 9000 10 13
+transfer_probe args 10 -2147483648 -2147483648 81
+set wait 17
+harvest collect
+harvest state
+transfer_probe args 10 -1 -1 82
+harvest collect
+harvest state
+transfer_probe args 10 0 0 83
+harvest collect
+harvest state
+transfer_probe args 10 1 1 84
+harvest collect
+harvest state
+transfer_probe args 10 2147483647 2147483647 85
+harvest collect
+harvest state
+save 9000
+save 1000
+usemeta legacy 1 100000
+
+section N12a direct start uses passed signed arguments not command raw fields and persists
+place 9000
+entity 10 4 0
+inventory 9000 10 13
+parse collect 10 9 3
+transfer_probe args 10 77 33 99
+harvest start 10 -7 -99
+harvest state
+run -1 1 1 0
+persist_command
+harvest state
+save 1000
+harvest start 10 2 7
+harvest state
+persist_command
+harvest state
+save 1000
+
+section N12a fish on ship uses immediate outer location not ship stock or province
+place 9000
+entity 9001 3 1
+entity 9002 9 30
+link 9001 9002
+link 9002 1000
+entity 87 4 0
+name 87 fish
+plural 87 fish
+entity 19 4 0
+name 19 sailor
+entity 603 5 0
+name 603 Fishing
+learn 1000 603 2 0
+inventory 9002 87 99
+transfer_probe args 87 7 3 91
+harvest collect
+harvest state
+inventory 9001 87 3
+harvest collect
+harvest state
+inventory 1000 19 1
+harvest collect
+harvest state
+harvest show 1
+transfer_probe args 87 7 7 3
+harvest summary 87
+harvest state
+readlog 200
+save 9001
+save 9002
+save 1000
+
+section N12a fish in port never climbs to ocean province or ship
+place 9000
+field 9000 subkind 1
+entity 9001 3 14
+entity 9002 9 30
+link 9000 9001
+link 9001 9002
+link 9002 1000
+entity 87 4 0
+entity 603 5 0
+learn 1000 603 2 0
+inventory 9000 87 99
+transfer_probe args 87 7 3 91
+harvest collect
+harvest state
+link 9001 1000
+harvest collect
+harvest state
+inventory 9001 87 3
+entity 19 4 0
+inventory 1000 19 2
+harvest collect
+harvest state
+readlog 200
+save 1000
+
+section N12a all resource empty summaries use terrain and preserve public flag without experience
+place 9000
+harvest show 1
+transfer_probe args 10 8 3 0
+harvest summary 10
+harvest summary 31
+harvest summary 70
+harvest summary 93
+harvest summary 78
+harvest summary 87
+harvest summary 77
+harvest summary 68
+harvest summary 51
+harvest summary 65
+harvest summary 66
+harvest summary 64
+harvest summary 67
+harvest summary 71
+harvest summary 277
+harvest state
+field 9000 subkind 16
+harvest summary 31
+field 9000 subkind 4
+harvest summary 78
+field 9000 subkind 1
+harvest summary 87
+readlog 200
+save 1000
+
+section N12a skilled worker free rare resource starts even on wrong terrain with stock
+place 9000
+entity 70 4 0
+entity 705 5 0
+learn 1000 705 2 -4
+inventory 9000 70 2
+transfer_probe args 70 8 3 91
+harvest collect
+harvest state
+usemeta state 1000 705
+save 9000
+save 1000
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section N12a partial summary public garrison output resets flag removes every duplicate not neighbors
+place 9000
+entity 9001 3 32
+link 9000 9001
+link 9001 1001
+field 1001 lord 201
+entity 1002 2 64
+link 9000 1002
+field 1002 castle 9001
+link 9000 1000
+name 1000 Harvester
+entity 78 4 0
+name 78 stone
+plural 78 stones
+entity 682 5 0
+learn 1000 682 2 2
+harvest add 1000
+harvest add 1001
+harvest add 1000
+harvest add 1002
+harvest add 1000
+transfer_probe args 78 77 8 3
+set wait 7
+harvest show 1
+harvest summary 78
+harvest state
+usemeta state 1000 682
+readlog 200
+readlog 201
+save 200
+save 201
+save 1000
+save 1002
+harvest summary 78
+harvest state
+usemeta state 1000 682
+readlog 200
+readlog 201
+
+section N12a private corpses retain prior show flag and award only original skill row
+place 9000
+entity 31 4 0
+name 31 corpse
+plural 31 corpses
+entity 901 5 0
+learn 1000 901 1 32767
+harvest show 1
+transfer_probe args 31 55 2 3
+harvest summary 31
+harvest state
+usemeta state 1000 901
+harvest summary 31
+usemeta state 1000 901
+readlog 200
+readlog 201
+save 1000
+
+section N12a summary raw zero negative partial full all and overtarget returns without inventory transfer
+place 9000
+entity 10 4 0
+name 10 peasant
+plural 10 peasants
+inventory 9000 10 23
+harvest add 1000
+transfer_probe args 10 77 0 0
+harvest summary 10
+harvest state
+transfer_probe args 10 77 -5 -3
+harvest summary 10
+harvest state
+transfer_probe args 10 77 -5 3
+harvest summary 10
+transfer_probe args 10 77 0 3
+harvest summary 10
+transfer_probe args 10 77 8 3
+harvest summary 10
+transfer_probe args 10 77 3 3
+harvest summary 10
+transfer_probe args 10 77 2 3
+harvest summary 10
+harvest state
+readlog 200
+save 9000
+save 1000
+
+section N12a positive summaries all table rows retain texts and visible item mapping
+place 9000
+entity 31 4 0
+entity 70 4 0
+entity 93 4 0
+entity 78 4 0
+entity 87 4 0
+entity 77 4 0
+entity 68 4 0
+entity 51 4 0
+entity 65 4 0
+entity 66 4 0
+entity 64 4 0
+entity 67 4 0
+entity 71 4 0
+entity 1 4 0
+entity 277 4 0
+transfer_probe args 10 0 2 3
+harvest summary 31
+harvest summary 70
+harvest summary 93
+harvest summary 78
+harvest summary 87
+harvest summary 77
+harvest summary 68
+harvest summary 51
+harvest summary 65
+harvest summary 66
+harvest summary 64
+harvest summary 67
+harvest summary 71
+harvest summary 277
+readlog 200
+save 1000
+
+section N12a menial actual entity keyed outcomes repeated day master and turn guards
+master 1
+set turn 7
+harvest menial 1000
+harvest menial 1001
+harvest menial 1002
+harvest menial 1003
+harvest menial 1004
+harvest menial 1005
+harvest menial 1006
+harvest menial 1007
+harvest menial 1008
+harvest menial 1009
+harvest menial 1010
+harvest menial 1011
+harvest menial 1012
+harvest menial 1013
+harvest menial 1014
+harvest menial 1015
+harvest menial 1016
+harvest menial 1017
+harvest menial 1018
+harvest menial 1019
+harvest menial 1020
+harvest menial 1021
+harvest menial 1022
+harvest menial 1023
+harvest menial 1024
+harvest menial 1025
+harvest menial 1026
+harvest menial 1027
+harvest menial 1028
+harvest menial 1029
+set day 9
+harvest menial 1000
+master 91
+harvest menial 1000
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+set turn 8
+harvest menial 1000
+harvest menial 1001
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+
+section N12a menial summary actual skill experience keyed prose and output cache ownership
+master 1
+set turn 7
+place 9000
+lore_root
+set flush 0
+entity 277 4 0
+entity 1 4 0
+entity 802 5 0
+learn 1000 802 2 3
+inventory 9000 277 9
+transfer_probe args 277 55 2 7
+harvest summary 277
+harvest state
+life path log/200
+usemeta state 1000 802
+life close
+life path log/200
+readfile log/200
+harvest summary 277
+usemeta state 1000 802
+harvest state
+save 9000
+save 1000
+
+section N12a each producing terrain empty resource now text and real worker stock zero start
+place 9000
+entity 78 4 0
+entity 682 5 0
+learn 1000 682 2 0
+field 9000 subkind 4
+transfer_probe args 78 9 3 91
+set wait 17
+harvest collect
+harvest state
+field 9000 subkind 11
+harvest summary 70
+harvest summary 65
+field 9000 subkind 28
+harvest summary 93
+field 9000 subkind 25
+harvest summary 68
+field 9000 subkind 3
+harvest summary 51
+field 9000 subkind 6
+harvest summary 66
+harvest summary 93
+field 9000 subkind 21
+harvest summary 64
+harvest summary 77
+field 9000 subkind 13
+harvest summary 67
+field 9000 subkind 26
+harvest summary 71
+harvest show 1
+harvest summary 277
+harvest state
+readlog 200
+usemeta state 1000 682
+
+section N12a all skilled table starts with unequal local stock real known skills and workers
+place 9000
+entity 11 4 0
+entity 19 4 0
+entity 31 4 0
+entity 70 4 0
+entity 93 4 0
+entity 78 4 0
+entity 87 4 0
+entity 77 4 0
+entity 68 4 0
+entity 51 4 0
+entity 65 4 0
+entity 66 4 0
+entity 64 4 0
+entity 67 4 0
+entity 71 4 0
+entity 277 4 0
+entity 901 5 0
+entity 705 5 0
+entity 706 5 0
+entity 682 5 0
+entity 603 5 0
+entity 702 5 0
+entity 703 5 0
+entity 655 5 0
+entity 704 5 0
+entity 695 5 0
+entity 802 5 0
+learn 1000 901 2 0
+learn 1000 705 2 1
+learn 1000 706 2 2
+learn 1000 682 2 3
+learn 1000 603 2 4
+learn 1000 702 2 5
+learn 1000 703 2 6
+learn 1000 655 2 7
+learn 1000 704 2 8
+learn 1000 695 2 9
+learn 1000 802 2 10
+inventory 1000 11 2
+inventory 1000 19 3
+inventory 9000 31 1
+inventory 9000 70 2
+inventory 9000 93 3
+inventory 9000 78 4
+inventory 9000 87 5
+inventory 9000 77 6
+inventory 9000 68 7
+inventory 9000 51 8
+inventory 9000 65 9
+inventory 9000 66 10
+inventory 9000 64 11
+inventory 9000 67 12
+inventory 9000 71 13
+inventory 9000 277 14
+harvest start 31 2 3
+harvest start 70 3 4
+harvest start 93 4 5
+harvest start 78 5 6
+harvest start 87 6 7
+harvest start 77 7 8
+harvest start 68 8 9
+harvest start 51 9 10
+harvest start 65 10 11
+harvest start 66 11 12
+harvest start 64 12 13
+harvest start 67 13 14
+harvest start 71 14 15
+harvest start 277 15 16
+harvest state
+save 9000
+save 1000
+readlog 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000

@@ -33,6 +33,10 @@ extern ilist load_q[5], run_q;
 extern int evening, auto_attack_flag, month_done;
 extern ilist second_wait_list, wait_list;
 ilist drv_collectors(void);
+void drv_collect_add(int who), drv_harvest_table(void), drv_menial(int who);
+int drv_harvest_find(int item), drv_harvest_gen(int terr, int item);
+int drv_harvest_start(struct command *c, int item, int number, int days);
+int drv_harvest_summary(struct command *c, int item);
 void drv_evening(void), drv_daily(void), drv_players(void), drv_sort_run(void);
 void drv_sort_load(int pri);
 int drv_fort_covers(int n);
@@ -1837,6 +1841,24 @@ int main(int argc, char **argv)
   }
   else if (!strcmp(op, "rawargs")) {
    sscanf(line,"%*s %d %d %d",&c->a,&c->b,&c->c);
+  }
+  else if (!strcmp(op, "harvest")) {
+   n=a=b=0;
+   if(sscanf(line,"%*s %31s %d %d %d",text,&n,&a,&b)<1) return 2;
+   if(!strcmp(text,"table")) drv_harvest_table();
+   else if(!strcmp(text,"find")) printf("harvest find %d %d\n",n,drv_harvest_find(n));
+   else if(!strcmp(text,"gen")) printf("harvest gen %d %d %d\n",n,a,drv_harvest_gen(n,a));
+   else if(!strcmp(text,"add")) drv_collect_add(n);
+   else if(!strcmp(text,"menial")) drv_menial(n);
+   else if(!strcmp(text,"start")) printf("harvest start %d\n",drv_harvest_start(c,n,a,b));
+   else if(!strcmp(text,"collect")) printf("harvest collect %d\n",v_collect(c));
+   else if(!strcmp(text,"summary")) printf("harvest summary %d\n",drv_harvest_summary(c,n));
+   else if(!strcmp(text,"show")) show_to_garrison=n;
+   else if(!strcmp(text,"state")) {
+    printf("harvest command %d %d %d %d wait %d show %d\n",c->a,c->b,c->c,c->d,c->wait,show_to_garrison);
+    list("collectors",drv_collectors());
+   }
+   else return 2;
   }
   else if (!strcmp(op, "callback_start")) {
    if(sscanf(line,"%*s %d",&n)==1) c->a=n;

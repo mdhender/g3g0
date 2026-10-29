@@ -3,6 +3,198 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Harvest table/start prerequisite (#210, stage 4 N12a)
+
+**0.132.0-alpha** implements the complete original harvest
+table, lookup, terrain predicate, generic start, COLLECT start and the complete
+reachable summary/menial closure in produce.go. The corrected #210/#211 and
+canonical plan `dependency_correction` supersede the old split: empty stock
+in v_generic_harvest calls i_generic_harvest immediately. No NYI summary or
+second empty-stock implementation is used. **No command/USE bindings change.**
+N12b reuses these owners and owns d_generic_harvest, bump_other_collectors,
+d/i_collect, wrappers and all real command/USE wiring.
+
+The existing command oracle extracts each definition unchanged exactly once,
+including its return-type line. produce.c was already tracked; no new source
+dependency, affected.sh edit or pin change. Exact source proof and original
+fixture-byte/mode audit: `tmp/issue210-source-proof.log`.
+
+| original produce.c definition | lines | SHA-256 |
+|---|---|---|
+| item_gen_here | 172–182 | `82d1b07b1915835e09ab8abedc0dafbf8fb5b65a65e05d0054f25b1baef2c19f` |
+| struct harvest / harv_tbl | 315–506 | `813bd4bc759154b8ab9aa8153580716e1bfa059b46d741868f34ccf10daf2c56` |
+| find_harv | 509–519 | `0b0696995ce87e39d1678d5e2c7762dd9e317448cc5f9058632681e1071bc0fe` |
+| v_generic_harvest | 579–623 | `8af0b56827039a0d807f43d54c2c51cdb42529e53bb12de7f609fb493318ab5f` |
+| mage_menial_how | 701–722 | `b35543c86c2d1959a5d7d4ed1e0607bc2acb3632e1b1a8d39195da1dd0791122` |
+| i_generic_harvest | 725–780 | `d79f3badcc9257511c1b14dfad178f15de8ecebc218cbb9282261864103cb59d` |
+| v_collect | 783–801 | `e4c0ba5f007b5fdefb304e75237f26cf46d6ae0ea950d5b1858109932d470a2c` |
+
+These are **6404 source bytes**; the extracted table also retains its two
+following blank lines. Whole produce.c SHA-256:
+`b1c7ee2e5a22ad60a2d1a9addf13b8e8b521750ceb2c4443114d5d8b592be9a2`.
+find_harv ends at **519**, not the following blank line 520. Existing terrain
+and monthly production, collectors list, inventory, subloc/ship, actual skill
+records/experience, output routing/cache, persistence and Streams.EntMenial
+remain the owners. All constants/messages, the original spiny-root message's
+"Avinia leaves", opium's double space, NULL sentinel fields and menial's
+visible gold/multiplier remain intact for N12b.
+
+**17 appended real-C sections, all status 0**, distinguish:
+
+- All 15 table rows plus NULL sentinel, absent/zero/negative lookup, every
+  resource's empty and positive summary, and producing versus nonproducing
+  terrain. Starts accept stock on wrong terrain; the terrain table chooses
+  the no-stock message, not start admission.
+- Missing versus learning versus known skill; refusal before c.c/c.d mutation;
+  empty-stock summary/removal before the worker check; positive stock with no
+  worker versus one worker; worker-free and rare-resource starts. Actual
+  per-row skill/worker/stock combinations are used, not an alternate table.
+- Raw signed quantity/day values, including INT_MIN/INT_MAX, days below one
+  becoming -1, explicit generic arguments independent of c.a/c.b/c.c, repeated
+  starts retaining collector duplicates, and real command writer/reader reload
+  preserving raw fields. No reparse/dispatch substitute is installed.
+- Fish from a real ship reads its immediate outer location, never ship stock
+  or an enclosing ocean beyond a port. Direct port fishing stays in the port.
+- Zero, negative, partial, full, overtarget and collect-all raw summaries;
+  no inventory is fabricated by a summary. Removal deletes all occurrences
+  of this collector once per call and preserves unequal neighboring entries.
+  Public output reaches actual garrison rulers and resets show_to_garrison to
+  false; private/empty paths retain its incoming value. Actual saved bytes,
+  output bits, buffers/inode ownership and logs are compared.
+- Real skill experience/month guard, including signed-short wrap. Repeating
+  a raw summary **does repeat its text**, as C does, but does not increment
+  experience again that month. It does not clear c.d; exactly-once daily/
+  completion orchestration is N12b, not a new idempotence guard here.
+- Actual keyed menial rolls **1 through 9**, including all three empty-prose
+  outcomes; same-day/day-change/master-reload/next-turn controls, shared entity
+  and legacy RNG aftermath. Chance constants are retained, but no daily
+  harvest/depletion/EconHarvest success is claimed in this prerequisite.
+
+Temporary `TestCommandHarvestDispatchStillUnsupported` additionally executed
+actual doCommand for COLLECT/recruit and every command alias, and actual vUse
+for all seven harvesting USE rows with known skills and school. Every path
+stopped at its real unsupported callback, without installing collectors. Parent
+independently ran these checks (`tmp/parent210-tests.log`), then removed the
+temporary test and restored the existing boundary test unchanged: N12b will
+intentionally enable these commands, so this is validation rather than a new
+permanent regression contract. Existing interruption-boundary tests remain
+green. These are **not successful family fixtures**.
+
+Before appending recordings, unchanged real C twice and Go matched the
+inherited oracle (`tmp/issue210-baseline-command.log`). C/C equality precedes
+every accepted C-only recording update. A construction-only missing stone entity
+hit original u.c:1832; the new status gate rejected it before replacement.
+The corrected input uses the real entity, not a relaxed assertion/status.
+An initial USE boundary test mistakenly made the skill its own school; it was
+corrected to actual known subskill/school records before final validation.
+
+Final oracle: **1696 sections / 138218 output lines / 2715578 bytes**;
+input **37377 lines / 704582 bytes**. Adds **531 input lines / 10227 input
+bytes / 1273 output lines / 27383 output bytes**. Complete HEAD prefixes
+**694355 / 2688195** and stage-3 prefixes **578307 / 2134398** are exact.
+All **67** high-bit bytes in HEAD survive (the earlier inherited **33**, plus
+N11's **34**); this task adds none. Eight new trailing-space lines are real
+C serializer output. Proof: `tmp/issue210-prefix-proof.log`.
+
+| file/prefix | SHA-256 |
+|---|---|
+| command-cases.txt | `a8d22580f954a58f6cf6d14cfa7fe9d4c496604fd32348b1b38f1f7e7f407dfc` |
+| command-c-output.txt | `2a809fb9044f3a687a29888759de6ba649eb10348c08015cf12c05edcd9cf901` |
+| HEAD input 694355 bytes | `b2d8c2505893be0263ea212a522a91d432a100f60176c13a3c64ab4fdb4f2a61` |
+| HEAD output 2688195 bytes | `05bebae07c628464d47a085142a8f3b005ba74915442ebb35cec0133e81bdc73` |
+| stage-3 input 578307 bytes | `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` |
+| stage-3 output 2134398 bytes | `c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac` |
+
+Temporary linker controls wrapped glob_init with a dependency marker and
+actual **0/134 × default/update**. All four reject section **0**, harness **2**,
+before status acceptance or replacement; independent bounded direct executions
+confirm actual 0/134. Final recording hash stays unchanged. Controls/proof:
+`tmp/issue210-negative-final-STATUS-MODE.log`,
+`tmp/issue210-probe-final-STATUS-MODE.{stdout,stderr}` and
+`tmp/issue210-negative-final-proof.log`. Probes are removed; ordinary command
+comparison passes again afterward.
+
+Original affected scripts ran **C twice before coding**, then fresh Go. The
+trusted bounded `tmp/stage4-capture` SHA is
+`816ad641b17c44bb2776d41dd7f2dc7c5f70cc5a3b05020658e4b036870f88b4`;
+canonical C `tmp/stage4-source/build/issue201/olympia-g3` SHA is
+`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`.
+Original fixture/engine/world/scenario bytes and extracted modes are pristine.
+Strict comparator plus tree-modes.py compare raw streams/status and **ALL**
+cwd types/modes/empty directories/bytes, no exclusions or normalization:
+
+| original fixture | C/C engine status; script result | entries | fresh Go first observed boundary |
+|---|---|---|---|
+| production-harvest | 0; YES | 249 | **mallorn start**, engine 2 / script 1 |
+| production-refused | 0; YES | 237 | **make start**, engine 2 / script 1 |
+| recruitment-raise | 0; YES | 241 | **recruit start**, engine 2 / script 1 |
+| recruitment-refused | 0; YES | 239 | **recruit start**, engine 2 / script 1 |
+| player-settings | 0; YES | 237 | C/C/Go strict match, script 0 |
+| order-unrecognized | 0; YES | 243 | C/C/Go strict match, script 0 |
+| release-swear-np, separate abort | **134**; YES | 229 | C/C/Go strict match, script 0 |
+
+The first boundary in production-harvest is **mallorn**, not an inferred later
+MAKE/COLLECT blocker. The four family scripts remain red, intentionally;
+their Go NYI markers are observations, never accepted as C-reference success.
+The abort is exact **olympia/swear.c (180): FALSE**, not a successful turn or
+release-swear-np+turn input. Logs: `tmp/issue210-FIXTURE-{c1,c2,go}.log`;
+proof `tmp/issue210-fixtures-proof.log`; raw streams/status and both manifests
+under `tmp/issue210-fixtures/FIXTURE/`. Matching capture trees are removed.
+
+Replay using N09's original-script recipe below, with `_issue210`,
+`issue210-fixtures` and the seven names above. Keep **c1, c2, then fresh Go**
+order, S4_ENGINE/S4_CAPTURE/OLYMPIA_ENGINE_BIN, physical disposable inputs,
+bounded launcher and explicit `G3_REPO="$PWD/tmp/upstream.git"`. Require
+marker-free C streams before accepting status, compare C/C for all seven and
+C/Go only for the three unaffected/abort controls. For the four unfinished
+family paths record the actual first Go boundary/status, do not override
+check.sh's failure or pretend the differing captures match. No protected cache
+is an engine input; no shared additional upstream clone is read/built.
+
+Final checks: bounded vet and fresh full-enabled tests pass **11 packages /
+10 explicit opt-in/child-entry skips**. Eight sequential defaults pass:
+command **1696/138218** plus live native traversal; move **135/7158**;
+helper **37/1487**; RNG **321**; code **43/969**; loadsave **61/3411**;
+turn-driver **7/152**, phase **5/484**, calendar **2/119**, schedule **4/1801**;
+default turn **2 cwd entries**. All **1696** command statuses are accounted for:
+**1427 × 0 / 255 × 134 / 3 × 139 / 11 × 1**. All inherited statuses survive.
+Use N11's validation commands below with issue210 log/WORK names: shared
+run_limited/run-limited.sh bounds every engine/test, defaults retain each
+independent pin, and all compat calls specify isolated G3_REPO. Small oracle
+limits are **10s**; turn/fixtures/spec/vet/fresh tests use **120s**.
+
+Full spec: **54 pass / 71 fail / 0 error**, no changed names. Every inherited
+**54**, including stage-3's exact **36**, remains; passing.txt is written only
+by the tool and stays **1142 bytes**, SHA
+`b12af8c9bf79671930d351451e9f81ca0430896de3c86f1b5b06a5b547b99b4b`.
+Golden **NO**, unsupported `-i` exits **2**. Evidence:
+`tmp/issue210-{vet,tests,default-status,spec,spec-proof}.log`,
+`tmp/issue210-TOOL-default.log`, `tmp/issue210-update-corrected.log` and
+`tmp/issue210-command-default-final.log`. No corpus/full-world gates are
+implied by standalone full-enabled tests without game lists.
+
+Fresh ALL-open audit: **90** local tasks/trackers/root19, no bug/follow-C
+(`tmp/issue210-open-audit.json`); corrected issue210/211 and canonical task
+plan were read. G3 #364's undefined missing-target diagnostics remain outside
+this prerequisite; no fix, repin or newly oversized dependency was needed.
+No full family/corpus/spec-golden/stage-exit, non-Linux/sanitizer or stage-5
+claim. No delegation, commit, push, issue closure or tracker tick.
+
+Independent parent acceptance reviewed the complete pinned table/functions,
+shared inventory/skill/output/RNG owners and adapter/case diffs, and verified
+each new C extraction once plus both HEAD and stage-3 prefixes. All eight
+sequential defaults pass again (`tmp/parent210-TOOL.log`). Bounded vet and
+fresh full-enabled tests pass before and after removing temporary boundary
+validation (`tmp/parent210-{vet,tests}{,-final}.log`). Independent original
+scripts reproduce the four exact unfinished Go boundaries above; all seven
+C/C trees match, and the two unaffected Go fixtures plus separate exact **134**
+abort match C completely. Logs/manifests/raw failure streams remain under
+`tmp/parent210-fixtures/` and `tmp/parent210-FIXTURE-ENGINE.log`; matching trees
+and scratch binary were removed. Independent full spec confirms **54 pass /
+71 fail / 0 error**, no changed names, golden **NO**, initialization **2**
+(`tmp/parent210-spec.log`). N12a prerequisite only is accepted; real harvest
+dispatch and family fixtures remain N12b and later tasks.
+
 ## Normal GM turn commands (#209, stage 4 N11)
 
 **0.131.0-alpha** ports complete original `int v_credit`, immed.c

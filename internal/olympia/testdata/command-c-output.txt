@@ -136943,3 +136943,1276 @@ CH
 stderr:
 
 exit 0
+stdout:
+section N12a complete original harvest table including NULL sentinel and absent lookup
+> harvest table
+harvest row 0 10 0 0 0 0 0 1
+harvest text [recruited] [There are no more peasants here to recruit.] [Peasants must be recruited in provinces.] [recruit peasants]
+harvest row 1 31 0 0 901 0 0 0
+harvest text [raised] [There are no more corpses here to raise.] [Corpses are found in graveyards.] [raise corpses]
+harvest row 2 70 0 0 705 0 20 1
+harvest text [cut] [All mallorn wood ready this month has been cut here.] [Mallorn wood is found only in mallorn groves.] [cut mallorn wood]
+harvest row 3 93 0 0 706 0 0 1
+harvest text [harvested] [All opium  ready this month has been harvested.] [Opium is harvested only in poppy fields.] [harvest opium]
+harvest row 4 78 0 0 682 11 0 1
+harvest text [quarried] [No further stone may be quarried here this month.] [Stone must be quarried in mountain provinces.] [quarry stone]
+harvest row 5 87 0 0 603 19 50 1
+harvest text [caught] [No further fish may be caught here this month.] [Fish must be caught in ocean provinces.] [catch fish]
+harvest row 6 77 0 0 702 11 0 1
+harvest text [cut] [All ready timber has already been cut this month.] [Wood must be cut in forest provinces.] [cut timber]
+harvest row 7 68 0 0 703 11 0 1
+harvest text [cut] [All yew available this month has already been cut.] [Yew must be cut in yew groves] [cut yew]
+harvest row 8 51 0 0 655 0 50 1
+harvest text [caught] [No wild horses can be found roaming here now.] [Wild horses are found on the plains and in pastures.] [catch horses]
+harvest row 9 65 0 0 704 0 20 1
+harvest text [collected] [All of the avinia leaves here have been collected.] [Avinia leaves are found in mallorn groves.] [collect avinia leaves]
+harvest row 10 66 0 0 704 0 25 1
+harvest text [collected] [All of the spiny roots here have been collected.] [Avinia leaves are found in swamps, pits and bogs.] [collect spiny roots]
+harvest row 11 64 0 0 704 0 50 1
+harvest text [collected] [All of the lana bark here has been collected.] [Lana bark is found in circles of trees.] [collect lana bark]
+harvest row 12 67 0 0 695 0 100 1
+harvest text [collected] [This cave's supply of farrenstone for this month has been exhausted.] [Farrenstone is found in caves.] [collect farrenstone]
+harvest row 13 71 0 0 695 0 100 1
+harvest text [collected] [No pretus bones can be found.] [Pretus bones are found in sand pits.] [collect pretus bones]
+harvest row 14 277 1 10 802 0 100 1
+harvest text [earned] [No work at common magic can be found here.] [No work at common magic can be found here.] [work at common magic]
+harvest row 15 0 0 0 0 0 0 0
+harvest text [NULL] [NULL] [NULL] [NULL]
+> harvest find 10
+harvest find 10 1
+> harvest find 31
+harvest find 31 1
+> harvest find 70
+harvest find 70 1
+> harvest find 93
+harvest find 93 1
+> harvest find 78
+harvest find 78 1
+> harvest find 87
+harvest find 87 1
+> harvest find 77
+harvest find 77 1
+> harvest find 68
+harvest find 68 1
+> harvest find 51
+harvest find 51 1
+> harvest find 65
+harvest find 65 1
+> harvest find 66
+harvest find 66 1
+> harvest find 64
+harvest find 64 1
+> harvest find 67
+harvest find 67 1
+> harvest find 71
+harvest find 71 1
+> harvest find 277
+harvest find 277 1
+> harvest find 0
+harvest find 0 0
+> harvest find -1
+harvest find -1 0
+> harvest find 9999
+harvest find 9999 0
+> harvest gen 2 77
+harvest gen 2 77 1
+> harvest gen 4 78
+harvest gen 4 78 1
+> harvest gen 1 87
+harvest gen 1 87 1
+> harvest gen 14 10
+harvest gen 14 10 1
+> harvest gen 16 31
+harvest gen 16 31 1
+> harvest gen 2 87
+harvest gen 2 87 0
+> harvest gen 1 10
+harvest gen 1 10 0
+> harvest gen 0 0
+harvest gen 0 0 0
+> harvest gen 0 10
+harvest gen 0 10 0
+> harvest gen 14 277
+harvest gen 14 277 0
+stderr:
+
+exit 0
+stdout:
+section N12a missing item refuses without mutation and raw negative unknown item
+> place 9000
+> transfer_probe args 9999 -8 -3 91
+> set wait 17
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command 9999 -8 -3 91 wait 17 show 0
+collectors:
+> transfer_probe args -1 -8 -3 91
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command -1 -8 -3 91 wait 17 show 0
+collectors:
+> readlog 200
+log 200:
+1000:0::0::Don't know how to collect [9999].
+1000:0::0::Don't know how to collect [-1].
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N12a skill refusal before saved argument mutation then empty stock before workers
+> place 9000
+> entity 78 4 0
+> name 78 stone
+> plural 78 stones
+> entity 11 4 0
+> name 11 worker
+> entity 682 5 0
+> name 682 Quarrying
+> transfer_probe args 78 -5 -2 91
+> set wait 17
+> harvest add 1001
+> harvest add 1000
+> harvest add 1000
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command 78 -5 -2 91 wait 17 show 0
+collectors: 1001 1000 1000
+> learn 1000 682 1 7
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command 78 -5 -2 91 wait 17 show 0
+collectors: 1001 1000 1000
+> usemeta state 1000 682
+use records 1000 1 0 0 0
+use experience 682 1 7 0 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	682 1 0 7 0
+
+> usemeta grant 1000 682
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command 78 -5 -5 0 wait 0 show 0
+collectors: 1001
+> usemeta state 1000 682
+use records 1000 1 1 0 0
+use experience 682 2 7 0 2
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	682 2 0 7 0
+
+> inventory 9000 78 9
+> transfer_probe args 78 -5 0 92
+> set wait 17
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command 78 -5 -5 0 wait 17 show 0
+collectors: 1001
+> inventory 1000 11 1
+> transfer_probe args 78 -5 0 92
+> harvest collect
+harvest collect 1
+> harvest state
+harvest command 78 -5 -5 0 wait -1 show 0
+collectors: 1001 1000
+> harvest collect
+harvest collect 1
+> harvest state
+harvest command 78 -5 -5 0 wait -1 show 0
+collectors: 1001 1000 1000
+> readlog 200
+log 200:
+1000:0::0::Requires Quarrying~[682].
+1000:0::0::Requires Quarrying~[682].
+1000:0::0::Learned Quarrying~[682].
+1000:0::0::Stone must be quarried in mountain provinces.
+1000:0::0::Need at least one worker~[11] to quarry stone.
+> save 9000
+9000 loc plain
+il	78 9
+LI
+ hl 1000 
+
+> save 1000
+1000 char 0
+il	11 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	682 2 0 7 0
+
+stderr:
+
+exit 0
+stdout:
+section N12a peasant starts with no workers raw signed quantity and day boundaries
+> place 9000
+> entity 10 4 0
+> name 10 peasant
+> plural 10 peasants
+> inventory 9000 10 13
+> transfer_probe args 10 -2147483648 -2147483648 81
+> set wait 17
+> harvest collect
+harvest collect 1
+> harvest state
+harvest command 10 -2147483648 -2147483648 0 wait -1 show 0
+collectors: 1000
+> transfer_probe args 10 -1 -1 82
+> harvest collect
+harvest collect 1
+> harvest state
+harvest command 10 -1 -1 0 wait -1 show 0
+collectors: 1000 1000
+> transfer_probe args 10 0 0 83
+> harvest collect
+harvest collect 1
+> harvest state
+harvest command 10 0 0 0 wait -1 show 0
+collectors: 1000 1000 1000
+> transfer_probe args 10 1 1 84
+> harvest collect
+harvest collect 1
+> harvest state
+harvest command 10 1 1 0 wait 1 show 0
+collectors: 1000 1000 1000 1000
+> transfer_probe args 10 2147483647 2147483647 85
+> harvest collect
+harvest collect 1
+> harvest state
+harvest command 10 2147483647 2147483647 0 wait 2147483647 show 0
+collectors: 1000 1000 1000 1000 1000
+> save 9000
+9000 loc plain
+il	10 13
+LI
+ hl 1000 
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> usemeta legacy 1 100000
+use legacy 38266
+stderr:
+
+exit 0
+stdout:
+section N12a direct start uses passed signed arguments not command raw fields and persists
+> place 9000
+> entity 10 4 0
+> inventory 9000 10 13
+> parse collect 10 9 3
+parse 1
+> transfer_probe args 10 77 33 99
+> harvest start 10 -7 -99
+harvest start 1
+> harvest state
+harvest command 10 77 -7 0 wait -1 show 0
+collectors: 1000
+> run -1 1 1 0
+> persist_command
+> harvest state
+harvest command 10 77 -7 0 wait -1 show 0
+collectors: 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li collect 10 9 3
+ ar 10 77 -7 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ po 1
+ pr 3
+
+> harvest start 10 2 7
+harvest start 1
+> harvest state
+harvest command 10 77 2 0 wait 7 show 0
+collectors: 1000 1000
+> persist_command
+> harvest state
+harvest command 10 77 2 0 wait 7 show 0
+collectors: 1000 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li collect 10 9 3
+ ar 10 77 2 0 0 0 0 0
+ cs 2
+ wa 7
+ st 1
+ po 1
+ pr 3
+
+stderr:
+
+exit 0
+stdout:
+section N12a fish on ship uses immediate outer location not ship stock or province
+> place 9000
+> entity 9001 3 1
+> entity 9002 9 30
+> link 9001 9002
+> link 9002 1000
+> entity 87 4 0
+> name 87 fish
+> plural 87 fish
+> entity 19 4 0
+> name 19 sailor
+> entity 603 5 0
+> name 603 Fishing
+> learn 1000 603 2 0
+> inventory 9002 87 99
+> transfer_probe args 87 7 3 91
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command 87 7 7 0 wait 0 show 0
+collectors:
+> inventory 9001 87 3
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command 87 7 7 0 wait 0 show 0
+collectors:
+> inventory 1000 19 1
+> harvest collect
+harvest collect 1
+> harvest state
+harvest command 87 7 7 0 wait 7 show 0
+collectors: 1000
+> harvest show 1
+> transfer_probe args 87 7 7 3
+> harvest summary 87
+harvest summary 0
+> harvest state
+harvest command 87 7 7 3 wait 0 show 0
+collectors:
+> readlog 200
+log 200:
+1000:0::0::No further fish may be caught here this month.
+1000:0::0::Need at least one sailor~[19] to catch fish.
+1000:0::0::Caught three~fish.
+> save 9001
+9001 loc ocean
+il	87 3
+LI
+ hl 9002 
+
+> save 9002
+9002 ship galley
+il	87 99
+LI
+ wh 9001
+ hl 1000 
+
+> save 1000
+1000 char 0
+il	19 1
+LI
+ wh 9002
+CH
+ lo 200
+ sl	603 2 0 1 0
+
+stderr:
+
+exit 0
+stdout:
+section N12a fish in port never climbs to ocean province or ship
+> place 9000
+> field 9000 subkind 1
+> entity 9001 3 14
+> entity 9002 9 30
+> link 9000 9001
+> link 9001 9002
+> link 9002 1000
+> entity 87 4 0
+> entity 603 5 0
+> learn 1000 603 2 0
+> inventory 9000 87 99
+> transfer_probe args 87 7 3 91
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command 87 7 7 0 wait 0 show 0
+collectors:
+> link 9001 1000
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command 87 7 7 0 wait 0 show 0
+collectors:
+> inventory 9001 87 3
+> entity 19 4 0
+> inventory 1000 19 2
+> harvest collect
+harvest collect 1
+> harvest state
+harvest command 87 7 7 0 wait 7 show 0
+collectors: 1000
+> readlog 200
+log 200:
+1000:0::0::Fish must be caught in ocean provinces.
+1000:0::0::Fish must be caught in ocean provinces.
+> save 1000
+1000 char 0
+il	19 2
+LI
+ wh 9001
+CH
+ lo 200
+ sl	603 2 0 0 0
+
+stderr:
+
+exit 0
+stdout:
+section N12a all resource empty summaries use terrain and preserve public flag without experience
+> place 9000
+> harvest show 1
+> transfer_probe args 10 8 3 0
+> harvest summary 10
+harvest summary 0
+> harvest summary 31
+harvest summary 0
+> harvest summary 70
+harvest summary 0
+> harvest summary 93
+harvest summary 0
+> harvest summary 78
+harvest summary 0
+> harvest summary 87
+harvest summary 0
+> harvest summary 77
+harvest summary 0
+> harvest summary 68
+harvest summary 0
+> harvest summary 51
+harvest summary 0
+> harvest summary 65
+harvest summary 0
+> harvest summary 66
+harvest summary 0
+> harvest summary 64
+harvest summary 0
+> harvest summary 67
+harvest summary 0
+> harvest summary 71
+harvest summary 0
+> harvest summary 277
+harvest summary 0
+> harvest state
+harvest command 10 8 3 0 wait 0 show 1
+collectors:
+> field 9000 subkind 16
+> harvest summary 31
+harvest summary 0
+> field 9000 subkind 4
+> harvest summary 78
+harvest summary 0
+> field 9000 subkind 1
+> harvest summary 87
+harvest summary 0
+> readlog 200
+log 200:
+1000:0::0::There are no more peasants here to recruit.
+1000:0::0::Corpses are found in graveyards.
+1000:0::0::Mallorn wood is found only in mallorn groves.
+1000:0::0::Opium is harvested only in poppy fields.
+1000:0::0::Stone must be quarried in mountain provinces.
+1000:0::0::Fish must be caught in ocean provinces.
+1000:0::0::Wood must be cut in forest provinces.
+1000:0::0::Yew must be cut in yew groves
+1000:0::0::No wild horses can be found roaming here now.
+1000:0::0::Avinia leaves are found in mallorn groves.
+1000:0::0::Avinia leaves are found in swamps, pits and bogs.
+1000:0::0::Lana bark is found in circles of trees.
+1000:0::0::Farrenstone is found in caves.
+1000:0::0::Pretus bones are found in sand pits.
+1000:0::0::No work at common magic can be found here.
+1000:0::0::There are no more corpses here to raise.
+1000:0::0::No further stone may be quarried here this month.
+1000:0::0::No further fish may be caught here this month.
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N12a skilled worker free rare resource starts even on wrong terrain with stock
+> place 9000
+> entity 70 4 0
+> entity 705 5 0
+> learn 1000 705 2 -4
+> inventory 9000 70 2
+> transfer_probe args 70 8 3 91
+> harvest collect
+harvest collect 1
+> harvest state
+harvest command 70 8 8 0 wait 3 show 0
+collectors: 1000
+> usemeta state 1000 705
+use records 1000 1 0 0 0
+use experience 705 2 -4 0 1
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	705 2 0 -4 0
+
+> save 9000
+9000 loc plain
+il	70 2
+LI
+ hl 1000 
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	705 2 0 -4 0
+
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+stderr:
+
+exit 0
+stdout:
+section N12a partial summary public garrison output resets flag removes every duplicate not neighbors
+> place 9000
+> entity 9001 3 32
+> link 9000 9001
+> link 9001 1001
+> field 1001 lord 201
+> entity 1002 2 64
+> link 9000 1002
+> field 1002 castle 9001
+> link 9000 1000
+> name 1000 Harvester
+> entity 78 4 0
+> name 78 stone
+> plural 78 stones
+> entity 682 5 0
+> learn 1000 682 2 2
+> harvest add 1000
+> harvest add 1001
+> harvest add 1000
+> harvest add 1002
+> harvest add 1000
+> transfer_probe args 78 77 8 3
+> set wait 7
+> harvest show 1
+> harvest summary 78
+harvest summary 0
+> harvest state
+harvest command 78 77 8 3 wait 0 show 0
+collectors: 1001 1002
+> usemeta state 1000 682
+use records 1000 1 0 0 0
+use experience 682 2 3 1 1
+1000 char 0
+na Harvester
+LI
+ wh 9000
+CH
+ lo 200
+ sl	682 2 0 3 0
+
+> readlog 200
+log 200:
+1000:0::0::Quarried three~stones.
+> readlog 201
+log 201:
+9000:0::0::Harvester~[1000] quarried three~stones.
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_regular
+PL
+
+> save 1000
+1000 char 0
+na Harvester
+LI
+ wh 9000
+CH
+ lo 200
+ sl	682 2 0 3 0
+
+> save 1002
+1002 char garrison
+LI
+ wh 9000
+MI
+ gc 9001
+
+> harvest summary 78
+harvest summary 0
+> harvest state
+harvest command 78 77 8 3 wait 0 show 0
+collectors: 1001 1002
+> usemeta state 1000 682
+use records 1000 1 0 0 0
+use experience 682 2 3 1 1
+1000 char 0
+na Harvester
+LI
+ wh 9000
+CH
+ lo 200
+ sl	682 2 0 3 0
+
+> readlog 200
+log 200:
+1000:0::0::Quarried three~stones.
+1000:0::0::Quarried three~stones.
+> readlog 201
+log 201:
+9000:0::0::Harvester~[1000] quarried three~stones.
+9000:0::0::Harvester~[1000] quarried three~stones.
+stderr:
+
+exit 0
+stdout:
+section N12a private corpses retain prior show flag and award only original skill row
+> place 9000
+> entity 31 4 0
+> name 31 corpse
+> plural 31 corpses
+> entity 901 5 0
+> learn 1000 901 1 32767
+> harvest show 1
+> transfer_probe args 31 55 2 3
+> harvest summary 31
+harvest summary 1
+> harvest state
+harvest command 31 55 2 3 wait 0 show 1
+collectors:
+> usemeta state 1000 901
+use records 1000 1 0 0 0
+use experience 901 1 -32768 1 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	901 1 0 -32768 0
+
+> harvest summary 31
+harvest summary 1
+> usemeta state 1000 901
+use records 1000 1 0 0 0
+use experience 901 1 -32768 1 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	901 1 0 -32768 0
+
+> readlog 200
+log 200:
+1000:0::0::Raised three~corpses.
+1000:0::0::Raised three~corpses.
+> readlog 201
+log 201:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	901 1 0 -32768 0
+
+stderr:
+
+exit 0
+stdout:
+section N12a summary raw zero negative partial full all and overtarget returns without inventory transfer
+> place 9000
+> entity 10 4 0
+> name 10 peasant
+> plural 10 peasants
+> inventory 9000 10 23
+> harvest add 1000
+> transfer_probe args 10 77 0 0
+> harvest summary 10
+harvest summary 0
+> harvest state
+harvest command 10 77 0 0 wait 0 show 0
+collectors:
+> transfer_probe args 10 77 -5 -3
+> harvest summary 10
+harvest summary 0
+> harvest state
+harvest command 10 77 -5 -3 wait 0 show 0
+collectors:
+> transfer_probe args 10 77 -5 3
+> harvest summary 10
+harvest summary 1
+> transfer_probe args 10 77 0 3
+> harvest summary 10
+harvest summary 1
+> transfer_probe args 10 77 8 3
+> harvest summary 10
+harvest summary 0
+> transfer_probe args 10 77 3 3
+> harvest summary 10
+harvest summary 1
+> transfer_probe args 10 77 2 3
+> harvest summary 10
+harvest summary 1
+> harvest state
+harvest command 10 77 2 3 wait 0 show 0
+collectors:
+> readlog 200
+log 200:
+1000:0::0::There are no more peasants here to recruit.
+1000:0::0::Recruited -3~peasants.
+1000:0::0::Recruited three~peasants.
+1000:0::0::Recruited three~peasants.
+1000:0::0::Recruited three~peasants.
+1000:0::0::Recruited three~peasants.
+1000:0::0::Recruited three~peasants.
+> save 9000
+9000 loc plain
+il	10 23
+LI
+ hl 1000 
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N12a positive summaries all table rows retain texts and visible item mapping
+> place 9000
+> entity 31 4 0
+> entity 70 4 0
+> entity 93 4 0
+> entity 78 4 0
+> entity 87 4 0
+> entity 77 4 0
+> entity 68 4 0
+> entity 51 4 0
+> entity 65 4 0
+> entity 66 4 0
+> entity 64 4 0
+> entity 67 4 0
+> entity 71 4 0
+> entity 1 4 0
+> entity 277 4 0
+> transfer_probe args 10 0 2 3
+> harvest summary 31
+harvest summary 1
+> harvest summary 70
+harvest summary 1
+> harvest summary 93
+harvest summary 1
+> harvest summary 78
+harvest summary 1
+> harvest summary 87
+harvest summary 1
+> harvest summary 77
+harvest summary 1
+> harvest summary 68
+harvest summary 1
+> harvest summary 51
+harvest summary 1
+> harvest summary 65
+harvest summary 1
+> harvest summary 66
+harvest summary 1
+> harvest summary 64
+harvest summary 1
+> harvest summary 67
+harvest summary 1
+> harvest summary 71
+harvest summary 1
+> harvest summary 277
+harvest summary 1
+> readlog 200
+log 200:
+1000:0::0::Raised three~<no subkind>.
+1000:0::0::Cut three~<no subkind>.
+1000:0::0::Harvested three~<no subkind>.
+1000:0::0::Quarried three~<no subkind>.
+1000:0::0::Caught three~<no subkind>.
+1000:0::0::Cut three~<no subkind>.
+1000:0::0::Cut three~<no subkind>.
+1000:0::0::Caught three~<no subkind>.
+1000:0::0::Collected three~<no subkind>.
+1000:0::0::Collected three~<no subkind>.
+1000:0::0::Collected three~<no subkind>.
+1000:0::0::Collected three~<no subkind>.
+1000:0::0::Collected three~<no subkind>.
+1000:0::0::Earned 3~gold.
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+stderr:
+warning: plural name not set for item [31]
+warning: plural name not set for item [70]
+warning: plural name not set for item [70]
+warning: plural name not set for item [93]
+warning: plural name not set for item [93]
+warning: plural name not set for item [78]
+warning: plural name not set for item [78]
+warning: plural name not set for item [87]
+warning: plural name not set for item [87]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [68]
+warning: plural name not set for item [68]
+warning: plural name not set for item [51]
+warning: plural name not set for item [51]
+warning: plural name not set for item [65]
+warning: plural name not set for item [65]
+warning: plural name not set for item [66]
+warning: plural name not set for item [66]
+warning: plural name not set for item [64]
+warning: plural name not set for item [64]
+warning: plural name not set for item [67]
+warning: plural name not set for item [67]
+warning: plural name not set for item [71]
+warning: plural name not set for item [71]
+
+exit 0
+stdout:
+section N12a menial actual entity keyed outcomes repeated day master and turn guards
+> master 1
+> set turn 7
+> harvest menial 1000
+menial 1000 1 [ curing runny noses]
+> harvest menial 1001
+menial 1001 6 [ reading palms]
+> harvest menial 1002
+menial 1002 3 [ selling love potions]
+> harvest menial 1003
+menial 1003 5 [ predicting the future]
+> harvest menial 1004
+menial 1004 7 []
+> harvest menial 1005
+menial 1005 1 [ curing runny noses]
+> harvest menial 1006
+menial 1006 8 []
+> harvest menial 1007
+menial 1007 9 []
+> harvest menial 1008
+menial 1008 9 []
+> harvest menial 1009
+menial 1009 3 [ selling love potions]
+> harvest menial 1010
+menial 1010 1 [ curing runny noses]
+> harvest menial 1011
+menial 1011 6 [ reading palms]
+> harvest menial 1012
+menial 1012 5 [ predicting the future]
+> harvest menial 1013
+menial 1013 2 [ dowsing for water]
+> harvest menial 1014
+menial 1014 1 [ curing runny noses]
+> harvest menial 1015
+menial 1015 2 [ dowsing for water]
+> harvest menial 1016
+menial 1016 5 [ predicting the future]
+> harvest menial 1017
+menial 1017 4 [ selling good luck charms]
+> harvest menial 1018
+menial 1018 5 [ predicting the future]
+> harvest menial 1019
+menial 1019 8 []
+> harvest menial 1020
+menial 1020 5 [ predicting the future]
+> harvest menial 1021
+menial 1021 1 [ curing runny noses]
+> harvest menial 1022
+menial 1022 4 [ selling good luck charms]
+> harvest menial 1023
+menial 1023 9 []
+> harvest menial 1024
+menial 1024 5 [ predicting the future]
+> harvest menial 1025
+menial 1025 9 []
+> harvest menial 1026
+menial 1026 9 []
+> harvest menial 1027
+menial 1027 6 [ reading palms]
+> harvest menial 1028
+menial 1028 7 []
+> harvest menial 1029
+menial 1029 2 [ dowsing for water]
+> set day 9
+> harvest menial 1000
+menial 1000 1 [ curing runny noses]
+> master 91
+> harvest menial 1000
+menial 1000 1 [ curing runny noses]
+> entity_rolls 1000 7 9000
+prison roll 521
+land dir99 3
+land dir98 3
+land pick 1
+> usemeta legacy 1 100000
+use legacy 47028
+> set turn 8
+> harvest menial 1000
+menial 1000 2 [ dowsing for water]
+> harvest menial 1001
+menial 1001 2 [ dowsing for water]
+> entity_rolls 1000 7 9000
+prison roll 586
+land dir99 2
+land dir98 2
+land pick 0
+> usemeta legacy 1 100000
+use legacy 92734
+stderr:
+
+exit 0
+stdout:
+section N12a menial summary actual skill experience keyed prose and output cache ownership
+> master 1
+> set turn 7
+> place 9000
+> lore_root
+> set flush 0
+> entity 277 4 0
+> entity 1 4 0
+> entity 802 5 0
+> learn 1000 802 2 3
+> inventory 9000 277 9
+> transfer_probe args 277 55 2 7
+> harvest summary 277
+harvest summary 1
+> harvest state
+harvest command 277 55 2 7 wait 0 show 0
+collectors:
+> life path log/200
+path log/200 empty
+> usemeta state 1000 802
+use records 1000 1 0 0 0
+use experience 802 2 4 1 1
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	802 2 0 4 0
+
+> life close
+> life path log/200
+path log/200 nonempty
+> readfile log/200
+file bytes log/200 45:
+1000:0::0::Earned 7~gold curing runny noses.
+
+end file bytes
+> harvest summary 277
+harvest summary 1
+> usemeta state 1000 802
+use records 1000 1 0 0 0
+use experience 802 2 4 1 1
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	802 2 0 4 0
+
+> harvest state
+harvest command 277 55 2 7 wait 0 show 0
+collectors:
+> save 9000
+9000 loc plain
+il	277 9
+LI
+ hl 1000 
+
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	802 2 0 4 0
+
+stderr:
+
+exit 0
+stdout:
+section N12a each producing terrain empty resource now text and real worker stock zero start
+> place 9000
+> entity 78 4 0
+> entity 682 5 0
+> learn 1000 682 2 0
+> field 9000 subkind 4
+> transfer_probe args 78 9 3 91
+> set wait 17
+> harvest collect
+harvest collect 0
+> harvest state
+harvest command 78 9 9 0 wait 0 show 0
+collectors:
+> field 9000 subkind 11
+> harvest summary 70
+harvest summary 0
+> harvest summary 65
+harvest summary 0
+> field 9000 subkind 28
+> harvest summary 93
+harvest summary 0
+> field 9000 subkind 25
+> harvest summary 68
+harvest summary 0
+> field 9000 subkind 3
+> harvest summary 51
+harvest summary 0
+> field 9000 subkind 6
+> harvest summary 66
+harvest summary 0
+> harvest summary 93
+harvest summary 0
+> field 9000 subkind 21
+> harvest summary 64
+harvest summary 0
+> harvest summary 77
+harvest summary 0
+> field 9000 subkind 13
+> harvest summary 67
+harvest summary 0
+> field 9000 subkind 26
+> harvest summary 71
+harvest summary 0
+> harvest show 1
+> harvest summary 277
+harvest summary 0
+> harvest state
+harvest command 78 9 9 0 wait 0 show 1
+collectors:
+> readlog 200
+log 200:
+1000:0::0::No further stone may be quarried here this month.
+1000:0::0::All mallorn wood ready this month has been cut here.
+1000:0::0::All of the avinia leaves here have been collected.
+1000:0::0::All opium  ready this month has been harvested.
+1000:0::0::All yew available this month has already been cut.
+1000:0::0::No wild horses can be found roaming here now.
+1000:0::0::All of the spiny roots here have been collected.
+1000:0::0::All opium  ready this month has been harvested.
+1000:0::0::All of the lana bark here has been collected.
+1000:0::0::All ready timber has already been cut this month.
+1000:0::0::This cave's supply of farrenstone for this month has been exhausted.
+1000:0::0::No pretus bones can be found.
+1000:0::0::No work at common magic can be found here.
+> usemeta state 1000 682
+use records 1000 1 0 0 0
+use experience 682 2 0 0 1
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	682 2 0 0 0
+
+stderr:
+
+exit 0
+stdout:
+section N12a all skilled table starts with unequal local stock real known skills and workers
+> place 9000
+> entity 11 4 0
+> entity 19 4 0
+> entity 31 4 0
+> entity 70 4 0
+> entity 93 4 0
+> entity 78 4 0
+> entity 87 4 0
+> entity 77 4 0
+> entity 68 4 0
+> entity 51 4 0
+> entity 65 4 0
+> entity 66 4 0
+> entity 64 4 0
+> entity 67 4 0
+> entity 71 4 0
+> entity 277 4 0
+> entity 901 5 0
+> entity 705 5 0
+> entity 706 5 0
+> entity 682 5 0
+> entity 603 5 0
+> entity 702 5 0
+> entity 703 5 0
+> entity 655 5 0
+> entity 704 5 0
+> entity 695 5 0
+> entity 802 5 0
+> learn 1000 901 2 0
+> learn 1000 705 2 1
+> learn 1000 706 2 2
+> learn 1000 682 2 3
+> learn 1000 603 2 4
+> learn 1000 702 2 5
+> learn 1000 703 2 6
+> learn 1000 655 2 7
+> learn 1000 704 2 8
+> learn 1000 695 2 9
+> learn 1000 802 2 10
+> inventory 1000 11 2
+> inventory 1000 19 3
+> inventory 9000 31 1
+> inventory 9000 70 2
+> inventory 9000 93 3
+> inventory 9000 78 4
+> inventory 9000 87 5
+> inventory 9000 77 6
+> inventory 9000 68 7
+> inventory 9000 51 8
+> inventory 9000 65 9
+> inventory 9000 66 10
+> inventory 9000 64 11
+> inventory 9000 67 12
+> inventory 9000 71 13
+> inventory 9000 277 14
+> harvest start 31 2 3
+harvest start 1
+> harvest start 70 3 4
+harvest start 1
+> harvest start 93 4 5
+harvest start 1
+> harvest start 78 5 6
+harvest start 1
+> harvest start 87 6 7
+harvest start 1
+> harvest start 77 7 8
+harvest start 1
+> harvest start 68 8 9
+harvest start 1
+> harvest start 51 9 10
+harvest start 1
+> harvest start 65 10 11
+harvest start 1
+> harvest start 66 11 12
+harvest start 1
+> harvest start 64 12 13
+harvest start 1
+> harvest start 67 13 14
+harvest start 1
+> harvest start 71 14 15
+harvest start 1
+> harvest start 277 15 16
+harvest start 1
+> harvest state
+harvest command 0 0 15 0 wait 16 show 0
+collectors: 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+> save 9000
+9000 loc plain
+il	31 1 \
+	70 2 \
+	93 3 \
+	78 4 \
+	87 5 \
+	77 6 \
+	68 7 \
+	51 8 \
+	65 9 \
+	66 10 \
+	64 11 \
+	67 12 \
+	71 13 \
+	277 14
+LI
+ hl 1000 
+
+> save 1000
+1000 char 0
+il	11 2 \
+	19 3
+LI
+ wh 9000
+CH
+ lo 200
+ sl	901 2 0 0 0 \
+	705 2 0 1 0 \
+	706 2 0 2 0 \
+	682 2 0 3 0 \
+	603 2 0 4 0 \
+	702 2 0 5 0 \
+	703 2 0 6 0 \
+	655 2 0 7 0 \
+	704 2 0 8 0 \
+	695 2 0 9 0 \
+	802 2 0 10 0
+
+> readlog 200
+log 200:
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+stderr:
+
+exit 0
