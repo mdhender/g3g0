@@ -1,6 +1,6 @@
-pin f73e48118805ffe8ff5e763bfa4f20ae00c3a705
+pin 7064d6c1767ba09772dc5e12af57719806184258
 args -r -l ./lib -S test-use-const-report-date
-binary 151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158
+binary a281a56744a84dd39768da5e42765cbc74f8a87c44f89c10124b4fb15afd50a7
 world.tgz 5c59fc014ea3d2f9a14e4756bfa7ccc8c7c11b23bf6611320713ec19760d8ce9
 C repeats: identical status, stdout, stderr, entire cwd (all entry types/modes/bytes)
 drwxr-xr-x  -  cwd

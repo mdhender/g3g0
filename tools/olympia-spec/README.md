@@ -4,6 +4,35 @@
 G3 is the reference.
 Expected output comes only from G3's committed files, which its C engine wrote; nothing here re-baselines.
 
+## Follow-C PR-head no-loss gate (#288)
+
+At **0.136.1-alpha**, immutable **7064d6c1767ba09772dc5e12af57719806184258**
+(inspected **PR #365 snapshot**, OPEN at initial recheck, not its later
+advanced/merged head; see the linked drift notice below), the full spec has
+**127 fixtures: 56 pass / 71 fail / 0 error (139s)**. All **56 prior names**
+and the complete stage-3 **36-name** set remain. The existing tool alone writes
+passing.txt: only its provenance pin changes, SHA-256
+`ef62cb05244e9d80e6c12d82c3f55f0222633d60ce6aaeffc9bdf13beeda75b8`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue288/spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+The changed gm-refused script now genuinely passes after following C's two
+guards. Both new original scripts pass unchanged C twice, but **fail Go**:
+stop-running reaches `command sail interrupt: not yet implemented`; use-quick-cast
+reaches `USE item key 6: not yet implemented` (engine 2 / script 1 each).
+These add no passing name. Full fixture/callback ownership, strict captures
+and retained production/player controls are documented in
+[the pin gate](../README.md#follow-c-pr-head-gate-288).
+
+Golden remains **NO**, initialization **2** at unsupported `load_db (-i)`.
+This is a no-loss gate, not whole-spec parity, later-stage completion, or a
+claim that a new fixture passes because its source pin moved.
+Logs: `tmp/issue288-spec.log` and `tmp/issue288-spec-{run-all,olympia-g3,golden}.log`.
+
 ## Stack command progress (#201, stage 4 N04)
 
 At **0.123.0-alpha**, unchanged pin **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**,
@@ -192,7 +221,7 @@ The spec is the three gates that G3 documents for another engine in `doc/claude/
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `7064d6c1767ba09772dc5e12af57719806184258`.
 The revision is pinned in `run.sh` (`PINNED_REV`).
 `G3_REV` runs another revision, but then `passing.txt` is neither compared nor written.
 Change the pin only on purpose, and rerun this and [`tools/olympia-roundtrip`](../olympia-roundtrip) when you do.

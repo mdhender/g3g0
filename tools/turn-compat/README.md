@@ -1,7 +1,7 @@
 # Strict whole-tree turn comparison (#56, #134)
 
 Pinned reference: [playbymail/olympia-g3 at
-f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
+7064d6c1767ba09772dc5e12af57719806184258](https://github.com/playbymail/olympia-g3/tree/7064d6c1767ba09772dc5e12af57719806184258).
 No turn engine code is implemented here. The reference is real C, never Go.
 
 There are no artifact exclusions. Both C/C determinism and C/Go comparison
@@ -15,6 +15,55 @@ tools/turn-compat/run.sh                 # fast recorded checks; no world turn o
 tools/turn-compat/run.sh --full          # real C/C/Go world turns and lifecycle controls
 tools/turn-compat/run.sh --full --record # explicitly refresh C-only recordings, then compare Go
 ```
+
+## Follow-C PR-head turn and fixtures (#288)
+
+**0.136.1-alpha**, immutable inspected **PR #365 snapshot 7064d6c**, OPEN at
+initial recheck, not its later advanced/merged head (see the linked drift
+notice below):
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue288-roundtrip" \
+  WORK="$PWD/tmp/issue288-turn" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/turn-compat/run.sh --full --record --command-coverage \
+  --use-coverage --phase-coverage --state-export --dump-integration
+```
+
+Two unchanged C world turns precede recording/Go; the ordinary turn matches
+**233 entries / status 0**. All **13 lifecycle / 10 command / 15 USE / 23
+phase / 13 export** and **84 integration** controls pass, including **74 status
+0 / 10 status 1** integration cases and **20 flag-free** integration aftermath
+comparisons. No exclusions or normalization: raw status/streams and all cwd
+types/modes/empty directories/bytes. Small recordings and the entire manifest
+body are unchanged; **only pin and binary provenance** advance in
+testdata/c-determinism.txt, and its test requires the reviewed pin.
+
+Original scripts use the unchanged trusted native `tmp/stage4-capture` via
+OLYMPIA_ENGINE_BIN, capturing before script cleanup. A fresh disposable C
+archive is compiled with `-ffile-prefix-map=ABS_SOURCE/=`; assertion paths are
+canonical at compilation, never rewritten in output. C SHA-256
+`f48d888089c3a0b192abc4d90c84b5fda4c2a1e0eab82ac6b0d3da42236bd294`.
+Each original script runs unchanged C twice then fresh Go:
+
+| Fixture | C/C | Go / strict C/Go |
+| --- | --- | --- |
+| gm-refused (changed bare-argument coverage) | YES, 237 entries | YES, exact |
+| gm-credit | YES, 237 entries | YES, exact |
+| production-harvest | YES, 249 entries | YES, exact |
+| production-refused | YES, 237 entries | YES, exact |
+| player-settings / player-refused | YES, 237 entries each | YES, exact |
+| stop-running (new frozen turn-1 input) | YES, 259 entries | NO: engine 2, command sail interrupt NYI |
+| use-quick-cast (new) | YES, 246 entries | NO: engine 2, USE item key 6 NYI |
+
+Both new scripts return **1** on Go; these are explicit pending gameplay,
+not accepted statuses or reference recordings. Matching captures are removed;
+decisive failure captures and manifests remain under `tmp/issue288-fixtures`.
+The unchanged-Go gm-refused panic (engine 2/script 1) is separately retained
+under `tmp/issue288-before-gm-refused`. Callback owners and full source review:
+[follow-C gate](../README.md#follow-c-pr-head-gate-288).
+Evidence: `tmp/issue288-{turn-full,fixtures,before,source-proof}.log` and
+`tmp/issue288-turn/{c-determinism,lifecycle,*coverage}.txt`.
 
 ## Final-tier turn and original fixtures (#178)
 

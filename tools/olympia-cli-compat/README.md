@@ -10,8 +10,25 @@ Two sources of expectations are used:
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `7064d6c1767ba09772dc5e12af57719806184258`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
+
+For follow-C #288 this is the inspected immutable **PR #365 snapshot**, OPEN
+at the initial recheck, not its later merged/advanced head (see the
+[drift notice](../README.md#follow-c-pr-head-gate-288)). The whole-engine build
+is an actual dependency of this
+tool, so its default advances; independent library tools do not. The complete
+default passes at **0.136.1-alpha** using the new disposable exact-pin C cache:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue288-roundtrip" \
+  WORK="$PWD/tmp/_issue288/cli" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-cli-compat/run.sh
+```
+
+Log: `tmp/issue288-cli.log`. Its explicit unsupported/NYI mode classification
+is unchanged; this is not stage-5 initialization or stage-6 CLI completion.
 
 The port follows `main()` in `olympia/main.c` (the long-option pass, the BSD `oly_getopt()` loop, the usage text and what `main()` prints before it dispatches), `test_random()` in `olympia/z.c` and `ilist_test()` in `lib/ilist.c`, and from #52 its load and save (`load_db()`, `check_db()`, `save_db()` with `-S`, `times_masthead()` and the closing output), which [`olympia-roundtrip`](../olympia-roundtrip) checks on saved games.
 Stage 1 also ports the no-orders turn on an existing world; report artifacts remain deferred. Unsupported modes stop with `<argv[0]>: <what>: not yet implemented` on stderr and exit status 2:

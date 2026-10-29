@@ -7,7 +7,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 RUN_TIMEOUT="${RUN_TIMEOUT:-10}"
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-f73e48118805ffe8ff5e763bfa4f20ae00c3a705}"
+G3_REV="${G3_REV:-7064d6c1767ba09772dc5e12af57719806184258}"
 WORK="${WORK:-${ROOT}/tmp/command-compat}"
 CC="${CC:-cc}"
 CASES="${ROOT}/internal/olympia/testdata/command-cases.txt"
@@ -832,6 +832,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section FOLLOW288 '* ]]; then
+   [ "$status" = 0 ] || die "unexpected FOLLOW288 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N14a '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

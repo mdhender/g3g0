@@ -7,6 +7,208 @@ Task notes below retain their original acceptance scope and temporary boundaries
 Current final-tier status is under **Final-tier validation (#178)**; the
 **Stage exit** section gives the command order and historical integration evidence.
 
+## Follow-C PR-head gate (#288)
+
+Priority follow-C after #214, before paused #215; **0.136.1-alpha** fixes only
+the two missing-argument guards in normal-turn `vCredit` / `vRelore`.
+Source moves from accepted **f73e48118805ffe8ff5e763bfa4f20ae00c3a705** to
+**7064d6c1767ba09772dc5e12af57719806184258**, the parent's explicitly chosen,
+immutable [upstream PR #365 head](https://github.com/playbymail/olympia-g3/pull/365).
+Initial PR recheck was **OPEN**, unchanged head; no moving-main assumption.
+The implementing subagent left the patch uncommitted for independent parent
+acceptance; the delivery and continuation notes below record that boundary.
+
+**Upstream changed during validation:** final recheck finds PR #365 **MERGED**
+at **2026-10-29T20:09:31Z**, head
+**3434e8ecd75f52d3df6d1e57809b215785992940**, merge commit
+**9a03d126b329ed466c4af48425553c025eaca26f**. The later head adds ATTACK/USE
+missing-argument guards, five immediate-GM guards, a summon-fog name guard and
+two more fixtures (15 changed files). **None is included in this bounded
+implementation or its pin/recordings.** Parent split the new delta into
+[priority follow-C #289](https://github.com/mdhender/g3g0/issues/289), attached
+to #183 before resuming #215. It includes an explicit scope gate: ATTACK/fog
+have later complete-contract owners, and immediate mode remains stage 5,
+not permission to expand this patch or silently implement the console. Evidence:
+`tmp/issue288-pr-{final.json,head-drift.log}`. No upstream merge was performed
+by this task; the source pin remains exactly 7064d6c.
+
+### Source review and independent pins
+
+The entire 24-file upstream diff is reviewed, not just its two immed.c hunks:
+
+- **immed.c:423–521**: 12 added lines, two `numargs(c) < 1` guards. Complete
+  originals otherwise unchanged. Bare CREDIT says `Must specify a character
+  or player.`; bare RELORE says `Must specify a skill.`. No other validation,
+  accounting, target access, grant/payment/lore or undefined-behavior repair.
+- **lua_bindings.c**: 29 added lines for authoring-only `oly.damage`, finished
+  building/ship and 1–99 checks, real `add_structure_damage(..., FALSE)`.
+  It is a **stage-7 Lua boundary**, not a frozen-replay prerequisite.
+- gm-refused adds targeted→bare CREDIT and RELORE orders; only expected
+  `save/1/200` hash changes. Its regenerated scenario also drops **16 explicit
+  zero fly-cap fields** and rewrites **414 existing kind-7 master entries**
+  from misc labels/order to road labels/order, retaining IDs/numeric kinds/
+  names and all road records. Actual unpacked comparison finds only
+  **lib/item, lib/master, lib/orders/200** changed. These are original upstream
+  inputs, not downstream fixture edits or a new engine closure.
+- Both new fixture READMEs, original checks, authoring scripts/Lua, complete
+  expected manifests/JSON and frozen scenarios are reviewed. stop-running is
+  **scenario.tgz**, a real turn-1 world with eleven running-order factions,
+  STOP + next-order queues, partial progress and no turn-1 reports/logs.
+  use-quick-cast is scenario.patch: five factions, potion IDs/charges
+  **67765:2, 60176:10, 72332:2, 65623:3, 64660:2**, known 804/921 skills,
+  plain 13450 (outside safe haven), invalid skills 997–999 and original
+  authored master/item/unform/Times state. No scenario is regenerated here.
+- Remaining doc/Ultron changes describe these new coverage contracts; no
+  RNG, command/USE tables, serializer, movement, repair or magic behavior
+  changes occur. The abort source/entire release-swear-np fixture is unchanged.
+
+`G3_REPO="$PWD/tmp/upstream.git" bash tools/affected.sh f73e481 7064d6c`
+lists **command-compat, turn-compat, olympia-cli-compat, olympia-roundtrip,
+olympia-spec** only. command already extracts immed.c; the other four consume
+the whole engine/spec tree. Only those defaults advance. No new dependency
+or affected.sh change, blanket repin, global G3_REV or shared C checkout.
+All **1227** original exported blobs/executable modes are verified at the pin.
+
+### Fixture/callback ownership inventory amendment
+
+These add to the original 125-fixture inventory, not unexplained deferrals:
+
+| Fixture / surface | Actual owners and current boundary |
+| --- | --- |
+| gm-refused | #209 normal GM ownership plus #288 guards; all targeted success/failure/rejected behavior retained; strict original C/C/Go now YES |
+| stop-running aggregate | #240 nonmagic integration exit after the named callbacks below; frozen replay needs no Lua |
+| collect land/ship and none-so-far interrupts | produce.c i_collect / i_generic_harvest; accepted #211, reuse real ocean resource/report routing |
+| one-/multi-day MAKE interrupts | make.c i_make / i_generic_make; accepted #212/#213, original multi-day silence retained |
+| repair both/defense/damage/no-progress | build.c i_repair:996–1018 and v/d_repair; pending #223, not a STOP dispatcher defect |
+| sail and USE601 interrupts / next orders | move.c v/d/i_sail (i_sail:1653–1665), same callbacks via use.c key601; pending #219 (support #220); **first observed Go NYI is command sail interrupt** |
+| use-quick-cast aggregate | #281 U35 quick state save/use owns fixture exit after #256 view-aura and #278 trance dependencies |
+| item key6 quick-cast potion | basic.c v_use_quick_cast:965–989; pending #281; **first observed Go NYI is USE item key6** |
+| cast speedup / aura view | existing use.c magically_speed_casting:327–360 is preserved; basic.c v/d_view_aura belongs #256, not reimplemented here |
+| Trance exemption and real 28-day cast | adv.c v/d_trance:12–45, key921 / direct command; pending #278 |
+| USE997/998/999 | existing generic invalid-skill rejection, counted invalid:0 before their callbacks; no skill boxes exist, so these outcomes do not prove add_ram/save_quick/quick_cast callbacks work; dispatcher preservation #245, bounded callback owners remain unchanged |
+
+Strict originals run unchanged real C **twice before Go** using the trusted
+native capture launcher, then the existing strict comparator plus tree-modes.py.
+No excluded streams/files, filtering, status substitution or fake callbacks.
+gm-refused, gm-credit, production-harvest/refused, player-settings/refused
+match fully (**237/237/249/237/237/237 entries**). New stop-running and
+use-quick-cast C/C match **259/246 entries**, original checks YES. Go gives
+**engine 2/script 1** at the above NYIs, honestly red and not implemented here.
+
+### Commands, provenance and evidence
+
+```sh
+# All compat/affected commands explicitly use this isolated source.
+G3_REPO="$PWD/tmp/upstream.git" bash tools/affected.sh f73e481 7064d6c
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3G0_FULL=1 go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue288/default-$tool" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+```
+
+Bounded vet and fresh full-enabled tests pass (**11 test packages**, Olympia
+**2.776s**); all **eight defaults** pass sequentially, as does affected CLI.
+Final bounded vet/fresh full-enabled test repeat also passes (Olympia
+**2.282s**): `tmp/issue288-{vet,tests}-final.log`.
+Command C/C/Go is **1781 sections / 148098 lines**; every #214 and stage-3
+input/output prefix remains byte-exact. Four real marker controls reject
+statuses **0/134**, both normal comparison and recording replacement, before
+acceptance; no recording changes in those controls. See command-compat for
+exact hashes and asymmetric cases. The unchanged-Go original gm-refused and
+new command scheduler case both reproduce the missing-target panic before
+the implementation, not just a unit assertion on fabricated output.
+
+New `WORK=tmp/issue288-roundtrip --determinism-all` passes **205/0/0 + 1
+separate EXPECTED_ABORT**, **662s**. All 201 inherited names remain, with
+**199 complete inputs unchanged**. Changed gm-refused input is listed above;
+gm-refused+turn changes only **lib/fact/200 and lib/save/1/200**. Four new
+names: stop-running{,+turn}, use-quick-cast{,+turn}. The pristine cache has
+**42812 files / 5331 directories** (including 205 input roots), no manufactured
+release-swear-np+turn. The narrow old/new exact-pin abort remains **134 /
+swear.c (180): FALSE** after explicit unchanged source/fixture review.
+
+Supplementary fresh strict replay runs **C twice then Go on every one of the
+205 inputs**, each on its own physical disposable copy, with
+`run_limited 120 olympia-g3 BIN -l ./lib -S test-use-const-report-date`.
+The existing strict comparator and tree-modes.py verify C/C, C/Go and
+cached-C/fresh-C raw status/streams and every cwd entry/type/mode/empty
+directory/byte: **all 205 match**. The separate real C abort is repeated
+twice, exact **134 / swear.c (180): FALSE**. **24** injected-marker controls
+on actual status-0/134 streams reject invalid references before acceptance.
+Matching captures/helpers are removed. Cache input manifest SHA-256:
+`676383d501db7a63c6e166c1ea8a36ec1bdd90f42ff2ceaf9dfceba1dd692f01`.
+Evidence: `tmp/issue288-{strict-replay,cache-integrity}.log`,
+`tmp/issue288-input-manifest.txt`, per-case strict manifests/diffs under
+`tmp/issue288-strict-replay` and its separate abort raw streams/status.
+
+Strict ordinary turn/all controls pass; the small C recording changes **only
+pin/binary metadata**. Original full spec is **56 pass / 71 fail / 0 error**,
+127 fixtures, preserving exact prior56/stage3-36 names. Existing spec tool
+alone writes passing.txt, provenance only. Golden remains **NO**, unsupported
+initialization **2**. No whole-spec, stage-4 exit, full serializer corpus,
+sanitizer or non-Linux acceptance is claimed by this bounded task.
+
+Canonical fixture build (GCC12.2.0, Linux amd64, Go1.26.4): disposable archive
+`tmp/_issue288/source`; `cmake -S ... -B .../build/canonical -G Ninja
+-DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS=-ffile-prefix-map=ABS_SOURCE/=` then
+`cmake --build .../build/canonical --target olympia-g3 -j4`. No source patch.
+Canonical C SHA-256 **f48d888089c3a0b192abc4d90c84b5fda4c2a1e0eab82ac6b0d3da42236bd294**;
+new roundtrip preset C **a281a56744a84dd39768da5e42765cbc74f8a87c44f89c10124b4fb15afd50a7**.
+Old canonical C stays **6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002**.
+Trusted capture SHA-256 stays
+**816ad641b17c44bb2776d41dd7f2dc7c5f70cc5a3b05020658e4b036870f88b4**.
+Every engine/test is bounded, inputs physical disposable copies, never links
+or writes into protected caches. All **47166** protected old input entries
+match their inherited paths/types/modes/byte manifest after validation.
+`tmp/issue288-final-integrity.log` rechecks both complete caches and all
+inherited command prefixes after replay/cleanup. The four generated root/
+internal coverage/use dumps, disposable archive/build, helpers and matching
+captures are removed; the pristine new-pin C/cache and decisive evidence remain.
+
+Logs: `tmp/issue288-{source-proof,protected-integrity,corpus-proof,before,
+command-before,negative-proof,vet,tests,defaults,cli,roundtrip,turn-full,
+fixtures,spec}.log`; raw decisive captures/manifests under
+`tmp/issue288-before-gm-refused` and `tmp/issue288-fixtures`.
+See the five affected tools' READMEs for exact invocations and detailed gates.
+
+### Independent parent acceptance and larger-orb continuation
+
+Parent reviewed the complete CREDIT/RELORE originals and every local diff,
+independently reran bounded vet/fresh full-enabled tests (**11 test packages**,
+Olympia **2.528s**), all eight sequential defaults and affected CLI, all passing.
+Command C/C/Go repeats **1781 sections / 148098 lines** without re-recording.
+The exact-pin corpus rerun passes **205 / 0 fail / 0 error / 1 separate expected
+abort**, **156s**. Strict ordinary turn again matches **233 entries** and all
+lifecycle/dump/integration/aftermath controls pass. Full spec repeats **56 pass /
+71 fail / 0 error**, **130s**, retaining every prior56 and stage3-36 name;
+golden remains **NO**, initialization **2**. No full serializer or stage-exit
+acceptance is inferred from these task gates.
+
+Fresh original scripts match strict C/C/Go for gm-refused, gm-credit,
+production-harvest/refused and player-settings/refused, including every raw
+stream/status and cwd mode/type/empty directory/byte. Both new originals match
+C/C; Go still honestly stops at sail interrupt / USE item6 NYI. Parent also
+verified all **2285** retained implementer evidence digests, all **1227**
+original new-pin source blobs/modes against git, every protected old/new input
+entry (**47166 / 48143**), and both entire HEAD/stage3 command byte prefixes.
+The inherited high-bit bytes and authentic recording whitespace remain exact.
+
+Parent evidence: `tmp/parent288-{vet,tests,command,move,helper,rng,code,loadsave,
+turn-driver,turn,roundtrip,turn-full,cli,spec,agent-evidence-check}.log` and
+`tmp/parent288-fixtures/` manifests/scripts/decisive failed-Go captures.
+Disposable parent helpers, binaries and matching captures are removed.
+
+At the owner's request, execution pauses after this bounded task. The saved
+[stage-4 continuation prompt](../stage-4-continue-prompt.md) targets a new
+**a1.large (8 CPU / 16 GB RAM)** orb. It reconstructs from tracked files and
+GitHub rather than assuming this orb's tmp state transfers. **#289's follow-C
+scope gate is first; #215 has not started; stage 5 remains unauthorized.**
+The drafting thread does not launch the new orb or continue gameplay.
+
 ## Final-tier validation (#178)
 
 Validation starts from clean main/origin **584e33d012e071440c2d8d5c1d9c85ccf897817c**,

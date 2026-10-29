@@ -1,7 +1,52 @@
 # Command dispatch, scheduler, waits, interruptions and ownership transfers
 
 Pinned reference: [Olympia G3 at
-f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
+7064d6c1767ba09772dc5e12af57719806184258](https://github.com/playbymail/olympia-g3/tree/7064d6c1767ba09772dc5e12af57719806184258).
+
+## Missing GM arguments (#288, follow-C)
+
+**0.136.1-alpha** follows only the two new `numargs(c) < 1` guards in
+immed.c:432–436 / 501–505. This is the immutable inspected **PR #365 snapshot**,
+OPEN at the initial recheck, not a merge or moving branch. PR later advanced
+and merged during validation; its additional changes are **not included**.
+See the final upstream-drift notice in the linked gate below.
+All other CREDIT/RELORE validation, Times payment, NP/item/lore effects and
+dispatcher accounting remain unchanged. Explicit `""` still counts as an
+argument and retains its inherited diagnostic. Immediate mode is not ported.
+
+Four appended sections exercise bare orders first and after targeted orders,
+including successful Times payment / NP credit and invalid targets, real
+load/do dispatch, exact fail/ok counters, saved inventories/NP, paid flags,
+lore queues and absent record allocation. The unchanged Go engine panics at
+vCredit on the new missing-target scheduler case (also on the new original
+gm-refused script). Unchanged new-pin C runs twice before recording or Go.
+The existing tool alone records C output; no bytes are synthesized from Go.
+
+Current oracle: **1781 sections / 148098 output lines / 2880391 bytes**.
+Input **742721 bytes**, SHA-256
+`2a7bbb12574ea36135181b4b8249c8324306cb63d0ef2119aacfe6177fd9c6c9`;
+output SHA-256
+`f71b3833e6e44b3571261e078bac705aca4a9edaeca32547b04c96527e9841cf`.
+Both entire accepted #214 prefixes (**741400 / 2871636 bytes**) and both
+stage-3 prefixes (**578307 / 2134398 bytes**) remain byte-exact, including
+all **21 / 67 high-bit bytes** and C trailing spaces. No inherited source-backed
+output change was necessary. FOLLOW288 sections require actual status 0;
+dependency rejection still precedes status acceptance and recording replacement.
+Four actual native marker controls (statuses 0/134, default/--update) each
+reject with harness 2 and leave the recording unchanged.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue288/command" \
+  bash tools/command-compat/run.sh --update # unchanged Go fails, C recorded twice
+# After the two guards, the ordinary default passes without re-recording:
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue288/default-command" \
+  bash tools/command-compat/run.sh
+```
+
+Evidence: `tmp/issue288-{command-before,command-default,negative-proof}.log`;
+strict original fixture outcomes, pin/source provenance and limits are in
+[the follow-C gate](../README.md#follow-c-pr-head-gate-288). This does not
+implement STOP's remaining repair/sail callbacks or quick-cast potions/Trance.
 
 ## Cookie NPC allocation prerequisite (#214, stage 4 N14a)
 

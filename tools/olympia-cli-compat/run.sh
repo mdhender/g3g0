@@ -39,7 +39,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 . "${HERE}/../lib/timeout.sh"
 
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
-G3_REV="${G3_REV:-f73e48118805ffe8ff5e763bfa4f20ae00c3a705}"
+G3_REV="${G3_REV:-7064d6c1767ba09772dc5e12af57719806184258}"
 WORK="${WORK:-${ROOT}/tmp/olympia-cli-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-60}"
 

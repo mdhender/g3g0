@@ -9,12 +9,15 @@ import (
 	"strings"
 )
 
-// Normal turn orders from immed.c:423–509; this does not enter immediate mode.
-// Missing-target raw parse slots are undefined in C (G3 #364); do not add a
-// validation rule or promise a deterministic diagnostic for stale pointers.
-// https://github.com/playbymail/olympia-g3/issues/364
+// Normal turn orders from immed.c:423–521; this does not enter immediate mode.
+// G3 #364 (PR #365, head 7064d6c) checks argument count before reading the
+// target slot, which may retain a pointer into the previous order in C.
 func (w *world) vCredit(c *command) int {
 	target, amount, item := int(c.a), int(c.b), int(c.c)
+	if c.parse.Len()-1 < 1 {
+		w.commandOut(int(c.who), "Must specify a character or player.")
+		return 0
+	}
 	if amount != 0 {
 		if w.kind(target) != tChar && w.kind(target) != tPlayer {
 			w.commandOut(int(c.who), "%s not a character or player.", c.parse[1])
@@ -56,6 +59,10 @@ func (w *world) vCredit(c *command) int {
 
 func (w *world) vRelore(c *command) int {
 	skill := int(c.a)
+	if c.parse.Len()-1 < 1 {
+		w.commandOut(int(c.who), "Must specify a skill.")
+		return 0
+	}
 	if !w.validBox(skill) || w.kind(skill) != tSkill {
 		w.commandOut(int(c.who), "%s is not a skill.", c.parse[1])
 		return 0

@@ -39618,3 +39618,79 @@ cookie do 1000 9999 0 1000
 section N14a invalid existing item absent from table asserts before terrain or inventory
 entity 99 4 0
 cookie do 1000 9999 99 1000
+
+section FOLLOW288 CREDIT targeted then bare real scheduler preserves payment inventory and failed accounting
+lore_root
+set gm 200
+entity 1 4 0
+field 1001 lord 201
+coverage path coverage.tsv
+queue credit 1001
+queue credit
+queue credit 201 13 NP
+queue credit
+load
+do
+do
+do
+do
+gm_state 200
+gm_state 201
+save 1001
+save 201
+coverage write
+readfile coverage.tsv
+readlog 200
+readlog 201
+export state
+
+section FOLLOW288 RELORE targeted then bare real scheduler preserves existing lore and failed accounting
+lore_root
+set gm 200
+entity 600 5 0
+name 600 Singing
+learn 1001 600 2 0
+field 1001 lord 201
+coverage path coverage.tsv
+queue relore 600
+queue relore
+queue relore 9000
+queue relore
+load
+do
+do
+do
+do
+lore_state 200
+lore_state 201
+save 1001
+coverage write
+readfile coverage.tsv
+readlog 200
+readlog 201
+export state
+
+section FOLLOW288 bare CREDIT first and after invalid explicit target does not allocate missing player
+parse credit
+callback_start
+parse credit 9999 7
+callback_start
+parse credit
+callback_start
+gm_state 1001
+gm_state 200
+gm_state 201
+readlog 200
+
+section FOLLOW288 bare RELORE first and after invalid explicit skill preserves absent records
+entity 1002 2 0
+parse relore
+callback_start
+parse relore 9000
+callback_start
+parse relore
+callback_start
+formation_state 1002
+lore_state 200
+lore_state 201
+readlog 200

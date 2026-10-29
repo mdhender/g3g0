@@ -18,8 +18,8 @@ func TestRecordedCProvenance(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.HasPrefix(string(metadata), "pin f73e48118805ffe8ff5e763bfa4f20ae00c3a705\n") {
-		t.Fatal("recording is not from the stage pin")
+	if !strings.HasPrefix(string(metadata), "pin 7064d6c1767ba09772dc5e12af57719806184258\n") {
+		t.Fatal("recording is not from the reviewed follow-C pin")
 	}
 	for _, name := range []string{"world-sample", "rejected-option"} {
 		files, err := capture(filepath.Join("testdata", name))

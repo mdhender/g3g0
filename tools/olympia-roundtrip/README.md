@@ -7,6 +7,47 @@ Expected results always come from running the pinned C build on the same input; 
 This is the exit check for stage 0 (#20): load and save must match on every case before the turn is ported.
 Since `load_db` and `save_db` were ported (#28), every case passes.
 
+## Follow-C PR-head corpus (#288)
+
+At **0.136.1-alpha**, the default is immutable
+**7064d6c1767ba09772dc5e12af57719806184258**, inspected **PR #365 snapshot**,
+OPEN at initial recheck, not its later advanced/merged head or a moving branch
+(see the linked drift notice below). A **new WORK** builds pristine source
+and every input/C result without touching any old-pin cache:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue288-roundtrip" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-roundtrip/run.sh --determinism-all
+```
+
+**205 pass / 0 fail / 0 error / 1 separate EXPECTED_ABORT (662s)**.
+All 201 inherited names remain; the four added saved games are **stop-running,
+stop-running+turn, use-quick-cast, use-quick-cast+turn**. The first fixture is
+already a turn-1 frozen world; its +turn is the saved turn-2 result, not Lua
+authoring. Go's success here proves load/save only, not either new gameplay
+fixture. The original scripts still stop at explicit sail/potion NYIs.
+
+Supplementary replay freshly runs C twice then Go on all **205** pristine
+inputs and compares cached C with fresh C too: every raw status/stream and
+cwd path/type/mode/empty directory/byte matches using the existing strict
+turn comparator plus tree-modes.py. All engines are bounded; copies are
+physical, never linked. Input manifest **42812 files / 5331 directories**,
+SHA-256 `676383d501db7a63c6e166c1ea8a36ec1bdd90f42ff2ceaf9dfceba1dd692f01`.
+All **199** untouched inherited inputs remain exact; only gm-refused and its
+post-turn input have the source-backed changes detailed in the linked gate.
+The strict separate abort repeats twice and **24 marker controls** reject
+invalid actual status-0/134 captures. Matching captures/helpers are removed.
+
+The entire release-swear-np fixture and olympia/swear.c are **byte-identical**
+between f73e481 and 7064d6c, verified before narrowly extending the existing
+exact-pin abort exception to the latter. Real C turns twice yield **134** and
+exact `swear.c (180): FALSE`; no successful +turn input exists. Arbitrary
+overrides and unrelated nonzero turns remain errors. Source/cache and strict
+fresh replay details: [the pin gate](../README.md#follow-c-pr-head-gate-288).
+Evidence: `tmp/issue288-{roundtrip,corpus-proof,source-proof,strict-replay}.log`;
+pristine reusable cache `tmp/issue288-roundtrip`.
+
 ## Final-tier replay (#178)
 
 At **0.115.1-alpha**, the unchanged tool reuses the verified exact-pin
@@ -65,8 +106,9 @@ The games are:
 - Each of those after one successful C turn, named `<game>+turn`.
   The turn is `olympia-g3 -r -l ./lib -S test-use-const-report-date`, as the fixtures run it.
 
-At the pinned revision that is 101 games and **201 saved-game cases**:
-101 ordinary games and 100 successful post-turn snapshots. All 196 inherited
+At the pinned revision that is 103 games and **205 saved-game cases**:
+103 ordinary games and 102 successful post-turn snapshots. The four #288 names
+are listed above. At f73e481 there were 201 cases; all 196 earlier inherited
 cases remain, plus `savage-cap` and `token-vanish` before/after a turn and
 the ordinary `release-swear-np` load/save case.
 
@@ -95,12 +137,13 @@ A case passes when the exit status, stdout and stderr match byte for byte, and s
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `7064d6c1767ba09772dc5e12af57719806184258`.
 The revision is pinned in `run.sh` (`PINNED_REV`); `G3_REV` tests against another.
 Change the pin only on purpose, together with [`tools/olympia-spec`](../olympia-spec).
 
-The expected-abort exception applies **only to this exact resolved revision**.
-`G3_REV` overrides at any other revision retain all ordinary `+turn` candidates
+The expected-abort exception applies **only to the two explicitly reviewed
+resolved revisions f73e481 and 7064d6c**.
+`G3_REV` overrides at other revisions retain all ordinary `+turn` candidates
 and require status 0. In particular, valid older snapshots are not silently
 dropped. A future pin needs its own source review; arbitrary nonzero turns
 are never accepted by this contract.
