@@ -1,8 +1,13 @@
 # Strict whole-tree turn comparison (#56, #134)
 
 Pinned reference: [playbymail/olympia-g3 at
-7064d6c1767ba09772dc5e12af57719806184258](https://github.com/playbymail/olympia-g3/tree/7064d6c1767ba09772dc5e12af57719806184258).
+9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 No turn engine code is implemented here. The reference is real C, never Go.
+
+The #291 merged-pin proof, current capture commands/provenance and explicit
+remaining original-fixture NYIs are in
+[merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
+stage-exit evidence below retain their historical scope.
 
 There are no artifact exclusions. Both C/C determinism and C/Go comparison
 cover every cwd entry, including empty directories, types, permission/special
@@ -15,6 +20,37 @@ tools/turn-compat/run.sh                 # fast recorded checks; no world turn o
 tools/turn-compat/run.sh --full          # real C/C/Go world turns and lifecycle controls
 tools/turn-compat/run.sh --full --record # explicitly refresh C-only recordings, then compare Go
 ```
+
+## Merged-pin turn (#291)
+
+At **0.136.3-alpha**, the immutable merged reference above passes the complete
+existing gate, real C twice before Go/recording:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue291-roundtrip" \
+  WORK="$PWD/tmp/issue291-turn" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/turn-compat/run.sh --full --record --command-coverage \
+  --use-coverage --phase-coverage --state-export --dump-integration
+```
+
+The ordinary comparison preserves **233 cwd entries / status 0**. All
+**13 lifecycle / 10 command / 15 USE / 23 phase / 13 export** controls and
+**84 integration** controls (**74 status 0 / 10 status 1**) pass, plus **20
+flag-free aftermath** comparisons. Every primary comparison includes all raw
+streams/status and cwd paths/types/modes/empty directories/bytes. Full four-dump
+hashes remain exactly those in [#177's table](#four-dump-integration-closure-177).
+Only the pin and actual binary provenance change in c-determinism.txt; its
+entire manifest body and small snapshots remain unchanged. New metadata SHA-256:
+`7800d8c36851a21e2d819428f0eae17bd81e02a358c0b2030e8bb921a7a757e0`.
+
+Logs and summaries: `tmp/issue291-turn-full.log`,
+`tmp/issue291-turn/{c-determinism,lifecycle,command-coverage,use-coverage,
+phase-coverage,state-coverage,integration-coverage}.txt`. Native original-script
+captures, canonical compiler provenance and explicit pending ATTACK/fog,
+console, sail-interrupt and quick-potion owners are in
+[merged-pin proof](../README.md#merged-pin-proof-291). This does not accept a
+whole gameplay family or stage exit.
 
 ## Follow-C PR-head turn and fixtures (#288)
 

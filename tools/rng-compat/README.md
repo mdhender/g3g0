@@ -6,9 +6,16 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `e733acb63bacb21167a1f2589d8dcdc023364896`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `9a03d126b329ed466c4af48425553c025eaca26f`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 The line ranges in `run.sh` (`SNIPPETS`) are for that revision; check them when the revision changes.
+
+For #291, the USE guard moves the complete unchanged skills RNG block from
+use.c **1623–1740 to 1630–1747**. Every extracted RNG block is byte-identical
+to the independent old e733acb pin; no assertion remapping is introduced.
+Two real C runs and the fresh Go default retain all **321 operations** and
+the entire recording unchanged. See [merged-pin proof](../README.md#merged-pin-proof-291)
+for the isolated source, bounded commands and acceptance limits.
 
 For #131/G3 #357, swear.c's social prefix moves from 428–528 to 425–525.
 The complete original definitions (begin_social through soc_breed) are

@@ -1,7 +1,14 @@
 # Clock and turn-driver helpers
 
 Pinned reference: [playbymail/olympia-g3 at
-e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
+9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
+
+#291 reviews the independent e733acb→merge source delta: the fog-name guard
+is outside the extracted weather RNG prefix; all clock/orchestration/calendar/
+scheduling definitions and all four recordings remain unchanged. Bounded C
+twice then fresh Go defaults pass. See [merged-pin proof](../README.md#merged-pin-proof-291)
+for commands, provenance and limits; callback instrumentation below remains
+call-order evidence, not new gameplay acceptance.
 
 ```sh
 tools/turn-driver-compat/run.sh

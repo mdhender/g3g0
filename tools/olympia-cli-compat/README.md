@@ -10,8 +10,35 @@ Two sources of expectations are used:
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `7064d6c1767ba09772dc5e12af57719806184258`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `9a03d126b329ed466c4af48425553c025eaca26f`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
+
+The #291 merged-pin validation and current provenance are in
+[merged-pin proof](../README.md#merged-pin-proof-291). The older #288
+snapshot evidence below is historical, not the current default pin.
+
+At **0.136.3-alpha**, two sequential live runs at the merged pin pass all
+**92 vectors** and both unchanged C/Go rng-selftest gates. Their generated
+tables are byte-identical. All **62 same** rows, all stdout digests, statuses,
+classifications, arguments and results remain unchanged; only **30 NYI**
+rows' C stderr/merged digest pairs refresh. The new raw C assertion contains
+the actual cache source path to faery.c:320. Historical raw streams are not
+available, so the recording review does not claim a byte-level explanation
+of their old diagnostic differences. No output is normalized.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue291-roundtrip" \
+  WORK="$PWD/tmp/issue291-cli" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-cli-compat/run.sh
+```
+
+Run twice before copying the generated table into results.tsv. Its SHA-256:
+`84f0701083ad742cb678a74a65ceb19acf7b1ac2208a47ccfaf4dd9539c39ced`.
+The none row's empty final argv field intentionally retains its terminal tab.
+Logs: `tmp/issue291-cli-{1,2}.log`, identical `.tsv` copies and
+`tmp/issue291-cli-recording-review.log`. The explicit unsupported-mode
+classification remains red/NYI, not console or initialization acceptance.
 
 For follow-C #288 this is the inspected immutable **PR #365 snapshot**, OPEN
 at the initial recheck, not its later merged/advanced head (see the

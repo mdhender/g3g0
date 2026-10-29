@@ -7,6 +7,31 @@ Expected results always come from running the pinned C build on the same input; 
 This is the exit check for stage 0 (#20): load and save must match on every case before the turn is ported.
 Since `load_db` and `save_db` were ported (#28), every case passes.
 
+## Merged-pin corpus (#291)
+
+The default is immutable **9a03d126b329ed466c4af48425553c025eaca26f**.
+At **0.136.3-alpha**, a fresh archive/build and all fresh deterministic C
+references pass **207 / 0 fail / 0 error**, plus **one separate EXPECTED_ABORT**
+in **629s**. Every inherited 205 name remains; the two added saved inputs are
+**missing-argument** and **missing-argument+turn**, made from unchanged pinned
+C, never Go. Their load/save parity does not accept ATTACK/fog gameplay.
+gm-immediate-missing uses world.tgz directly, so adds no saved-game name.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue291-roundtrip" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-roundtrip/run.sh --fresh --determinism-all
+```
+
+The complete swear.c blob and entire release-swear-np fixture tree are
+unchanged from both reviewed earlier pins. Complete source/fixture review
+precedes adding **only this merge SHA** to the exact **134 / swear.c (180):
+FALSE** exception. No successful release-swear-np+turn exists; arbitrary
+overrides still require an ordinary successful turn. Supplementary strict
+replay, all four actual full serializer corpora, native original-fixture
+captures and integrity evidence: [merged-pin proof](../README.md#merged-pin-proof-291).
+Earlier pin evidence below remains historical.
+
 ## Follow-C PR-head corpus (#288)
 
 At **0.136.1-alpha**, the default is immutable
@@ -106,8 +131,8 @@ The games are:
 - Each of those after one successful C turn, named `<game>+turn`.
   The turn is `olympia-g3 -r -l ./lib -S test-use-const-report-date`, as the fixtures run it.
 
-At the pinned revision that is 103 games and **205 saved-game cases**:
-103 ordinary games and 102 successful post-turn snapshots. The four #288 names
+At the pinned revision that is 104 games and **207 saved-game cases**:
+104 ordinary games and 103 successful post-turn snapshots. The two #291 and four #288 names
 are listed above. At f73e481 there were 201 cases; all 196 earlier inherited
 cases remain, plus `savage-cap` and `token-vanish` before/after a turn and
 the ordinary `release-swear-np` load/save case.
@@ -137,12 +162,12 @@ A case passes when the exit status, stdout and stderr match byte for byte, and s
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `7064d6c1767ba09772dc5e12af57719806184258`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `9a03d126b329ed466c4af48425553c025eaca26f`.
 The revision is pinned in `run.sh` (`PINNED_REV`); `G3_REV` tests against another.
 Change the pin only on purpose, together with [`tools/olympia-spec`](../olympia-spec).
 
-The expected-abort exception applies **only to the two explicitly reviewed
-resolved revisions f73e481 and 7064d6c**.
+The expected-abort exception applies **only to the three explicitly reviewed
+resolved revisions f73e481, 7064d6c and 9a03d126**.
 `G3_REV` overrides at other revisions retain all ordinary `+turn` candidates
 and require status 0. In particular, valid older snapshots are not silently
 dropped. A future pin needs its own source review; arbitrary nonzero turns

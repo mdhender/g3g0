@@ -4,6 +4,40 @@
 G3 is the reference.
 Expected output comes only from G3's committed files, which its C engine wrote; nothing here re-baselines.
 
+The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
+are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
+Historical task results below describe their own pins, not whole-spec parity.
+
+## Merged-pin no-loss gate (#291)
+
+At **0.136.3-alpha**, immutable **9a03d126b329ed466c4af48425553c025eaca26f**,
+the existing full tool reports **129 fixtures: 56 pass / 73 fail / 0 error
+(194s)**. All **56 accepted names** and the full stage-3 **36-name** set remain;
+only the provenance line changes in passing.txt, written by the tool, never
+hand-edited. Its SHA-256 is
+`d070fda317b046dc1bedb06a73d0b63ad874ed877917d9eb3a36de241d89c8c3`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue291-spec" \
+  RUN_DIR=/tmp/g3g0-issue291-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+The two new originals add failures, not passes: missing-argument first reaches
+`command USE v_summon_fog callback` NYI; complete #264/#235 and strict fixture
+acceptance remain mandatory before stage-4 exit. gm-immediate-missing reaches
+unsupported `load_db (-i)` and remains explicitly stage 5. Both have strict
+real C/C proof before the Go run; neither C/Go comparison passes. STOP sail interruption
+and quick-cast item6 remain NYI too. No fixture, expected byte or callback is
+changed. Golden stays **NO**, initialization **2**. Tool exit 0 means no
+accepted name was lost, not whole-spec, family or stage completion. Full C
+spec was not rerun; separate C/C/native original-script proof covers the 18
+selected fixtures documented in the linked proof.
+
+Logs: `tmp/issue291-spec.log` and
+`tmp/issue291-spec/{run-all,olympia-g3,golden}.log`.
+
 ## Follow-C PR-head no-loss gate (#288)
 
 At **0.136.1-alpha**, immutable **7064d6c1767ba09772dc5e12af57719806184258**
@@ -221,7 +255,7 @@ The spec is the three gates that G3 documents for another engine in `doc/claude/
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `7064d6c1767ba09772dc5e12af57719806184258`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `9a03d126b329ed466c4af48425553c025eaca26f`.
 The revision is pinned in `run.sh` (`PINNED_REV`).
 `G3_REV` runs another revision, but then `passing.txt` is neither compared nor written.
 Change the pin only on purpose, and rerun this and [`tools/olympia-roundtrip`](../olympia-roundtrip) when you do.

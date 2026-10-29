@@ -1,7 +1,14 @@
 # Movement helper compatibility
 
-Pin: `f73e48118805ffe8ff5e763bfa4f20ae00c3a705` in
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
+Pin: `9a03d126b329ed466c4af48425553c025eaca26f` in
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
+
+#291 reviews f73e481→merge against every extracted definition: ATTACK and
+fog changes are outside this helper closure; the USE guard moves original
+skill helper source locations by seven lines, without changing their bodies.
+Two deterministic real C runs and fresh Go retain the entire **135-section /
+7158-line** recording. No MOVE/SAIL callback is added. Commands, provenance
+and limits: [merged-pin proof](../README.md#merged-pin-proof-291).
 
 Current #131 recording: **135 sections / 7158 lines**, from two identical
 real-C runs. Only G3 #353's unowned route changes: the explicit owner

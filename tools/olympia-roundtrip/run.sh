@@ -59,7 +59,7 @@ ROOT="$(cd "${HERE}/../.." && pwd)"
 # shellcheck source=../lib/timeout.sh
 . "${HERE}/../lib/timeout.sh"
 
-PINNED_REV=7064d6c1767ba09772dc5e12af57719806184258
+PINNED_REV=9a03d126b329ed466c4af48425553c025eaca26f
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 G3_REV="${G3_REV:-${PINNED_REV}}"
 WORK="${WORK:-${ROOT}/tmp/olympia-roundtrip}"
@@ -141,13 +141,14 @@ for d in "${REGRESS}"/*/; do
 done
 all=()
 # Exact-pin contract, not a general allowance for failed turns. Source:
-# f73e481 and 7064d6c: olympia/swear.c and the entire release-swear-np
-# fixture are byte-identical (reviewed for follow-C #288).
+# f73e481, 7064d6c and 9a03d126: olympia/swear.c and the entire
+# release-swear-np fixture are byte-identical (reviewed for #288/#291).
 # (G3 #357): status 134, swear.c assertion, no sanitizer report. At older
 # or override pins keep the ordinary +turn path, requiring status 0.
 unavailable=""
 if [ "${G3_REV}" = f73e48118805ffe8ff5e763bfa4f20ae00c3a705 ] ||
-   [ "${G3_REV}" = 7064d6c1767ba09772dc5e12af57719806184258 ]; then
+   [ "${G3_REV}" = 7064d6c1767ba09772dc5e12af57719806184258 ] ||
+   [ "${G3_REV}" = 9a03d126b329ed466c4af48425553c025eaca26f ]; then
 	unavailable=release-swear-np+turn
 fi
 for g in "${games[@]}"; do

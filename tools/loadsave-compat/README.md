@@ -6,9 +6,15 @@ Expected results always come from running a C driver built from the pinned sourc
 
 ## Upstream revision
 
-[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
+[playbymail/olympia-g3](https://github.com/playbymail/olympia-g3) at `9a03d126b329ed466c4af48425553c025eaca26f`.
 The revision is pinned in `run.sh` (`G3_REV`). Change it only on purpose, and rerun the test when you do.
 The script exports that revision with `git archive`, so the clone's checkout does not matter.
+
+For #291, all extracted definitions remain byte-identical to f73e481;
+skill_school's assertion naturally moves seven source lines with the USE
+guard. The deterministic **61-section / 3411-line** default recording is
+unchanged. Full-corpus commands, disposable-input provenance, counts and
+limits are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 
 | upstream | Go |
 |---|---|

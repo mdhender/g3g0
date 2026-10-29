@@ -7,6 +7,255 @@ Task notes below retain their original acceptance scope and temporary boundaries
 Current final-tier status is under **Final-tier validation (#178)**; the
 **Stage exit** section gives the command order and historical integration evidence.
 
+## Merged-pin proof (#291)
+
+At **0.136.3-alpha**, the remaining eight affected defaults advance to immutable
+G3 **9a03d126b329ed466c4af48425553c025eaca26f**: **rng, loadsave, olympia-cli,
+olympia-roundtrip, olympia-spec, turn, turn-driver and move**. Accepted #290
+already owns the exact USE guard and command/helper/check assertion-provenance
+repins. This task adds no gameplay callback, console, fixture or upstream
+change. Other tools retain their independent pins.
+
+### Source and recording review
+
+The complete 15-file delta from 7064d6c to the merge is reviewed separately
+from each tool's actual older pin. The later head **3434e8e** and merge have
+identical tree **765148d47086f44dbd0be21c023e5691dbc6a41b**. Reproduce the
+dependency audit against the isolated bare source (no shared checkout writes):
+
+```sh
+for old in e733acb63bacb21167a1f2589d8dcdc023364896 \
+  f73e48118805ffe8ff5e763bfa4f20ae00c3a705 \
+  7064d6c1767ba09772dc5e12af57719806184258; do
+  G3_REPO="$PWD/tmp/upstream.git" bash tools/affected.sh "$old" \
+    9a03d126b329ed466c4af48425553c025eaca26f
+done
+```
+
+The actual old defaults are **e733acb** for rng/turn-driver, **f73e481** for
+loadsave/move, and **7064d6c** for CLI/roundtrip/spec/turn. A union of changes
+from the oldest pin is not a reason to repin already-unaffected tools.
+
+The e733acb delta additionally includes io.c's positive-quantity/no-price
+trade rejection and report.c's null previous-word guard; both were already
+accepted at the independent f73e481 serializer/engine pins. Lua's damage
+authoring binding is not a frozen replay dependency. The later guards are
+USE (#290), ATTACK (#235), fog naming (#264) and five immediate commands
+(stage 5), not authorization for callbacks here. Extraction review covers
+**184 definitions/ranges**: RNG's identical use.c range naturally moves from
+**1623:1740 to 1630:1747**, and skill_school assertions move seven lines.
+No `#line` remapping or diagnostic normalization is added. Full swear.c and
+the entire release-swear-np fixture are byte-identical at f73e481, 7064d6c
+and the merge. Only that exact merge SHA joins the narrow **134 / swear.c
+(180): FALSE** allowlist; arbitrary identical-tree overrides are not allowed.
+No successful release-swear-np+turn snapshot is fabricated.
+
+The RNG/loadsave/turn-driver/move C recordings are regenerated from real C
+and then compared afresh, unchanged. Two live CLI runs produce identical
+**92-vector** tables: all **62 same** rows and every stdout digest, status,
+classification, argument and result remain unchanged. Only **30 NYI** rows'
+stderr/merged C digests refresh; the new raw assertion includes the actual
+roundtrip build path to faery.c:320. Historical raw CLI streams are unavailable,
+so this does not claim their old/new raw bytes differ only by that path.
+`results.tsv` SHA-256 is
+**84f0701083ad742cb678a74a65ceb19acf7b1ac2208a47ccfaf4dd9539c39ced**;
+its authentic empty final argv field retains the terminal tab on the none row.
+
+### Fresh C corpus and strict supplementary replay
+
+```sh
+export GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'"
+export RUN_TIMEOUT=120
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue291-roundtrip" \
+  bash tools/olympia-roundtrip/run.sh --fresh --determinism-all
+```
+
+The fresh full corpus passes **207 / 0 fail / 0 error**, plus **one separate
+EXPECTED_ABORT**, **629s**. All 205 inherited names remain; only original
+missing-argument{,+turn} are added. This tests load/save, not whether the
+missing-argument gameplay fixture passes. A separate fresh strict replay runs
+real C **twice before Go on all 207 inputs**, and compares cached C to fresh
+C too: raw status/stdout/stderr and every cwd path/type/mode/empty directory/
+byte match using `tools/turn-compat` and `tools/lib/tree-modes.py`, without
+exclusions or normalization. Separate real C/C abort replay is exact **134 /
+swear.c:180**. **24 actual marker controls** reject dependency, NYI, stub,
+sanitizer and runtime-error contamination in either stream at statuses 0/134,
+before treating a C result as a reference.
+
+The pristine new-pin cache contains **43238 files / 5383 directories**,
+including 207 input roots. Its full mode/byte manifest SHA-256 is
+**af1453a48658ac26e97ece4d46df3345484897e11010b04314821668f01d5b53**.
+Physical disposable copies under `tmp/issue291-inputs/cases` have identical
+manifests, with **48414 non-root entries**, no symlinks or shared inodes.
+Missing caches come only from pristine C fixtures, never Go-generated saves.
+All **1237 original source blobs and 644/755 modes** match the merge in both
+the provided pristine export and the fresh C export. The original is not built
+in or modified. Cache preset C SHA-256:
+**d8967f5700225d1f8c3714d203858f201508b7349c36c6daead8cd37b5cda634**.
+
+Native original-script captures use OLYMPIA_ENGINE_BIN before script cleanup:
+preserved argv[0]/stdin, O_RDWR raw captures, real signal status, seek/replay
+stdout then stderr, then `cp -a` cwd (including redirected script-owned stderr).
+Canonical C is built from a separate pristine archive using CMake Debug/Ninja,
+`-DCMAKE_C_FLAGS=-ffile-prefix-map=ABS_SOURCE/=` with the trailing slash:
+assertion paths are source-backed at compilation, not filtered afterwards.
+Canonical C SHA-256:
+**2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212**;
+capture launcher SHA-256:
+**a485b5dd8189000068c64cd1fd74b9d6fe44c7f40e17be99bac09905cb0dabc9**.
+Every engine/test is bounded by the existing run_limited/run-limited.sh;
+tools run sequentially, never concurrently over shared scratch.
+
+The inherited command corpus stays **1785 sections / 149824 lines**:
+input **744331 bytes**, SHA-256
+**71adf26e7a9fd8f8e3c012da92771541944eeaefce923948b4de3e2688b49866**;
+output **2909533 bytes**, SHA-256
+**9b038ceb5ba7b42bfd7842a81c144e4ff6430973e7d0f78e9fac9e418a1c4f00**.
+No command input/output is edited or re-recorded by this task.
+
+### Sequential validation commands
+
+```sh
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3G0_FULL=1 go test -count=1 \
+  -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+# Prepare physical copies of each verified idle cache cases/*/input first.
+# GAMES is outside each WORK; --full runs the suites, not just G3G0_FULL=1.
+for tool in box boxfile check loadsave; do
+  G3_REPO="$PWD/tmp/upstream.git" GAMES="$PWD/tmp/issue291-inputs/cases" \
+    WORK="$PWD/tmp/issue291-full-$tool" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh" --full
+done
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue291-roundtrip" \
+  WORK="$PWD/tmp/issue291-turn" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/turn-compat/run.sh --full --record --command-coverage \
+  --use-coverage --phase-coverage --state-export --dump-integration
+# Then the 18 unchanged original scripts, real C twice before Go, using
+# the native bounded pre-cleanup capture method described above.
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue291-spec" \
+  RUN_DIR=/tmp/g3g0-issue291-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+All four full serializer suites actually execute **208 worlds each** (the
+207 copied inputs plus each tool's original base world), not skipped opt-in
+tests. Box's plain/pretty views, boxfile's **three variants**, and check cover
+**8,398,707 boxes** per view/variant; loadsave saves **8,398,698**. Check and
+loadsave both report **zero check_db messages**. C/Go raw streams/status and
+complete compared lib trees/modes match. Box/boxfile retain f73e481; check
+retains #290's merged pin. No recording bytes change in these gates.
+Logs: `tmp/issue291-{box,boxfile,check,loadsave}-full.log`.
+
+Strict ordinary turn passes **233 entries / status 0**, all **13 lifecycle /
+10 command / 15 USE / 23 phase / 13 export** controls and **84 integration**
+controls (**74 status 0 / 10 status 1**), plus **20 flag-free aftermath**
+comparisons. Every primary comparison retains all raw streams/status and
+cwd paths/types/modes/empty directories/bytes. The four complete integration
+dumps retain #177's hashes. Recording review finds only the pin and actual
+C-binary header change in c-determinism.txt; small snapshots and the complete
+manifest body remain identical. Metadata SHA-256:
+**7800d8c36851a21e2d819428f0eae17bd81e02a358c0b2030e8bb921a7a757e0**.
+Logs/summaries: `tmp/issue291-turn-full.log`, `tmp/issue291-turn/*.txt`.
+
+### Original fixtures and remaining owners
+
+All **18 unchanged scripts** run real C twice before fresh Go with native
+pre-cleanup captures. C/C matches completely and every C script exits 0.
+**14** also match strict C/Go: gm-refused/credit (**237/237 entries**),
+production-harvest/refused (**249/237**), player-settings/refused (**237/237**),
+all six phase scripts (**252/245/242/241/246/242**) and savage-cap (**238**),
+plus release-swear-np (**229**, engine **134**, exact swear.c:180 assertion).
+The other four remain honestly red (**Go engine 2 / script 1 / strict diff 1**):
+
+| Original fixture | C/C entries | First observed Go boundary / owner |
+| --- | --- | --- |
+| missing-argument | 246 | `command USE v_summon_fog callback` NYI; complete fog #264 and ATTACK #235 contracts remain mandatory, then strict original C/C/Go before stage-4 exit |
+| gm-immediate-missing | 227 | `load_db (-i)` NYI; actual console, be/additem/poof/know/makeloc and fixture remain owner-approved stage 5 |
+| stop-running | 259 | `command sail interrupt` NYI; #219/#220, repair #223 and aggregate #240 remain later owners |
+| use-quick-cast | 246 | `USE item key 6` NYI; #281 after view-aura #256 and trance #278 |
+
+This is not a claim that ATTACK is accepted because the observed first NYI
+is fog. No fixture-only guard overlay, successful callback substitute,
+console or fixture edit is added. Roundtrip success does not accept any of
+these gameplay scripts. Keep #289 open; its explicit console exception
+authorizes no other deferral. Evidence: `tmp/issue291-fixtures.log`, retained
+per-script manifests/diffs and decisive C1/Go captures under
+`tmp/issue291-fixtures/`.
+
+The existing full spec tool passes its no-loss gate: **129 fixtures, 56 pass /
+73 fail / 0 error (194s)**. The exact prior **56** and all stage-3 **36** names
+remain; only the tool-written provenance header changes in passing.txt,
+SHA-256 **d070fda317b046dc1bedb06a73d0b63ad874ed877917d9eb3a36de241d89c8c3**.
+Golden remains **NO**, unsupported initialization **2**. Full C spec is not
+rerun; the selected original C/C fixtures above are separate evidence.
+
+Bounded vet and fresh full-enabled tests pass both initially and after all
+metadata updates/cleanup (**11 test packages**, final Olympia **2.385s**).
+All eight routine defaults and affected CLI pass sequentially; final default
+turn repeats successfully against the new recorded provenance. Logs:
+`tmp/issue291-{vet,tests}{,-final}.log`, `tmp/issue291-*-default.log`,
+`tmp/issue291-turn-final-default.log`, `tmp/issue291-spec.log` and the spec's
+run-all/initialization/golden logs. Plain `git diff --check` reports only the
+authentic CLI none-row terminal tab explained above; excluding that TSV is
+clean. Its raw warning is retained in `tmp/issue291-diff-check.log`.
+
+Post-proof audit again verifies all **1237** original source blobs/modes in
+the provided original, cache, canonical build export and spec export; both
+entire input manifests remain unchanged, as do C binary provenance and the
+complete command oracle. `tmp/issue291-final-integrity.log` also records all
+four unchanged integration dump hashes and confirms that an identical-tree
+3434e8e override still includes release-swear-np+turn (no broadened exception).
+One scratch count initially included the separate rejected-option manifest;
+scoping it to the ordinary world proves **233**, without changing a test or
+recording. Temporary sources/helpers/binaries, matching captures, disposable
+input copies and generated dumps are removed; reusable pristine C/cache and
+decisive evidence remain. Digest index: `tmp/issue291-evidence.sha256`.
+
+Evidence: `tmp/issue291-{affected,source-delta,extraction-proof,roundtrip,
+strict-replay,copy-integrity,cache-provenance,cli-recording-review}.log`,
+`tmp/issue291-{input,disposable}-manifest.txt` and per-case strict manifests/
+diffs under `tmp/issue291-strict`. Matching captures and temporary helpers
+are removed after proof; decisive failures, manifests and reusable pristine
+C/cache are retained. This is a Linux amd64/GCC12.2.0/Go1.26.4 proof, not
+sanitizer, another platform, whole-family or stage-exit acceptance.
+
+### Independent parent acceptance
+
+Parent reviewed every pin/extraction/abort/recording change and verified all
+**2888** implementer evidence digests. Bounded vet and fresh full-enabled
+tests pass independently (11 test packages, Olympia **2.901s**), as do all
+eight sequential defaults and affected CLI; CLI's new live table is byte-exact
+to the recording. No historical raw CLI-byte explanation is inferred.
+Independent deterministic roundtrip repeats **207 / 0 / 0 + 1 separate
+expected abort (161s)**. Fresh physical copies pass all four full serializers
+again: **208 worlds each**, **8,398,707** boxes for box/boxfile/check and
+**8,398,698** for loadsave; zero check_db messages. Strict ordinary turn and
+every lifecycle/dump/integration/aftermath control pass again unchanged.
+
+Fresh parent native captures repeat all **18 C/C** and **14 C/Go** original
+script matches, including the exact separate 134 abort. The other four
+retain the same explicit Go NYIs and are not accepted as gameplay parity.
+Full spec repeats **56 pass / 73 fail / 0 error (138s)** with every name
+unchanged, golden **NO**, initialization **2**. Parent verifies all **1237**
+original source blobs/modes in original/cache/canonical exports, the identical
+canonical C binary, and unchanged protected-input and command manifests.
+Evidence: `tmp/parent291-{vet,tests,TOOL,TOOL-full,roundtrip,turn-full,fixtures,spec}.log`,
+`tmp/parent291-{evidence,integrity-before,integrity-after}.log`,
+`tmp/parent291-input-manifest.txt` and original-script manifests/diffs under
+`tmp/parent291-fixtures/`. Matching captures and task helpers are removed.
+Only #291's amended pin/proof scope is accepted. #289 remains open for its
+pending stage-4 owners and explicit stage-5 console remainder; #215 resumes
+next, without a family/stage-exit claim or any stage-5 implementation.
+
 ## Follow-C PR-head gate (#288)
 
 Priority follow-C after #214, before paused #215; **0.136.1-alpha** fixes only
