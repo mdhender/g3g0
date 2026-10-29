@@ -129,6 +129,67 @@ from the strict primary comparison. Matching captures are removed promptly;
 The ordinary world turn and all 13 inherited lifecycle controls still run.
 Defaults remain fast and do not run any world engine.
 
+## USE coverage CLI controls (#172)
+
+`--full --use-coverage` extends the same runner and all-entry comparator used
+by `--command-coverage`. The original ten controls also run for USE (load,
+load/save, turn, no-save, last-option-wins, three open failures and two path
+collisions). Four compare independent flag-free C/C/Go aftermath, **only after**
+strict primary C/C/Go equality, removing only the requested new dump from
+disposable captures for that secondary check. Three further cases combine
+command/USE dumps, share their destination (USE writes last), or fail command
+coverage's open while USE still writes. No normalization/artifact exclusions.
+
+Two meaningful initialized-world controls unpack original pinned patches
+freshly via original `scenario_unpack`, never cached/post-engine game inputs:
+
+- `shared-checks`: `use-checks/scenario.patch`, SHA-256
+  `3c33e158e35ad2a78743980ed8413a9cd915da73a977056bd00e16bad5925002`.
+  Remove only `orders/300` (the ten unported implicit callbacks); keep original
+  check orders for 301/302, all factions, world state and real shared checks.
+- `hide`: `use-stealth/scenario.patch`, SHA-256
+  `0c57dcd7fe9f3c07e0f03c9ae119cda3b5f63747825181a361171bdd2a28343a`.
+  Keep the whole world/factions; select only implemented shadow noble 6947's
+  `use 638 1` then `use 638 0` orders. This exercises actual start/completion
+  and inhibited zero-time completion without fake thief/sneak/torture/form.
+
+These are explicitly downstream **selected-order** controls, not claims that
+the unchanged upstream full fixtures or remaining USE gameplay pass. Both
+also request command coverage. Each entire unchanged C engine runs twice and
+matches raw status/streams and every cwd entry/type/mode/byte before Go is
+compared. The ordinary world and all thirteen lifecycle controls still run.
+Matching captures are deleted; `use-coverage.txt` retains summaries/dump hashes.
+Defaults remain fast, with no world engines or new duplicate harness.
+
+At 0.108.0-alpha, the ordinary **233-entry** turn, all **10 command** and
+**15 USE** controls and all **13 lifecycle** controls match. The four ordinary
+aftermath cases per dump and both selected-order aftermath cases also match.
+Each selected USE dump is **5,100 bytes**. Original `use_cells` rejects vacuous
+selected controls: `shared-checks` has invalid checks **5**, skill checks **1**
+each for **603/613/631/801**, and item checks **1** each for **8/9**; `hide`
+has skill **638 ok=2**. All other selected cells are zero.
+
+Actual C dump SHA-256 values (also exactly matched by C repeat and Go):
+
+| Control | USE dump | Command dump |
+| --- | --- | --- |
+| Ordinary zero-count world | `b01e1c9960eeeb0d076bf033000139f00e53b98957f476bdbb4e2417213549e0` | See command controls above |
+| Selected shared checks | `2083eb2692db35b59f52c679cd8f9e7668a571b47bc39806bf48cb4fe7f083a5` | `263cdc40552e1f654d3487ad51d9a7bf420f3ab6d25100112ef7220f7e9ce252` |
+| Selected hide | `c30833c3ee3cbaccf2be0ced5f02035a040799b8e5ee2b4340a7e6e3732adf87` | `a7cc4922749a7aeb516feee75b547b3e33f7acb752439e30b3641951727802bb` |
+
+Provenance: exact-pin C binary SHA-256
+`1f03220bac19c2b3fd3a75c3b3aac34cc0df56210472148b11fba82d8e05c8bf`,
+pristine world archive SHA-256
+`5c59fc014ea3d2f9a14e4756bfa7ccc8c7c11b23bf6611320713ec19760d8ce9`.
+The binary is reused read-only from `tmp/stage3-roundtrip`; every engine input
+is a disposable copy. Logs: `tmp/issue172-turn-full.log` and
+`tmp/issue172-turn/{c-determinism,command-coverage,use-coverage,lifecycle}.txt`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/stage3-roundtrip" \
+  WORK="$PWD/tmp/issue172-turn" tools/turn-compat/run.sh --full --command-coverage --use-coverage
+```
+
 ## Cache, prerequisites and evidence
 
 Requires Go, Bash, Python 3, Perl, `mkfifo`, `diff`, `tar`, `shasum`; full mode also needs a

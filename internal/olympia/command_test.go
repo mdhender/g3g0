@@ -2057,6 +2057,40 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			default:
 				t.Fatalf("unknown USE metadata action %s", action)
 			}
+		case "ucov":
+			switch action := args.word(); action {
+			case "path":
+				path := args.word()
+				if path == "NULL" {
+					w.useCoveragePath = nil
+				} else {
+					if path == "EMPTY" {
+						path = ""
+					}
+					w.useCoveragePath = &path
+				}
+			case "skill":
+				w.useCoverageSkill(args.num(t), args.num(t))
+			case "item":
+				w.useCoverageItem(args.num(t), args.num(t))
+			case "seed":
+				ent, outcome, value := args.num(t), args.num(t), args.num(t)
+				w.ucovSkills[ent][outcome] = int32(value)
+			case "state":
+				fmt.Fprintf(&stdout, "ucov allocated %d nents %d table %d\n", b2i(w.ucovSkills != nil), len(w.ucovSkills), len(useTbl)-1)
+			case "command":
+				fmt.Fprintf(&stdout, "use command %d %d %d %d %d %d %d\n", c.useSkill, c.useEnt, c.useExp, c.h, c.wait, c.poll, c.inhibitFinish)
+			case "write":
+				w.writeUseCoverage()
+			case "start":
+				fmt.Fprintf(&stdout, "use start %d\n", w.vUse(c))
+			case "finish":
+				fmt.Fprintf(&stdout, "use finish %d\n", w.dUse(c))
+			case "interrupt":
+				fmt.Fprintf(&stdout, "use interrupt %d\n", w.iUse(c))
+			default:
+				t.Fatalf("unknown ucov action %s", action)
+			}
 		case "coverage":
 			switch action := args.word(); action {
 			case "path":
@@ -2250,6 +2284,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pItemMagic(n).mayUse.Append(a)
 			case "required":
 				w.pSkill(n).requiredSkill = int32(a)
+			case "produced":
+				w.pSkill(n).produced = int32(a)
 			case "use_count":
 				w.pSkill(n).useCount = int32(a)
 			case "last_use":
@@ -2625,6 +2661,10 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				c.status = int8(n)
 			case "wait":
 				c.wait = int32(n)
+			case "use_ent":
+				c.useEnt = int32(n)
+			case "use_skill":
+				c.useSkill = int32(n)
 			case "poll":
 				c.poll = int8(n)
 			case "debug":

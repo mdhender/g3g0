@@ -224,7 +224,6 @@ func Run(args []string, stdout, stderr io.Writer, stdoutIsTTY bool) int {
 func (o *options) unported() bool {
 	return o.eatFlag || o.startlocFlag || o.addFlag ||
 		o.immedAfter || o.mailNow || o.htmlFlag ||
-		o.useCoveragePath != "" ||
 		o.phaseCoveragePath != "" || o.stateExportPath != ""
 }
 
@@ -259,6 +258,9 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	w.testUseConstReportDate = o.testUseConstReportDate
 	if o.coveragePath != "" {
 		w.coveragePath = &o.coveragePath
+	}
+	if o.useCoveragePath != "" {
+		w.useCoveragePath = &o.useCoveragePath
 	}
 
 	defer func() {
@@ -331,6 +333,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	}
 
 	w.writeCoverage()
+	w.writeUseCoverage()
 	w.checkDb() // check database integrity
 
 	if o.saveFlag {

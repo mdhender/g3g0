@@ -230,8 +230,11 @@ type world struct {
 	dotCount int32
 
 	// coverage.c process state: nil path disables counting and writing.
-	coveragePath *string
-	covCounts    [][covMax]int32
+	coveragePath    *string
+	covCounts       [][covMax]int32
+	useCoveragePath *string
+	ucovSkills      [][ucovMax]int32
+	ucovItems       [useKeyMax + 1][ucovMax]int32
 
 	// stderr is C's stderr, which print_box_usage() and alloc_box() write
 	// to. newWorld sets it to os.Stderr; the engine sets it to its own.

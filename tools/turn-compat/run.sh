@@ -9,18 +9,20 @@ PINNED_REV=e733acb63bacb21167a1f2589d8dcdc023364896
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 WORK="${WORK:-${ROOT}/tmp/turn-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
-full=0 record=0 command_coverage=0
+full=0 record=0 command_coverage=0 use_coverage=0
 die() { echo "error: $*" >&2; exit 2; }
 for arg in "$@"; do
 	case "$arg" in
 	--full) full=1 ;;
 	--record) record=1 ;;
 	--command-coverage) command_coverage=1 ;;
-	*) die "usage: $0 [--full [--record] [--command-coverage]]" ;;
+	--use-coverage) use_coverage=1 ;;
+	*) die "usage: $0 [--full [--record] [--command-coverage] [--use-coverage]]" ;;
 	esac
 done
 [ "$record" = 0 ] || [ "$full" = 1 ] || die "--record requires --full and two real pinned C runs"
 [ "$command_coverage" = 0 ] || [ "$full" = 1 ] || die "--command-coverage requires --full"
+[ "$use_coverage" = 0 ] || [ "$full" = 1 ] || die "--use-coverage requires --full"
 mkdir -p "${WORK}/bin"
 WORK="$(cd "${WORK}" && pwd -P)"
 (cd "${ROOT}" && go build -o "${WORK}/bin/compare" ./tools/turn-compat &&
@@ -50,7 +52,7 @@ run_c_engine() {
 	run_engine "$@"
 	local out="$3" marker_status=0
 	# Never bless a missing C dependency, even on an expected diagnostic/failure.
-	grep -Ei 'out-of-scope|not yet implemented|missing.*dependency|C stub|AddressSanitizer|UndefinedBehaviorSanitizer|runtime error:' \
+	grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency|NYI|stub|Sanitizer|runtime error:' \
 		"${out}/stdout" "${out}/stderr" >&2 || marker_status=$?
 	[ "$marker_status" = 1 ] || die "invalid C reference or unreadable streams; see ${out}"
 }
@@ -155,10 +157,28 @@ else
 fi
 [ "$status" = 0 ] || exit "$status"
 
-if [ "$command_coverage" = 1 ]; then
-	: >"${WORK}/command-coverage.txt"
-	for case_name in load load-save turn turn-nosave duplicate missing directory blocked saved-system report; do
-		base="${WORK}/command-coverage/${case_name}"
+for family in command use; do
+	flag=--coverage
+	if [ "$family" = command ]; then
+		[ "$command_coverage" = 1 ] || continue
+	else
+		[ "$use_coverage" = 1 ] || continue
+		flag=--use-coverage
+	fi
+	cases=(load load-save turn turn-nosave duplicate missing directory blocked saved-system report)
+	if [ "$family" = use ]; then
+		cases+=(combined shared-path command-failure shared-checks hide)
+		# Pristine pinned fixture inputs, never a previous engine/cache result.
+		mkdir -p "${WORK}/use-fixtures"
+		git -C "${G3_REPO}" archive "$PINNED_REV" tests/olympia/fixtures \
+			tests/olympia/regress/use-checks/scenario.patch \
+			tests/olympia/regress/use-stealth/scenario.patch | tar -x -C "${WORK}/use-fixtures"
+		. "${WORK}/use-fixtures/tests/olympia/fixtures/scenario.sh"
+		. "${WORK}/use-fixtures/tests/olympia/fixtures/coverage.sh"
+	fi
+	: >"${WORK}/${family}-coverage.txt"
+	for case_name in "${cases[@]}"; do
+		base="${WORK}/${family}-coverage/${case_name}"
 		rm -rf "${base}"
 		mkdir -p "${base}/input"
 		cp -a "${WORK}/input/." "${base}/input/"
@@ -166,7 +186,7 @@ if [ "$command_coverage" = 1 ]; then
 		path=cov.tsv
 		case "$case_name" in
 		load-save) ARGS+=(-S) ;;
-		turn|duplicate|missing|directory|blocked|saved-system|report) ARGS+=(-r -S) ;;
+		turn|duplicate|missing|directory|blocked|saved-system|report|combined|shared-path|command-failure|shared-checks|hide) ARGS+=(-r -S) ;;
 		turn-nosave) ARGS+=(-r) ;;
 		esac
 		case "$case_name" in
@@ -175,12 +195,32 @@ if [ "$command_coverage" = 1 ]; then
 		blocked) path=blocked/cov.tsv; printf 'not a directory\n' >"${base}/input/blocked" ;;
 		saved-system) path=lib/system ;;
 		report) path=lib/players ;;
+		combined) ARGS+=(--coverage commands.tsv) ;;
+		shared-path) ARGS+=(--coverage "$path") ;;
+		command-failure) ARGS+=(--coverage lib/log) ;;
+		shared-checks|hide)
+			rm -rf "${base}/input"
+			mkdir "${base}/input"
+			fixture=use-checks
+			[ "$case_name" != hide ] || fixture=use-stealth
+			scenario_unpack "${WORK}/use-fixtures/tests/olympia/regress/${fixture}" "${base}/input" || die "cannot unpack ${fixture}"
+			if [ "$case_name" = shared-checks ]; then
+				# The ten implicit callbacks remain explicitly NYI. Select only
+				# the unchanged fixture's real shared-check orders (301/302).
+				rm "${base}/input/lib/orders/300"
+			else
+				# Select the existing shadow noble's implemented hide callback;
+				# no missing thief/sneak/torture/form gameplay is substituted.
+				rm "${base}/input/lib/orders/"*
+				printf '6947:use 638 1\n6947:use 638 0\n' >"${base}/input/lib/orders/304"
+			fi
+			;;
 		esac
 		# Baseline controls use the exact same full-engine/comparator owners.
 		# They establish no flag-free state/RNG/report/stream effect, not just
 		# agreement between two implementations that both changed their state.
 		case "$case_name" in
-		load|load-save|turn|turn-nosave)
+		load|load-save|turn|turn-nosave|shared-checks|hide)
 			run_c_engine "${C_BIN}" "${base}/input" "${base}/plain-c"
 			run_c_engine "${C_BIN}" "${base}/input" "${base}/plain-again"
 			[ "$(cat "${base}/plain-c/status")" = 0 ] || die "${case_name}: flag-free C failed"
@@ -191,8 +231,9 @@ if [ "$command_coverage" = 1 ]; then
 			rm -rf "${base}/plain-go"
 			;;
 		esac
-		[ "$case_name" != duplicate ] || ARGS+=(--coverage ignored.tsv)
-		ARGS+=(--coverage "$path")
+		case "$case_name" in shared-checks|hide) ARGS+=(--coverage commands.tsv) ;; esac
+		[ "$case_name" != duplicate ] || ARGS+=("$flag" ignored.tsv)
+		ARGS+=("$flag" "$path")
 		run_c_engine "${C_BIN}" "${base}/input" "${base}/c"
 		run_c_engine "${C_BIN}" "${base}/input" "${base}/c-again"
 		[ "$(cat "${base}/c/status")" = 0 ] || die "${case_name}: coverage C failed"
@@ -200,23 +241,41 @@ if [ "$command_coverage" = 1 ]; then
 		rm -rf "${base}/c-again"
 		run_engine "${GO_BIN}" "${base}/input" "${base}/go"
 		compare_captures "${base}/c" "${base}/go" >"${base}/diff.txt" || die "${case_name}: coverage Go differs; see ${base}"
-		printf '%s: C/C/Go status 0, exact streams and all entries/types/modes/bytes\n' "$case_name" | tee -a "${WORK}/command-coverage.txt"
+		printf '%s: C/C/Go status 0, exact streams and all entries/types/modes/bytes\n' "$case_name" | tee -a "${WORK}/${family}-coverage.txt"
 		case "$case_name" in
-		load|load-save|turn|turn-nosave)
-			printf '%s: C dump ' "$case_name" >>"${WORK}/command-coverage.txt"
-			shasum -a 256 "${base}/c/cwd/cov.tsv" | cut -d' ' -f1 >>"${WORK}/command-coverage.txt"
-			# Only after strict C/C/Go byte comparison, remove the one requested
-			# new dump from these disposable captures to check flag-free aftermath.
+		shared-checks|hide)
+			if [ "$case_name" = shared-checks ]; then
+				use_cells "${base}/c/cwd/cov.tsv" invalid:0:checks skill:603:checks \
+					skill:631:checks skill:613:checks skill:801:checks item:8:checks item:9:checks || die "selected shared checks were not reached"
+			else
+				use_cells "${base}/c/cwd/cov.tsv" skill:638:ok || die "selected hide callback was not reached"
+			fi
+			# Supplemental observations, never a replacement for the strict raw
+			# comparisons above: retain actual C nonzero cells before cleanup.
+			printf '%s: C USE bytes %s\n' "$case_name" "$(wc -c <"${base}/c/cwd/cov.tsv")" >>"${WORK}/${family}-coverage.txt"
+			awk -F '\t' 'NR == 1 || $4 != 0 || $5 != 0 || $6 != 0' "${base}/c/cwd/cov.tsv" >>"${WORK}/${family}-coverage.txt"
+			printf '%s: command dump ' "$case_name" >>"${WORK}/${family}-coverage.txt"
+			shasum -a 256 "${base}/c/cwd/commands.tsv" | cut -d' ' -f1 >>"${WORK}/${family}-coverage.txt"
+			rm "${base}/c/cwd/commands.tsv" "${base}/go/cwd/commands.tsv"
+			;;
+		esac
+		case "$case_name" in
+		load|load-save|turn|turn-nosave|shared-checks|hide)
+			printf '%s: C dump ' "$case_name" >>"${WORK}/${family}-coverage.txt"
+			shasum -a 256 "${base}/c/cwd/cov.tsv" | cut -d' ' -f1 >>"${WORK}/${family}-coverage.txt"
+			# Only after strict C/C/Go byte comparison, remove the requested
+			# dumps from disposable captures to check flag-free aftermath.
 			rm "${base}/c/cwd/cov.tsv" "${base}/go/cwd/cov.tsv"
 			compare_captures "${base}/plain-c" "${base}/c" >"${base}/effect-c.diff" || die "${case_name}: C coverage changed other observations"
 			compare_captures "${base}/plain-c" "${base}/go" >"${base}/effect-go.diff" || die "${case_name}: Go coverage changed other observations"
-			echo "${case_name}: flag-free aftermath identical except requested dump" | tee -a "${WORK}/command-coverage.txt"
+			echo "${case_name}: flag-free aftermath identical except requested dump" | tee -a "${WORK}/${family}-coverage.txt"
 			;;
 		esac
 		rm -rf "${base}"
 	done
-	rm -rf "${WORK}/command-coverage"
-fi
+	rm -rf "${WORK}/${family}-coverage"
+done
+rm -rf "${WORK}/use-fixtures"
 
 # Exercise main's actual composition as well as the component recordings in
 # command-compat. These opt-in controls change only lifecycle inputs on the

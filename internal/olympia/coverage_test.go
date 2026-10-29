@@ -13,7 +13,7 @@ import (
 func TestCommandCoverageLaterModesRemainGated(t *testing.T) {
 	t.Chdir(t.TempDir())
 	for _, later := range [][]string{
-		{"--use-coverage", "u"}, {"--phase-coverage", "p"}, {"--state-export", "s"},
+		{"--phase-coverage", "p"}, {"--state-export", "s"},
 		{"-e"}, {"-E"}, {"-s"}, {"-a"}, {"-i"}, {"-M"}, {"-h"},
 	} {
 		args := append([]string{"--coverage", "c"}, later...)

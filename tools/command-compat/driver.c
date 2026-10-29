@@ -99,6 +99,8 @@ int drv_admission(char *acct, FILE *fp);
 void drv_make_players(void);
 void drv_coverage_state(int cmd);
 void drv_coverage_seed(int cmd, int outcome, int value);
+void drv_ucov_state(void);
+void drv_ucov_seed(int ent, int outcome, int value);
 void drv_use_table(void), drv_use_consume(int who,int sk), drv_use_scroll(int who,int basis), drv_use_magic(struct command *c,int sk);
 int drv_use_lookup(int sk), drv_use_may(int who,int sk), drv_use_correct(struct command *c), drv_use_meets(int who,int sk);
 
@@ -1510,6 +1512,29 @@ int main(int argc, char **argv)
    }
    else return 2;
   }
+  else if (!strcmp(op, "ucov")) {
+   if(sscanf(line,"%*s %31s",text)!=1) return 2;
+   if(!strcmp(text,"path")) {
+    char path[8192];
+    if(sscanf(line,"%*s %*s %8191s",path)!=1) return 2;
+    use_coverage_path = !strcmp(path,"NULL") ? NULL : str_save(!strcmp(path,"EMPTY") ? "" : path);
+   }
+   else if(!strcmp(text,"skill") || !strcmp(text,"item")) {
+    if(sscanf(line,"%*s %*s %d %d",&n,&a)!=2) return 2;
+    if(!strcmp(text,"skill")) use_coverage_skill(n,a); else use_coverage_item(n,a);
+   }
+   else if(!strcmp(text,"seed")) {
+    if(sscanf(line,"%*s %*s %d %d %d",&n,&a,&b)!=3) return 2;
+    drv_ucov_seed(n,a,b);
+   }
+   else if(!strcmp(text,"state")) drv_ucov_state();
+   else if(!strcmp(text,"command")) printf("use command %d %d %d %d %d %d %d\n",c->use_skill,c->use_ent,c->use_exp,c->h,c->wait,c->poll,c->inhibit_finish);
+   else if(!strcmp(text,"write")) write_use_coverage();
+   else if(!strcmp(text,"start")) printf("use start %d\n",v_use(c));
+   else if(!strcmp(text,"finish")) printf("use finish %d\n",d_use(c));
+   else if(!strcmp(text,"interrupt")) printf("use interrupt %d\n",i_use(c));
+   else return 2;
+  }
   else if (!strcmp(op, "coverage")) {
    if(sscanf(line,"%*s %31s",text)!=1) return 2;
    if(!strcmp(text,"path")) {
@@ -1641,6 +1666,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"may_study")) ilist_append(&p_item_magic(n)->may_study,a);
    else if (!strcmp(text,"may_use")) ilist_append(&p_item_magic(n)->may_use,a);
    else if (!strcmp(text,"required")) p_skill(n)->required_skill = a;
+   else if (!strcmp(text,"produced")) p_skill(n)->produced = a;
    else if (!strcmp(text,"use_count")) p_skill(n)->use_count = a;
    else if (!strcmp(text,"last_use")) p_skill(n)->last_use_who = a;
    else if (!strcmp(text,"seal_key")) p_gate(n)->seal_key = (short)a;
@@ -1855,6 +1881,8 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "priority")) cur_pri = n;
    else if (!strcmp(text, "status")) c->status = (schar)n;
    else if (!strcmp(text, "wait")) c->wait = n;
+   else if (!strcmp(text, "use_ent")) c->use_ent = n;
+   else if (!strcmp(text, "use_skill")) c->use_skill = n;
    else if (!strcmp(text, "poll")) c->poll = (schar)n;
    else if (!strcmp(text, "debug")) c->debug = (schar)n;
    else if (!strcmp(text, "days")) c->days_executing = n;

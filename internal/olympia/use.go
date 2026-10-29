@@ -5,7 +5,7 @@ package olympia
 
 import "fmt"
 
-// Skill lookup and report helpers from olympia/use.c.
+// USE metadata, shared dispatch and skill/report helpers from olympia/use.c.
 
 // useTbl is the complete use.c:84–229 table. Index zero is a placeholder;
 // the separate final zero row terminates walks starting at index one.
@@ -321,6 +321,199 @@ func (w *world) addSkillExperience(who, sk int) {
 		p.experience++
 		p.expThisMonth = 1
 	}
+}
+
+func (w *world) vUse(c *command) int {
+	sk, who := int(c.a), int(c.who)
+	c.useSkill = int32(sk)
+	invalid := func() int {
+		w.commandOut(who, "%s is not a valid skill to use.", c.parse[1])
+		w.useCoverageSkill(0, ucovChecks)
+		return 0
+	}
+	if !w.validBox(sk) {
+		return invalid()
+	}
+	if w.kind(sk) == tItem {
+		sk = w.correctUseItem(c)
+	}
+	if w.kind(sk) == tItem {
+		return w.vUseItem(c)
+	}
+	if w.kind(sk) != tSkill {
+		return invalid()
+	}
+	parent := w.skillSchool(sk)
+	if parent == sk {
+		w.commandOut(who, "Skill schools have no direct use.  Only subskills within a school may be used.")
+		w.useCoverageSkill(0, ucovChecks)
+		return 0
+	}
+	ent, basis := findUseEntry(sk), w.mayUseSkill(who, sk)
+	if basis == 0 {
+		w.commandOut(who, "%s does not know %s.", w.justName(who), w.boxCode(sk))
+		w.useCoverageSkill(ent, ucovChecks)
+		return 0
+	}
+	if w.mayUseSkill(who, parent) == 0 {
+		w.commandOut(who, "Knowledge of %s is first required before %s may be used.", w.boxName(parent), w.boxCode(sk))
+		w.useCoverageSkill(ent, ucovChecks)
+		return 0
+	}
+	if ent <= 0 {
+		fmt.Fprintf(w.stderr, "v_use: no use table entry for %s\n", c.parse[1])
+		w.commandOut(who, "Internal error.")
+		w.useCoverageSkill(0, ucovChecks)
+		return 0
+	}
+	if w.subkind(w.skillSchool(sk)) == subMagic && w.inSafeNow(who) {
+		w.commandOut(who, "Magic may not be used in safe havens.")
+		w.useCoverageSkill(ent, ucovChecks)
+		return 0
+	}
+	w.cmdShift(c)
+	c.useEnt, c.useSkill, c.useExp = int32(ent), int32(sk), int32(w.hasSkill(who, sk))
+	c.poll, c.wait, c.h = int8(useTbl[ent].poll), useTbl[ent].time, int32(basis)
+	experienceUseSpeedup(c)
+	if !w.meetsRequirements(who, sk) {
+		w.useCoverageSkill(ent, ucovChecks)
+		return 0
+	}
+	if start := useTbl[ent].start; start != nil {
+		ret := start(w, c)
+		if ret != 0 {
+			w.useCoverageSkill(ent, ucovOk)
+			w.magicallySpeedCasting(c, sk)
+		} else {
+			w.useCoverageSkill(ent, ucovFail)
+		}
+		return ret
+	}
+	if p := w.rpSkill(sk); p != nil && p.produced != 0 {
+		w.commandOut(who, "Work to produce one %s.", w.justName(int(p.produced)))
+	} else {
+		fmt.Fprintf(w.stderr, "sk == %s\n", w.boxName(sk))
+		assert(false, "olympia/use.c", 648, "FALSE")
+	}
+	w.useCoverageSkill(ent, ucovOk)
+	return 1
+}
+
+func (w *world) dUse(c *command) int {
+	sk, ent, who, basis := int(c.useSkill), int(c.useEnt), int(c.who), int(c.h)
+	if w.kind(sk) == tItem {
+		return w.dUseItem(c)
+	}
+	if ent <= 0 {
+		ent = findUseEntry(sk)
+	}
+	if ent <= 0 {
+		fmt.Fprintf(w.stderr, "d_use: no use table entry for %s\n", c.parse[1])
+		w.commandOut(who, "Internal error.")
+		return 0
+	}
+	if c.wait > 0 && c.poll == 0 {
+		return 1
+	}
+	if c.poll == 0 && !w.meetsRequirements(who, sk) {
+		return 0
+	}
+	if sk != skBreedBeasts {
+		w.pSkill(sk).useCount++
+	}
+	w.pSkill(sk).lastUseWho = c.who
+	if finish := useTbl[ent].finish; finish != nil {
+		ret := finish(w, c)
+		if c.wait == 0 && ret != 0 {
+			w.addSkillExperience(who, sk)
+		}
+		if ret != 0 {
+			w.consumeScroll(who, basis)
+			w.consumeRequirements(who, sk)
+		}
+		return ret
+	}
+	w.addSkillExperience(who, sk)
+	if p := w.rpSkill(sk); p != nil && p.produced != 0 {
+		w.genItem(who, int(p.produced), 1)
+		w.commandOut(who, "Produced one %s.", w.boxName(int(p.produced)))
+	}
+	w.consumeScroll(who, basis)
+	w.consumeRequirements(who, sk)
+	return 1
+}
+
+func (w *world) iUse(c *command) int {
+	ent := int(c.useEnt)
+	if ent < 0 {
+		w.commandOut(int(c.who), "Internal error.")
+		fmt.Fprintf(w.stderr, "i_use: c->use_ent is %d\n", c.useEnt)
+		return 0
+	}
+	if interrupt := useTbl[ent].interrupt; interrupt != nil {
+		return interrupt(w, c)
+	}
+	return 0
+}
+
+func (w *world) vUseItem(c *command) int {
+	item, who := int(c.a), int(c.who)
+	c.poll, c.wait = 0, 0
+	key := 0
+	if p := w.rpItemMagic(item); p != nil {
+		key = int(p.useKey)
+	}
+	if w.hasItem(who, item) < 1 {
+		w.commandOut(who, "%s has no %s.", w.justName(who), w.boxCode(item))
+		w.useCoverageItem(key, ucovChecks)
+		return 0
+	}
+	if key == 0 {
+		w.commandOut(who, "Nothing special happens.")
+		w.useCoverageItem(0, ucovChecks)
+		return 0
+	}
+	switch key {
+	case usePalantir, useProjCast, useQuickCast, useOrb, useBarbarianKill, useSavageKill, useCorpseKill, useOrcKill, useSkeletonKill:
+		if w.inSafeNow(who) {
+			w.commandOut(who, "Magic may not be used in safe havens.")
+			c.wait, c.inhibitFinish = 0, 1
+			w.useCoverageItem(key, ucovChecks)
+			return 0
+		}
+	}
+	if key < 1 || key > useKeyMax {
+		fmt.Fprintf(w.stderr, "bad use key: %d\n", key)
+		assert(false, "olympia/use.c", 908, "FALSE")
+	}
+	if key == useDrum {
+		c.a = c.b
+	}
+	// All item gameplay callbacks are absent. Stop before their return,
+	// outcome accounting and inhibit_finish effects, never fabricate failure.
+	panic(notImplemented(fmt.Sprintf("USE item key %d", key)))
+}
+
+func (w *world) dUseItem(c *command) int {
+	item, who := int(c.a), int(c.who)
+	if w.hasItem(who, item) < 1 {
+		w.commandOut(who, "%s no longer has %s.", w.justName(who), w.boxCode(item))
+		return 0
+	}
+	key := 0
+	if p := w.rpItemMagic(item); p != nil {
+		key = int(p.useKey)
+	}
+	if key == 0 {
+		w.commandOut(who, "Nothing special happens.")
+		return 0
+	}
+	if key == usePalantir {
+		panic(notImplemented("USE d_use_palantir"))
+	}
+	fmt.Fprintf(w.stderr, "bad use key: %d\n", key)
+	assert(false, "olympia/use.c", 950, "FALSE")
+	return 1
 }
 
 func expLevel(exp int) int {

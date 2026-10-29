@@ -27305,3 +27305,421 @@ usemeta state 1001 610
 usemeta legacy 1 10000
 newitem 1000 42
 save_new
+
+section use coverage disabled immediate guards and writes do not allocate
+lore_root
+ucov skill -1 -1
+ucov item 100000 3
+ucov state
+ucov write
+ucov path use.tsv
+set immediate 1
+ucov skill 1 3
+ucov item 15 -1
+ucov write
+ucov state
+readfile use.tsv
+set immediate 0
+ucov item 15 2
+ucov state
+ucov write
+readfile use.tsv
+
+section use coverage zero rows sorted dynamic names kinds and repeated truncation
+lore_root
+entity 733 5 0
+entity 800 4 0
+entity 822 5 0
+name 638 Zeta
+name 733 Alpha
+name 800 WrongKind
+ucov path use.tsv
+ucov write
+ucov state
+readfile use.tsv
+name 638 Renamed
+ucov write
+ucov state
+readfile use.tsv
+
+section use coverage direct outcomes index bounds sentinel highest item and signed overflow
+lore_root
+ucov path use.tsv
+ucov item -1 0
+ucov item 0 1
+ucov item 16 2
+ucov item 15 0
+ucov item 15 1
+ucov item 15 2
+ucov item 1 2
+ucov state
+ucov skill -1 0
+ucov skill 0 1
+ucov skill 136 2
+ucov skill 100000 2
+ucov skill 135 0
+ucov skill 135 1
+ucov skill 135 2
+ucov skill 1 0
+ucov seed 1 0 2147483647
+ucov skill 1 0
+ucov seed 135 2 -2147483648
+ucov state
+ucov path NULL
+ucov item 15 1
+ucov skill 1 0
+ucov path use.tsv
+set immediate 1
+ucov item 15 1
+ucov skill 1 0
+ucov write
+readfile use.tsv
+
+section use coverage empty path counts open failures do not allocate or reset
+lore_root
+ucov path NULL
+ucov write
+ucov path EMPTY
+ucov write
+ucov state
+ucov item 4 0
+ucov skill 1 1
+ucov write
+ucov state
+ucov path missing/use.tsv
+ucov write
+lore_dir blocked
+ucov path blocked
+ucov write
+lore_file plain content
+ucov path plain/use.tsv
+ucov write
+ucov path use.tsv
+ucov write
+readfile use.tsv
+
+section use coverage invalid skill negative outcome
+ucov path EMPTY
+ucov skill 0 -1
+
+section use coverage invalid skill upper outcome
+ucov path EMPTY
+ucov skill 136 3
+
+section use coverage invalid item negative outcome
+ucov path EMPTY
+ucov item -1 -1
+
+section use coverage invalid item upper outcome
+ucov path EMPTY
+ucov item 16 3
+
+section use coverage real invalid target school unknown skill and missing school
+lore_root
+ucov path use.tsv
+coverage path cmd.tsv
+entity 610 5 0
+field 638 required 610
+queue use 9999
+queue use 200
+queue use 610
+queue use 638 1
+load
+do
+do
+do
+do
+learn 1000 638 2 0
+queue use 638 1
+load
+do
+ucov command
+dump
+ucov write
+coverage write
+readfile use.tsv
+readfile cmd.tsv
+readlog 200
+
+section use coverage real no table entry after knowledge and item checks
+lore_root
+ucov path use.tsv
+entity 610 5 0
+entity 611 5 0
+field 611 required 610
+learn 1000 610 2 0
+learn 1000 611 2 0
+parse use 611
+ucov start
+entity 60000 4 0
+field 60000 use_key 15
+parse use 60000
+ucov start
+field 60000 use_key 0
+inventory 1000 60000 1
+parse use 60000
+ucov start
+ucov command
+ucov write
+readfile use.tsv
+readlog 200
+
+section use coverage real item safe haven exact magical key set
+lore_root
+ucov path use.tsv
+entity 9000 3 3
+link 9000 1000
+field 9000 safe 1
+entity 60000 4 0
+inventory 1000 60000 1
+field 60000 use_key 4
+parse use 60000 123
+ucov start
+ucov command
+field 60000 use_key 5
+ucov start
+field 60000 use_key 6
+ucov start
+field 60000 use_key 9
+ucov start
+field 60000 use_key 10
+ucov start
+field 60000 use_key 11
+ucov start
+field 60000 use_key 12
+ucov start
+field 60000 use_key 13
+ucov start
+field 60000 use_key 14
+ucov start
+ucov write
+readfile use.tsv
+readlog 200
+
+section use coverage real magic safe haven precedes shift requirements and callback
+lore_root
+ucov path use.tsv
+entity 800 5 43
+entity 822 5 0
+field 822 required 800
+learn 1000 800 2 0
+learn 1000 822 2 20
+entity 9000 3 3
+link 9000 1000
+field 9000 safe 1
+parse use 822 60000
+ucov start
+ucov command
+dump
+ucov write
+readfile use.tsv
+readlog 200
+
+section use coverage real requirements after shift speedup before callback
+lore_root
+ucov path use.tsv
+entity 610 5 0
+entity 10 4 0
+name 10 amber
+field 638 required 610
+learn 1000 610 2 0
+learn 1000 638 2 20
+usemeta req 638 10 2 1
+parse use 638 1 42
+ucov start
+ucov command
+dump
+ucov write
+readfile use.tsv
+readlog 200
+
+section use coverage real hide start success failure finish interrupt accounting only starts
+lore_root
+ucov path use.tsv
+coverage path cmd.tsv
+entity 610 5 0
+field 638 required 610
+learn 1000 610 2 0
+learn 1000 638 2 0
+queue use 638 1
+load
+do
+ucov command
+ucov finish
+set wait 0
+ucov finish
+ucov interrupt
+save 638
+save 1000
+link 1000 1001
+queue use 638 1
+load
+do
+ucov command
+queue use 638 0
+load
+do
+ucov command
+ucov write
+coverage write
+readfile use.tsv
+readfile cmd.tsv
+readlog 200
+
+section use coverage real scroll correction consumes only successful completion and no borrowed knowledge
+lore_root
+ucov path use.tsv
+entity 800 5 43
+entity 822 5 0
+field 822 required 800
+learn 1000 800 2 0
+weather_map 2
+entity 9400 9 30
+link 9000 9400
+link 9400 1000
+entity 70000 11 59
+field 70000 summoner 1000
+link 9000 70000
+field 1000 cur_aura 12
+field 1000 quick_cast 3
+entity 60000 4 42
+field 60000 unique 1000
+field 60000 may_use 822
+inventory 1000 60000 1
+parse use 60000 70000
+ucov start
+ucov command
+ucov finish
+save 60000
+set wait 0
+ucov finish
+usemeta state 1000 822
+save 60000
+save 822
+save 70000
+save 9400
+ucov write
+readfile use.tsv
+readlog 200
+
+section use coverage real production NULL start duration experience requirements and output
+lore_root
+ucov path use.tsv
+entity 700 5 0
+entity 701 5 0
+entity 10 4 0
+entity 11 4 0
+name 10 timber
+name 11 ram
+field 701 required 700
+field 701 produced 11
+learn 1000 700 2 0
+learn 1000 701 2 34
+inventory 1000 10 4
+usemeta req 701 10 2 1
+parse use 701
+ucov start
+ucov command
+ucov finish
+save 701
+set wait 0
+ucov finish
+usemeta state 1000 701
+save 701
+ucov finish
+ucov finish
+usemeta state 1000 701
+save 701
+ucov write
+readfile use.tsv
+readlog 200
+
+section use coverage invalid production missing product asserts without ok outcome
+entity 700 5 0
+entity 701 5 0
+field 701 required 700
+learn 1000 700 2 0
+learn 1000 701 2 0
+ucov path EMPTY
+parse use 701
+ucov start
+
+section use coverage real hide scroll shared access does not bypass callback knowledge check
+lore_root
+ucov path use.tsv
+entity 630 5 0
+field 638 required 630
+learn 1000 630 2 0
+entity 60000 4 42
+field 60000 unique 1000
+field 60000 may_use 638
+inventory 1000 60000 1
+parse use 60000 1
+ucov start
+ucov command
+save 60000
+save 1000
+ucov write
+readfile use.tsv
+readlog 200
+
+section use coverage real restored ent lookup does not persist and failed finish counts use before callback
+lore_root
+ucov path use.tsv
+entity 630 5 0
+field 638 required 630
+learn 1000 630 2 0
+learn 1000 638 2 0
+parse use 638 1
+ucov start
+set use_ent 0
+ucov finish
+ucov command
+set wait 0
+link 1000 1001
+ucov finish
+ucov command
+save 638
+save 1000
+set use_ent -1
+ucov interrupt
+set use_ent 0
+ucov interrupt
+set use_skill 611
+ucov finish
+ucov write
+readfile use.tsv
+readlog 200
+
+section use coverage real item finish lost item and key zero no start outcomes
+lore_root
+ucov path use.tsv
+entity 60000 4 0
+field 60000 use_key 4
+parse use 60000
+set use_skill 60000
+ucov finish
+inventory 1000 60000 1
+field 60000 use_key 0
+ucov finish
+ucov state
+ucov write
+readfile use.tsv
+readlog 200
+
+section use coverage invalid held item key asserts before outcome
+entity 60000 4 0
+field 60000 use_key 16
+inventory 1000 60000 1
+ucov path EMPTY
+parse use 60000
+ucov start
+
+section use coverage invalid item finish key asserts before outcome
+entity 60000 4 0
+field 60000 use_key 2
+inventory 1000 60000 1
+ucov path EMPTY
+parse use 60000
+set use_skill 60000
+ucov finish

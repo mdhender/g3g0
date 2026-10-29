@@ -3,6 +3,86 @@
 Pinned reference: [Olympia G3 at
 e733acb63bacb21167a1f2589d8dcdc023364896](https://github.com/playbymail/olympia-g3/tree/e733acb63bacb21167a1f2589d8dcdc023364896).
 
+## USE accounting and real shared dispatch (#172)
+
+At **0.108.0-alpha**, coverage.go completes the USE counters and writer;
+use.go wires the real shared `v_use`, `d_use`, `i_use`, `v_use_item` and
+`d_use_item` through cmdTbl. The main writer follows command coverage and
+precedes check/save. Only the USE CLI gate is removed; phase/export remain
+explicitly gated. Existing metadata/helpers and hide/bind-storm callbacks are
+reused. **Every other non-NULL skill callback remains explicit NYI**, including
+implicit/shipbuild/SAIL. All item gameplay callbacks remain NYI before return
+accounting or fabricated outcomes. Go-only boundary tests reach every absent
+skill start through real command dispatch and every item key through vUse,
+checking pre-callback mutation and absence of either fabricated counter family.
+
+The existing C extractor now retains the entire unchanged **6,122-byte**
+coverage.c prefix through the USE writer (before phase coverage), SHA-256
+`827715623143788543f71c4c37f76590f4f500602ec095849dc27421d4d150ce`.
+Complete original use.c definitions are extracted unchanged exactly once:
+`v_use` **524–653**, `d_use` **685–762**, `i_use` **765–782**,
+`v_use_item` **785–920**, `d_use_item` **923–954**. Missing references are
+abort-only rejected dependencies, never successful gameplay substitutions.
+The source audit compares all **100** archived original files against the
+immutable pin; coverage.c is **12,597 bytes**, SHA-256
+`5730dc2b64b817a6ee1a1d9c250856a400f6aaf54b6ac50251b5f37e5e5ded5a`.
+No upstream source dependency or pin changes; use.c/coverage.c were tracked.
+
+Twenty-two appended sections cover direct outcomes, placeholder/sentinel/high
+indices and keys, signed overflow, NULL/empty paths, immediate suppression,
+lazy skill-only allocation, numeric skill ordering and real database names,
+zero rows, repeated/truncating writes and ENOENT/ENOTDIR/EISDIR opens. Real
+shared paths cover invalid/wrong-kind/school/knowledge checks, no table entry,
+all nine magical-item safe-haven keys, pre-shift magic rejection, post-shift
+requirements, hide success/failure/finish/interrupt, bind-storm scroll correction
+and speedup/consumption, and the original NULL-start production branch.
+Restored `use_ent=0` is looked up locally, not written back. Failed finishes
+increment use_count before callbacks but never start counters. A hide scroll
+passes shared access yet fails hide's own knowledge check: it counts **fail**,
+not checks, and is not consumed. Successful production consumes requirements
+and grants experience in original order; a missing product asserts, not NYI
+or success. Item finish lost/zero/invalid-key paths invoke real C, not stubs.
+
+The previous **1,260 sections / 523,069 input bytes** and **1,703,330 output
+bytes** remain exact prefixes (SHA-256 respectively
+`c0099469c48a560b66f8dbcb4e3d6131b9b94ed182011e15a5397ef4a521f0e5`
+and `f77a1f488eb9ae4482777766d79a4ed2e4ebd36d4d574d29d4825e485ea25975`).
+Real C is run twice before recording/comparing Go; marker rejection precedes
+expected-status acceptance and `--update`, including expected assertion exits.
+See also [the actual CLI controls](../turn-compat#use-coverage-cli-controls-172).
+
+Accepted #172 recording at the same immutable pin: **1,282 sections / 27,725
+input lines / 530,432 input bytes**, SHA-256
+`9466b4111cb9732208571b30bbe7bbab5adafedf4ff9e87b12759f6cbe90d207`;
+**90,461 output lines / 1,769,491 output bytes**, SHA-256
+`927a74512cd4171cc161874a886601e69dcd2348d38cc269249981c681aca305`.
+The 22 additions contain 15 successful and 7 expected-assertion sections.
+`tmp/issue172-source-audit.log` records byte identity of 100 archived source
+files, the complete unchanged 6,122-byte coverage prefix (SHA-256
+`827715623143788543f71c4c37f76590f4f500602ec095849dc27421d4d150ce`),
+and each of the five unchanged shared USE definitions extracted exactly once.
+
+Negative acceptance probes wrapped `use_coverage_skill` only for the enabled
+negative-outcome input in expected-assertion section 1264: a missing-dependency
+marker followed by either exit 0 or exit 134 was rejected with harness exit 2,
+both ordinarily and with `--update`, before status acceptance or recording
+writes. The recording checksum stayed unchanged. Logs are
+`tmp/issue172-negative-{0,134}-{default,update}.log`; the temporary wrappers
+were removed and the ordinary unwrapped oracle passed again in
+`tmp/issue172-command-default.log`.
+
+Independent parent review of the pinned coverage/shared USE definitions and
+complete diff passes. Fresh bounded vet/tests, the eight relevant default
+comparisons and all 92 CLI vectors pass. The parent full repeat also passes
+the strict 233-entry world turn, 10 command controls, 15 USE controls and all
+13 lifecycle controls, including nonzero shared checks/HIDE and flag-free
+aftermath. Both inherited recording prefixes remain independently byte-exact.
+Logs: `tmp/parent172-{vet,tests,cli,turn-full}.log` and
+`tmp/parent172-*-default.log`; summaries in `tmp/parent172-turn/`.
+During acceptance G3 #360 merged at `f73e48118805ffe8ff5e763bfa4f20ae00c3a705`.
+Follow-C #179 takes priority before the next feature task; this task's
+acceptance remains at its original immutable pin, not an implicit repin.
+
 ## USE metadata and shared prerequisites (#171)
 
 At **0.107.0-alpha**, existing use.go owns the complete original `use_tbl`

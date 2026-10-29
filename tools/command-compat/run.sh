@@ -147,6 +147,7 @@ functions = {
     'use.c': ['find_use_entry', 'use_tbl_skill', 'may_use_skill', 'magically_speed_casting',
               'correct_use_item', 'meets_requirements', 'consume_requirements', 'consume_scroll',
               'experience_use_speedup', 'add_skill_experience',
+              'v_use', 'd_use', 'i_use', 'v_use_item', 'd_use_item',
               'rp_skill_ent', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school',
               'exp_s', 'rep_skill_comp', 'flat_skill_comp', 'list_skill_sup',
               'list_skills', 'fractional_skill_qualifier', 'list_partial_skills'],
@@ -602,7 +603,9 @@ with open(f'{dst}/npc-rng.c', 'w') as out:
     out.write('void drv_auto_bandit(int who, int prog) { auto_bandit(who, prog); }\n')
 glob = open(f'{src}/glob.c').read()
 table = glob[glob.index('struct cmd_tbl_ent cmd_tbl[]'):glob.index('char *kind_s[]')]
-routines = set()
+routines = {'v_use_heal', 'v_use_slave', 'v_use_death', 'v_use_palantir',
+            'd_use_palantir', 'v_use_proj_cast', 'v_use_quick_cast', 'v_use_drum',
+            'v_use_faery_stone', 'v_use_orb', 'v_suffuse_ring', 'v_use_bta_skull'}
 for m in re.finditer(r'^\{[^,]*,[^,]*,\s*(\w+),\s*(\w+),\s*(\w+),', table, re.M):
     routines.update(n for n in m.groups() if n != 'NULL')
 source = open(f'{src}/use.c').read()
@@ -617,18 +620,18 @@ with open(f'{dst}/stubs.c', 'w') as out:
 #define STUB(n) { fprintf(stderr, "out-of-scope C dependency: %s\\n", n); abort(); }
 ''')
     for name in sorted(routines - real):
-        out.write(f'int {name}(struct command *c) STUB("{name}")\n')
+        args = 'struct command *c, int item' if name == 'v_suffuse_ring' else 'struct command *c'
+        out.write(f'int {name}({args}) STUB("{name}")\n')
     out.write('''
 int immediate, flush_always = 1, pretty_data_files, time_self;
 int win_flag;
 ilist trades_to_check;
 ''')
-# The complete unchanged command coverage prefix, including declarations and
-# comparators. USE/phase accounting stays at its existing task boundary.
+# Complete unchanged command and USE coverage, including all static owners.
 source = open(f'{src}/coverage.c').read()
 with open(f'{dst}/coverage-command.c', 'w') as out:
     out.write('#line 1 "olympia/coverage.c"\n')
-    out.write(source[:source.index('/*\n *  Ultron use coverage dump')])
+    out.write(source[:source.index('/*\n *  Ultron phase coverage dump')])
     out.write('''
 void drv_coverage_state(int cmd) {
  printf("coverage allocated %d ncmds %d table %d\\n", cov_counts != NULL, cov_ncmds, cov_num_cmds());
@@ -639,6 +642,10 @@ void drv_coverage_seed(int cmd, int outcome, int value) {
  assert(cov_counts && cmd >= 0 && cmd < cov_ncmds && outcome >= 0 && outcome < COV_MAX);
  cov_counts[cmd][outcome] = value;
 }
+void drv_ucov_state(void) {
+ printf("ucov allocated %d nents %d table %d\\n", ucov_skills != NULL, ucov_nents, ucov_num_ents());
+}
+void drv_ucov_seed(int ent, int outcome, int value) { ucov_skills[ent][outcome] = value; }
 ''')
 PY
 
@@ -670,9 +677,16 @@ for run in run1 run2; do
    >"${WORK}/${run}/stdout" 2>"${WORK}/${run}/stderr" || status=$?
   [ "$status" != 124 ] || die "C section $i timed out"
   marker_status=0
-  grep -Ei 'out-of-scope|not yet implemented|missing.*dependency:|C stub|AddressSanitizer|UndefinedBehaviorSanitizer|runtime error:' \
+  grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section use coverage '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section use coverage invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected USE coverage status $status in section $i; expected $expected_status"
+  fi
   if [[ "${section_names[$i]}" == 'section use prerequisites '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in
@@ -1025,7 +1039,7 @@ for run in run1 run2; do
  run_limited "${RUN_TIMEOUT}" command-driver "${WORK}/driver" "${native}/cases.txt" 0 "${native}/input" \
   >"${native}/${run}.stdout" 2>"${native}/${run}.stderr" || status=$?
  marker_status=0
- grep -Ei 'out-of-scope|not yet implemented|missing.*dependency:|C stub|AddressSanitizer|UndefinedBehaviorSanitizer|runtime error:' \
+ grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
   "${native}/${run}.stdout" "${native}/${run}.stderr" >&2 || marker_status=$?
  [ "$marker_status" = 1 ] || die "invalid native C reference or unreadable streams"
  [ "$status" = 0 ] || die "unexpected native traversal C status $status"

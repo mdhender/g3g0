@@ -23,6 +23,37 @@ strict C/Go whole-entry comparisons and four flag-free aftermath controls.
 See [command coverage contracts and evidence](command-compat#command-coverage-170)
 and [the CLI matrix](turn-compat#command-coverage-cli-controls-170).
 
+## USE accounting and shared dispatch (#172)
+
+Stage 3 completes only `--use-coverage`, using existing use.go metadata/helpers,
+real shared USE start/finish/interrupt and the original NULL-start production
+branch. Only hide/bind-storm gameplay exists; every other non-NULL skill
+callback and all item gameplay still stop explicitly NYI. No fake callback
+outcomes, duplicate harness, upstream pin move or phase/export enablement.
+
+Run command/move/helper/RNG/code/loadsave/turn-driver/default-turn, CLI matrix,
+bounded vet and fresh bounded tests sequentially. Actual initialized-world
+acceptance extends `turn-compat --full --command-coverage --use-coverage`:
+unchanged full C twice, strict whole-tree C/Go and four flag-free aftermath
+controls per dump; selected real check/hide worlds and dump combinations.
+Read [source/contracts and byte provenance](command-compat#use-accounting-and-real-shared-dispatch-172)
+and [selected-order CLI scope](turn-compat#use-coverage-cli-controls-172).
+
+At **0.108.0-alpha**, command **1282 sections / 90461 lines**, move
+**135 / 7158**, helper **37 / 1487**, RNG **321**, code **43 / 969**,
+loadsave **61 / 3411**, turn-driver **7 / 152** (phase **5 / 484**,
+calendar **2 / 119**, schedule **4 / 1801**), default turn and CLI **92**
+vectors pass, including CLI C/Go RNG selftests. Bounded vet and fresh default
+tests pass with the shared `run-limited.sh` exec adapter. Full acceptance is
+the ordinary 233-entry turn, 10 command controls, 15 USE controls and all
+13 inherited lifecycle controls; selected nonzero cells and dump SHA-256
+values are retained in the linked READMEs. Four temporary missing-dependency
+negative controls reject even expected-abort status and `--update` without
+changing recording hashes. Logs: `tmp/issue172-*-default.log`,
+`tmp/issue172-turn-full.log`, `tmp/issue172-{vet,tests,source-audit}.log` and
+`tmp/issue172-negative-{0,134}-{default,update}.log`. No stage-exit/full-corpus
+or spec-suite rerun is claimed; remaining USE gameplay and later gates remain.
+
 ## Auxiliary files and saved report lifecycle (#165)
 
 Existing olympia.go replaces all five post-writer projections directly in

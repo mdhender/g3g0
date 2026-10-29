@@ -330,6 +330,10 @@ func init() {
 	}
 	for i := range cmdTbl {
 		switch cmdTbl[i].name {
+		case "use":
+			cmdTbl[i].start = (*world).vUse
+			cmdTbl[i].finish = (*world).dUse
+			cmdTbl[i].interrupt = (*world).iUse
 		case "bind":
 			cmdTbl[i].start = (*world).vBindStorm
 			cmdTbl[i].finish = (*world).dBindStorm
