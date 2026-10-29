@@ -16,6 +16,66 @@ tools/turn-compat/run.sh --full          # real C/C/Go world turns and lifecycle
 tools/turn-compat/run.sh --full --record # explicitly refresh C-only recordings, then compare Go
 ```
 
+## GUARD/STACK fixture rerun (#180)
+
+At **0.113.0-alpha**, complete original GUARD/STACK starts and their small
+gone/visibility validator execute in the real engine; no fixture, upstream
+harness, expected bytes, turn comparator or tree-modes policy changes.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue179-roundtrip" \
+  WORK="$PWD/tmp/issue180-turn" tools/turn-compat/run.sh \
+  --full --command-coverage --use-coverage --phase-coverage --state-export
+```
+
+This passes the strict **233-entry** ordinary turn, all **13 lifecycle /
+10 command / 15 USE / 23 phase / 13 nonempty-export** controls and four
+nonempty-export flag-free aftermath comparisons. Each real C run repeats
+before Go; raw statuses/streams and every cwd entry/type/mode/empty directory/
+regular byte match without normalization or exclusions. Summary files:
+`tmp/issue180-turn/{c-determinism,lifecycle,command-coverage,use-coverage,phase-coverage,state-coverage}.txt`;
+raw log: `tmp/issue180-turn-full.log`.
+
+Both affected unchanged phase scripts run C twice then Go. A temporary native
+launcher invokes each engine through run_limited, tees its raw streams/status
+and copies its complete cwd **before the script's cleanup trap**. The scripts
+still unpack their pristine original scenario.patch/world.tgz themselves.
+The launcher and exported source are removed after comparison. The existing
+strict turn comparator and tree-modes.py compare captures with no changes:
+
+| fixture | original C twice | Go script / engine | strict result |
+|---|---|---|---|
+| phase-daily | YES / 0 | **YES / 0** | C/C/Go, all **245 cwd entries**, identical |
+| phase-day0 | YES / 0 | **NO / 2**, script status **1** | C/C all **252 entries** identical; Go reaches later USE drum NYI |
+
+The day0 diagnostic is exactly `USE item key 7: not yet implemented`, after
+GUARD succeeds. Original use.c **869–872** maps key **7** (`use_drum`,
+oly.h:411), moves c->b into c->a and calls complete savage.c `v_use_drum`
+**70–146**. Its definition is **1483 bytes**, SHA-256
+`9dc335d781d225c678f8f50fcfdf094baaa965c639e62d169d324d5fa580103d`.
+Actual C's generated savage **97167** executes `use 98 1` on day **8**
+(`lib/save/1/100`); this is neither an export mismatch nor a successful turn.
+Missing-dependency/NYI markers are rejected before accepting engine statuses.
+
+Separately sized next prerequisite, **not implemented here**: complete
+v_use_drum plus original USE-item dispatch wiring, reusing existing
+callSavage/createSavage, numSavages/cap, shared real randomized land exits,
+location messages, creation, queues, initLoadSup and RNG owners; asymmetric
+C/C/Go start/lifecycle/aftermath cases. No summon command, combat or ATTACK.
+Parent must file/attach it before expansion. Source/sizing evidence:
+`tmp/issue180-prerequisite.log`. #181 hinder meditation is untouched.
+
+Logs/manifests: `tmp/issue180-fixtures.log`,
+`tmp/issue180-fixture-captures/*-{script.log,manifest.txt,diff}`.
+Matching captures (including the second deterministic day0 C copy) and all
+temporary launchers/source are deleted. Decisive day0 C/Go raw captures and
+complete cwd remain at `tmp/issue180-fixture-captures/phase-day0/{c1,go}`.
+Read-only cache verified before reuse: all **1212** originals equal pin
+**f73e481**, C executable SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`
+(`tmp/issue180-cache-audit.log`). No engine runs on cached input or symlink
+sources. No six-phase-fixture, final-corpus or stage-exit acceptance is claimed.
+
 ## State export save lifecycle (#176)
 
 **0.112.0-alpha** adds `--full --state-export`: **13** actual-engine controls

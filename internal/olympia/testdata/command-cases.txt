@@ -29342,3 +29342,354 @@ life flush
 readfile log/200
 usemeta legacy 1 100000
 entity_rolls 1000 7 5000
+
+section guard stack guard direct signed flags and dispatch lifecycle
+lore_root
+master 17
+place 9000
+parse guard -7
+callback_start -7
+save 1000
+callback_start 256
+save 1000
+callback_start 0
+save 1000
+callback_start
+save 1000
+queue guard 0
+queue guard 257
+queue guard
+queue wait time 1
+coverage path cov.tsv
+initial
+start
+dump
+save 1000
+evening
+dump
+coverage write
+readfile cov.tsv
+log
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section guard stack guard prisoner dispatch and immediate suppression
+lore_root
+place 9000
+set prisoner 1
+queue guard 1
+queue wait 1
+coverage path cov.tsv
+load
+do
+dump
+save 1000
+set prisoner 0
+set immediate 1
+parse guard -1
+do
+dump
+save 1000
+coverage write
+readfile cov.tsv
+log
+
+section guard stack invalid garrison nonchar zero and missing
+lore_root
+place 9000
+queue stack garrison
+queue stack 9000
+queue stack 0
+queue stack 1999
+coverage path cov.tsv
+load
+do
+dump
+do
+dump
+do
+dump
+do
+dump
+save 1000
+save 1001
+coverage write
+readfile cov.tsv
+log
+
+section guard stack self before cycle and prisoner
+place 9000
+parse stack 1000
+callback_start
+link 1000 1001
+set prisoner 1
+parse stack 1001
+callback_start
+save 1000
+save 1001
+log
+
+section guard stack cycle precedes target prisoner
+place 9000
+link 1000 1001
+who 1001
+set prisoner 1
+who 1000
+queue stack 1001
+load
+do
+dump
+save 1000
+save 1001
+log
+
+section guard stack target prisoner before admission
+place 9000
+link 9000 1001
+field 1001 lord 201
+who 1001
+set prisoner 1
+who 1000
+queue stack 1001
+load
+do
+dump
+save 1000
+save 1001
+log
+
+section guard stack absent before moving and hidden
+master 17
+place 9000
+entity 9001 3 1
+link 9001 1001
+field 1001 hidden 1
+field 1001 moving -1
+queue stack 1001
+load
+do
+dump
+save 1000
+save 1001
+log
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section guard stack moving same turn and negative moving reject
+place 9000
+link 9000 1001
+set epoch 17
+field 1001 moving 17
+parse stack 1001
+callback_start
+field 1001 moving -1
+queue stack 1001
+load
+do
+dump
+save 1000
+save 1001
+log
+
+section guard stack hidden foreign refusal then character contact and admit
+lore_root
+master 17
+place 9000
+link 9000 1001
+field 1001 lord 201
+field 1001 hidden 1
+queue stack 1001
+queue stack 1001
+queue stack 1001
+coverage path cov.tsv
+load
+do
+dump
+field 1000 contact 1001
+do
+dump
+field 1001 contact 1000
+report admit 201 1001 0 1000
+do
+dump
+save 1000
+save 1001
+save 201
+coverage write
+readfile cov.tsv
+log
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section guard stack visible foreign refuses then faction permission
+place 9000
+link 9000 1001
+field 1001 lord 201
+queue stack 1001
+queue stack 1001
+load
+do
+dump
+report admit 201 1001 0 200
+do
+dump
+save 1000
+save 1001
+save 201
+log
+who 1001
+log
+
+section guard stack fog foreign invisible then faction contact and default garrison
+master 17
+place 9000
+link 9000 1001
+field 1001 lord 201
+weather new 0 57 5 9000
+queue stack 1001
+queue stack 1001
+load
+do
+dump
+field 1001 contact 200
+field 1001 default_garrison 1
+do
+dump
+save 1000
+save 1001
+log
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section guard stack hidden same faction direct success with children and guard retained
+master 17
+place 9000
+link 9000 1001
+field 1001 hidden 1
+field 1000 guard 1
+entity 1100 2 0
+field 1100 lord 200
+link 1000 1100
+parse stack 1001
+callback_start
+save 1000
+save 1001
+save 1100
+log
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section guard stack reparent nested child with prisoner insertion and real queue phases
+lore_root
+master 17
+place 9000
+link 9000 1001
+entity 1100 2 0
+field 1100 lord 200
+link 1001 1100
+who 1100
+set prisoner 1
+who 1000
+entity 1101 2 0
+field 1101 lord 200
+link 1101 1000
+link 9000 1101
+queue stack 1001
+queue guard -1
+queue wait time 1
+coverage path cov.tsv
+phcov path ph.tsv
+initial
+start
+dump
+save 1000
+save 1001
+save 1100
+save 1101
+evening
+dump
+coverage write
+readfile cov.tsv
+phcov write
+readfile ph.tsv
+log
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000
+
+section guard stack fog garrison visibility exception without contact
+master 17
+place 9000
+link 9000 1001
+link 9000 1000
+field 1001 lord 201
+field 1001 subkind 64
+field 1001 default_garrison 1
+weather new 0 57 5 9000
+queue stack garrison
+load
+do
+dump
+save 1000
+save 1001
+log
+who 1001
+log
+
+section guard stack foreign same stack visible despite fog and admission exclusion
+master 17
+place 9000
+link 9000 1001
+link 1001 1000
+field 1001 lord 201
+weather new 0 57 5 9000
+report admit 201 1001 1 200
+queue stack 1001
+queue stack 1001
+load
+do
+dump
+field 1000 lord 201
+do
+dump
+save 1000
+save 1001
+log
+who 1001
+log
+
+section guard stack fog does not conceal foreign characters inside building
+master 17
+place 9000
+entity 9100 3 31
+link 9000 9100
+link 9100 1000
+link 9100 1001
+field 1001 lord 201
+weather new 0 57 5 9000
+report admit 201 1001 1 0
+parse stack 1001
+callback_start
+save 1000
+save 1001
+log
+who 1001
+log
+
+section guard stack hidden target moving visibility precedes gone then contact exposes gone
+place 9000
+link 9000 1001
+field 1001 lord 201
+field 1001 hidden 1
+field 1001 moving 1
+parse stack 1001
+callback_start
+field 1001 contact 200
+callback_start
+save 1000
+save 1001
+log
+
+section guard stack no command RNG control
+master 17
+usemeta legacy 1 100000
+entity_rolls 1000 7 5000

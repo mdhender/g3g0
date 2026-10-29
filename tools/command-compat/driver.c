@@ -1633,6 +1633,10 @@ int main(int argc, char **argv)
    else return 2;
   }
   else if (!strcmp(op, "load")) printf("load %d\n", drv_load(c));
+  else if (!strcmp(op, "callback_start")) {
+   if(sscanf(line,"%*s %d",&n)==1) c->a=n;
+   printf("callback start %d\n", cmd_tbl[c->cmd].start(c));
+  }
   else if (!strcmp(op, "do")) do_command(c);
   else if (!strcmp(op, "finish")) printf("finish %d\n", finish_command(c));
   else if (!strcmp(op, "interrupt")) printf("interrupt %d\n", cmd_tbl[c->cmd].interrupt(c));

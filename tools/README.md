@@ -6,6 +6,93 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## GUARD and STACK prerequisites (#180)
+
+**0.113.0-alpha**, immutable C **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**:
+complete original combat.c `v_guard` **2947–2964**, stack.c `v_stack`
+**703–741** and u.c `check_char_gone` **933–962** now execute through the
+original command starts. Existing visibility/contact, admission and joinStack
+owners are reused unchanged. No extra filters, guard clearing, independent
+fixes, combat, sibling commands or USE callback work. No pin/new source
+dependency/affected.sh change. [Complete source/byte audit](command-compat#guard-and-stack-command-prerequisites-180).
+
+Unchanged C twice and Go match **1350 sections / 103698 output lines /
+2068804 bytes**, SHA-256
+`ab33212cfdbf47c158a014c6c3d4ba25113e3c2f9f6d0234723f793a5c09146d`.
+Input: **29695 lines / 564972 bytes**, SHA-256
+`b778a5b247549f69da5dc81b3e29abb331c2175a5cdb0eb4940df3b0a6122975`.
+Both entire inherited prefixes (**559758 / 2035552 bytes**) retain their
+accepted hashes and literal whitespace. All **100** archived originals and
+**577** complete extracted definitions are audited unchanged. Eighteen new
+asymmetric sections exercise direct starts, real dispatch/queues/evenings,
+flags, diagnostic/validation order, hidden/fog/contact/admission branches,
+nested reparenting/prisoners, both output recipients, saved state, command/
+phase counters and independent RNG aftermath. Four real linker probes reject
+markers on status **0/134** in default/update modes before accepting statuses
+or replacing recordings; all probes and temporary launchers are removed.
+
+Bounded vet and fresh bounded full-enabled tests pass (**11 packages**, Olympia
+**1.667s**, **10** explicit opt-in/child-entry skips); all **15 engine/library
+defaults** pass sequentially. Lists uses a removed temporary native compiler
+launcher for its otherwise-unbounded C driver; its Go test also uses -exec.
+An initial vet attempt detected two temporary launcher main functions in tmp;
+the scratch launchers were removed before the successful fresh vet/test run
+(`tmp/issue180-vet-initial.log` retains that tooling-only failure).
+Strict ordinary turn and all **13 lifecycle / 10 command / 15 USE / 23 phase /
+13 nonempty-export** controls pass, including four export flag-free aftermath
+comparisons. Every raw status/stream and cwd entry/type/mode/byte is compared.
+[Exact turn/fixture evidence](turn-compat#guardstack-fixture-rerun-180).
+
+Both affected unchanged scripts run C twice then Go, with bounded native
+pre-cleanup full-cwd capture. **phase-daily now passes**, all **245 entries**
+matching. **phase-day0 remains NO**, Go engine **2** / script **1**, reaching
+later **USE item key 7**, original savage.c `v_use_drum` **70–146**, after
+GUARD succeeds. C twice is YES/status **0**, identical **252-entry** captures.
+That newly observed prerequisite is separately source-identified/sized in
+`tmp/issue180-prerequisite.log`; parent must file/attach it before expanding.
+No drum implementation, #181 hinder meditation, fixture edits or successful
+substitutes are included. Matching captures/temporary launchers/source are
+deleted; decisive day0 C/Go failure captures and complete manifests remain.
+
+Spec is **33 pass / 92 fail / 0 error** (**119s**), retaining every accepted
+**32**, including all prior 23. Only actual new unchanged-script pass
+**phase-daily** is added by the existing tool. Golden remains **NO**, unsupported
+`load_db (-i)` / **exit 2**. [Spec evidence](olympia-spec#guardstack-prerequisite-progress-180).
+No all-six, accepted-201-world/four-corpus repeat, native-platform or stage-exit
+claim is made. Remaining integrated acceptance stays #177/#178.
+
+Every compatibility invocation explicitly uses `G3_REPO="$PWD/tmp/upstream.git"`;
+all engines/tests use run_limited. Read-only cache verified: all **1212**
+originals equal pin; C executable SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`.
+Engines use real disposable inputs, never cached inputs or symlink sources.
+Logs: `tmp/issue180-{source-audit,cache-audit,final-recording,vet,tests,spec,fixtures,prerequisite}.log`,
+`tmp/issue180-command-{update,default}.log`, `tmp/issue180-*-default.log`,
+`tmp/issue180-negative-{0,134}-{default,update}.log`, `tmp/issue180-turn-full.log`;
+strict summaries under `tmp/issue180-turn/`, manifests and decisive failures
+under `tmp/issue180-fixture-captures/`. Changes remain **uncommitted**; parent
+alone handles independent acceptance, delivery and issue/checklist updates.
+Final bounded vet/fresh bounded full-enabled repeat passes (Olympia **1.865s**):
+`tmp/issue180-{vet,tests}-final.log`. Final cache/capture/progress/unchanged-HEAD
+audit: `tmp/issue180-final-integrity.log`; decisive evidence digest index:
+`tmp/issue180-evidence.sha256`.
+
+Independent parent source/diff review and acceptance repeat passes: bounded
+vet, fresh bounded full-enabled tests (Olympia **1.747s**), 14 relevant
+defaults, command **1350 sections / 103698 lines**, strict **233-entry** turn
+and all **13 lifecycle / 10 command / 15 USE / 23 phase / 13 export** controls.
+Lists remains covered by fresh Go tests and the implementer's bounded native
+default. Spec repeats **33 pass / 92 fail / 0 error** (**120s**), with no
+recorded names changed; golden remains NO/initialization exit 2. Parent
+independently verifies both complete inherited recording prefixes, all 1212
+cached originals and the executable hash. The retained day0 C report actually
+executes `use 98 1` on day 8; Go stops at the matching item dispatch. This
+new prerequisite is filed, sized and attached as **#182**, after #181 and
+before #177. No drum or hinder-meditation implementation is included in #180.
+Logs: `tmp/parent180-{integrity,vet,tests,turn-full,spec}.log`,
+`tmp/parent180-*-default.log`; strict summaries: `tmp/parent180-turn/`.
+This accepts #180 only, not all six phase fixtures or stage exit.
+
 ## Complete location export and save lifecycle (#176)
 
 **0.112.0-alpha** completes state_export.c `export_location` **133–189** in

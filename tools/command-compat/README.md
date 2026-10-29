@@ -3,6 +3,76 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## GUARD and STACK command prerequisites (#180)
+
+**0.113.0-alpha** adds complete original combat.c `v_guard` **2947–2964**,
+stack.c `v_stack` **703–741**, and u.c `check_char_gone` **933–962**, wiring
+only the two original command starts in glob.go. Existing charWhere/charHere/
+contacted, admission and joinStack remain the authoritative owners, unchanged.
+Validation retains garrison/character/visibility/gone, then self/cycle/prisoner/
+admission order. The active `char_gone` macro tests nonzero moving, even on
+the same epoch, not elapsed days. GUARD normalizes any nonzero raw argument
+to TRUE; normal parsing still clamps negative arguments to zero. No added
+prisoner filter, guard clearing, combat, UNSTACK, USE or independent fix.
+
+The real C table calls the complete extracted definitions unchanged; there
+are no callback overlays. `callback_start [raw-a]` calls that actual table
+entry directly, optionally setting its first argument to check signed/raw
+boundaries independently of the real parser. Real load/do/start/evening
+paths separately exercise queued commands, completion, counters and outputs.
+All **100** archived source files equal the immutable pin, and **577** complete
+extractor-listed definitions occur literally unchanged exactly once. New
+complete-definition SHA-256 values:
+
+- `v_guard`: `0a51deac1d45d9e77ce8f309d4b08acc410b376de40a5ae12642d0acb38c75ec`
+- `v_stack`: `10a0a105fd5536cee532596d6d1757c5e01a91062f404a369ccee59e02b4deec`
+- `check_char_gone`: `d54ff88d3fb7c9522e82ed7826658dc419ea1caccf6e39c38f4ddb782592ffdf`
+
+No new upstream source dependency, affected.sh change or pin move is needed.
+Full source/closure audit: `tmp/issue180-source-audit.log`.
+
+**18 appended asymmetric sections** check raw negative/256/zero flags, omitted
+arguments, prisoner GUARD and immediate suppression; missing garrison, zero,
+noncharacter and missing targets; self, cycle before prisoner, prisoner before
+admission, absent before moving/hidden, same-epoch/negative moving; hidden and
+fog visibility, character versus faction contacts, real garrison visibility,
+same-faction/same-stack exemptions, building depth, admission inclusion and
+exclusion, both refusal recipients, nested reparenting/children/prisoner
+insertion, retained guard, real command/phase dumps and saved state. Legacy
+next draw **62497** and entity aftermath **701/2/1/1** match the independent
+no-command control. Every new C section requires status **0**, after marker
+rejection, not merely equal failed recordings.
+
+Unchanged C twice and Go match **1350 sections / 103698 output lines /
+2068804 bytes**, SHA-256
+`ab33212cfdbf47c158a014c6c3d4ba25113e3c2f9f6d0234723f793a5c09146d`.
+Input: **29695 lines / 564972 bytes**, SHA-256
+`b778a5b247549f69da5dc81b3e29abb331c2175a5cdb0eb4940df3b0a6122975`.
+The entire inherited **559758-byte input / 2035552-byte output** prefixes
+retain respectively `35c5e55721fe82b4481ddc2dcb2e1414f82041937c8556fd3801e85830b91615`
+and `57ad48790379b5df3ef83e155320c0ef6c6d78026477c29e81c22626f98d28f0`.
+Literal C whitespace is retained. Byte audit: `tmp/issue180-final-recording.log`.
+
+Four temporary actual linker probes wrap only v_guard at the first new
+section (**1332**), emit a dependency marker on stdout/status **0** or
+stderr/status **134**, in both default/update modes. All reject with harness
+status **2** before status acceptance or recording replacement; the recording
+hash stays unchanged during the probes. Probes/launchers/captures are removed;
+the final real command default passes without them. Logs:
+`tmp/issue180-negative-{0,134}-{default,update}.log`,
+`tmp/issue180-command-{update,default}.log`.
+
+Bounded vet, fresh bounded full-enabled tests and all **15** engine/library
+defaults pass. Strict ordinary turn and all **13 lifecycle / 10 command /
+15 USE / 23 phase / 13 export** controls pass, including four nonempty-export
+flag-free aftermath controls. The unchanged phase-daily script now passes
+C/C/Go, including all **245 cwd entries**. phase-day0 passes C twice but Go
+now stops later, at **USE item key 7 / savage.c v_use_drum**, not GUARD.
+That separately sized prerequisite must be filed by the parent before any
+expansion; no drum handler or #181 hinder-meditation work is included.
+See [strict fixture evidence](../turn-compat#guardstack-fixture-rerun-180).
+No all-six, full-corpus, native-platform or stage-exit claim is made.
+
 ## Complete location export (#176)
 
 **0.112.0-alpha** completes original `export_location` **133–189** in the

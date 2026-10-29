@@ -4,6 +4,35 @@
 G3 is the reference.
 Expected output comes only from G3's committed files, which its C engine wrote; nothing here re-baselines.
 
+## GUARD/STACK prerequisite progress (#180)
+
+At **0.113.0-alpha**, the unchanged complete spec records **33 pass / 92 fail /
+0 error** (**119s**), preserving every previously accepted **32** pass,
+including all inherited 23. The existing tool adds only **phase-daily** to
+passing.txt; no manifest, EXPECT.json, scenario, upstream script or expected
+byte is edited. That fixture separately passes real C twice and Go with
+identical raw status/streams and all **245 cwd entries**, including modes.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue180-spec" \
+  tools/olympia-spec/run.sh
+```
+
+phase-day0 still fails: GUARD now executes, but Go later stops at **USE item
+key 7**, original savage.c `v_use_drum` **70–146**. Real C twice passes its
+unchanged script. That separately sized prerequisite is documented for the
+parent to file before expansion, not implemented or accepted as success.
+phase-month-decay's #181 hinder-meditation boundary is unchanged. The three
+accepted month fixtures and all other recorded passes remain green; only
+four of the six phase fixtures currently pass. Golden remains **NO**, with
+initialization **exit 2** at unsupported `load_db (-i)`.
+
+Logs: `tmp/issue180-spec.log`, `tmp/issue180-spec/{run-all,olympia-g3,golden}.log`;
+strict affected-fixture evidence and the additional source/sizing boundary:
+[turn comparison](../turn-compat#guardstack-fixture-rerun-180),
+`tmp/issue180-{fixtures,prerequisite}.log`. No whole-spec, all-six fixture,
+full-corpus, native-platform or stage-exit claim is made.
+
 The spec is the three gates that G3 documents for another engine in `doc/claude/testing.md` ("Running the spec against another engine"):
 
 | Gate | What it checks |

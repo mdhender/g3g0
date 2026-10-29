@@ -2275,6 +2275,11 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			}
 		case "load":
 			fmt.Fprintf(&stdout, "load %d\n", b2i(w.loadCommand(c)))
+		case "callback_start":
+			if args.rest != "" {
+				c.a = int32(args.num(t))
+			}
+			fmt.Fprintf(&stdout, "callback start %d\n", cmdTbl[c.cmd].start(w, c))
 		case "do":
 			w.doCommand(c)
 		case "finish":

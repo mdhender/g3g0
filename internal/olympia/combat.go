@@ -5,6 +5,19 @@ package olympia
 
 import "fmt"
 
+// vGuard is the complete combat.c:2947–2964 command start.
+func (w *world) vGuard(c *command) int {
+	where := w.subloc(int(c.who))
+	if c.a != 0 {
+		w.pChar(int(c.who)).guard = 1
+		w.commandOut(int(c.who), "Will guard %s.", w.boxName(where))
+		return 1
+	}
+	w.pChar(int(c.who)).guard = 0
+	w.commandOut(int(c.who), "Will not guard %s.", w.boxName(where))
+	return 1
+}
+
 // fight and wield retain combat.c:110–146's original fields and C int widths.
 // findWield mutates only the three ratings, not the selected-item fields.
 type fight struct {

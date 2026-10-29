@@ -72,14 +72,14 @@ functions = {
                 'first_prisoner_pos', 'promote', 'unstack', 'leave_stack', 'stack', 'join_stack',
                 'check_prisoner_escape', 'prisoner_escapes', 'prisoner_movement_escape_check',
                 'weekly_prisoner_escape_check',
-                'drop_stack', 'extract_stacked_unit', 'move_prisoner'],
+                'drop_stack', 'extract_stacked_unit', 'move_prisoner', 'v_stack'],
     'dir.c': ['location_direction', 'exit_distance', 'is_port_city',
               'province_has_port_city', 'summer_uldim_open_now', 'add_province_exit',
               'extra_routes', 'province_exits', 'province_sub_exits', 'subloc_exits',
               'ship_exits', 'building_exits', 'exits_from_loc', 'exits_from_loc_nsew',
               'exits_from_loc_nsew_select', 'has_ocean_access', 'list_exit_extras',
               'list_exits_sup', 'list_road_sup', 'list_exits', 'list_sailable_routes'],
-    'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits', 'find_wield', 'wield_s'],
+    'combat.c': ['fort_covers', 'auto_attack', 'check_auto_attack_sup', 'check_all_auto_attacks', 'clear_second_waits', 'find_wield', 'wield_s', 'v_guard'],
     'loc.c': ['add_char_here', 'all_stack', 'subloc', 'first_character',
               'subloc_here', 'count_loc_structures',
               'in_safe_now', 'province', 'building_owner', 'viewloc', 'all_char_here',
@@ -107,7 +107,7 @@ functions = {
     'u.c': ['stage', 'olytime_increment', 'olytime_turn_change', 'print_dot',
             'nprovinces', 'greater_region', 'deduct_aura', 'charge_aura', 'check_aura',
             'min', 'cap', 'set_bit', 'test_bit', 'count_stack_any', 'count_any', 'check_skill',
-            'contacted', 'char_where', 'char_here', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
+            'contacted', 'char_where', 'char_here', 'check_char_gone', 'test_known', 'loc_hidden', 'has_item', 'loc_depth',
             'lookup', 'gold_s', 'comma_num', 'nice_num', 'loyal_s', 'add_np', 'deduct_np',
             'new_char', 'beast_capturable', 'create_unique_item', 'create_unique_item_alloc',
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
@@ -696,6 +696,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section guard stack '* ]]; then
+   [ "$status" = 0 ] || die "unexpected GUARD/STACK status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section state export '* ]]; then
    [ "$status" = 0 ] || die "unexpected state export status $status in section $i"
   fi

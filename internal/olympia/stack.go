@@ -5,7 +5,7 @@ package olympia
 
 // Ported from olympia/stack.c: stack lookup, positioning, join/leave and
 // their small dependencies, also used by new_char(), and movement escapes.
-// Stack command handlers remain for later stages.
+// v_stack is implemented; the other stack commands remain for later stages.
 
 func (w *world) herePos(who int) int {
 	p := w.rpLocInfo(w.loc(who))
@@ -116,6 +116,33 @@ func (w *world) stack(who, target int) {
 			w.promote(who, pos)
 		}
 	}
+}
+
+// vStack is the complete stack.c:703–741 validation and join command.
+func (w *world) vStack(c *command) int {
+	who, target := int(c.who), int(c.a)
+	if !w.checkCharGone(who, target) {
+		return 0
+	}
+	if target == who {
+		w.commandOut(who, "Can't stack beneath oneself.")
+		return 0
+	}
+	if w.stackedBeneath(who, target) {
+		w.commandOut(who, "Cannot stack beneath %s since %s is stacked under you.", w.boxName(target), w.justName(target))
+		return 0
+	}
+	if w.isPrisoner(target) {
+		w.commandOut(who, "Can't stack beneath prisoners.")
+		return 0
+	}
+	if !w.willAdmit(target, who, target) {
+		w.commandOut(who, "%s refuses to let us stack.", w.boxName(target))
+		w.commandOut(target, "Refused to let %s stack with us.", w.boxName(who))
+		return 0
+	}
+	w.joinStack(who, target)
+	return 1
 }
 
 func (w *world) joinStack(who, target int) {

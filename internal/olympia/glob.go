@@ -347,6 +347,10 @@ func init() {
 			cmdTbl[i].start = (*world).vFormat
 		case "notab":
 			cmdTbl[i].start = (*world).vNotab
+		case "guard":
+			cmdTbl[i].start = (*world).vGuard
+		case "stack":
+			cmdTbl[i].start = (*world).vStack
 		case "hide":
 			cmdTbl[i].start = (*world).vHide
 			cmdTbl[i].finish = (*world).dHide

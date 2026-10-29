@@ -21,6 +21,7 @@ load-trade-no-price
 mint-top-id
 move-go
 move-out-first
+phase-daily
 phase-month-close
 phase-month-gold
 phase-month-open

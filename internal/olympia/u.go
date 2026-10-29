@@ -444,6 +444,28 @@ func (w *world) charHere(who, target int) bool {
 	return w.charWhere(w.subloc(who), who, target)
 }
 
+// checkCharGone is the complete u.c:933–962 validator. The active
+// char_gone macro tests moving itself, not elapsed days (oly.h:1008).
+func (w *world) checkCharGone(who, target int) bool {
+	if target == int(w.garrisonMagic) {
+		w.commandOut(who, "There is no garrison here.")
+		return false
+	}
+	if w.kind(target) != tChar {
+		w.commandOut(who, "%s is not a character.", w.boxCode(target))
+		return false
+	}
+	if !w.charHere(who, target) {
+		w.commandOut(who, "%s cannot be seen here.", w.boxCode(target))
+		return false
+	}
+	if w.charMoving(target) != 0 {
+		w.commandOut(who, "%s has left.", w.boxName(target))
+		return false
+	}
+	return true
+}
+
 func (w *world) testKnown(who, i int) bool {
 	if who == 0 {
 		return false
