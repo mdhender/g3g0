@@ -53,28 +53,58 @@ Upstream PR playbymail/olympia-g3#365 advanced during validation and merged at
 **#289**, attached to #183, from the later owner comment on #288:
 https://github.com/mdhender/g3g0/issues/288#issuecomment-6507018145.
 
-## First priority: #289's source and scope gate
+## First priority: #289's authorized stage-4 follow-C work
 
-Assess #289 before resuming #215. Review the complete delta from 7064d6c to
-the later head/merge and run tools/affected.sh with isolated G3_REPO before
-choosing a new immutable pin. It adds ATTACK/USE missing-argument guards,
-a fog naming guard, five immediate-GM guards, and original missing-argument /
+**Owner decision in the continuation-assessment thread:** retain immediate
+mode and its five console guards in stage 5. Complete stage 4's follow-C work
+without pulling in the console, and keep #289 open to record the remaining
+stage-5 work. This decision resolves the immediate-mode scope gate; do not
+ask for it again or treat the deferred console as blocking stage-4 progress.
+Decision thread: https://ampcode.com/threads/T-01a1896d-7b58-73b5-8e7d-cdd7f139aafc.
+This drafting thread changes only the handoff and #289; implementation starts
+after the owner creates the larger orb and launches this prompt there.
+
+Before resuming #215, review the complete delta from 7064d6c to the later
+head/merge and run tools/affected.sh with isolated G3_REPO before choosing a
+new immutable pin. It adds ATTACK/USE missing-argument guards, a fog naming
+guard, five immediate-GM guards, and original missing-argument /
 gm-immediate-missing fixtures. A saved command's CO/li text is reparsed on
-load; do not assume its argument slots began empty.
+load; do not assume its argument slots began empty. Assessment found the
+15-file later-head delta and an identical merge tree. The affected tools are
+**rng, helper, check, loadsave, CLI, roundtrip, spec, turn, turn-driver,
+command and move**. Recheck live source and each tool's own old pin; the
+five-tool list above describes accepted #288, not this next pin move.
 
 The existing USE dispatcher can be updated in its owner, but ATTACK and fog
-have pending complete-contract tasks #235 and #264. The five console commands
-need immediate mode, which #19 assigns to stage 5. Do not implement a
-missing-argument-only ATTACK overlay, expand into combat/weather closures,
-invent successful callbacks, or silently implement stage 5 to satisfy a
-composite fixture. Inventory actual dependencies and split bounded work and
-later-owner obligations before implementation. If immediate-mode parity now
-conflicts with the authorized stage boundary, ask the owner for that specific
-scope decision; neither this prompt nor the upstream fixture authorizes
-stage 5. Do not claim #289 complete merely because the pin moved.
+have pending complete-contract tasks #235 and #264. Split and file bounded
+priority USE/pin/proof work under #289 before coding; accept that work before
+#215. Explicitly attach the ATTACK guard to #235 and fog naming guard to #264,
+including missing-argument's full fixture acceptance once both owners are
+complete. Keep their canonical order; do not implement a missing-argument-only
+ATTACK overlay, accelerate combat/weather closures into the priority task,
+or invent successful callbacks. The full original missing-argument fixture
+is a stage-4 obligation, not a deferred-mode exception. Until its complete
+owners land, retain honest C/C proof and Go NYI evidence rather than claiming
+it passes. Complete its strict C/C/Go acceptance before stage-4 exit.
 
-After the priority follow-C scope is resolved and its required bounded work
-accepted, resume canonical gameplay at **#215 N14b RAISE/RALLY**, family #187.
+The five console commands (be, additem, poof, know and makeloc), their guards
+and original gm-immediate-missing fixture remain stage-5 obligations. Do not
+implement -i, a fixture-only console, world creation or golden-flow work in
+stage 4. Inventory and retain the unchanged fixture and its real dependencies;
+report its unsupported Go result honestly, preserving all accepted spec names.
+That explicit owner-approved exception does not authorize any other deferral.
+
+Update #289 as each bounded task/complete owner is accepted, distinguishing
+implemented delta, pending stage-4 obligations and deferred stage-5 obligations.
+Do not use Closes #289 in a stage-4 commit or tick it as wholly complete merely
+because the pin moved. At stage-4 exit, record that all its stage-4 work is
+accepted and only immediate mode/the five console guards/original console
+fixture remain. Keep #289 open for stage 5; its deferred remainder alone is
+not a blocker to stage-4 acceptance or canonical gameplay after the priority
+work is accepted. No stage-5 implementation is authorized by this prompt.
+
+After the bounded priority USE/pin/proof work is accepted and remaining owners
+are recorded in #289, resume **#215 N14b RAISE/RALLY**, family #187.
 Its prerequisite #214 already owns complete cookie allocation in npc.go.
 Use the existing swear.go/npc.go/glob.go/USE owners; do not duplicate that
 machinery. Read #215 and its complete pinned source before briefing its one
@@ -138,6 +168,10 @@ Use an **a1.large (8 CPUs / 16 GB RAM)** orb. The new orb starts from remote
 main with its own filesystem. Do not assume the old thread's untracked tmp
 trees, caches, binaries, captures, logs or agents transferred. Tracked setup
 installs Go from go.mod and CMake 4.1.3; inspect installed tools first.
+The continuation-assessment orb was only **4 CPUs / 8 GB RAM** and performed
+no implementation or new-pin validation. The owner will create the larger
+orb and restart; verify its actual resources rather than assuming a resize
+or any previous validation happened.
 
 Never build/write the shared additional C checkout or ~/Software reference.
 Create an isolated bare clone if absent, and fetch missing immutable pins there:
@@ -197,7 +231,10 @@ task helpers, binaries, matching captures and generated coverage/use dumps.
 Follow the original stage-exit final tier only after all in-scope contracts
 and assigned original family fixtures are complete. Do not infer a family
 exit from one start callback or partial oracle. Report every lost name,
-unexplained difference and true blocker honestly. Finish stage 4, independently
-accept it and update #19/#183/families, then PAUSE. Do not plan or implement
-stage 5 without the owner's explicit authorization. No further thread is
-needed merely for a phase change; keep this thread's implementation/proof here.
+unexplained difference and true blocker honestly. Include missing-argument
+in stage-4 acceptance, but retain gm-immediate-missing as the explicit
+owner-approved stage-5 exception above, with #289 open for that remainder.
+Finish stage 4, independently accept it and update #19/#183/families, then
+PAUSE. Do not plan or implement stage 5 without the owner's explicit
+authorization. No further thread is needed merely for a phase change; keep
+this thread's implementation/proof here.
