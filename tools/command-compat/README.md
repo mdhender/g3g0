@@ -3,6 +3,109 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## ACCEPT, DISCARD/DROP, CLAIM and RECLAIM (#203, stage 4 N06a)
+
+**0.125.0-alpha** ports the complete pinned **int** definitions, including
+their return-type lines: c1.c `v_accept` **529–549**, `will_accept_sup`
+**552–582**, `will_accept` **585–616**, `how_many` **619–651**; c2.c
+`v_discard` **11–43**, `v_claim` **761–819**; u.c `v_reclaim` **265–278**.
+The extractor retains each unchanged exactly once (**4068 bytes** total;
+individual hashes in `tmp/issue203-source-proof.log`). The original whole
+`lib/accept_ents.c` is a genuinely new linked list dependency, now tracked
+in tools/README.md and affected.sh; no pin changes. Go reuses the existing
+acceptEnt list, inventory, unique/token, death, reclamation, mayRuleHere,
+parser, reporting/output-cache and RNG owners. No parallel gameplay layer.
+
+The actual starts are wired, preserving all genuine NULL finish/interrupt
+slots and DISCARD versus DROP permissions. **GIVE/PAY/GET/TAKE remain NYI
+for N06b #204**. Shared callers reviewed include GIVE's prisoner/item paths,
+GET, DISCARD, CLAIM and adv.c's teleport-item completion; those other starts
+are not implemented here. Garrison ten-man withdrawal is GET's N06b rule,
+not an extra restriction on ACCEPT or DISCARD.
+
+Thirty appended sections (**26 status 0 / 4 exact source assertions 134**)
+compare raw status/streams, real save_box bytes, unsaved record/list/cache
+state, queues and entity/keyed/mint/legacy RNG aftermath. Cases distinguish
+unvalidated raw/duplicate/negative ACCEPT fields; first-row selection,
+wildcards, finite consumption and all four ordered unit/faction alternatives;
+gold/same-faction bypass without allocation/consumption; garrison control
+before acceptance rows; asymmetric qty/leave, qty=0 and signed-int subtraction
+and assertion boundaries. Exact finite depletion leaves the **unlimited zero
+sentinel**, not an exhausted or removed row. Raw argument probes explicitly
+set command fields: the real parser maps textual negative numeric codes to
+zero, and is not altered to make these helper-boundary cases possible.
+
+Public dispatch checks cover item/inventory validation before quantities,
+ordinary consumption, unique drops and token drops followed by real deferred
+reconciliation/cookie return; nested actual-region CLAIM restrictions in all
+three realms and allowed Underworld, **including zero-ID equality**; correction
+log/message order without rewriting saved args; unique/token acquisition and
+RNG aftermath. RECLAIM broadcasts default/empty/custom first-field text before
+real charReclaim, discards rather than inheriting to mates, and melts even
+with known survival/transcendence skills. Real scheduler composition and
+save/reload/generic interruption prove the genuine NULL callbacks do not
+execute starts or consume following queued WAITs. Refusal output reuses a
+renamed cached inode without reopening the old path.
+
+The first 22 discriminating sections ran unchanged real C twice **before
+implementation or any recording update** (`tmp/issue203-before.log`). Final
+additions likewise repeat unchanged C before update/Go. Final comparison:
+**1551 sections / 122599 output lines / 2427561 output bytes**, input
+**33914 lines / 643223 bytes**. Additions are **604 input lines / 10635 input
+bytes / 2815 output lines / 50914 output bytes**. Complete HEAD prefixes
+**632588 / 2376647** and directly checked stage-3 prefixes **578307 / 2134398**
+are exact, including all **13 high-bit output bytes** and authentic trailing
+spaces. The **39** appended trailing-space lines are original C bytes.
+Proof: `tmp/issue203-prefix-proof.log`; C/C/update/Go:
+`tmp/issue203-update-final.log`; independent default: `tmp/issue203-command-final.log`.
+
+| file | SHA-256 |
+|---|---|
+| command-cases.txt | `5f6e920ecb3efdcb03f5b23b8f0d130ef786cf48c6bbb685308cba9b2585b860` |
+| command-c-output.txt | `f64558e8e92259482a783a99b060c081bd9e7b492252093fed446459446d3029` |
+
+Four temporary linker controls emit a dependency marker from how_many and
+actually exit **0/134**, in default/update modes. All reject section **1528**
+with harness **2** before status acceptance or recording replacement; the
+pre-update recording hash stays `e685790bf695242f7a33cac8dc3ef6689571c0b64f8665224e7eff9b484c75ed`.
+Bounded direct executions independently confirm **0/134**. Logs:
+`tmp/issue203-negative-STATUS-MODE.log`, `tmp/issue203-probe-STATUS.{stdout,stderr}`.
+
+Original inventory-* and token-swear scripts/scenarios were reviewed and run
+unchanged, real C twice then fresh Go, via bounded native pre-cleanup capture.
+C scripts **YES / script 0 / engine 0**, with strict raw C/C and complete
+**241 / 239 / 238** cwd entries (inventory-give/refused/token-swear).
+All three Go runs now first stop at **GIVE start**, engine **2 / script 1 / NO**;
+no GET/PAY or later missing path is inferred. RECLAIM no longer gates the
+inventory-give run. Separate release-swear-np remains **YES / script 0**,
+exact engine **134** at `olympia/swear.c (180): FALSE`; C/C/Go raw streams and
+all **229** cwd entries match, including tree-modes.py. It is not a successful
+turn. Canonical C binary SHA-256 remains
+`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`;
+captures are never filtered. Logs: `tmp/issue203-FIXTURE-{c1,c2,go}.log`;
+manifests/decisive raw failure streams: `tmp/issue203-fixtures/FIXTURE/`.
+
+Bounded vet, fresh full-enabled tests (**11 packages / 10 explicit skips**)
+and eight sequential defaults **command/move/helper/rng/code/loadsave/
+turn-driver/turn** pass; reproduce with the explicit-G3_REPO commands in
+N05 below. Logs: `tmp/issue203-{vet,tests}.log`, `tmp/issue203-TOOL-final.log`.
+Full existing spec (`G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue203-spec"
+tools/olympia-spec/run.sh`) remains **41 pass / 84 fail / 0 error**, every
+previous name retained and passing.txt unchanged; **golden NO**, initialization
+exit **2** (`tmp/issue203-spec.log`). No new verified bug/blocker, family exit,
+later-stage mode or whole-world acceptance is claimed. Temporary probes,
+helpers/binaries and matching captures are removed. No upstream fixtures or
+expected bytes were edited. Parent independently reviewed all seven complete
+pinned definitions, the original accept_ents dependency, shared owners and
+the engine/adapter/case diff; verified both entire inherited byte prefixes;
+and passed bounded vet, fresh full-enabled tests and all eight sequential
+defaults (`tmp/parent203-{vet,tests,command,move,helper,rng,code,loadsave,
+turn-driver,turn}.log`). The parent command run independently repeats real C
+twice before comparing Go: **1551 sections / 122599 lines**, byte-exact.
+The independent parent full spec also retains all **41** passing names,
+**84** failures and **0** errors; golden remains **NO**, initialization **2**
+(`tmp/parent203-spec.log`).
+
 ## Prisoner capture and transfer prerequisites (#202, stage 4 N05)
 
 **0.124.0-alpha** adds the complete pinned stack.c `take_prisoner`

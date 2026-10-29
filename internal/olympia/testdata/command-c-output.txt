@@ -119782,3 +119782,2818 @@ LI
 stderr:
 
 exit 0
+stdout:
+section N06a accept appends raw invalid negative and duplicate fields including player and prisoner
+> entity 10 4 0
+> field 1000 prisoner 1
+> queue accept 999999 -4 -7
+> load
+load 1
+> rawargs 999999 -4 -7
+> do
+> queue accept 999999 -4 -7
+> load
+load 1
+> rawargs 999999 -4 -7
+> do
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 999999 -4 -7
+acceptance row 999999 -4 -7
+> who 200
+> queue accept 0 0 0
+> load
+load 1
+> do
+> acceptance state 200
+acceptance char 200 allocated 1 list 1
+acceptance row 0 0 0
+> dump
+cmd 1 who 200 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [accept] [0] [0] [0]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ pr 1
+CO
+ li accept 999999 -4 -7
+ ar 999999 -4 -7 0 0 0 0 0
+ st 1
+
+> save 200
+200 player pl_regular
+CH
+PL
+CO
+ li accept 0 0 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 1 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 200
+200 player pl_regular
+CH
+PL
+CO
+ li accept 0 0 0
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+ pr 1
+CO
+ li accept 999999 -4 -7
+ ar 999999 -4 -7 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N06a finite first matching row exact depletion becomes unlimited sentinel
+> entity 10 4 0
+> field 1001 lord 201
+> queue accept 1001 10 7
+> load
+load 1
+> do
+> queue accept 0 0 19
+> load
+load 1
+> do
+> acceptance check 1000 10 1001 3
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 1001 10 4
+acceptance row 0 0 19
+> acceptance check 1000 10 1001 4
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 1001 10 0
+acceptance row 0 0 19
+> acceptance check 1000 10 1001 900
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 1001 10 0
+acceptance row 0 0 19
+> save 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li accept 0 0 19
+ ar 0 0 19 0 0 0 0 0
+ st 1
+
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_regular
+PL
+
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li accept 0 0 19
+ ar 0 0 19 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 201
+
+stderr:
+
+exit 0
+stdout:
+section N06a four short circuit alternatives exact unit sender before faction sender
+> entity 10 4 0
+> field 1001 lord 201
+> queue accept 1001 10 2
+> load
+load 1
+> do
+> queue accept 201 10 11
+> load
+load 1
+> do
+> who 200
+> queue accept 1001 10 5
+> load
+load 1
+> do
+> queue accept 201 10 17
+> load
+load 1
+> do
+> acceptance check 1000 10 1001 1
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 1001 10 1
+acceptance row 201 10 11
+> acceptance state 200
+acceptance char 200 allocated 1 list 1
+acceptance row 1001 10 5
+acceptance row 201 10 17
+> acceptance check 1000 10 1001 3
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 1001 10 1
+acceptance row 201 10 11
+> acceptance state 200
+acceptance char 200 allocated 1 list 1
+acceptance row 1001 10 2
+acceptance row 201 10 17
+> acceptance check 1000 10 1001 6
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 1001 10 1
+acceptance row 201 10 5
+> acceptance state 200
+acceptance char 200 allocated 1 list 1
+acceptance row 1001 10 2
+acceptance row 201 10 17
+> acceptance check 1000 10 1001 12
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 1001 10 1
+acceptance row 201 10 5
+> acceptance state 200
+acceptance char 200 allocated 1 list 1
+acceptance row 1001 10 2
+acceptance row 201 10 5
+> acceptance check 1000 10 1001 99
+acceptance 0
+> readlog 200
+log 200:
+1000:0::0::> accept 1001 10 2
+1000:0::0::> accept 201 10 11
+200:0::0::> accept 1001 10 5
+200:0::0::> accept 201 10 17
+1000:0::0::Refused 99~<no subkind> from <no subkind>~[1001].
+> readlog 201
+log 201:
+1001:0::0::Refused by <no subkind>.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 1 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 200
+200 player pl_regular
+CH
+PL
+CO
+ li accept 201 10 17
+ ar 201 10 17 0 0 0 0 0
+ st 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li accept 201 10 11
+ ar 201 10 11 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 201
+
+stderr:
+warning: plural name not set for item [10]
+
+exit 0
+stdout:
+section N06a wildcard item from finite and signed subtraction width
+> entity 10 4 0
+> queue accept 0 10 4
+> load
+load 1
+> do
+> queue accept 1001 0 6
+> load
+load 1
+> do
+> queue accept 0 0 -2
+> load
+load 1
+> do
+> acceptance sup 1000 10 777 3
+acceptance 1
+> acceptance sup 1000 99 1001 5
+acceptance 1
+> acceptance sup 1000 88 777 -3
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 0 10 1
+acceptance row 1001 0 1
+acceptance row 0 0 0
+> acceptance sup 1000 88 777 -2147483648
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 0 10 1
+acceptance row 1001 0 1
+acceptance row 0 0 0
+> save 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li accept 0 0 -2
+ ar 0 0 0 0 0 0 0 0
+ st 1
+
+stderr:
+
+exit 0
+stdout:
+section N06a gold same faction bypass allocate and consume nothing
+> entity 1 4 0
+> entity 10 4 0
+> entity 1002 2 0
+> field 1002 lord 200
+> who 200
+> queue accept 0 0 8
+> load
+load 1
+> do
+> acceptance check 1002 10 1000 7
+acceptance 1
+> acceptance check 201 1 1000 999
+acceptance 1
+> acceptance state 1002
+acceptance char 1002 allocated 1 list 0
+> acceptance state 201
+acceptance char 201 allocated 0 list 0
+> acceptance state 200
+acceptance char 200 allocated 1 list 1
+acceptance row 0 0 8
+> field 1001 lord 201
+> who 1000
+> queue accept 0 0 9
+> load
+load 1
+> do
+> acceptance check 1000 1 1001 99
+acceptance 1
+> acceptance check 1000 10 1002 99
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 0 0 9
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 1 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 200 1000
+200 player pl_regular
+CH
+PL
+CO
+ li accept 0 0 8
+ ar 0 0 8 0 0 0 0 0
+ st 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li accept 0 0 9
+ ar 0 0 9 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 201
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N06a garrison control precedes matching acceptance rows and own faction bypass
+> entity 10 4 0
+> entity 9000 3 3
+> entity 9300 3 32
+> entity 1002 2 64
+> field 1001 lord 201
+> field 1002 lord 201
+> field 1002 castle 9300
+> link 9000 9300
+> link 9300 1000
+> link 9000 1002
+> who 1002
+> queue accept 0 0 9
+> load
+load 1
+> do
+> acceptance check 1002 10 1000 3
+acceptance 1
+> acceptance state 1002
+acceptance char 1002 allocated 1 list 1
+acceptance row 0 0 9
+> link 9300 1001
+> link 9000 1000
+> acceptance check 1002 10 1000 3
+acceptance 0
+> acceptance state 1002
+acceptance char 1002 allocated 1 list 1
+acceptance row 0 0 9
+> acceptance check 1002 10 1001 3
+acceptance 1
+> acceptance state 1002
+acceptance char 1002 allocated 1 list 1
+acceptance row 0 0 9
+> readlog 200
+log 200:
+6:0:1002:0::> accept 0 0 9
+1000:0::0::Garrison~[1002] is not under your control.
+> readlog 201
+log 201:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 6 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9300
+CH
+ lo 201
+
+export entity 1002 char 1 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+1002 char garrison
+LI
+ wh 9000
+CH
+ lo 201
+MI
+ gc 9300
+CO
+ li accept 0 0 9
+ ar 0 0 9 0 0 0 0 0
+ st 1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300 1002 1000
+9000 loc plain
+LI
+ hl 9300 1002 1000 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9300 loc castle
+LI
+ wh 9000
+ hl 1001 
+
+stderr:
+
+exit 0
+stdout:
+section N06a missing acceptance record refusal does not allocate character
+> entity 10 4 0
+> entity 1002 2 0
+> field 1001 lord 201
+> acceptance sup 1002 10 1000 1
+acceptance 0
+> acceptance state 1002
+acceptance char 1002 allocated 0 list 0
+> acceptance check 1000 10 1001 1
+acceptance 0
+> acceptance state 201
+acceptance char 201 allocated 0 list 0
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 0
+> readlog 200
+log 200:
+1000:0::0::Refused one~<no subkind> from <no subkind>~[1001].
+> readlog 201
+log 201:
+1001:0::0::Refused by <no subkind>.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 201
+
+export entity 1002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char 0
+
+stderr:
+
+exit 0
+stdout:
+section N06a quantity missing before have left and asymmetric minimum all sentinel
+> entity 10 4 0
+> entity 11 4 0
+> inventory 1001 10 17
+> acceptance quantity 1000 1001 11 -2 -9
+quantity 0
+> acceptance quantity 1000 1001 10 0 17
+quantity 0
+> acceptance quantity 1000 1001 10 99 18
+quantity 0
+> acceptance quantity 1000 1001 10 5 3
+quantity 5
+> acceptance quantity 1000 1001 10 13 7
+quantity 10
+> acceptance quantity 1000 1001 10 0 9
+quantity 8
+> acceptance quantity 1000 1001 10 99 -4
+quantity 21
+> acceptance quantity 1000 1001 10 0 -4
+quantity 17
+> save 1001
+1001 char 0
+il	10 17
+CH
+ lo 200
+
+> readlog 200
+log 200:
+1000:0::0::<no subkind> has no <no subkind>.
+1000:0::0::<no subkind> has only 17~<no subkind>.
+1000:0::0::<no subkind> has only 17~<no subkind>.
+stderr:
+warning: plural name not set for item [10]
+warning: plural name not set for item [10]
+
+exit 0
+stdout:
+section N06a invalid negative quantity asserts rather than clamp
+> entity 10 4 0
+> inventory 1000 10 17
+> acceptance quantity 1000 1000 10 -1 2
+stderr:
+assertion failure: olympia/c1.c (648): qty > 0
+
+exit 134
+stdout:
+section N06a invalid quantity signed C int subtraction wraps before min
+> entity 10 4 0
+> inventory 1000 10 2147483647
+> acceptance quantity 1000 1000 10 7 -1
+stderr:
+assertion failure: olympia/c1.c (648): qty > 0
+
+exit 134
+stdout:
+section N06a discard validates item then inventory then quantity before real consumption
+> entity 10 4 0
+> inventory 1000 10 17
+> queue discard 1001 -9
+> load
+load 1
+> do
+> queue drop 1 -9
+> load
+load 1
+> do
+> queue discard 10 99 17
+> load
+load 1
+> do
+> queue discard 10 13 7
+> load
+load 1
+> do
+> dump
+cmd 21 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 10 13 7 0 0 0 0 0; parse [discard] [10] [13] [7]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	10 7
+CH
+ lo 200
+CO
+ li discard 10 13 7
+ ar 10 13 7 0 0 0 0 0
+ st 1
+ pr 1
+
+> queue drop 10 0 2
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+il	10 2
+CH
+ lo 200
+CO
+ li drop 10 0 2
+ ar 10 0 2 0 0 0 0 0
+ st 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> discard 1001 -9
+1000:0::0::[1001] is not an item.
+1000:0::0::> drop 1 -9
+1000:0::0::[1] is not an item.
+1000:0::0::> discard 10 99 17
+1000:0::0::<no subkind> has only 17~<no subkind>.
+1000:0::0::> discard 10 13 7
+1000:0::0::Dropped.
+1000:0::0::> drop 10 0 2
+1000:0::0::Dropped.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 10 2
+1000 char 0
+il	10 2
+CH
+ lo 200
+CO
+ li drop 10 0 2
+ ar 10 0 2 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+warning: plural name not set for item [10]
+
+exit 0
+stdout:
+section N06a drop unique goes through province and real ownership log
+> entity 10000 3 50
+> entity 9000 3 3
+> entity 9001 3 14
+> link 10000 9000
+> link 9000 9001
+> link 9001 1000
+> entity 7000 4 42
+> field 7000 unique 1000
+> inventory 1000 7000 1
+> queue drop 7000
+> load
+load 1
+> do
+> dump
+cmd 22 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 7000 0 0 0 0 0 0 0; parse [drop] [7000]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+CO
+ li drop 7000
+ ar 7000 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> save 9000
+9000 loc plain
+il	7000 1
+LI
+ wh 10000
+ hl 9001 
+
+> death state
+kind chain 2: 1000 1001
+kind chain 4: 7000
+kind chain 8:
+> readlog 200
+log 200:
+1000:0::0::> drop 7000
+10:0::0::drop_item: Scroll~[7000] from City~[9001] to Plain~[9000]
+1000:0::0::Dropped.
+> readlog 10
+log 10:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 10
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 7000 0
+1000 char 0
+LI
+ wh 9001
+CH
+ lo 200
+CO
+ li drop 7000
+ ar 7000 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 7000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+7000 item scroll
+IT
+ un 9000
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 9001
+raw item 7000 1
+9000 loc plain
+il	7000 1
+LI
+ wh 10000
+ hl 9001 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9001 loc city
+LI
+ wh 9000
+ hl 1000 
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+
+exit 0
+stdout:
+section N06a claim region zero equality blocks before correction
+> entity 1 4 0
+> inventory 200 1 41
+> queue claim 23
+> load
+load 1
+> do
+> dump
+cmd 13 who 1000 state 0 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 23 0 0 0 0 0 0 0; parse [claim] [23]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 200
+200 player pl_regular
+il	1 41
+PL
+
+> readlog 200
+log 200:
+1000:0::0::> claim 23
+1000:0::0::CLAIM may not be used in the Cloudlands, Hades or Faery.
+> readlog 10
+log 10:
+stderr:
+
+exit 0
+stdout:
+section N06a claim three realms rejects nested locations but underworld is allowed
+> entity 1 4 0
+> inventory 200 1 41
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 8002 3 50
+> entity 8003 3 50
+> entity 9000 3 3
+> entity 9100 3 14
+> link 8000 9000
+> link 9000 9100
+> link 9100 1000
+> set cloud_region 8000
+> set hades_region 8001
+> set faery_region 8002
+> set under_region 8003
+> queue claim 23
+> load
+load 1
+> do
+> link 8001 9000
+> queue claim 23
+> load
+load 1
+> do
+> link 8002 9000
+> queue claim 23
+> load
+load 1
+> do
+> link 8003 9000
+> queue claim 23
+> load
+load 1
+> do
+> dump
+cmd 13 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 23 0 0 0 0 0 0 0; parse [claim] [23]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> claim 23
+1000:0::0::CLAIM may not be used in the Cloudlands, Hades or Faery.
+1000:0::0::> claim 23
+1000:0::0::CLAIM may not be used in the Cloudlands, Hades or Faery.
+1000:0::0::> claim 23
+1000:0::0::CLAIM may not be used in the Cloudlands, Hades or Faery.
+1000:0::0::> claim 23
+10:0::0::correcting CLAIM for 200:  claim 23
+1000:0::0::(assuming you meant CLAIM 1 23)
+1000:0::0::Claimed 23~<no subkind>.
+> readlog 10
+log 10:
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 10
+raw item 1 18
+200 player pl_regular
+il	1 18
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 1 23
+1000 char 0
+il	1 23
+LI
+ wh 9100
+CH
+ lo 200
+CO
+ li claim 23
+ ar 23 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+8000 loc region
+LI
+
+export entity 8001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+8001 loc region
+LI
+
+export entity 8002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+8002 loc region
+LI
+
+export entity 8003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8003 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc plain
+LI
+ wh 8003
+ hl 9100 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9100 loc city
+LI
+ wh 9000
+ hl 1000 
+
+stderr:
+warning: plural name not set for item [1]
+
+exit 0
+stdout:
+section N06a claim correction uses local arguments logs before message and retains saved raw args
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> entity 1 4 0
+> entity 10 4 0
+> inventory 200 1 41
+> inventory 200 10 17
+> queue claim 23
+> load
+load 1
+> do
+> dump
+cmd 13 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 23 0 0 0 0 0 0 0; parse [claim] [23]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	1 23
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li claim 23
+ ar 23 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> queue claim 10
+> load
+load 1
+> do
+> dump
+cmd 13 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 10 0 0 0 0 0 0 0; parse [claim] [10]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> queue claim 1001 0
+> load
+load 1
+> do
+> queue claim 11 2
+> load
+load 1
+> do
+> queue claim 1 99 11
+> load
+load 1
+> do
+> save 1000
+1000 char 0
+il	1 30 \
+	10 17
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li claim 1 99 11
+ ar 1 99 11 0 0 0 0 0
+ st 1
+ pr 1
+
+> save 200
+200 player pl_regular
+il	1 11
+PL
+
+> readlog 10
+log 10:
+> readlog 200
+log 200:
+1000:0::0::> claim 23
+10:0::0::correcting CLAIM for 200:  claim 23
+1000:0::0::(assuming you meant CLAIM 1 23)
+1000:0::0::Claimed 23~<no subkind>.
+1000:0::0::> claim 10
+1000:0::0::Claimed 17~<no subkind>.
+1000:0::0::> claim 1001 0
+1000:0::0::[1001] is not an item.
+1000:0::0::> claim 11 2
+1000:0::0::[11] is not an item.
+1000:0::0::> claim 1 99 11
+1000:0::0::Claimed seven~<no subkind>.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000 10
+raw item 1 11
+raw item 10 0
+200 player pl_regular
+il	1 11
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 30
+raw item 10 17
+1000 char 0
+il	1 30 \
+	10 17
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li claim 1 99 11
+ ar 1 99 11 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 
+
+stderr:
+warning: plural name not set for item [1]
+warning: plural name not set for item [10]
+warning: plural name not set for item [1]
+
+exit 0
+stdout:
+section N06a claim unique uses shared acquisition with lore and mint aftermath
+> lore_root
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> entity 7000 4 42
+> field 7000 unique 200
+> inventory 200 7000 1
+> queue claim 7000
+> load
+load 1
+> do
+> dump
+cmd 13 who 1000 state 0 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 7000 0 0 0 0 0 0 0; parse [claim] [7000]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> death state
+kind chain 2: 1000 1001
+kind chain 4: 7000
+kind chain 8:
+> readlog 200
+log 200:
+1000:0::0::> claim 7000
+1000:0::0::Claimed one~Scroll.
+> save 200
+200 player pl_regular
+PL
+
+> save 1000
+1000 char 0
+il	7000 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li claim 7000
+ ar 7000 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 77542
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+raw item 7000 0
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 7000 1
+raw item 77542 1
+1000 char 0
+il	7000 1 \
+	77542 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li claim 7000
+ ar 7000 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 7000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+7000 item scroll
+IT
+ un 1000
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77542 item scroll
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N06a reclaim default broadcasts then melts real noble without mate inheritance
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> link 9000 1000
+> link 1000 1001
+> entity 10 4 0
+> inventory 1000 10 17
+> name 1000 Gone
+> queue reclaim
+> queue wait time 9
+> load
+load 1
+> do
+> death state
+kind chain 2: 1001
+kind chain 4: 10
+kind chain 8: 1000
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1000 12
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> stack_probe state
+stack entity 10 loc 0 char 0 magic 0 command 0 moving 0
+here:
+stack entity 200 loc 0 char 0 magic 0 command 0 moving 0
+here:
+stack entity 201 loc 0 char 0 magic 0 command 0 moving 0
+here:
+stack entity 638 loc 0 char 0 magic 0 command 0 moving 0
+here:
+stack entity 1000 loc 0 char 1 magic 0 command 1 moving 0
+here:
+stack entity 1001 loc 9000 char 1 magic 0 command 0 moving 0
+here:
+stack entity 9000 loc 10000 char 0 magic 0 command 0 moving 0
+here: 1001
+stack entity 10000 loc 0 char 0 magic 0 command 0 moving 0
+here: 9000
+> save 1000
+1000 deadchar 0
+na Gone
+LI
+CH
+CO
+ li reclaim
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> save 1001
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 9000
+9000 loc plain
+LI
+ wh 10000
+ hl 1001 
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> reclaim
+1000:0::0::*** Gone has vanished ***
+12:0::0::Gone~[1000] melted in Plain~[9000].
+> readlog 12
+log 12:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 12
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 10 0
+1000 deadchar 0
+na Gone
+LI
+CH
+CO
+ li reclaim
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1001
+9000 loc plain
+LI
+ wh 10000
+ hl 1001 
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+
+exit 0
+stdout:
+section N06a reclaim empty text defaults and custom text uses only first parsed field
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> link 9000 1000
+> link 9000 1001
+> queue reclaim ""
+> load
+load 1
+> do
+> who 1001
+> queue reclaim "fades into mist." ignored
+> load
+load 1
+> do
+> death state
+kind chain 2:
+kind chain 4:
+kind chain 8: 1000 1001
+> readlog 200
+log 200:
+1000:0::0::> reclaim ""
+1000:0::0::*** <no subkind> has vanished ***
+12:0::0::<no subkind>~[1000] melted in Plain~[9000].
+1001:0::0::> reclaim "fades into mist." ignored
+1001:0::0::*** <no subkind> has vanished ***
+12:0::0::<no subkind>~[1001] melted in Plain~[9000].
+> readlog 12
+log 12:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 12 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 deadchar 0
+CH
+CO
+ li reclaim ""
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 deadchar 0
+CH
+CO
+ li reclaim "fades into mist." ignored
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9000 loc plain
+LI
+ wh 10000
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+
+exit 0
+stdout:
+section N06a reclaim melt bypasses known survival and transcendence with real interruption
+> set gm 200
+> entity 10000 3 50
+> entity 9000 3 3
+> link 10000 9000
+> link 9000 1000
+> link 9000 1001
+> entity 611 5 43
+> entity 911 5 43
+> learn 1000 611 2 21
+> learn 1000 911 2 9
+> field 1000 health -9
+> field 1000 sick 1
+> field 1000 magician 1
+> queue reclaim "vanishes."
+> queue wait day 9
+> load
+load 1
+> do
+> death state
+kind chain 2: 1001
+kind chain 4:
+kind chain 8: 1000
+> save 1000
+1000 deadchar 0
+CH
+ he -9
+ si 1
+ sl	611 2 0 21 0 \
+	911 2 0 9 0
+CM
+ im 1
+CO
+ li reclaim "vanishes."
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> reclaim "vanishes."
+1000:0::0::*** <no subkind> has vanished ***
+12:0::0::<no subkind>~[1000] melted in Plain~[9000].
+> readlog 12
+log 12:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 12
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 611 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+611 skill magic
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 911 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+911 skill magic
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 611 2
+raw skill 911 2
+1000 deadchar 0
+CH
+ he -9
+ si 1
+ sl	611 2 0 21 0 \
+	911 2 0 9 0
+CM
+ im 1
+CO
+ li reclaim "vanishes."
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9000 loc plain
+LI
+ wh 10000
+ hl 1001 
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+
+exit 0
+stdout:
+section N06a queued accept discard claim reclaim actual scheduler and NULL interruption
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> link 9000 1001
+> entity 1 4 0
+> entity 10 4 0
+> inventory 200 1 41
+> inventory 1000 10 17
+> orders 200 1000 accept 0 0 9
+> orders 200 1000 discard 10 13 7
+> orders 200 1000 claim 5
+> orders 200 1000 reclaim "leaves."
+> orders 200 1001 wait day 3
+> resolve_wait
+> initial
+> day 1
+> day 2
+> day 3
+> death state
+kind chain 2: 1001
+kind chain 4: 1 10
+kind chain 8: 1000
+> inherit state
+combat gold 4 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1000 1001 10 12
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> stack_probe state
+stack entity 1 loc 0 char 0 magic 0 command 0 moving 0
+here:
+stack entity 10 loc 0 char 0 magic 0 command 0 moving 0
+here:
+stack entity 200 loc 0 char 0 magic 0 command 1 moving 0
+here:
+stack entity 201 loc 0 char 0 magic 0 command 1 moving 0
+here:
+stack entity 638 loc 0 char 0 magic 0 command 0 moving 0
+here:
+stack entity 1000 loc 0 char 1 magic 0 command 1 moving 0
+here:
+stack entity 1001 loc 9000 char 1 magic 0 command 1 moving 0
+here:
+stack entity 8000 loc 0 char 0 magic 0 command 0 moving 0
+here: 9000
+stack entity 9000 loc 8000 char 0 magic 0 command 0 moving 0
+here: 1001
+> readlog 200
+log 200:
+1000:0::0::> accept 0 0 9
+1000:0::0::> discard 10 13 7
+1000:0::0::Dropped.
+1001:0::0::> wait day 3
+1000:0::0::> claim 5
+10:0::0::correcting CLAIM for 200:  claim 5
+1000:0::0::(assuming you meant CLAIM 1 5)
+1000:0::0::Claimed five~<no subkind>.
+1000:0::0::> reclaim "leaves."
+1000:0::0::*** <no subkind> has vanished ***
+12:0::0::<no subkind>~[1000] melted in Plain~[9000].
+1001:0::0::Wait finished: today is day 3.
+> readlog 10
+log 10:
+> readlog 12
+log 12:
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001 10 12
+raw item 1 36
+200 player pl_regular
+il	1 36
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 10000 order 0
+here:
+raw item 10 0
+raw item 1 0
+1000 deadchar 0
+CH
+ dt 0 1 0
+CO
+ li reclaim "leaves."
+ ar 0 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1010000 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait day 3
+ ar 0 3 0 0 0 0 0 0
+ st 1
+ de 3
+ po 1
+ pr 1
+ if 1
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9000 loc plain
+LI
+ wh 8000
+ hl 1001 
+
+stderr:
+warning: plural name not set for item [1]
+
+exit 0
+stdout:
+section N06a loaded accept genuine NULL interrupt retains next wait
+> queue accept 0 0 9
+> queue wait day 4
+> load
+load 1
+> persist_command
+> generic_interrupt 1000
+> dump
+cmd 1 who 1000 state 1 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 9 0 0 0 0 0; parse [accept] [0] [0] [9]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait day 4]
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li accept 0 0 9
+ ar 0 0 9 0 0 0 0 0
+ cs 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N06a independent no command inventory and RNG control
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> newitem 200 42
+created 77542
+> entity_rolls 1000 7 9000
+prison roll 713
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 42
+created 68129
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+raw item 77542 1
+200 player pl_regular
+il	77542 1
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 68129 1
+1000 char 0
+il	68129 1
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 
+
+export entity 68129 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+68129 item scroll
+IT
+ un 1000
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77542 item scroll
+IT
+ un 200
+
+stderr:
+
+exit 0
+stdout:
+section N06a finite signed allowance wraps rather than widening subtraction
+> queue accept 0 0 2147483647
+> load
+load 1
+> do
+> acceptance sup 1000 10 1001 -1
+acceptance 1
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 0 0 -2147483648
+> acceptance sup 1000 10 1001 1
+acceptance 0
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 1
+acceptance row 0 0 -2147483648
+> save 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li accept 0 0 2147483647
+ ar 0 0 2147483647 0 0 0 0 0
+ st 1
+
+stderr:
+
+exit 0
+stdout:
+section N06a invalid discard positive inventory negative requested quantity asserts
+> entity 10 4 0
+> inventory 1000 10 17
+> queue discard 10 -3 2
+> load
+load 1
+> rawargs 10 -3 2
+> do
+stderr:
+assertion failure: olympia/c1.c (648): qty > 0
+
+exit 134
+stdout:
+section N06a invalid claim negative corrected quantity reaches real quantity assertion
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 1 4 0
+> inventory 200 1 41
+> link 8000 9000
+> link 9000 1000
+> queue claim -3
+> load
+load 1
+> rawargs -3 0 0
+> do
+stderr:
+assertion failure: olympia/c1.c (648): qty > 0
+
+exit 134
+stdout:
+section N06a claim empty correction and missing gold occur in original order
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 1 4 0
+> entity 10 4 0
+> link 8000 9000
+> link 9000 1000
+> queue claim
+> load
+load 1
+> do
+> dump
+cmd 13 who 1000 state 0 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [claim]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> queue claim 10
+> load
+load 1
+> do
+> dump
+cmd 13 who 1000 state 0 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 10 0 0 0 0 0 0 0; parse [claim] [10]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> claim
+10:0::0::correcting CLAIM for 200:  claim
+1000:0::0::(assuming you meant CLAIM 1 0)
+1000:0::0::No [1] for you to claim.
+1000:0::0::> claim 10
+10:0::0::correcting CLAIM for 200:  claim 10
+1000:0::0::(assuming you meant CLAIM 1 10)
+1000:0::0::No [1] for you to claim.
+> readlog 10
+log 10:
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 10
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li claim 10
+ ar 10 0 0 0 0 0 0 0
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N06a claim token from faction reuses real token creation shared mint and lore
+> lore_root
+> set gm 200
+> master 0
+> set turn 1
+> set day 8
+> set indep 202
+> entity 202 1 52
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> entity 22 4 0
+> name 22 Wolf
+> field 22 capturable 1
+> entity 60000 4 63
+> name 60000 Wolf token
+> field 60000 unique 200
+> field 60000 token_num 4
+> field 60000 token_ni 22
+> field 60000 lore 22
+> inventory 200 60000 1
+> queue claim 60000
+> load
+load 1
+> do
+> token_state 60000
+60000 item npc_token
+na Wolf token
+IT
+ un 1000
+IM
+ tn 1
+ ti 22
+ lo 22
+PL
+ un 110158 
+
+token row 110158
+110158 char ni
+LI
+ wh 9000
+CH
+ ni 22
+ lo 200
+ he -1
+ lk 4
+ at 60
+ df 60
+CM
+ ot 60000
+MI
+ ca r
+
+pending trades:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+token output 200
+bits: 1000 13 11 9000
+token output 201
+bits:
+token output 202
+bits:
+> lore_state 200
+known: 60000
+lore: 60000
+touched: 9000
+weather:
+> save 1000
+1000 char 0
+il	60000 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li claim 60000
+ ar 60000 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+> save 200
+200 player pl_regular
+PL
+ lt 1
+ kn 60000 
+ un 110158 
+
+> entity_rolls 1000 7 9000
+prison roll 144
+land dir99 4
+land dir98 3
+land pick 2
+> usemeta legacy 1 100000
+use legacy 87265
+> newitem 1000 42
+created 68643
+> readlog 200
+log 200:
+1000:0::0::> claim 60000
+13:0::0::Token Wolf token~[b000] moved from Player~[200] (Player~[202]) to <no subkind>~[1000] (Player~[200])
+11:0::0::token b000 from 4 to 1.
+13:0::0::Player~[200] got npc token Wolf token~[b000]
+13:0::0::add_token_units(Wolf token~[b000])
+13:0::0::  adding Wolf~[110158] to Wolf token~[b000]
+9000:0::0::Wolf~[110158] appears.
+1000:0::0::Claimed one~Wolf token.
+> export state
+export entity 22 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+22 item 0
+na Wolf
+IT
+ ca 1
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units: 110158
+output: 1000 13 11 9000
+raw item 60000 0
+200 player pl_regular
+PL
+ lt 1
+ kn 60000 
+ un 110158 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+202 player pl_npc
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 60000 1
+raw item 68643 1
+1000 char 0
+il	60000 1 \
+	68643 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li claim 60000
+ ar 60000 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 110158
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 110158 
+
+export entity 60000 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units: 110158
+output:
+60000 item npc_token
+na Wolf token
+IT
+ un 1000
+IM
+ tn 1
+ ti 22
+ lo 22
+PL
+ un 110158 
+
+export entity 68643 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+68643 item scroll
+IT
+ un 1000
+
+export entity 110158 char 1 player 0 magic 1 misc 1 skill 0 temp 1 order 0
+here:
+110158 char ni
+LI
+ wh 9000
+CH
+ ni 22
+ lo 200
+ he -1
+ lk 4
+ at 60
+ df 60
+CM
+ ot 60000
+MI
+ ca r
+
+stderr:
+
+exit 0
+stdout:
+section N06a discard token defers real melt until reconciliation with cookie return
+> set gm 200
+> set indep 202
+> entity 202 1 52
+> entity 8000 3 50
+> entity 9000 3 3
+> link 8000 9000
+> link 9000 1000
+> entity 22 4 0
+> entity 60000 4 63
+> field 60000 unique 1000
+> field 60000 token_num 3
+> field 60000 token_ni 22
+> inventory 1000 60000 1
+> entity 1002 2 54
+> field 1002 lord 200
+> field 1002 npc_home 9000
+> field 1002 npc_cookie 22
+> field 60000 unit 1002
+> link 9000 1002
+> orders 200 1002 wait day 9
+> queue drop 60000
+> load
+load 1
+> do
+> token_state 60000
+60000 item npc_token
+IT
+ un 9000
+IM
+ tn 3
+ ti 22
+PL
+ un 1002 
+
+token row 1002
+1002 char ni
+LI
+ wh 9000
+CH
+ lo 202
+ pl 200
+MI
+ mh 9000
+ co 22
+
+pending trades:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+token output 200
+bits: 1000 10 13
+token output 201
+bits:
+token output 202
+bits:
+> reconcile
+> token_state 60000
+60000 item npc_token
+IT
+ un 9000
+IM
+ tn 1
+ ti 22
+PL
+ un 1002 
+
+token row 1002
+1002 deadchar 0
+CH
+ pl 200
+MI
+ mh 9000
+ co 22
+
+pending trades:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+token output 200
+bits: 1000 10 13 12
+token output 201
+bits:
+token output 202
+bits: 9000 1002
+> death state
+kind chain 2: 1000 1001
+kind chain 4: 22 60000
+kind chain 8: 1002
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1000 10 13 12
+inherit player 201
+bits:
+inherit player 202
+bits: 9000 1002
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> drop 60000
+10:0::0::drop_item: Npc_token~[b000] from Plain~[9000] to Plain~[9000]
+13:0::0::Token Npc_token~[b000] moved from <no subkind>~[1000] (Player~[200]) to Plain~[9000] (Player~[202])
+13:0::0::Player~[202] got npc token Npc_token~[b000]
+13:0::0::   swearing Ni~[1002], ni
+1000:0::0::Dropped.
+13:0::0::Melting token units for Npc_token~[b000].
+12:0::0::Ni~[1002] melted in Plain~[9000].
+10:0::0::[1002] holds unit [1002] which is deadchar, player(unit) = 0, owner = 9000
+> readlog 10
+log 10:
+> readlog 12
+log 12:
+> export state
+export entity 22 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+22 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 10 13 12
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 202 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 9000 1002
+202 player pl_npc
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 60000 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li drop 60000
+ ar 60000 0 0 0 0 0 0 0
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1002 char 1 player 0 magic 0 misc 1 skill 0 temp 1 order 0
+here:
+1002 deadchar 0
+CH
+ pl 200
+MI
+ mh 9000
+ co 22
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+raw item 60000 1
+raw item 22 1
+9000 loc plain
+il	60000 1 \
+	22 1
+LI
+ wh 8000
+ hl 1000 
+
+export entity 60000 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units: 1002
+output:
+60000 item npc_token
+IT
+ un 9000
+IM
+ tn 1
+ ti 22
+PL
+ un 1002 
+
+stderr:
+
+exit 0
+stdout:
+section N06a refusal borrows existing output cache and preserves row and queue
+> lore_root
+> entity 10 4 0
+> field 1001 lord 201
+> emit 1000 7
+> life flush
+> life rename log/200 held
+> acceptance check 1000 10 1001 3
+acceptance 0
+> life flush
+> life path log/200
+path log/200 missing
+> readfile held
+file bytes held 87:
+1000:0::0::routing 7  
+1000:0::0::Refused three~<no subkind> from <no subkind>~[1001].
+
+end file bytes
+> readlog 201
+log 201:
+1001:0::0::Refused by <no subkind>.
+> acceptance state 1000
+acceptance char 1000 allocated 1 list 0
+> sout state
+route 0 0 frame 0 0 0 0
+vector:
+saved vector:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 201
+
+stderr:
+warning: plural name not set for item [10]
+
+exit 0
+stdout:
+section N06a loaded discard claim reclaim NULL interrupts do not execute start
+> queue discard 10 2
+> queue claim 17
+> queue reclaim
+> queue wait day 4
+> load
+load 1
+> persist_command
+> generic_interrupt 1000
+> dump
+cmd 21 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 10 2 0 0 0 0 0 0; parse [discard] [10] [2]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 3
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> load
+load 1
+> persist_command
+> generic_interrupt 1000
+> dump
+cmd 13 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 17 0 0 0 0 0 0 0; parse [claim] [17]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> load
+load 1
+> persist_command
+> generic_interrupt 1000
+> dump
+cmd 69 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [reclaim]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li reclaim
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 0 0 touched 0 0
+orders 1000: [wait day 4]
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li reclaim
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0

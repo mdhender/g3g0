@@ -1143,6 +1143,20 @@ int main(int argc, char **argv)
    }
    else return 2;
   }
+  else if (!strcmp(op, "acceptance")) {
+   n=a=b=d=i=0;
+   sscanf(line,"%*s %31s %d %d %d %d %d",text,&n,&a,&b,&d,&i);
+   if(!strcmp(text,"check")) printf("acceptance %d\n",will_accept(n,a,b,d));
+   else if(!strcmp(text,"sup")) printf("acceptance %d\n",will_accept_sup(n,a,b,d));
+   else if(!strcmp(text,"quantity")) printf("quantity %d\n",how_many(n,a,b,d,i));
+   else if(!strcmp(text,"state")) {
+    struct entity_char *p=rp_char(n);
+    printf("acceptance char %d allocated %d list %d\n",n,p!=NULL,p && p->accept!=NULL);
+    if(p) for(i=0;i<accept_ents_len(p->accept);i++)
+     printf("acceptance row %d %d %d\n",p->accept[i]->from_who,p->accept[i]->item,p->accept[i]->qty);
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "prisoner")) {
    sscanf(line,"%*s %31s %d %d %d",text,&n,&a,&b);
    if(!strcmp(text,"take")) take_prisoner(n,a);
@@ -1745,6 +1759,9 @@ int main(int argc, char **argv)
    else return 2;
   }
   else if (!strcmp(op, "load")) printf("load %d\n", drv_load(c));
+  else if (!strcmp(op, "rawargs")) {
+   sscanf(line,"%*s %d %d %d",&c->a,&c->b,&c->c);
+  }
   else if (!strcmp(op, "callback_start")) {
    if(sscanf(line,"%*s %d",&n)==1) c->a=n;
    printf("callback start %d\n", cmd_tbl[c->cmd].start(c));

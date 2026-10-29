@@ -33308,3 +33308,607 @@ life close
 life path held
 life path log/201
 export state
+
+section N06a accept appends raw invalid negative and duplicate fields including player and prisoner
+entity 10 4 0
+field 1000 prisoner 1
+queue accept 999999 -4 -7
+load
+rawargs 999999 -4 -7
+do
+queue accept 999999 -4 -7
+load
+rawargs 999999 -4 -7
+do
+acceptance state 1000
+who 200
+queue accept 0 0 0
+load
+do
+acceptance state 200
+dump
+save 1000
+save 200
+export state
+
+section N06a finite first matching row exact depletion becomes unlimited sentinel
+entity 10 4 0
+field 1001 lord 201
+queue accept 1001 10 7
+load
+do
+queue accept 0 0 19
+load
+do
+acceptance check 1000 10 1001 3
+acceptance state 1000
+acceptance check 1000 10 1001 4
+acceptance state 1000
+acceptance check 1000 10 1001 900
+acceptance state 1000
+save 1000
+save 200
+save 201
+export state
+
+section N06a four short circuit alternatives exact unit sender before faction sender
+entity 10 4 0
+field 1001 lord 201
+queue accept 1001 10 2
+load
+do
+queue accept 201 10 11
+load
+do
+who 200
+queue accept 1001 10 5
+load
+do
+queue accept 201 10 17
+load
+do
+acceptance check 1000 10 1001 1
+acceptance state 1000
+acceptance state 200
+acceptance check 1000 10 1001 3
+acceptance state 1000
+acceptance state 200
+acceptance check 1000 10 1001 6
+acceptance state 1000
+acceptance state 200
+acceptance check 1000 10 1001 12
+acceptance state 1000
+acceptance state 200
+acceptance check 1000 10 1001 99
+readlog 200
+readlog 201
+export state
+
+section N06a wildcard item from finite and signed subtraction width
+entity 10 4 0
+queue accept 0 10 4
+load
+do
+queue accept 1001 0 6
+load
+do
+queue accept 0 0 -2
+load
+do
+acceptance sup 1000 10 777 3
+acceptance sup 1000 99 1001 5
+acceptance sup 1000 88 777 -3
+acceptance state 1000
+acceptance sup 1000 88 777 -2147483648
+acceptance state 1000
+save 1000
+
+section N06a gold same faction bypass allocate and consume nothing
+entity 1 4 0
+entity 10 4 0
+entity 1002 2 0
+field 1002 lord 200
+who 200
+queue accept 0 0 8
+load
+do
+acceptance check 1002 10 1000 7
+acceptance check 201 1 1000 999
+acceptance state 1002
+acceptance state 201
+acceptance state 200
+field 1001 lord 201
+who 1000
+queue accept 0 0 9
+load
+do
+acceptance check 1000 1 1001 99
+acceptance check 1000 10 1002 99
+acceptance state 1000
+export state
+
+section N06a garrison control precedes matching acceptance rows and own faction bypass
+entity 10 4 0
+entity 9000 3 3
+entity 9300 3 32
+entity 1002 2 64
+field 1001 lord 201
+field 1002 lord 201
+field 1002 castle 9300
+link 9000 9300
+link 9300 1000
+link 9000 1002
+who 1002
+queue accept 0 0 9
+load
+do
+acceptance check 1002 10 1000 3
+acceptance state 1002
+link 9300 1001
+link 9000 1000
+acceptance check 1002 10 1000 3
+acceptance state 1002
+acceptance check 1002 10 1001 3
+acceptance state 1002
+readlog 200
+readlog 201
+export state
+
+section N06a missing acceptance record refusal does not allocate character
+entity 10 4 0
+entity 1002 2 0
+field 1001 lord 201
+acceptance sup 1002 10 1000 1
+acceptance state 1002
+acceptance check 1000 10 1001 1
+acceptance state 201
+acceptance state 1000
+readlog 200
+readlog 201
+export state
+
+section N06a quantity missing before have left and asymmetric minimum all sentinel
+entity 10 4 0
+entity 11 4 0
+inventory 1001 10 17
+acceptance quantity 1000 1001 11 -2 -9
+acceptance quantity 1000 1001 10 0 17
+acceptance quantity 1000 1001 10 99 18
+acceptance quantity 1000 1001 10 5 3
+acceptance quantity 1000 1001 10 13 7
+acceptance quantity 1000 1001 10 0 9
+acceptance quantity 1000 1001 10 99 -4
+acceptance quantity 1000 1001 10 0 -4
+save 1001
+readlog 200
+
+section N06a invalid negative quantity asserts rather than clamp
+entity 10 4 0
+inventory 1000 10 17
+acceptance quantity 1000 1000 10 -1 2
+
+section N06a invalid quantity signed C int subtraction wraps before min
+entity 10 4 0
+inventory 1000 10 2147483647
+acceptance quantity 1000 1000 10 7 -1
+
+section N06a discard validates item then inventory then quantity before real consumption
+entity 10 4 0
+inventory 1000 10 17
+queue discard 1001 -9
+load
+do
+queue drop 1 -9
+load
+do
+queue discard 10 99 17
+load
+do
+queue discard 10 13 7
+load
+do
+dump
+save 1000
+queue drop 10 0 2
+load
+do
+save 1000
+readlog 200
+export state
+
+section N06a drop unique goes through province and real ownership log
+entity 10000 3 50
+entity 9000 3 3
+entity 9001 3 14
+link 10000 9000
+link 9000 9001
+link 9001 1000
+entity 7000 4 42
+field 7000 unique 1000
+inventory 1000 7000 1
+queue drop 7000
+load
+do
+dump
+save 1000
+save 9000
+death state
+readlog 200
+readlog 10
+export state
+
+section N06a claim region zero equality blocks before correction
+entity 1 4 0
+inventory 200 1 41
+queue claim 23
+load
+do
+dump
+save 200
+readlog 200
+readlog 10
+
+section N06a claim three realms rejects nested locations but underworld is allowed
+entity 1 4 0
+inventory 200 1 41
+entity 8000 3 50
+entity 8001 3 50
+entity 8002 3 50
+entity 8003 3 50
+entity 9000 3 3
+entity 9100 3 14
+link 8000 9000
+link 9000 9100
+link 9100 1000
+set cloud_region 8000
+set hades_region 8001
+set faery_region 8002
+set under_region 8003
+queue claim 23
+load
+do
+link 8001 9000
+queue claim 23
+load
+do
+link 8002 9000
+queue claim 23
+load
+do
+link 8003 9000
+queue claim 23
+load
+do
+dump
+readlog 200
+readlog 10
+export state
+
+section N06a claim correction uses local arguments logs before message and retains saved raw args
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+entity 1 4 0
+entity 10 4 0
+inventory 200 1 41
+inventory 200 10 17
+queue claim 23
+load
+do
+dump
+save 1000
+queue claim 10
+load
+do
+dump
+queue claim 1001 0
+load
+do
+queue claim 11 2
+load
+do
+queue claim 1 99 11
+load
+do
+save 1000
+save 200
+readlog 10
+readlog 200
+export state
+
+section N06a claim unique uses shared acquisition with lore and mint aftermath
+lore_root
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+entity 7000 4 42
+field 7000 unique 200
+inventory 200 7000 1
+queue claim 7000
+load
+do
+dump
+death state
+readlog 200
+save 200
+save 1000
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
+
+section N06a reclaim default broadcasts then melts real noble without mate inheritance
+set gm 200
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+link 9000 1000
+link 1000 1001
+entity 10 4 0
+inventory 1000 10 17
+name 1000 Gone
+queue reclaim
+queue wait time 9
+load
+do
+death state
+inherit state
+stack_probe state
+save 1000
+save 1001
+save 9000
+pstate 200
+readlog 200
+readlog 12
+export state
+
+section N06a reclaim empty text defaults and custom text uses only first parsed field
+set gm 200
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+link 9000 1000
+link 9000 1001
+queue reclaim ""
+load
+do
+who 1001
+queue reclaim "fades into mist." ignored
+load
+do
+death state
+readlog 200
+readlog 12
+export state
+
+section N06a reclaim melt bypasses known survival and transcendence with real interruption
+set gm 200
+entity 10000 3 50
+entity 9000 3 3
+link 10000 9000
+link 9000 1000
+link 9000 1001
+entity 611 5 43
+entity 911 5 43
+learn 1000 611 2 21
+learn 1000 911 2 9
+field 1000 health -9
+field 1000 sick 1
+field 1000 magician 1
+queue reclaim "vanishes."
+queue wait day 9
+load
+do
+death state
+save 1000
+readlog 200
+readlog 12
+pstate 200
+export state
+
+section N06a queued accept discard claim reclaim actual scheduler and NULL interruption
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+link 9000 1001
+entity 1 4 0
+entity 10 4 0
+inventory 200 1 41
+inventory 1000 10 17
+orders 200 1000 accept 0 0 9
+orders 200 1000 discard 10 13 7
+orders 200 1000 claim 5
+orders 200 1000 reclaim "leaves."
+orders 200 1001 wait day 3
+resolve_wait
+initial
+day 1
+day 2
+day 3
+death state
+inherit state
+stack_probe state
+readlog 200
+readlog 10
+readlog 12
+export state
+
+section N06a loaded accept genuine NULL interrupt retains next wait
+queue accept 0 0 9
+queue wait day 4
+load
+persist_command
+generic_interrupt 1000
+dump
+pstate 200
+acceptance state 1000
+export state
+
+section N06a independent no command inventory and RNG control
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+newitem 200 42
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+export state
+
+section N06a finite signed allowance wraps rather than widening subtraction
+queue accept 0 0 2147483647
+load
+do
+acceptance sup 1000 10 1001 -1
+acceptance state 1000
+acceptance sup 1000 10 1001 1
+acceptance state 1000
+save 1000
+
+section N06a invalid discard positive inventory negative requested quantity asserts
+entity 10 4 0
+inventory 1000 10 17
+queue discard 10 -3 2
+load
+rawargs 10 -3 2
+do
+
+section N06a invalid claim negative corrected quantity reaches real quantity assertion
+entity 8000 3 50
+entity 9000 3 3
+entity 1 4 0
+inventory 200 1 41
+link 8000 9000
+link 9000 1000
+queue claim -3
+load
+rawargs -3 0 0
+do
+
+section N06a claim empty correction and missing gold occur in original order
+entity 8000 3 50
+entity 9000 3 3
+entity 1 4 0
+entity 10 4 0
+link 8000 9000
+link 9000 1000
+queue claim
+load
+do
+dump
+queue claim 10
+load
+do
+dump
+readlog 200
+readlog 10
+export state
+
+section N06a claim token from faction reuses real token creation shared mint and lore
+lore_root
+set gm 200
+master 0
+set turn 1
+set day 8
+set indep 202
+entity 202 1 52
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+entity 22 4 0
+name 22 Wolf
+field 22 capturable 1
+entity 60000 4 63
+name 60000 Wolf token
+field 60000 unique 200
+field 60000 token_num 4
+field 60000 token_ni 22
+field 60000 lore 22
+inventory 200 60000 1
+queue claim 60000
+load
+do
+token_state 60000
+lore_state 200
+save 1000
+save 200
+entity_rolls 1000 7 9000
+usemeta legacy 1 100000
+newitem 1000 42
+readlog 200
+export state
+
+section N06a discard token defers real melt until reconciliation with cookie return
+set gm 200
+set indep 202
+entity 202 1 52
+entity 8000 3 50
+entity 9000 3 3
+link 8000 9000
+link 9000 1000
+entity 22 4 0
+entity 60000 4 63
+field 60000 unique 1000
+field 60000 token_num 3
+field 60000 token_ni 22
+inventory 1000 60000 1
+entity 1002 2 54
+field 1002 lord 200
+field 1002 npc_home 9000
+field 1002 npc_cookie 22
+field 60000 unit 1002
+link 9000 1002
+orders 200 1002 wait day 9
+queue drop 60000
+load
+do
+token_state 60000
+reconcile
+token_state 60000
+death state
+inherit state
+readlog 200
+readlog 10
+readlog 12
+export state
+
+section N06a refusal borrows existing output cache and preserves row and queue
+lore_root
+entity 10 4 0
+field 1001 lord 201
+emit 1000 7
+life flush
+life rename log/200 held
+acceptance check 1000 10 1001 3
+life flush
+life path log/200
+readfile held
+readlog 201
+acceptance state 1000
+sout state
+export state
+
+section N06a loaded discard claim reclaim NULL interrupts do not execute start
+queue discard 10 2
+queue claim 17
+queue reclaim
+queue wait day 4
+load
+persist_command
+generic_interrupt 1000
+dump
+load
+persist_command
+generic_interrupt 1000
+dump
+load
+persist_command
+generic_interrupt 1000
+dump
+save 1000
+pstate 200
+export state

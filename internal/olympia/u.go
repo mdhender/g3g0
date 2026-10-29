@@ -240,6 +240,18 @@ func (w *world) charReclaim(who int) {
 	w.killChar(who, 0)
 }
 
+// Complete u.c:265–278. Broadcast before the shared reclamation lifecycle;
+// meltMe suppresses survival and transcendence in the real killChar owner.
+func (w *world) vReclaim(c *command) int {
+	what := "disperses."
+	if c.parse.Len() > 1 && c.parse[1] != "" {
+		what = c.parse[1]
+	}
+	w.commandOut(w.subloc(int(c.who)), "%s %s", w.boxName(int(c.who)), what)
+	w.charReclaim(int(c.who))
+	return 1
+}
+
 func (w *world) deadCharBody(pl, who int) {
 	grave := w.province(who)
 	if w.subkind(grave) == subOcean {

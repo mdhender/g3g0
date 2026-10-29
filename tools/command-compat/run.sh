@@ -120,7 +120,7 @@ functions = {
             'destroy_unique_item', 'add_item', 'sub_item', 'set_known', 'gen_item',
             'consume_item', 'move_item', 'drop_item',
             'stackmate_inheritor', 'take_unit_items', 'put_back_cookie',
-            'survive_fatal', 'char_reclaim', 'dead_char_body', 'kill_char', 'hack_unique_item',
+            'survive_fatal', 'char_reclaim', 'v_reclaim', 'dead_char_body', 'kill_char', 'hack_unique_item',
             'kill_stack_ocean', 'sink_ship', 'building_collapses',
             'get_rid_of_collapsed_mine', 'add_structure_damage', 'count_loc_char_item',
             'can_pay', 'charge', 'stack_has_item', 'has_use_key', 'stack_has_use_key',
@@ -144,7 +144,7 @@ functions = {
               'list_market_items', 'market_report'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait', 'next_np_turn', 'print_hiring_status', 'print_unformed',
-             'form_new_noble', 'v_form', 'd_form'],
+             'form_new_noble', 'v_form', 'd_form', 'v_accept', 'will_accept_sup', 'will_accept', 'how_many'],
     'produce.c': ['init_collect_list', 'replenish', 'mine_production', 'location_production'],
     'perm.c': ['is_hostile', 'is_defend', 'clear_all_att', 'rp_admit', 'p_admit', 'will_admit',
                'v_admit', 'set_att', 'v_set_att', 'v_hostile', 'v_defend', 'v_neutral', 'v_att_clear',
@@ -184,7 +184,8 @@ functions = {
              'gm_show_locs_visited', 'gm_loyalty_stats', 'region_occupy_comp', 'gm_land_stats',
              'wealth_list_comp', 'gm_faction_wealth', 'nobles_list_comp', 'gm_nobles_list',
              'gm_player_details', 'list_all_notices', 'list_all_items', 'gm_report'],
-    'c2.c': ['v_stop', 'v_format', 'v_notab', 'open_times', 'times_masthead', 'close_times'],
+    'c2.c': ['v_stop', 'v_format', 'v_notab', 'open_times', 'times_masthead', 'close_times',
+             'v_discard', 'v_claim'],
     'immed.c': ['v_xyzzy', 'v_plugh'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts', 'add_contact', 'v_contact', 'cloak_lord'],
     'main.c': ['write_totimes', 'write_email', 'list_a_player', 'write_player_list',
@@ -733,7 +734,7 @@ esac
  "${HERE}/driver.c" "${WORK}/helpers.c" "${WORK}/stubs.c" "${WORK}/hades-rng.c" "${WORK}/faery-rng.c" "${WORK}/npc-rng.c" \
  "${WORK}/coverage-command.c" "${WORK}/state-export-wrapper.c" \
  olympia/{code,glob,z,sout}.c "${WORK}/io-wrapper.c" \
- lib/{checked_alloc,ilist,exit_views,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents,admits,trades,req_ents}.c \
+ lib/{checked_alloc,ilist,exit_views,rng,rnd,cstrings,item_ents,skill_ents,orders,wait_args,flag_ents,admits,trades,req_ents,accept_ents}.c \
  -o "${WORK}/driver") >"${WORK}/build.log" 2>&1 || die "C build failed: ${WORK}/build.log"
 sections=$(grep -c '^section ' "${CASES}")
 section_names=() # Bash 3 (Darwin) has no mapfile.
@@ -749,6 +750,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N06a '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N06a invalid '*) expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N06a status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N05 '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

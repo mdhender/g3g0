@@ -10,6 +10,60 @@ import (
 	"github.com/mdhender/g3g0/internal/clib"
 )
 
+// Complete c2.c:11–43; validation precedes quantity assertions and dropItem
+// owns consumption, unique ownership, ocean routing and token side effects.
+func (w *world) vDiscard(c *command) int {
+	who, item := int(c.who), int(c.a)
+	if w.kind(item) != tItem {
+		w.commandOut(who, "%s is not an item.", w.boxCode(item))
+		return 0
+	}
+	if w.hasItem(who, item) < 1 {
+		w.commandOut(who, "%s does not have any %s.", w.boxName(who), w.boxCode(item))
+		return 0
+	}
+	qty := w.howMany(who, who, item, int(c.b), int(c.c))
+	if qty <= 0 {
+		return 0
+	}
+	ret := w.dropItem(who, item, qty)
+	assert(ret, "olympia/c2.c", 38, "ret")
+	w.commandOut(who, "Dropped.")
+	return 1
+}
+
+// Complete c2.c:761–819. The common mistake correction changes local values,
+// not the saved command or parse fields. Zero realm IDs still compare equal.
+func (w *world) vClaim(c *command) int {
+	who, item, qty := int(c.who), int(c.a), int(c.b)
+	pl := w.player(who)
+	if w.region(who) == int(w.cloudRegion) || w.region(who) == int(w.hadesRegion) || w.region(who) == int(w.faeryRegion) {
+		w.commandOut(who, "CLAIM may not be used in the Cloudlands, Hades or Faery.")
+		return 0
+	}
+	if c.parse.Len()-1 < 2 && (w.kind(item) != tItem || w.hasItem(pl, item) < 1) && qty == 0 {
+		w.logWrite(10, "correcting CLAIM for %s:  %s", boxCodeLess(w.player(who)), clib.Str(c.line))
+		w.commandOut(who, "(assuming you meant CLAIM %d %d)", itemGold, item)
+		qty, item = item, itemGold
+	}
+	if w.kind(item) != tItem {
+		w.commandOut(who, "%s is not an item.", w.boxCode(item))
+		return 0
+	}
+	if w.hasItem(pl, item) < 1 {
+		w.commandOut(who, "No %s for you to claim.", w.boxCode(item))
+		return 0
+	}
+	qty = w.howMany(who, pl, item, qty, int(c.c))
+	if qty <= 0 {
+		return 0
+	}
+	ret := w.moveItem(pl, who, item, qty)
+	assert(ret, "olympia/c2.c", 815, "ret")
+	w.commandOut(who, "Claimed %s.", w.justNameQty(item, qty))
+	return 1
+}
+
 // Minimal command handlers, ported whole from c2.c. In particular these
 // report settings persist on the player and control report formatting.
 func (w *world) vFormat(c *command) int {

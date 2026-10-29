@@ -5,6 +5,72 @@ package olympia
 
 import "fmt"
 
+// Complete c1.c:529–651. ACCEPT deliberately appends unvalidated raw fields.
+func (w *world) vAccept(c *command) int {
+	p := w.pChar(int(c.who))
+	p.accept.Append(&acceptEnt{fromWho: c.a, item: c.b, qty: c.c})
+	return 1
+}
+
+func (w *world) willAcceptSup(who, item, from, qty int) bool {
+	if p := w.rpChar(who); p != nil {
+		for _, e := range p.accept {
+			if (e.item == int32(item) || e.item == 0) &&
+				(e.fromWho == int32(from) || e.fromWho == 0) &&
+				(e.qty >= int32(qty) || e.qty == 0) {
+				// Exactly consuming a finite allowance leaves C's unlimited zero
+				// sentinel in place; do not remove or mark the row exhausted.
+				if e.qty != 0 {
+					e.qty -= int32(qty)
+				}
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func (w *world) willAccept(who, item, from, qty int) bool {
+	if item == itemGold || w.player(who) == w.player(from) {
+		return true
+	}
+	if w.subkind(who) == subGarrison {
+		if w.mayRuleHere(from, who) {
+			return true
+		}
+		w.commandOut(from, "%s is not under your control.", w.boxName(who))
+		return false
+	}
+	if w.willAcceptSup(who, item, from, qty) ||
+		w.willAcceptSup(w.player(who), item, from, qty) ||
+		w.willAcceptSup(who, item, w.player(from), qty) ||
+		w.willAcceptSup(w.player(who), item, w.player(from), qty) {
+		return true
+	}
+	w.commandOut(who, "Refused %s from %s.", w.justNameQty(item, qty), w.boxName(from))
+	w.commandOut(from, "Refused by %s.", w.justName(who))
+	return false
+}
+
+func (w *world) howMany(who, fromWho, item, qty, haveLeft int) int {
+	numHas := w.hasItem(fromWho, item)
+	if numHas <= 0 {
+		w.commandOut(who, "%s has no %s.", w.justName(fromWho), w.justName(item))
+		return 0
+	}
+	if numHas <= int32(haveLeft) {
+		w.commandOut(who, "%s has only %s.", w.justName(fromWho), w.justNameQty(item, int(numHas)))
+		return 0
+	}
+	q := int32(qty)
+	if q == 0 {
+		q = numHas
+	}
+	q = min(numHas-int32(haveLeft), q)
+	assert(q > 0, "olympia/c1.c", 648, "qty > 0")
+	return int(q)
+}
+
 // Complete c1.c:947–974. Ownership initializes the new noble's queued command
 // before joinStack moves it beneath the forming noble; do not use newChar,
 // which allocates a different entity and has different initialization.

@@ -1484,6 +1484,26 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			default:
 				t.Fatalf("unknown death %s", action)
 			}
+		case "acceptance":
+			switch action := args.word(); action {
+			case "check":
+				fmt.Fprintf(&stdout, "acceptance %d\n", b2i(w.willAccept(args.num(t), args.num(t), args.num(t), args.num(t))))
+			case "sup":
+				fmt.Fprintf(&stdout, "acceptance %d\n", b2i(w.willAcceptSup(args.num(t), args.num(t), args.num(t), args.num(t))))
+			case "quantity":
+				fmt.Fprintf(&stdout, "quantity %d\n", w.howMany(args.num(t), args.num(t), args.num(t), args.num(t), args.num(t)))
+			case "state":
+				n := args.num(t)
+				p := w.rpChar(n)
+				fmt.Fprintf(&stdout, "acceptance char %d allocated %d list %d\n", n, b2i(p != nil), b2i(p != nil && p.accept != nil))
+				if p != nil {
+					for _, e := range p.accept {
+						fmt.Fprintf(&stdout, "acceptance row %d %d %d\n", e.fromWho, e.item, e.qty)
+					}
+				}
+			default:
+				t.Fatalf("unknown acceptance %s", action)
+			}
 		case "prisoner":
 			switch action := args.word(); action {
 			case "take":
@@ -2438,6 +2458,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			}
 		case "load":
 			fmt.Fprintf(&stdout, "load %d\n", b2i(w.loadCommand(c)))
+		case "rawargs":
+			c.a, c.b, c.c = int32(args.num(t)), int32(args.num(t)), int32(args.num(t))
 		case "callback_start":
 			if args.rest != "" {
 				c.a = int32(args.num(t))
