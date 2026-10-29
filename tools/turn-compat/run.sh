@@ -9,7 +9,7 @@ PINNED_REV=f73e48118805ffe8ff5e763bfa4f20ae00c3a705
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 WORK="${WORK:-${ROOT}/tmp/turn-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
-full=0 record=0 command_coverage=0 use_coverage=0 phase_coverage=0 state_export=0
+full=0 record=0 command_coverage=0 use_coverage=0 phase_coverage=0 state_export=0 dump_integration=0
 die() { echo "error: $*" >&2; exit 2; }
 for arg in "$@"; do
 	case "$arg" in
@@ -19,7 +19,8 @@ for arg in "$@"; do
 	--use-coverage) use_coverage=1 ;;
 	--phase-coverage) phase_coverage=1 ;;
 	--state-export) state_export=1 ;;
-	*) die "usage: $0 [--full [--record] [--command-coverage] [--use-coverage] [--phase-coverage] [--state-export]]" ;;
+	--dump-integration) dump_integration=1 ;;
+	*) die "usage: $0 [--full [--record] [--command-coverage] [--use-coverage] [--phase-coverage] [--state-export] [--dump-integration]]" ;;
 	esac
 done
 [ "$record" = 0 ] || [ "$full" = 1 ] || die "--record requires --full and two real pinned C runs"
@@ -27,6 +28,7 @@ done
 [ "$use_coverage" = 0 ] || [ "$full" = 1 ] || die "--use-coverage requires --full"
 [ "$phase_coverage" = 0 ] || [ "$full" = 1 ] || die "--phase-coverage requires --full"
 [ "$state_export" = 0 ] || [ "$full" = 1 ] || die "--state-export requires --full"
+[ "$dump_integration" = 0 ] || [ "$full" = 1 ] || die "--dump-integration requires --full"
 mkdir -p "${WORK}/bin"
 WORK="$(cd "${WORK}" && pwd -P)"
 (cd "${ROOT}" && go build -o "${WORK}/bin/compare" ./tools/turn-compat &&
@@ -161,7 +163,7 @@ else
 fi
 [ "$status" = 0 ] || exit "$status"
 
-for family in command use phase state; do
+for family in command use phase state integration; do
 	flag=--coverage
 	if [ "$family" = command ]; then
 		[ "$command_coverage" = 1 ] || continue
@@ -171,19 +173,35 @@ for family in command use phase state; do
 	elif [ "$family" = phase ]; then
 		[ "$phase_coverage" = 1 ] || continue
 		flag=--phase-coverage
-	else
+	elif [ "$family" = state ]; then
 		[ "$state_export" = 1 ] || continue
 		flag=--state-export
+	else
+		[ "$dump_integration" = 1 ] || continue
 	fi
 	cases=(load load-save turn turn-nosave duplicate missing directory blocked saved-system report)
-	if [ "$family" = state ]; then
-		cases+=(saved-directory seed times)
+	if [ "$family" = state ] || [ "$family" = integration ]; then
 		# Real nonempty factions/topology from the unchanged pinned scenario.
 		# This exercises export at each save boundary, not just an empty root.
 		mkdir -p "${WORK}/state-fixtures"
 		git -C "${G3_REPO}" archive "$PINNED_REV" tests/olympia/fixtures \
-			tests/olympia/regress/phase-month-open/scenario.patch | tar -x -C "${WORK}/state-fixtures"
+			tests/olympia/regress/phase-month-open/scenario.patch \
+			tests/olympia/regress/phase-day0/scenario.patch | tar -x -C "${WORK}/state-fixtures"
 		. "${WORK}/state-fixtures/tests/olympia/fixtures/scenario.sh"
+		. "${WORK}/state-fixtures/tests/olympia/fixtures/coverage.sh"
+		[ "$family" != state ] || cases+=(saved-directory seed times)
+	fi
+	if [ "$family" = integration ]; then
+		# All sixteen enabled/NULL combinations, and every shared-path subset
+		# with two or more writers. Reverse argv order must not change main's
+		# command -> USE -> phase -> check/save -> export -> Times order.
+		cases=(load load-save turn-nosave inside overwrite repeat all-fail save-fail times-fail)
+		for mask in {0..15}; do cases+=(subset-$mask); done
+		for mask in 3 5 6 7 9 10 11 12 13 14 15; do cases+=(shared-$mask); done
+		for writer in {0..3}; do
+			for collision in system seed report log saved times press rumor; do cases+=($collision-$writer); done
+			cases+=(failure-$writer empty-$writer missing-$writer dash-$writer)
+		done
 	fi
 	if [ "$family" = phase ]; then
 		cases+=(command-combined use-combined all-combined command-shared use-shared all-shared command-failure use-failure prior-failures dash-path parse-missing parse-empty parse-equals)
@@ -203,8 +221,10 @@ for family in command use phase state; do
 		base="${WORK}/${family}-coverage/${case_name}"
 		rm -rf "${base}"
 		mkdir -p "${base}/input"
-		if [ "$family" = state ]; then
-			scenario_unpack "${WORK}/state-fixtures/tests/olympia/regress/phase-month-open" "${base}/input" || die "cannot unpack phase-month-open"
+		if [ "$family" = state ] || [ "$family" = integration ]; then
+			fixture=phase-month-open
+			[ "$family" != integration ] || fixture=phase-day0
+			scenario_unpack "${WORK}/state-fixtures/tests/olympia/regress/${fixture}" "${base}/input" || die "cannot unpack ${fixture}"
 		else
 			cp -a "${WORK}/input/." "${base}/input/"
 		fi
@@ -260,7 +280,7 @@ for family in command use phase state; do
 		# They establish no flag-free state/RNG/report/stream effect, not just
 		# agreement between two implementations that both changed their state.
 		case "$case_name" in
-		load|load-save|turn|turn-nosave|shared-checks|hide)
+		load|load-save|turn|turn-nosave|shared-checks|hide|subset-*|inside)
 			run_c_engine "${C_BIN}" "${base}/input" "${base}/plain-c"
 			run_c_engine "${C_BIN}" "${base}/input" "${base}/plain-again"
 			[ "$(cat "${base}/plain-c/status")" = 0 ] || die "${case_name}: flag-free C failed"
@@ -273,6 +293,51 @@ for family in command use phase state; do
 		esac
 		case "$case_name" in shared-checks|hide) ARGS+=(--coverage commands.tsv) ;; esac
 		[ "$case_name" != duplicate ] || ARGS+=("$flag" ignored.tsv)
+		if [ "$family" = integration ]; then
+			flags=(--coverage --use-coverage --phase-coverage --state-export)
+			paths=(commands.tsv use.tsv phase.tsv state.json)
+			mask=15
+			case "$case_name" in
+			subset-*) mask=${case_name#subset-} ;;
+			shared-*)
+				mask=${case_name#shared-}
+				paths=(shared.dump shared.dump shared.dump shared.dump)
+				;;
+			inside) paths=(lib/commands.tsv lib/use.tsv lib/phase.tsv lib/state.json) ;;
+			overwrite)
+				for path in "${paths[@]}"; do printf 'old bytes that must be truncated\n' >"${base}/input/$path"; done
+				;;
+			repeat)
+				for flag in "${flags[@]}"; do ARGS+=("$flag" missing/ignored "$flag" ignored.dump); done
+				;;
+			all-fail) paths=(missing/command blocked/use lib/log lib/fact); printf 'blocked\n' >"${base}/input/blocked" ;;
+			save-fail) rm "${base}/input/lib/randseed"; mkdir "${base}/input/lib/randseed"; expected_status=1 ;;
+			times-fail) rm "${base}/input/lib/times_0"; mkdir "${base}/input/lib/times_0"; expected_status=1 ;;
+			*-*)
+				writer=${case_name##*-}
+				case "${case_name%-*}" in
+				system) paths[$writer]=lib/system ;;
+				seed) paths[$writer]=lib/randseed ;;
+				report) paths[$writer]=lib/players ;;
+				log) paths[$writer]=lib/log/300 ;;
+				saved) paths[$writer]=lib/save/1/300 ;;
+				times) paths[$writer]=lib/times_0 ;;
+				press) paths[$writer]=lib/times_press ;;
+				rumor) paths[$writer]=lib/times_rumor ;;
+				failure) paths[$writer]=missing/failed.dump ;;
+				dash) paths[$writer]=-dump ;;
+				empty|missing) mask=$((15 ^ (1 << writer))); expected_status=1 ;;
+				esac
+				;;
+			esac
+			for writer in 3 2 1 0; do
+				[ "$((mask & (1 << writer)))" = 0 ] || ARGS+=("${flags[$writer]}" "${paths[$writer]}")
+			done
+			case "$case_name" in
+			empty-*) ARGS+=("${flags[${case_name##*-}]}" "") ;;
+			missing-*) ARGS+=("${flags[${case_name##*-}]}") ;;
+			esac
+		else
 		case "$case_name" in
 		parse-missing) ARGS+=("$flag"); expected_status=1 ;;
 		parse-empty) ARGS+=("$flag" ""); expected_status=1 ;;
@@ -281,6 +346,7 @@ for family in command use phase state; do
 		parse-equals) ARGS+=("$flag=$path") ;;
 		*) ARGS+=("$flag" "$path") ;;
 		esac
+		fi
 		run_c_engine "${C_BIN}" "${base}/input" "${base}/c"
 		run_c_engine "${C_BIN}" "${base}/input" "${base}/c-again"
 		[ "$(cat "${base}/c/status")" = "$expected_status" ] || die "${case_name}: unexpected coverage C status"
@@ -289,6 +355,24 @@ for family in command use phase state; do
 		run_engine "${GO_BIN}" "${base}/input" "${base}/go"
 		compare_captures "${base}/c" "${base}/go" >"${base}/diff.txt" || die "${case_name}: coverage Go differs; see ${base}"
 		printf '%s: C/C/Go status %s, exact streams and all entries/types/modes/bytes\n' "$case_name" "$expected_status" | tee -a "${WORK}/${family}-coverage.txt"
+		if [ "$family" = integration ]; then
+			# Keep complete manifests and the four raw reference dumps, not a
+			# parsed projection. Cell checks only guard against vacuous inputs.
+			"${COMPARE}" --manifest "${base}/c" >>"${WORK}/integration-coverage.txt"
+			if [ "$case_name" = subset-15 ]; then
+				use_cells "${base}/c/cwd/use.tsv" item:7:ok || die "integration did not reach real drum USE"
+				phase_cells "${base}/c/cwd/phase.tsv" init_savage_attacks:spawn match_all_trades:trade || die "integration phases did not act"
+				awk -F '\t' '$1 == "use" && $4 > 0 { found=1 } END { exit !found }' "${base}/c/cwd/commands.tsv" || die "integration command counter is empty"
+				python3 - "${base}/c/cwd/state.json" <<'PY'
+import json, sys
+with open(sys.argv[1]) as f:
+    factions = json.load(f)["factions"]
+assert len(factions) > 1 and len({len(f["units"]) for f in factions}) > 1
+assert any(f["units"] and f["locations"] for f in factions)
+PY
+				for path in "${paths[@]}"; do cp "${base}/c/cwd/$path" "${WORK}/integration-$path"; done
+			fi
+		fi
 		if [ "$family" = phase ] && [ "$case_name" = turn ]; then
 			# Keep the complete ordinary-turn TSV as evidence, not just selected
 			# totals. Expected bytes remain the two unchanged full C engines.
@@ -319,12 +403,18 @@ for family in command use phase state; do
 			;;
 		esac
 		case "$case_name" in
-		load|load-save|turn|turn-nosave|shared-checks|hide)
+		load|load-save|turn|turn-nosave|shared-checks|hide|subset-*|inside)
+			if [ "$family" = integration ]; then
+				for writer in 0 1 2 3; do
+					[ "$((mask & (1 << writer)))" = 0 ] || rm "${base}/c/cwd/${paths[$writer]}" "${base}/go/cwd/${paths[$writer]}"
+				done
+			else
 			printf '%s: C dump ' "$case_name" >>"${WORK}/${family}-coverage.txt"
 			shasum -a 256 "${base}/c/cwd/cov.tsv" | cut -d' ' -f1 >>"${WORK}/${family}-coverage.txt"
 			# Only after strict C/C/Go byte comparison, remove the requested
 			# dumps from disposable captures to check flag-free aftermath.
 			rm "${base}/c/cwd/cov.tsv" "${base}/go/cwd/cov.tsv"
+			fi
 			compare_captures "${base}/plain-c" "${base}/c" >"${base}/effect-c.diff" || die "${case_name}: C coverage changed other observations"
 			compare_captures "${base}/plain-c" "${base}/go" >"${base}/effect-go.diff" || die "${case_name}: Go coverage changed other observations"
 			echo "${case_name}: flag-free aftermath identical except requested dump" | tee -a "${WORK}/${family}-coverage.txt"

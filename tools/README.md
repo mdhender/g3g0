@@ -6,6 +6,87 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Four-dump integration harness closure (#177)
+
+**0.115.1-alpha**, immutable C **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**.
+Harness only: `turn-compat/run.sh --full --dump-integration` extends the
+existing real-engine family loop/options, not gameplay or a parallel framework.
+It adds **84** strict unchanged C/C/Go controls: all **16** flag subsets,
+all **11** multi-writer shared-path subsets, load/turn/save/no-save boundaries,
+inside/outside-lib destinations, existing-file overwrite, repeated last-wins
+options, per-writer database/seed/report/log/saved-report/Times collisions,
+individual/all failed opens and CLI empty/missing/dash paths. **74** exit 0,
+**10** exit 1; all raw streams/status/TSV/JSON and complete cwd entries/types/
+modes/bytes match. **20** additional flag-free aftermath comparisons match
+after removing only requested dumps from disposable captures, following the
+strict primary comparison. Real asymmetric input has **8 factions / 8 units**,
+actual successful drum USE and nonzero savage spawn/day-1 trade counters.
+[Complete source contracts, case matrix, dump counts/hashes and evidence](turn-compat#four-dump-integration-closure-177).
+
+The strict ordinary turn still passes **233 entries**, plus all inherited
+**13 lifecycle / 10 command / 15 USE / 23 phase / 13 export** controls.
+All **six original phase scripts** themselves pass C twice then Go, with
+pre-cleanup complete raw/cwd capture: **252 / 245 / 242 / 241 / 246 / 242**
+entries. No upstream script, fixture, expected file, pin or recording changes.
+Real negative controls reject **24** injected reference markers on actual C
+statuses **0/1**, including failed dump opens and failed seed saves, before
+status acceptance. Six real-capture mutations reject whitespace/mode changes
+as differences and missing streams/cwd or symlinks as capture errors. Three
+decisive C/C/Go failure reruns retain raw observations and full manifests.
+
+Bounded vet, fresh bounded **G3G0_FULL=1** tests and **14 relevant defaults**
+pass (rng/entity/code/helper/io/box/boxfile/check/loadsave/olympia-cli/turn-driver/
+command/move/turn; no unrelated lists-native rerun). Command oracle remains
+**1380 sections / 107214 lines / 2134398 output bytes**; the ENTIRE inherited
+input (**578307 bytes**) and output (**2134398 bytes**) retain SHA-256
+`3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` /
+`c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac`.
+Spec retains **36 pass / 89 fail / 0 error** (127s), every prior 34 retained;
+golden remains **NO**, initialization **2** at unsupported -i.
+Read-only cache integrity preserves **1212** original files, executable
+SHA-256 `151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`,
+**201 pristine worlds / 41938 input hashes**. Every compat invocation sets
+isolated G3_REPO explicitly; engines/tests use existing run_limited adapters.
+
+```sh
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue179-roundtrip" \
+  WORK="$PWD/tmp/issue177-turn" tools/turn-compat/run.sh --full \
+  --command-coverage --use-coverage --phase-coverage --state-export --dump-integration
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue177-spec" tools/olympia-spec/run.sh
+```
+
+Evidence: `tmp/issue177-{source-audit,final-integrity,vet,tests-final}.log`,
+`tmp/issue177-*-default.log`, `tmp/issue177-turn-full.log`,
+`tmp/issue177-turn/`, `tmp/issue177-negative.log`, `tmp/issue177-negative/`,
+`tmp/issue177-fixtures.log`, `tmp/issue177-fixture-captures/`,
+`tmp/issue177-spec.log`. Temporary probes/launchers/fixture exports and matching
+cwd captures are removed. No product bug or missing prerequisite was found.
+No issue/checklist edits, commits or pushes; parent owns independent acceptance
+and delivery. **Not stage exit**: the final 201-world/four-corpus/peripheral
+tier remains **#178**. Evidence is Linux amd64 only; no native Darwin/Windows,
+full-spec parity or stage 4 claim.
+
+Independent parent complete source/diff review and acceptance repeat passes:
+bounded vet, fresh bounded full-enabled tests (Olympia **1.894s**), all
+14 relevant defaults, strict **233-entry** ordinary turn, all inherited
+**13 lifecycle / 10 command / 15 USE / 23 phase / 13 export** controls and
+all **84** new integration controls (**74** status 0 / **10** status 1),
+including **20** flag-free aftermath comparisons. All four complete reference
+dumps retain the hashes above; command input/output are wholly unchanged.
+Parent independently verifies all **1212** cached originals and the accepted
+executable hash, and confirms the new option rejects missing --full with
+status **2** before running engines. Spec repeats **36 pass / 89 fail /
+0 error** (**141s**), retaining every recorded name and all six phase passes;
+golden remains NO/initialization exit 2. No first-time implementation or
+prerequisite remains hidden in this task. Logs:
+`tmp/parent177-{integrity,vet,tests,requires-full,turn-full,spec}.log`,
+`tmp/parent177-*-default.log`; raw dumps/manifests/summaries:
+`tmp/parent177-turn/`. This accepts #177 only; final stage acceptance is #178.
+
 ## Drum USE item prerequisite (#182)
 
 **0.115.0-alpha**, immutable C **f73e48118805ffe8ff5e763bfa4f20ae00c3a705**:

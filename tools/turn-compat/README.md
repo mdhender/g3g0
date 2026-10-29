@@ -16,6 +16,141 @@ tools/turn-compat/run.sh --full          # real C/C/Go world turns and lifecycle
 tools/turn-compat/run.sh --full --record # explicitly refresh C-only recordings, then compare Go
 ```
 
+## Four-dump integration closure (#177)
+
+**0.115.1-alpha**, unchanged immutable reference
+**f73e48118805ffe8ff5e763bfa4f20ae00c3a705**. This is harness work only:
+`--dump-integration` extends the existing full-engine family loop, runners,
+strict comparator and all-entry mode checks. It requires `--full`; default
+checks remain small. No engine gameplay, generic helper layer, upstream
+harness/fixture, expected byte, pin or inherited recording changes.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue179-roundtrip" \
+  WORK="$PWD/tmp/issue177-turn" tools/turn-compat/run.sh --full \
+  --command-coverage --use-coverage --phase-coverage --state-export --dump-integration
+```
+
+### Source contracts and matrix
+
+The complete original coverage.c (**453 lines / 12597 bytes**, SHA-256
+`5730dc2b64b817a6ee1a1d9c250856a400f6aaf54b6ac50251b5f37e5e5ded5a`)
+and state_export.c (**290 lines / 6496 bytes**, SHA-256
+`2f710e5ec96c810996206c87efc7908fe50f75732b28f7119237e9ef1fb8210b`)
+remain the writer definitions. All four return without opening for NULL;
+otherwise `fopen(path, "w")` truncates an existing file, or prints exactly
+`Can't write PATH!\n` and returns nonfatally. Empty writer paths therefore
+fail to open, unlike NULL. Existing unchanged command-oracle cases retain
+direct NULL/empty/repeated-write accounting, immediate suppression and byte
+escaping coverage; CLI empty/missing values instead set errflag and return 1
+before load. main.c **802–853** removes exact long options before BSD getopt,
+consumes any nonempty next argument (including dash-prefixed paths), and the
+last repeated assignment wins. An omitted option remains NULL.
+
+main.c **1024–1045** calls command → USE → phase writers, then check_db,
+optional save_db, optional save_logdir, state export, and finally Times
+masthead/close. check_db and its complete checks were read; load_db also
+checks at io.c **2906**. io.c **3045–3099** renames log into save/turn,
+renames players into that saved directory and recreates log; save_db first
+saves randseed, then routes/system/boxes/master/orders/admissions. rnd.c
+**286–325** reads the seed and exits 1 on failed seed save. c2.c **339–472**
+opens/flushes press and rumor streams early, writes times_0 late, and closes
+the original FILEs. These real owners, not a modeled lifecycle, determine
+overwrite/rename/cache behavior. All complete source-file hashes are in
+`tmp/issue177-source-audit.log`. affected.sh already treats turn-compat as a
+whole-engine/source consumer; no dependency rule or pin update is needed.
+
+The **84 new controls** use pristine original **phase-day0** input, unpacked
+from the isolated pin via original scenario_unpack. Each C reference runs
+twice deterministically **before** Go. Final enabled path assignments use
+reverse writer order to distinguish parse order from execution order.
+Bits/indexes **0/1/2/3 = command/USE/phase/state**:
+
+| Cases | Count | Contract exercised |
+|---|---:|---|
+| `subset-0` … `subset-15` | 16 | Every enabled/NULL combination, including completely flag-free |
+| `shared-3,5,6,7,9,10,11,12,13,14,15` | 11 | Every pair/triple/four-way shared destination; later actual writer wins |
+| `load`, `load-save`, `turn-nosave`, `inside` | 4 | All four at load/turn and save/no-save boundaries; destinations outside/inside lib |
+| `overwrite`, `repeat` | 2 | Existing-file truncation; each option repeated with missing/unused prior destinations, only last used |
+| `all-fail`, `save-fail`, `times-fail` | 3 | Four nonfatal open failures in writer order; fatal save stops before export; late Times failure after export |
+| `{system,seed,report,log,saved,times,press,rumor}-{0..3}` | 32 | Each writer collides with saved DB/RNG, players, log/300, save/1/300, times_0/press/rumor |
+| `{failure,empty,missing,dash}-{0..3}` | 16 | One failed writer with three successful writers; CLI empty/missing values; literal dash-prefixed destinations |
+
+All **84** match C/C/Go status, unfiltered streams, **whole raw TSV/JSON**,
+and every cwd entry/type/mode/empty directory/regular byte. **74** exit 0;
+**10** exit 1 (eight parse failures plus seed-save and late Times failures).
+Complete C manifests, including raw stream/status hashes, are retained in
+`tmp/issue177-turn/integration-coverage.txt`. No exclusions or normalization.
+For **20** controls (all subsets and the four load/save/inside controls),
+flag-free C also repeats before flag-free Go. Only after the strict primary
+comparison are requested dumps removed from disposable captures; every
+remaining state/RNG/report/file/stream observation equals flag-free C.
+
+The combined case is not an empty-root/zero-counter comparison: **8 regular
+factions / 8 units / 8 faction-location records**, unit distribution
+**1,0,1,1,2,1,1,1**; actual command `use` is **0/0/1/0**, actual USE item
+**7/drum ok=1**, savage spawn and day-1 trade both **ran=1/acted=1**.
+Supplemental cell/JSON assertions guard against vacuous input; they do not
+replace the primary complete byte comparisons. Complete C dump evidence:
+
+| `tmp/issue177-turn/` file | Bytes / rows | SHA-256 |
+|---|---:|---|
+| `integration-commands.tsv` | 2116 / 148 data rows | `1dade8bdfb65dc21476fa211be3573d7bafcad9c4d8280ffafa119fd6439696d` |
+| `integration-use.tsv` | 5100 / 151 data rows | `b54a151a39fe67db0c4027c273496170c42a76083fa570d5f160083c6b245a9e` |
+| `integration-phase.tsv` | 2523 / 74 data rows | `109a9151092d5a55ad68f3282558b0cff3d87f719fef077473f69276cb8eeeb1` |
+| `integration-state.json` | 16422 | `455c499a16b469eff43f6aec998a8f6e6df0c80f4b911f647bbc9676174543db` |
+
+### Rejection controls and independent fixtures
+
+The unchanged strict ordinary turn still matches **233 entries**, and all
+**13 lifecycle / 10 command / 15 USE / 23 phase / 13 export** controls pass.
+Log: `tmp/issue177-turn-full.log`; existing family/lifecycle summaries remain
+under `tmp/issue177-turn/`. Matching captures are deleted promptly.
+
+`tmp/issue177-negative.log` exercises the actual runner and comparator, not
+replacement successful gameplay. A temporary native pre-exec diagnostic
+injector execs the **real unchanged C binary**: six marker families in either
+stream on actual statuses **0 and 1** give **24 rejections (harness 2)** before
+expected-status acceptance. Status 0 includes a real failed dump open; status
+1 includes a real failed randseed save. Missing dependency, not implemented,
+NYI, stub, AddressSanitizer and runtime-error markers are all rejected.
+Six real-capture mutations independently reject JSON/TSV whitespace and a
+directory mode (**1**), or missing stream/cwd and a symlink (**2**, capture
+error rather than mismatch). Existing fast tests retain the broader negative
+type/mode/error controls. No recording refresh is performed.
+
+Three decisive failure reruns also repeat real C before Go and retain raw
+streams/status and complete manifests in `tmp/issue177-negative/`:
+`all-fail` **0 / 251 entries**, `save-fail` **1 / 251**, `times-fail`
+**1 / 254**. all-fail stderr orders command/use/phase open diagnostics before
+`check_db()`/`save_db()`, then the state diagnostic afterwards. The failed
+seed save has all three TSVs but no JSON; late Times failure retains all four.
+
+All **six original phase scripts** themselves run C twice then Go, using the
+temporary native pre-cleanup capture method documented for #182.
+All script/engine statuses are **0**, scripts print **YES**, complete raw
+streams/status and cwd entries/types/modes/bytes match:
+**day0 252 / daily 245 / month-open 242 / month-gold 241 / month-decay 246 /
+month-close 242**. Logs: `tmp/issue177-fixtures.log`; original script logs,
+complete manifests and strict diffs: `tmp/issue177-fixture-captures/`.
+Temporary launchers, probes, fixture exports and matching cwd captures are
+removed. No first-time gameplay prerequisite or product defect was found.
+
+Bounded vet, fresh bounded full-enabled tests and the 14 relevant default
+tools pass; unchanged full spec retains **36 pass / 89 fail / 0 error** (127s).
+Golden remains **NO**, initialization **2** at unsupported -i. The entire
+**578307 / 2134398-byte** inherited command input/output remains unchanged,
+SHA-256 `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` /
+`c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac`.
+The read-only cache retains **1212** original files, executable SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`,
+**201 pristine worlds / 41938 input hashes**. Every compat invocation uses
+explicit isolated G3_REPO; every engine/test uses run_limited. Full tests
+enable opt-in tests but do not supply corpus child-entry variables; the final
+201-world/four-corpus and peripheral tier stays **#178**. Evidence here is
+Linux amd64 only; no native Darwin/Windows verification is claimed.
+This is **not stage exit**, whole-spec parity, or stage-4 authorization.
+
 ## Drum fixture rerun (#182)
 
 At **0.115.0-alpha**, only the complete original drum USE callback and real
