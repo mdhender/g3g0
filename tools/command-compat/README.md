@@ -3,6 +3,174 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## One-day MAKE core (#212, stage 4 N13a)
+
+**0.134.0-alpha** adds the new make.go owner: the entire original make table
+(including both multiday rows and NULL sentinel), findMake, and complete
+vGenericMake/dGenericMake/iGenericMake. It reuses real skill/experience,
+inventory/lore/trade, aura, topology, formatting, cached output and save owners.
+There is **no MAKE/TRAIN/USE wiring** in this bounded slice. N13b #213 owns
+the multiday and common callbacks and actual command wiring; the existing
+dispatch still stops honestly at MAKE. No success overlay or new RNG adapter.
+
+The C extractor retains complete original definitions exactly once, including
+return-type lines and both preprocessor branches (the original **#if 1** is
+active). make.c is a genuinely new command-oracle dependency, added to
+affected.sh and tools/README.md. The pin and independent tool pins do not move.
+Whole make.c: **10456 bytes**, SHA-256
+`100ce9aefacf6b5bbe752faa82e255822eb164c716d855b0488986be9f5a2ee0`.
+
+| original definition | complete lines | SHA-256 |
+|---|---|---|
+| WHERE_SHIP, struct make, make_tbl | 34–173 | `4a26232a28fe092d8ce14b52250aa31f2d63cc87e35c45d97c0cfb820ca9946c` |
+| find_make | 176–186 | `1defa87899d3c632245472271afe1fc0e34b2a6f00d54fd093786adbb1e2ae51` |
+| v_generic_make | 193–256 | `442f5413360e2c29e07d76c411cda164c5fffccc052b3b18c28f9ed0a6ae5994` |
+| d_generic_make | 259–326 | `863af08f4eee098d5e76d3fda59ee8b655bc7d4655a2adbed01f67ca29902f57` |
+| i_generic_make | 329–350 | `20ddc2371655b2d164bb5ff7b70f42762913039e9ff50cb41b2f430a7d5967e5` |
+
+`tmp/issue212-source-proof.log` also verifies all **50** original selected
+fixture/engine/scenario/world files' bytes and executable modes against the
+immutable bare source, not a shared upstream working copy.
+
+**20 appended real-C sections** cover all **25 actual one-day table recipes**
+with accepted starts and real production; skill/input/location/aura refusal
+order and start-field resets; first versus second input exhaustion; month-end
+unlimited no-input production versus positive/negative desired amounts;
+finished and unfinished ships, castle and temple requirements; factor-two
+ghost output counting inputs, not generated units, with fixed aura debits;
+lost skill/location/workers/inputs/aura after start; raw signed C32 arithmetic
+and exact make.c:284 assertion; zero/negative/partial/full/all summaries;
+and real command-record persistence before subsequent helper completion.
+Daily experience is awarded before continuation/summary and uses the existing
+per-entry monthly guard: changing the turn alone does not reset that guard.
+Cached output is proved by renaming the open inode and its containing directory,
+then summarizing without reopening the missing path. Original save_box bytes,
+raw allocation/list/queue state, statuses/streams, keyed/entity/legacy RNG
+aftermath and original plural-name warnings are compared, not normalized.
+
+**Raw helper probes are not table execution claims.** Every table worker is
+zero; one-day rows are private, and no table aura cost exceeds one. The
+make_raw driver copies a row to a separate scratch struct, never changing the
+table or C bodies, to expose worker batching, zero-adjusted quantity still
+charging aura/experience, cost >1 (including ignored failed debit after start),
+factor wrapping and the public-summary unmultiplied quantity. These preserve
+generic helper contracts; they do not invent reachable recipes or successful
+multiday/USE/command execution. Actual delayed command scheduling and generic
+interruption wiring remain #213, not proved by direct helpers or persistence.
+
+Each recording update executes unchanged real C **twice before** replacing
+the recording and comparing Go. The first run found only a wrong Go assertion
+source line (281 versus original **284**); corrected without changing C.
+Final C/C/Go: **1740 sections / 142607 output lines / 2791606 bytes**;
+input **38578 lines / 724032 bytes**. Appended: **20 sections / 475 input
+lines / 8549 input bytes / 1918 output lines / 36440 output bytes**.
+Statuses: **1468 × 0 / 258 × 134 / 3 × 139 / 11 × 1**; the new sections
+are **19 × 0 / 1 × 134**. Entire HEAD prefixes (**715483 / 2755166 bytes**)
+and stage-3 prefixes (**578307 / 2134398 bytes**) remain exact, including
+all **21 input / 67 output high-bit bytes** and authentic trailing spaces.
+See `tmp/issue212-{command-record,prefix-proof}.log`.
+
+| file/prefix | SHA-256 |
+|---|---|
+| command-cases.txt | `0ff63da873db5902fe51be670307280b3e755255b21a0a34fad73dbc968e029f` |
+| command-c-output.txt | `66abddeb087b7e9f2f58eda5027e0710c452eb2202064954d7607387c83ede2e` |
+| HEAD input | `ccb524a8239909544fc440191f0b6b32d7cdf80afd32856fba4a3c1ab1b5936e` |
+| HEAD output | `82b69927243e2f3a1f4809b1f8b218c430118269251aad2fa3716a1ba089c090` |
+| stage-3 input | `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` |
+| stage-3 output | `c4cc3c8ee0cd5f0b40ac6eb239aa7bf51235aaf1448fa6d9aad81f5a821f1bac` |
+
+Unchanged original scripts execute real C/C before fresh Go through trusted
+bounded `tmp/stage4-capture`, SHA-256
+`816ad641b17c44bb2776d41dd7f2dc7c5f70cc5a3b05020658e4b036870f88b4`.
+Canonical C is `tmp/stage4-source/build/issue201/olympia-g3`, SHA-256
+`6853f055376d9af2bd1d4048ffb9befb53d04fb9ff211ca6ca4db2fd794f4002`.
+All seven C/C raw status/streams and complete cwd comparisons pass under the
+existing strict comparator and tree-modes.py, with no exclusions or links to
+protected inputs. The fresh Go observations remain intentionally incomplete:
+
+| original fixture | C engine / script | cwd entries | fresh Go result |
+|---|---|---|---|
+| production-harvest | 0 / YES | 249 | MAKE start; engine 2 / script 1 |
+| production-refused | 0 / YES | 237 | MAKE start; engine 2 / script 1 |
+| recruitment-raise | 0 / YES | 241 | RAISE start; engine 2 / script 1 |
+| recruitment-refused | 0 / YES | 239 | RAISE start; engine 2 / script 1 |
+| player-settings | 0 / YES | 237 | strict C/C/Go PASS; script 0 |
+| order-unrecognized | 0 / YES | 243 | strict C/C/Go PASS; script 0 |
+| release-swear-np | **134** / YES | 229 | strict C/C/Go PASS; script 0 |
+
+release-swear-np is the separate exact **olympia/swear.c (180): FALSE** abort,
+**not** a successful turn or manufactured +turn input. Manifests/comparison
+logs and decisive failed raw streams/statuses remain under
+`tmp/issue212-fixtures/`; original script logs are
+`tmp/issue212-FIXTURE-{c1,c2,go}.log`, summarized in
+`tmp/issue212-fixture-proof.log`. Matching captures are removed. The N09 replay
+recipe below applies with `_issue212`, `issue212-fixtures` and these seven
+names; the four Go failures are prerequisite observations, never acceptance.
+
+Actual linker-probe controls cover **0/134 × default/update**: each prints a
+dependency marker and is rejected at section 0 with harness **2**, before
+status acceptance or recording replacement. Independent bounded invocation
+confirms each probe's actual **0/134** status; all four retain the final
+`66abddeb...` recording hash above. Evidence:
+`tmp/issue212-negative-proof.log`, `tmp/issue212-negative-STATUS-MODE.log`,
+`tmp/issue212-probe-STATUS-MODE.{stdout,stderr}`. Temporary linker probes,
+scratch helpers/binaries and matching capture trees are removed.
+
+Final commands, with every engine/test bounded and all eight defaults run
+**sequentially**, independent tool pins unchanged:
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" bash tools/command-compat/run.sh --update
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh" # check each status
+done
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue212-spec" \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Bounded vet and fresh full-enabled tests pass (**11 test packages**, **10
+explicit opt-in/child-entry skips**, Olympia **2.356s**). No full-corpus claim
+is inferred without the respective game lists. All eight defaults pass:
+command **1740/142607**, move **135/7158**, helper **37/1487**, RNG **321**,
+code **43/969**, loadsave **61/3411**, turn-driver **7/152**, phase **5/484**,
+calendar **2/119**, schedule **4/1801**, default turn **2 cwd entries**.
+Logs: `tmp/issue212-{vet,tests,default-status}.log`,
+`tmp/issue212-TOOL-default.log`. Full spec is unchanged **54 pass / 71 fail /
+0 error**, **125 fixtures / 130s**, preserving **all 54 names** byte-for-byte
+in passing.txt (SHA-256
+`b12af8c9bf79671930d351451e9f81ca0430896de3c86f1b5b06a5b547b99b4b`).
+Golden remains **NO**, initialization **2** at unsupported `-i`.
+Evidence: `tmp/issue212-{spec,spec-proof}.log` and the retained spec logs.
+
+The fresh all-open audit (`tmp/issue212-open.json`) confirms **88** planned
+tasks/trackers and no bug/follow-C. No blocker or oversized new prerequisite
+was found. G3 #364's undefined GM missing-target behavior is unrelated and
+not changed. This slice does not accept the production family, full-world
+turns, multiday commands, USE, later stages or stage exit.
+
+Independent parent acceptance reviewed the complete pinned table and four
+definitions, shared owners and all source/test/adapter diffs. The original
+C blocks appear exactly once in generated helpers; entire HEAD and stage-3
+input/output prefixes remain byte-identical. Bounded vet, fresh full-enabled
+tests (**11 test packages**) and all eight sequential defaults pass again
+(`tmp/parent212-{vet,tests,TOOL}.log`), including **1740 sections / 142607
+lines** in command compatibility. Independent original scripts match all
+seven C/C whole-cwd trees and the three unaffected C/Go controls above;
+production still stops at MAKE and recruitment at RAISE. Raw failed Go
+streams/statuses and manifests remain under `tmp/parent212-fixtures/`, with
+script logs at `tmp/parent212-FIXTURE-ENGINE.log`; matching capture trees and
+scratch binaries were removed. Independent full spec confirms **54 pass /
+71 fail / 0 error**, every passing name unchanged, golden **NO** and
+initialization **2** (`tmp/parent212-spec.log`). Only N13a is accepted;
+N13b owns the remaining callbacks and real dispatch.
+
 ## Harvest daily depletion, interruption and aliases (#211, stage 4 N12b)
 
 **0.133.0-alpha** completes the daily collection closure in the existing

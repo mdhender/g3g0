@@ -39,6 +39,9 @@ int drv_harvest_start(struct command *c, int item, int number, int days);
 int drv_harvest_summary(struct command *c, int item);
 int drv_harvest_daily(struct command *c, int item);
 void drv_harvest_bump(int where, int item);
+void drv_make_table(void);
+int drv_make_find(int item), drv_make_call(struct command *c, int action, int item, int number);
+void drv_make_raw(int item, int worker, int inp1, int inp2, int aura, int factor, int pub, int where, int skill);
 void drv_evening(void), drv_daily(void), drv_players(void), drv_sort_run(void);
 void drv_sort_load(int pri);
 int drv_fort_covers(int n);
@@ -1843,6 +1846,21 @@ int main(int argc, char **argv)
   }
   else if (!strcmp(op, "rawargs")) {
    sscanf(line,"%*s %d %d %d",&c->a,&c->b,&c->c);
+  }
+  else if (!strcmp(op, "make_raw")) {
+   int worker,inp1,inp2,aura,factor,pub,where,skill;
+   if(sscanf(line,"%*s %d %d %d %d %d %d %d %d %d",&n,&worker,&inp1,&inp2,&aura,&factor,&pub,&where,&skill)!=9) return 2;
+   drv_make_raw(n,worker,inp1,inp2,aura,factor,pub,where,skill);
+  }
+  else if (!strcmp(op, "make")) {
+   n=a=0;
+   if(sscanf(line,"%*s %31s %d %d",text,&n,&a)<1) return 2;
+   if(!strcmp(text,"table")) drv_make_table();
+   else if(!strcmp(text,"find")) printf("make find %d %d\n",n,drv_make_find(n));
+   else if(!strcmp(text,"start")) printf("make start %d\n",drv_make_call(c,0,n,a));
+   else if(!strcmp(text,"daily")) printf("make daily %d\n",drv_make_call(c,1,n,0));
+   else if(!strcmp(text,"summary")) printf("make summary %d\n",drv_make_call(c,2,n,0));
+   else return 2;
   }
   else if (!strcmp(op, "harvest")) {
    n=a=b=0;

@@ -2764,8 +2764,10 @@ Paths are in the G3 repository.
 `command-compat` additionally reads complete `olympia/coverage.c` and
 `olympia/state_export.c`, and the complete original magic RNG prefix and
 hinder-meditation closure from `olympia/basic.c`, plus `olympia/alchem.c`'s
-complete `new_potion` and original `lib/accept_ents.c`; the inherited dependency row
-below lists its other sources.
+complete `new_potion`, original `lib/accept_ents.c`, and `olympia/make.c`'s
+complete original make table/find_make and v/d/i_generic_make (#212).
+make.c is newly tracked by affected.sh; MAKE/TRAIN/USE dispatch remains #213.
+The inherited dependency row below lists its other sources.
 A tool needs rerunning after a pin move if any file it reads changed; [`affected.sh`](affected.sh) applies this table to `git diff --name-only OLD NEW`.
 
 | tool | records | reads |

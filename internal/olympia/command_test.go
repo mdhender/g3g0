@@ -81,6 +81,7 @@ func runCommandSection(t *testing.T, lines []string) string {
 
 func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output string) {
 	var stdout, stderr strings.Builder
+	var rawMake makeRecipe
 	w := newWorld()
 	w.flushAlways = true // command C driver opens streams with flush_always=1.
 	t.Cleanup(func() { w.immediate = false; w.closeLogfile(); w.closeTimes() })
@@ -2562,6 +2563,40 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			}
 		case "rawargs":
 			c.a, c.b, c.c = int32(args.num(t)), int32(args.num(t)), int32(args.num(t))
+		case "make_raw":
+			rawMake = *findMake(args.num(t))
+			rawMake.worker, rawMake.inp1, rawMake.inp2 = args.num(t), args.num(t), args.num(t)
+			rawMake.aura, rawMake.factor, rawMake.public = args.num(t), args.num(t), args.num(t) != 0
+			rawMake.where, rawMake.reqSkill = args.num(t), args.num(t)
+		case "make":
+			action := args.word()
+			if action == "table" {
+				for i, r := range makeTbl {
+					text := "NULL"
+					if r.gotEm != nil {
+						text = *r.gotEm
+					}
+					fmt.Fprintf(&stdout, "make row %d %d %d %d %d %d [%s] %d %d %d %d %d\n", i, r.item, r.inp1, r.inp2, r.reqSkill, r.worker, text, b2i(r.public), r.where, r.aura, r.factor, r.days)
+				}
+				break
+			}
+			item := args.num(t)
+			r := findMake(item)
+			if item == -1 && action != "find" {
+				r = &rawMake
+			}
+			switch action {
+			case "find":
+				fmt.Fprintf(&stdout, "make find %d %d\n", item, b2i(r != nil))
+			case "start":
+				fmt.Fprintf(&stdout, "make start %d\n", w.vGenericMake(c, args.num(t), r))
+			case "daily":
+				fmt.Fprintf(&stdout, "make daily %d\n", w.dGenericMake(c, r))
+			case "summary":
+				fmt.Fprintf(&stdout, "make summary %d\n", w.iGenericMake(c, r))
+			default:
+				t.Fatalf("unknown make action %s", action)
+			}
 		case "harvest":
 			switch action := args.word(); action {
 			case "table":

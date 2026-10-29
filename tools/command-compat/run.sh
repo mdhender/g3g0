@@ -68,6 +68,7 @@ functions = {
               'collapsed_mine_decay', 'ghost_warrior_decay', 'corpse_decay', 'dead_body_rot',
               'auto_drop', 'link_decay', 'quest_decay', 'post_month'],
     'scry.c': ['notify_loc_shroud', 'reset_cast_where'],
+    'make.c': ['find_make', 'v_generic_make', 'd_generic_make', 'i_generic_make'],
     'basic.c': ['v_hinder_med', 'hinder_med_omen', 'd_hinder_med'],
     'alchem.c': ['new_potion'],
     'seed.c': ['int_comp', 'seed_taxes'],
@@ -309,6 +310,10 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/u.c"\n')
             out.write(source[start:source.index('void\nkill_stack_ocean(int who)')])
             start, end = source.index('static char *num_s[]'), source.index('char *\nnice_num(')
+            out.write(source[start:end])
+        if file == 'make.c':
+            start, end = source.index('#define\tWHERE_SHIP'), source.index('static struct make *\nfind_make(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/make.c"\n')
             out.write(source[start:end])
         if file == 'produce.c':
             # Original complete production tables/macros, not a driver copy.
@@ -559,6 +564,26 @@ int drv_sub_item(int who, int item, int qty) { return sub_item(who, item, qty); 
 void drv_add_item(int who, int item, int qty) { add_item(who, item, qty); }
 void drv_sort_load(int pri) { sort_load_queue(load_q[pri]); }
 void drv_sort_run(void) { sort_run_queue(run_q); }
+static struct make drv_raw_make;
+void drv_make_raw(int item, int worker, int inp1, int inp2, int aura, int factor, int pub, int where, int skill) {
+ drv_raw_make = *find_make(item);
+ drv_raw_make.worker=worker; drv_raw_make.inp1=inp1; drv_raw_make.inp2=inp2;
+ drv_raw_make.aura=aura; drv_raw_make.factor=factor; drv_raw_make.public=pub;
+ drv_raw_make.where=where; drv_raw_make.req_skill=skill;
+}
+void drv_make_table(void) {
+ for (int i=0; i<sizeof(make_tbl)/sizeof(*make_tbl); i++) {
+  struct make *t=&make_tbl[i];
+  printf("make row %d %d %d %d %d %d [%s] %d %d %d %d %d\\n", i,t->item,t->inp1,t->inp2,t->req_skill,t->worker,t->got_em ? t->got_em : "NULL",t->public,t->where,t->aura,t->factor,t->days);
+ }
+}
+int drv_make_find(int item) { return find_make(item)!=NULL; }
+int drv_make_call(struct command *c, int action, int item, int number) {
+ struct make *t=item == -1 ? &drv_raw_make : find_make(item);
+ if(action==0) return v_generic_make(c,number,t);
+ if(action==1) return d_generic_make(c,t);
+ return i_generic_make(c,t);
+}
 ilist drv_collectors(void) { return collectors; }
 void drv_collect_add(int who) { ilist_append(&collectors, who); }
 void drv_harvest_table(void) {
@@ -785,6 +810,13 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N13a '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N13a raw overtarget remainder asserts original location') expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N13a status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N12b '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

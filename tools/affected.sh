@@ -96,7 +96,7 @@ reads() {
 		olympia/art.c | olympia/display.c | lib/exit_views.c) return 0 ;;
 		olympia/order.c | olympia/swear.c | olympia/stack.c | olympia/loc.c | olympia/garr.c) return 0 ;;
 		olympia/perm.c | olympia/storm.c) return 0 ;;
-		olympia/c1.c | olympia/produce.c) return 0 ;;
+		olympia/c1.c | olympia/produce.c | olympia/make.c) return 0 ;;
 		olympia/move.c | olympia/day.c | olympia/seed.c | olympia/io.c) return 0 ;;
 		olympia/buy.c | olympia/lore.c | olympia/scry.c | olympia/basic.c) return 0 ;;
 		olympia/alchem.c) return 0 ;;
