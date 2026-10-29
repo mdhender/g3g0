@@ -208,9 +208,15 @@ func (w *world) chargeMaintSup(who int) int {
 // chargeMaintCosts is day.c:1352–1376. Prisoners and unsworn regular
 // faction characters are not excluded by the active C source.
 func (w *world) chargeMaintCosts() {
+	w.phaseRan(phMaintPaid)
 	for who := range w.loopKind(tChar) {
 		if w.subkind(w.player(who)) == subPlRegular {
-			w.chargeMaintSup(who)
+			switch w.chargeMaintSup(who) {
+			case 1:
+				w.phaseActed(phMaintPaid)
+			case 2:
+				w.phaseActed(phMaintStarve)
+			}
 		}
 	}
 }
@@ -219,6 +225,7 @@ func (w *world) chargeMaintCosts() {
 // one-based leaf keys and strict <10 threshold (nine chances per thousand).
 func (w *world) animalDeaths() {
 	w.stage("animal_deaths()")
+	w.phaseRan(phAnimal)
 	for who := range w.loopKind(tChar) {
 		if w.subkind(w.player(who)) != subPlRegular {
 			continue
@@ -237,6 +244,7 @@ func (w *world) animalDeaths() {
 			}
 			if dead > 0 {
 				w.consumeItem(who, int(e.item), int(dead))
+				w.phaseActed(phAnimal)
 				w.commandOut(who, "%s %s died.", capitalize(niceNum(int(dead))), w.pluralItemName(int(e.item), int(dead)))
 			}
 		}
@@ -271,14 +279,17 @@ func (w *world) touchLoc(who int) {
 // stormDecay is day.c:1655–1678, including signed-short decrement and
 // live kind-chain traversal while dissipation deletes adjacent storms.
 func (w *world) stormDecay() {
+	w.phaseRan(phStormWeaken)
 	for i := range w.loopKind(tStorm) {
 		p := w.pMisc(i)
 		p.stormStr--
+		w.phaseActed(phStormWeaken)
 		if p.stormStr > 0 {
 			continue
 		}
 		p.stormStr = 0
 		w.dissipateStorm(i, 1)
+		w.phaseActed(phStormGone)
 	}
 }
 
@@ -298,6 +309,7 @@ func (w *world) stormOwnerTouchLoc() {
 // stormMove is day.c:1705–1734. npc_dir gates a previously selected
 // destination; monthly relocation deliberately bypasses moveStorm output.
 func (w *world) stormMove() {
+	w.phaseRan(phStormMove)
 	for i := range w.loopKind(tStorm) {
 		p := w.pMisc(i)
 		if p.npcDir == 0 {
@@ -310,6 +322,7 @@ func (w *world) stormMove() {
 		}
 		p.npcDir = 0
 		p.stormMove = 0
+		w.phaseActed(phStormMove)
 	}
 }
 
@@ -334,17 +347,21 @@ func (w *world) clearOrdersSent() {
 // unformed replenishment instead visits every existing player record. Keep
 // list entries verbatim, including stale entries and lists longer than five.
 func (w *world) addClaimGold() {
+	w.phaseRan(phClaim)
 	for pl := range w.loopKind(tPlayer) {
 		if w.subkind(pl) == subPlRegular {
 			w.genItem(pl, itemGold, 25)
+			w.phaseActed(phClaim)
 		}
 	}
 }
 
 func (w *world) addNoblePoints() {
+	w.phaseRan(phNp)
 	for pl := range w.loopKind(tPlayer) {
 		if w.subkind(pl) == subPlRegular && w.nextNPTurn(pl) == 0 {
 			w.addNP(pl, 1)
+			w.phaseActed(phNp)
 		}
 	}
 }
@@ -364,14 +381,24 @@ func (w *world) addUnformedSup(pl int) {
 }
 
 func (w *world) addUnformed() {
+	w.phaseRan(phUnformed)
 	for pl := range w.loopKind(tPlayer) {
+		p := w.rpPlayer(pl)
+		n := 0
+		if p != nil {
+			n = len(p.unformed)
+		}
 		w.addUnformedSup(pl)
+		if p != nil && len(p.unformed) > n {
+			w.phaseActed(phUnformed)
+		}
 	}
 }
 
 // collectTaxes is day.c:1756–1789: each castle consumes the province's
 // remaining cookies before truncating, including zero-tax output to its owner.
 func (w *world) collectTaxes() {
+	w.phaseRan(phTaxes)
 	for fort := range w.loopSubkind(subCastle) {
 		prov, owner := w.province(fort), w.buildingOwner(fort)
 		if owner == 0 {
@@ -383,49 +410,61 @@ func (w *world) collectTaxes() {
 		w.goldTaxes += amount
 		w.genItem(owner, itemGold, int(amount))
 		w.commandOut(owner, "Collected %s in taxes.", goldS(int(amount)))
+		w.phaseActed(phTaxes)
 	}
 }
 
 // Seasonal announcements, day.c:2046–2127. These do not change route flags;
 // postMonth owns the calendar gates. The else-if precedence is significant.
 func (w *world) specialLocsOpen() {
+	w.phaseRan(phSpecialOpen)
 	for i := range w.loopProvince() {
 		if w.summerbridge(i) == 1 {
 			w.logWrite(10, "%s open to the north.", w.boxName(i))
 			w.commandOut(i, "The swamps of Summerbridge have dried enough to permit passage north.")
+			w.phaseActed(phSpecialOpen)
 		} else if w.summerbridge(i) == 2 {
 			w.logWrite(10, "%s open to the south.", w.boxName(i))
 			w.commandOut(i, "The swamps of Summerbridge have dried enough to permit passage south.")
+			w.phaseActed(phSpecialOpen)
 		} else if w.uldim(i) == 3 {
 			w.logWrite(10, "%s open to the south.", w.boxName(i))
 			w.commandOut(i, "The snows blocking Uldim pass to the south have melted.")
+			w.phaseActed(phSpecialOpen)
 		} else if w.uldim(i) == 4 {
 			w.logWrite(10, "%s open to the north.", w.boxName(i))
 			w.commandOut(i, "The snows blocking Uldim pass to the north have melted.")
+			w.phaseActed(phSpecialOpen)
 		}
 	}
 }
 
 func (w *world) specialLocsClose() {
+	w.phaseRan(phSpecialClose)
 	for i := range w.loopProvince() {
 		if w.summerbridge(i) == 1 {
 			w.logWrite(10, "%s closed to the north.", w.boxName(i))
 			w.commandOut(i, "Seasonal rains have made Summerbridge an impassable bog to the north.")
+			w.phaseActed(phSpecialClose)
 		} else if w.summerbridge(i) == 2 {
 			w.logWrite(10, "%s closed to the south.", w.boxName(i))
 			w.commandOut(i, "Seasonal rains have made Summerbridge an impassable bog to the south.")
+			w.phaseActed(phSpecialClose)
 		} else if w.uldim(i) == 3 {
 			w.logWrite(10, "%s closed to the south.", w.boxName(i))
 			w.commandOut(i, "Falling snow blocks Uldim pass to the south for the winter.")
+			w.phaseActed(phSpecialClose)
 		} else if w.uldim(i) == 4 {
 			w.logWrite(10, "%s closed to the north.", w.boxName(i))
 			w.commandOut(i, "Falling snow blocks Uldim pass to the north for the winter.")
+			w.phaseActed(phSpecialClose)
 		}
 	}
 }
 
 // autoDrop is the complete day.c:1133–1167 autoquit queue/log pass.
 func (w *world) autoDrop() {
+	w.phaseRan(phAutoDrop)
 	for pl := range w.loopSubkind(subPlRegular) {
 		p := w.pPlayer(pl)
 		if int32(w.sysclock.turn)-p.lastOrderTurn >= w.autoQuitTurns {
@@ -437,6 +476,7 @@ func (w *world) autoDrop() {
 				email = *p.email
 			}
 			w.queue(pl, "quit")
+			w.phaseActed(phAutoDrop)
 			w.logWrite(11, "Queued drop for %s", w.boxName(pl))
 			w.logWrite(11, "    %s <%s>", name, email)
 		}
@@ -446,6 +486,7 @@ func (w *world) autoDrop() {
 // linkDecay is day.c:1966–1997: positive countdown precedes month reopening;
 // negative openings remain permanent, and absent destinations do not decay.
 func (w *world) linkDecay() {
+	w.phaseRan(phLinkDec)
 	for i := range w.loopKind(tLoc) {
 		p := w.rpSubloc(i)
 		if p == nil || len(p.linkTo) < 1 {
@@ -453,9 +494,11 @@ func (w *world) linkDecay() {
 		}
 		if p.linkOpen > 0 {
 			p.linkOpen--
+			w.phaseActed(phLinkDec)
 		}
 		if int(p.linkWhen) == olyMonth(w.sysclock) && p.linkOpen < 2 && p.linkOpen >= 0 {
 			p.linkOpen = 2
+			w.phaseActed(phLinkOpen)
 		}
 	}
 }
@@ -463,9 +506,11 @@ func (w *world) linkDecay() {
 // questDecay is day.c:1737–1753. Despite its name, subloc_quest is the
 // quest_late counter itself (oly.h:1082), not a separate quest ID.
 func (w *world) questDecay() {
+	w.phaseRan(phQuest)
 	for where := range w.loopKind(tLoc) {
 		if p := w.rpSubloc(where); p != nil && p.questLate > 0 {
 			w.pSubloc(where).questLate--
+			w.phaseActed(phQuest)
 		}
 	}
 }
@@ -506,6 +551,8 @@ func (w *world) postMonth() {
 	w.stormDecay()
 	w.stormMove()
 	w.collapsedMineDecay()
+	w.phaseRan(phProduction) // not the initialization call from loadDb
+	w.phaseActed(phProduction)
 	w.postProduction()
 	if w.autoQuitTurns > 0 {
 		w.autoDrop()

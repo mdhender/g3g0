@@ -12,14 +12,16 @@ import (
 
 func TestCommandCoverageLaterModesRemainGated(t *testing.T) {
 	t.Chdir(t.TempDir())
-	for _, later := range [][]string{
-		{"--phase-coverage", "p"}, {"--state-export", "s"},
-		{"-e"}, {"-E"}, {"-s"}, {"-a"}, {"-i"}, {"-M"}, {"-h"},
-	} {
-		args := append([]string{"--coverage", "c"}, later...)
-		status, stdout, stderr := run(false, args...)
-		if status != 2 || stdout != header || !strings.Contains(stderr, "load_db (") || !strings.HasSuffix(stderr, ": not yet implemented\n") {
-			t.Fatalf("%q: status %d stdout %q stderr %q", args, status, stdout, stderr)
+	for _, flag := range []string{"--coverage", "--use-coverage", "--phase-coverage"} {
+		for _, later := range [][]string{
+			{"--state-export", "s"},
+			{"-e"}, {"-E"}, {"-s"}, {"-a"}, {"-i"}, {"-M"}, {"-h"},
+		} {
+			args := append([]string{flag, "c"}, later...)
+			status, stdout, stderr := run(false, args...)
+			if status != 2 || stdout != header || !strings.Contains(stderr, "load_db (") || !strings.HasSuffix(stderr, ": not yet implemented\n") {
+				t.Fatalf("%q: status %d stdout %q stderr %q", args, status, stdout, stderr)
+			}
 		}
 	}
 	entries, err := os.ReadDir(".")

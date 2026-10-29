@@ -6,6 +6,73 @@ This page says which checks to run when, and which upstream files each tool read
 Task notes below retain their original acceptance scope and temporary boundaries;
 the current integration evidence and stage-exit status are under **Stage exit**.
 
+## Monthly phase hooks and CLI integration (#174)
+
+**0.110.0-alpha** completes the remaining **84 monthly hook sites** in the
+existing day/garrison owners (32 ran / 52 acted, all **43 monthly event rows**).
+Every original caller is source-audited against its actual Go location:
+**135 sites / 50 ran / 85 acted**, in **52 complete original definitions**.
+No new gameplay, RNG/allocation/order change, callback success overlay,
+source dependency or pin move. Production counts only at the real postMonth
+call, never load initialization; the shared token routine still runs twice.
+Main accepts the phase path and writes command → USE → phase coverage before
+check_db/save_db. **State export and later gates remain unsupported.**
+
+The existing command oracle appends **12** real-C scenarios, exercising all
+monthly events nontrivially, branch multiplicity, zero/repeated/grouped calls,
+paid/starve/no-debt distinctions, attempted actions and signed counter wrap.
+Unchanged real C twice and Go match **1320 sections / 99685 lines /
+1983914 output bytes**, SHA-256
+`7d7315f4335b7cf7ffa5c1fc710846204a9b4863d2d203974fceef131a8593e4`.
+Input is **552971 bytes**, SHA-256
+`deeb7928b106cd8bcdfa36102516dfe087f59c735b51290920e85a68d054ffca`.
+The entire accepted **544674-byte input / 1902639-byte output** prefixes are
+unchanged. Four negative linker controls reject missing-dependency markers
+before expected statuses or recording updates, preserving the recording hash.
+[Exact source audit, hashes and scope](command-compat#monthly-phase-hooks-and-cli-integration-174).
+
+Sequential bounded vet and fresh bounded tests pass (**11 packages**, Olympia
+**1.971s**), as do all **15 engine/library defaults**. Strict real-world C/C/Go
+passes the ordinary **233-entry** turn, **13 lifecycle / 10 command / 15 USE /
+23 phase** controls with complete raw streams/status and all cwd
+entries/types/modes/bytes, no exclusions or normalization. Four phase
+flag-free aftermath controls pass. Complete ordinary-turn phase output is
+**2523 bytes**, SHA-256
+`9fb3a1f3d900bfc3d5b971a84966fbf7328d1f3d10838110ac43c5d04e16ab16`.
+[CLI cases, actual getopt parsing and retained TSV](turn-compat#monthly-phase-cli-controls-174).
+Spec retains all **23 pass / 102 fail / 0 error**; golden remains **NO**
+because initialization `-i` is unsupported. No phase-fixture pass is fabricated
+without export: the six unchanged fixtures remain for #176/#177.
+
+Every compat invocation explicitly sets isolated `G3_REPO`; all engine/test
+runs are bounded. The lists default's C driver uses a temporary compiler
+launcher to apply shared run_limited without changing that unrelated tool;
+its Go tests use bounded GOFLAGS. The temporary launcher is removed afterward.
+The read-only cache `tmp/issue179-roundtrip` is verified against **1212**
+original archived files and accepted executable SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`;
+engines run only on real disposable copies. Logs:
+`tmp/issue174-{source-audit,hook-coverage,cache-audit,vet,tests,turn-full,spec}.log`,
+`tmp/issue174-command-{update,default}.log`, `tmp/issue174-*-default.log`,
+`tmp/issue174-negative-{0,134}-{default,update}.log`; summaries and complete
+phase TSV under `tmp/issue174-turn/`. Matching captures/probes are removed.
+No full 201-world roundtrip/four-corpus rerun, native Darwin/Windows, new
+initialization/USE gameplay, export combinations or stage-exit claim; inherited
+#179 full-corpus evidence and known island/scanf limits remain unchanged.
+
+Independent parent pinned-source/diff review and acceptance repeat pass:
+bounded vet/fresh bounded tests, 14 relevant default tools (lists remains
+covered by the fresh Go suite and implementer's bounded C/C/Go default),
+command **1320 sections / 99685 lines**, strict **233-entry** ordinary turn,
+all **13 lifecycle / 10 command / 15 USE / 23 phase** controls and four phase
+flag-free aftermath controls. The complete phase TSV retains the SHA-256 above;
+spec remains **23/102/0**, initialization exit 2 and golden NO. Parent verifies
+both complete inherited recording prefixes, all **1212** original cached C
+files and executable hash, and independently matches the full **135-site**
+hook multiset (50 ran / 85 acted) to pinned C in addition to branch review.
+Logs: `tmp/parent174-{vet,tests,turn-full,spec}.log` and
+`tmp/parent174-*-default.log`; strict summaries/TSV: `tmp/parent174-turn/`.
+
 ## Phase primitives and day-zero/daily hooks (#173)
 
 **0.109.0-alpha** ports all 74 phase enum/metadata rows, world-owned int32

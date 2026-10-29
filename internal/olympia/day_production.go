@@ -106,9 +106,13 @@ func (w *world) postProduction() {
 // move_city_gold is day.c:2005–2024; use real move_item, including its zero
 // quantity behavior and the city subtype chain (not a province traversal).
 func (w *world) moveCityGold() {
+	w.phaseRan(phCityGold)
 	for i := range w.loopSubkind(subCity) {
 		prov := w.province(i)
 		has := w.hasItem(i, itemTaxCookie)
 		w.moveItem(i, prov, itemTaxCookie, int(has))
+		if has > 0 {
+			w.phaseActed(phCityGold)
+		}
 	}
 }

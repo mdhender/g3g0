@@ -16,6 +16,66 @@ tools/turn-compat/run.sh --full          # real C/C/Go world turns and lifecycle
 tools/turn-compat/run.sh --full --record # explicitly refresh C-only recordings, then compare Go
 ```
 
+## Monthly phase CLI controls (#174)
+
+At **0.110.0-alpha**, `--full --phase-coverage` adds **23** actual-world
+C/C/Go controls to the existing strict comparator. No upstream harness or
+expected fixture is edited. The ten original command controls and fifteen
+USE controls remain independently selectable and unchanged in behavior.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" C_CACHE="$PWD/tmp/issue179-roundtrip" \
+  WORK="$PWD/tmp/issue174-turn" tools/turn-compat/run.sh \
+  --full --command-coverage --use-coverage --phase-coverage
+```
+
+Phase cases cover load only (all 74 rows zero, including production), load
+and save, turn with/without save, last duplicate wins, ENOENT/ENOTDIR/EISDIR,
+destinations colliding with saved system and post-writer files, command+phase,
+USE+phase and all three counters, each pair/all three sharing a path, and
+prior command/USE write failures not preventing the later phase writer.
+They check cwd-relative paths outside lib, including `-R` consumed as a path;
+missing/empty phase paths are usage/status **1**. `--phase-coverage=cov.tsv`
+is deliberately **not** long-option syntax: original getopt scans its
+characters, reports illegal options, then the `t` in `cov.tsv` runs ilist_test
+and exits **0** before errflag. The initial expected-1 harness assumption was
+rejected by real C, corrected from source/streams, and the complete suite
+rerun (`tmp/issue174-turn-discovery.log` preserves that discovery).
+
+Every case runs unchanged original C twice and compares the raw status and
+streams and **every cwd entry/type/mode/byte** before comparing Go, without
+normalization or exclusions. Four phase cases additionally repeat flag-free
+C/C/Go and, only after the strict full comparison, remove the requested dump
+from disposable captures to prove the complete flag-free aftermath is unchanged.
+All use real directory copies, never cached inputs or symlink sources.
+
+The complete ordinary-turn **74-row / 2523-byte phase TSV** is retained at
+`tmp/issue174-turn/phase-turn.tsv`, SHA-256
+`9fb3a1f3d900bfc3d5b971a84966fbf7328d1f3d10838110ac43c5d04e16ab16`.
+It is compared as raw bytes, not selected totals; notably token ran is **2**
+on both grouped rows, production ran/acted is **1/1**, and the real turn has
+**432** city transfers, **9** unformed grants, **6472** storm weakenings and
+**4** link openings. Its tax/NP/claim/garrison/rank actions are zero, not
+invented fixture effects. Direct meaningful nonzero coverage for all 43
+monthly rows is in [command-compat](../command-compat#monthly-phase-hooks-and-cli-integration-174).
+
+The final run passes the strict **233-entry** ordinary turn, all **13 lifecycle,
+10 command, 15 USE and 23 phase** controls, including expected diagnostic
+statuses. Summaries: `tmp/issue174-turn/{c-determinism,lifecycle,command-coverage,
+use-coverage,phase-coverage}.txt`; raw run log: `tmp/issue174-turn-full.log`.
+Matching captures/inputs are removed. No small turn recording or manifest
+expectation is refreshed. The read-only cache's **1212** original archived
+files and C binary SHA-256
+`151c7355890eba7f8bfda1f4f16f4a490947aaa1db1ffcc3ca859cd659c01158`
+are verified before reuse (`tmp/issue174-cache-audit.log`).
+
+Marker rejection is exercised in both streams by the existing default tests;
+command-compat also performs four actual linker probes, rejecting invalid
+references before expected assertions or recording updates. All engines use
+run_limited; every compat invocation explicitly sets isolated G3_REPO.
+No full 201-world rerun, state export, six phase-fixture pass, golden success,
+or full export combinations are claimed: those integrations remain #176/#177.
+
 ## Default checks
 
 The Go tests exercise the comparator's observable contract on a tiny recorded

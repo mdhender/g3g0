@@ -188,6 +188,7 @@ func (w *world) detNobleRankSup(who int) int8 {
 // determineNobleRanks is the complete garr.c:718–761 settlement.
 func (w *world) determineNobleRanks() {
 	w.stage("determine_noble_ranks()")
+	w.phaseRan(phRanks)
 	w.clearTemps(tChar)
 	for garr := range w.loopSubkind(subGarrison) {
 		if w.garrisonStrength(garr) < 10 {
@@ -209,6 +210,7 @@ func (w *world) determineNobleRanks() {
 	for who := range w.loopKind(tChar) {
 		if w.rpChar(who).rank != 0 {
 			w.pChar(who).rank = w.detNobleRankSup(who)
+			w.phaseActed(phRanks)
 		}
 	}
 }
@@ -218,6 +220,7 @@ func (w *world) determineNobleRanks() {
 // garrForward is written only by the two forwarding branches, not reset.
 func (w *world) garrisonGold() {
 	w.clearTemps(tLoc)
+	w.phaseRan(phGarrTax)
 	for garr := range w.loopSubkind(subGarrison) {
 		if w.defaultGarrison(garr) != 0 {
 			continue
@@ -228,6 +231,9 @@ func (w *world) garrisonGold() {
 		w.consumeItem(where, itemTaxCookie, int(base))
 		w.genItem(garr, itemGold, int(base))
 		w.pMisc(garr).garrTax = base
+		if base > 0 {
+			w.phaseActed(phGarrTax)
+		}
 		hasBefore := w.hasItem(garr, itemGold)
 		w.chargeMaintSup(garr)
 		hasNow := w.hasItem(garr, itemGold)
@@ -243,6 +249,7 @@ func (w *world) garrisonGold() {
 		if w.provinceSubloc(where, subCastle) != 0 {
 			w.genItem(where, itemTaxCookie, int(remain))
 			w.pMisc(garr).garrForward = -1
+			w.phaseActed(phGarrCastle)
 			continue
 		}
 		remain /= 2
@@ -266,6 +273,7 @@ func (w *world) garrisonGold() {
 		w.commandOut(owner, "Collected %s from owned provinces.", goldS(int(w.bx[i].temp)))
 		w.genItem(owner, itemGold, int(w.bx[i].temp))
 		w.goldProvinces += w.bx[i].temp
+		w.phaseActed(phGarrOwner)
 	}
 }
 

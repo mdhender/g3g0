@@ -3,10 +3,11 @@
 
 package olympia
 
-// innIncome is the complete day.c:1421–1489 definition, excluding phase
-// instrumentation. Sharing and pillage use the immediate sublocation, not
+// innIncome is the complete day.c:1421–1489 definition.
+// Sharing and pillage use the immediate sublocation, not
 // the province; the traveller bonus is added after both integer divisions.
 func (w *world) innIncome() {
+	w.phaseRan(phInnIncome)
 	for i := range w.loopSubkind(subInn) {
 		owner := w.buildingOwner(i)
 		if owner == 0 {
@@ -27,9 +28,11 @@ func (w *world) innIncome() {
 			bonus := int32(w.streams.UpIncome(i, 2, 5, 13)) * 10
 			w.commandOut(owner, "A rich traveller stayed in %s this month, spending %s.", w.boxName(i), goldS(int(bonus)))
 			base += bonus
+			w.phaseActed(phInnTraveller)
 		}
 		w.genItem(owner, itemGold, int(base))
 		w.goldInn += base
+		w.phaseActed(phInnIncome)
 		w.commandOut(owner, "%s yielded %s in income.", w.boxName(i), goldS(int(base)))
 		if pil != 0 {
 			switch w.streams.UpIncome(i, 3, 1, 3) {
@@ -48,6 +51,7 @@ func (w *world) innIncome() {
 // sharing, capacity or occupant-count cap: only the building owner's religion
 // skill gates the flat offering (before immediate-sublocation pillage).
 func (w *world) templeIncome() {
+	w.phaseRan(phTemple)
 	for i := range w.loopSubkind(subTemple) {
 		owner := w.buildingOwner(i)
 		if owner == 0 || w.hasSkill(owner, skReligion) == 0 {
@@ -59,6 +63,7 @@ func (w *world) templeIncome() {
 		}
 		w.genItem(owner, itemGold, int(amount))
 		w.goldTemple += amount
+		w.phaseActed(phTemple)
 		w.commandOut(owner, "%s collected offerings of %s.", w.boxName(i), goldS(int(amount)))
 	}
 }

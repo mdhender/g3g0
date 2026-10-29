@@ -9,7 +9,7 @@ PINNED_REV=f73e48118805ffe8ff5e763bfa4f20ae00c3a705
 G3_REPO="${G3_REPO:-${HOME}/Software/playbymail/olympia-g3}"
 WORK="${WORK:-${ROOT}/tmp/turn-compat}"
 RUN_TIMEOUT="${RUN_TIMEOUT:-120}"
-full=0 record=0 command_coverage=0 use_coverage=0
+full=0 record=0 command_coverage=0 use_coverage=0 phase_coverage=0
 die() { echo "error: $*" >&2; exit 2; }
 for arg in "$@"; do
 	case "$arg" in
@@ -17,12 +17,14 @@ for arg in "$@"; do
 	--record) record=1 ;;
 	--command-coverage) command_coverage=1 ;;
 	--use-coverage) use_coverage=1 ;;
-	*) die "usage: $0 [--full [--record] [--command-coverage] [--use-coverage]]" ;;
+	--phase-coverage) phase_coverage=1 ;;
+	*) die "usage: $0 [--full [--record] [--command-coverage] [--use-coverage] [--phase-coverage]]" ;;
 	esac
 done
 [ "$record" = 0 ] || [ "$full" = 1 ] || die "--record requires --full and two real pinned C runs"
 [ "$command_coverage" = 0 ] || [ "$full" = 1 ] || die "--command-coverage requires --full"
 [ "$use_coverage" = 0 ] || [ "$full" = 1 ] || die "--use-coverage requires --full"
+[ "$phase_coverage" = 0 ] || [ "$full" = 1 ] || die "--phase-coverage requires --full"
 mkdir -p "${WORK}/bin"
 WORK="$(cd "${WORK}" && pwd -P)"
 (cd "${ROOT}" && go build -o "${WORK}/bin/compare" ./tools/turn-compat &&
@@ -157,15 +159,21 @@ else
 fi
 [ "$status" = 0 ] || exit "$status"
 
-for family in command use; do
+for family in command use phase; do
 	flag=--coverage
 	if [ "$family" = command ]; then
 		[ "$command_coverage" = 1 ] || continue
-	else
+	elif [ "$family" = use ]; then
 		[ "$use_coverage" = 1 ] || continue
 		flag=--use-coverage
+	else
+		[ "$phase_coverage" = 1 ] || continue
+		flag=--phase-coverage
 	fi
 	cases=(load load-save turn turn-nosave duplicate missing directory blocked saved-system report)
+	if [ "$family" = phase ]; then
+		cases+=(command-combined use-combined all-combined command-shared use-shared all-shared command-failure use-failure prior-failures dash-path parse-missing parse-empty parse-equals)
+	fi
 	if [ "$family" = use ]; then
 		cases+=(combined shared-path command-failure shared-checks hide)
 		# Pristine pinned fixture inputs, never a previous engine/cache result.
@@ -183,11 +191,13 @@ for family in command use; do
 		mkdir -p "${base}/input"
 		cp -a "${WORK}/input/." "${base}/input/"
 		ARGS=(-l ./lib test-use-const-report-date)
+		expected_status=0
 		path=cov.tsv
 		case "$case_name" in
 		load-save) ARGS+=(-S) ;;
-		turn|duplicate|missing|directory|blocked|saved-system|report|combined|shared-path|command-failure|shared-checks|hide) ARGS+=(-r -S) ;;
+		load) ;;
 		turn-nosave) ARGS+=(-r) ;;
+		*) ARGS+=(-r -S) ;;
 		esac
 		case "$case_name" in
 		missing) path=missing/cov.tsv ;;
@@ -198,6 +208,15 @@ for family in command use; do
 		combined) ARGS+=(--coverage commands.tsv) ;;
 		shared-path) ARGS+=(--coverage "$path") ;;
 		command-failure) ARGS+=(--coverage lib/log) ;;
+		command-combined) ARGS+=(--coverage commands.tsv) ;;
+		use-combined) ARGS+=(--use-coverage use.tsv) ;;
+		all-combined) ARGS+=(--coverage commands.tsv --use-coverage use.tsv) ;;
+		command-shared) ARGS+=(--coverage "$path") ;;
+		use-shared) ARGS+=(--use-coverage "$path") ;;
+		all-shared) ARGS+=(--coverage "$path" --use-coverage "$path") ;;
+		use-failure) ARGS+=(--use-coverage lib/log) ;;
+		prior-failures) ARGS+=(--coverage lib/log --use-coverage missing/use.tsv) ;;
+		dash-path) path=-R ;;
 		shared-checks|hide)
 			rm -rf "${base}/input"
 			mkdir "${base}/input"
@@ -233,15 +252,29 @@ for family in command use; do
 		esac
 		case "$case_name" in shared-checks|hide) ARGS+=(--coverage commands.tsv) ;; esac
 		[ "$case_name" != duplicate ] || ARGS+=("$flag" ignored.tsv)
-		ARGS+=("$flag" "$path")
+		case "$case_name" in
+		parse-missing) ARGS+=("$flag"); expected_status=1 ;;
+		parse-empty) ARGS+=("$flag" ""); expected_status=1 ;;
+		# This is not long-option syntax in C: getopt scans its characters.
+		# The 't' in cov.tsv returns ilist_test before checking errflag.
+		parse-equals) ARGS+=("$flag=$path") ;;
+		*) ARGS+=("$flag" "$path") ;;
+		esac
 		run_c_engine "${C_BIN}" "${base}/input" "${base}/c"
 		run_c_engine "${C_BIN}" "${base}/input" "${base}/c-again"
-		[ "$(cat "${base}/c/status")" = 0 ] || die "${case_name}: coverage C failed"
+		[ "$(cat "${base}/c/status")" = "$expected_status" ] || die "${case_name}: unexpected coverage C status"
 		compare_captures "${base}/c" "${base}/c-again" >"${base}/determinism.diff" || die "${case_name}: coverage C nondeterminism"
 		rm -rf "${base}/c-again"
 		run_engine "${GO_BIN}" "${base}/input" "${base}/go"
 		compare_captures "${base}/c" "${base}/go" >"${base}/diff.txt" || die "${case_name}: coverage Go differs; see ${base}"
-		printf '%s: C/C/Go status 0, exact streams and all entries/types/modes/bytes\n' "$case_name" | tee -a "${WORK}/${family}-coverage.txt"
+		printf '%s: C/C/Go status %s, exact streams and all entries/types/modes/bytes\n' "$case_name" "$expected_status" | tee -a "${WORK}/${family}-coverage.txt"
+		if [ "$family" = phase ] && [ "$case_name" = turn ]; then
+			# Keep the complete ordinary-turn TSV as evidence, not just selected
+			# totals. Expected bytes remain the two unchanged full C engines.
+			cp "${base}/c/cwd/cov.tsv" "${WORK}/phase-turn.tsv"
+			printf 'complete ordinary-turn phase TSV: ' >>"${WORK}/phase-coverage.txt"
+			shasum -a 256 "${WORK}/phase-turn.tsv" | cut -d' ' -f1 >>"${WORK}/phase-coverage.txt"
+		fi
 		case "$case_name" in
 		shared-checks|hide)
 			if [ "$case_name" = shared-checks ]; then

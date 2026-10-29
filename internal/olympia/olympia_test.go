@@ -96,7 +96,7 @@ func TestUsage(t *testing.T) {
 	// No getopt() diagnostic: '?' is in the option string, and the long
 	// options are checked before getopt() runs.
 	usage := want[strings.IndexByte(want, '\n')+1:]
-	for _, args := range [][]string{{"-?"}, {"--coverage"}, {"--state-export", ""}, {"--coverage", "", "-R"}} {
+	for _, args := range [][]string{{"-?"}, {"--coverage"}, {"--phase-coverage"}, {"--phase-coverage", ""}, {"--state-export", ""}, {"--coverage", "", "-R"}} {
 		status, stdout, stderr := run(false, args...)
 		if status != 1 || stdout != header || stderr != usage {
 			t.Errorf("%q: status %d, stdout %q, stderr %q", args, status, stdout, stderr)
@@ -125,7 +125,7 @@ func TestIListTest(t *testing.T) {
 func TestNotYetImplemented(t *testing.T) {
 	// A mode that runs after load_db() and is not ported stops before
 	// load_db().
-	for _, args := range [][]string{{"-e"}, {"--phase-coverage", "-R"}} {
+	for _, args := range [][]string{{"-e"}, {"--state-export", "-R"}} {
 		status, stdout, stderr := run(false, args...)
 		if status != 2 || stdout != header || !strings.HasPrefix(stderr, "olympia-g3: load_db (") ||
 			!strings.HasSuffix(stderr, ": not yet implemented\n") {
@@ -137,7 +137,7 @@ func TestNotYetImplemented(t *testing.T) {
 	// world, which stops at post_production(), after C's messages for the
 	// missing files and the players check_db() creates.
 	t.Chdir(t.TempDir())
-	for _, args := range [][]string{nil, {"-S"}, {"-r"}, {"-r", "-S"}, {"foo", "-R"}, {"-l", "lib", "-T"}, {"--coverage", "-R"}, {"--use-coverage", "-R"}} {
+	for _, args := range [][]string{nil, {"-S"}, {"-r"}, {"-r", "-S"}, {"foo", "-R"}, {"-l", "lib", "-T"}, {"--coverage", "-R"}, {"--use-coverage", "-R"}, {"--phase-coverage", "-R"}} {
 		status, stdout, stderr := run(false, args...)
 		if status != 2 || stdout != header+"lib/randseed could not be opened.\n" ||
 			!strings.HasPrefix(stderr, "load_db()") ||

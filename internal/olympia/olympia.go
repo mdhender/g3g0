@@ -224,7 +224,7 @@ func Run(args []string, stdout, stderr io.Writer, stdoutIsTTY bool) int {
 func (o *options) unported() bool {
 	return o.eatFlag || o.startlocFlag || o.addFlag ||
 		o.immedAfter || o.mailNow || o.htmlFlag ||
-		o.phaseCoveragePath != "" || o.stateExportPath != ""
+		o.stateExportPath != ""
 }
 
 // runEngine is main() from load_db() on. A turn runs until the first real
@@ -260,6 +260,9 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 	}
 	if o.useCoveragePath != "" {
 		w.useCoveragePath = &o.useCoveragePath
+	}
+	if o.phaseCoveragePath != "" {
+		w.phaseCoveragePath = &o.phaseCoveragePath
 	}
 
 	defer func() {
@@ -333,6 +336,7 @@ func runEngine(o *options, prog string, out *cStdout, stderr io.Writer) (status 
 
 	w.writeCoverage()
 	w.writeUseCoverage()
+	w.writePhaseCoverage()
 	w.checkDb() // check database integrity
 
 	if o.saveFlag {

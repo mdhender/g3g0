@@ -3,6 +3,96 @@
 Pinned reference: [Olympia G3 at
 f73e48118805ffe8ff5e763bfa4f20ae00c3a705](https://github.com/playbymail/olympia-g3/tree/f73e48118805ffe8ff5e763bfa4f20ae00c3a705).
 
+## Monthly phase hooks and CLI integration (#174)
+
+**0.110.0-alpha** adds the remaining **84 hook sites** (32 ran / 52 acted)
+in the existing monthly owners: **43 monthly event rows**, with no new
+gameplay. Together with #173, every original caller is present: **135 sites,
+50 ran / 85 acted, in 52 complete original hook-containing definitions**.
+The actual `process_orders` and `daily_events` scheduling definitions are
+also extracted unchanged. `--phase-coverage` now reaches the existing world
+field and main writes it after command/USE coverage, before check_db/save_db.
+State export and the later unsupported modes remain gated.
+
+The complete audit maps **each of the 135 individual C file:line callers to
+its actual Go file:line and method**, including all repeated branch positions:
+`tmp/issue174-source-audit.log`. All **100** original archived command-tool
+files equal the immutable pin; every one of those 52 full definitions occurs
+unchanged exactly once in the compiled extraction. Complete coverage.c remains
+**12,597 bytes**, SHA-256
+`5730dc2b64b817a6ee1a1d9c250856a400f6aaf54b6ac50251b5f37e5e5ded5a`.
+There is no source dependency/pin change, C body edit, phase-macro substitution,
+gameplay callback overlay, new RNG adapter or successful missing dependency.
+
+Monthly source ownership (inclusive definition ranges, not broad task ranges):
+
+| Pinned C definition(s) | Existing Go owner, under internal/olympia |
+|---|---|
+| day.c add_claim_gold 635–653; add_noble_points 655–676; add_unformed 699–719 | day.go addClaimGold/addNoblePoints/addUnformed |
+| day.c increment_current_aura 722–774 | day_monthly.go incrementCurrentAura |
+| day.c decrement_ability_shroud 806–825; decrement_loc_barrier 828–853; decrement_region_shroud 856–876; decrement_meditation_hinder 879–898 | day_monthly.go decrementAbilityShroud/decrementLocBarrier/decrementRegionShroud/decrementMeditationHinder |
+| day.c loyalty_decay 1007–1075; relic_decay 1078–1108; pillage_decay 1111–1130 | day_monthly.go loyaltyDecay/relicDecay/pillageDecay |
+| day.c auto_drop 1133–1167; charge_maint_costs 1352–1376; animal_deaths 1379–1418 | day.go autoDrop/chargeMaintCosts/animalDeaths |
+| day.c inn_income 1421–1489; temple_income 1492–1522 | day_income.go innIncome/templeIncome |
+| day.c collapsed_mine_decay 1525–1549; ghost_warrior_decay 1556–1584; corpse_decay 1591–1619; dead_body_rot 1626–1652 | day_decay.go collapsedMineDecay/ghostWarriorDecay/corpseDecay/deadBodyRot |
+| day.c storm_decay 1655–1678; storm_move 1705–1734; quest_decay 1737–1753; collect_taxes 1756–1789 | day.go stormDecay/stormMove/questDecay/collectTaxes |
+| day.c hide_mage_decay 1945–1963 | day_monthly.go hideMageDecay |
+| day.c link_decay 1966–1997 | day.go linkDecay |
+| day.c move_city_gold 2005–2024 | day_production.go moveCityGold |
+| day.c special_locs_open 2046–2085; special_locs_close 2088–2127; post_month 2147–2203 | day.go specialLocsOpen/specialLocsClose/postMonth |
+| garr.c garrison_gold 446–549; determine_noble_ranks 718–761 | garr.go garrisonGold/determineNobleRanks |
+
+The inherited 51 sites were re-audited against their actual Go locations,
+not just #173's intended list: art.go, buy.go, day.go, day_damage.go,
+day_entities.go, faery.go, garr.go, hades.go, input.go, move.go, npc.go,
+savage.go and storm.go. Their complete pinned definitions/ranges are in the
+#173 table below and the new all-caller map. Token reconciliation still counts
+twice per turn in its day0-labeled rows. Production hooks occur **only in
+postMonth immediately before postProduction**, never its load initialization.
+
+The **12 appended sections** exercise every monthly event with nonzero actual
+gameplay, verified separately in `tmp/issue174-hook-coverage.log` without
+including primitive sweeps or seeded counters. They distinguish seasonal
+else-if precedence/all four branches; aura caps, positive/negative shrouds,
+barrier decrement+dissipation and pillage wrap; summon release versus contract
+and fear desertion/decay multiplicity; relic decrement/vanish/short wrap;
+per-building income/traveller and temple zero/nonzero offerings; maintenance
+paid/starved/no-debt; animal **inventory entries with deaths, not individuals**;
+ghosts/corpses/body and deletion-safe collapsed mines; storm weakening,
+dissipation and relocation; actual repeated post_month tax/castle/owner,
+NP/claim/unformed/rank/production/autoquit/link/quest composition; positive
+versus zero city transfers and attempted zero-tax collection. Empty calls,
+immediate gameplay with suppressed counters, repeated grouped rows, and a
+real maintenance call wrapping signed int32 counters are included. Original
+saved boxes, queues, allocation/mint effects, scalars and logs remain observed.
+
+Unchanged real C twice and Go match **1320 sections / 99685 lines /
+1983914 output bytes**, SHA-256
+`7d7315f4335b7cf7ffa5c1fc710846204a9b4863d2d203974fceef131a8593e4`.
+Input: **29025 lines / 552971 bytes**, SHA-256
+`deeb7928b106cd8bcdfa36102516dfe087f59c735b51290920e85a68d054ffca`.
+The complete accepted #173 prefixes remain exact: **544674 input bytes**
+(`c0d27f47c17ef533051667df155fa4b96c6377b1d87da67c2614cc8932214572`)
+and **1902639 output bytes**
+(`a93ea34d069efd3a47ada8bf71f4ee75bfe0b9636335b589793b6dfcbe15c90e`).
+Native traversal also matches raw C/C/Go with unchanged shared input.
+
+Four temporary linker probes emit a dependency marker for the enabled
+negative-index expected-assertion section **1284**, exiting **0** or **134**.
+Both normal and `--update` runs reject with harness status **2** before
+expected-status checks or recording replacement; the recording hash above
+stays unchanged. Probe/wrapper sources and matching probe captures are removed.
+Logs: `tmp/issue174-negative-{0,134}-{default,update}.log`.
+
+Validation logs: `tmp/issue174-command-{update,default}.log`,
+`tmp/issue174-{vet,tests,cache-audit,turn-full,spec}.log` and
+`tmp/issue174-*-default.log`. All 15 defaults, bounded vet/fresh bounded tests,
+strict ordinary turn, 13 lifecycle/10 command/15 USE/**23 phase** controls and
+spec no-loss check pass. See [turn evidence](../turn-compat#monthly-phase-cli-controls-174).
+No full 201-world/corpus rerun, native Darwin/Windows, golden initialization,
+six phase-fixture success or state-export integration is claimed. Export is
+still NYI, as required; unchanged phase fixture success belongs to #176/#177.
+
 ## Phase primitives and real day-zero/daily hooks (#173)
 
 At **0.109.0-alpha**, coverage.go adds the complete **74-row** PH enum,
