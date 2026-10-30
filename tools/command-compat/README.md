@@ -3,6 +3,108 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## BRIBE (#216, stage 4 N15)
+
+**0.138.0-alpha**, unchanged immutable **9a03d12**. The entire swear.c blob
+remains identical to original task pin f73e481: **25163 bytes**, SHA-256
+`ec7ca1c106ae808ab20ea2f961b9bf8f6906560fc7989a1e163a3f48f79891ae`.
+The oracle extracts complete unchanged definitions at their actual `#line`
+locations, plus original social tags/state/begin_social/soc_today/soc_gift/
+soc_bribe and outcome constants. No new dependency or pin change:
+
+| Definition | Inclusive lines (including return type) | Bytes | SHA-256 |
+| --- | --- | --- | --- |
+| v_bribe | 343–396 | 1027 | `3c65be92a89f53e44eea1fb865243c1a81bb592dbce9f4134a904135978be590` |
+| thanks_for_gift | 528–551 | 368 | `ecec7e7e23a81c91f2bd303687e7705bf92f8290c8c13d9e69b18795068e98b5` |
+| d_bribe | 572–679 | 2091 | `e545a04935e7035bc1d8bf558e3ac770e075959d1645248ef5340d24aa445dd3` |
+
+Existing swear.go owns the callbacks; glob.go and USE671 select those same
+owners. Both direct and skill-specific interrupts remain C NULL. Existing
+visibility, inventory, NP, desertion, ownership, stack, queue/interruption,
+output and `Streams.SocGift/SocBribe` are reused unchanged. No RNG owner,
+successful callback overlay or early INCITE/TERRORIZE/combat port is added.
+The source-linked G3 #159 comment deliberately preserves the gold sink:
+POCKET does **not** give gold to the target; only REPORT refunds the briber.
+
+**19 appended sections** compare raw status/streams, full saved/raw entity
+records and allocation flags, loyalty/new_lord/fresh_hire, lists, queues,
+NP gained/spent, skills/use counts and keyed/legacy RNG aftermath:
+
+- Native C key discovery with master seed bytes **00..0f**, turn/day **0/0**,
+  actor **1000**, targets **1051/1056/1081/1227/1111/1026** yields exactly
+  **35/36/65/66/90/91**. These real keys distinguish SWITCH, both POCKET
+  boundaries, both REPORT boundaries and HEAD_FOR_HILLS; no forced draws.
+  All three gift flavors occur. Repeat/day/turn observations distinguish
+  turn-keyed gift from day-keyed outcomes without advancing legacy rnd.
+- SWITCH with optional stacking, unequal factions/NP, nontrivial skill NP,
+  nested dependents, pledge/attitude clearing, old running WAIT interruption,
+  old order flushing and new owner's actual queued GUARD. The no-stack path,
+  independent desertion and NP-shortfall SWITCH→POCKET are separate controls.
+- Threshold 249/250, contract 499/500, fear (irrespective of loyalty rate),
+  oath (including negative loyalty rate), zero/negative amount, exact start
+  message order, invisible/moving/prisoner targets and poor briber at finish.
+  Completion checks only still-here/new_lord before charging; it does **not**
+  repeat skill, NPC or same-faction checks. Start-to-finish mutations prove
+  these omissions rather than adding the issue shorthand's extra checks.
+- Real direct/USE dispatch, refusal, failed completion, seven-day scheduling,
+  saved-command reparse/reload, conditional flag retention and both generic
+  interruption paths. USE counts a failed finish but adds no experience;
+  direct BRIBE adds no experience. The only new expected aborts are exact
+  **134 / swear.c:614 FALSE** (mutated invalid loyalty after charge) and
+  **134 / u.c:645 qty >= 0** (negative amount reaches sub_item).
+
+Old Go first fails the new real dispatch at `command bribe start` NYI in
+`tmp/issue216-before.log`, after deterministic real C/C. Real C then repeats
+before every recording update/Go comparison. Final oracle: **1828 sections /
+156715 lines**. Both **entire** inherited byte prefixes, including all
+**21 input / 67 output high-bit bytes** and authentic C trailing spaces,
+are verified unchanged:
+
+| File | Bytes | SHA-256 |
+| --- | --- | --- |
+| full input | 764663 | `22ac0386e8d5d075fadd76e99e310707c3b5e01e4d462ddda6bdabad840c2011` |
+| full output | 3032662 | `434bedc4bd41789cd42342567a99fe06162de4b44932ca1b13b05c661d4b5b94` |
+| inherited input | 755065 | `3784e0da540eaaa840d6ed129cf849bb2aa2d6dbfbb5aa81c1c06fb8ca198666` |
+| inherited output | 2987101 | `941512646e6c132d0f7d09e9c50b070847edfb64e77794f3e9bee46cd244eee4` |
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/command-compat/run.sh --update
+# Repeat without --update, then move/helper/rng/code/loadsave/turn-driver/turn
+# sequentially, with the same G3_REPO, RUN_TIMEOUT and GOFLAGS.
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+```
+
+The unchanged marker gate is exercised with a compiled native executable-entry
+control (not gameplay callbacks): six marker classes × actual native **0/134**
+× default/update, **24** harness-status-2 rejections before recording acceptance.
+No control changes expected bytes. Logs/provenance:
+`tmp/issue216-{before,command-update,command-default,marker-controls,prefixes,source-definitions}.log`.
+See [strict original-script evidence](../turn-compat/README.md#bribe-and-social-fixtures-216)
+and the [spec no-loss gate](../olympia-spec/README.md#bribe-no-loss-gate-216).
+Stage-3 prefix bytes remain inherited unchanged; no fixture or expected
+manifest is edited. Family #189 and stage 4 remain open.
+
+Parent independently reviewed the complete pinned callbacks, social extraction
+and all changed owners. Bounded vet and fresh full-enabled tests pass across
+11 packages (Olympia **2.984s**), as do all eight sequential defaults and the
+full **1828-section C/C/Go** oracle. Both entire inherited byte prefixes and
+all **1237 canonical source blobs/modes** verify unchanged. Fresh native
+pre-cleanup captures repeat social-switched C/C/Go (**243 entries**, identical
+manifest hash in the linked proof), and social-bribe/refused C/C (**245/241 entries**).
+Both latter Go runs remain honestly **engine2/script1 at INCITE start NYI**.
+Independent full spec repeats **59 pass /70 fail /0 error (171s)**, no changed
+accepted names; golden remains NO and initialization2. Redundant pointer-only
+BRIBE assertions were omitted in favor of existing boundary and real-dispatch
+oracle coverage. Logs/manifests are `tmp/parent216-*`; temporary launchers,
+binaries, matching captures/WORKs and generated coverage/use dumps are cleaned,
+retaining decisive failed-Go evidence and pristine canonical C. No family or
+stage-exit acceptance is inferred.
+
 ## RAISE/RALLY (#215, stage 4 N14b)
 
 **0.137.0-alpha**, unchanged immutable command/engine pin **9a03d12**.

@@ -6,6 +6,136 @@ package olympia
 // Ported from olympia/swear.c: lord() and player(), which write_master()
 // uses, and set_loyal(), set_lord() and is_unit(), which check_db() uses.
 
+// swear.c:344–396. Start validation is deliberately stricter than completion.
+func (w *world) vBribe(c *command) int {
+	who, target, amount := int(c.who), int(c.a), int(c.b)
+	if w.hasSkill(who, skBribeNoble) < 1 {
+		w.commandOut(who, "BRIBE requires knowledge of %s.", capitalize(w.boxName(skBribeNoble)))
+		return 0
+	}
+	if !w.checkCharHere(who, target) {
+		return 0
+	}
+	if p := w.rpChar(target); p != nil && p.newLord != 0 {
+		w.commandOut(who, "%s just switched employers this month, and is not looking for a new one so soon.", w.boxName(target))
+		return 0
+	}
+	if w.isNPC(target) {
+		w.commandOut(who, "NPC's cannot be bribed.")
+		return 0
+	}
+	if w.player(target) == w.player(who) {
+		w.commandOut(who, "%s already belongs to our faction.", w.boxName(target))
+		return 0
+	}
+	if amount == 0 {
+		w.commandOut(who, "Must specify an amount of gold to use as a bribe.")
+		return 0
+	}
+	if !w.canPay(who, amount) {
+		w.commandOut(who, "Don't have %s for a bribe.", goldS(amount))
+		return 0
+	}
+	w.commandOut(who, "Attempt to bribe %s with a gift of %s.", w.boxName(target), goldS(amount))
+	return 1
+}
+
+// swear.c:529–551. Gift flavor is keyed per turn, unlike the daily outcome.
+func (w *world) thanksForGift(who, target int) {
+	switch w.streams.SocGift(who, target) {
+	case 1:
+		w.commandOut(who, "%s graciously accepts our gift.", w.boxName(target))
+	case 2:
+		w.commandOut(who, "%s thanks us for the gift.", w.boxName(target))
+	case 3:
+		w.commandOut(who, "%s pockets the gold.", w.boxName(target))
+	default:
+		assert(false, "olympia/swear.c", 549, "FALSE")
+	}
+}
+
+// swear.c:573–679. Do not repeat start's skill, NPC or same-faction checks.
+// Bribes are intentionally a gold sink, including POCKET; only REPORT refunds:
+// https://github.com/playbymail/olympia-g3/issues/159
+func (w *world) dBribe(c *command) int {
+	who, target, amount := int(c.who), int(c.a), int(c.b)
+	if !w.checkStillHere(who, target) {
+		return 0
+	}
+	if p := w.rpChar(target); p != nil && p.newLord != 0 {
+		w.commandOut(who, "%s just switched employers this month, and is not looking for a new one so soon.", w.boxName(target))
+		return 0
+	}
+	if !w.charge(who, amount) {
+		w.commandOut(who, "Don't have %s for a bribe.", goldS(amount))
+		return 0
+	}
+	var lk int8
+	var rate int32
+	if p := w.rpChar(target); p != nil {
+		lk, rate = p.loyKind, p.loyRate
+	}
+	threshold := 0
+	switch lk {
+	case loyUnsworn, loyContract:
+		threshold = max(int(rate), 250)
+	case loyFear:
+		threshold = 250
+	case loyOath:
+	default:
+		assert(false, "olympia/swear.c", 614, "FALSE")
+	}
+	const (
+		switchLord = iota + 1
+		pocket
+		report
+		headForHills
+	)
+	outcome := pocket
+	if threshold <= 0 || amount < threshold {
+		if w.streams.SocBribe(who, target, 0, 1, 2) != 1 {
+			outcome = report
+		}
+	} else {
+		n := w.streams.SocBribe(who, target, 1, 1, 100)
+		switch {
+		case n <= 35:
+			outcome = switchLord
+		case n <= 65:
+			outcome = pocket
+		case n <= 90:
+			outcome = report
+		default:
+			outcome = headForHills
+		}
+	}
+	if outcome == switchLord && !w.enoughNPToAcquire(who, target) {
+		outcome = pocket
+	}
+	switch outcome {
+	case switchLord:
+		w.commandOut(who, "%s accepts the gift, and has decided to join us.", w.boxName(target))
+		w.unitDeserts(target, w.player(who), true, loyContract, 250)
+		w.pChar(target).freshHire = 1
+		if c.c != 0 {
+			w.joinStack(target, who)
+		}
+	case headForHills:
+		w.thanksForGift(who, target)
+		w.commandOut(who, "%s left the service of %s, but didn't join us.", w.boxName(target), w.boxName(w.player(target)))
+		w.unitDeserts(target, int(w.indepPlayer), true, loyUnsworn, 0)
+	case pocket:
+		w.thanksForGift(who, target)
+	case report:
+		w.thanksForGift(who, target)
+		w.genItem(who, itemGold, amount)
+		w.commandOut(target, "%s tried to bribe us with %s.", w.boxName(who), goldS(amount))
+	default:
+		assert(false, "olympia/swear.c", 675, "FALSE")
+	}
+	return 1
+}
+
 // swear.c:973–1082. RAISE checks availability at start, but allocates from
 // the actor's current sublocation at completion, through the shared cookie owner.
 func (w *world) vRaise(c *command) int {

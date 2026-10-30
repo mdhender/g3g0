@@ -1074,6 +1074,9 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			for _, p := range l {
 				fmt.Fprintf(&stdout, "offer %d %d %d %d %d\n", p.who, p.item, p.qty, p.cost, p.sort)
 			}
+		case "social":
+			who, target := args.num(t), args.num(t)
+			fmt.Fprintf(&stdout, "social rolls %d %d %d %d %d\n", who, target, w.streams.SocGift(who, target), w.streams.SocBribe(who, target, 0, 1, 2), w.streams.SocBribe(who, target, 1, 1, 100))
 		case "master":
 			n := args.num(t)
 			seed := make([]byte, 16)
@@ -2844,6 +2847,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pLoc(n).shroud = int16(a)
 			case "fresh":
 				w.pChar(n).freshHire = int8(a)
+			case "new_lord":
+				w.pChar(n).newLord = int8(a)
 			case "recent":
 				w.pSubloc(n).recentLoot = int8(a)
 			case "relic_decay":

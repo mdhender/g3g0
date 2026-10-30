@@ -60,6 +60,10 @@ func useCallback(name string) func(*world, *command) int {
 		return (*world).vRally
 	case "d_rally":
 		return (*world).dRally
+	case "v_bribe":
+		return (*world).vBribe
+	case "d_bribe":
+		return (*world).dBribe
 	}
 	return unportedCommand("USE "+name, "callback")
 }

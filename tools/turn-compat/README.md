@@ -9,6 +9,56 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## BRIBE and social fixtures (#216)
+
+At **0.138.0-alpha**, immutable **9a03d126b329ed466c4af48425553c025eaca26f**
+is unchanged. The original social README/Lua/scenario/check.sh/EXPECT files
+are read, never modified. All **1237 original blobs and modes** in the
+separate canonical export `tmp/_issue215/canonical` are reverified before
+reusing its C binary, SHA-256
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+No protected roundtrip input/cache is executed or needed for this proof.
+
+The native pre-cleanup method documented below is recreated under
+`tmp/_issue216`: O_RDWR stream captures, original argv[0]/stdin, bash sourcing
+timeout.sh and `run_limited 120 "$0" "$S4_ENGINE" "$@"`; record actual status,
+seek/replay stdout then stderr, close both, write status/newline, then
+`cp -a . "$S4_CAPTURE/cwd"` **after replay, before original script cleanup**.
+The unchanged scripts themselves run under `run_limited 150`. Real C runs
+twice before Go; raw dependency/NYI/stub/sanitizer/runtime-error rejection
+precedes C status acceptance. Launcher SHA-256:
+`e61415bad36b03243802bb6119846b5bb80e624bf32100ea91c8981dcac948f9`.
+
+| Original fixture | C1/C2/Go engine status | C scripts / Go script | Strict result |
+| --- | --- | --- | --- |
+| social-switched | 0/0/0 | YES 0 / YES 0 | C/C and C/Go, all **243** cwd entries identical |
+| social-bribe | 0/0/2 | YES 0 / NO 1 | C/C, all **245** cwd entries identical; Go stops at INCITE start NYI |
+| social-refused | 0/0/2 | YES 0 / NO 1 | C/C, all **241** cwd entries identical; Go stops at INCITE start NYI |
+
+The existing strict comparator (`tools/turn-compat`), supplemented by
+`tools/lib/tree-modes.py`, covers raw status/stdout/stderr and **every** cwd
+path/type/mode/empty directory/file byte. There are no exclusions or
+normalization, including script-owned stderr. All three social-switched
+capture manifests have SHA-256
+`9571120d8a7e2f100813cc53507da7eb4242033b89257da88dad7f28175d3ac8`;
+its original coverage/report/state-export assertions pass too. Its delayed
+contract-500 SWITCH, rival's finish refusal and latecomer's start refusal
+are actual complete-engine behavior, not a callback overlay.
+
+social-bribe/refused still require later INCITE/TERRORIZE and, for actual
+USE675 success, combat. Their original scripts remain honestly red; no
+partial-oracle success closes family #189. Matching captures and temporary
+launchers/binaries/sources are removed; failed-Go captures and decisive logs/
+manifests remain. Logs: `tmp/issue216-fixtures.log`,
+`tmp/issue216-social-FIXTURE-{c1,c2,go}.log`, corresponding `-manifest.txt`,
+`tmp/issue216-{canonical-provenance,source-definitions}.log`; failed-Go trees
+are `tmp/_issue216/social-{bribe,refused}-go`.
+
+No pin move, original fixture edit, full serializer/207-roundtrip rerun,
+new dependency, family/stage-exit or remote-CI acceptance is implied.
+See [callback/source proof](../command-compat/README.md#bribe-216-stage-4-n15)
+and [spec no-loss](../olympia-spec/README.md#bribe-no-loss-gate-216).
+
 ## Recruitment raise and refused (#215)
 
 At **0.137.0-alpha**, pin **9a03d126b329ed466c4af48425553c025eaca26f** stays

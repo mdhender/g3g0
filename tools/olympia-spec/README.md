@@ -8,6 +8,37 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## BRIBE no-loss gate (#216)
+
+At **0.138.0-alpha**, unchanged immutable **9a03d126b329ed466c4af48425553c025eaca26f**,
+the full unchanged spec reports **129 fixtures: 59 pass / 70 fail / 0 error
+(179s)**. Only **social-switched** is newly passing. Exact set checks retain
+all prior **58 names** and every stage-3 **36** name (the stage-3 source list
+is verified against its accepted 876-byte SHA-256). The tool alone writes
+passing.txt: **1234 bytes**, SHA-256
+`7a4fd07d17e2822c50d996912f1504d0bb2ae436424f191c73576a4aba5b633e`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue216/spec" \
+  RUN_DIR=/tmp/g3g0-issue216-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Separate original-script proof runs real C twice before Go; social-switched
+matches raw status/streams and all **243 cwd entries**, paths/types/modes/
+empty directories/bytes, with original script **YES / 0**, engine **0**.
+social-bribe/refused each pass C/C but Go honestly stops at **INCITE start
+NYI**, engine **2** / script **1**; their later social/combat owners remain.
+Golden remains **NO**, initialization exits **2** at unsupported `load_db (-i)`.
+#289's pending ATTACK/fog and explicit stage-5 console remainder are unchanged.
+No fixture/expected output is edited and no family/stage-exit is claimed.
+
+Logs: `tmp/issue216-spec.log`, `tmp/_issue216/spec/{run-all,olympia-g3,golden}.log`,
+`tmp/issue216-spec-names.log`. Temporary export/launcher sources and binaries
+are removed; logs remain. See [native capture evidence](../turn-compat/README.md#bribe-and-social-fixtures-216)
+and [complete callback evidence](../command-compat/README.md#bribe-216-stage-4-n15).
+
 ## RAISE RALLY no-loss gate (#215)
 
 At **0.137.0-alpha**, unchanged immutable **9a03d126b329ed466c4af48425553c025eaca26f**,

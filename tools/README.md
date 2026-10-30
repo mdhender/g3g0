@@ -7,6 +7,42 @@ Task notes below retain their original acceptance scope and temporary boundaries
 Current final-tier status is under **Final-tier validation (#178)**; the
 **Stage exit** section gives the command order and historical integration evidence.
 
+## BRIBE callback proof (#216)
+
+**0.138.0-alpha**, unchanged immutable **9a03d126b329ed466c4af48425553c025eaca26f**.
+Complete swear.c v_bribe/thanks_for_gift/d_bribe use existing shared owners,
+direct BRIBE and USE671, preserving genuine NULL interrupts and C's gold sink
+(G3 #159). No new RNG owner, source dependency, fixture or pin changes.
+Completion deliberately does not repeat start's skill/NPC/faction checks.
+
+The existing command oracle adds **19 sections**, unchanged real C twice
+before recording/Go, with all four outcomes at actual keyed boundary rolls
+35/36/65/66/90/91, thresholds/mutations, NP/ownership/queues/allocations,
+real delayed/reloaded direct/USE dispatch, interruption and raw accounting.
+Entire inherited **755065-byte input / 2987101-byte output** prefixes remain
+byte-identical, including high-bit/trailing-space bytes. Source/recording
+hashes and bounded commands are in [command proof](command-compat/README.md#bribe-216-stage-4-n15).
+Twenty-four compiled native marker controls reject all six marker classes at
+actual statuses **0/134 × default/update**, before reference acceptance.
+
+Original social-switched passes C/C/Go, **243 cwd entries**, raw streams/status
+and all paths/types/modes/empty directories/bytes. Original social-bribe and
+social-refused pass C/C (**245/241 entries**) but Go remains **engine2/script1,
+INCITE start NYI**; later social/combat owners remain mandatory. See
+[native capture provenance](turn-compat/README.md#bribe-and-social-fixtures-216).
+Full original spec is **59 pass / 70 fail / 0 error**, adding only social-switched
+and retaining all **58** prior / **36** stage-3 names; golden remains NO,
+initialization2. The tool alone writes passing.txt; see
+[spec no-loss](olympia-spec/README.md#bribe-no-loss-gate-216).
+
+Eight routine defaults run sequentially (command/move/helper/rng/code/loadsave/
+turn-driver/turn), followed by bounded vet and fresh bounded full-enabled
+tests. Logs: `tmp/issue216-*-default.log`, `tmp/issue216-{vet,tests}{,-final}.log`,
+`tmp/issue216-spec.log`, prefix/source/provenance/marker/fixture manifests.
+This localized callback adds no serializer dependency; #291's full207-corpus
+proof is not rerun or newly claimed. No family/stage exit, stage5, remote CI,
+commit or delivery acceptance is implied.
+
 ## Merged-pin proof (#291)
 
 At **0.136.3-alpha**, the remaining eight affected defaults advance to immutable
