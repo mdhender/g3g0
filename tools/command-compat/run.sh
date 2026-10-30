@@ -176,6 +176,7 @@ functions = {
               'correct_use_item', 'meets_requirements', 'consume_requirements', 'consume_scroll',
               'experience_use_speedup', 'add_skill_experience',
               'v_use', 'd_use', 'i_use', 'v_use_item', 'd_use_item',
+              'skill_cost', 'may_study', 'begin_study', 'correct_study_item', 'v_study', 'd_study',
               'rp_skill_ent', 'p_skill_ent', 'learn_skill', 'exp_level', 'has_skill', 'char_np_total', 'forget_skill', 'skill_school',
               'exp_s', 'rep_skill_comp', 'flat_skill_comp', 'list_skill_sup',
               'list_skills', 'fractional_skill_qualifier', 'list_partial_skills'],
@@ -376,6 +377,10 @@ int immed_see_all, month_done, show_combat_flag;
             start, end = source.index('struct use_tbl_ent {'), source.index('\n\nint\nv_implicit(')
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/use.c"\n')
             out.write(source[start:end])
+            # Entire original skills stream prefix and static draw helpers.
+            start, end = source.index('#define\tTAG_TURN'), source.index('int\nv_study(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/use.c"\n')
+            out.write(source[start:end])
         if file == 'storm.c':
             start = source.index('static rng_stream weather_rng;')
             end = source.index('int\nv_bind_storm(')
@@ -432,6 +437,8 @@ void drv_use_table(void) {
 int drv_use_lookup(int sk) { return find_use_entry(sk); }
 int drv_use_may(int who,int sk) { return may_use_skill(who,sk); }
 int drv_use_correct(struct command *c) { return correct_use_item(c); }
+int drv_study_basis(int who,int sk) { return may_study(who,sk); }
+int drv_study_roll(int who,int sk) { return skil_study(who,sk); }
 int drv_use_meets(int who,int sk) { return meets_requirements(who,sk); }
 void drv_use_consume(int who,int sk) { consume_requirements(who,sk); }
 void drv_use_scroll(int who,int basis) { consume_scroll(who,basis); }
@@ -900,6 +907,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N24 '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N24 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N23 '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

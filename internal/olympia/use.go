@@ -725,6 +725,183 @@ func (w *world) charNPTotal(who int) int {
 	return int(sum)
 }
 
+// STUDY is use.c:1416–1576,1750–1856,1906–1942. Allocation and the
+// archery/magic completion effects remain in the shared P4 owners below.
+func skillCost(sk int) int { return 100 }
+
+// mayStudy preserves instruction precedence and the original list order:
+// location, first known offering skill, last book, last scroll.
+func (w *world) mayStudy(who, sk int) int {
+	where := w.subloc(who)
+	if p := w.rpSubloc(where); p != nil && p.teaches.Lookup(sk) >= 0 {
+		return where
+	}
+	assert(w.validBox(who), "olympia/use.c", 1458, "valid_box(who)")
+	if p := w.rpChar(who); p != nil {
+		for _, e := range p.skills.Copy() {
+			if e.know == skillKnow {
+				if q := w.rpSkill(int(e.skill)); q != nil && q.offered.Lookup(sk) >= 0 {
+					return int(e.skill)
+				}
+			}
+		}
+	}
+	ret, scroll := 0, 0
+	for e := range w.loopInv(who) {
+		if p := w.rpItemMagic(int(e.item)); p != nil && p.mayStudy.Lookup(sk) >= 0 {
+			if w.subkind(int(e.item)) == subScroll {
+				scroll = int(e.item)
+			} else {
+				ret = int(e.item)
+			}
+		}
+	}
+	if ret != 0 {
+		return ret
+	}
+	return scroll
+}
+
+func (w *world) beginStudy(c *command, sk int) bool {
+	who := int(c.who)
+	cost, npReq := skillCost(sk), 0
+	if p := w.rpSkill(sk); p != nil {
+		npReq = int(p.npReq)
+	}
+	np := 0
+	if p := w.rpPlayer(w.player(who)); p != nil {
+		np = int(p.noblePoints)
+	}
+	if npReq > np {
+		verb := "are"
+		if npReq == 1 {
+			verb = "is"
+		}
+		w.commandOut(who, "%s noble point%s %s required to begin study of %s.", capitalize(niceNum(npReq)), addS(npReq), verb, w.boxCode(sk))
+		return false
+	}
+	if cost > 0 {
+		if !w.charge(who, cost) {
+			w.commandOut(who, "Cannot afford %s to begin study.", goldS(cost))
+			return false
+		}
+		w.commandOut(who, "Paid %s to begin study.", goldS(cost))
+	}
+	if npReq > 0 {
+		w.commandOut(who, "Deducted %s noble point%s to begin study.", niceNum(npReq), addS(npReq))
+		w.deductNP(w.player(who), npReq)
+	}
+	w.pSkillEnt(who, sk).know = skillLearning
+	return true
+}
+
+func (w *world) correctStudyItem(c *command) int {
+	if p := w.rpItemMagic(int(c.a)); p != nil && len(p.mayStudy) > 0 {
+		c.a = int32(p.mayStudy[0])
+	}
+	return int(c.a)
+}
+
+func (w *world) vStudy(c *command) int {
+	who, sk, fast := int(c.who), int(c.a), int(c.b)
+	studied := int8(0)
+	if p := w.rpChar(who); p != nil {
+		studied = p.studied
+	}
+	if studied >= 14 && fast <= 0 {
+		w.commandOut(who, "Maximum 14 days studied this month.")
+		return 0
+	}
+	if w.kind(sk) == tItem {
+		sk = w.correctStudyItem(c)
+	}
+	if c.parse.Len()-1 < 1 {
+		w.commandOut(who, "Must specify a skill to study.")
+		return 0
+	}
+	if w.kind(sk) != tSkill {
+		w.commandOut(who, "%s is not a valid skill.", c.parse[1])
+		return 0
+	}
+	parent := w.skillSchool(sk)
+	if parent != sk && w.hasSkill(who, parent) < 1 {
+		w.commandOut(who, "%s must be learned before %s can be known.", capitalize(w.boxName(parent)), w.boxCode(sk))
+		return 0
+	}
+	p := w.rpSkillEnt(who, sk)
+	if p != nil && p.know == skillKnow {
+		w.commandOut(who, "Already know %s.", w.boxName(sk))
+		return 0
+	}
+	basis := 0
+	if p == nil {
+		basis = w.mayStudy(who, sk)
+		if basis == 0 {
+			w.commandOut(who, "Instruction in %s is not available here.", w.boxCode(sk))
+			return 0
+		}
+	}
+	if p == nil || p.know == skillDont {
+		if !w.beginStudy(c, sk) {
+			return 0
+		}
+	}
+	if fast > 0 {
+		pl := w.player(who)
+		pool := 0
+		if p := w.rpPlayer(pl); p != nil {
+			pool = int(p.fastStudy)
+		}
+		if fast > pool {
+			fast = pool
+		}
+		p := w.pSkillEnt(who, sk)
+		required := int(int32(w.learnTime(sk)) - p.daysStudied)
+		if fast > required {
+			fast = required
+		}
+		w.commandOut(who, "Using %d fast study day%s to accelerate learning of %s.", fast, addS(fast), w.justName(sk))
+		p.daysStudied += int32(fast)
+		w.pPlayer(pl).fastStudy -= int16(fast)
+		if int(p.daysStudied) >= w.learnTime(sk) {
+			w.learnSkill(who, sk)
+		}
+		c.wait, c.inhibitFinish = 0, 1
+		if basis != 0 && w.streams.SkilStudy(who, sk) == 4 {
+			w.consumeScroll(who, basis)
+		}
+		return 1
+	}
+	w.commandOut(who, "Study %s for %s day%s.", w.justName(sk), niceNum(int(c.wait)), addS(int(c.wait)))
+	if basis != 0 && w.streams.SkilStudy(who, sk) == 4 {
+		w.consumeScroll(who, basis)
+	}
+	return 1
+}
+
+func (w *world) dStudy(c *command) int {
+	who, sk := int(c.who), int(c.a)
+	if w.kind(sk) != tSkill {
+		w.logWrite(10, "d_study: skill %d is gone, who=%d\n", sk, who)
+		w.commandOut(who, "Internal error: skill %s is gone", w.boxCode(sk))
+		return 0
+	}
+	ch := w.pChar(who)
+	ch.studied++
+	p := w.pSkillEnt(who, sk)
+	p.daysStudied++
+	if int(p.daysStudied) >= w.learnTime(sk) {
+		w.learnSkill(who, sk)
+		c.wait = 0
+		return 1
+	}
+	if ch.studied >= 14 && c.wait > 0 {
+		w.commandOut(who, "Maximum 14 days studied this month.")
+		c.wait = 0
+	}
+	return 1
+}
+
 func (w *world) rpSkillEnt(who, skill int) *skillEnt {
 	if p := w.rpChar(who); p != nil {
 		for _, e := range p.skills {

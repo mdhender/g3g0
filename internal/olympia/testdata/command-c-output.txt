@@ -180600,3 +180600,2242 @@ warning: plural name not set for item [77]
 warning: plural name not set for item [77]
 
 exit 0
+stdout:
+section N24 first tuition through actual dispatch
+> entity 1 4 0
+> entity 9000 3 14
+> entity 9500 5 0
+> name 9500 asymmetric craft
+> link 9000 1000
+> field 9000 teaches 9500
+> field 9500 skill_np 2
+> field 9500 skill_time 15
+> field 200 np 1
+> inventory 1000 1 99
+> parse study 9500
+parse 1
+> do
+> save 1000
+1000 char 0
+il	1 99
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+
+> save 200
+200 player pl_regular
+PL
+ np 1
+
+> field 200 np 2
+> parse study 9500
+parse 1
+> do
+> save 1000
+1000 char 0
+il	1 99
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+
+> save 200
+200 player pl_regular
+PL
+ np 2
+
+> genitem 1000 1 1
+> parse study 9500
+parse 1
+> do
+> dump
+cmd 81 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9500 0 0 0 0 0 0 0; parse [study] [9500]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 1 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+ st 1
+
+> save 200
+200 player pl_regular
+PL
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 9500 1 1 0 0
+> readlog 200
+log 200:
+1000:0::0::> study 9500
+1000:0::0::Two noble points are required to begin study of [9500].
+1000:0::0::> study 9500
+1000:0::0::Cannot afford 100~gold to begin study.
+1000:0::0::> study 9500
+1000:0::0::Paid 100~gold to begin study.
+1000:0::0::Deducted two noble points to begin study.
+1000:0::0::Study asymmetric craft for zero days.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9500 1
+raw item 1 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 1 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+SL
+ te 9500 
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9500 skill 0
+na asymmetric craft
+SK
+ tl 15
+ np 2
+
+stderr:
+
+exit 0
+stdout:
+section N24 dont row bypasses instruction but pays and learning resumes free
+> entity 1 4 0
+> entity 9500 5 0
+> field 9500 skill_np 1
+> field 9500 skill_time 19
+> report skill 1000 9500 0 3
+> field 200 np 1
+> inventory 1000 1 100
+> parse study 9500
+parse 1
+> do
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	9500 1 4 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+ st 1
+
+> save 200
+200 player pl_regular
+PL
+
+> parse study 9500
+parse 1
+> do
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	9500 1 5 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+ st 1
+
+> save 200
+200 player pl_regular
+PL
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 9500 1 5 0 0
+> readlog 200
+log 200:
+1000:0::0::> study 9500
+1000:0::0::Paid 100~gold to begin study.
+1000:0::0::Deducted one noble point to begin study.
+1000:0::0::Study <no subkind> for zero days.
+1000:0::0::> study 9500
+1000:0::0::Study <no subkind> for zero days.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9500 1
+raw item 1 0
+1000 char 0
+CH
+ lo 200
+ sl	9500 1 5 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9500 skill 0
+SK
+ tl 19
+ np 1
+
+stderr:
+
+exit 0
+stdout:
+section N24 validation unknown parent known parent missing invalid and known refusal
+> entity 1 4 0
+> entity 9000 3 14
+> entity 9500 5 0
+> entity 9501 5 0
+> name 9500 parent school
+> name 9501 child skill
+> link 9000 1000
+> field 9501 required 9500
+> field 9000 teaches 9501
+> parse study
+parse 1
+> do
+> parse study 1
+parse 1
+> do
+> parse study unknown
+parse 1
+> rawargs -2147483648 -1 0
+> do
+> parse study 9501
+parse 1
+> do
+> report skill 1000 9500 1 9
+> parse study 9501
+parse 1
+> do
+> usemeta grant 1000 9500
+> inventory 1000 1 100
+> parse study 9501
+parse 1
+> do
+> parse study 9500
+parse 1
+> do
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 2 9 0 0 \
+	9501 2 1 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 9500 2 9 0 0
+grant row 9501 2 1 0 0
+> readlog 200
+log 200:
+1000:0::0::> study
+1000:0::0::Must specify a skill to study.
+1000:0::0::> study 1
+1000:0::0::1 is not a valid skill.
+1000:0::0::> study unknown
+1000:0::0::unknown is not a valid skill.
+1000:0::0::> study 9501
+1000:0::0::Parent school~[9500] must be learned before [9501] can be known.
+1000:0::0::> study 9501
+1000:0::0::Parent school~[9500] must be learned before [9501] can be known.
+1000:0::0::Learned parent school~[9500].
+1000:0::0::> study 9501
+1000:0::0::Paid 100~gold to begin study.
+1000:0::0::Study child skill for zero days.
+1000:0::0::Learned child skill~[9501].
+1000:0::0::> study 9500
+1000:0::0::Already know parent school~[9500].
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9500 2
+raw skill 9501 2
+raw item 1 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 2 9 0 0 \
+	9501 2 1 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+SL
+ te 9501 
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9500 skill 0
+na parent school
+
+export entity 9501 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9501 skill 0
+na child skill
+SK
+ tl 0
+ rs 9500
+
+stderr:
+
+exit 0
+stdout:
+section N24 item correction uses first skill even without possession and cap precedes correction
+> entity 1 4 0
+> entity 9000 3 14
+> entity 9500 5 0
+> entity 9501 5 0
+> entity 9600 4 42
+> field 9600 may_study 9501
+> field 9600 may_study 9500
+> link 9000 1000
+> field 9000 teaches 9501
+> field 9501 skill_time 30
+> inventory 1000 1 100
+> field 1000 studied 14
+> parse study 9600
+parse 1
+> do
+> dump
+cmd 81 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9600 0 0 0 0 0 0 0; parse [study] [9600]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> parse study
+parse 1
+> rawargs 9600 0 0
+> study start
+study start 0
+> dump
+cmd 81 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9600 0 0 0 0 0 0 0; parse [study]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> parse study garbage
+parse 1
+> do
+> field 1000 studied 13
+> parse study 9600
+parse 1
+> do
+> dump
+cmd 81 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9501 0 0 0 0 0 0 0; parse [study] [9600]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9501 1 1 0 0
+CO
+ li study 9600
+ ar 9501 0 0 0 0 0 0 0
+ st 1
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 9501 1 1 0 0
+> readlog 200
+log 200:
+1000:0::0::> study 9600
+1000:0::0::Maximum 14 days studied this month.
+1000:0::0::Maximum 14 days studied this month.
+1000:0::0::> study garbage
+1000:0::0::Maximum 14 days studied this month.
+1000:0::0::> study 9600
+1000:0::0::Paid 100~gold to begin study.
+1000:0::0::Study <no subkind> for zero days.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9501 1
+raw item 1 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9501 1 1 0 0
+CO
+ li study 9600
+ ar 9501 0 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+SL
+ te 9501 
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9500 skill 0
+
+export entity 9501 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9501 skill 0
+SK
+ tl 30
+
+export entity 9600 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9600 item scroll
+IT
+IM
+ ms 9501 9500 
+
+stderr:
+
+exit 0
+stdout:
+section N24 instruction location first known skill last book last scroll original ordering
+> entity 9000 3 14
+> entity 9001 3 14
+> entity 9500 5 0
+> entity 9510 5 0
+> entity 9511 5 0
+> entity 9600 4 42
+> entity 9601 4 0
+> entity 9602 4 0
+> entity 9603 4 42
+> field 9600 may_study 9500
+> field 9601 may_study 9500
+> field 9602 may_study 9500
+> field 9603 may_study 9500
+> field 9510 offered 9500
+> field 9511 offered 9500
+> report skill 1000 9511 2 0
+> report skill 1000 9510 2 0
+> report skill 1001 9510 1 0
+> inventory 1000 9600 1
+> inventory 1000 9602 1
+> inventory 1000 9601 1
+> inventory 1000 9603 1
+> inventory 1001 9600 1
+> inventory 1001 9602 1
+> inventory 1001 9601 1
+> inventory 1001 9603 1
+> link 9000 1000
+> link 9001 1001
+> field 9000 teaches 9500
+> study basis 1000 9500
+study basis 9000
+> link 9001 1000
+> study basis 1000 9500
+study basis 9511
+> study basis 1001 9500
+study basis 9601
+> delete_box 9601
+> study basis 1001 9500
+study basis 9602
+> delete_box 9602
+> study basis 1001 9500
+study basis 9603
+> inventory 1001 9600 -9
+> save 1000
+1000 char 0
+il	9600 1 \
+	9603 1
+LI
+ wh 9001
+CH
+ lo 200
+ sl	9511 2 0 0 0 \
+	9510 2 0 0 0
+
+> save 1001
+1001 char 0
+il	9600 1 \
+	9603 1
+LI
+ wh 9001
+CH
+ lo 200
+ sl	9510 1 0 0 0
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 9511 2 0 0 0
+grant row 9510 2 0 0 0
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9511 2
+raw skill 9510 2
+raw item 9600 1
+raw item 9602 1
+raw item 9601 1
+raw item 9603 1
+1000 char 0
+il	9600 1 \
+	9603 1
+LI
+ wh 9001
+CH
+ lo 200
+ sl	9511 2 0 0 0 \
+	9510 2 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9510 1
+raw item 9600 1
+raw item 9602 1
+raw item 9601 1
+raw item 9603 1
+raw item 9600 -9
+1001 char 0
+il	9600 1 \
+	9603 1
+LI
+ wh 9001
+CH
+ lo 200
+ sl	9510 1 0 0 0
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9000 loc city
+LI
+SL
+ te 9500 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001 1000
+9001 loc city
+LI
+ hl 1001 1000 
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9500 skill 0
+
+export entity 9510 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9510 skill 0
+SK
+ tl 0
+ of 9500 
+
+export entity 9511 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9511 skill 0
+SK
+ tl 0
+ of 9500 
+
+export entity 9600 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9600 item scroll
+IT
+IM
+ ms 9500 
+
+export entity 9603 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9603 item scroll
+IT
+IM
+ ms 9500 
+
+stderr:
+
+exit 0
+stdout:
+section N24 slow scroll draws keyed per day and last scroll disappears with full aftermath
+> entity 1 4 0
+> entity 9000 3 14
+> entity 9500 5 0
+> entity 9600 4 42
+> entity 9601 4 42
+> field 9500 skill_time 30
+> field 9600 may_study 9500
+> field 9601 may_study 9500
+> field 9600 unique 1000
+> field 9601 unique 1000
+> inventory 1000 9600 1
+> inventory 1000 9601 1
+> inventory 1000 1 100
+> link 9000 1000
+> set turn 9
+> set day 0
+> study roll 1000 9500
+study roll 1
+> set day 1
+> study roll 1000 9500
+study roll 3
+> set day 2
+> study roll 1000 9500
+study roll 2
+> set day 3
+> study roll 1000 9500
+study roll 2
+> set day 4
+> study roll 1000 9500
+study roll 1
+> set day 5
+> study roll 1000 9500
+study roll 4
+> parse study 9500
+parse 1
+> do
+> study roll 1000 9500
+study roll 4
+> save 1000
+1000 char 0
+il	9600 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 1 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+ st 1
+
+> save 9600
+9600 item scroll
+IT
+ un 1000
+IM
+ ms 9500 
+
+> save 9601
+> entity_rolls 1000 1 9000
+prison roll 929
+land dir99 4
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 38266
+> set turn 10
+> study roll 1000 9500
+study roll 3
+> newitem 1000 0
+created 72545
+> save_new
+72545 item 0
+IT
+ un 1000
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 9500 1 1 0 0
+> readlog 200
+log 200:
+1000:0::0::> study 9500
+1000:0::0::Paid 100~gold to begin study.
+1000:0::0::Study <no subkind> for zero days.
+1000:0::0::Scroll~[9601] vanishes.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9500 1
+raw item 9600 1
+raw item 9601 0
+raw item 1 0
+raw item 72545 1
+1000 char 0
+il	9600 1 \
+	72545 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 1 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9500 skill 0
+SK
+ tl 30
+
+export entity 9600 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+9600 item scroll
+IT
+ un 1000
+IM
+ ms 9500 
+
+export entity 72545 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+72545 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N24 fast original positive pool zero negative overrequest zero and negative required
+> entity 9500 5 0
+> field 9500 skill_time 10
+> report skill 1000 9500 1 2
+> field 1000 studied 14
+> parse study 9500 3
+parse 1
+> do
+> dump
+cmd 81 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 1 cur 0
+args 9500 3 0 0 0 0 0 0; parse [study] [9500] [3]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	9500 1 2 0 0
+CO
+ li study 9500 3
+ ar 9500 3 0 0 0 0 0 0
+ st 1
+ if 1
+
+> field 200 fast_study -2
+> parse study 9500 3
+parse 1
+> do
+> dump
+cmd 81 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 1 cur 0
+args 9500 3 0 0 0 0 0 0; parse [study] [9500] [3]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	9500 1 0 0 0
+CO
+ li study 9500 3
+ ar 9500 3 0 0 0 0 0 0
+ st 1
+ if 1
+
+> save 200
+200 player pl_regular
+PL
+
+> field 200 fast_study 20
+> parse study 9500 999
+parse 1
+> do
+> dump
+cmd 81 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 1 cur 0
+args 9500 999 0 0 0 0 0 0; parse [study] [9500] [999]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	9500 2 10 0 0
+CO
+ li study 9500 999
+ ar 9500 999 0 0 0 0 0 0
+ st 1
+ if 1
+
+> save 200
+200 player pl_regular
+PL
+ fs 10
+
+> entity 9501 5 0
+> field 9501 skill_time 4
+> report skill 1000 9501 1 4
+> parse study 9501 1
+parse 1
+> do
+> dump
+cmd 81 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 1 cur 0
+args 9501 1 0 0 0 0 0 0; parse [study] [9501] [1]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 200
+200 player pl_regular
+PL
+ fs 10
+
+> entity 9502 5 0
+> field 9502 skill_time 4
+> report skill 1000 9502 1 9
+> parse study 9502 1
+parse 1
+> do
+> dump
+cmd 81 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 1 cur 0
+args 9502 1 0 0 0 0 0 0; parse [study] [9502] [1]
+player 200 count 5 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	9500 2 10 0 0 \
+	9501 2 4 0 0 \
+	9502 2 4 0 0
+CO
+ li study 9502 1
+ ar 9502 1 0 0 0 0 0 0
+ st 1
+ if 1
+
+> save 200
+200 player pl_regular
+PL
+ fs 15
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 9500 2 10 0 0
+grant row 9501 2 4 0 0
+grant row 9502 2 4 0 0
+> readlog 200
+log 200:
+1000:0::0::> study 9500 3
+1000:0::0::Using 0 fast study days to accelerate learning of <no subkind>.
+1000:0::0::> study 9500 3
+1000:0::0::Using -2 fast study days to accelerate learning of <no subkind>.
+1000:0::0::> study 9500 999
+1000:0::0::Using 10 fast study days to accelerate learning of <no subkind>.
+1000:0::0::Learned <no subkind>~[9500].
+1000:0::0::> study 9501 1
+1000:0::0::Using 0 fast study days to accelerate learning of <no subkind>.
+1000:0::0::Learned <no subkind>~[9501].
+1000:0::0::> study 9502 1
+1000:0::0::Using -5 fast study days to accelerate learning of <no subkind>.
+1000:0::0::Learned <no subkind>~[9502].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ fs 15
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9500 2
+raw skill 9501 2
+raw skill 9502 2
+1000 char 0
+CH
+ lo 200
+ sl	9500 2 10 0 0 \
+	9501 2 4 0 0 \
+	9502 2 4 0 0
+CO
+ li study 9502 1
+ ar 9502 1 0 0 0 0 0 0
+ st 1
+ if 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9500 skill 0
+SK
+ tl 10
+
+export entity 9501 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9501 skill 0
+SK
+ tl 4
+
+export entity 9502 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9502 skill 0
+SK
+ tl 4
+
+stderr:
+
+exit 0
+stdout:
+section N24 daily boundary completion precedes monthly cap and signed narrow wrap
+> entity 9500 5 0
+> field 9500 skill_time 15
+> report skill 1000 9500 1 13
+> field 1000 studied 13
+> parse study 9500
+parse 1
+> set wait 7
+> study daily
+study daily 1
+> dump
+cmd 81 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9500 0 0 0 0 0 0 0; parse [study] [9500]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	9500 1 14 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+
+> field 1000 studied 13
+> study daily
+study daily 1
+> dump
+cmd 81 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9500 0 0 0 0 0 0 0; parse [study] [9500]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	9500 2 15 0 0
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+
+> entity 9501 5 0
+> field 9501 skill_time 100
+> parse study 9501
+parse 1
+> field 1000 studied 14
+> set wait 0
+> study daily
+study daily 1
+> dump
+cmd 81 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9501 0 0 0 0 0 0 0; parse [study] [9501]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> field 1000 studied 127
+> set wait 5
+> study daily
+study daily 1
+> dump
+cmd 81 who 1000 state 0 status 0 wait 5 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9501 0 0 0 0 0 0 0; parse [study] [9501]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> usemeta row_fields 1000 9501 2147483647 0
+> study daily
+study daily 1
+> dump
+cmd 81 who 1000 state 0 status 0 wait 5 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9501 0 0 0 0 0 0 0; parse [study] [9501]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	9500 2 15 0 0 \
+	9501 0 -2147483648 0 0
+CO
+ li study 9501
+ ar 9501 0 0 0 0 0 0 0
+ wa 5
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 9500 2 15 0 0
+grant row 9501 0 -2147483648 0 0
+> readlog 200
+log 200:
+1000:0::0::Maximum 14 days studied this month.
+1000:0::0::Learned <no subkind>~[9500].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9500 2
+raw skill 9501 0
+1000 char 0
+CH
+ lo 200
+ sl	9500 2 15 0 0 \
+	9501 0 -2147483648 0 0
+CO
+ li study 9501
+ ar 9501 0 0 0 0 0 0 0
+ wa 5
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9500 skill 0
+SK
+ tl 15
+
+export entity 9501 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9501 skill 0
+SK
+ tl 100
+
+stderr:
+
+exit 0
+stdout:
+section N24 daily invalid deleted skill has no row allocation or studied increment
+> entity 9500 5 0
+> field 9500 skill_time 30
+> parse study 9500
+parse 1
+> set wait 6
+> delete_box 9500
+> study daily
+study daily 0
+> dump
+cmd 81 who 1000 state 0 status 0 wait 6 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9500 0 0 0 0 0 0 0; parse [study] [9500]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+ wa 6
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+> readlog 10
+log 10:
+> readlog 200
+log 200:
+10:0::0::d_study: skill 9500 is gone, who=1000
+
+1000:0::0::Internal error: skill [9500] is gone
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 10 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li study 9500
+ ar 9500 0 0 0 0 0 0 0
+ wa 6
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N24 fast archery threshold 49 and 50 and magic weather effects reuse real grant
+> entity 615 5 0
+> field 615 skill_time 1
+> report skill 1000 615 1 0
+> report skill 1001 615 1 0
+> field 1000 char_missile 49
+> field 1001 char_missile 50
+> field 200 fast_study 10
+> parse study 615 1
+parse 1
+> do
+> who 1001
+> parse study 615 1
+parse 1
+> do
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	615 2 1 0 0
+ mi 99
+CO
+ li study 615 1
+ ar 615 1 0 0 0 0 0 0
+ st 1
+ if 1
+
+> save 1001
+1001 char 0
+CH
+ lo 200
+ sl	615 2 1 0 0
+ mi 50
+CO
+ li study 615 1
+ ar 615 1 0 0 0 0 0 0
+ st 1
+ if 1
+
+> who 1000
+> entity 820 5 43
+> field 820 skill_time 1
+> report skill 1000 820 1 0
+> parse study 820 1
+parse 1
+> do
+> entity 9500 5 0
+> field 9500 required 820
+> field 9500 skill_time 1
+> report skill 1000 9500 1 0
+> parse study 9500 1
+parse 1
+> do
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	615 2 1 0 0 \
+	820 2 1 0 0 \
+	9500 2 1 0 0
+ mi 99
+CM
+ im 1
+ ma 2
+ ca 2
+ kw 1
+CO
+ li study 9500 1
+ ar 9500 1 0 0 0 0 0 0
+ st 1
+ if 1
+
+> save 200
+200 player pl_regular
+PL
+ fs 6
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 1
+grant row 615 2 1 0 0
+grant row 820 2 1 0 0
+grant row 9500 2 1 0 0
+> readlog 200
+log 200:
+1000:0::0::> study 615 1
+1000:0::0::Using 1 fast study day to accelerate learning of <no subkind>.
+1000:0::0::Learned <no subkind>~[615].
+1001:0::0::> study 615 1
+1001:0::0::Using 1 fast study day to accelerate learning of <no subkind>.
+1001:0::0::Learned <no subkind>~[615].
+1000:0::0::> study 820 1
+1000:0::0::Using 1 fast study day to accelerate learning of Magic.
+1000:0::0::Learned Magic~[820].
+1000:0::0::Maximum aura now 1.
+1000:0::0::> study 9500 1
+1000:0::0::Using 1 fast study day to accelerate learning of <no subkind>.
+1000:0::0::Learned <no subkind>~[9500].
+1000:0::0::Maximum aura now 2.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+ fs 6
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 615 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+615 skill 0
+SK
+ tl 1
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 820 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+820 skill magic
+SK
+ tl 1
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 615 2
+raw skill 820 2
+raw skill 9500 2
+1000 char 0
+CH
+ lo 200
+ sl	615 2 1 0 0 \
+	820 2 1 0 0 \
+	9500 2 1 0 0
+ mi 99
+CM
+ im 1
+ ma 2
+ ca 2
+ kw 1
+CO
+ li study 9500 1
+ ar 9500 1 0 0 0 0 0 0
+ st 1
+ if 1
+
+export entity 1001 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 615 2
+1001 char 0
+CH
+ lo 200
+ sl	615 2 1 0 0
+ mi 50
+CO
+ li study 615 1
+ ar 615 1 0 0 0 0 0 0
+ st 1
+ if 1
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9500 skill 0
+SK
+ tl 1
+ rs 820
+
+stderr:
+
+exit 0
+stdout:
+section N24 saved slow delayed polls queues monthly cap STOP and genuine NULL interrupt
+> resolve_wait
+> entity 1 4 0
+> entity 9000 3 14
+> entity 9500 5 0
+> field 9500 skill_time 30
+> field 9000 teaches 9500
+> link 9000 1000
+> inventory 1000 1 100
+> field 1000 studied 12
+> queue study 9500
+> queue study 9500
+> queue wait time 2
+> initial
+> start
+> dump
+cmd 81 who 1000 state 2 status 1 wait 7 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 9500 0 0 0 0 0 0 0; parse [study] [9500]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> day 1
+> dump
+cmd 81 who 1000 state 2 status 1 wait 6 poll 1 pri 3 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 99
+args 9500 0 0 0 0 0 0 0; parse [study] [9500]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> persist_command
+> initial
+> dump
+cmd 81 who 1000 state 2 status 1 wait 6 poll 1 pri 3 cond 0 fuzzy 0 days 1 debug 0 inhibit 0 cur 99
+args 9500 0 0 0 0 0 0 0; parse [study] [9500]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> day 2
+> dump
+cmd 81 who 1000 state 1 status 1 wait 7 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 2 inhibit 0 cur 3
+args 9500 0 0 0 0 0 0 0; parse [study] [9500]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> day 3
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 1 debug 3 inhibit 0 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 2 0 0
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 2
+ wa -1
+ st 1
+ de 1
+ po 1
+ pr 1
+
+> save 200
+200 player pl_regular
+PL
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 9500 1 2 0 0
+> queue stop
+> players
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 1 debug 3 inhibit 0 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> queue study 9500
+> parse study 9500
+parse 1
+> run 6 1 1 0
+> persist_command
+> transfer_probe state 1000
+transfer 1000 men 1 command 1
+transfer command 81 state 2 wait 6 callbacks 1 1 0
+> generic_interrupt 1000
+> dump
+cmd 121 who 1000 state 1 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [stop]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0: 1000
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 2 0 0
+CO
+ li stop
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ st 1
+
+> readlog 200
+log 200:
+1000:0::0::> study 9500
+1000:0::0::Paid 100~gold to begin study.
+1000:0::0::Study <no subkind> for seven days.
+1000:0::0::Maximum 14 days studied this month.
+1000:0::0::> study 9500
+1000:0::0::Maximum 14 days studied this month.
+1000:0::0::> wait time 2
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9500 1
+raw item 1 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 2 0 0
+CO
+ li stop
+ ar 0 0 0 0 0 0 0 0
+ cs 1
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+SL
+ te 9500 
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9500 skill 0
+SK
+ tl 30
+
+stderr:
+
+exit 0
+stdout:
+section N24 saved CO missing text with stale signed ar cap and fast discrimination
+> entity 9500 5 0
+> report skill 1000 9500 1 0
+> field 9500 skill_time 10
+> field 1000 studied 14
+> parse study
+parse 1
+> rawargs 9500 -2147483648 2147483647 -9
+> run 6 1 1 0
+> persist_command
+> dump
+cmd 81 who 1000 state 2 status 1 wait 6 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9500 -2147483648 2147483647 -9 0 0 0 0; parse [study]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> study start
+study start 0
+> rawargs 9500 2147483647 -2147483648 -9
+> study start
+study start 0
+> dump
+cmd 81 who 1000 state 2 status 1 wait 6 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9500 2147483647 -2147483648 -9 0 0 0 0; parse [study]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> parse study 9500
+parse 1
+> rawargs 9500 2147483647 -2147483648 -9
+> run 6 1 1 0
+> persist_command
+> study start
+study start 1
+> dump
+cmd 81 who 1000 state 2 status 1 wait 0 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 1 cur 0
+args 9500 2147483647 -2147483648 -9 0 0 0 0; parse [study] [9500]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+CH
+ lo 200
+ sl	9500 1 0 0 0
+CO
+ li study 9500
+ ar 9500 2147483647 -2147483648 -9 0 0 0 0
+ cs 2
+ st 1
+ po 1
+ pr 3
+ if 1
+
+> save 200
+200 player pl_regular
+PL
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 9500 1 0 0 0
+> readlog 200
+log 200:
+1000:0::0::Maximum 14 days studied this month.
+1000:0::0::Must specify a skill to study.
+1000:0::0::Using 0 fast study days to accelerate learning of <no subkind>.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9500 1
+1000 char 0
+CH
+ lo 200
+ sl	9500 1 0 0 0
+CO
+ li study 9500
+ ar 9500 2147483647 -2147483648 -9 0 0 0 0
+ cs 2
+ st 1
+ po 1
+ pr 3
+ if 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9500 skill 0
+SK
+ tl 10
+
+stderr:
+
+exit 0
+stdout:
+section N24 fast first instruction scroll disappears even with zero pool and inhibition
+> entity 1 4 0
+> entity 9000 3 14
+> entity 9500 5 0
+> entity 9600 4 42
+> field 9500 skill_time 20
+> field 9600 may_study 9500
+> field 9600 unique 1000
+> link 9000 1000
+> inventory 1000 9600 1
+> inventory 1000 1 100
+> field 1000 studied 14
+> set turn 9
+> set day 5
+> study roll 1000 9500
+study roll 4
+> parse study 9600 999
+parse 1
+> do
+> dump
+cmd 81 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 5 inhibit 1 cur 0
+args 9500 999 0 0 0 0 0 0; parse [study] [9600] [999]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 0 0 0
+CO
+ li study 9600 999
+ ar 9500 999 0 0 0 0 0 0
+ st 1
+ if 1
+
+> save 200
+200 player pl_regular
+PL
+
+> save 9600
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 9500 1 0 0 0
+> study roll 1000 9500
+study roll 4
+> entity_rolls 1000 1 9000
+prison roll 929
+land dir99 4
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 0
+created 67771
+> save_new
+67771 item 0
+IT
+ un 1000
+
+> readlog 200
+log 200:
+1000:0::0::> study 9600 999
+1000:0::0::Paid 100~gold to begin study.
+1000:0::0::Using 0 fast study days to accelerate learning of <no subkind>.
+1000:0::0::Scroll~[9600] vanishes.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9500 1
+raw item 9600 0
+raw item 1 0
+raw item 67771 1
+1000 char 0
+il	67771 1
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 0 0 0
+CO
+ li study 9600 999
+ ar 9500 999 0 0 0 0 0 0
+ st 1
+ if 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9500 skill 0
+SK
+ tl 20
+
+export entity 67771 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+67771 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N24 saved running study STOP retains successor without daily or tuition repeats
+> resolve_wait
+> entity 1 4 0
+> entity 9000 3 14
+> entity 9500 5 0
+> field 9500 skill_time 30
+> field 9000 teaches 9500
+> link 9000 1000
+> inventory 1000 1 100
+> queue study 9500
+> load
+load 1
+> do
+> day 1
+> persist_command
+> initial
+> queue stop
+> queue wait time 1
+> stops
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 1
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 1 0 0
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> save 200
+200 player pl_regular
+PL
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 9500 1 1 0 0
+> readlog 200
+log 200:
+1000:0::0::> study 9500
+1000:0::0::Paid 100~gold to begin study.
+1000:0::0::Study <no subkind> for seven days.
+1000:0::0::> stop
+1000:0::0::Interrupt current order.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 9500 1
+raw item 1 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	9500 1 1 0 0
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+SL
+ te 9500 
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+9500 skill 0
+SK
+ tl 30
+
+stderr:
+
+exit 0
+stdout:
+section N24 stream no study control keyed legacy and mint aftermath
+> entity 1 4 0
+> entity 9000 3 14
+> entity 9500 5 0
+> link 9000 1000
+> set turn 9
+> set day 5
+> study roll 1000 9500
+study roll 4
+> entity_rolls 1000 1 9000
+prison roll 929
+land dir99 4
+land dir98 3
+land pick 0
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 0
+created 67771
+> save_new
+67771 item 0
+IT
+ un 1000
+
+> set turn 10
+> study roll 1000 9500
+study roll 3
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 67771 1
+1000 char 0
+il	67771 1
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc city
+LI
+ hl 1000 
+
+export entity 9500 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9500 skill 0
+
+export entity 67771 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+67771 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0

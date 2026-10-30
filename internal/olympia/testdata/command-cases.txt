@@ -45894,3 +45894,464 @@ economy raw 1100
 economy raw 1101
 readlog 200
 export state
+
+section N24 first tuition through actual dispatch
+entity 1 4 0
+entity 9000 3 14
+entity 9500 5 0
+name 9500 asymmetric craft
+link 9000 1000
+field 9000 teaches 9500
+field 9500 skill_np 2
+field 9500 skill_time 15
+field 200 np 1
+inventory 1000 1 99
+parse study 9500
+do
+save 1000
+save 200
+field 200 np 2
+parse study 9500
+do
+save 1000
+save 200
+genitem 1000 1 1
+parse study 9500
+do
+dump
+save 1000
+save 200
+usemeta rows 1000
+readlog 200
+export state
+
+section N24 dont row bypasses instruction but pays and learning resumes free
+entity 1 4 0
+entity 9500 5 0
+field 9500 skill_np 1
+field 9500 skill_time 19
+report skill 1000 9500 0 3
+field 200 np 1
+inventory 1000 1 100
+parse study 9500
+do
+save 1000
+save 200
+parse study 9500
+do
+save 1000
+save 200
+usemeta rows 1000
+readlog 200
+export state
+
+section N24 validation unknown parent known parent missing invalid and known refusal
+entity 1 4 0
+entity 9000 3 14
+entity 9500 5 0
+entity 9501 5 0
+name 9500 parent school
+name 9501 child skill
+link 9000 1000
+field 9501 required 9500
+field 9000 teaches 9501
+parse study
+do
+parse study 1
+do
+parse study unknown
+rawargs -2147483648 -1 0
+do
+parse study 9501
+do
+report skill 1000 9500 1 9
+parse study 9501
+do
+usemeta grant 1000 9500
+inventory 1000 1 100
+parse study 9501
+do
+parse study 9500
+do
+save 1000
+usemeta rows 1000
+readlog 200
+export state
+
+section N24 item correction uses first skill even without possession and cap precedes correction
+entity 1 4 0
+entity 9000 3 14
+entity 9500 5 0
+entity 9501 5 0
+entity 9600 4 42
+field 9600 may_study 9501
+field 9600 may_study 9500
+link 9000 1000
+field 9000 teaches 9501
+field 9501 skill_time 30
+inventory 1000 1 100
+field 1000 studied 14
+parse study 9600
+do
+dump
+parse study
+rawargs 9600 0 0
+study start
+dump
+parse study garbage
+do
+field 1000 studied 13
+parse study 9600
+do
+dump
+save 1000
+usemeta rows 1000
+readlog 200
+export state
+
+section N24 instruction location first known skill last book last scroll original ordering
+entity 9000 3 14
+entity 9001 3 14
+entity 9500 5 0
+entity 9510 5 0
+entity 9511 5 0
+entity 9600 4 42
+entity 9601 4 0
+entity 9602 4 0
+entity 9603 4 42
+field 9600 may_study 9500
+field 9601 may_study 9500
+field 9602 may_study 9500
+field 9603 may_study 9500
+field 9510 offered 9500
+field 9511 offered 9500
+report skill 1000 9511 2 0
+report skill 1000 9510 2 0
+report skill 1001 9510 1 0
+inventory 1000 9600 1
+inventory 1000 9602 1
+inventory 1000 9601 1
+inventory 1000 9603 1
+inventory 1001 9600 1
+inventory 1001 9602 1
+inventory 1001 9601 1
+inventory 1001 9603 1
+link 9000 1000
+link 9001 1001
+field 9000 teaches 9500
+study basis 1000 9500
+link 9001 1000
+study basis 1000 9500
+study basis 1001 9500
+delete_box 9601
+study basis 1001 9500
+delete_box 9602
+study basis 1001 9500
+inventory 1001 9600 -9
+save 1000
+save 1001
+usemeta rows 1000
+export state
+
+section N24 slow scroll draws keyed per day and last scroll disappears with full aftermath
+entity 1 4 0
+entity 9000 3 14
+entity 9500 5 0
+entity 9600 4 42
+entity 9601 4 42
+field 9500 skill_time 30
+field 9600 may_study 9500
+field 9601 may_study 9500
+field 9600 unique 1000
+field 9601 unique 1000
+inventory 1000 9600 1
+inventory 1000 9601 1
+inventory 1000 1 100
+link 9000 1000
+set turn 9
+set day 0
+study roll 1000 9500
+set day 1
+study roll 1000 9500
+set day 2
+study roll 1000 9500
+set day 3
+study roll 1000 9500
+set day 4
+study roll 1000 9500
+set day 5
+study roll 1000 9500
+parse study 9500
+do
+study roll 1000 9500
+save 1000
+save 9600
+save 9601
+entity_rolls 1000 1 9000
+usemeta legacy 1 100000
+set turn 10
+study roll 1000 9500
+newitem 1000 0
+save_new
+usemeta rows 1000
+readlog 200
+export state
+
+section N24 fast original positive pool zero negative overrequest zero and negative required
+entity 9500 5 0
+field 9500 skill_time 10
+report skill 1000 9500 1 2
+field 1000 studied 14
+parse study 9500 3
+do
+dump
+save 1000
+field 200 fast_study -2
+parse study 9500 3
+do
+dump
+save 1000
+save 200
+field 200 fast_study 20
+parse study 9500 999
+do
+dump
+save 1000
+save 200
+entity 9501 5 0
+field 9501 skill_time 4
+report skill 1000 9501 1 4
+parse study 9501 1
+do
+dump
+save 200
+entity 9502 5 0
+field 9502 skill_time 4
+report skill 1000 9502 1 9
+parse study 9502 1
+do
+dump
+save 1000
+save 200
+usemeta rows 1000
+readlog 200
+export state
+
+section N24 daily boundary completion precedes monthly cap and signed narrow wrap
+entity 9500 5 0
+field 9500 skill_time 15
+report skill 1000 9500 1 13
+field 1000 studied 13
+parse study 9500
+set wait 7
+study daily
+dump
+save 1000
+field 1000 studied 13
+study daily
+dump
+save 1000
+entity 9501 5 0
+field 9501 skill_time 100
+parse study 9501
+field 1000 studied 14
+set wait 0
+study daily
+dump
+field 1000 studied 127
+set wait 5
+study daily
+dump
+usemeta row_fields 1000 9501 2147483647 0
+study daily
+dump
+save 1000
+usemeta rows 1000
+readlog 200
+export state
+
+section N24 daily invalid deleted skill has no row allocation or studied increment
+entity 9500 5 0
+field 9500 skill_time 30
+parse study 9500
+set wait 6
+delete_box 9500
+study daily
+dump
+save 1000
+usemeta rows 1000
+readlog 10
+readlog 200
+export state
+
+section N24 fast archery threshold 49 and 50 and magic weather effects reuse real grant
+entity 615 5 0
+field 615 skill_time 1
+report skill 1000 615 1 0
+report skill 1001 615 1 0
+field 1000 char_missile 49
+field 1001 char_missile 50
+field 200 fast_study 10
+parse study 615 1
+do
+who 1001
+parse study 615 1
+do
+save 1000
+save 1001
+who 1000
+entity 820 5 43
+field 820 skill_time 1
+report skill 1000 820 1 0
+parse study 820 1
+do
+entity 9500 5 0
+field 9500 required 820
+field 9500 skill_time 1
+report skill 1000 9500 1 0
+parse study 9500 1
+do
+save 1000
+save 200
+usemeta rows 1000
+readlog 200
+export state
+
+section N24 saved slow delayed polls queues monthly cap STOP and genuine NULL interrupt
+resolve_wait
+entity 1 4 0
+entity 9000 3 14
+entity 9500 5 0
+field 9500 skill_time 30
+field 9000 teaches 9500
+link 9000 1000
+inventory 1000 1 100
+field 1000 studied 12
+queue study 9500
+queue study 9500
+queue wait time 2
+initial
+start
+dump
+day 1
+dump
+persist_command
+initial
+dump
+day 2
+dump
+day 3
+dump
+save 1000
+save 200
+usemeta rows 1000
+queue stop
+players
+dump
+queue study 9500
+parse study 9500
+run 6 1 1 0
+persist_command
+transfer_probe state 1000
+generic_interrupt 1000
+dump
+save 1000
+readlog 200
+export state
+
+section N24 saved CO missing text with stale signed ar cap and fast discrimination
+entity 9500 5 0
+report skill 1000 9500 1 0
+field 9500 skill_time 10
+field 1000 studied 14
+parse study
+rawargs 9500 -2147483648 2147483647 -9
+run 6 1 1 0
+persist_command
+dump
+study start
+rawargs 9500 2147483647 -2147483648 -9
+study start
+dump
+parse study 9500
+rawargs 9500 2147483647 -2147483648 -9
+run 6 1 1 0
+persist_command
+study start
+dump
+save 1000
+save 200
+usemeta rows 1000
+readlog 200
+export state
+
+section N24 fast first instruction scroll disappears even with zero pool and inhibition
+entity 1 4 0
+entity 9000 3 14
+entity 9500 5 0
+entity 9600 4 42
+field 9500 skill_time 20
+field 9600 may_study 9500
+field 9600 unique 1000
+link 9000 1000
+inventory 1000 9600 1
+inventory 1000 1 100
+field 1000 studied 14
+set turn 9
+set day 5
+study roll 1000 9500
+parse study 9600 999
+do
+dump
+save 1000
+save 200
+save 9600
+usemeta rows 1000
+study roll 1000 9500
+entity_rolls 1000 1 9000
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+readlog 200
+export state
+
+section N24 saved running study STOP retains successor without daily or tuition repeats
+resolve_wait
+entity 1 4 0
+entity 9000 3 14
+entity 9500 5 0
+field 9500 skill_time 30
+field 9000 teaches 9500
+link 9000 1000
+inventory 1000 1 100
+queue study 9500
+load
+do
+day 1
+persist_command
+initial
+queue stop
+queue wait time 1
+stops
+dump
+save 1000
+save 200
+usemeta rows 1000
+readlog 200
+export state
+
+section N24 stream no study control keyed legacy and mint aftermath
+entity 1 4 0
+entity 9000 3 14
+entity 9500 5 0
+link 9000 1000
+set turn 9
+set day 5
+study roll 1000 9500
+entity_rolls 1000 1 9000
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+set turn 10
+study roll 1000 9500
+export state

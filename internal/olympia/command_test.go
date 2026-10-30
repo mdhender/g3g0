@@ -2630,6 +2630,19 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			if strings.TrimSpace(args.rest) != "" {
 				c.e = int32(args.num(t))
 			}
+		case "study":
+			switch args.word() {
+			case "basis":
+				fmt.Fprintf(&stdout, "study basis %d\n", w.mayStudy(args.num(t), args.num(t)))
+			case "roll":
+				fmt.Fprintf(&stdout, "study roll %d\n", w.streams.SkilStudy(args.num(t), args.num(t)))
+			case "start":
+				fmt.Fprintf(&stdout, "study start %d\n", w.vStudy(c))
+			case "daily":
+				fmt.Fprintf(&stdout, "study daily %d\n", w.dStudy(c))
+			default:
+				t.Fatal("unknown study operation")
+			}
 		case "build":
 			action, s := args.word(), args.word()
 			n := 0
@@ -3022,6 +3035,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pPlayer(n).npSpent = int16(a)
 			case "fast_study":
 				w.pPlayer(n).fastStudy = int16(a)
+			case "studied":
+				w.pChar(n).studied = int8(a)
 			case "first_turn":
 				w.pPlayer(n).firstTurn = int32(a)
 			case "sent":

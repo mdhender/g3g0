@@ -127,6 +127,7 @@ void drv_ucov_seed(int ent, int outcome, int value);
 void drv_use_table(void), drv_use_consume(int who,int sk), drv_use_scroll(int who,int basis), drv_use_magic(struct command *c,int sk);
 int drv_use_lookup(int sk), drv_use_may(int who,int sk), drv_use_correct(struct command *c), drv_use_meets(int who,int sk);
 int drv_use_callback(struct command *c, int sk, int finish);
+int drv_study_basis(int who,int sk), drv_study_roll(int who,int sk);
 void drv_social_rolls(int who, int target);
 void drv_terror_roll(int who, int target);
 void drv_magic_rolls(int who, int other);
@@ -1905,6 +1906,15 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "rawargs")) {
    sscanf(line,"%*s %d %d %d %d %d",&c->a,&c->b,&c->c,&c->d,&c->e);
   }
+  else if (!strcmp(op, "study")) {
+   n=a=0;
+   if(sscanf(line,"%*s %31s %d %d",text,&n,&a)<1) return 2;
+   if(!strcmp(text,"basis")) printf("study basis %d\n",drv_study_basis(n,a));
+   else if(!strcmp(text,"roll")) printf("study roll %d\n",drv_study_roll(n,a));
+   else if(!strcmp(text,"start")) printf("study start %d\n",v_study(c));
+   else if(!strcmp(text,"daily")) printf("study daily %d\n",d_study(c));
+   else return 2;
+  }
   else if (!strcmp(op, "build")) {
    char s[80]="";
    n=0;
@@ -2049,6 +2059,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"char_attack")) p_char(n)->attack = (short)a;
    else if (!strcmp(text,"char_defense")) p_char(n)->defense = (short)a;
    else if (!strcmp(text,"char_missile")) p_char(n)->missile = (short)a;
+   else if (!strcmp(text,"studied")) p_char(n)->studied = (schar)a;
    else if (!strcmp(text,"behind")) p_char(n)->behind = (schar)a;
    else if (!strcmp(text,"break")) p_char(n)->break_point = (schar)a;
    else if (!strcmp(text,"vision_protect")) p_magic(n)->vis_protect = (schar)a;

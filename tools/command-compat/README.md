@@ -3,6 +3,116 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## STUDY (#226, stage 4 N24)
+
+**0.148.0-alpha**, unchanged immutable **9a03d126**. use.go owns the complete
+original use.c `skill_cost` **1416–1421**, `may_study` **1431–1508**,
+`begin_study` **1511–1555**, `correct_study_item` **1563–1576**,
+`v_study` **1750–1856** and `d_study` **1906–1942**, including declarations.
+The issue's historical ranges are not extraction boundaries. glob.c227's
+real direct callbacks are wired with **wait7/poll1/priority3/NULL interrupt**;
+generic interruption remains unchanged. No STUDY USE row, RESEARCH, FORGET,
+new source dependency, pin, independent fix or stage5 code is introduced.
+Existing rpSkillEnt/pSkillEnt/learnSkill are unchanged, including duplicate
+and unknown rows, unconditional magic allocation, repeated magic/weather
+effects and archery's below50 bonus. Skill metadata, payment/NP,
+consumeScroll and real streams.SkilStudy are reused.
+
+Monthly studied>=14 precedes item correction and argument validation unless
+the **original** fast argument is positive. Correction selects the first
+item may_study entry without checking possession. Instruction is needed only
+for a missing row: an existing know=dont row bypasses instruction but pays;
+learning rows bypass both. Sources are location → first known offered skill
+→ last nonscroll item → last scroll, preserving original list ordering.
+NP is checked before the 100-gold charge/message, then NP is deducted and
+learning marked. Fast study caps to the signed player pool then remaining
+days, even zero/negative; preserves int32/day, int16/pool and int8/studied
+arithmetic, exact pluralization, completion, wait0 and inhibitFinish. Slow
+message precedes the same keyed basis draw; only roll4 consumes a scroll.
+Daily invalid/deleted skills log/refuse before allocation/increment;
+otherwise completion precedes the monthly cap, which applies only at wait>0.
+
+**15 appended sections /461 input lines /7912 bytes** discriminate tuition
+99/100, NP1/2 shortfall/success and singular NP payment, missing/partial/known
+parents, known refusal, absent/dont/learning rows, instruction and inventory
+order, unowned item correction, missing/invalid/stale signed ar, 14-day
+start/daily boundaries and learning on day14, fast pool0/-2/over-request,
+zero/negative required time, inhibition, archery49/50, weather and another
+magic grant, deleted skill, daily narrow wrap, saved CO/li reparsing,
+delayed polls, queued successors and actual STOP/NULL interruption. Actual
+save/export/list/allocation flags and keyed/legacy/mint aftermath are observed,
+not calculated expectations. At turn9/day5, unchanged C's roll4 destroys the
+**last** of two slow-scroll sources and the fast scroll even with pool0;
+the same-day keyed roll remains4. An independent no-study control preserves
+the sibling/legacy/mint aftermath. Hooks only invoke real callbacks/helpers
+or set the original narrow studied field.
+
+Before production edits, unchanged C ran twice (**2010 sections**) and old
+Go failed through actual doCommand at **command study start NYI**:
+`tmp/issue226-command-before.log`. Authoring corrected raw inventory append
+versus real genitem increment and mistaken transfer_probe observer syntax;
+no engine behavior was changed to accommodate a test. Final C runs twice
+before recording/Go, matching **2024 sections /182841 lines /3513820 bytes**.
+Both ENTIRE accepted225 prefixes remain byte-exact, including **47 input /
+93 output high-bit bytes**, trailing spaces and accepted290 assertions:
+
+| Bytes | Size | SHA-256 |
+| --- | --- | --- |
+| Input | 856415 | `a79e7e2fbf55bca76ef11c8cd345387f6fda0751db7eb4dcc594beb9a562f5a8` |
+| Output | 3513820 | `c2c17c88f50d7b82f2f4ecef68131d155de093176de7356b2bb126f558dc3db0` |
+| Entire inherited input | 848503 | `915f809765ceb9e069061155c4b610777c0c8e3748d7897e4641eb8b30dac29e` |
+| Entire inherited output | 3472805 | `ded94d1d625735325276e0a8ba265fab89d61dd91a41dac5f1cc6e015a3fe21e` |
+
+Added output: **2239 lines /41015 bytes**. Prefix and full-body/#line proofs:
+`tmp/issue226-{prefix,extraction}-proof.log`. The entire unchanged skills RNG
+prefix/static helpers are extracted, not a driver rewrite. Every new section
+requires native0. Marker rejection still precedes status/reference writes:
+compiled **native0/134 × default/update × seven marker classes**, **28 reject2**,
+recording SHA unchanged. Exact helpers/commands/hashes are retained in
+`tmp/issue226-helper-provenance.log`; results in `tmp/issue226-marker-controls.log`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/command-compat/run.sh --update
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+```
+
+Bounded vet and fresh full-enabled tests pass **11 packages**, Olympia
+**2.368s**. All eight defaults pass sequentially: command **2024/182841**,
+move **135/7158**, helper **37/1487**, RNG **321**, code **43/969**, loadsave
+**61/3411**, turn-driver **7/152**, phase **5/484**, calendar **2/119**,
+schedule **4/1801**, default turn raw status/streams/two cwd entries exact.
+Logs: `tmp/issue226-{vet,tests,command-final-record}.log` and
+`tmp/issue226-*-default.log`. No full207 serializer repeat is claimed;
+protected issue291-roundtrip stays idle/untouched. Gofmt/shell syntax and
+non-oracle diff-check pass; raw C trailing spaces are intentionally retained.
+[Original skills scripts](../turn-compat/README.md#study-original-fixture-boundary-226)
+repeat strictly C/C but honestly fail Go at RESEARCH; this is not whole-fixture
+acceptance or a skills-family/stage exit. Supplied all-open audit has no demonstrated
+new blocker. Changes remain uncommitted for parent independent acceptance.
+
+Parent acceptance independently passes bounded vet, fresh full-enabled tests
+(11 packages, Olympia **2.438s**), all eight sequential defaults and the complete
+real-C oracle **2024 sections /182841 lines**. All1237 canonical original
+blobs/modes, binary/build provenance, eleven complete extracted definitions
+with genuine locations, the entire skills RNG prefix/static helpers and both
+inherited byte prefixes verify. Fresh native C1/C2/Go replay independently
+confirms both original skills scripts: C/C raw streams/status and all **241 cwd
+entries** match; Go honestly stops at **RESEARCH start NYI**, engine2/script1.
+Full unchanged spec repeats **73 pass /56 fail /0 error (133s)**, with every
+prior73/stage3-36 name retained and golden still NO/init2. Logs/manifests are
+`tmp/parent226-*`, including retained spec logs in `tmp/parent226-spec-logs/`.
+No new family/stage exit or full207 serializer-corpus proof is inferred.
+
 ## Direct BUY and SELL (#225, stage 4 N23)
 
 **0.147.0-alpha**, unchanged immutable **9a03d126**. Existing buy.go now

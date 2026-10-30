@@ -8,6 +8,44 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## STUDY no-loss (#226)
+
+At **0.148.0-alpha**, unchanged immutable **9a03d126**, full unchanged spec
+exits0: **129 fixtures /73 pass /56 fail /0 error (133s)**. All **73 prior
+names** and stage3's exact **36 names** remain; **no new passing name**.
+Only the existing tool writes passing.txt. Its **1430 bytes** retain SHA-256
+`5e82f52fcab18c59f92abde108db03f4b57d0253213474e325880f531e38975f`.
+Stage3 source remains tmp/issue291-stage3-passing.txt; name-set proof is
+`tmp/issue226-spec-names.log`. No fixture, authoring/scenario, expected bytes,
+pin or original --update changes.
+
+Complete STUDY replaces the demonstrated old-Go actual **study start NYI**;
+instruction/tuition, slow daily/fast behavior and shared real skill effects
+are discriminated separately by the **2024-section** command oracle. Both
+unchanged skills-learn/refused still fail at **command research start NYI**
+(engine2/script1), the real next owner, not a STUDY workaround or new blocker.
+Separate [native C1/C2-before-Go proof](../turn-compat/README.md#study-original-fixture-boundary-226)
+has **six captures /two branches**, exact C/C raw status/streams and **241 cwd
+entries each**, preserving full failed-Go/C1 evidence and invocation inventories.
+No RESEARCH/FORGET, later gameplay, family exit or new scope deferral is added.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue226/spec" \
+  RUN_DIR=/tmp/g3g0-issue226-spec-run RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Golden remains **NO**, initialization **2** at unsupported `load_db (-i)`.
+ATTACK235/fog264/full missing-argument remain stage4; immediate-i, five
+console guards/gm-immediate-missing remain the explicit stage5 remainder.
+Protected full207 cache stays idle/untouched; no serializer repeat is inferred.
+Logs: `tmp/issue226-spec.log`, `tmp/issue226-spec-logs/` and linked native
+proof. Matching captures, temporary helpers/binaries/disposable WORK/external
+RUN_DIR and generated coverage/use dumps are removed; decisive logs/manifests
+and failed-Go/C1 captures remain. Work is uncommitted for parent acceptance;
+no GitHub writes, commit/push, whole-spec parity or stage exit claim.
+
 ## Direct trade-entry no-loss (#225)
 
 At **0.147.0-alpha**, unchanged immutable **9a03d126**, full unchanged spec

@@ -9,6 +9,71 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## STUDY original-fixture boundary (#226)
+
+**0.148.0-alpha**, unchanged immutable **9a03d126**. Complete STUDY start/daily
+and instruction/tuition helpers only; shared P4 skill grants and real RNG,
+allocation, payment, scroll destruction, scheduler and NULL interruption are
+reused. No RESEARCH/FORGET or later gameplay is implemented to force a frozen
+script to pass. The supplied all-open audit has no demonstrated new blocker.
+
+Before canonical reuse, all **1237 original blobs/modes** were verified from
+isolated bare tmp/upstream.git at9a03d126. The exact C binary SHA-256 is still
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+Debug/Ninja retains the original trailing-slash
+`-ffile-prefix-map=/home/user/workspace/repo/tmp/_issue215/canonical/=`.
+Evidence: `tmp/issue226-canonical-provenance.log`. Canonical originals/build
+are unchanged; the protected full207 cache is not used or touched.
+
+Read complete original skills-learn/refused README/check.sh/Lua/**scenario.patch**:
+`tmp/issue226-original-fixtures.log`. Learn contains two Combat studies,
+Forestry research before offered-skill study, and Magic/Combat forgetting.
+Refused contains STUDY validation/month cap plus RESEARCH, FORGET and USE
+refusals and player-entity rejection. Their unchanged scripts legitimately
+require later command owners; neither is accepted as a complete Go fixture.
+
+The accepted225 bounded **native** pre-cleanup capture source is reused
+unchanged. It preserves invocation inventories, argv0/stdin, O_RDWR raw
+streams, status/newline, and cp-a of the **whole cwd** before original cleanup.
+For each original script, C1 then C2 precede fresh Go. C markers are rejected
+before expected statuses. The existing ./tools/turn-compat comparator plus
+tree-modes.py compare **ALL paths/types/modes/empty dirs/bytes**, no exclusions.
+Complete helper source, commands and binary hashes are retained in
+`tmp/issue226-helper-provenance.log` (capture source SHA remains
+`6408f53dd970f6bd4eaa32c82b7c4d29926579e7254b07127b0dd2ae7fe6d24f`).
+
+```sh
+. tools/lib/timeout.sh
+export G3_REPO="$PWD/tmp/upstream.git" S4_ROOT="$PWD"
+# Recreate native source/recipe from issue226-helper-provenance.log;
+# build fresh ./cmd/olympia and ./tools/turn-compat under tmp/_issue226.
+# For EACH skills-learn/skills-refused: C1, C2, THEN Go, absent capture bases.
+export S4_CAPTURE="$PWD/tmp/_issue226/$fixture-$run"
+export S4_ENGINE="$PWD/tmp/_issue215/canonical/build/canonical/olympia-g3"
+# Set S4_ENGINE to the fresh Go binary for run=go.
+OLYMPIA_ENGINE_BIN="$PWD/tmp/_issue226/capture" \
+  run_limited 180 bash /bin/bash \
+  "$PWD/tmp/_issue215/canonical/tests/olympia/regress/$fixture/check.sh"
+run_limited 120 compare "$PWD/tmp/_issue226/compare" --manifest "$capture"
+run_limited 120 compare "$PWD/tmp/_issue226/compare" "$c1" "$c2"
+run_limited 120 compare "$PWD/tmp/_issue226/compare" "$c1" "$go"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$c2/cwd"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$go/cwd"
+```
+
+All **six captures /two invocation branches** are retained in the inventory
+and manifests. Each original C script is **YES/0**, engine0; C/C matches raw
+streams/status and **241 cwd entries** for each. Both Go engines honestly
+exit **2**, original scripts **1**, at **command research start: not yet
+implemented**; strict C/Go comparators return1. Exact next NYI and failing
+raw/tree evidence remain in `tmp/_issue226/skills-{learn,refused}-{c1,go}/`.
+Matching C2 captures, temporary helpers/binaries/WORKs are removed. Logs:
+`tmp/issue226-fixtures.log`, script logs, invocation inventories,
+`*-manifest.txt` and `*-{cc,cgo}.log`. No original --update, expected-byte
+rewrite, scope deferral or family/stage/full-spec parity claim is made.
+The [2024-section command oracle](../command-compat/README.md#study-226-stage-4-n24)
+separately proves complete STUDY contracts and unchanged accepted prefixes.
+
 ## Direct trade-entry original-fixture proof (#225)
 
 **0.147.0-alpha**, immutable **9a03d126**, complete gold_each/v_buy/v_sell
