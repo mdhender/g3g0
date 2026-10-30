@@ -434,3 +434,161 @@ func padStar(s string, width int) string {
 	}
 	return clib.PadLeft(s, width)
 }
+
+// Complete c2.c:843–854. FEE is a character setting, not captain-only.
+func (w *world) vFee(c *command) int {
+	w.pMagic(int(c.who)).fee = c.a
+	w.commandOut(int(c.who), "Ship boarding fee set to %s per 100 weight.", goldS(int(c.a)))
+	return 1
+}
+
+// boardMessage is c2.c:857–883. Suppression affects only the public notice.
+func (w *world) boardMessage(who, ship int) {
+	where := w.subloc(ship)
+	if w.charReallyHidden(who) || w.weatherHere(where, subFog) != 0 {
+		return
+	}
+	with := w.displayWith(who)
+	desc := w.linerDesc(who)
+	comma := ""
+	if strings.Contains(desc, ",") {
+		comma = ","
+	}
+	if with == "" {
+		with = "."
+	}
+	w.commandOut(where, "%s%s boarded %s%s", desc, comma, w.boxName(ship), with)
+	w.showCharsBelow(where, who)
+}
+
+// Complete c2.c:886–994. Capacity and fee products retain signed C int
+// arithmetic. Direct charge, notices, captain credit and movement are ordered;
+// neither admission nor MOVE/FLY's leave-stack/guard hooks apply to BOARD.
+func (w *world) vBoard(c *command) int {
+	who, ship := int(c.who), int(c.a)
+	if !w.isShip(ship) {
+		w.commandOut(who, "%s is not a ship.", w.boxCode(ship))
+		return 0
+	}
+	w.logWrite(11, "BOARD for %s", w.boxName(w.player(who)))
+	board := "board"
+	v := w.parseExitDir(c, w.subloc(who), &board)
+	if v == nil {
+		return 0
+	}
+	assert(int(v.destination) == ship, "olympia/c2.c", 912, "v->destination == ship")
+	if v.inTransit != 0 {
+		w.commandOut(who, "%s is underway.  Boarding is not possible.", w.boxName(int(v.destination)))
+		return 0
+	}
+	owner := w.buildingOwner(ship)
+	var fee int32
+	if w.validBox(owner) {
+		if p := w.rpMagic(owner); p != nil {
+			fee = p.fee
+		}
+	}
+	if !w.validBox(owner) || fee == 0 {
+		w.commandOut(who, "%s is not being operated as a ferry (no boarding FEE is set).", w.boxName(ship))
+		return 0
+	}
+	weight := w.determineStackWeights(who)
+	if capacity := w.shipCap(ship); capacity != 0 {
+		load := w.shipWeight(ship)
+		if load > capacity {
+			w.commandOut(who, "%s is already overloaded.  It can take no more passengers.", w.boxName(ship))
+			w.commandOut(owner, "Refused to let %s board because we are overloaded.", w.boxName(who))
+			return 0
+		}
+		if load+weight.totalWeight > capacity {
+			w.commandOut(who, "%s would be overloaded with us.  We can't board.", w.boxName(ship))
+			w.commandOut(owner, "Refused to let %s board because then we would be overloaded.", w.boxName(who))
+			return 0
+		}
+	}
+	amount := weight.totalWeight * fee / 100
+	if c.b != 0 && amount > c.b {
+		w.commandOut(who, "Refused to pay a boarding fee of %s.", goldS(int(amount)))
+		w.commandOut(owner, "%s refused to pay a boarding fee of %s.", w.boxName(who), goldS(int(amount)))
+		return 0
+	}
+	if !w.charge(who, int(amount)) {
+		w.commandOut(who, "Can't afford a boarding fee of %s.", goldS(int(amount)))
+		w.commandOut(owner, "%s couldn't afford a boarding fee of %s.", w.boxName(who), goldS(int(amount)))
+		return 0
+	}
+	w.commandOut(who, "Paid %s to board %s.", goldS(int(amount)), w.boxName(ship))
+	w.commandOut(owner, "%s paid %s to board.", w.boxName(who), goldS(int(amount)))
+	w.boardMessage(who, ship)
+	w.genItem(owner, itemGold, int(amount))
+	w.goldFerry += amount
+	w.moveStack(who, ship)
+	return 1
+}
+
+// unboardMessage is c2.c:997–1024, before the actual relocation.
+func (w *world) unboardMessage(who, ship int) {
+	where := w.subloc(ship)
+	if w.charReallyHidden(who) || w.weatherHere(where, subFog) != 0 {
+		return
+	}
+	with := w.displayWith(who)
+	desc := w.linerDesc(who)
+	comma := ""
+	if strings.Contains(desc, ",") {
+		comma = ","
+	}
+	if with == "" {
+		with = "."
+	}
+	w.commandOut(where, "%s%s disembarked from %s%s", desc, comma, w.boxName(ship), with)
+	w.showCharsBelow(where, who)
+}
+
+// Complete c2.c:1031–1075. loop_char_here snapshots ALL descendants, not
+// just passenger leaders; stack_leader is tested anew after earlier moves.
+func (w *world) vUnload(c *command) int {
+	who := int(c.who)
+	ship := w.subloc(who)
+	if !w.isShip(ship) || w.buildingOwner(ship) != who {
+		w.commandOut(who, "%s is not the captain of a ship.", w.boxName(who))
+		return 0
+	}
+	where := w.subloc(ship)
+	if w.subkind(where) == subOcean {
+		w.commandOut(who, "Can't unload passengers at sea.  They won't go.")
+		return 0
+	}
+	any := false
+	for _, i := range w.allCharHere(ship) {
+		if w.stackLeader(i) == who {
+			continue
+		}
+		w.commandOut(who, "%s disembarks.", w.boxName(i))
+		w.commandOut(i, "%s disembarks.", w.boxName(i))
+		w.unboardMessage(i, ship)
+		w.moveStack(i, where)
+		any = true
+	}
+	if any {
+		w.commandOut(who, "All passengers unloaded.")
+	} else {
+		w.commandOut(who, "No passengers to unload.")
+	}
+	return 1
+}
+
+// Complete c2.c:1082–1103. Existing WAIT polling observes the flag; the
+// horn itself does not directly resume or modify waiting commands.
+func (w *world) vFerry(c *command) int {
+	who := int(c.who)
+	ship := w.subloc(who)
+	if !w.isShip(ship) || w.buildingOwner(ship) != who {
+		w.commandOut(who, "%s is not the captain of a ship.", w.boxName(who))
+		return 0
+	}
+	w.commandOut(w.subloc(ship), "%s sounds a blast on its horn.", w.boxName(ship))
+	w.logWrite(11, "FERRY for %s", w.boxName(w.player(who)))
+	w.pMagic(ship).ferryFlag = 1
+	return 1
+}

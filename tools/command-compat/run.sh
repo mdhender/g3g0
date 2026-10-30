@@ -201,7 +201,8 @@ functions = {
     'c2.c': ['v_stop', 'v_format', 'v_notab', 'open_times', 'times_masthead', 'close_times',
              'v_discard', 'v_claim', 'v_public', 'text_list_free', 'line_length_check',
              'parse_text_list', 'v_post', 'v_message', 'v_rumor', 'v_press',
-             'drop_player', 'v_quit', 'v_die'],
+             'drop_player', 'v_quit', 'v_die', 'v_fee', 'board_message', 'v_board',
+             'unboard_message', 'v_unload', 'v_ferry'],
     'immed.c': ['v_xyzzy', 'v_plugh', 'v_credit', 'v_relore'],
     'stealth.c': ['v_hide', 'd_hide', 'clear_contacts', 'add_contact', 'v_contact', 'cloak_lord'],
     'main.c': ['write_totimes', 'write_email', 'list_a_player', 'write_player_list',
@@ -853,6 +854,17 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N19 '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N19 negative boarding amount reaches direct charge assertion')
+     expected_status=134 ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N19 status $status in section $i"
+   if [ "$expected_status" = 134 ]; then
+    grep -Fxq 'assertion failure: olympia/u.c (645): qty >= 0' "${WORK}/${run}/stderr" || die "wrong N19 assertion in section $i"
+   fi
+  fi
   if [[ "${section_names[$i]}" == 'section N18 '* ]]; then
    expected_status=0
    expected_assert=''

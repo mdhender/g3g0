@@ -475,6 +475,14 @@ func init() {
 			cmdTbl[i].start = (*world).vSail
 			cmdTbl[i].finish = (*world).dSail
 			cmdTbl[i].interrupt = (*world).iSail
+		case "fee":
+			cmdTbl[i].start = (*world).vFee
+		case "board":
+			cmdTbl[i].start = (*world).vBoard
+		case "unload":
+			cmdTbl[i].start = (*world).vUnload
+		case "ferry":
+			cmdTbl[i].start = (*world).vFerry
 		case "north", "n":
 			cmdTbl[i].start = (*world).vNorth
 		case "south", "s":

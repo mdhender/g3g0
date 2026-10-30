@@ -42773,3 +42773,524 @@ save 9201
 report skill_rows 1000
 readlog 200
 export state
+
+section N19 fee has no captain check signed int32 and real zero time dispatch
+queue fee -2147483648
+queue fee 2147483647
+queue fee -7
+queue fee 0
+load
+do
+do
+do
+do
+parse fee 1
+rawargs -2147483648 0 0
+callback_start
+save 1000
+rawargs 2147483647 0 0
+callback_start
+save 1000
+rawargs -7 0 0
+callback_start
+dump
+save 1000
+readlog 200
+export state
+
+section N19 invalid ship before special log and captain checks
+parse board 1001
+callback_start
+parse ferry
+callback_start
+parse unload
+callback_start
+dump
+save 1000
+readlog 200
+
+section N19 invisible ship and hidden exit before owner fee check
+entity 9000 3 4
+entity 9001 3 4
+entity 9200 9 30
+link 9000 1000
+link 9001 9200
+parse board 9200
+callback_start
+link 9000 9200
+field 9200 loc_hidden 1
+callback_start
+dump
+save 1000
+save 9200
+readlog 200
+
+section N19 underway before no fee before weights and capacity
+entity 1 4 0
+entity 10 4 0
+field 10 weight 100
+entity 9000 3 4
+entity 9200 9 30
+field 9200 capacity 1
+field 9200 ship_moving 1
+link 9000 1000
+link 9000 9200
+parse board 9200
+callback_start
+field 9200 ship_moving 0
+callback_start
+link 9200 1001
+callback_start
+field 1001 board_fee 1
+callback_start
+dump
+save 9200
+readlog 200
+export state
+
+section N19 rounding zero still direct charge requires existing gold entry
+entity 1 4 0
+entity 10 4 0
+field 10 weight 99
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee 1
+link 9000 1000
+link 9000 9200
+link 9200 1001
+parse board 9200
+callback_start
+inventory 1000 1 1
+callback_start
+save 1000
+save 1001
+save 9200
+gm_economy gold 200
+arrival_state
+readlog 200
+export state
+
+section N19 exact max fee same faction charges and output sees precredit weight
+master 123
+gm_gold 0 0 0 0 0 0 0 0 0 0 0 0 0 17 0 0
+entity 1 4 0
+entity 10 4 0
+field 10 weight 101
+field 1 weight 1
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee 3
+field 1000 guard 1
+field 1000 moving 77
+link 9000 1000
+link 9000 9200
+link 9200 1001
+inventory 1000 1 33
+parse board 9200 4
+callback_start
+save 1000
+save 1001
+save 9200
+gm_economy gold 200
+move_state
+arrival_state
+readlog 200
+export state
+usemeta legacy 1 100000
+region_rolls 1000 9000
+newitem 1000 0
+save_new
+
+section N19 maximum refusal precedes affordability and allocation
+entity 1 4 0
+entity 10 4 0
+field 10 weight 199
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee 3
+link 9000 1000
+link 9000 9200
+link 9200 1001
+parse board 9200 4
+callback_start
+parse board 9200 -1
+rawargs 9200 -1 0
+callback_start
+save 1000
+save 1001
+gm_economy gold 200
+readlog 200
+export state
+
+section N19 stack gold does not autocharge and max zero is unlimited
+entity 1 4 0
+entity 10 4 0
+field 10 weight 100
+entity 1002 2 0
+field 1002 lord 200
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee 7
+link 9000 1000
+link 1000 1002
+link 9000 9200
+link 9200 1001
+inventory 1002 1 999
+inventory 200 1 999
+parse board 9200 0
+callback_start
+inventory 1000 1 14
+callback_start
+save 1000
+save 1001
+save 1002
+save 200
+gm_economy gold 200
+readlog 200
+export state
+
+section N19 capacity exact versus would overload and already overloaded
+entity 1 4 0
+entity 10 4 0
+field 10 weight 100
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee 1
+field 9200 capacity 199
+link 9000 1000
+link 9000 9200
+link 9200 1001
+inventory 1000 1 20
+parse board 9200
+callback_start
+field 9200 capacity 99
+callback_start
+field 9200 capacity 200
+callback_start
+save 1000
+save 1001
+save 9200
+gm_economy gold 200
+readlog 200
+export state
+
+section N19 capacity zero bypass and damage reduces capacity before fee
+entity 1 4 0
+entity 10 4 0
+field 10 weight 100
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee 5
+field 9200 capacity 399
+field 9200 damage 50
+link 9000 1000
+link 9000 9200
+link 9200 1001
+inventory 1000 1 20
+parse board 9200
+callback_start
+field 9200 capacity 0
+callback_start
+save 1000
+save 1001
+save 9200
+readlog 200
+export state
+
+section N19 signed capacity sum wraps before comparison
+entity 1 4 0
+entity 10 4 0
+field 10 weight 1500000000
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee 1
+field 9200 capacity 2000000000
+link 9000 1000
+link 9000 9200
+link 9200 1001
+inventory 1000 1 15000000
+parse board 9200
+callback_start
+save 1000
+save 1001
+save 9200
+gm_economy gold 200
+readlog 200
+export state
+
+section N19 multiplication remains int32 on positive wrapped fee
+entity 1 4 0
+entity 10 4 0
+field 10 weight 1073741825
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee 4
+link 9000 1000
+link 9000 9200
+link 9200 1001
+inventory 1000 1 1
+parse board 9200
+callback_start
+save 1000
+save 1001
+gm_economy gold 200
+readlog 200
+export state
+
+section N19 negative boarding amount reaches direct charge assertion
+entity 1 4 0
+entity 10 4 0
+field 10 weight 100
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee -1
+link 9000 1000
+link 9000 9200
+link 9200 1001
+parse board 9200
+callback_start
+
+section N19 hidden board and unload suppress public notices not relocation or fees
+entity 1 4 0
+entity 10 4 0
+field 10 weight 100
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee 3
+field 1000 hidden 1
+link 9000 1000
+link 9000 9200
+link 9200 1001
+inventory 1000 1 10
+queue board 9200
+load
+do
+who 1001
+queue unload
+load
+do
+save 1000
+save 1001
+save 9200
+gm_economy gold 200
+readlog 200
+export state
+
+section N19 fog board and unload suppress notices not relocation or accounting
+entity 1 4 0
+entity 10 4 0
+field 10 weight 100
+entity 9000 3 4
+entity 9200 9 30
+entity 9300 11 57
+field 9300 strength 1
+field 1001 board_fee 3
+link 9000 9300
+link 9000 1000
+link 9000 9200
+link 9200 1001
+inventory 1000 1 10
+queue board 9200
+load
+do
+who 1001
+queue unload
+load
+do
+save 1000
+save 1001
+save 9200
+gm_economy gold 200
+readlog 200
+export state
+
+section N19 nested passenger unload snapshots every descendant and tests leader now
+master 123
+entity 1 4 0
+entity 10 4 0
+field 10 weight 100
+entity 8000 3 50
+entity 9000 3 4
+entity 9200 9 30
+entity 1002 2 0
+entity 1003 2 0
+entity 1004 2 0
+entity 1005 2 0
+field 1002 lord 200
+field 1003 lord 201
+field 1004 lord 201
+field 1005 lord 201
+field 1002 prisoner 1
+field 1005 prisoner 1
+link 8000 9000
+link 9000 9200
+link 9200 1000
+link 1000 1001
+link 1001 1002
+link 9200 1003
+link 1003 1004
+link 1004 1005
+parse unload
+callback_start
+save 9000
+save 9200
+save 1000
+save 1001
+save 1002
+save 1003
+save 1004
+save 1005
+arrival_state
+readlog 200
+readlog 201
+export state
+usemeta legacy 1 100000
+region_rolls 1000 9000
+newitem 1000 0
+save_new
+
+section N19 unload captain only ocean refusal and no passengers still true
+entity 8000 3 50
+entity 9000 3 1
+entity 9200 9 30
+link 8000 9000
+link 9000 9200
+link 9200 1001
+link 9200 1000
+parse unload
+callback_start
+who 1001
+parse unload
+callback_start
+field 9000 subkind 4
+callback_start
+callback_start
+save 1000
+save 1001
+save 9200
+readlog 200
+export state
+
+section N19 horn real scheduler polling wakes wait ferry not direct wakeup
+entity 9000 3 4
+entity 9200 9 30
+link 9000 1000
+link 9000 9200
+link 9200 1001
+queue wait ferry 9200
+load
+do
+init_wait
+lists
+who 1001
+queue ferry
+load
+do
+save 1000
+save 9200
+lists
+poll_wait
+who 1000
+dump
+lists
+save 1000
+readlog 200
+export state
+
+section N19 saved board reparse stale arguments and genuine null interrupts finishes
+master 123
+entity 1 4 0
+entity 10 4 0
+field 10 weight 100
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee 5
+link 9000 1000
+link 9000 9200
+link 9200 1001
+inventory 1000 1 20
+queue board 9200 5
+load
+rawargs 1001 999 0
+persist_command
+do
+dump
+generic_interrupt 1000
+parse fee -1
+generic_interrupt 1000
+parse ferry
+generic_interrupt 1000
+parse unload
+generic_interrupt 1000
+save 1000
+save 1001
+save 9200
+gm_economy gold 200
+readlog 200
+export state
+usemeta legacy 1 100000
+region_rolls 1000 9000
+newitem 1000 0
+save_new
+
+section N19 foreign captain no admission check stacked actor keeps guard and moves descendants
+master 123
+entity 1 4 0
+entity 10 4 0
+field 10 weight 100
+entity 8000 3 50
+entity 9000 3 4
+entity 9200 9 30
+entity 1002 2 0
+entity 1003 2 0
+field 1001 lord 201
+field 1002 lord 200
+field 1003 lord 200
+field 1001 board_fee 5
+field 1000 guard 1
+field 1000 contact 1001
+field 1003 contact 1001
+link 8000 9000
+link 9000 1002
+link 1002 1000
+link 1000 1003
+link 9000 9200
+link 9200 1001
+inventory 1000 1 20
+parse board 9200 10
+callback_start
+save 1000
+save 1001
+save 1002
+save 1003
+save 9200
+arrival_state
+readlog 200
+readlog 201
+gm_economy gold 200
+readlog 200
+export state
+usemeta legacy 1 100000
+region_rolls 1000 9000
+newitem 1000 0
+save_new
+
+section N19 signed negative fee rounds toward zero without independent prohibition
+entity 1 4 0
+entity 10 4 0
+field 10 weight 99
+entity 9000 3 4
+entity 9200 9 30
+field 1001 board_fee -1
+link 9000 1000
+link 9000 9200
+link 9200 1001
+inventory 1000 1 1
+parse board 9200
+callback_start
+save 1000
+save 1001
+save 9200
+gm_economy gold 200
+readlog 200
+export state

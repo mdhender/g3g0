@@ -31,6 +31,8 @@ mint-top-id
 move-go
 move-land
 move-out-first
+move-ship
+movement-refused
 order-quoted-comment
 order-unrecognized
 phase-daily

@@ -8,6 +8,51 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## Ferry no-loss (#220)
+
+At **0.142.0-alpha**, unchanged immutable
+**9a03d126b329ed466c4af48425553c025eaca26f**, the full original spec reports
+**129 fixtures: 66 pass /63 fail /0 error (129s)**. Exactly **move-ship** and
+**movement-refused** are newly passing; every prior **64 name** and all
+stage-3 **36 names** are retained, compared by name rather than count.
+The stage-3 source list remains **876 bytes**, SHA-256
+`6d2080c29961395d8387364983b6543a6d05c7277b63bdfd16f9025a91736b67`.
+Only the existing tool writes passing.txt: **1325 bytes**, SHA-256
+`326cf4c3827bb0f8be7ab11094f900cda2ae50ceb81b55187b569198738c9f8d`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue220/spec" \
+  RUN_DIR=/tmp/g3g0-issue220-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Separate unchanged original scripts run real C twice before Go through the
+[bounded native pre-cleanup capture](../turn-compat/README.md#ferry-originals-220),
+including complete invocation inventories and raw status/streams/all cwd
+paths/types/modes/empty directories/bytes. All six scripts invoke their engine
+once: **18 captures**, six C/C matches, five strict C/Go matches. move-ship
+and movement-refused match **239 cwd entries each**, engine0/scriptYES0;
+the inherited wait-ferry-range/wait-gm-stack/wait-not-weather matches retain
+**235/237/245** entries. trade-refused matches C/C **237** entries, but Go
+honestly stops **engine2/scriptNO1** at actual **command buy start NYI**;
+the complete BUY/SELL owner remains #225, not an overlay in #220.
+
+Golden stays **NO**, initialization exits **2** at unsupported `load_db (-i)`.
+The #289 canonical ATTACK235/fog264/full original missing-argument stage4
+obligations and owner-deferred stage5 console remainder remain unchanged.
+There is no pin/fixture/expected-data edit, movement-family/stage exit or
+stage5 implementation. Linux amd64, GCC **12.2.0**, Go **1.26.4** only;
+accepted #291 full207 serializer/roundtrip corpora are not rerun for this
+localized callback task, and their protected cache remains untouched.
+
+Evidence: `tmp/issue220-spec.log`, `tmp/issue220-spec-names.log`,
+`tmp/issue220-spec-logs/{run-all,olympia-g3,golden,build}.log` and linked
+native provenance/manifests. Matching captures, spec WORK/RUN_DIR, temporary
+helpers/binaries and generated root/internal coverage/use dumps are removed;
+pristine C/cache and decisive failed trade C/Go captures/logs are retained.
+See [complete callback/source proof](../command-compat/README.md#ferry-boarding-unload-and-fee-220-stage-4-n19).
+
 ## SAIL no-loss (#219)
 
 At **0.141.0-alpha**, unchanged immutable

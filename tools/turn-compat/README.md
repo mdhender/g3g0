@@ -9,6 +9,95 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## Ferry originals (#220)
+
+**0.142.0-alpha**, unchanged immutable **9a03d126**. All **1237 original
+source blobs and 644/755 modes** in `tmp/_issue215/canonical` were verified
+against the isolated bare pin before reuse; canonical C SHA-256 is still
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+The pristine source and protected `tmp/issue291-roundtrip` cache remain
+untouched. No cached input is executed in place or linked, and no shared
+additional C checkout is used. Original scripts/READMEs/frozen scenarios and
+EXPECT files are unchanged; no `--update`, Lua authoring or build-scenario
+prerequisite is introduced.
+
+The [bounded native pre-cleanup method](#recruitment-raise-and-refused-215)
+was recreated under unique `tmp/_issue220`. The native launcher retains
+argv0/stdin, opens raw captures **O_RDWR**, invokes bash sourcing timeout.sh
+and `run_limited 120 "$0" "$S4_ENGINE" "$@"`, then seeks/replays stdout
+before stderr, closes both, writes actual status/newline and finally
+`cp -a . "$capture/cwd"` **after replay, before original script cleanup**.
+Script-owned redirected out/err are therefore included. Capture destinations
+are absent, not existing directories that would nest a second copy. Launcher
+executable SHA-256:
+`750c45d79a4bdc0127b84cecdae500534d268d6e18275735eea5cfc1730208b8`;
+source SHA-256:
+`f4bb57495e5271a934369866a0643f063ab136c03e5ebe9984b19116f232554f`.
+
+Each fixture runs real **C1, C2, then Go**, with every engine invocation
+allocated a distinct sequential **001/002/003** capture directory. Inspection
+of these six scripts finds exactly **one invocation each**; all complete
+invocation inventories are exactly `001`, compared across C1/C2/Go. Thus
+**18 native engine captures**, six C/C comparisons and five strict C/Go
+matches, not an overwritten last-invocation-only observation. C marker
+rejection precedes accepting status; raw stdout/stderr/status and **every cwd
+path/type/mode/empty directory/byte**, including the root, are compared with
+the existing comparator and tree-modes.py, without normalization/exclusions.
+
+```sh
+. tools/lib/timeout.sh
+export G3_REPO="$PWD/tmp/upstream.git" S4_ROOT="$PWD"
+# Recreate/build the native sequential-capture launcher described above.
+export S4_CAPTURE="$PWD/tmp/_issue220/$fixture-$run" # fresh absent run base
+export S4_ENGINE="$PWD/tmp/_issue215/canonical/build/canonical/olympia-g3"
+# Go uses a freshly built cmd/olympia, only after both C runs.
+OLYMPIA_ENGINE_BIN="$PWD/tmp/_issue220/capture" \
+  run_limited 150 bash /bin/bash \
+  "$PWD/tmp/_issue215/canonical/tests/olympia/regress/$fixture/check.sh"
+run_limited 120 compare "$PWD/tmp/_issue220/compare" --manifest "$capture"
+run_limited 120 compare "$PWD/tmp/_issue220/compare" "$c1" "$c2"
+run_limited 120 compare "$PWD/tmp/_issue220/compare" "$c1" "$go"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$go/cwd"
+```
+
+| Original fixture | Complete C cwd entries | Go engine / script | Strict result |
+| --- | --- | --- | --- |
+| move-ship | 239 | 0 / YES0 | C/C/Go exact, newly passing |
+| movement-refused | 239 | 0 / YES0 | C/C/Go exact, newly passing |
+| trade-refused | 237 | 2 / NO1 | C/C exact; actual `command buy start` NYI, #225 |
+| wait-ferry-range | 235 | 0 / YES0 | C/C/Go exact, retained |
+| wait-gm-stack | 237 | 0 / YES0 | C/C/Go exact, retained |
+| wait-not-weather | 245 | 0 / YES0 | C/C/Go exact, retained |
+
+All C engines/scripts exit0. move-ship proves the original fee/horn/wait/board/
+out-and-back sail/unload turn, including original coverage, reports, saved
+ship and JSON assertions. movement-refused proves every original verb's fail
+and rejected cells. trade-refused remains an honest later BUY/SELL boundary:
+no successful callback or rejection-only overlay is added. Family #186 still
+has later combat/storm dependencies; this is not family/stage exit.
+
+Strict manifest SHA-256s (C1/C2/Go identical except the honest trade boundary):
+
+- move-ship: `3ef71115ed831ec414a0a9ae48616ba2532c91921a3deaca19a47f8f453e7f50`
+- movement-refused: `f5d0e3b032eaaf50e8954a7fd8d598beae85507e5dc9a0edc1a6e86597e7f2c3`
+- trade-refused C/C: `28511102be321d13de314f844ba833ea41b27a81623294bc2f4545ad8a7c623e`
+- wait-ferry-range: `46c6090941300054159d3cca3693131baa37e4ed4c0e307fcc4b7a05ad719929`
+- wait-gm-stack: `1d88382f463499fd192e1cb53d8898acfe033740edf4e921cfce2735f5a8fdd0`
+- wait-not-weather: `b3addb02a6b6f2975e8c1230fde63ac83075a769be4fbbf96191f86cf3771885`
+
+Logs/inventories/manifests: `tmp/issue220-fixtures.log`,
+`tmp/issue220-FIXTURE-RUN.log`, `tmp/issue220-FIXTURE-RUN-invocations.txt`,
+`tmp/issue220-FIXTURE-RUN-001-manifest.txt`,
+`tmp/issue220-{canonical-provenance,source-definitions}.log`,
+`tmp/issue220-{launcher,fixture-manifests}.sha256`. The decisive trade C/Go
+captures remain under `tmp/issue220-trade-refused-captures/{c1-001,go-001}`;
+full strict mismatch list: `tmp/issue220-trade-refused-go-001.diff`.
+Matching captures, disposable WORK/RUN_DIR and task helpers/binaries are
+removed; pristine C/cache and decisive evidence remain. Linux amd64 only,
+no sanitizer/platform or full-corpus claim. See
+[command proof](../command-compat/README.md#ferry-boarding-unload-and-fee-220-stage-4-n19)
+and [spec no-loss](../olympia-spec/README.md#ferry-no-loss-220).
+
 ## SAIL originals (#219)
 
 **0.141.0-alpha**, unchanged immutable **9a03d126**. Before native reuse,

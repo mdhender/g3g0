@@ -3,6 +3,129 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## Ferry, boarding, unload and fee (#220, stage 4 N19)
+
+**0.142.0-alpha**, unchanged immutable **9a03d126**. The six complete original
+c2.c definitions are extracted unchanged at their actual `#line`:
+
+| Definition | Lines | Bytes | SHA-256 |
+| --- | --- | --- | --- |
+| v_fee | 843–854 | 185 | `51480e56dbd5cd70f2736d9f0c531a9390c2701065d480959f9b741c988fdb63` |
+| board_message | 857–883 | 436 | `a6955529d34c80b0cfe1dff0e023ea6d6f0ca8a16dc5c716ad549c79c59aba28` |
+| v_board | 886–994 | 2475 | `6c9f9116c11558f91910b0827fbe3bc6dd2b76868f9607658474273590377211` |
+| unboard_message | 997–1024 | 452 | `fc8c1532f5831754b8c39dcc880ff6dc2df50dd3748c643105dfbf61a9cb60d8` |
+| v_unload | 1031–1075 | 782 | `f39ada72a6ded1b42f77b0d102a3fd88d4b59f8229d899770bc022bd2af662fd` |
+| v_ferry | 1082–1103 | 434 | `c9083cd5807b2c1e008ee194e332f556c87ada5d4cf488074003c976ff2206a7` |
+
+Existing c2.go/glob.go own all four starts, retaining the real NULL finishes
+and interrupts. There is no USE callback in this slice. Existing topology,
+exit parsing, weights/capacity, direct charge, inventory, output, moveStack,
+state persistence and WAIT polling remain the actual shared owners. No new
+source dependency, upstream edit, pin change or later gameplay is introduced.
+
+**21 appended sections** discriminate validation and asymmetric message order:
+nonship before special log; invisible/hidden exits, underway, owner/no fee,
+then weights/capacity, maximum, direct affordability. Signed FEE has no captain
+check; raw negative/boundary arguments complement real parser/queue dispatch
+(the parser itself turns a typed negative number into zero). Tests cover
+rounding **99/100**, positive wrapped fee multiplication, signed capacity-sum
+wrap, damage arithmetic, capacity0/exact/would-overload/already-overloaded,
+max_fee0/exact/refusal and raw negative maximum. Even zero charge needs an
+existing gold inventory entry in C. Neither faction nor stack gold is an
+autocharge substitute, and same-faction passengers still pay.
+
+Paid notices and public boarding occur before captain credit/gold_ferry and
+moveStack; the gold report discriminates accumulation **17 + 4 = 21** from
+replacement. Hidden/fog suppress public notices, not charges or relocation.
+A foreign captain accepts a nested passenger stack without will_admit or
+leaveStack/guard clearing; saved/raw state observes contacts, topology,
+allocation, touched/known/output lists and retained movement state. Keyed
+and legacy RNG aftermath use the existing real owners, seeded before the
+commands; subsequent real newitem/save_new probes also check shared mint
+allocation aftermath. UNLOAD snapshots
+**all_char_here**, including nested captain/prisoner and noncaptain stacks:
+captain descendants stay aboard, but each passenger descendant is visited
+after its ancestor moves, so the original passenger stack is ultimately
+flattened ashore. Do not replace this with a grouped top-level unload.
+Captain/ocean/no-passenger results, actual horn plus scheduler WAIT FERRY
+polling, saved-command reload with stale raw slots, generic interruption and
+NULL callback metadata/lifecycle are retained. The horn does not directly
+wake the waiting command.
+
+One narrow new expected native abort requires **134** and exactly
+`assertion failure: olympia/u.c (645): qty >= 0`: a negative resulting BOARD
+amount reaches real direct charge. Other N19 sections require native **0**.
+Dependency/NYI/stub/sanitizer rejection precedes status acceptance and recording.
+Temporary compiled executable-entry controls, not callbacks, replace only
+the newly built native driver's entry: six marker classes × actual native
+**0/134** × default/update = **24 status2 rejections**, recording unchanged.
+
+Unchanged C first ran twice deterministically, and old Go then failed at
+real direct **command fee start NYI** (`tmp/issue220-before-go.log`). Small
+input errors (missing peasant item, wrong inventory opcode, missing containing
+region) were corrected rather than accepting incidental 139/2 results.
+Final update and default each run unchanged C twice before Go:
+**1910 sections /168521 lines /3249171 output bytes**, adding 21 sections.
+
+| Bytes | Size | SHA-256 |
+| --- | --- | --- |
+| Input | 803258 | `4a78cdb3869651790e5a3a25af0cab993242caa367039e1016953ee36e794b4c` |
+| Output | 3249171 | `3eac918a0fe5c8663d9cd714df79cbec96c6cbca4ad3ab7c144fa2297968d39f` |
+
+Both **entire inherited prefixes** are exact: input **794529** SHA
+`5fc572bae7cc3bae8d7781fcf76858e69f67554ffa402c07af5816dcd285dd83`,
+output **3197725** SHA
+`71b3ec349f49c75ae424ccbf04aec8fb25bcb6820da1b5ec7f7ceb067446f424`,
+including **21/67 high-bit bytes** and authentic C trailing spaces.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/command-compat/run.sh --update # real C twice, C-only record, Go
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+```
+
+All eight defaults run **sequentially** and pass, as do bounded vet and fresh
+full-enabled tests across **11 test packages**. Default loadsave deliberately
+does not run saved games; default turn is its small two-entry control, not a
+whole-world claim. The accepted #291 full207 serializer/roundtrip corpus is
+unmodified and not rerun for this local callback task.
+Original [native fixture proof](../turn-compat/README.md#ferry-originals-220)
+and [full spec no-loss](../olympia-spec/README.md#ferry-no-loss-220) remain
+separate gates. Logs/provenance: `tmp/issue220-command-{before,update-final}.log`,
+`tmp/issue220-*-default.log`, `tmp/issue220-{vet,tests}.log`,
+`tmp/issue220-{prefix-proof,source-definitions,marker-controls}.log`.
+No family/stage exit, stage5, commit, push or independent acceptance is claimed.
+
+Parent independently reviewed all six complete pinned C definitions and the
+Go/extraction/case diff, verified all **1237 canonical source blobs/modes**,
+the canonical binary hash and both entire inherited prefixes. Bounded vet,
+fresh bounded full-enabled tests (**11 packages**, Olympia **2.432s**) and
+all eight sequential defaults pass; the fresh command reference repeats
+**1910 sections /168521 lines**, C/C/Go exact. A separately recreated native
+launcher (source SHA-256
+`e8e486ef5e0653591d93f354bdd006183ef88fc103caa50516a3dc72fd4012f4`,
+executable `30820214e5c4648c273b0677cce5a62ed6a377f0c92519a6382f0fcb70cc7ff2`)
+repeats all **18 original engine invocations**: six C/C matches and five
+strict C/Go matches, with complete invocation inventories and every raw
+stream/status/cwd entry/type/mode/byte. All five matching manifests also
+equal the implementer's independently produced manifests. trade-refused
+remains engine2/script1 at BUY start NYI, #225. Fresh full spec is
+**66 pass /63 fail /0 error (130s)**, exactly the same accepted names,
+golden NO/init2. Evidence: `tmp/parent220-{vet,tests,command,fixtures,spec}.log`,
+per-tool logs and per-invocation manifests; decisive trade captures remain
+under `tmp/parent220-trade-captures`. Temporary launchers/binaries, matching
+captures, disposable WORK/RUN_DIRs and generated dumps are removed after
+inspection. This accepts #220, not the movement family or stage exit.
+
 ## SAIL (#219, stage 4 N18)
 
 **0.141.0-alpha**, unchanged immutable **9a03d126**. Complete original
