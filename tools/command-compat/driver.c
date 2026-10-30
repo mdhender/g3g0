@@ -1897,6 +1897,11 @@ int main(int argc, char **argv)
    n=0;
    if(sscanf(line,"%*s %31s %79s %d",text,s,&n)<1) return 2;
    if(!strcmp(text,"table")) drv_build_table();
+   else if(!strcmp(text,"chains")) {
+    printf("locations:"); loop_loc(a) { printf(" %d",a); } next_loc;
+    printf("\nsubtype %d:",n); loop_subkind(n,a) { printf(" %d",a); } next_subkind;
+    printf("\n");
+   }
    else printf("build %s %d\n",text,drv_build(c,text,s,n));
   }
   else if (!strcmp(op, "make_raw")) {

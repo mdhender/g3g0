@@ -3,7 +3,7 @@
 
 package olympia
 
-// Construction and repair/improvement: build.c. Raze remains a separate owner.
+// Construction, repair, improvement and raze: build.c.
 func fortDefaultDefense(sk int) int {
 	switch sk {
 	case subCastle:
@@ -501,6 +501,70 @@ func (w *world) iRepair(c *command) int {
 		w.commandOut(vect, "%s repaired %s damage to %s.", w.boxName(int(c.who)), niceNum(int(c.e)), w.boxName(where))
 	case c.f != 0:
 		w.commandOut(vect, "%s repaired %s defense for %s.", w.boxName(int(c.who)), niceNum(int(c.f)), w.boxName(where))
+	}
+	return 1
+}
+
+// v_raze, build.c:1021–1067 (including the return declaration).
+func (w *world) vRaze(c *command) int {
+	who := int(c.who)
+	where := w.subloc(who)
+	if w.locDepth(where) != locBuild {
+		w.commandOut(who, "Not in a building.")
+		return 0
+	}
+	if c.a != 0 && where != int(c.a) {
+		w.commandOut(who, "Not in %s.", c.parse[1])
+		return 0
+	}
+	if w.buildingOwner(where) != who {
+		w.commandOut(who, "Must be the owner of a structure to RAZE.")
+		return 0
+	}
+	perPoint := repairPoints(w.subkind(where))
+	// The original computes men here, but its minimum-men check is #if 0.
+	_ = w.countManItems(who) + 1
+	if perPoint < 1 {
+		w.commandOut(who, "Can't raze this location.")
+		return 0
+	}
+	c.d = 0
+	return 1
+}
+
+// d_raze, build.c:1070–1120. Revalidate the current location, not a saved
+// structure. countManItems already includes the noble (except garrisons);
+// C deliberately adds another one. All work/remainder arithmetic is C32.
+func (w *world) dRaze(c *command) int {
+	who := int(c.who)
+	where := w.subloc(who)
+	if w.locDepth(where) != locBuild {
+		w.commandOut(who, "No longer in a building.")
+		return 0
+	}
+	if c.a != 0 && where != int(c.a) {
+		w.commandOut(who, "No longer in %s.", c.parse[1])
+		return 0
+	}
+	if w.buildingOwner(where) != who {
+		w.commandOut(who, "Must be the owner of a structure to RAZE.")
+		return 0
+	}
+	perPoint := repairPoints(w.subkind(where))
+	men := w.countManItems(who) + 1
+	if perPoint < 1 {
+		w.commandOut(who, "Can't raze this location.")
+		return 0
+	}
+	men += c.d
+	c.d = men % perPoint
+	points := men / perPoint
+	if points > 100 {
+		points = 100
+	}
+	// Preserve the original NOTYET: RAZE does not erode defense first.
+	if w.addStructureDamage(where, int(points), true) {
+		c.wait = 0
 	}
 	return 1
 }

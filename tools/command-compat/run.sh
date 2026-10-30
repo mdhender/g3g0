@@ -108,7 +108,8 @@ functions = {
                 'tower_loc_okay', 'mine_loc_okay', 'inn_loc_okay', 'province_subloc',
                 'castle_loc_okay', 'find_build', 'build_materials_check', 'create_new_building', 'start_build',
                 'build_structure', 'unfinished_building', 'v_build', 'daily_build', 'd_build',
-                'repair_points', 'v_repair', 'd_repair', 'i_repair', 'v_improve', 'd_improve'],
+                'repair_points', 'v_repair', 'd_repair', 'i_repair', 'v_improve', 'd_improve',
+                'v_raze', 'd_raze'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'max_current_aura', 'limit_cur_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
     'display.c': ['loc_inside_string', 'show_loc_barrier', 'safe_haven_s', 'ship_cap_s',
@@ -618,6 +619,8 @@ void drv_build_table(void) {
 }
 int drv_build(struct command *c, char *action, char *s, int n) {
  if(!strcmp(action,"repair_points")) return repair_points(n);
+ if(!strcmp(action,"raze_v")) return v_raze(c);
+ if(!strcmp(action,"raze_d")) return d_raze(c);
  if(!strcmp(action,"repair_v")) return v_repair(c);
  if(!strcmp(action,"repair_d")) return d_repair(c);
  if(!strcmp(action,"repair_i")) return i_repair(c);
@@ -897,6 +900,14 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N22b '* ]]; then
+   expected_status=0
+   if [[ "${section_names[$i]}" == 'section N22b negative C32 manpower reaches shared damage assertion' ]]; then
+    expected_status=134
+    grep -Fxq 'assertion failure: olympia/u.c (1148): damage >= 0' "${WORK}/${run}/stderr" || die "wrong N22b assertion in section $i"
+   fi
+   [ "$status" = "$expected_status" ] || die "unexpected N22b status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N22a '* ]]; then
    [ "$status" = 0 ] || die "unexpected N22a status $status in section $i"
   fi

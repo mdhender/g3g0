@@ -51,6 +51,7 @@ player-settings
 production-harvest
 production-refused
 raft-sail
+raze-rebuild
 recruitment-raise
 recruitment-refused
 release-swear-np

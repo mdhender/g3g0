@@ -3,6 +3,127 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## RAZE (#224, stage 4 N22b)
+
+**0.146.0-alpha**, unchanged immutable **9a03d126**. Existing build.go owns
+complete original `v_raze` **1021–1067** and `d_raze` **1070–1120**,
+including return declarations (1121 is blank). glob.go wires the actual
+direct command, **-1 wait / daily poll / priority3 / genuine NULL interrupt**.
+There is no RAZE USE row. No construction/research/trade/combat/magic closure,
+pin, dependency or shared-owner change is added.
+
+Both callbacks validate **depth → explicit target → owner → repair tariff**
+with original messages and untouched `parse[1]` spelling. Completion checks
+the current location again, not a retained structure. Start resets only d;
+the original low-men refusal is disabled. Daily manpower is deliberately
+`count_man_items(who) + 1`: the shared helper already includes the noble
+except garrisons, and the extra one is intentional. C32 accumulation,
+signed remainder/division and the upper-only100 cap precede shared real
+`addStructureDamage`. Defense is retained: the original NOTYET is not fixed.
+Only an actual true destruction result clears wait. Existing building/mine/
+ship collapse, stack movement, garrison detachment, deletion/subtype chains,
+allocation, cache invalidation, output and RNG owners are reused unchanged.
+
+**17 appended sections** cover real delayed dispatch, saved command writer/
+reader and reparsing, daily remainder, generic NULL interruption and saved
+STOP with an actual successor; explicit/implicit target, owner and subtype
+changes; low men, garrisons, asymmetric man/nonman items, all three tariffs,
+signed C32 wrap/remainder, cap and retained defense. They exercise actual
+mine collapse (**delay8**, evacuation, collapsed-mine rebuild refusal on
+legal mountain terrain), castle garrison detachment, completed ship sinking/
+storm unbinding versus unfinished ship building-collapse, nested occupants,
+and deletion of the cached unfinished tower followed by a higher-id tower
+on both real chains. Raw save/list/allocation and keyed/legacy/mint aftermath
+are compared, not successful replacement callbacks.
+
+Before production edits, unchanged C ran twice (**1985 deterministic sections**)
+and old Go actually failed through RAZE dispatch at **command raze start NYI**:
+`tmp/issue224-command-before.log`. Original raze-rebuild's old Go also exits
+**engine2/script1** at that same dispatch boundary, with strict failure evidence
+in `tmp/issue224-raze-before.diff` and `tmp/_issue224/raze-before-{c1,go}`.
+Authoring review strengthened the signed-remainder probe from zero to -1,
+moved STOP ahead of its successor, and made the mine terrain legal so the
+specific collapsed-mine refusal, not an earlier terrain guard, is exercised.
+No production workaround or expected bytes from Go were used.
+
+Final unchanged C runs **twice before recording/Go** and matches **1988
+sections /177889 lines /3420442 output bytes**. Additions: **17 sections /
+373 input lines /6137 input bytes /1776 output lines /30442 output bytes**.
+Both ENTIRE inherited prefixes remain exact, including **47 input /93 output
+high-bit bytes**, original trailing spaces and accepted290 assertion shifts:
+
+| Bytes | Size | SHA-256 |
+| --- | --- | --- |
+| Input | 839203 | `64b16ed8b298f2047caec83cd03b871be55e81c771ac4f3d54634bf8955c72fe` |
+| Output | 3420442 | `9a5839838745395127df75784bf9070747da220bb47e10e992e3c11eebecefc7` |
+| Entire inherited input | 833066 | `6c875a847add536a17aad0200179b401a44d9128d49a8c3762dec9b4e955e807` |
+| Entire inherited output | 3390000 | `2d59dc8b0930c7d26084c4eb2c3f17b48fc506ce2a03c0346ab337f0fb6e77ac` |
+
+Stage3 prefixes **578307/2134398 bytes** retain
+`3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` /
+`1eabf595ecf06bcde56319a75012527a42dabb7e7218191b69006a86accccabe`.
+Audit: `tmp/issue224-prefix-proof.log`. Extraction verifies **25 complete
+original build.c definitions**, with exact bodies and genuine #line directives:
+`tmp/issue224-extraction-proof.log`. N22b requires status0 except its exact
+**134 / u.c:1148 / damage >= 0** case. Marker rejection still precedes statuses
+and reference writes. Compiled native **0/134 × default/update × seven marker
+classes** all **28 reject2**, recordings unchanged; separate bounded probes
+verify actual native0/134. See `tmp/issue224-marker-{native,controls}.log` and
+per-control logs; temporary negative-control sources are retained as text in
+`tmp/issue224-marker-provenance.log`, not linked into successful C references.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  bash tools/command-compat/run.sh --update
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+```
+
+Bounded vet and fresh full-enabled tests pass **11 packages** (Olympia
+**2.554s**, ten explicit opt-in/child-entry skips). All **eight defaults run
+sequentially and pass** at their existing independent pins; command repeats
+the complete real C/C/Go recording, **1988 sections /177889 lines**, Olympia
+**1.628s**. Gofmt, shell syntax and non-oracle code/docs diff-check pass.
+Whole diff-check reports only authentic newly recorded C trailing spaces,
+deliberately not normalized. Logs: `tmp/issue224-{vet,tests}.log`,
+`tmp/issue224-command-record-final.log`, `tmp/issue224-*-default.log` and
+`tmp/issue224-{diff-check,full-diff-check}.log`.
+
+Native original-script outcomes/provenance are in the
+[strict fixture proof](../turn-compat/README.md#raze-and-retained-construction-proof-224);
+full unchanged spec/no-loss and honest golden boundary in the
+[spec proof](../olympia-spec/README.md#raze-no-loss-224).
+No family/stage exit or full207 serializer-corpus rerun is implied. Protected
+`tmp/issue291-roundtrip` stays idle. ATTACK235/fog264/full missing-argument and
+the owner-approved immediate/five-console/gm-immediate-missing stage5 remainder
+remain authoritative; no new upstream blocker was demonstrated. Logs and
+manifests are `tmp/issue224-*`; matching captures, helpers/binaries, disposable
+WORKs and generated coverage/use dumps are removed, retaining failed-Go
+evidence and pristine canonical/cache. Changes are uncommitted; parent owns
+independent acceptance and delivery, not this localized proof.
+
+Parent independently accepted the full source/diff, correcting only the
+obsolete file header that still excluded RAZE. Bounded vet, fresh full-enabled
+tests (**11 packages**, Olympia **2.335s**), all eight sequential defaults and
+the full unchanged spec (**70/59/0**, no lost names, golden NO/init2) pass.
+The command oracle again matches **1988/177889**. Fresh native C1/C2/Go
+replay of all four scripts matches raw status/streams and every **236/242/
+245/259 cwd entry**, including modes and empty directories. Parent reverified
+all **1237** canonical blobs/modes, binary/build provenance, **25** complete
+extracted definitions/genuine locations, both entire inherited prefixes,
+prior69/stage3-36 names and **132** handoff evidence digests before the header
+correction. Logs: `tmp/parent224-{vet,tests,command,move,helper,rng,code,
+loadsave,turn-driver,turn,spec,fixtures,integrity,evidence-check}.log`, native
+inventories and full manifests. Only raze-rebuild is a new spec pass; no
+family/stage exit or new full-corpus proof is inferred.
+
 ## REPAIR and IMPROVE (#223, stage 4 N22a)
 
 **0.145.0-alpha**, unchanged immutable **9a03d126**. Existing build.go owns

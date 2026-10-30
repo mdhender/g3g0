@@ -9,6 +9,90 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## Raze and retained construction proof (#224)
+
+**0.146.0-alpha**, unchanged immutable **9a03d126**. Complete direct RAZE
+uses the existing shared collapse/deletion owners; no construction, combat,
+magic, cache or serializer implementation is duplicated. Supplied all-open
+audit has only settled289 follow-C remaining, upstream main9a03d126 unchanged;
+no demonstrated new blocker or reason to expand scope was found. This is not
+a construction-family/stage exit or acceptance of any other missing command.
+
+Before canonical reuse, all **1237 original blobs/modes** are verified against
+isolated bare pin9a03d126, not a shared checkout. Binary SHA-256 remains
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+Debug/Ninja and original
+`-ffile-prefix-map=/home/user/workspace/repo/tmp/_issue215/canonical/=`
+retain the trailing slash. Verification: `tmp/issue224-canonical-provenance.log`.
+No source/build/fixture in that pristine canonical was written. The protected
+idle `tmp/issue291-roundtrip` cache was not used for engines or copies, and
+no repeat full207 serializer corpus is claimed by this localized callback.
+
+Read original raze-rebuild README/check.sh/Lua/**scenario.patch**, retained
+construction-build/refused originals and stop-running's saved-order setup:
+`tmp/issue224-original-fixture-source.log` and source-contract log. No original
+--update, fixture overlay, regeneration or Lua authoring is used. Raze-rebuild
+actually builds unfinished1375, razes it on day5, then builds higher3743 on
+day6, with no intervening weather cache reset. Its original check requires
+the second tower on the real T_loc chain in lib/loc, plus the whole lib hashes.
+
+Recreated native pre-cleanup capture preserves argv0/stdin, opens streams
+**O_RDWR**, sources timeout.sh and invokes
+`run_limited 120 "$0" "$S4_ENGINE" "$@"`; seeks/replays stdout then stderr,
+closes both, writes raw status/newline, then **cp -a .** to the absent capture
+cwd before script cleanup. Every actual invocation gets a distinct001/002/etc
+inventory, never overwritten. Source/binary SHA-256:
+`6408f53dd970f6bd4eaa32c82b7c4d29926579e7254b07127b0dd2ae7fe6d24f` /
+`00fab3f1ec380641088f44ee47dd256bb320c25fea62ed8c0af5dd44759bee81`.
+Complete temporary source/commands/hashes survive as text in
+`tmp/issue224-capture-provenance.log` after helper/binary cleanup.
+
+```sh
+. tools/lib/timeout.sh
+export G3_REPO="$PWD/tmp/upstream.git" S4_ROOT="$PWD"
+# Recreate/build the documented native capture launcher and fresh Go under tmp/_issue224.
+# For EACH original script: C1, C2, then fresh Go; use absent capture bases.
+export S4_CAPTURE="$PWD/tmp/_issue224/$fixture-$run"
+export S4_ENGINE="$PWD/tmp/_issue215/canonical/build/canonical/olympia-g3"
+OLYMPIA_ENGINE_BIN="$PWD/tmp/_issue224/capture" \
+  run_limited 150 bash /bin/bash \
+  "$PWD/tmp/_issue215/canonical/tests/olympia/regress/$fixture/check.sh"
+# Reject C reference markers BEFORE expected statuses, compare ALL invocation inventories.
+run_limited 120 compare "$PWD/tmp/_issue224/compare" --manifest "$capture"
+run_limited 120 compare "$PWD/tmp/_issue224/compare" "$c1" "$c2"
+run_limited 120 compare "$PWD/tmp/_issue224/compare" "$c1" "$go"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$c2/cwd"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$go/cwd"
+```
+
+All **12 native captures /four invocation branches** pass. For each script,
+unchanged C1,C2 precede Go; all inventories are exactly001, every engine is
+**status0**, every original script **YES/0**. The EXISTING strict turn comparator
+and tree-modes.py compare raw stdout/stderr/status and **ALL cwd paths/types/
+modes/empty directories/regular bytes**, with no exclusions or normalization:
+
+| Unchanged original script / invocation | C/C/Go cwd entries | Result |
+| --- | --- | --- |
+| raze-rebuild001 | 236 | strict exact; original whole-lib manifest and chain check pass |
+| construction-build001 | 242 | strict exact; coverage/hashes/JSON pass |
+| construction-refused001 | 245 | strict exact; coverage/hashes/JSON pass |
+| stop-running001 | 259 | strict exact; coverage/hashes/JSON pass |
+
+Logs: `tmp/issue224-fixtures.log`, `tmp/issue224-*-script.log`, invocation
+inventories, full manifests and `*-{cc,cgo}.log`. The old Go raze-rebuild
+diagnostic remains honestly **engine2/script1, command raze start NYI**;
+before captures/diff are retained, not accepted as a reference. The final
+fresh replay above succeeds after the complete owner is implemented.
+The [command oracle](../command-compat/README.md#raze-224-stage-4-n22b) separately
+discriminates saved daily RAZE/NULL STOP, mine delay8/rebuild refusal,
+garrison/occupant/ship aftermath and actual cached-chain deletion/reinsertion.
+Full original spec is **70/59/0**, adding only `raze-rebuild`, no lost69 or
+stage3-36 names; golden remains NO/init2. ATTACK235/fog264/full missing-argument
+and the immediate/five-console/gm-immediate-missing stage5 deferrals remain
+unchanged. Matching captures, helpers/binaries, disposable WORKs and generated
+coverage/use dumps are removed; decisive logs/manifests/failed-Go evidence,
+pristine canonical/cache remain. Parent independently accepts/delivers.
+
 ## Repair and improvement original-fixture proof (#223)
 
 At **0.145.0-alpha**, immutable **9a03d126**, the complete direct REPAIR/

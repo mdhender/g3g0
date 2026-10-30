@@ -2636,10 +2636,26 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				}
 				break
 			}
+			if action == "chains" {
+				fmt.Fprint(&stdout, "locations:")
+				for id := range w.loopKind(tLoc) {
+					fmt.Fprintf(&stdout, " %d", id)
+				}
+				fmt.Fprintf(&stdout, "\nsubtype %d:", n)
+				for id := range w.loopSubkind(n) {
+					fmt.Fprintf(&stdout, " %d", id)
+				}
+				fmt.Fprintln(&stdout)
+				break
+			}
 			result := 0
 			switch action {
 			case "repair_points":
 				result = int(repairPoints(n))
+			case "raze_v":
+				result = w.vRaze(c)
+			case "raze_d":
+				result = w.dRaze(c)
 			case "repair_v":
 				result = w.vRepair(c)
 			case "repair_d":

@@ -333,6 +333,9 @@ func init() {
 	}
 	for i := range cmdTbl {
 		switch cmdTbl[i].name {
+		case "raze":
+			cmdTbl[i].start = (*world).vRaze
+			cmdTbl[i].finish = (*world).dRaze
 		case "repair":
 			cmdTbl[i].start = (*world).vRepair
 			cmdTbl[i].finish = (*world).dRepair

@@ -8,6 +8,50 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## Raze no-loss (#224)
+
+At **0.146.0-alpha**, unchanged immutable **9a03d126**, full unchanged spec:
+**129 fixtures /70 pass /59 fail /0 error (133s)**, tool exit0. All **69 prior
+names** and stage3's **36 names** are retained, checked as exact name sets.
+The **only** newly passing original name is **`raze-rebuild`**. Only the existing
+tool writes passing.txt; no expected fixture byte or original script is edited.
+
+The complete RAZE owner removes the actual old Go **command raze start NYI**.
+Original raze-rebuild now builds1375, razes it, builds higher3743, and satisfies
+the real T_loc-chain/lib/loc check and whole-lib C manifest. Separate bounded
+[native original-script proof](../turn-compat/README.md#raze-and-retained-construction-proof-224)
+runs unchanged C1,C2 before Go for raze-rebuild plus retained construction-build,
+construction-refused and stop-running. All **12 captures /four invocation
+branches** match raw streams/status and every cwd entry/type/mode/empty
+directory/byte, **236/242/245/259 entries**, with no exclusions or normalization.
+This is localized acceptance evidence, not a construction-family/stage exit,
+whole-spec parity or acceptance of unrelated command/USE callbacks.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue224/spec" \
+  RUN_DIR=/tmp/g3g0-issue224-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Tool-written passing.txt: **1391 bytes**, SHA-256
+`c01eb3b256617f9840d4df4caa8b418c17751479d08a57d43350597c657cd71b`.
+Stage3 source list: **876 bytes**, SHA-256
+`6d2080c29961395d8387364983b6543a6d05c7277b63bdfd16f9025a91736b67`.
+Golden remains honestly **NO**, initialization **2**, unsupported
+`load_db (-i)`. ATTACK235/fog264/full original missing-argument remain stage4;
+immediate mode/five console guards/original gm-immediate-missing remain the
+explicit owner-approved stage5 remainder. No new blocker was demonstrated,
+no console implementation/fixture overlay/original --update/new pin or repeat
+full207 serializer corpus is introduced. Protected roundtrip cache stays idle.
+
+Evidence: `tmp/issue224-spec.log`, `tmp/issue224-spec-names.log`,
+`tmp/issue224-spec-logs/{run-all,olympia-g3,golden,build}.log`, plus native
+inventories/manifests/comparison logs. Disposable WORK/external RUN_DIR,
+temporary helpers/binaries, matching captures and generated coverage/use dumps
+are removed; decisive failed-Go evidence and pristine canonical/cache remain.
+Everything is left uncommitted for the parent's independent acceptance.
+
 ## Repair and improvement no-loss (#223)
 
 At **0.145.0-alpha**, unchanged immutable **9a03d126**, full original spec:
