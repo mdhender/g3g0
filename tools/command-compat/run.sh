@@ -106,10 +106,8 @@ functions = {
                'garr_own_s', 'garrison_summary', 'pledged_beneath', 'v_pledge'],
     'build.c': ['fort_default_defense', 'ship_loc_okay', 'temple_loc_okay',
                 'tower_loc_okay', 'mine_loc_okay', 'inn_loc_okay', 'province_subloc',
-                # Native-only complete completion body resolves start_build's
-                # unreachable instant_build reference; no completion hook.
                 'castle_loc_okay', 'find_build', 'build_materials_check', 'create_new_building', 'start_build',
-                'build_structure', 'unfinished_building', 'v_build'],
+                'build_structure', 'unfinished_building', 'v_build', 'daily_build', 'd_build'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'max_current_aura', 'limit_cur_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
     'display.c': ['loc_inside_string', 'show_loc_barrier', 'safe_haven_s', 'ship_cap_s',
@@ -616,7 +614,9 @@ void drv_build_table(void) {
 }
 int drv_build(struct command *c, char *action, char *s, int n) {
  if(!strcmp(action,"defense")) return fort_default_defense(n);
+ if(!strcmp(action,"roll")) return ent_build(n);
  if(!strcmp(action,"v")) return v_build(c);
+ if(!strcmp(action,"d")) return d_build(c);
  if(!strcmp(action,"unfinished")) { char *p=unfinished_building(c->who); printf("unfinished [%s]\\n",p?p:"NULL"); return p!=NULL; }
  struct build_ent *t=find_build(s);
  if(!strcmp(action,"find")) { printf("build find [%s] %d\\n",t?t->what:"NULL",fuzzy_build_match); return t!=NULL; }
@@ -625,6 +625,7 @@ int drv_build(struct command *c, char *action, char *s, int n) {
  if(!strcmp(action,"materials")) return build_materials_check(c,t);
  if(!strcmp(action,"start")) return start_build(c,t,n);
  if(!strcmp(action,"structure")) return build_structure(c,t,n);
+ if(!strcmp(action,"create")) { create_new_building(c,t,n); return 1; }
  abort();
 }
 void drv_make_table(void) {
@@ -886,6 +887,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N21 '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N21 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N20 '* ]]; then
    [ "$status" = 0 ] || die "unexpected N20 status $status in section $i"
   fi

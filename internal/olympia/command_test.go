@@ -2640,8 +2640,12 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			switch action {
 			case "defense":
 				result = fortDefaultDefense(n)
+			case "roll":
+				result = w.streams.EntBuild(n)
 			case "v":
 				result = w.vBuild(c)
+			case "d":
+				result = w.dBuild(c)
 			case "unfinished":
 				p := w.unfinishedBuilding(int(c.who))
 				name := "NULL"
@@ -2666,6 +2670,9 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 					result = w.startBuild(c, r, n)
 				case "structure":
 					result = w.buildStructure(c, r, n)
+				case "create":
+					w.createNewBuilding(c, r, n)
+					result = 1
 				default:
 					t.Fatalf("unknown build action %s", action)
 				}
@@ -3075,6 +3082,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				w.pSubloc(n).effortGiven = int32(a)
 			case "effort_required":
 				w.pSubloc(n).effortRequired = int32(a)
+			case "build_materials":
+				w.pSubloc(n).buildMaterials = int8(a)
 			case "ram":
 				w.pSubloc(n).galleyRam = int8(a)
 			case "board_fee":
@@ -3337,6 +3346,8 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 				c.status = int8(n)
 			case "wait":
 				c.wait = int32(n)
+			case "use_exp":
+				c.useExp = int32(n)
 			case "use_ent":
 				c.useEnt = int32(n)
 			case "use_skill":

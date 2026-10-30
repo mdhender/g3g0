@@ -3,9 +3,7 @@
 
 package olympia
 
-// Construction starts only: build.c:8–427,460–560,666–793. Completion,
-// repair/improve and raze belong to later owners. Direct BUILD dispatch stays
-// NYI until its completion exists; these are the complete function contracts.
+// Construction: build.c:8–811. Repair/improve and raze remain separate owners.
 func fortDefaultDefense(sk int) int {
 	switch sk {
 	case subCastle:
@@ -176,6 +174,29 @@ func (w *world) buildMaterialsCheck(c *command, bi *buildEnt) int {
 	return 1
 }
 
+// create_new_building, build.c:430–457. Use the shared subtype/cache,
+// keyed entity stream, mine stock floor and skill-experience owners.
+func (w *world) createNewBuilding(c *command, bi *buildEnt, where int) {
+	w.changeBoxSubkind(where, bi.finishedSubkind)
+	p := w.pSubloc(where)
+	p.effortGiven, p.effortRequired = 0, 0
+	p.defense = int32(fortDefaultDefense(bi.finishedSubkind))
+	p.damage, p.buildMaterials = 0, 0
+	if bi.finishedSubkind == subMine {
+		p.shaftDepth = 3
+		if w.streams.EntBuild(where) == 1 {
+			w.genItem(where, itemGateCrystal, 1)
+		}
+		w.mineProduction(where)
+	}
+	if bi.finishedSubkind == subTemple {
+		p.teaches.Append(skReligion)
+	}
+	if bi.skillReq != 0 {
+		w.addSkillExperience(int(c.who), bi.skillReq)
+	}
+}
+
 func (w *world) startBuild(c *command, bi *buildEnt, new int) int {
 	pl := w.player(int(c.who))
 	where := w.subloc(int(c.who))
@@ -213,6 +234,56 @@ func (w *world) startBuild(c *command, bi *buildEnt, new int) int {
 	w.commandOut(where, "%s began construction of %s in %s.", w.boxName(int(c.who)), w.boxNameKind(new), w.boxName(where))
 	w.showToGarrison = false
 	w.moveStack(int(c.who), new)
+	return 1
+}
+
+// daily_build, build.c:563–663. A failed later material increment keeps
+// earlier consumption, but does not commit today's effort. The <= threshold
+// intentionally charges the first fifth even when fifth is zero.
+func (w *world) dailyBuild(c *command, bi *buildEnt) int {
+	who := int(c.who)
+	inside := w.subloc(who)
+	if w.subkind(inside) == bi.finishedSubkind {
+		w.commandOut(who, "%s is finished!", w.boxName(inside))
+		c.wait = 0
+		return 1
+	}
+	if w.subkind(inside) != bi.unfinishedSubkind {
+		w.commandOut(who, "%s is no longer in a %s.  Construction halts.", w.justName(who), bi.what)
+		return 0
+	}
+	nworkers := int32(1)
+	if bi.minWorkers != 0 {
+		nworkers = w.hasItem(who, itemWorker)
+	}
+	if nworkers <= 0 {
+		w.commandOut(who, "%s has no workers.  Construction halts.", w.justName(who))
+		return 0
+	}
+	p := w.pSubloc(inside)
+	bonus := 5 * c.useExp * nworkers
+	effortGiven := nworkers*100 + bonus
+	if bi.reqItem > 0 {
+		fifth := (p.effortGiven + effortGiven) * 5 / p.effortRequired
+		for p.buildMaterials < 5 && int32(p.buildMaterials) <= fifth {
+			if !w.consumeItem(who, bi.reqItem, bi.reqQty) {
+				w.commandOut(who, "Need another %s to continue work.  Construction halted.", w.boxNameQty(bi.reqItem, bi.reqQty))
+				return 0
+			}
+			w.commandOut(who, "Used %s in construction of %s.", w.boxNameQty(bi.reqItem, bi.reqQty), w.boxName(inside))
+			p.buildMaterials++
+		}
+	}
+	p.effortGiven += effortGiven
+	if p.effortGiven < p.effortRequired || c.daysExecuting < int32(bi.minDays) {
+		return 1
+	}
+	w.createNewBuilding(c, bi, inside)
+	w.commandOut(who, "%s is finished!", w.boxName(inside))
+	w.showToGarrison = true
+	w.commandOut(w.subloc(who), "%s completed construction of %s in %s.", w.boxName(who), w.boxNameKind(inside), w.boxName(w.loc(inside)))
+	w.showToGarrison = false
+	c.wait = 0
 	return 1
 }
 
@@ -297,4 +368,16 @@ func (w *world) vBuild(c *command) int {
 	}
 	// C's automatic choice from p->unformed is also disabled by #if 0.
 	return w.buildStructure(c, t, new)
+}
+
+// d_build, build.c:796–811. Saved command text is reparsed by the scheduler;
+// lookup still happens at completion rather than retaining a table pointer.
+func (w *world) dBuild(c *command) int {
+	t := w.findBuild(c.parse[1])
+	if t == nil {
+		w.logWrite(10, "d_build: t is NULL (%s)", c.parse[1])
+		w.commandOut(int(c.who), "Internal error.")
+		return 0
+	}
+	return w.dailyBuild(c, t)
 }

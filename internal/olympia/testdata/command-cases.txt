@@ -43904,3 +43904,567 @@ build v
 dump
 readlog 200
 export state
+
+section N21 direct BUILD real delayed completion saved reparse NULL interrupt metadata
+master 123
+resolve_wait
+entity 8000 3 50
+entity 9000 3 3
+entity 9300 12 0
+entity 680 5 0
+entity 11 4 0
+entity 78 4 0
+field 200 unformed 9300
+link 8000 9000
+link 9000 1000
+link 1000 1001
+learn 1000 680 2 0
+inventory 1000 11 2000
+inventory 1000 78 100
+queue build tower "Daily tower" 3 9300
+queue wait time 1
+load
+do
+dump
+save 9300
+save 1000
+persist_command
+initial
+dump
+day 1
+dump
+save 9300
+save 1000
+usemeta state 1000 680
+readlog 200
+export state
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+
+section N21 finished first and actor leaves or changes subtype before workers and stock
+entity 9000 3 3
+entity 9300 3 46
+entity 9301 3 47
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9000 9301
+link 9300 1000
+parse build tower
+set wait 9
+build d
+dump
+link 9000 1000
+set wait 8
+build d
+dump
+link 9301 1000
+build d
+inventory 1000 11 -1
+build d
+field 9301 subkind 38
+build d
+save 9300
+save 9301
+save 1000
+readlog 200
+
+section N21 one and two workers resume without skill or original three minimum
+entity 9000 3 3
+entity 9300 3 47
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9300 1000
+field 9300 effort_required 1000
+inventory 1000 11 1
+inventory 1000 78 100
+parse build tower
+set wait 3
+set days 1
+build d
+save 9300
+genitem 1000 11 1
+set use_exp 4
+build d
+save 9300
+save 1000
+readlog 200
+
+section N21 fifth zero charge and below exact above one fifth boundaries
+entity 9000 3 3
+entity 9300 3 47
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9300 1000
+inventory 1000 11 1
+inventory 1000 78 200
+field 9300 effort_required 1000
+parse build tower
+set days 1
+build d
+save 9300
+field 9300 effort_given 99
+build d
+save 9300
+field 9300 effort_given 100
+build d
+save 9300
+field 9300 effort_given 101
+build d
+save 9300
+field 9300 effort_given 299
+build d
+save 9300
+field 9300 effort_given 300
+build d
+save 9300
+save 1000
+readlog 200
+
+section N21 partial multiple charges persist on failure but not todays effort saved reentry
+resolve_wait
+entity 9000 3 3
+entity 9300 3 47
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9300 1000
+field 9300 effort_given 10
+field 9300 effort_required 1000
+inventory 1000 11 6
+inventory 1000 78 40
+queue build tower "" 7
+load
+do
+day 1
+dump
+save 9300
+save 1000
+persist_command
+initial
+genitem 1000 78 20
+queue build
+load
+do
+day 2
+save 9300
+save 1000
+genitem 1000 78 40
+queue build tower
+load
+do
+day 3
+dump
+save 9300
+save 1000
+readlog 200
+export state
+
+section N21 wait expires early retaining effort reenter and STOP after saved running BUILD
+resolve_wait
+entity 9000 3 3
+entity 9300 3 47
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9300 1000
+field 9300 effort_required 10000
+inventory 1000 11 1
+inventory 1000 78 100
+queue build tower "" 1
+load
+do
+day 1
+dump
+save 9300
+queue build
+load
+do
+day 2
+persist_command
+initial
+queue stop
+queue guard 1
+stops
+dump
+save 9300
+save 1000
+day 3
+dump
+save 9300
+save 1000
+readlog 200
+export state
+
+section N21 raft virtual worker zero then negative inventory min day before reset
+entity 9000 3 3
+entity 9300 9 67
+entity 11 4 0
+entity 59 4 0
+link 9000 9300
+link 9300 1000
+field 9300 effort_required 100
+field 9300 damage 78
+inventory 1000 59 25
+parse build raft
+set wait 8
+set days 0
+build d
+save 9300
+dump
+inventory 1000 11 -8
+set days 1
+build d
+save 9300
+save 1000
+dump
+build d
+readlog 200
+export state
+
+section N21 galley completion resets damage defense effort not capacity and experience once
+entity 9000 3 3
+entity 9300 9 33
+entity 602 5 0
+entity 11 4 0
+entity 77 4 0
+link 9000 9300
+link 9300 1000
+learn 1000 602 2 3
+inventory 1000 11 1
+inventory 1000 77 50
+field 9300 capacity 9876
+field 9300 damage 87
+field 9300 structure_defense 99
+field 9300 effort_required 100
+parse build galley
+set wait 9
+set days 1
+set use_exp 3
+build d
+save 9300
+save 1000
+build d
+usemeta rows 1000
+readlog 200
+export state
+
+section N21 roundship completes using current location rather than original one
+entity 9000 3 3
+entity 9300 9 34
+entity 9301 9 34
+entity 11 4 0
+entity 77 4 0
+link 9000 9300
+link 9000 9301
+link 9300 1000
+field 9300 effort_required 1000
+field 9301 effort_required 100
+inventory 1000 11 1
+inventory 1000 77 100
+parse build roundship
+build v
+link 9301 1000
+set days 1
+build d
+save 9300
+save 9301
+save 1000
+readlog 200
+export state
+
+section N21 temple teaches append duplicates and completion inside output route
+entity 9000 3 3
+entity 9300 3 36
+entity 680 5 0
+entity 750 5 0
+entity 11 4 0
+entity 78 4 0
+entity 1002 2 0
+field 1002 lord 201
+link 9000 9300
+link 9300 1000
+link 9300 1001
+link 9000 1002
+field 9300 teaches 750
+field 9300 effort_required 100
+field 9300 damage 45
+learn 1000 680 2 0
+inventory 1000 11 1
+inventory 1000 78 50
+parse build temple
+set days 1
+build d
+save 9300
+save 1000
+usemeta rows 1000
+readlog 200
+readlog 201
+export state
+
+section N21 inn completion and castle completion use actual defense and material cap five
+entity 9000 3 3
+entity 9300 3 38
+entity 9301 3 39
+entity 680 5 0
+entity 11 4 0
+entity 77 4 0
+entity 78 4 0
+link 9000 9300
+link 9000 9301
+link 9300 1000
+learn 1000 680 2 0
+inventory 1000 11 10000
+inventory 1000 77 75
+inventory 1000 78 500
+field 9300 effort_required 30000
+field 9301 effort_required 1000000
+parse build inn
+set days 1
+build d
+save 9300
+link 9301 1000
+parse build castle
+build d
+save 9301
+usemeta rows 1000
+save 1000
+readlog 200
+export state
+
+section N21 mine alternate Mining only completion attempts Construction not Mining
+master 123
+entity 1 4 0
+entity 8000 3 50
+entity 9000 3 4
+entity 9300 12 0
+entity 680 5 0
+entity 720 5 0
+entity 11 4 0
+entity 77 4 0
+entity 79 4 0
+entity 82 4 0
+entity 83 4 0
+field 200 unformed 9300
+link 8000 9000
+link 9000 1000
+learn 1000 720 2 0
+inventory 1000 11 500
+inventory 1000 77 25
+parse build mine "Mining only" 2 9300
+build v
+set days 1
+build d
+save 9300
+save 1000
+usemeta rows 1000
+readlog 200
+entity_rolls 1000 1 9000
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+export state
+
+section N21 int32 speed products addition fifth numerator and saved signed fields
+entity 9000 3 3
+entity 9300 3 47
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9300 1000
+field 9300 effort_required 2147483647
+field 9300 effort_given 2147483640
+field 9300 build_materials 5
+inventory 1000 11 2147483647
+parse build tower
+set use_exp 2147483647
+set days 1
+build d
+save 9300
+set use_exp -2147483648
+build d
+save 9300
+set use_exp 4
+build d
+save 9300
+save 1000
+dump
+readlog 200
+
+section N21 unknown completion name logs before Internal error no stock or state changes
+entity 9000 3 3
+link 9000 1000
+parse build nonsense
+set wait 7
+build d
+dump
+save 1000
+readlog 10
+readlog 200
+
+section N21 mines actual keyed crystal yes no repeated day and turn stock floors
+master 123
+set turn 1
+entity 1 4 0
+entity 11 4 0
+entity 77 4 0
+entity 79 4 0
+entity 82 4 0
+entity 83 4 0
+entity 680 5 0
+entity 9000 3 4
+entity 9300 3 41
+entity 9301 3 41
+link 9000 9300
+link 9000 9301
+link 9300 1000
+field 9300 effort_required 100
+field 9301 effort_required 100
+field 9300 shaft_depth 24
+field 9300 damage 98
+inventory 9300 79 20
+inventory 9300 1 3
+inventory 9300 82 2
+inventory 1000 11 1
+inventory 1000 77 50
+learn 1000 680 2 3
+parse build mine
+set days 1
+build roll mine 9300
+build d
+save 9300
+build d
+save 9300
+build create mine 9300
+save 9300
+set day 19
+build roll mine 9300
+build create mine 9300
+save 9300
+link 9301 1000
+build roll mine 9301
+build d
+save 9301
+set turn 2
+build roll mine 9300
+build roll mine 9301
+usemeta month 1000 680 0
+build create mine 9300
+build create mine 9301
+save 9300
+save 9301
+usemeta rows 1000
+save 1000
+readlog 200
+entity_rolls 1000 1 9000
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+export state
+
+section N21 exact later fifths and five cap retain charged materials above threshold min days
+entity 9000 3 3
+entity 9300 3 47
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9300 1000
+field 9300 effort_required 1000
+field 9300 build_materials 2
+inventory 1000 11 1
+inventory 1000 78 60
+parse build tower
+field 9300 effort_given 299
+build d
+save 9300
+field 9300 effort_given 300
+build d
+save 9300
+field 9300 effort_given 499
+build d
+save 9300
+field 9300 effort_given 500
+build d
+save 9300
+field 9300 effort_given 699
+build d
+save 9300
+field 9300 effort_given 700
+build d
+save 9300
+field 9300 effort_given 899
+build d
+save 9300
+field 9300 effort_given 900
+build d
+save 9300
+dump
+save 1000
+set days 1
+build d
+save 9300
+readlog 200
+
+section N21 bare continuation reparse keeps stale days chosen args then deferred finish
+resolve_wait
+entity 9000 3 3
+entity 9300 3 47
+entity 9301 12 0
+entity 11 4 0
+entity 78 4 0
+field 200 unformed 9301
+link 9000 9300
+link 9300 1000
+field 9300 effort_required 100
+inventory 1000 11 1
+inventory 1000 78 100
+parse build
+rawargs 11 12 7 9301
+build v
+dump
+save 9300
+save 9301
+save 200
+set days 1
+build d
+dump
+save 9300
+save 1000
+readlog 200
+export state
+
+section N21 completion public route inside touched only and garrison only with loc inside formatting
+entity 202 1 49
+entity 9000 3 3
+entity 9300 3 47
+entity 9400 3 32
+entity 1010 2 64
+entity 680 5 0
+entity 11 4 0
+entity 78 4 0
+name 9000 Outer
+name 9300 Inside
+link 9000 9300
+link 9000 9400
+link 9000 1010
+link 9400 1001
+link 9300 1000
+field 1001 lord 202
+field 1010 castle 9400
+field 201 touched 9300
+field 9300 effort_required 100
+inventory 1000 11 1
+inventory 1000 78 100
+learn 1000 680 2 0
+parse build tower
+set days 1
+build d
+readlog 200
+readlog 201
+readlog 202
+save 9300
+save 1000
+export state

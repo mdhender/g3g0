@@ -2134,6 +2134,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text,"structure_defense")) p_subloc(n)->defense = a;
    else if (!strcmp(text,"effort_given")) p_subloc(n)->effort_given = a;
    else if (!strcmp(text,"effort_required")) p_subloc(n)->effort_required = a;
+   else if (!strcmp(text,"build_materials")) p_subloc(n)->build_materials = (schar)a;
    else if (!strcmp(text,"ram")) p_subloc(n)->galley_ram = (schar)a;
    else if (!strcmp(text,"board_fee")) p_magic(n)->fee = a;
    else if (!strcmp(text,"shaft_depth")) p_subloc(n)->shaft_depth = (short)a;
@@ -2290,6 +2291,7 @@ int main(int argc, char **argv)
    else if (!strcmp(text, "priority")) cur_pri = n;
    else if (!strcmp(text, "status")) c->status = (schar)n;
    else if (!strcmp(text, "wait")) c->wait = n;
+   else if (!strcmp(text, "use_exp")) c->use_exp = n;
    else if (!strcmp(text, "use_ent")) c->use_ent = n;
    else if (!strcmp(text, "use_skill")) c->use_skill = n;
    else if (!strcmp(text, "poll")) c->poll = (schar)n;

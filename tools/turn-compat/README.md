@@ -9,6 +9,81 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## Daily BUILD original-fixture proof (#222)
+
+**0.144.0-alpha**, unchanged immutable **9a03d126**. Before reusing
+`tmp/_issue215/canonical`, all **1237 original blobs and modes** were verified
+against the isolated bare pin, together with Debug/Ninja and
+`-ffile-prefix-map=/home/user/workspace/repo/tmp/_issue215/canonical/=`
+(trailing slash retained). Canonical binary SHA-256 remains
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+Audit: `tmp/issue222-canonical-provenance.log`. No original C/source/fixture,
+pin or protected full207 input cache was changed; no engine ran in that
+cache or on linked inputs. No new full-corpus claim.
+
+Read unchanged construction-build/refused READMEs, check.sh, Lua and frozen
+scenario orders, raft-sail's three cases and **both actual raft-loc-depth
+branches**. No authoring/regeneration, upstream --update or fixture edits.
+The native pre-cleanup launcher was recreated under unique `tmp/_issue222`:
+preserve argv0/stdin, open raw streams **O_RDWR**, invoke bash sourcing
+timeout.sh and `run_limited 120 "$0" "$S4_ENGINE" "$@"`, seek/replay stdout
+then stderr, close, write actual status/newline, then `cp -a .` to an absent
+capture/cwd **after replay and before script cleanup**. Every invocation
+gets distinct sequential001/002/003, never overwritten. Launcher source /
+binary SHA-256:
+`aa20eeb688fde9d0e6de417df1e242acd17b1fc28d8191dc6cfb043956fa8ed0` /
+`49af958e2316c2eff170060406aab9f2fd67418c8316b9eb38556a318dee2d16`.
+Provenance: `tmp/issue222-capture-provenance.log`.
+
+```sh
+. tools/lib/timeout.sh
+export G3_REPO="$PWD/tmp/upstream.git" S4_ROOT="$PWD"
+# Recreate the native sequential launcher as described above.
+# For EACH fixture, run C1, C2, then Go (fresh tmp/_issue222/olympia).
+export S4_CAPTURE="$PWD/tmp/_issue222/$fixture-$run" # fresh absent run base
+export S4_ENGINE="$PWD/tmp/_issue215/canonical/build/canonical/olympia-g3"
+OLYMPIA_ENGINE_BIN="$PWD/tmp/_issue222/capture" \
+  run_limited 150 bash /bin/bash \
+  "$PWD/tmp/_issue215/canonical/tests/olympia/regress/$fixture/check.sh"
+# Compare complete invocation inventories before comparing each001/002/003:
+run_limited 120 compare "$PWD/tmp/_issue222/compare" --manifest "$capture"
+run_limited 120 compare "$PWD/tmp/_issue222/compare" "$c1" "$c2"
+run_limited 120 compare "$PWD/tmp/_issue222/compare" "$c1" "$go"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$c2/cwd"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$go/cwd"
+```
+
+**21 native engine captures**, seven actual invocation branches. For each
+script fresh **C1,C2 precede Go**, C marker rejection precedes accepting0,
+and inventories match across all three runs. All seven C/C comparisons
+match raw status/stdout/stderr plus **every cwd path/type/mode/empty
+directory/byte**, using existing turn-compat and tree-modes.py without
+exclusions or normalization. Native scripts have C engine0/scriptYES0.
+
+| Original script / invocation | Entries | Go engine / script | Strict result |
+| --- | --- | --- | --- |
+| construction-build001 | 242 | 2 / NO1 | C/C exact; now actual **command improve start NYI**, #223 |
+| construction-refused001 | 245 | 2 / NO1 | C/C exact; actual **command repair start NYI**, #223 |
+| raft-sail001 sail | 235 | 0 / YES0 | C/C/Go exact |
+| raft-sail002 lose | 235 | 0 / YES0 | C/C/Go exact |
+| raft-sail003 lose-ship | 235 | 0 / YES0 | C/C/Go exact |
+| raft-loc-depth001 load | 227 | 0 / NO1 (whole script) | This branch C/C/Go exact |
+| raft-loc-depth002 attack | 235 | 2 / NO1 | C/C exact; **regular_combat NYI**, #235 |
+
+Direct BUILD no longer stops at start, but unfinished construction scripts
+are **not** accepted as passes or a family exit. Existing raft-sail all
+three cases remain passing. Stage4 #289's settled ATTACK235/fog264/original
+missing-argument obligations and stage5 console remainder are unchanged.
+
+Logs/manifests/inventories: `tmp/issue222-fixtures.log`,
+`tmp/issue222-*-{cc,cgo,*-script}.log`,
+`tmp/issue222-*-{manifest,inventory}.txt`. Failed Go captures retained in
+`tmp/issue222-construction-{build,refused}-go/001` and
+`tmp/issue222-raft-loc-depth-go/002`. Matching captures, temporary native/
+Go binaries/helpers and disposable WORK/RUN_DIRs are removed. Completion's
+bounded real-C/C/Go [command oracle](../command-compat/README.md#daily-build-and-completion-222-stage-4-n21)
+discriminates the complete callbacks independently of those later NYIs.
+
 ## Construction start prerequisite (#221)
 
 **0.143.0-alpha**, unchanged immutable **9a03d126**. All **1237 original

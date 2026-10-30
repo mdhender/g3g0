@@ -8,6 +8,39 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## Daily BUILD no-loss (#222)
+
+At **0.144.0-alpha**, unchanged immutable **9a03d126**, full original spec:
+**129 fixtures /66 pass /63 fail /0 error (128s)**, exit0. Exactly every
+prior **66 name** and stage3 **36 names** remains, checked by name, not count.
+No new passing name: construction scripts still need repair/improve223,
+raft-loc-depth's attack branch needs regular_combat235. The separate strict
+[original-fixture replay](../turn-compat/README.md#daily-build-original-fixture-proof-222)
+ran all seven native invocation branches C1,C2,Go; raft-sail all three
+branches stay exact. This is not a family/stage exit or whole-spec parity.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue222/spec" \
+  RUN_DIR=/tmp/g3g0-issue222-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Only the tool writes passing.txt, unchanged **1325 bytes**, SHA-256
+`326cf4c3827bb0f8be7ab11094f900cda2ae50ceb81b55187b569198738c9f8d`.
+Stage3 source list remains **876 bytes**, SHA-256
+`6d2080c29961395d8387364983b6543a6d05c7277b63bdfd16f9025a91736b67`.
+Golden remains **NO**, initialization **2**, unsupported `load_db (-i)`.
+No fixture changes, new pin, console/stage5 implementation or full207
+serializer/roundtrip rerun. #289's settled remaining owners are unchanged.
+
+Evidence: `tmp/issue222-spec.log`, `tmp/issue222-spec-names.log`,
+`tmp/issue222-spec-logs/{run-all,olympia-g3,golden,build}.log`.
+Disposable spec WORK/external RUN_DIR, temporary helpers/binaries,
+matching captures and generated coverage.tsv/use.tsv are removed. Decisive
+logs/manifests and failed Go captures remain. Linux amd64, GCC12.2.0,
+Go1.26.4; all engines use existing bounded run_limited/native launchers.
+
 ## Construction start no-loss (#221)
 
 At **0.143.0-alpha**, unchanged immutable **9a03d126**, full original spec:

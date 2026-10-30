@@ -3,6 +3,116 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## Daily BUILD and completion (#222, stage 4 N21)
+
+**0.144.0-alpha**, unchanged immutable **9a03d126**. build.go now ports
+complete original `create_new_building` **430–457**, `daily_build`
+**563–663**, and `d_build` **796–811**. glob.go installs real direct BUILD
+start/finish together, retaining its genuine **NULL interrupt**. No USE
+callback is wired: USE shipbuilding's refusal callback has a separate owner.
+The constant-false instant_build branch remains disabled. Repair/improve223,
+raze224 and combat235 are not implemented here.
+
+Completion reuses subtype/cache, inventory, output/garrison, placement,
+`streams.EntBuild`, `mineProduction` and `addSkillExperience`, not a new
+framework/stream/allocation owner. Finished subtype precedes worker checks;
+location changes precede stock. Rafts always use one virtual worker; other
+structures accept any positive current workers. Speed/fifths arithmetic is
+C32. The material loop's **<=**, first charge at fifth0, five-charge cap,
+and partial consumption **without today's effort commit** on later failure
+are intentional. Effort and minimum command days both gate completion;
+wait expiry and generic STOP retain structure progress. Public output routes
+through **subloc(who)** inside the structure, with **loc(inside)** in its text.
+
+The extractor now retains **17 complete original build.c definitions** and
+the unchanged **3429-byte** table/state. Exact original bodies, real #line,
+ranges, byte counts and SHA-256s are audited in
+`tmp/issue222-extraction-proof.log`; the three new-port body hashes are:
+
+- create: `dcbfa2f860093680ac1077cccc0c8af032e08b2d2f40f11fdef26f1343c35b42`
+- daily: `118fa96f56e573db34e17fb2fc7b0fda75532443f1e5f49c655b5c19bd4a50c8`
+- dispatch: `d3b8215d116ba1ffab84c8c24be179a68cabe4ac0aa387dc5e1320ae74b5c274`
+
+**18 appended sections** cover actual allocated BUILD → saved RUN reparse →
+daily completion/successor queues; finished/left/changed/no/negative-worker
+ordering; one/two workers without rechecking start skills/minimum3; all eight
+completions/defenses, damage/progress/material resets and retained capacity;
+below/exact/above fifths0–5, multiple charges then failure, saved partial
+re-entry, early wait expiry and real saved STOP; raft zero/negative workers
+and day0/1; C32 products/addition/fifth numerator; duplicate temple teaches;
+Mining-only mine does not gain invented Mining/Construction experience;
+actual mine stock floors; internal-error log ordering; stale raw argument
+slots; inside-only touched and garrison-only public recipients. Keyed mine
+rolls at master123/turn1 are **9300→1,9301→3**; same day/repeated creation
+and day19 keep those rolls, turn2 gives **2/5**. Already-finished daily calls
+do not draw/create again. Subsequent real keyed/legacy/mint probes and raw
+saved/list/allocation/output state are compared as well.
+
+Real unchanged C ran **twice before recording/Go**. Before production edits,
+the new direct lifecycle ran C/C0, then old Go genuinely stopped at
+**command build start NYI**, not a missing test hook:
+`tmp/issue222-{command-before,direct-before}.log`. Test-authoring omitted
+referenced mine items initially (native has_item assertion); one authoring
+run changed its last input while C was reading and was correctly rejected
+as nondeterministic. Neither failure was accepted/re-recorded or relaxed.
+Final fresh recording/default runs repeat all unchanged C twice, then Go:
+**1951 sections /173858 lines /3348498 output bytes**, all match.
+
+| Bytes | Size | SHA-256 |
+| --- | --- | --- |
+| Input | 823608 | `41c36407bbdf90770dea91e6269fba0ac8332f8bd2b9b3d2141333276122fc23` |
+| Output | 3348498 | `3f4186c9cac88f041df3bd0e67c253d73dbae9dd9f089bdf393d40a1d80e4249` |
+| Entire inherited input | 814197 | `537b574d1da1f75318bc8022f13e35d6d06efd7a401da9ff7cc49a1c60a387b1` |
+| Entire inherited output | 3297105 | `016ccb97e8a84280c009b92edab2ec313aa8cd66781e3ecff3ee7ed041b42f63` |
+
+Both **entire prefixes**, including high-bit bytes and authentic C trailing
+spaces, remain exact. Stage3 **578307/2134398** prefix hashes remain
+`3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` /
+`1eabf595ecf06bcde56319a75012527a42dabb7e7218191b69006a86accccabe`;
+accepted #290 shifts are not reverted. `tmp/issue222-prefix-proof.log` records
+the byte audit. New N21 native sections require **0**, with no new assertion
+exception. Marker rejection precedes status/reference writes: native
+executable-entry controls exercise **0/134 × default/update × six marker
+classes =24 rejection2**, recording unchanged. Separate bounded native
+probes confirm actual0/134 (`tmp/issue222-marker-{native,controls}.log`).
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/command-compat/run.sh --update
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3G0_FULL=1 RUN_TIMEOUT=120 go test -count=1 \
+  -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+```
+
+All eight defaults run **sequentially**, bounded vet/fresh full-enabled
+tests, gofmt/source/shell checks pass. Raw C recording trailing spaces are
+not formatted away. Logs: `tmp/issue222-command-{record,default}.log`,
+`tmp/issue222-*-default.log`, `tmp/issue222-{vet,tests,source-checks}.log`.
+No new source dependency/pin/full207-corpus proof: build.c already appears in
+affected.sh. Original scripts and unchanged **66/63/0** spec are documented
+in [turn proof](../turn-compat/README.md#daily-build-original-fixture-proof-222)
+and [spec proof](../olympia-spec/README.md#daily-build-no-loss-222).
+
+Parent acceptance independently repeated bounded vet, fresh full-enabled
+tests (**11 packages**, Olympia **2.342s**), all eight sequential defaults,
+and the full spec (**66/63/0**, unchanged names, golden NO/init2).
+The command run again matched **1951 sections /173858 lines**. Parent
+verified all **1237** canonical source blobs/modes, binary/build provenance,
+all **17** extracted definitions with genuine locations, and both entire
+inherited prefixes. Fresh native **21 captures /seven branches** independently
+matched every C/C pair; all three raft-sail cases and raft loading matched
+C/Go exactly. Construction honestly stops at IMPROVE/REPAIR223 and raft
+combat at regular_combat235. Evidence: `tmp/parent222-{vet,tests,command,move,
+helper,rng,code,loadsave,turn-driver,turn,spec,fixtures}.log`, inventories,
+complete manifests and retained decisive failed captures. No family exit.
+
 ## Construction predicates, table and start (#221, stage 4 N20)
 
 **0.143.0-alpha**, unchanged immutable **9a03d126**. New build.go owns only
