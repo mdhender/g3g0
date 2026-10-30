@@ -44,6 +44,8 @@ player-refused
 player-settings
 production-harvest
 production-refused
+recruitment-raise
+recruitment-refused
 release-swear-np
 rng-selftest
 savage-cap

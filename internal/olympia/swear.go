@@ -6,6 +6,79 @@ package olympia
 // Ported from olympia/swear.c: lord() and player(), which write_master()
 // uses, and set_loyal(), set_lord() and is_unit(), which check_db() uses.
 
+// swear.c:973–1082. RAISE checks availability at start, but allocates from
+// the actor's current sublocation at completion, through the shared cookie owner.
+func (w *world) vRaise(c *command) int {
+	where := w.subloc(int(c.who))
+	if !w.checkSkill(int(c.who), skRaiseMob) {
+		return 0
+	}
+	if !w.mayCookieNPC(int(c.who), where, itemMobCookie) {
+		return 0
+	}
+	return 1
+}
+
+func (w *world) dRaise(c *command) int {
+	who := int(c.who)
+	where := w.subloc(who)
+	mob := w.doCookieNPC(who, where, itemMobCookie, where)
+	if mob <= 0 {
+		w.logWrite(10, "d_raise mob <= 0")
+		w.commandOut(who, "Failed to raise peasant mob.")
+		return 0
+	}
+	w.addSkillExperience(who, skRaiseMob)
+	w.queue(mob, "guard 1")
+	w.initLoadSup(mob)
+	w.commandOut(who, "Raised %s.", w.boxName(mob))
+	w.commandOut(where, "A speech by %s has raised %s.", w.boxName(who), w.linerDesc(mob))
+	return 1
+}
+
+func (w *world) vRally(c *command) int {
+	who, mob := int(c.who), int(c.a)
+	if !w.checkSkill(who, skRallyMob) {
+		return 0
+	}
+	if !w.checkCharHere(who, mob) {
+		return 0
+	}
+	if w.nobleItem(mob) != itemPeasant && w.nobleItem(mob) != itemAngryPeasant {
+		w.commandOut(who, "%s is not a peasant mob.", w.boxName(mob))
+		return 0
+	}
+	return 1
+}
+
+func (w *world) dRally(c *command) int {
+	who, mob := int(c.who), int(c.a)
+	if !w.checkCharGone(who, mob) {
+		return 0
+	}
+	if w.nobleItem(mob) != itemPeasant && w.nobleItem(mob) != itemAngryPeasant {
+		w.commandOut(who, "%s is not a peasant mob.", w.boxName(mob))
+		return 0
+	}
+	w.addSkillExperience(who, skRallyMob)
+	if n := w.stackParent(mob); n != 0 {
+		var rate int32
+		if p := w.rpChar(mob); p != nil {
+			rate = p.loyRate
+		}
+		w.setLoyal(mob, loySummon, min(int(rate+3), 5))
+		w.commandOut(who, "Renewed enthusiasm of %s for %s.", w.boxName(mob), w.boxName(n))
+		w.commandOut(who, "The peasants will stay spirited for %d months.", w.pChar(mob).loyRate)
+		return 1
+	}
+	w.joinStack(mob, who)
+	w.setLoyal(mob, loySummon, 3)
+	w.flushUnitOrders(w.player(mob), mob)
+	w.interruptOrder(mob)
+	// C deliberately returns FALSE after joining, with all side effects retained.
+	return 0
+}
+
 // vSwear is the active unconditional refusal in swear.c:216–287. The
 // fealty code below its #if 1 return is unreachable in the pinned engine.
 func (w *world) vSwear(c *command) int {

@@ -8,6 +8,40 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## RAISE RALLY no-loss gate (#215)
+
+At **0.137.0-alpha**, unchanged immutable **9a03d126b329ed466c4af48425553c025eaca26f**,
+the existing full original spec reports **129 fixtures: 58 pass / 71 fail /
+0 error (156s)**. The only new names are **recruitment-raise** and
+**recruitment-refused**. Every prior **56-name** and stage-3 **36-name** entry
+is retained, checked as exact sets, not just counts. The tool alone writes
+passing.txt: **1218 bytes**, SHA-256
+`4e0c70e4454892cc8036db90eed178c33aea53d51389cde5acf4164ce46b6aa0`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue215-spec" \
+  RUN_DIR=/tmp/g3g0-issue215-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+The generated alternate-engine launcher invokes the existing run_limited
+supervisor with the original argv[0]/stdin. Its scratch Go source/binaries
+and disposable export are removed after the run; use an underscore-prefixed
+WORK for future invocations to avoid even a transient extra scratch Go package.
+Separate unchanged native-script proof ran real C twice before Go for both
+newly passing fixtures: script **YES / 0**, engine **0**, strict **241 / 239
+cwd entries**, raw streams/status and every path/type/mode/empty directory/byte.
+See [capture provenance](../turn-compat/README.md#recruitment-raise-and-refused-215)
+and [complete callback evidence](../command-compat/README.md#raiserally-215-stage-4-n14b).
+
+Golden remains **NO**, initialization exits **2** at unsupported `load_db (-i)`.
+Pending #289 ATTACK/fog owners and owner-approved console remainder remain
+unchanged. This is a no-loss/local callback gate, not full-spec, family or
+stage-exit acceptance. No original fixture, expected bytes or pin is edited.
+Logs: `tmp/issue215-spec.log`, `tmp/issue215-spec/{run-all,olympia-g3,golden}.log`,
+and `tmp/issue215-spec-names.log`.
+
 ## Merged-pin no-loss gate (#291)
 
 At **0.136.3-alpha**, immutable **9a03d126b329ed466c4af48425553c025eaca26f**,

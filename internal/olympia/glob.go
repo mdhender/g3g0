@@ -365,6 +365,12 @@ func init() {
 			cmdTbl[i].start = (*world).vPledge
 		case "swear":
 			cmdTbl[i].start = (*world).vSwear
+		case "raise":
+			cmdTbl[i].start = (*world).vRaise
+			cmdTbl[i].finish = (*world).dRaise
+		case "rally":
+			cmdTbl[i].start = (*world).vRally
+			cmdTbl[i].finish = (*world).dRally
 		case "accept":
 			cmdTbl[i].start = (*world).vAccept
 		case "give":

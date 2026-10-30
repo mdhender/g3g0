@@ -44,7 +44,8 @@ functions = {
     'order.c': ['p_order_head', 'rp_order_head', 'top_order', 'pop_order', 'is_stop_order', 'stop_order', 'flush_unit_orders', 'queue_order', 'prepend_order', 'queue', 'save_player_orders',
                 'orders_template_sup', 'orders_other', 'orders_template', 'list_order_templates'],
     'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord', 'unit_deserts',
-                'np_to_acquire', 'enough_np_to_acquire', 'v_honor', 'v_oath', 'v_swear'],
+                'np_to_acquire', 'enough_np_to_acquire', 'v_honor', 'v_oath', 'v_swear',
+                'v_raise', 'd_raise', 'v_rally', 'd_rally'],
     'move.c': ['check_captain_loses_sailors', 'restore_stack_actions', 'touch_loc_after_move', 'move_stack',
                'departure_message', 'arrival_message', 'discover_road', 'parse_exit_dir',
                'save_v_array', 'restore_v_array', 'move_exit_land', 'land_check',
@@ -834,6 +835,9 @@ for run in run1 run2; do
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
   if [[ "${section_names[$i]}" == 'section FOLLOW288 '* || "${section_names[$i]}" == 'section FOLLOW290 '* ]]; then
    [ "$status" = 0 ] || die "unexpected follow-C status $status in section $i"
+  fi
+  if [[ "${section_names[$i]}" == 'section N14b '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N14b status $status in section $i"
   fi
   if [[ "${section_names[$i]}" == 'section N14a '* ]]; then
    expected_status=0

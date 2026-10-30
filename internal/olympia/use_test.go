@@ -17,6 +17,8 @@ func TestCommandUseCallbackBoundaries(t *testing.T) {
 	implemented := map[int][2]func(*world, *command) int{
 		skHideSelf:      {(*world).vHide, (*world).dHide},
 		skBindStorm:     {(*world).vBindStorm, (*world).dBindStorm},
+		skRaiseMob:      {(*world).vRaise, (*world).dRaise},
+		skRallyMob:      {(*world).vRally, (*world).dRally},
 		skHinderMed:     {(*world).vHinderMed, (*world).dHinderMed},
 		skQuarryStone:   {(*world).vQuarry, nil},
 		skCatchHorse:    {(*world).vCatch, nil},
@@ -69,7 +71,7 @@ func TestCommandUseSharedNYIBoundaries(t *testing.T) {
 		}
 		switch row.skill {
 		case skQuarryStone, skCatchHorse, skHarvestLumber, skHarvestYew, skRaiseCorpses, skMageMenial, skFishing,
-			skTrainWild, skTrainWarmount:
+			skTrainWild, skTrainWarmount, skRaiseMob, skRallyMob:
 			continue // Real reparse/dispatch outcomes are covered by the C oracle.
 		}
 		t.Run(fmt.Sprint(row.skill), func(t *testing.T) {

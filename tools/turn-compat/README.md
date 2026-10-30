@@ -9,6 +9,82 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## Recruitment raise and refused (#215)
+
+At **0.137.0-alpha**, pin **9a03d126b329ed466c4af48425553c025eaca26f** stays
+unchanged. Original recruitment-raise/refused README, Lua authoring source,
+scenario patches, expected manifests/JSON and complete check.sh scripts were
+read without modifying them. The unchanged scripts run real C twice, then
+fresh Go through native OLYMPIA_ENGINE_BIN capture before script cleanup:
+
+| Fixture | C1 / C2 / Go engine | Original scripts | Strict C/C and C/Go |
+| --- | --- | --- | --- |
+| recruitment-raise | 0 / 0 / 0 | YES / 0 each | 241 cwd entries identical |
+| recruitment-refused | 0 / 0 / 0 | YES / 0 each | 239 cwd entries identical |
+
+Both comparisons include raw status/stdout/stderr and **all** cwd paths,
+types, modes, empty directories and file bytes through the existing
+`tools/turn-compat` comparator and `tools/lib/tree-modes.py`. Nothing is
+excluded or normalized. The original scripts' own coverage, manifest and
+state-export assertions also pass. Matching captures are deleted only after
+all three manifest hashes agree:
+
+- recruitment-raise: `82008ab2fd77b7b21a318866ed012b96f04cbc49f2b5abef4b89f9e7578b6a9c`
+- recruitment-refused: `7357ab6ae4ca0a3771763ece6028a56b2e6172eb6f50209abdd55e6fb1d43185`
+
+Reference provenance: verify all **1237** original source blobs/modes and
+the protected 207-input cache manifest before reuse. The accepted cache
+`tmp/issue291-roundtrip` remains idle and unchanged: C SHA-256
+`d8967f5700225d1f8c3714d203858f201508b7349c36c6daead8cd37b5cda634`,
+input-manifest SHA-256
+`af1453a48658ac26e97ece4d46df3345484897e11010b04314821668f01d5b53`.
+No cached input is executed in place, linked or written. The original
+check.sh unpacks fresh physical disposable inputs itself.
+
+A separate pristine archive builds the canonical reference as follows; the
+**build/canonical** directory is significant for reproducible DWARF bytes:
+
+```sh
+src="$PWD/tmp/_issue215/canonical"
+# Export the immutable source with git archive into $src first.
+cmake -S "$src" -B "$src/build/canonical" -G Ninja \
+  -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS="-ffile-prefix-map=$src/="
+cmake --build "$src/build/canonical" --target olympia-g3 -j4
+go build -o tmp/_issue215/compare ./tools/turn-compat
+```
+
+Canonical C SHA-256 is the accepted
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+The trailing slash in the compiler map is retained; no assertion text is
+rewritten later. The temporary native Go launcher lives under tmp/_issue215
+(not a discoverable scratch test package); SHA-256
+`740125c50805f59fbf761a25ea837da680802b7806bcbf7475789206ebec5032`.
+It opens O_RDWR stdout/stderr captures, sources timeout.sh in bash and invokes
+`run_limited 120 "$0" "$S4_ENGINE" "$@"`, preserving launcher argv[0]/stdin.
+It records the real status, seeks/replays stdout then stderr, closes streams,
+writes status plus newline, then `cp -a . "$S4_CAPTURE/cwd"` **after replay,
+before script cleanup**, and exits that status. Script-owned redirected
+stderr is therefore included too. The scripts themselves are bounded at
+150 seconds. All compatibility calls explicitly use
+`G3_REPO="$PWD/tmp/upstream.git"`.
+
+Raw marker rejection precedes accepting C status or comparisons; the command
+oracle separately exercises 24 compiled native 0/134 default/update rejection
+controls. There are no temporary successful callbacks in the full engine.
+The task's launcher, Go/compare binaries, marker controls, scratch Go sources
+and matching captures are removed; verified original C/cache and decisive
+failed-Go evidence, logs and manifests remain.
+
+Logs: `tmp/issue215-fixtures.log`, `tmp/issue215-FIXTURE-{c1,c2,go}.log`,
+`tmp/issue215-FIXTURE-{c1,c2,go}-manifest.txt`,
+`tmp/issue215-fixture-manifests.sha256`, `tmp/issue215-cache-provenance.log`
+and `tmp/issue215-canonical-build.log`. Full spec adds exactly the two
+recruitment names, retaining all prior 56 and stage-3 36 names. See
+[callback/source evidence](../command-compat/README.md#raiserally-215-stage-4-n14b)
+and [spec gate](../olympia-spec/README.md#raise-rally-no-loss-gate-215).
+This localized callback task does not rerun the already-accepted #291 four
+full serializer/207-roundtrip corpora and makes no family/stage-exit claim.
+
 There are no artifact exclusions. Both C/C determinism and C/Go comparison
 cover every cwd entry, including empty directories, types, permission/special
 bits and regular-file bytes, plus unfiltered stdout/stderr/status. The strict

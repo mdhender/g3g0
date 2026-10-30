@@ -3,6 +3,160 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## RAISE/RALLY (#215, stage 4 N14b)
+
+**0.137.0-alpha**, unchanged immutable command/engine pin **9a03d12**.
+The complete swear.c is byte-identical to original task pin f73e481:
+**25163 bytes**, SHA-256
+`ec7ca1c106ae808ab20ea2f961b9bf8f6906560fc7989a1e163a3f48f79891ae`.
+The existing oracle extracts these complete, unchanged definitions with their
+actual `#line` locations; no new source dependency or tool pin changes:
+
+| swear.c definition | Inclusive lines | Bytes | SHA-256 |
+| --- | --- | --- | --- |
+| v_raise | 973–985 | 208 | `12c13e218c2fa0e411932ba99882956b4a71bd745b531aa164f0660e953811f9` |
+| d_raise | 988–1014 | 558 | `26e8b29ed63afdfb020f90ea00a51f34fec4c8a1e27f07bde1bfe292bce6f514` |
+| v_rally | 1017–1036 | 344 | `d0828d4950c877963162dc8e7985e0e84cecb70ff1e8b6da2dd907b4459bd222` |
+| d_rally | 1039–1082 | 874 | `65151d054c4acf4134840d216b09b22c68ac762281a0c67edd147eb72bb4173b` |
+
+Go implements only those owners in swear.go and wires direct commands 65/66
+in glob.go plus USE skills 673/674 through the existing useCallback switch.
+Both command and skill-specific interrupts remain genuinely NULL. Existing
+USE boundary tests now identify these real callbacks; all other NYIs remain.
+**npc.go is unchanged**: #214 owns cookieMonster/findCookie/mayCookieNPC/
+doCookieNPC, allocation, ownership, stock consumption, keyed NPC quantities
+and shared mint. The real skill validators/experience, scheduler/initLoadSup,
+queue/flush, checkCharHere/Gone, joinStack, setLoyal and output owners are
+reused, not copied or replaced with successful callbacks.
+
+The **24 appended sections** discriminate:
+
+- Skill refusal before absent cookie/type/target validation. RAISE starts
+  against available stock, then finishes against the **current** sublocation:
+  depleted stock, movement to an independently stocked city, a depleted city
+  and a tower. Failed completion emits the original code log before its
+  failure message. No finish-time skill check is invented; real forget_skill
+  removes the skill after start in the moved-city/reloaded-rally controls.
+- Actual seven-day and persisted/reloaded direct/USE RAISE, immediate loading
+  of real `guard 1`, independent ownership (no faction transfer), exactly-once
+  experience, location output and observers' actual vector/output bits.
+  A raised mob is **107045**, with **18** angry peasants in the seed-37
+  province control; the moved-city quantity is **17**. Existing #214 exhausted
+  allocator/assertion controls remain inherited, not duplicated or replaced
+  by a zero-return allocation substitute.
+- RALLY invalid/noncharacter/invisible targets, ordinary-versus-angry
+  peasants, changed type, movement allowed at start but refused at finish,
+  gone targets and foreign hidden/contact exceptions. A raw target-kind
+  change after start checks the finish validator before peasant inspection.
+- A foreign, immediately nested leader is preserved, not replaced by the
+  actor or top stack leader. Renewal returns TRUE and computes only
+  `min(rate+3,5)`: **-8→-5→-2**, **3→5**, **99→5**; no extra floor.
+  Already-led mobs retain their running WAIT and pending orders.
+- An unled foreign mob joins the actor, becomes summon-3, clears only its
+  **own player's** queued orders, then really interrupts running WAIT. The
+  foreign player's alternate orders remain. A separate real STATE_LOAD case
+  checks load-queue removal. Experience/stack/loyalty effects persist while
+  completion **returns FALSE**, including USE's failed completion/accounting.
+  This result is not independently fixed. Existing-leader USE succeeds.
+- Direct and USE delay/reload/interrupt paths preserve next queued orders,
+  saved CO/li reparse state, real load/run queues, command/USE counts, saved
+  fields, raw lists, streams and keyed entity/NPC/economy, legacy RNG and
+  shared-mint aftermath. Generic direct interruption has no invented handler;
+  generic USE interruption delegates to the original NULL skill interrupt.
+
+Before implementation, 22 initial new sections ran real C twice with raw
+byte-identical streams/status, then the unchanged Go engine stopped at the
+new real `parse raise`/callback path: **command raise start NYI**. The final
+24-section corpus was subsequently run through the full original C oracle
+twice **before recording or comparing Go**. Every new native section requires
+status **0**, after dependency/NYI/stub/sanitizer/runtime-error rejection.
+No expected bytes come from Go. An initial fixture-authoring mistake used
+raw `inventory ... 0` (which appends rather than consumes); it was corrected
+to the existing real consume action, not a gameplay change or accepted abort.
+
+Current oracle: **1809 sections / 154270 output lines / 2987101 bytes**,
+SHA-256 `941512646e6c132d0f7d09e9c50b070847edfb64e77794f3e9bee46cd244eee4`.
+Input: **40446 lines / 755065 bytes**, SHA-256
+`3784e0da540eaaa840d6ed129cf849bb2aa2d6dbfbb5aa81c1c06fb8ca198666`.
+Appended: **643 input lines / 10734 bytes**, **4446 output lines / 77568 bytes**.
+Both entire inherited prefixes are exact, including **21/67 high-bit bytes**
+and authentic trailing spaces:
+
+| Prefix | Bytes | SHA-256 |
+| --- | --- | --- |
+| inherited input | 744331 | `71adf26e7a9fd8f8e3c012da92771541944eeaefce923948b4de3e2688b49866` |
+| inherited output | 2909533 | `9b038ceb5ba7b42bfd7842a81c144e4ff6430973e7d0f78e9fac9e418a1c4f00` |
+| stage-3 input | 578307 | `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` |
+| stage-3 output, accepted merged-pin assertion shifts | 2134398 | `1eabf595ecf06bcde56319a75012527a42dabb7e7218191b69006a86accccabe` |
+
+Bounded native marker controls use a temporary **oracle executable-entry**
+linker wrapper, never a gameplay callback or the original full engine. Actual
+native statuses **0 and 134**, in default and --update modes, reject each of
+dependency, not-implemented, NYI, stub, AddressSanitizer and runtime-error
+markers **before status/recording acceptance** (24 controls, harness status 2).
+The recording hash stays unchanged; temporary controls are removed.
+
+Original unchanged recruitment-raise/refused scripts also pass real C twice
+then fresh Go: engine **0**, script **0 / YES**, strict **241 / 239 cwd entries**,
+raw status/stdout/stderr and all paths/types/modes/empty directories/bytes.
+See [strict capture details](../turn-compat/README.md#recruitment-raise-and-refused-215)
+and [full spec no-loss](../olympia-spec/README.md#raise-rally-no-loss-gate-215).
+No upstream fixture/reference, console/social/weather/combat closure or C source
+is edited. #289's ATTACK/fog/console owners remain pending as before. No
+family/stage exit, full serializer rerun or whole-spec/golden parity is claimed.
+
+Reproduction (every engine/test bounded; all defaults sequential):
+
+```sh
+. tools/lib/timeout.sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  bash tools/command-compat/run.sh --update
+run_limited 120 go "$(command -v go)" vet ./...
+G3G0_FULL=1 RUN_TIMEOUT=120 go test -count=1 \
+  -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+```
+
+Bounded vet and fresh full-enabled tests pass, **11 test packages** (final
+Olympia **2.891s**, after removing the spec tool's scratch launcher). The
+eight defaults above pass **sequentially**, without recording replacement:
+command **1809/154270**, move **135/7158**, helper **37/1487**, RNG **321**,
+code **43/969**, loadsave **61/3411**, turn-driver **7/152** plus phase
+**5/484**, calendar **2/119**, schedule **4/1801**, then default turn's raw
+diagnostic comparison (**2 cwd entries**). The latter is deliberately the
+small default, not a new full-world/233-entry claim. All processes use
+**120-second** limits (2-second kill grace); original native fixture scripts
+use 150 seconds around their separately bounded 120-second engine calls.
+Source/documentation whitespace checks pass; only literal appended C save
+lines retain the authentic trailing spaces. Matching captures, generated
+coverage/use dumps and task-only sources/binaries are cleaned; verified C
+exports/cache and decisive logs/manifests remain.
+
+Evidence: `tmp/issue215-{source-proof,cache-provenance,new-c-check,go-before,
+command-update-final,negative-controls-final,vet-final,tests-final,defaults,
+prefixes,final-integrity}.log`,
+per-tool `tmp/issue215-TOOL-default.log`, fixture logs/manifests and spec logs.
+The implementer left changes uncommitted for independent parent acceptance.
+
+Parent independently reviewed the complete pinned callbacks and all changed
+owners, verified all 74 evidence digests and all 1237 canonical source
+blobs/modes, and reproduced bounded vet/fresh full-enabled tests (11 packages,
+Olympia 2.830s). Eight defaults pass sequentially; command repeats the full
+1809-section C/C/Go match. Both inherited byte prefixes remain exact.
+Fresh native original-script capture repeats recruitment-raise/refused with
+C twice before Go: engine/script 0, YES, identical raw streams/status and
+241/239 complete cwd entries, with tree-modes.py and the strict comparator.
+All six capture manifests match the hashes above. Independent full spec
+reports **58 pass /71 fail /0 error (168s)**, no changed accepted names;
+golden remains NO and initialization 2. No family/stage exit is inferred.
+Parent logs/manifests are `tmp/parent215-*`; matching captures, temporary
+launchers/binaries, tool WORK trees and generated coverage/use dumps are
+removed after verification, retaining decisive evidence and pristine C.
+
 ## Missing USE argument (#290, follow-C)
 
 **0.136.2-alpha**, Linux amd64, GCC 12.2.0, Go 1.26.4. This tool's
