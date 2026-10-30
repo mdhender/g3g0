@@ -41575,3 +41575,608 @@ monthly state
 readlog 200
 readlog 100
 export state
+
+section N17 missing argument already here and unknown alternatives retain final argument
+entity 8000 3 50
+place 9000
+link 8000 9000
+queue fly
+queue fly 9000
+queue fly nowhere west
+queue guard 1
+load
+do
+dump
+do
+dump
+do
+dump
+readlog 200
+export state
+
+section N17 two day ocean flight saved reparse delayed arrival stack guards queues and RNG
+master 0
+resolve_wait
+set turn 3
+set day 1
+set epoch 71
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 1
+entity 1002 2 0
+field 1002 lord 201
+field 1002 prisoner 1
+link 8000 9000
+link 8000 9001
+link 9000 1000
+link 1000 1001
+link 1000 1002
+field 1000 guard 1
+field 1001 guard 1
+field 1002 guard 1
+routes 9000 9001 9001 9001 9001
+routes 9001 9000 9000 9000 9000
+queue fly nowhere north west
+queue wait time 1
+load
+do
+dump
+move_state
+arrival_state
+persist_command
+initial
+dump
+set day 2
+set epoch 72
+daily
+dump
+move_state
+set day 3
+set epoch 73
+daily
+dump
+move_state
+arrival_state
+set day 4
+daily
+dump
+orders_file 200
+shuffle 1000 9001
+entity_rolls 1000 1 9000
+newitem 1000 0
+save_new
+readlog 200
+readlog 201
+export state
+
+section N17 four day forest flight no Hades toll no movement prisoner escape
+master 0
+set epoch 71
+set turn 1
+set day 8
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 295 4 0
+entity 1185 2 0
+entity 8000 3 50
+entity 8001 3 50
+entity 9000 3 3
+entity 9001 3 2
+set hades_region 8001
+link 8000 9000
+link 8001 9001
+link 9000 1000
+link 1000 1001
+link 1000 1185
+field 1001 prisoner 1
+field 1001 lord 201
+field 1185 prisoner 1
+field 1185 lord 201
+routes 9000 9001 0 0 0
+queue fly north
+load
+do
+dump
+move_state
+arrival_state
+entity_rolls 1001 1 9000
+entity_rolls 1185 1 9000
+readlog 200
+readlog 201
+export state
+
+section N17 zero distance still needs flight capacity before detaching or clearing guards
+entity 10 4 0
+field 10 weight 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9100 3 29
+link 8000 9000
+link 9000 9100
+link 9000 1001
+link 1001 1000
+field 1000 guard 1
+queue fly 9100
+load
+do
+dump
+move_state
+field 10 fly_cap 100
+queue fly 9100
+load
+do
+dump
+move_state
+arrival_state
+readlog 200
+export state
+
+section N17 admission refusal then sewer bypass then explicitly admitted entry
+set epoch 21
+set day 1
+entity 10 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9100 3 29
+link 8000 9000
+link 9000 9100
+link 9000 1000
+link 9100 1001
+field 1001 lord 201
+queue fly in
+load
+do
+dump
+field 9100 subkind 71
+queue fly 9100
+load
+do
+dump
+link 9000 1000
+field 9100 subkind 29
+who 1001
+parse admit 9100 1000
+callback_start
+who 1000
+queue fly 9100
+load
+do
+dump
+move_state
+readlog 200
+readlog 201
+export state
+
+section N17 OUT exception leaves owned outer building despite refusal
+set epoch 21
+set day 1
+entity 10 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9100 3 32
+entity 9200 3 29
+link 8000 9000
+link 9000 9100
+link 9100 9200
+link 9100 1001
+field 1001 lord 201
+link 9200 1000
+queue fly out
+load
+do
+dump
+move_state
+readlog 200
+readlog 201
+export state
+
+section N17 underway ship uses literal tab and refuses before admission
+entity 8000 3 50
+place 9000
+link 8000 9000
+entity 9100 9 31
+link 9000 9100
+link 9100 1001
+field 1001 lord 201
+field 9100 ship_moving 7
+queue fly 9100
+load
+do
+dump
+move_state
+readlog 200
+readlog 201
+export state
+
+section N17 parsed refused exit prevents outer fallback even after final north fails locally
+master 0
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 3 14
+entity 9200 3 29
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9100 9200
+link 9100 1000
+link 9200 1001
+field 1001 lord 201
+routes 9000 9001 0 0 0
+queue fly 9200 north
+load
+do
+dump
+pstate 200
+move_state
+readlog 200
+readlog 201
+export state
+
+section N17 outer fallback keeps final numeric destination and prepends exact original multiargument line
+master 0
+resolve_wait
+set day 1
+set epoch 71
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 3 14
+entity 9200 3 29
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9100 9200
+link 9200 1000
+routes 9000 9001 0 0 0
+queue fly nowhere 9001
+queue wait time 1
+load
+do
+dump
+pstate 200
+orders_file 200
+move_state
+do
+dump
+pstate 200
+set day 2
+evening
+dump
+pstate 200
+do
+dump
+move_state
+readlog 200
+export state
+
+section N17 outer viability ignores admission and excludes IN
+master 0
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9100 3 14
+entity 9200 3 29
+entity 9300 3 29
+link 8000 9000
+link 9000 9100
+link 9100 9200
+link 9100 9300
+link 9200 1000
+link 9300 1001
+field 1001 lord 201
+queue fly in
+load
+do
+dump
+pstate 200
+field 9100 link_open 1
+field 9100 link_to 9300
+queue fly 9300
+load
+do
+dump
+pstate 200
+orders_file 200
+move_state
+do
+dump
+readlog 200
+readlog 201
+export state
+
+section N17 underground refusal does not try later valid alternative after parsed accepted exit
+master 0
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 7
+entity 9002 3 70
+entity 9003 3 3
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 8000 9003
+link 9000 1000
+routes 9000 9001 9002 9003 0
+queue fly north south
+queue fly east south
+load
+do
+dump
+do
+dump
+move_state
+readlog 200
+export state
+
+section N17 generic NULL interrupt retains moving flags and loads actual successor
+master 0
+resolve_wait
+set epoch 51
+set day 1
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+link 8000 9000
+link 8000 9001
+link 9000 1000
+link 1000 1001
+routes 9000 9001 0 0 0
+queue fly north
+queue wait time 2
+load
+do
+dump
+generic_interrupt 1000
+dump
+move_state
+readlog 200
+export state
+
+section N17 hidden road arrival discovers every reverse road including prisoner factions
+master 0
+set day 1
+set epoch 41
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 401 7 0
+entity 402 7 0
+entity 403 7 0
+entity 1002 2 0
+field 1002 lord 201
+field 1002 prisoner 1
+link 8000 9000
+link 8000 9001
+link 9000 1000
+link 1000 1001
+link 1000 1002
+link 9000 401
+link 9001 402
+link 9001 403
+road 401 9001 1
+road 402 9000 1
+road 403 9000 1
+set_known 1000 401
+queue fly 9001
+load
+do
+dump
+persist_command
+initial
+set wait 1
+evening
+dump
+move_state
+arrival_state
+shuffle 1000 9001
+entity_rolls 1002 1 9000
+readlog 200
+readlog 201
+export state
+
+section N17 fog arrival vector suppresses public arrival but records real stack relocation
+master 0
+set epoch 21
+set day 1
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9002 11 57
+entity 1002 2 0
+field 1002 lord 201
+link 8000 9000
+link 8000 9001
+link 9001 9002
+field 9002 strength 1
+link 9000 1000
+link 1000 1001
+link 9001 1002
+routes 9000 9001 0 0 0
+queue fly north
+load
+do
+set wait 1
+evening
+dump
+move_state
+arrival_state
+readlog 200
+readlog 201
+export state
+
+section N17 same viewloc arrival still emits public arrival unlike MOVE
+set epoch 21
+set day 1
+entity 10 4 0
+entity 8000 3 50
+entity 9000 3 3
+entity 9100 3 29
+link 8000 9000
+link 9000 9100
+link 9000 1000
+link 9000 1001
+queue fly 9100
+load
+do
+dump
+move_state
+readlog 200
+export state
+
+section N17 capacity99 refuses first parsed accepted exit without alternatives then exact100 starts
+entity 10 4 0
+field 10 weight 100
+entity 54 4 0
+field 54 fly_cap 99
+inventory 1000 54 1
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 9100 3 29
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9000 1000
+field 1000 guard 1
+routes 9000 9001 0 0 0
+queue fly north 9100
+load
+do
+dump
+move_state
+field 54 fly_cap 100
+queue fly north 9100
+load
+do
+dump
+move_state
+readlog 200
+export state
+
+section N17 impassable surface cloud flight still uses distance cap and real army slowdown
+master 0
+set day 1
+set epoch 71
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+field 10 man 1
+inventory 1000 10 501
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 65
+link 8000 9000
+link 8000 9001
+link 9000 1000
+link 9001 1001
+field 1001 lord 201
+routes 9000 0 0 0 0 9001 0
+queue fly up
+load
+do
+dump
+move_state
+set wait 1
+evening
+dump
+arrival_state
+readlog 200
+readlog 201
+export state
+
+section N17 outer viability ignores underway ship then original retry reports underway tab
+master 0
+set epoch 71
+set day 1
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9100 3 14
+entity 9200 9 31
+entity 9300 3 29
+link 8000 9000
+link 9000 9100
+link 9000 9200
+link 9100 9300
+link 9300 1000
+field 9100 link_open 1
+field 9100 link_to 9200
+field 9200 ship_moving 7
+queue fly 9200
+load
+do
+dump
+pstate 200
+move_state
+do
+dump
+readlog 200
+export state
+
+section N17 hidden origin omits public source and hidden actor suppresses both movement notices
+master 0
+set day 1
+set epoch 71
+entity 10 4 0
+field 10 weight 100
+field 10 fly_cap 100
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 3
+entity 1002 2 0
+field 1002 lord 201
+link 8000 9000
+link 8000 9001
+link 9000 1000
+link 9000 1001
+link 9001 1002
+field 9000 loc_hidden 1
+routes 9000 9001 0 0 0
+routes 9001 9000 0 0 0
+queue fly north
+load
+do
+set wait 1
+evening
+dump
+move_state
+arrival_state
+field 1000 hidden 1
+field 9000 loc_hidden 0
+queue fly north
+load
+do
+set wait 1
+evening
+dump
+move_state
+readlog 200
+readlog 201
+export state

@@ -9,6 +9,79 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## FLY originals (#218)
+
+**0.140.0-alpha**, immutable **9a03d126b329ed466c4af48425553c025eaca26f**.
+Before reuse, all **1237 original source blobs/modes** in
+`tmp/_issue215/canonical` match the bare pin; canonical C SHA-256 remains
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+The original move-land/fly-out-first/movement-refused/save-fly-cap scripts,
+READMEs, frozen scenarios and expected files are unchanged. No protected
+`tmp/issue291-roundtrip` input/cache is executed or modified.
+
+The [native pre-cleanup method](#recruitment-raise-and-refused-215) is
+recreated under `tmp/_issue218`. The launcher opens **O_RDWR** raw streams,
+retains original argv[0]/stdin, sources timeout.sh and calls
+`run_limited 120 "$0" "$S4_ENGINE" "$@"`. It records the actual status,
+seeks/replays stdout then stderr, closes both streams, writes status/newline,
+then `cp -a . "$S4_CAPTURE/cwd"` after replay and before script cleanup.
+Script-owned redirected streams are included. Launcher executable SHA-256:
+`8ec21d42117b9310fcefc7c5ed7b4cc15e4f6030f77427a80e3589d56389114f`;
+source SHA-256 `7a8c93161fa1117ef39c8876dea9160a3fe26f1cc91d437aaa37b5b816417acc`.
+
+```sh
+. tools/lib/timeout.sh
+export G3_REPO="$PWD/tmp/upstream.git" S4_ROOT="$PWD"
+# For each fixture below, run c1, c2, then go, never concurrently:
+export S4_CAPTURE="$PWD/tmp/_issue218/$fixture-$run"
+# c1/c2 use the verified canonical binary; go uses freshly built cmd/olympia.
+export S4_ENGINE="$PWD/tmp/_issue215/canonical/build/canonical/olympia-g3"
+OLYMPIA_ENGINE_BIN="$PWD/tmp/_issue218/capture" \
+  run_limited 150 bash "$(command -v bash)" \
+  "$PWD/tmp/_issue215/canonical/tests/olympia/regress/$fixture/check.sh"
+# Reject raw dependency/NYI/stub/sanitizer/runtime-error markers in C BEFORE
+# accepting its status. Manifest and compare with the existing comparator:
+run_limited 120 compare "$PWD/tmp/_issue218/compare" --manifest "$S4_CAPTURE"
+run_limited 120 compare "$PWD/tmp/_issue218/compare" "$c1" "$c2"
+run_limited 120 compare "$PWD/tmp/_issue218/compare" "$c1" "$go"
+python3 tools/lib/tree-modes.py "$c1/cwd" "$go/cwd"
+```
+
+| Original fixture | C1/C2/Go engine | C / Go scripts | Strict result |
+| --- | --- | --- | --- |
+| move-land | 0/0/0 | YES0 / YES0 | C/C and C/Go, **241 entries**, newly passing |
+| fly-out-first | 0/0/0 | YES0 / YES0 | C/C and C/Go, **240 entries**, newly passing |
+| movement-refused | 0/0/2 | YES0 / NO1 | C/C, **239 entries**; first Go stop is **command board start NYI** |
+| save-fly-cap | 0/0/0 | YES0 / YES0 | C/C and C/Go, **226 entries**, retained |
+
+Comparisons include raw status/streams and **all** cwd paths/types/modes/
+empty directories/bytes, without exclusions or normalization. Both new
+successes also pass the originals' own report/hash/state-export checks;
+move-land passes every original movement-verb coverage assertion.
+movement-refused still requires BOARD/FERRY/UNLOAD (#220) and SAIL (#219),
+not another FLY overlay. Its Go result remains honestly red.
+
+The three equal manifests per passing fixture have SHA-256:
+
+- move-land: `a1a639c8730e7b197fb36ad1425efe79f8ff44088b9fd11697b5d72a2707519e`
+- fly-out-first: `0d8c3e0f806cd49520677deead7f973f4a3ad8471b53395ac426c003f967f7a2`
+- save-fly-cap: `5f9a1067b2b9505ba5fe06195397958749dc0fba9cb14abcb81e2344be16b69d`
+- Both C movement-refused manifests: `f5d0e3b032eaaf50e8954a7fd8d598beae85507e5dc9a0edc1a6e86597e7f2c3`
+
+Evidence: `tmp/issue218-fixtures.log`,
+`tmp/issue218-FIXTURE-{c1,c2,go}.log`, corresponding `-manifest.txt`,
+`tmp/issue218-{canonical-provenance,source-definitions}.log`, and
+`tmp/issue218-{launcher,fixture-manifests}.sha256`.
+Matching captures, task helpers/binaries and disposable WORKs are removed;
+the decisive C/Go pair remains
+`tmp/issue218-movement-refused-captures/{c1,go}`, with the full mismatch list
+at `tmp/issue218-movement-refused.diff` and first stop at
+`tmp/issue218-first-nyi.log`.
+No pin change, new source dependency, full-corpus rerun, family/stage exit,
+later gameplay or stage5 acceptance is implied.
+See [callback proof](../command-compat/README.md#fly-218-stage-4-n17)
+and [spec no-loss](../olympia-spec/README.md#fly-no-loss-218).
+
 ## TERRORIZE and INCITE start (#217)
 
 **0.139.0-alpha**, unchanged **9a03d126b329ed466c4af48425553c025eaca26f**.

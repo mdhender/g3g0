@@ -3,6 +3,137 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## FLY (#218, stage 4 N17)
+
+**0.140.0-alpha**, unchanged immutable **9a03d126**. Complete unchanged
+move.c definitions are extracted at their actual original `#line`:
+
+| Definition | Lines | Bytes | SHA-256 |
+| --- | --- | --- | --- |
+| fly_check | 901–922 | 587 | `308ba588e3ded83d47a2d4b8f99e0948d3708cf47e4a529c39ed4599cb176ba9` |
+| can_fly_here | 925–938 | 225 | `1c26ebbba9a3493e77ad6d40ac2011b1c2dc0b3fa2c56085bb278f59d10c3113` |
+| can_fly_at_outer_level | 941–955 | 264 | `bf818d4457b742feb8448920965ad02da61d24ea9eae8b9ac3dc8813800d551d` |
+| v_fly | 958–1038 | 1293 | `62a170ba4acd1ddfa2ce3ebf8fc3b2960f601c4b5807b176ba218664737f9851` |
+| d_fly | 1041–1089 | 916 | `21a1d9f547d5117e81413720e73466eb3d9269df8784ad462c28989ee8d80b17` |
+| move_exit_fly (existing Go owner) | 358–424 | 1300 | `85ee051e65e17fcf6372e8859900de1326b1641f109ad4c03cd4069d2d79326d` |
+
+Go implements the five complete callbacks/helpers in existing move.go and
+wires direct FLY in glob.go, retaining C's **NULL interrupt**. It reuses
+parseExitDir, moveExitFly, weights, saved exit arrays, stack/departure/arrival,
+output, queues, persistent RNG and state owners. There is no new upstream
+source dependency, pin, RNG adapter or parallel movement implementation.
+
+**19 appended real-C sections** compare raw status/streams, complete saved
+state and raw observers, queues, allocations, messages and RNG aftermath:
+
+- Missing arguments, already-here/unknown destinations, IN assumptions,
+  admission refusal/admission, sewer bypass and OUT admission exception.
+  The underway diagnostic contains a literal **TAB**, not landCheck's spaces.
+- Any parsed exit disables outer fallback even after refusal. The final
+  argument retains both text and parsed id; nested fallback prepends the
+  **exact original multiargument line** ahead of the successor. Outer viability
+  excludes IN but deliberately ignores admission and underway; real linked
+  routes discriminate both from the subsequent refused retry.
+- Zero-distance flight still checks weight. Actual **99/100** flight capacity
+  around a 100-weight noble distinguishes refusal from equality; refusal
+  precedes detachment and guard clearing. Underground/tunnel failure and
+  overload stop after the first parsed/admitted exit, not a later alternative.
+  Water and impassable surface/cloud routes remain flyable. Natural distance
+  cases cover **0/1/2/3/4** days and the real army slowdown cap (**17** total).
+- Four-day Hades-bound flight charges no land toll and does not check prisoner
+  escapes. A real seeded **turn1/day8 prisoner1185 roll10** would escape under
+  MOVE's threshold20, but remains captive and moving under FLY. No forced roll
+  or successful replacement callback is introduced.
+- Real delayed evenings, command save/reload/reparse, stack/foreign-prisoner
+  moving flags, detachment, guards and queued successors. Generic interruption
+  follows the genuine NULL callback and retains moving flags as C does.
+- Hidden-road discovery marks every reverse road for stack/prisoner factions;
+  fog and hidden actors suppress public sightings, hidden origins omit the
+  source, and same-viewloc arrival **still emits arrival_message**. d_fly has
+  **no dMove destination-valid guard**. Exit shuffles, keyed entity draws and
+  shared mint allocation after flight retain their real aftermath.
+
+Before porting, C runs twice deterministically (**1867 sections**) and old Go
+fails at **command fly start NYI**: `tmp/issue218-before-valid.log`.
+Preliminary malformed harness constructions (missing region/item, wrong ship
+subkind) were corrected, not accepted as new abort exceptions. The capacity
+case was also corrected to use a separate mount: a self-flying item's weight
+does not load its own flight capacity in the original weight calculation.
+All N17 sections require **native status0**, after the unchanged marker rejection.
+The existing gate is exercised by temporary compiled executable-entry
+controls (not gameplay callbacks): six marker classes × actual **0/134** ×
+default/update, **24 harness-status2 rejections**, recording unchanged.
+
+Final C twice and Go match **1870 sections /162536 output lines**. Both entire
+inherited prefixes remain exact, including **21 input /67 output high-bit
+bytes** and authentic trailing spaces (**85** appended C-output lines).
+
+| File | Full bytes | Full SHA-256 |
+| --- | --- | --- |
+| command-cases.txt | 784547 | `e3c02bf494be280ccce07ccc09d0b8a2ed379368ade02a5f136a360cddc3c900` |
+| command-c-output.txt | 3141113 | `2d9559d99b114ea8d69dc3edcf8758eab920d982aee05a96e7a312b7e799112b` |
+
+Inherited input **775266 bytes**, SHA-256
+`f89630b8cdd92e3866cf41ffee4f72e54d456bc07717db6454deabb941b3b8d9`;
+output **3082072 bytes**, SHA-256
+`3f9fb49dc7ce0d793bfdbc79731fcc24d12c588cd4d5aa71cf5cbeae12e2ef41`.
+Stage-3 prefixes remain **578307/2134398 bytes**, SHA-256
+`3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` /
+`1eabf595ecf06bcde56319a75012527a42dabb7e7218191b69006a86accccabe`
+(the already accepted merged-pin assertion-line shifts, not a new change).
+
+```sh
+. tools/lib/timeout.sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/command-compat/run.sh --update
+# Every update repeats real C twice BEFORE recording or comparing Go.
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+```
+
+Evidence: `tmp/issue218-{before-valid,command-update-final,marker-controls,
+prefixes,source-definitions,canonical-provenance,vet-final,tests-final}.log` and the
+per-tool `tmp/issue218-TOOL-default-final.log` files. Full-enabled tests are
+not a substitute for executing full corpora; the accepted #291 serializer/
+207-roundtrip tier is not rerun for this localized callback change.
+Bounded vet and fresh full-enabled tests pass, **11 test packages**, Olympia
+**2.809s** on the final run (Linux amd64, GCC12.2.0, Go1.26.4).
+All eight final defaults pass sequentially: command **1870/162536**,
+move **135/7158**, helper **37/1487**, RNG **321 results**, code **43/969**,
+loadsave **61/3411**. Turn-driver remains **7/152** plus phase **5/484**,
+calendar **2/119** and schedule **4/1801** (scheduling, not skipped gameplay
+acceptance). Default turn passes its six comparator tests and Go/strict
+comparator control; it is not a new full-world tier claim.
+See [strict original scripts](../turn-compat/README.md#fly-originals-218)
+and [spec no-loss](../olympia-spec/README.md#fly-no-loss-218).
+No SAIL/BOARD/FERRY/UNLOAD, later gameplay, family/stage exit, stage5,
+remote writes or remote-CI acceptance is implied.
+
+Parent independently reviewed all five complete pinned FLY definitions,
+shared movement owners and the full diff. Bounded vet, fresh full-enabled
+tests (**11 packages**, Olympia **2.380s**) and eight sequential defaults
+pass, including the full **1870-section /162536-line C/C/Go** oracle. All
+**548** evidence digests and both entire inherited byte prefixes verify.
+Fresh original-script native captures repeat C/C/Go equality for move-land
+(**241 entries**), fly-out-first (**240**) and save-fly-cap (**226**), with
+the same manifest hashes as the linked proof; movement-refused repeats C/C (**239**) and
+Go's explicit BOARD start NYI, engine2/script1. Independent full spec repeats
+**62 pass /67 fail /0 error (130s)**, adding only fly-out-first/move-land and
+retaining all prior60/stage3-36 names; initialization2/goldenNO remain red.
+Logs: `tmp/parent218-{vet,tests,spec,evidence-check}.log`, the eight
+`tmp/parent218-*-default.log` files and original-script manifests/logs
+`tmp/parent218-FIXTURE-{c1,c2,go}*`. Canonical source/binary provenance is
+independently verified in `tmp/parent218-canonical-provenance.log`.
+Source/docs/input whitespace checks pass; all **85** authentic appended
+C-output trailing-space lines remain unchanged.
+
 ## TERRORIZE and INCITE start (#217, stage 4 N16)
 
 **0.139.0-alpha**, unchanged immutable **9a03d126**. Complete original

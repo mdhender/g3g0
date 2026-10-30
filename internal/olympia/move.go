@@ -90,6 +90,81 @@ func (w *world) vMove(c *command) int {
 	return 1
 }
 
+// vFly is move.c:958–1038. A parsed but refused exit disables outer
+// fallback; only the last unparsed argument is tested at outer levels.
+func (w *world) vFly(c *command) int {
+	who := int(c.who)
+	where, checkOuter := w.subloc(who), true
+	var v *exitView
+	if c.parse.Len()-1 < 1 {
+		w.commandOut(who, "Specify direction or destination to FLY.")
+		return 0
+	}
+	for c.parse.Len()-1 > 0 {
+		fly := "fly"
+		v = w.parseExitDir(c, where, &fly)
+		if v != nil {
+			checkOuter = false
+			if w.flyCheck(c, v) {
+				break
+			}
+			v = nil
+		}
+		if c.parse.Len()-1 == 1 {
+			break
+		}
+		w.cmdShift(c)
+	}
+	if v == nil && checkOuter && w.canFlyAtOuterLevel(where, c) != 0 {
+		c.a = int32(w.subloc(where))
+		v = w.parseExitDir(c, where, nil)
+		assert(v != nil, "olympia/move.c", 999, "v")
+		if v != nil {
+			assert(w.moveExitFly(c, v, false) >= 0, "olympia/move.c", 1003, "move_exit_fly(c, v, FALSE) >= 0")
+			w.commandOut(who, "(assuming 'fly out' first)")
+			w.prependOrder(w.player(who), who, *c.line)
+		}
+	}
+	if v == nil {
+		return 0
+	}
+	delay := w.moveExitFly(c, v, true)
+	if delay < 0 {
+		return 0
+	}
+	v.distance, c.wait = delay, delay
+	saveVArray(c, v)
+	w.leaveStack(who)
+	if delay > 0 {
+		w.vectorStack(who, true)
+		w.commandOut(vect, "Flying to %s will take %s day%s.", w.boxName(int(v.destination)), niceNum(int(delay)), addS(int(delay)))
+	}
+	w.suspendStackActions(who)
+	w.clearGuardFlag(who)
+	w.departureMessage(who, v)
+	return 1
+}
+
+// dFly is move.c:1041–1089. Unlike dMove, C has no destination-valid
+// guard and calls arrival_message even when both locations share a viewloc.
+func (w *world) dFly(c *command) int {
+	var v exitView
+	restoreVArray(c, &v)
+	who, dest := int(c.who), int(v.destination)
+	if v.road != 0 {
+		w.discoverRoad(who, w.subloc(who), &v)
+	}
+	w.vectorStack(who, true)
+	w.commandOut(vect, "Arrival at %s.", w.boxName(dest))
+	if w.locDepth(dest) == locProvince && w.viewloc(w.subloc(who)) != w.viewloc(dest) && w.weatherHere(dest, subFog) != 0 {
+		w.commandOut(vect, "The province is blanketed in fog.")
+	}
+	w.restoreStackActions(who)
+	w.moveStack(who, dest)
+	w.arrivalMessage(who, &v)
+	return 1
+}
+
 // dMove is move.c:776–832. The disabled #if 0 move_skip block is not active
 // gameplay. Missing destinations fail before restoring moving flags, as C does.
 func (w *world) dMove(c *command) int {
@@ -435,6 +510,41 @@ func (w *world) canMoveHere(where int, c *command) bool {
 func (w *world) canMoveAtOuterLevel(where int, c *command) int {
 	for outer := w.subloc(where); w.locDepth(outer) > locRegion; outer = w.subloc(outer) {
 		if w.canMoveHere(outer, c) {
+			return w.locDepth(outer) - w.locDepth(where)
+		}
+	}
+	return 0
+}
+
+// flyCheck is move.c:901–922, deliberately not landCheck: water and
+// impassability do not prevent flight, and the underway message contains TAB.
+func (w *world) flyCheck(c *command, v *exitView) bool {
+	who, dest := int(c.who), int(v.destination)
+	if v.inTransit != 0 {
+		w.commandOut(who, "%s is underway.\tBoarding is not possible.", w.boxName(dest))
+		return false
+	}
+	if w.locDepth(dest) == locBuild && w.subkind(dest) != subSewer {
+		owner := w.buildingOwner(dest)
+		if owner != 0 && !w.willAdmit(owner, who, dest) && v.direction != dirOut {
+			w.commandOut(who, "%s refused to let us enter.", w.boxName(owner))
+			w.commandOut(owner, "Refused to let %s enter.", w.boxName(who))
+			return false
+		}
+	}
+	return true
+}
+
+// canFlyHere is move.c:925–938. Outer viability excludes IN but does not
+// consult fly_check (neither admission nor underway is tested here).
+func (w *world) canFlyHere(where int, c *command) bool {
+	v := w.parseExitDir(c, where, nil)
+	return v != nil && v.direction != dirIn && w.moveExitFly(c, v, false) >= 0
+}
+
+func (w *world) canFlyAtOuterLevel(where int, c *command) int {
+	for outer := w.subloc(where); w.locDepth(outer) > locRegion; outer = w.subloc(outer) {
+		if w.canFlyHere(outer, c) {
 			return w.locDepth(outer) - w.locDepth(where)
 		}
 	}

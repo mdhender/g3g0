@@ -159518,3 +159518,3019 @@ LI
 stderr:
 
 exit 0
+stdout:
+section N17 missing argument already here and unknown alternatives retain final argument
+> entity 8000 3 50
+> place 9000
+> link 8000 9000
+> queue fly
+> queue fly 9000
+> queue fly nowhere west
+> queue guard 1
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 1 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9000 0 0 0 0 0 0 0; parse [fly] [9000]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 30 who 1000 state 1 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [fly] [nowhere] [west]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 38 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> fly
+1000:0::0::Specify direction or destination to FLY.
+1000:0::0::> fly 9000
+1000:0::0::Already in Plain~[9000].
+1000:0::0::> fly nowhere west
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::No visible west route from Plain~[9000].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N17 two day ocean flight saved reparse delayed arrival stack guards queues and RNG
+> master 0
+> resolve_wait
+> set turn 3
+> set day 1
+> set epoch 71
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 1002 2 0
+> field 1002 lord 201
+> field 1002 prisoner 1
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 1000 1001
+> link 1000 1002
+> field 1000 guard 1
+> field 1001 guard 1
+> field 1002 guard 1
+> routes 9000 9001 9001 9001 9001
+> routes 9001 9000 9000 9000 9000
+> queue fly nowhere north west
+> queue wait time 1
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 2 status 1 wait 2 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 2 9000 0; parse [fly] [north] [west]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1000 1001 1002
+move char 1000 where 9000 moving 71 guard 0
+here: 1001 1002
+move char 1001 where 1000 moving 71 guard 0
+here:
+move char 1002 where 1000 moving 71 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000 1001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> persist_command
+> initial
+> dump
+cmd 30 who 1000 state 2 status 1 wait 2 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 2 9000 0; parse [fly] [nowhere] [north] [west]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> set day 2
+> set epoch 72
+> daily
+> dump
+cmd 30 who 1000 state 2 status 1 wait 1 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 2 inhibit 0 cur 99
+args 0 1 9001 0 0 2 9000 0; parse [fly] [nowhere] [north] [west]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1000 1001 1002
+move char 1000 where 9000 moving 71 guard 0
+here: 1001 1002
+move char 1001 where 1000 moving 71 guard 0
+here:
+move char 1002 where 1000 moving 71 guard 0
+here:
+show_garrison 0
+> set day 3
+> set epoch 73
+> daily
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 3 inhibit 0 cur 1
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000 1001 1002
+move char 1000 where 9001 moving 0 guard 0
+here: 1001 1002
+move char 1001 where 1000 moving 0 guard 0
+here:
+move char 1002 where 1000 moving 0 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean: 1000
+arrival char 1000 allocated 1 time 1 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather:
+output: 1000 1001 9001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> set day 4
+> daily
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 1 debug 4 inhibit 1 cur 99
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 2 last 3 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> orders_file 200
+orders file 200:
+> shuffle 1000 9001
+> entity_rolls 1000 1 9000
+prison roll 164
+land dir99 3
+land dir98 4
+land pick 2
+> newitem 1000 0
+created 78783
+> save_new
+78783 item 0
+IT
+ un 1000
+
+> readlog 200
+log 200:
+1000:0::0::> fly nowhere north west
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::Flying to Ocean~[9001] will take two days.
+1001:0::0::Flying to Ocean~[9001] will take two days.
+1000:0::0::Arrival at Ocean~[9001].
+1001:0::0::Arrival at Ocean~[9001].
+9001:0::0::<no subkind>~[1000] arrived from the south, accompanied~by:
+9001:0::3/3::<no subkind>~[1001]
+9001:0::3/3::<no subkind>~[1002], prisoner
+1000:0::0::> wait time 1
+1000:0::0::Wait finished: one day has passed.
+> readlog 201
+log 201:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001 9001
+200 player pl_regular
+PL
+ lt 3
+ kn 9001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1010000 order 0
+here: 1001 1002
+raw item 78783 1
+1000 char 0
+il	78783 1
+LI
+ wh 9001
+ hl 1001 1002 
+CH
+ lo 200
+ tf 1
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ st 1
+ de 1
+ po 1
+ pr 1
+ if 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ pr 1
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9000 loc plain
+LI
+ wh 8000
+LO
+ pd 9001 9001 9001 9001 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9001 loc ocean
+LI
+ wh 8000
+ hl 1000 
+LO
+ pd 9000 9000 9000 9000 
+
+export entity 78783 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+78783 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N17 four day forest flight no Hades toll no movement prisoner escape
+> master 0
+> set epoch 71
+> set turn 1
+> set day 8
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 295 4 0
+> entity 1185 2 0
+> entity 8000 3 50
+> entity 8001 3 50
+> entity 9000 3 3
+> entity 9001 3 2
+> set hades_region 8001
+> link 8000 9000
+> link 8001 9001
+> link 9000 1000
+> link 1000 1001
+> link 1000 1185
+> field 1001 prisoner 1
+> field 1001 lord 201
+> field 1185 prisoner 1
+> field 1185 lord 201
+> routes 9000 9001 0 0 0
+> queue fly north
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 2 status 1 wait 4 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [fly] [north]
+player 200 count 1 last 1 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1000 1001 1185
+move char 1000 where 9000 moving 71 guard 0
+here: 1001 1185
+move char 1001 where 1000 moving 71 guard 0
+here:
+move char 1185 where 1000 moving 71 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1185 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known:
+touched:
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> entity_rolls 1001 1 9000
+prison roll 476
+land dir99 4
+land dir98 3
+land pick 2
+> entity_rolls 1185 1 9000
+prison roll 10
+land dir99 4
+land dir98 3
+land pick 2
+> readlog 200
+log 200:
+1000:0::0::> fly north
+1000:0::0::Flying to Forest~[9001] will take four days.
+> readlog 201
+log 201:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ lt 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 295 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+295 item 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001 1185
+1000 char 0
+LI
+ wh 9000
+ hl 1001 1185 
+CH
+ lo 200
+ mo 71
+CO
+ li fly north
+ ar 0 1 9001 0 0 4 9000 0
+ cs 2
+ wa 4
+ st 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ pr 1
+ mo 71
+
+export entity 1185 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1185 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ pr 1
+ mo 71
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 8001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9001
+8001 loc region
+LI
+ hl 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc forest
+LI
+ wh 8001
+
+stderr:
+
+exit 0
+stdout:
+section N17 zero distance still needs flight capacity before detaching or clearing guards
+> entity 10 4 0
+> field 10 weight 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 3 29
+> link 8000 9000
+> link 9000 9100
+> link 9000 1001
+> link 1001 1000
+> field 1000 guard 1
+> queue fly 9100
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9100 0 0 0 0 0 0 0; parse [fly] [9100]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector:
+move char 1000 where 1001 moving 0 guard 1
+here:
+move char 1001 where 9000 moving 0 guard 0
+here: 1000
+show_garrison 0
+> field 10 fly_cap 100
+> queue fly 9100
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9100 7 9100 0 0 0 9000 0; parse [fly] [9100]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9100 moving 0 guard 0
+here:
+move char 1001 where 9000 moving 0 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9100
+touched: 9000
+weather:
+output: 1000 1001 9000
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> readlog 200
+log 200:
+1000:0::0::> fly 9100
+1000:0::0::<no subkind>~[1000] is too overloaded to fly.
+1000:0::0::> fly 9100
+1001:0::0::<no subkind>~[1000] unstacks from us.
+1000:0::0::<no subkind>~[1000] unstacks from <no subkind>~[1001].
+1000:0::0::Arrival at Temple~[9100].
+9000:0::0::<no subkind>~[1000] arrived from Plain~[9000].
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001 9000
+200 player pl_regular
+PL
+ kn 9100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CO
+ li fly 9100
+ ar 9100 7 9100 0 0 0 9000 0
+ st 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 1001
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 1001 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9100 loc temple
+LI
+ wh 9000
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N17 admission refusal then sewer bypass then explicitly admitted entry
+> set epoch 21
+> set day 1
+> entity 10 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 3 29
+> link 8000 9000
+> link 9000 9100
+> link 9000 1000
+> link 9100 1001
+> field 1001 lord 201
+> queue fly in
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [fly] [in]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> field 9100 subkind 71
+> queue fly 9100
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 9100 7 9100 0 0 0 9000 0; parse [fly] [9100]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> link 9000 1000
+> field 9100 subkind 29
+> who 1001
+> parse admit 9100 1000
+parse 1
+> callback_start
+callback start 1
+> who 1000
+> queue fly 9100
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 9100 7 9100 0 0 0 9000 0; parse [fly] [9100]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9100 moving 0 guard 0
+here:
+move char 1001 where 9100 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> fly in
+1000:0::0::(assuming 'fly 9100')
+1000:0::0::<no subkind>~[1001] refused to let us enter.
+1000:0::0::> fly 9100
+1000:0::0::Arrival at Sewer~[9100].
+9100:0::0::<no subkind>~[1000] arrived from Plain~[9000].
+1000:0::0::> fly 9100
+9000:0::0::<no subkind>~[1000] entered Temple~[9100].
+1000:0::0::Arrival at Temple~[9100].
+9000:0::0::<no subkind>~[1000] arrived from Plain~[9000].
+> readlog 201
+log 201:
+1001:0::0::Refused to let <no subkind>~[1000] enter.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9100 9000
+200 player pl_regular
+PL
+ kn 9100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+ am 9100 0 1000 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CO
+ li fly 9100
+ ar 9100 7 9100 0 0 0 9000 0
+ st 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 201
+CO
+ li admit 9100 1000
+ ar 0 0 0 0 0 0 0 0
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001 1000
+9100 loc temple
+LI
+ wh 9000
+ hl 1001 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N17 OUT exception leaves owned outer building despite refusal
+> set epoch 21
+> set day 1
+> entity 10 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 3 32
+> entity 9200 3 29
+> link 8000 9000
+> link 9000 9100
+> link 9100 9200
+> link 9100 1001
+> field 1001 lord 201
+> link 9200 1000
+> queue fly out
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 8 9100 0 0 0 9200 0; parse [fly] [out]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9100 moving 0 guard 0
+here:
+move char 1001 where 9100 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> fly out
+1000:0::0::Arrival at Castle~[9100].
+9000:0::0::<no subkind>~[1000] arrived from Temple~[9200].
+> readlog 201
+log 201:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9000
+200 player pl_regular
+PL
+ kn 9100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CO
+ li fly out
+ ar 0 8 9100 0 0 0 9200 0
+ st 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 201
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200 1001 1000
+9100 loc castle
+LI
+ wh 9000
+ hl 9200 1001 1000 
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9200 loc temple
+LI
+ wh 9100
+
+stderr:
+
+exit 0
+stdout:
+section N17 underway ship uses literal tab and refuses before admission
+> entity 8000 3 50
+> place 9000
+> link 8000 9000
+> entity 9100 9 31
+> link 9000 9100
+> link 9100 1001
+> field 1001 lord 201
+> field 9100 ship_moving 7
+> queue fly 9100
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9100 0 0 0 0 0 0 0; parse [fly] [9100]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector:
+move char 1000 where 9000 moving 0 guard 0
+here:
+move char 1001 where 9100 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> fly 9100
+1000:0::0::Roundship~[9100] is underway.	Boarding is not possible.
+> readlog 201
+log 201:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li fly 9100
+ ar 9100 0 0 0 0 0 0 0
+ wa -1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9100
+CH
+ lo 201
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 9100
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 9100 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9100 ship roundship
+LI
+ wh 9000
+ hl 1001 
+SL
+ mo 7
+
+stderr:
+
+exit 0
+stdout:
+section N17 parsed refused exit prevents outer fallback even after final north fails locally
+> master 0
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 14
+> entity 9200 3 29
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9100 9200
+> link 9100 1000
+> link 9200 1001
+> field 1001 lord 201
+> routes 9000 9001 0 0 0
+> queue fly 9200 north
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [fly] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> move_state
+vector:
+move char 1000 where 9100 moving 0 guard 0
+here:
+move char 1001 where 9200 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> fly 9200 north
+1000:0::0::<no subkind>~[1001] refused to let us enter.
+1000:0::0::No visible north route from City~[9100].
+> readlog 201
+log 201:
+1001:0::0::Refused to let <no subkind>~[1000] enter.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CO
+ li fly 9200 north
+ ar 0 0 0 0 0 0 0 0
+ wa -1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9200
+CH
+ lo 201
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc plain
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200 1000
+9100 loc city
+LI
+ wh 9000
+ hl 9200 1000 
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9200 loc temple
+LI
+ wh 9100
+ hl 1001 
+
+stderr:
+
+exit 0
+stdout:
+section N17 outer fallback keeps final numeric destination and prepends exact original multiargument line
+> master 0
+> resolve_wait
+> set day 1
+> set epoch 71
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 14
+> entity 9200 3 29
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9100 9200
+> link 9200 1000
+> routes 9000 9001 0 0 0
+> queue fly nowhere 9001
+> queue wait time 1
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 9001 0 0 0 0 0 0; parse [fly] [nowhere] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 1 0
+orders 1000: [wait time 1]
+> orders_file 200
+orders file 200:
+1000:wait time 1
+> move_state
+vector: 1000
+move char 1000 where 9100 moving 0 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> do
+> dump
+cmd 30 who 1000 state 2 status 1 wait 1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9000 8 9000 0 0 1 9100 0; parse [fly] [9001]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 1 0
+orders 1000: [fly nowhere 9001] [wait time 1]
+> set day 2
+> evening
+> dump
+cmd 30 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 2 inhibit 0 cur 0
+args 0 9001 0 0 0 0 0 0; parse [fly] [nowhere] [9001]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 1 0
+orders 1000: [wait time 1]
+> do
+> dump
+cmd 30 who 1000 state 2 status 1 wait 3 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9001 1 9001 0 0 3 9000 0; parse [fly] [9001]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 71 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> fly nowhere 9001
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::No visible route from Temple~[9200] to 9001.
+1000:0::0::(assuming 'fly out' first)
+1000:0::0::Arrival at City~[9100].
+9100:0::0::<no subkind>~[1000] arrived from Temple~[9200].
+1000:0::0::> fly nowhere 9001
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::No visible route from City~[9100] to 9001.
+1000:0::0::(assuming 'fly out' first)
+1000:0::0::Flying to Plain~[9000] will take one day.
+9100:0::0::<no subkind>~[1000] exited City~[9100].
+1000:0::0::Arrival at Plain~[9000].
+9000:0::0::<no subkind>~[1000] arrived from City~[9100].
+1000:0::0::> fly nowhere 9001
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::Flying to Plain~[9001] will take three days.
+9000:0::0::<no subkind>~[1000] went north.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9100 9000
+200 player pl_regular
+PL
+ kn 9000 9100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 2010001 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ mo 71
+CO
+ li fly nowhere 9001
+ ar 9001 1 9001 0 0 3 9000 0
+ cs 2
+ wa 3
+ st 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 1000 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc plain
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9100 loc city
+LI
+ wh 9000
+ hl 9200 
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9200 loc temple
+LI
+ wh 9100
+
+stderr:
+
+exit 0
+stdout:
+section N17 outer viability ignores admission and excludes IN
+> master 0
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 3 14
+> entity 9200 3 29
+> entity 9300 3 29
+> link 8000 9000
+> link 9000 9100
+> link 9100 9200
+> link 9100 9300
+> link 9200 1000
+> link 9300 1001
+> field 1001 lord 201
+> queue fly in
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [fly] [in]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> field 9100 link_open 1
+> field 9100 link_to 9300
+> queue fly 9300
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9300 0 0 0 0 0 0 0; parse [fly] [9300]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 1 0
+orders 1000:
+> orders_file 200
+orders file 200:
+> move_state
+vector: 1000
+move char 1000 where 9100 moving 0 guard 0
+here:
+move char 1001 where 9300 moving 0 guard 0
+here:
+show_garrison 0
+> do
+> dump
+cmd 30 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9300 0 0 0 0 0 0 0; parse [fly] [9300]
+player 200 count 3 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> fly in
+1000:0::0::No visible in route from Temple~[9200].
+1000:0::0::> fly 9300
+1000:0::0::No visible route from Temple~[9200] to 9300.
+1000:0::0::(assuming 'fly out' first)
+1000:0::0::Arrival at City~[9100].
+9100:0::0::<no subkind>~[1000] arrived from Temple~[9200].
+1000:0::0::> fly 9300
+1000:0::0::<no subkind>~[1001] refused to let us enter.
+> readlog 201
+log 201:
+1001:0::0::Refused to let <no subkind>~[1000] enter.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9100
+200 player pl_regular
+PL
+ kn 9100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CO
+ li fly 9300
+ ar 9300 0 0 0 0 0 0 0
+ wa -1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9300
+CH
+ lo 201
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200 9300 1000
+9100 loc city
+LI
+ wh 9000
+ hl 9200 9300 1000 
+SL
+ lt 9300 
+ lp 1
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9200 loc temple
+LI
+ wh 9100
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9300 loc temple
+LI
+ wh 9100
+ hl 1001 
+
+stderr:
+
+exit 0
+stdout:
+section N17 underground refusal does not try later valid alternative after parsed accepted exit
+> master 0
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 7
+> entity 9002 3 70
+> entity 9003 3 3
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 8000 9003
+> link 9000 1000
+> routes 9000 9001 9002 9003 0
+> queue fly north south
+> queue fly east south
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 1 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [fly] [east] [south]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 30 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [fly] [east] [south]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector:
+move char 1000 where 9000 moving 0 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> fly north south
+1000:0::0::Cannot fly underground.
+1000:0::0::> fly east south
+1000:0::0::Cannot fly underground.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li fly east south
+ ar 0 0 0 0 0 0 0 0
+ wa -1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001 9002 9003
+8000 loc region
+LI
+ hl 9000 9001 9002 9003 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 
+LO
+ pd 9001 9002 9003 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc underground
+LI
+ wh 8000
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9002 loc tunnel
+LI
+ wh 8000
+
+export entity 9003 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9003 loc plain
+LI
+ wh 8000
+
+stderr:
+
+exit 0
+stdout:
+section N17 generic NULL interrupt retains moving flags and loads actual successor
+> master 0
+> resolve_wait
+> set epoch 51
+> set day 1
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 1000 1001
+> routes 9000 9001 0 0 0
+> queue fly north
+> queue wait time 2
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 2 status 1 wait 3 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [fly] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000 1001
+move char 1000 where 9000 moving 0 guard 0
+here: 1001
+move char 1001 where 1000 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> fly north
+1000:0::0::Flying to Plain~[9001] will take three days.
+1001:0::0::Flying to Plain~[9001] will take three days.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 1000 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc plain
+LI
+ wh 8000
+
+stderr:
+
+exit 0
+stdout:
+section N17 hidden road arrival discovers every reverse road including prisoner factions
+> master 0
+> set day 1
+> set epoch 41
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 401 7 0
+> entity 402 7 0
+> entity 403 7 0
+> entity 1002 2 0
+> field 1002 lord 201
+> field 1002 prisoner 1
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 1000 1001
+> link 1000 1002
+> link 9000 401
+> link 9001 402
+> link 9001 403
+> road 401 9001 1
+> road 402 9000 1
+> road 403 9000 1
+> set_known 1000 401
+> queue fly 9001
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 2 status 1 wait 3 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9001 0 9001 401 1 3 9000 1; parse [fly] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> persist_command
+> initial
+> set wait 1
+> evening
+> dump
+cmd 30 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 9001 0 9001 401 1 3 9000 1; parse [fly] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000 1001 1002
+move char 1000 where 9001 moving 0 guard 0
+here: 1001 1002
+move char 1001 where 1000 moving 0 guard 0
+here:
+move char 1002 where 1000 moving 0 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 401 402 403 9001
+touched: 9001
+weather:
+output: 1000 1001 9001
+arrival player 201 allocated 1
+known: 402 401 403
+touched:
+weather:
+output:
+> shuffle 1000 9001
+> entity_rolls 1002 1 9000
+prison roll 399
+land dir99 4
+land dir98 4
+land pick 0
+> readlog 200
+log 200:
+1000:0::0::> fly 9001
+1000:0::0::Flying to Plain~[9001] will take three days.
+1001:0::0::Flying to Plain~[9001] will take three days.
+1000:0::0::Arrival at Plain~[9001].
+1001:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[1000] arrived, accompanied~by:
+9001:0::3/3::<no subkind>~[1001]
+9001:0::3/3::<no subkind>~[1002], prisoner
+> readlog 201
+log 201:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001 9001
+200 player pl_regular
+PL
+ kn 401 402 403 9001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+ kn 401 402 403 
+
+export entity 401 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+401 road 0
+LI
+ wh 9000
+GA
+ tl 9001
+ rh 1
+
+export entity 402 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+402 road 0
+LI
+ wh 9001
+GA
+ tl 9000
+ rh 1
+
+export entity 403 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+403 road 0
+LI
+ wh 9001
+GA
+ tl 9000
+ rh 1
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 2010000 order 0
+here: 1001 1002
+1000 char 0
+LI
+ wh 9001
+ hl 1001 1002 
+CH
+ lo 200
+CO
+ li fly 9001
+ ar 9001 0 9001 401 1 3 9000 1
+ st 1
+ de 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ pr 1
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 401
+9000 loc plain
+LI
+ wh 8000
+ hl 401 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 402 403 1000
+9001 loc plain
+LI
+ wh 8000
+ hl 402 403 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N17 fog arrival vector suppresses public arrival but records real stack relocation
+> master 0
+> set epoch 21
+> set day 1
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9002 11 57
+> entity 1002 2 0
+> field 1002 lord 201
+> link 8000 9000
+> link 8000 9001
+> link 9001 9002
+> field 9002 strength 1
+> link 9000 1000
+> link 1000 1001
+> link 9001 1002
+> routes 9000 9001 0 0 0
+> queue fly north
+> load
+load 1
+> do
+> set wait 1
+> evening
+> dump
+cmd 30 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [fly] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000 1001
+move char 1000 where 9001 moving 0 guard 0
+here: 1001
+move char 1001 where 1000 moving 0 guard 0
+here:
+move char 1002 where 9001 moving 0 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather:
+output: 1000 1001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> readlog 200
+log 200:
+1000:0::0::> fly north
+1000:0::0::Flying to Plain~[9001] will take three days.
+1001:0::0::Flying to Plain~[9001] will take three days.
+1000:0::0::Arrival at Plain~[9001].
+1001:0::0::Arrival at Plain~[9001].
+1000:0::0::The province is blanketed in fog.
+1001:0::0::The province is blanketed in fog.
+> readlog 201
+log 201:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+ kn 9001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 2010000 order 0
+here: 1001
+1000 char 0
+LI
+ wh 9001
+ hl 1001 
+CH
+ lo 200
+CO
+ li fly north
+ ar 0 1 9001 0 0 3 9000 0
+ st 1
+ de 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char 0
+LI
+ wh 9001
+CH
+ lo 201
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9000 loc plain
+LI
+ wh 8000
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9002 1002 1000
+9001 loc plain
+LI
+ wh 8000
+ hl 9002 1002 1000 
+
+export entity 9002 char 0 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+9002 storm fog
+LI
+ wh 9001
+MI
+ ss 1
+
+stderr:
+
+exit 0
+stdout:
+section N17 same viewloc arrival still emits public arrival unlike MOVE
+> set epoch 21
+> set day 1
+> entity 10 4 0
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 3 29
+> link 8000 9000
+> link 9000 9100
+> link 9000 1000
+> link 9000 1001
+> queue fly 9100
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 9100 7 9100 0 0 0 9000 0; parse [fly] [9100]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9100 moving 0 guard 0
+here:
+move char 1001 where 9000 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> fly 9100
+1000:0::0::Arrival at Temple~[9100].
+9000:0::0::<no subkind>~[1000] arrived from Plain~[9000].
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9000
+200 player pl_regular
+PL
+ kn 9100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CO
+ li fly 9100
+ ar 9100 7 9100 0 0 0 9000 0
+ st 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 1001
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 1001 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9100 loc temple
+LI
+ wh 9000
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N17 capacity99 refuses first parsed accepted exit without alternatives then exact100 starts
+> entity 10 4 0
+> field 10 weight 100
+> entity 54 4 0
+> field 54 fly_cap 99
+> inventory 1000 54 1
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 9100 3 29
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9000 1000
+> field 1000 guard 1
+> routes 9000 9001 0 0 0
+> queue fly north 9100
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 9100 0 0 0 0 0 0; parse [fly] [north] [9100]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector:
+move char 1000 where 9000 moving 0 guard 1
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> field 54 fly_cap 100
+> queue fly north 9100
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 2 status 1 wait 3 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [fly] [north] [9100]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 0 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> fly north 9100
+1000:0::0::<no subkind>~[1000] is too overloaded to fly.
+1000:0::0::> fly north 9100
+1000:0::0::Flying to Plain~[9001] will take three days.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+
+export entity 54 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+54 item 0
+IT
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw item 54 1
+1000 char 0
+il	54 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li fly north 9100
+ ar 0 1 9001 0 0 3 9000 0
+ cs 2
+ wa 3
+ st 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 1000 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc plain
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9100 loc temple
+LI
+ wh 9000
+
+stderr:
+
+exit 0
+stdout:
+section N17 impassable surface cloud flight still uses distance cap and real army slowdown
+> master 0
+> set day 1
+> set epoch 71
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> field 10 man 1
+> inventory 1000 10 501
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 65
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 9001 1001
+> field 1001 lord 201
+> routes 9000 0 0 0 0 9001 0
+> queue fly up
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 2 status 1 wait 17 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 5 9001 0 0 17 9000 0; parse [fly] [up]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 71 guard 0
+here:
+move char 1001 where 9001 moving 0 guard 0
+here:
+show_garrison 0
+> set wait 1
+> evening
+> dump
+cmd 30 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 0 5 9001 0 0 17 9000 0; parse [fly] [up]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather:
+output: 1000 9001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> readlog 200
+log 200:
+1000:0::0::> fly up
+1000:0::0::One noble, 501 men: travel will take an extra 14 days.
+1000:0::0::Flying to Cloud~[9001] will take 17 days.
+1000:0::0::Arrival at Cloud~[9001].
+9001:0::0::<no subkind>~[1000] arrived from Plain~[9000].
+> readlog 201
+log 201:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+ mu 1
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9001
+200 player pl_regular
+PL
+ kn 9001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 2010000 order 0
+here:
+raw item 10 501
+1000 char 0
+il	10 501
+LI
+ wh 9001
+CH
+ lo 200
+CO
+ li fly up
+ ar 0 5 9001 0 0 17 9000 0
+ st 1
+ de 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9001
+CH
+ lo 201
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9000 loc plain
+LI
+ wh 8000
+LO
+ pd 0 0 0 0 9001 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001 1000
+9001 loc cloud
+LI
+ wh 8000
+ hl 1001 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N17 outer viability ignores underway ship then original retry reports underway tab
+> master 0
+> set epoch 71
+> set day 1
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9100 3 14
+> entity 9200 9 31
+> entity 9300 3 29
+> link 8000 9000
+> link 9000 9100
+> link 9000 9200
+> link 9100 9300
+> link 9300 1000
+> field 9100 link_open 1
+> field 9100 link_to 9200
+> field 9200 ship_moving 7
+> queue fly 9200
+> load
+load 1
+> do
+> dump
+cmd 30 who 1000 state 1 status 1 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 9200 0 0 0 0 0 0 0; parse [fly] [9200]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2: 1000
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 1 0
+orders 1000:
+> move_state
+vector: 1000
+move char 1000 where 9100 moving 0 guard 0
+here:
+move char 1001 where 0 moving 0 guard 0
+here:
+show_garrison 0
+> do
+> dump
+cmd 30 who 1000 state 0 status 0 wait -1 poll 0 pri 2 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9200 0 0 0 0 0 0 0; parse [fly] [9200]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> fly 9200
+1000:0::0::No visible route from Temple~[9300] to 9200.
+1000:0::0::(assuming 'fly out' first)
+1000:0::0::Arrival at City~[9100].
+9100:0::0::<no subkind>~[1000] arrived from Temple~[9300].
+1000:0::0::> fly 9200
+1000:0::0::Roundship~[9200] is underway.	Boarding is not possible.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9100
+200 player pl_regular
+PL
+ kn 9100 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CO
+ li fly 9200
+ ar 9200 0 0 0 0 0 0 0
+ wa -1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 9200
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 9200 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300 1000
+9100 loc city
+LI
+ wh 9000
+ hl 9300 1000 
+SL
+ lt 9200 
+ lp 1
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9200 ship roundship
+LI
+ wh 9000
+SL
+ mo 7
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9300 loc temple
+LI
+ wh 9100
+
+stderr:
+
+exit 0
+stdout:
+section N17 hidden origin omits public source and hidden actor suppresses both movement notices
+> master 0
+> set day 1
+> set epoch 71
+> entity 10 4 0
+> field 10 weight 100
+> field 10 fly_cap 100
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 3
+> entity 1002 2 0
+> field 1002 lord 201
+> link 8000 9000
+> link 8000 9001
+> link 9000 1000
+> link 9000 1001
+> link 9001 1002
+> field 9000 loc_hidden 1
+> routes 9000 9001 0 0 0
+> routes 9001 9000 0 0 0
+> queue fly north
+> load
+load 1
+> do
+> set wait 1
+> evening
+> dump
+cmd 30 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 1; parse [fly] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9001 moving 0 guard 0
+here:
+move char 1001 where 9000 moving 0 guard 0
+here:
+move char 1002 where 9001 moving 0 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather:
+output: 1000 9001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> field 1000 hidden 1
+> field 9000 loc_hidden 0
+> queue fly north
+> load
+load 1
+> do
+> set wait 1
+> evening
+> dump
+cmd 30 who 1000 state 0 status 1 wait 0 poll 0 pri 2 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 0 1 9000 0 0 3 9001 0; parse [fly] [north]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 1 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000
+move char 1000 where 9000 moving 0 guard 0
+here:
+move char 1001 where 9000 moving 0 guard 0
+here:
+move char 1002 where 9001 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> fly north
+1000:0::0::Flying to Plain~[9001] will take three days.
+1000:0::0::Arrival at Plain~[9001].
+9001:0::0::<no subkind>~[1000] arrived.
+1000:0::0::> fly north
+1000:0::0::Flying to Plain~[9000] will take three days.
+1000:0::0::Arrival at Plain~[9000].
+> readlog 201
+log 201:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+ fc 100
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9001
+200 player pl_regular
+PL
+ kn 9000 9001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 1 misc 0 skill 0 temp 2010001 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CM
+ hs 1
+CO
+ li fly north
+ ar 0 1 9000 0 0 3 9001 0
+ st 1
+ de 1
+ pr 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char 0
+LI
+ wh 9001
+CH
+ lo 201
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001 1000
+9000 loc plain
+LI
+ wh 8000
+ hl 1001 1000 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1002
+9001 loc plain
+LI
+ wh 8000
+ hl 1002 
+LO
+ pd 9000 0 0 0 
+
+stderr:
+
+exit 0

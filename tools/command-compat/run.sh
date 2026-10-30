@@ -52,6 +52,7 @@ functions = {
                'save_v_array', 'restore_v_array', 'move_exit_land', 'land_check',
                'can_move_here', 'can_move_at_outer_level', 'suspend_stack_actions',
                'clear_guard_flag', 'v_move', 'd_move',
+               'move_exit_fly', 'fly_check', 'can_fly_here', 'can_fly_at_outer_level', 'v_fly', 'd_fly',
                'init_ocean_chars', 'check_ocean_chars',
                'v_exit', 'v_enter', 'v_north', 'v_south', 'v_east', 'v_west'],
     'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched',
@@ -847,6 +848,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N17 '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N17 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N16 '* ]]; then
    [ "$status" = 0 ] || die "unexpected N16 status $status in section $i"
   fi

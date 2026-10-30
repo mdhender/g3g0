@@ -8,6 +8,46 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## FLY no-loss (#218)
+
+At **0.140.0-alpha**, unchanged immutable
+**9a03d126b329ed466c4af48425553c025eaca26f**, the full unchanged spec reports
+**129 fixtures: 62 pass /67 fail /0 error (212s)**. Exactly **fly-out-first**
+and **move-land** are newly passing. All prior **60 names** and the full
+stage-3 **36-name** set remain; the latter source list verifies against its
+accepted **876-byte** SHA-256
+`6d2080c29961395d8387364983b6543a6d05c7277b63bdfd16f9025a91736b67`.
+The existing tool alone writes passing.txt: **1273 bytes**, SHA-256
+`52f944165625d4fc88c24e6da0ed498129660242dd5b9ac8b1e425154a9ac1fc`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue218/spec" \
+  RUN_DIR=/tmp/g3g0-issue218-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Separate unchanged original scripts execute real C twice before Go through
+the [bounded native pre-cleanup capture](../turn-compat/README.md#fly-originals-218).
+move-land/fly-out-first match raw status/streams and **241/240 complete cwd
+entries**, engine0/scriptYES0. save-fly-cap retains its strict **226-entry**
+success. movement-refused matches C/C (**239 entries**) but Go honestly stops
+at **command board start NYI**, engine2/script1; #219/#220 still own the
+remaining sailing/boarding/ferry/unload contracts. No callbacks are overlaid.
+
+Golden remains **NO**, initialization **2** at unsupported `load_db (-i)`.
+#289's canonical ATTACK/fog/full original missing-argument obligations and
+owner-approved stage5 console remainder are unchanged. No fixture, expected
+bytes or pin is edited; no movement-family or stage exit is claimed.
+Linux amd64 only, GCC **12.2.0**, Go **1.26.4**; full serializer/207-roundtrip
+corpora remain the accepted #291 evidence, not rerun for this local callback.
+
+Logs: `tmp/issue218-spec.log`, `tmp/issue218-spec-names.log`,
+`tmp/issue218-spec-logs/{run-all,olympia-g3,golden,build}.log`.
+Task helpers/binaries, disposable exports and matching captures are removed;
+decisive failed C/Go evidence is retained in the linked native-capture proof.
+See [complete callback/source proof](../command-compat/README.md#fly-218-stage-4-n17).
+
 ## TERRORIZE and INCITE no-loss (#217)
 
 At **0.139.0-alpha**, unchanged immutable **9a03d126b329ed466c4af48425553c025eaca26f**,

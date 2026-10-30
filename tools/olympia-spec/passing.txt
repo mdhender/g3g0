@@ -8,6 +8,7 @@ attitude-refused
 attitude-set
 cli-options
 coast-rocks
+fly-out-first
 gm-credit
 gm-refused
 inventory-give
@@ -28,6 +29,7 @@ loyalty-bind
 loyalty-refused
 mint-top-id
 move-go
+move-land
 move-out-first
 order-quoted-comment
 order-unrecognized
