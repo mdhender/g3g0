@@ -819,6 +819,19 @@ int main(int argc, char **argv)
    sscanf(line,"%*s %d %d %d %d %d %d %d",&n,&t->kind,&t->item,&t->qty,&t->cost,&t->who,&t->sort);
    trades_append(&bx[n]->trades,t);
   }
+  else if (!strcmp(op, "tradecmd")) {
+   sscanf(line,"%*s %31s",text);
+   if (!strcmp(text,"buy")) printf("trade start %d\n",v_buy(c));
+   else if (!strcmp(text,"sell")) printf("trade start %d\n",v_sell(c));
+   else if (!strcmp(text,"table")) {
+    int ids[]={find_command("buy"),find_command("sell")};
+    for(i=0;i<2;i++) {
+     struct cmd_tbl_ent *e=&cmd_tbl[ids[i]];
+     printf("trade table %s %d %d %d %d %d %d\n",e->name,e->start!=NULL,e->finish!=NULL,e->interrupt!=NULL,e->time,e->poll,e->pri);
+    }
+   }
+   else return 2;
+  }
   else if (!strcmp(op, "economy")) {
    sscanf(line,"%*s %s %d %d %d %d",text,&n,&a,&b,&d);
    if (!strcmp(text,"all")) match_all_trades();
@@ -1890,7 +1903,7 @@ int main(int argc, char **argv)
    else return 2;
   }
   else if (!strcmp(op, "rawargs")) {
-   sscanf(line,"%*s %d %d %d %d",&c->a,&c->b,&c->c,&c->d);
+   sscanf(line,"%*s %d %d %d %d %d",&c->a,&c->b,&c->c,&c->d,&c->e);
   }
   else if (!strcmp(op, "build")) {
    char s[80]="";

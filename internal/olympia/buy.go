@@ -462,6 +462,112 @@ func (w *world) checkValidatedTrades() {
 	w.tradesToCheck.Clear()
 }
 
+// goldEach is the complete buy.c:873–881 formatter.
+func goldEach(cost, qty int32) string {
+	if qty == 1 {
+		return goldS(int(cost))
+	}
+	return sout("%s each", goldS(int(cost)))
+}
+
+// vBuy is the complete buy.c:884–952 direct BUY entry point. Keep the
+// original sublocation for settlement, even when marketHere finds a city
+// outside it. Argument slots are copied, not normalized in the command.
+func (w *world) vBuy(c *command) int {
+	where := w.subloc(int(c.who))
+	item, qty, cost, haveLeft, hideMe := c.a, c.b, c.c, c.d, c.e
+	if w.kind(int(item)) != tItem {
+		w.commandOut(int(c.who), "%s is not an item.", w.boxCode(int(item)))
+		return 0
+	}
+	if item == itemGold {
+		w.commandOut(int(c.who), "Can't buy or sell gold.")
+		return 0
+	}
+	if hideMe != 0 {
+		if w.hasSkill(int(c.who), skCloakTrade) != 0 {
+			hideMe = 1
+		} else {
+			w.commandOut(int(c.who), "Must have %s to conceal trades.", boxCodeLess(skCloakTrade))
+			return 0
+		}
+	}
+	if qty > 0 && cost < 1 {
+		w.commandOut(int(c.who), "No price given.")
+		return 0
+	}
+
+	t := w.newTrade(int(c.who), tradeBuy, int(item))
+	assert(t.who == c.who, "olympia/buy.c", 926, "t->who == c->who")
+	if qty <= 0 {
+		if t.qty <= 0 {
+			w.commandOut(int(c.who), "No pending buy for %s.", w.boxName(int(item)))
+		} else {
+			w.commandOut(int(c.who), "Cleared pending buy for %s.", w.boxName(int(item)))
+		}
+	}
+	t.qty = qty
+	t.cost = cost
+	t.cloak = hideMe
+	t.haveLeft = haveLeft
+	if qty > 0 {
+		w.commandOut(int(c.who), "Try to buy %s for %s.", w.boxNameQty(int(item), int(qty)), goldEach(cost, qty))
+		if w.marketHere(int(c.who)) != 0 {
+			w.scanTrades(t, w.sellerList(where, int(c.who)))
+		}
+	}
+	return 1
+}
+
+// vSell is the complete buy.c:955–1023 direct SELL entry point. As in BUY,
+// even a no-pending clear allocates through the existing newTrade owner;
+// its positive-quantity findTrade filtering is deliberately unchanged.
+func (w *world) vSell(c *command) int {
+	where := w.subloc(int(c.who))
+	item, qty, cost, haveLeft, hideMe := c.a, c.b, c.c, c.d, c.e
+	if w.kind(int(item)) != tItem {
+		w.commandOut(int(c.who), "%s is not an item.", w.boxCode(int(item)))
+		return 0
+	}
+	if item == itemGold {
+		w.commandOut(int(c.who), "Can't buy or sell gold.")
+		return 0
+	}
+	if hideMe != 0 {
+		if w.hasSkill(int(c.who), skCloakTrade) != 0 {
+			hideMe = 1
+		} else {
+			w.commandOut(int(c.who), "Must have %s to conceal trades.", boxCodeLess(skCloakTrade))
+			return 0
+		}
+	}
+	if qty > 0 && cost < 1 {
+		w.commandOut(int(c.who), "No price given.")
+		return 0
+	}
+
+	t := w.newTrade(int(c.who), tradeSell, int(item))
+	assert(t.who == c.who, "olympia/buy.c", 997, "t->who == c->who")
+	if qty <= 0 {
+		if t.qty <= 0 {
+			w.commandOut(int(c.who), "No pending sell for %s.", w.boxName(int(item)))
+		} else {
+			w.commandOut(int(c.who), "Cleared pending sell for %s.", w.boxName(int(item)))
+		}
+	}
+	t.qty = qty
+	t.cost = cost
+	t.cloak = hideMe
+	t.haveLeft = haveLeft
+	if qty > 0 {
+		w.commandOut(int(c.who), "Try to sell %s for %s.", w.boxNameQty(int(item), int(qty)), goldEach(cost, qty))
+		if w.marketHere(int(c.who)) != 0 {
+			w.scanTrades(t, w.buyerList(where, int(c.who)))
+		}
+	}
+	return 1
+}
+
 // listPendingTrades is complete buy.c:1123–1158. Unlike market_report,
 // this displays the stored positive-quantity offers without affordability
 // calculations, sorting, or updating the original trade records.

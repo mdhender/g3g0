@@ -69,6 +69,9 @@ stop-running
 summary-trunc-name
 token-swear
 token-vanish
+trade-market
+trade-opium
+trade-refused
 trade-route-seed-parse
 wait-ferry-range
 wait-gm-stack

@@ -3,6 +3,118 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## Direct BUY and SELL (#225, stage 4 N23)
+
+**0.147.0-alpha**, unchanged immutable **9a03d126**. Existing buy.go now
+owns complete original `gold_each` **873–881**, `v_buy` **884–952** and
+`v_sell` **955–1023**, including declaration lines. glob.go wires both direct
+commands with **wait0 / poll0 / priority1 / real NULL finish and interrupt**.
+The already accepted C2 `v_fee`843–854 is untouched. There is no direct
+trade-command USE row: FIND SELL/BUY skill callbacks remain separate #243/#244.
+No source dependency, pin, shared settlement/report/monthly owner or RNG
+adapter changes.
+
+Validation remains **item → gold → conceal skill → positive-quantity price**,
+including before clears. Locals retain all signed int32 argument values;
+only a nonzero cloak with the real learned skill normalizes to1, without
+rewriting command slots. Even no-pending clears call existing newTrade;
+findTrade/loopTrade still skip zero/negative quantities, so repeated clears
+can append. Owner assertions remain **buy.c:926/997**. Positive offers scan
+only if marketHere succeeds, using the **original subloc**, not the enclosing
+city. Ships still suppress scanning. Existing seller price/tie/city-last
+ordering and unsorted buyer traversal, self exclusion, reserves, raw stock,
+inventory/gold, accounting, output and validated-trade cascades are reused.
+
+**21 appended sections /494 input lines /9300 input bytes** exercise real
+dispatch, saved CO/li tokenization with stored signed ar values, queued
+BUY→SELL→clear→WAIT, genuine NULL completion and saved-running generic
+interruption; validation precedence, negative/extreme copied arguments,
+learned versus partial cloak skill, exact one-versus-each text, repeated-clear
+allocation and filtered lists; opposing price/traversal orders, unequal
+reserves, self/nonmatching/outpriced/moving/prisoner/invalid offers, nested
+markets/ships, city stock, opium/basket accounting and month delta. Actual
+save/export/list flags and keyed/legacy/mint aftermath are observed through
+the existing real owners, not models. New tradecmd hooks only call the real
+entry points or inspect the real command table; rawargs now optionally sets e.
+
+Before production edits, complete unchanged C ran twice (**2007 sections**)
+and old Go actually panicked at **command buy start NYI** through doCommand:
+`tmp/issue225-command-before.log`. A separate unchanged-code actual SELL
+dispatch panicked at **command sell start NYI**:
+`tmp/issue225-sell-before.log`. Authoring corrected a mistaken city subtype
+and an omitted unused arrival-observer argument; negative raw arguments are
+injected explicitly because ordinary parse_arg maps negative text to0.
+No engine behavior or original fixture was changed to accommodate a probe.
+
+Final unchanged C ran **twice before recording/Go**, matching **2009 sections /
+180602 lines /3472805 output bytes**. Both **ENTIRE inherited prefixes** are
+unchanged, including **47 input /93 output high-bit bytes**, trailing spaces
+and accepted290 assertion shifts:
+
+| Bytes | Size | SHA-256 |
+| --- | --- | --- |
+| Input | 848503 | `915f809765ceb9e069061155c4b610777c0c8e3748d7897e4641eb8b30dac29e` |
+| Output | 3472805 | `ded94d1d625735325276e0a8ba265fab89d61dd91a41dac5f1cc6e015a3fe21e` |
+| Entire inherited input | 839203 | `64b16ed8b298f2047caec83cd03b871be55e81c771ac4f3d54634bf8955c72fe` |
+| Entire inherited output | 3420442 | `9a5839838745395127df75784bf9070747da220bb47e10e992e3c11eebecefc7` |
+
+Added output: **2713 lines /52363 bytes**. Proof:
+`tmp/issue225-prefix-proof.log`. Extraction verifies exact complete original
+bodies/#line directives for the three new and six shared trade definitions:
+`tmp/issue225-extraction-proof.log`. N23 requires status0 except its two exact
+owner assertions134. Existing marker rejection precedes all status checks
+and reference writes: actual compiled **native0/134 × default/update × seven
+classes** (including sanitizer/runtime errors), **28 reject2**, recording SHA
+unchanged. Sources/commands/hashes survive in `tmp/issue225-helper-provenance.log`;
+results: `tmp/issue225-marker-controls.log` and per-control logs.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  bash tools/command-compat/run.sh --update
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -v -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+```
+
+Bounded vet and fresh full-enabled tests pass **11 packages**, Olympia
+**2.534s**, ten explicit opt-in/child-entry skips. All eight defaults pass
+**sequentially**, keeping independent pins: command **2009/180602**, move
+**135/7158**, helper **37/1487**, RNG **321**, code **43/969**, loadsave
+**61/3411**, turn-driver **7/152**, phase **5/484**, calendar **2/119**,
+schedule **4/1801**, default turn exact raw status/streams/two cwd entries.
+Logs: `tmp/issue225-{vet,tests,command-record}.log` and
+`tmp/issue225-*-default.log`. Full serializers were not rerun or inferred.
+Gofmt, shell syntax and non-oracle diff-check pass. Whole diff-check reports
+only authentic new C-recorded trailing spaces (status2), intentionally not
+normalized: `tmp/issue225-{diff-check,full-diff-check}.log`.
+
+The [strict original-fixture proof](../turn-compat/README.md#direct-trade-entry-original-fixture-proof-225)
+accepts trade-market/refused/opium plus all14 retained seed-parse branches,
+not USE discovery244, a trade-family/stage exit or whole-spec parity.
+Supplied all-open audit is relied on: no demonstrated new upstream blocker.
+ATTACK235/fog264/full missing-argument remain canonical stage4; immediate-i,
+five console guards and gm-immediate-missing remain stage5. All changes are
+left uncommitted for the parent's independent acceptance and delivery.
+
+Parent acceptance independently repeats bounded vet, fresh full-enabled tests
+(11 packages, Olympia **2.413s**), all eight sequential defaults and the complete
+**2009-section /180602-line** real-C oracle. Fresh native C1/C2/Go replay matches
+all **51 captures /17 branches** above, including complete **239/237/235/228/229**
+entry trees and raw streams/status. Full unchanged spec independently repeats
+**73 pass /56 fail /0 error (133s)**; every prior70/stage3-36 name remains,
+with exactly the three trade additions and golden still NO/init2. Parent also
+verifies all1237 original source blobs/modes, binary/build provenance, nine
+complete extracted definitions/locations, both inherited byte prefixes and208
+handoff evidence digests. Logs/manifests: `tmp/parent225-*`; decisive spec logs
+are retained in `tmp/parent225-spec-logs/`. No family/stage exit or new full207
+serializer-corpus acceptance is inferred.
+
 ## RAZE (#224, stage 4 N22b)
 
 **0.146.0-alpha**, unchanged immutable **9a03d126**. Existing build.go owns

@@ -177887,3 +177887,2716 @@ SL
 stderr:
 
 exit 0
+stdout:
+section N23 BUY actual dispatch and saved argument reparse genuine NULL callbacks
+> resolve_wait
+> entity 77 4 0
+> entity 9000 3 3
+> link 9000 1000
+> queue buy 77 3 17 -9 0
+> queue wait time 2
+> load
+load 1
+> rawargs 77 3 17 -9
+> persist_command
+> dump
+cmd 11 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 77 3 17 -9 0 0 0 0; parse [buy] [77] [3] [17] [-9] [0]
+player 200 count 0 last 0 format 0 notab 0 output 0 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> do
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> tradecmd table
+trade table buy 1 0 0 0 0 1
+trade table sell 1 0 0 0 0 1
+> economy raw 1000
+trade raw 0 1000 1 77 3 17 0 -9 0 0 0
+1000 char 0
+tl	1 77 3 17 0 -9 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::> buy 77 3 17 -9 0
+1000:0::0::Try to buy three~<no subkind>~[77] for 17~gold each.
+> entity_rolls 1000 1 9000
+prison roll 524
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 0
+created 77542
+> save_new
+77542 item 0
+IT
+ un 1000
+
+> export state
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77542 1
+1000 char 0
+il	77542 1
+tl	1 77 3 17 0 -9 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+77542 item 0
+IT
+ un 1000
+
+stderr:
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 SELL actual dispatch saved queue NULL finish and interruption
+> resolve_wait
+> entity 77 4 0
+> entity 9000 3 3
+> link 9000 1000
+> queue sell 77 1 1234 8 0
+> queue wait time 2
+> load
+load 1
+> persist_command
+> do
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> economy raw 1000
+trade raw 0 1000 2 77 1 1234 0 8 0 0 0
+1000 char 0
+tl	2 77 1 1234 0 8 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+tl	2 77 1 1234 0 8 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> sell 77 1 1234 8 0
+1000:0::0::Try to sell one~<no subkind>~[77] for 1,234~gold.
+> export state
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+tl	2 77 1 1234 0 8 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N23 BUY validation item then gold then conceal skill then positive price
+> entity 1 4 0
+> entity 77 4 0
+> parse buy 1001 0 -4 0 9
+parse 1
+> tradecmd buy
+trade start 0
+> parse buy 1 0 -4 0 9
+parse 1
+> tradecmd buy
+trade start 0
+> parse buy 77 0 -4 0 9
+parse 1
+> tradecmd buy
+trade start 0
+> parse buy 77 1 -4
+parse 1
+> tradecmd buy
+trade start 0
+> parse buy 77 1
+parse 1
+> tradecmd buy
+trade start 0
+> dump
+cmd 11 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 77 1 0 0 0 0 0 0; parse [buy] [77] [1]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> economy raw 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li buy 77 1
+ ar 77 1 0 0 0 0 0 0
+
+> readlog 200
+log 200:
+1000:0::0::[1001] is not an item.
+1000:0::0::Can't buy or sell gold.
+1000:0::0::Must have 731 to conceal trades.
+1000:0::0::No price given.
+1000:0::0::No price given.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li buy 77 1
+ ar 77 1 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N23 SELL validation item then gold then conceal skill then positive price
+> entity 1 4 0
+> entity 77 4 0
+> parse sell 1001 -1 0 0 -8
+parse 1
+> rawargs 1001 -1 0 0 -8
+> tradecmd sell
+trade start 0
+> parse sell 1 -1 0 0 -8
+parse 1
+> rawargs 1 -1 0 0 -8
+> tradecmd sell
+trade start 0
+> parse sell 77 -1 0 0 -8
+parse 1
+> rawargs 77 -1 0 0 -8
+> tradecmd sell
+trade start 0
+> parse sell 77 1 0
+parse 1
+> tradecmd sell
+trade start 0
+> parse sell 77 1 -99
+parse 1
+> tradecmd sell
+trade start 0
+> dump
+cmd 75 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 77 1 0 0 0 0 0 0; parse [sell] [77] [1] [-99]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> economy raw 1000
+1000 char 0
+CH
+ lo 200
+CO
+ li sell 77 1 -99
+ ar 77 1 0 0 0 0 0 0
+
+> readlog 200
+log 200:
+1000:0::0::[1001] is not an item.
+1000:0::0::Can't buy or sell gold.
+1000:0::0::Must have 731 to conceal trades.
+1000:0::0::No price given.
+1000:0::0::No price given.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li sell 77 1 -99
+ ar 77 1 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+
+exit 0
+stdout:
+section N23 BUY clear allocates absent and repeats append zero negative offers not found
+> entity 77 4 0
+> parse buy 77 0
+parse 1
+> tradecmd buy
+trade start 1
+> parse buy 77 -3 -8 -9
+parse 1
+> rawargs 77 -3 -8 -9
+> tradecmd buy
+trade start 1
+> economy raw 1000
+trade raw 0 1000 1 77 0 0 0 0 0 0 0
+trade raw 1 1000 1 77 -3 -8 0 -9 0 0 0
+1000 char 0
+CH
+ lo 200
+CO
+ li buy 77 -3 -8 -9
+ ar 77 -3 -8 -9 0 0 0 0
+
+> parse buy 77 4 11 7
+parse 1
+> tradecmd buy
+trade start 1
+> parse buy 77 0
+parse 1
+> tradecmd buy
+trade start 1
+> parse buy 77 0
+parse 1
+> tradecmd buy
+trade start 1
+> economy raw 1000
+trade raw 0 1000 1 77 0 0 0 0 0 0 0
+trade raw 1 1000 1 77 -3 -8 0 -9 0 0 0
+trade raw 2 1000 1 77 0 0 0 0 0 0 0
+trade raw 3 1000 1 77 0 0 0 0 0 0 0
+1000 char 0
+CH
+ lo 200
+CO
+ li buy 77 0
+ ar 77 0 0 0 0 0 0 0
+
+> report pending_trades 1000 1000
+> readlog 200
+log 200:
+1000:0::0::No pending buy for <no subkind>~[77].
+1000:0::0::No pending buy for <no subkind>~[77].
+1000:0::0::Try to buy four~<no subkind>~[77] for 11~gold each.
+1000:0::0::Cleared pending buy for <no subkind>~[77].
+1000:0::0::No pending buy for <no subkind>~[77].
+> export state
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li buy 77 0
+ ar 77 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 SELL clear allocates absent repeats and reuses only positive offers
+> entity 77 4 0
+> parse sell 77 0
+parse 1
+> tradecmd sell
+trade start 1
+> parse sell 77 -2 -19 -21
+parse 1
+> rawargs 77 -2 -19 -21
+> tradecmd sell
+trade start 1
+> parse sell 77 3 5 2
+parse 1
+> tradecmd sell
+trade start 1
+> parse sell 77 -4 -7 -8
+parse 1
+> rawargs 77 -4 -7 -8
+> tradecmd sell
+trade start 1
+> parse sell 77 0
+parse 1
+> tradecmd sell
+trade start 1
+> economy raw 1000
+trade raw 0 1000 2 77 0 0 0 0 0 0 0
+trade raw 1 1000 2 77 -2 -19 0 -21 0 0 0
+trade raw 2 1000 2 77 -4 -7 0 -8 0 0 0
+trade raw 3 1000 2 77 0 0 0 0 0 0 0
+1000 char 0
+CH
+ lo 200
+CO
+ li sell 77 0
+ ar 77 0 0 0 0 0 0 0
+
+> report pending_trades 1000 1000
+> readlog 200
+log 200:
+1000:0::0::No pending sell for <no subkind>~[77].
+1000:0::0::No pending sell for <no subkind>~[77].
+1000:0::0::Try to sell three~<no subkind>~[77] for 5~gold each.
+1000:0::0::Cleared pending sell for <no subkind>~[77].
+1000:0::0::No pending sell for <no subkind>~[77].
+> export state
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+CH
+ lo 200
+CO
+ li sell 77 0
+ ar 77 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 conceal requires real learned skill normalizes nonzero not command slots
+> entity 77 4 0
+> entity 731 5 0
+> learn 1000 731 1 0
+> parse buy 77 0 -3 -9 -7
+parse 1
+> rawargs 77 0 -3 -9 -7
+> tradecmd buy
+trade start 0
+> learn 1001 731 2 0
+> who 1001
+> parse buy 77 2 1400 -9 -7
+parse 1
+> rawargs 77 2 1400 -9 -7
+> tradecmd buy
+trade start 1
+> dump
+cmd 11 who 1001 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 77 2 1400 -9 -7 0 0 0; parse [buy] [77] [2] [1400] [-9] [-7]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> parse sell 77 1 9000 -12 19
+parse 1
+> rawargs 77 1 9000 -12 19
+> tradecmd sell
+trade start 1
+> dump
+cmd 75 who 1001 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 77 1 9000 -12 19 0 0 0; parse [sell] [77] [1] [9000] [-12] [19]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> parse sell 77 0 -3 -4 -7
+parse 1
+> rawargs 77 0 -3 -4 -7
+> tradecmd sell
+trade start 1
+> economy raw 1000
+1000 char 0
+CH
+ lo 200
+ sl	731 1 0 0 0
+CO
+ li buy 77 0 -3 -9 -7
+ ar 77 0 -3 -9 -7 0 0 0
+
+> economy raw 1001
+trade raw 0 1001 1 77 2 1400 1 -9 0 0 0
+trade raw 1 1001 2 77 0 -3 1 -4 0 0 0
+1001 char 0
+tl	1 77 2 1400 1 -9 0 0
+CH
+ lo 200
+ sl	731 2 0 0 0
+CO
+ li sell 77 0 -3 -4 -7
+ ar 77 0 -3 -4 -7 0 0 0
+
+> readlog 200
+log 200:
+1000:0::0::Must have 731 to conceal trades.
+1001:0::0::Try to buy two~<no subkind>~[77] for 1,400~gold each.
+1001:0::0::Try to sell one~<no subkind>~[77] for 9,000~gold.
+1001:0::0::Cleared pending sell for <no subkind>~[77].
+> export state
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 731 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+731 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 731 1
+1000 char 0
+CH
+ lo 200
+ sl	731 1 0 0 0
+CO
+ li buy 77 0 -3 -9 -7
+ ar 77 0 -3 -9 -7 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 731 2
+1001 char 0
+tl	1 77 2 1400 1 -9 0 0
+CH
+ lo 200
+ sl	731 2 0 0 0
+CO
+ li sell 77 0 -3 -4 -7
+ ar 77 0 -3 -4 -7 0 0 0
+
+stderr:
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 raw signed quantities costs reserves are copied without rewriting command slots
+> entity 77 4 0
+> parse buy 77 1 1
+parse 1
+> rawargs 77 -2147483648 -2147483648 2147483647
+> tradecmd buy
+trade start 1
+> dump
+cmd 11 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 77 -2147483648 -2147483648 2147483647 0 0 0 0; parse [buy] [77] [1] [1]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> parse sell 77 1 1
+parse 1
+> rawargs 77 2147483647 2147483647 -2147483648
+> tradecmd sell
+trade start 1
+> dump
+cmd 75 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 77 2147483647 2147483647 -2147483648 0 0 0 0; parse [sell] [77] [1] [1]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> economy raw 1000
+trade raw 0 1000 1 77 -2147483648 -2147483648 0 2147483647 0 0 0
+trade raw 1 1000 2 77 2147483647 2147483647 0 -2147483648 0 0 0
+1000 char 0
+tl	2 77 2147483647 2147483647 0 -2147483648 0 0
+CH
+ lo 200
+CO
+ li sell 77 1 1
+ ar 77 2147483647 2147483647 -2147483648 0 0 0 0
+
+> readlog 200
+log 200:
+1000:0::0::No pending buy for <no subkind>~[77].
+1000:0::0::Try to sell 2,147,483,647~<no subkind>~[77] for 2,147,483,647~gold each.
+> export state
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+tl	2 77 2147483647 2147483647 0 -2147483648 0 0
+CH
+ lo 200
+CO
+ li sell 77 1 1
+ ar 77 2147483647 2147483647 -2147483648 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 BUY sorts sellers ascending self exclusion nonmatching outpriced and unequal reserves
+> entity 1 4 0
+> entity 77 4 0
+> entity 78 4 0
+> entity 9000 3 14
+> entity 1100 2 0
+> entity 1101 2 0
+> field 1100 lord 201
+> field 1101 lord 201
+> link 9000 1000
+> link 9000 1001
+> link 9000 1100
+> link 9000 1101
+> inventory 1000 1 83
+> inventory 1000 77 20
+> inventory 1001 77 7
+> inventory 1100 77 9
+> inventory 1101 77 6
+> trade 1000 2 77 20 1 1000 0
+> trade 1001 2 78 9 2 1001 0
+> trade 1001 2 77 9 9 1001 0
+> economy options 1001 1 5 0
+> trade 1100 2 77 8 4 1100 0
+> economy options 1100 0 6 0
+> trade 1101 2 77 6 19 1101 0
+> trade 9000 2 77 5 3 9000 0
+> parse buy 77 12 10 24
+parse 1
+> do
+> dump
+cmd 11 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 77 12 10 24 0 0 0 0; parse [buy] [77] [12] [10] [24]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> economy raw 1000
+trade raw 0 1000 2 77 20 1 0 0 0 0 0
+trade raw 1 1000 1 77 2 10 0 24 0 0 0
+1000 char 0
+il	1 38 \
+	77 30
+tl	2 77 20 1 0 0 0 0 \
+	1 77 2 10 0 24 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li buy 77 12 10 24
+ ar 77 12 10 24 0 0 0 0
+ st 1
+
+> economy raw 1001
+trade raw 0 1001 2 78 9 2 0 0 0 0 0
+trade raw 1 1001 2 77 7 9 0 5 0 0 1
+1001 char 0
+il	77 5 \
+	1 18
+tl	2 78 9 2 0 0 0 0 \
+	2 77 7 9 0 5 0 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> economy raw 1100
+trade raw 0 1100 2 77 5 4 0 6 0 0 2
+1100 char 0
+il	77 6 \
+	1 12
+tl	2 77 5 4 0 6 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> economy raw 1101
+trade raw 0 1101 2 77 6 19 0 0 0 0 3
+1101 char 0
+il	77 6
+tl	2 77 6 19 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> economy raw 9000
+trade raw 0 9000 2 77 0 3 0 0 0 0 0
+9000 loc city
+LI
+ hl 1000 1001 1100 1101 
+
+> economy state
+trade gold 0 pot basket 0 opium 0
+pending trades:
+> readlog 200
+log 200:
+1000:0::0::> buy 77 12 10 24
+1000:0::0::Try to buy 12~<no subkind>~[77] for 10~gold each.
+1000:0::0::Bought three~<no subkind>~[77] from <no subkind>~[1100] for 12~gold.
+1000:0::0::Bought two~<no subkind>~[77] from <no subkind>~[1001] for 18~gold.
+1001:0::0::Sold two~<no subkind>~[77] to <no subkind>~[1000] for 18~gold.
+1000:0::0::Bought five~<no subkind>~[77] from City~[9000] for 15~gold.
+> readlog 201
+log 201:
+1100:0::0::Sold three~<no subkind>~[77] to <no subkind>~[1000] for 12~gold.
+> entity_rolls 1000 1 9000
+prison roll 524
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 0
+created 77542
+> save_new
+77542 item 0
+IT
+ un 1000
+
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 78 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+78 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1100
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 38
+raw item 77 30
+raw item 77542 1
+1000 char 0
+il	1 38 \
+	77 30 \
+	77542 1
+tl	2 77 20 1 0 0 0 0 \
+	1 77 2 10 0 24 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li buy 77 12 10 24
+ ar 77 12 10 24 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 5
+raw item 1 18
+1001 char 0
+il	77 5 \
+	1 18
+tl	2 78 9 2 0 0 0 0 \
+	2 77 7 9 0 5 0 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 6
+raw item 1 12
+1100 char 0
+il	77 6 \
+	1 12
+tl	2 77 5 4 0 6 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+export entity 1101 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 6
+1101 char 0
+il	77 6
+tl	2 77 6 19 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000 1001 1100 1101
+9000 loc city
+LI
+ hl 1000 1001 1100 1101 
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+77542 item 0
+IT
+ un 1000
+
+stderr:
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 SELL buyers retain traversal order not highest price with unequal gold reserves
+> entity 1 4 0
+> entity 77 4 0
+> entity 78 4 0
+> entity 9000 3 14
+> entity 1100 2 0
+> field 1001 lord 201
+> field 1100 lord 201
+> link 9000 1000
+> link 9000 1001
+> link 9000 1100
+> inventory 1000 77 9
+> inventory 1000 1 100
+> inventory 1001 1 27
+> inventory 1100 1 99
+> trade 1000 1 77 30 90 1000 0
+> trade 1001 1 78 30 100 1001 0
+> trade 1001 1 77 30 6 1001 0
+> economy options 1001 1 15 0
+> trade 1001 1 77 30 5 1001 0
+> trade 1100 1 77 30 50 1100 0
+> economy options 1100 0 87 0
+> trade 9000 1 77 30 100 9000 0
+> parse sell 77 9 6 3
+parse 1
+> do
+> dump
+cmd 75 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 77 9 6 3 0 0 0 0; parse [sell] [77] [9] [6] [3]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> economy raw 1000
+trade raw 0 1000 1 77 30 90 0 0 0 0 0
+trade raw 1 1000 2 77 3 6 0 3 0 0 0
+1000 char 0
+il	77 3 \
+	1 136
+tl	1 77 30 90 0 0 0 0 \
+	2 77 3 6 0 3 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li sell 77 9 6 3
+ ar 77 9 6 3 0 0 0 0
+ st 1
+
+> economy raw 1001
+trade raw 0 1001 1 78 30 100 0 0 0 0 0
+trade raw 1 1001 1 77 28 6 0 15 0 0 0
+trade raw 2 1001 1 77 30 5 0 0 0 0 0
+1001 char 0
+il	1 15 \
+	77 2
+tl	1 78 30 100 0 0 0 0 \
+	1 77 28 6 0 15 0 0 \
+	1 77 30 5 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> economy raw 1100
+trade raw 0 1100 1 77 28 50 0 87 0 0 0
+1100 char 0
+il	1 87 \
+	77 2
+tl	1 77 28 50 0 87 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> economy raw 9000
+trade raw 0 9000 1 77 28 100 0 0 0 0 0
+9000 loc city
+tl	1 77 28 100 0 0 0 0
+LI
+ hl 1000 1001 1100 
+
+> economy state
+trade gold 12 pot basket 0 opium 0
+pending trades:
+> readlog 200
+log 200:
+1000:0::0::> sell 77 9 6 3
+1000:0::0::Try to sell nine~<no subkind>~[77] for 6~gold each.
+1000:0::0::Sold two~<no subkind>~[77] to <no subkind>~[1001] for 12~gold.
+1000:0::0::Sold two~<no subkind>~[77] to <no subkind>~[1100] for 12~gold.
+1000:0::0::Sold two~<no subkind>~[77] to City~[9000] for 12~gold.
+> readlog 201
+log 201:
+1001:0::0::Bought two~<no subkind>~[77] from <no subkind>~[1000] for 12~gold.
+1100:0::0::Bought two~<no subkind>~[77] from <no subkind>~[1000] for 12~gold.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 78 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+78 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001 1100
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 3
+raw item 1 136
+1000 char 0
+il	77 3 \
+	1 136
+tl	1 77 30 90 0 0 0 0 \
+	2 77 3 6 0 3 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li sell 77 9 6 3
+ ar 77 9 6 3 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 15
+raw item 77 2
+1001 char 0
+il	1 15 \
+	77 2
+tl	1 78 30 100 0 0 0 0 \
+	1 77 28 6 0 15 0 0 \
+	1 77 30 5 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 87
+raw item 77 2
+1100 char 0
+il	1 87 \
+	77 2
+tl	1 77 28 50 0 87 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000 1001 1100
+9000 loc city
+tl	1 77 28 100 0 0 0 0
+LI
+ hl 1000 1001 1100 
+
+stderr:
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 SELL opposing buyer price order keeps first buyer not max bid
+> entity 1 4 0
+> entity 77 4 0
+> entity 9000 3 14
+> entity 1100 2 0
+> field 1001 lord 201
+> field 1100 lord 201
+> link 9000 1000
+> link 9000 1100
+> link 9000 1001
+> inventory 1000 77 3
+> inventory 1001 1 100
+> inventory 1100 1 100
+> trade 1001 1 77 2 9 1001 0
+> trade 1100 1 77 2 50 1100 0
+> parse sell 77 3 6
+parse 1
+> do
+> economy raw 1000
+trade raw 0 1000 2 77 0 6 0 0 0 0 0
+1000 char 0
+il	1 18
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li sell 77 3 6
+ ar 77 3 6 0 0 0 0 0
+ st 1
+
+> economy raw 1001
+trade raw 0 1001 1 77 1 9 0 0 0 0 0
+1001 char 0
+il	1 94 \
+	77 1
+tl	1 77 1 9 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> economy raw 1100
+trade raw 0 1100 1 77 0 50 0 0 0 0 0
+1100 char 0
+il	1 88 \
+	77 2
+LI
+ wh 9000
+CH
+ lo 201
+
+> readlog 200
+log 200:
+1000:0::0::> sell 77 3 6
+1000:0::0::Try to sell three~<no subkind>~[77] for 6~gold each.
+1000:0::0::Sold two~<no subkind>~[77] to <no subkind>~[1100] for 12~gold.
+1000:0::0::Sold one~<no subkind>~[77] to <no subkind>~[1001] for 6~gold.
+> readlog 201
+log 201:
+1100:0::0::Bought two~<no subkind>~[77] from <no subkind>~[1000] for 12~gold.
+1001:0::0::Bought one~<no subkind>~[77] from <no subkind>~[1000] for 6~gold.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1100 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 0
+raw item 1 18
+1000 char 0
+il	1 18
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li sell 77 3 6
+ ar 77 3 6 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 94
+raw item 77 1
+1001 char 0
+il	1 94 \
+	77 1
+tl	1 77 1 9 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 88
+raw item 77 2
+1100 char 0
+il	1 88 \
+	77 2
+LI
+ wh 9000
+CH
+ lo 201
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1100 1001
+9000 loc city
+LI
+ hl 1000 1100 1001 
+
+stderr:
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 BUY equal-price tie order before cheaper city negative reserve and cloak output
+> entity 1 4 0
+> entity 77 4 0
+> entity 731 5 0
+> entity 9000 3 14
+> entity 1100 2 0
+> field 1001 lord 201
+> field 1100 lord 201
+> learn 1000 731 2 0
+> link 9000 1000
+> link 9000 1100
+> link 9000 1001
+> inventory 1000 1 100
+> inventory 1001 77 5
+> inventory 1100 77 5
+> trade 1001 2 77 3 7 1001 87
+> trade 1100 2 77 3 7 1100 98
+> economy options 1100 0 -1 1
+> trade 9000 2 77 10 1 9000 0
+> parse buy 77 5 8 -9 7
+parse 1
+> rawargs 77 5 8 -9 7
+> do
+> dump
+cmd 11 who 1000 state 0 status 1 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 77 5 8 -9 7 0 0 0; parse [buy] [77] [5] [8] [-9] [7]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> offers 1 9000 1000
+offer 1001 77 1 7 0
+offer 9000 77 10 1 0
+> economy raw 1000
+trade raw 0 1000 1 77 0 8 1 -9 0 0 0
+1000 char 0
+il	1 65 \
+	77 5
+LI
+ wh 9000
+CH
+ lo 200
+ sl	731 2 0 0 0
+CO
+ li buy 77 5 8 -9 7
+ ar 77 5 8 -9 7 0 0 0
+ st 1
+
+> economy raw 1001
+trade raw 0 1001 2 77 1 7 0 0 0 0 0
+1001 char 0
+il	77 3 \
+	1 14
+tl	2 77 1 7 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+> economy raw 1100
+trade raw 0 1100 2 77 0 7 1 -1 0 0 0
+1100 char 0
+il	77 2 \
+	1 21
+LI
+ wh 9000
+CH
+ lo 201
+
+> economy raw 9000
+trade raw 0 9000 2 77 10 1 0 0 0 0 0
+9000 loc city
+tl	2 77 10 1 0 0 0 0
+LI
+ hl 1000 1100 1001 
+
+> readlog 200
+log 200:
+1000:0::0::> buy 77 5 8 -9 7
+1000:0::0::Try to buy five~<no subkind>~[77] for 8~gold each.
+1000:0::0::Bought three~<no subkind>~[77] for 21~gold.
+1000:0::0::Bought two~<no subkind>~[77] from <no subkind>~[1001] for 14~gold.
+> readlog 201
+log 201:
+1100:0::0::Sold three~<no subkind>~[77] for 21~gold.
+1001:0::0::Sold two~<no subkind>~[77] for 14~gold.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1100 1001
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 731 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+731 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 731 2
+raw item 1 65
+raw item 77 5
+1000 char 0
+il	1 65 \
+	77 5
+LI
+ wh 9000
+CH
+ lo 200
+ sl	731 2 0 0 0
+CO
+ li buy 77 5 8 -9 7
+ ar 77 5 8 -9 7 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 3
+raw item 1 14
+1001 char 0
+il	77 3 \
+	1 14
+tl	2 77 1 7 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 201
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 2
+raw item 1 21
+1100 char 0
+il	77 2 \
+	1 21
+LI
+ wh 9000
+CH
+ lo 201
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000 1100 1001
+9000 loc city
+tl	2 77 10 1 0 0 0 0
+LI
+ hl 1000 1100 1001 
+
+stderr:
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 nested market scans original subloc not enclosing city for BUY and SELL
+> entity 1 4 0
+> entity 77 4 0
+> entity 9000 3 14
+> entity 9300 3 46
+> link 9000 9300
+> link 9300 1000
+> link 9300 1001
+> inventory 1000 1 40
+> inventory 1000 77 3
+> inventory 1001 1 50
+> inventory 1001 77 3
+> trade 9000 2 77 50 1 9000 0
+> trade 9000 1 77 50 90 9000 0
+> trade 1001 2 77 2 4 1001 0
+> trade 1001 1 77 2 8 1001 0
+> arrival market 1000 0
+market 9000
+> parse buy 77 3 4
+parse 1
+> do
+> parse sell 77 3 6
+parse 1
+> tradecmd sell
+trade start 1
+> economy raw 1000
+trade raw 0 1000 1 77 1 4 0 0 0 0 0
+trade raw 1 1000 2 77 1 6 0 0 0 0 0
+1000 char 0
+il	1 44 \
+	77 3
+tl	1 77 1 4 0 0 0 0 \
+	2 77 1 6 0 0 0 0
+LI
+ wh 9300
+CH
+ lo 200
+CO
+ li sell 77 3 6
+ ar 77 3 6 0 0 0 0 0
+ st 1
+
+> economy raw 1001
+trade raw 0 1001 2 77 0 4 0 0 0 0 0
+trade raw 1 1001 1 77 0 8 0 0 0 0 0
+1001 char 0
+il	1 46 \
+	77 3
+LI
+ wh 9300
+CH
+ lo 200
+
+> economy raw 9000
+trade raw 0 9000 2 77 50 1 0 0 0 0 0
+trade raw 1 9000 1 77 50 90 0 0 0 0 0
+9000 loc city
+tl	2 77 50 1 0 0 0 0 \
+	1 77 50 90 0 0 0 0
+LI
+ hl 9300 
+
+> economy state
+trade gold 0 pot basket 0 opium 0
+pending trades:
+> readlog 200
+log 200:
+1000:0::0::> buy 77 3 4
+1000:0::0::Try to buy three~<no subkind>~[77] for 4~gold each.
+1000:0::0::Bought two~<no subkind>~[77] from <no subkind>~[1001] for 8~gold.
+1001:0::0::Sold two~<no subkind>~[77] to <no subkind>~[1000] for 8~gold.
+1000:0::0::Try to sell three~<no subkind>~[77] for 6~gold each.
+1001:0::0::Bought two~<no subkind>~[77] from <no subkind>~[1000] for 12~gold.
+1000:0::0::Sold two~<no subkind>~[77] to <no subkind>~[1001] for 12~gold.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 44
+raw item 77 3
+1000 char 0
+il	1 44 \
+	77 3
+tl	1 77 1 4 0 0 0 0 \
+	2 77 1 6 0 0 0 0
+LI
+ wh 9300
+CH
+ lo 200
+CO
+ li sell 77 3 6
+ ar 77 3 6 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 46
+raw item 77 3
+1001 char 0
+il	1 46 \
+	77 3
+LI
+ wh 9300
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 9300
+9000 loc city
+tl	2 77 50 1 0 0 0 0 \
+	1 77 50 90 0 0 0 0
+LI
+ hl 9300 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001
+9300 loc tower
+LI
+ wh 9000
+ hl 1000 1001 
+
+stderr:
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 ship in city suppresses direct settlement even with matching onboard offers
+> entity 1 4 0
+> entity 77 4 0
+> entity 9000 3 14
+> entity 9300 9 30
+> link 9000 9300
+> link 9300 1000
+> link 9300 1001
+> inventory 1000 1 50
+> inventory 1000 77 5
+> inventory 1001 1 50
+> inventory 1001 77 5
+> trade 1001 2 77 5 3 1001 0
+> trade 1001 1 77 5 6 1001 0
+> parse buy 77 1 4
+parse 1
+> do
+> parse sell 77 2 5
+parse 1
+> tradecmd sell
+trade start 1
+> economy raw 1000
+trade raw 0 1000 1 77 1 4 0 0 0 0 0
+trade raw 1 1000 2 77 2 5 0 0 0 0 0
+1000 char 0
+il	1 50 \
+	77 5
+tl	1 77 1 4 0 0 0 0 \
+	2 77 2 5 0 0 0 0
+LI
+ wh 9300
+CH
+ lo 200
+CO
+ li sell 77 2 5
+ ar 77 2 5 0 0 0 0 0
+ st 1
+
+> economy raw 1001
+trade raw 0 1001 2 77 5 3 0 0 0 0 0
+trade raw 1 1001 1 77 5 6 0 0 0 0 0
+1001 char 0
+il	1 50 \
+	77 5
+tl	2 77 5 3 0 0 0 0 \
+	1 77 5 6 0 0 0 0
+LI
+ wh 9300
+CH
+ lo 200
+
+> economy state
+trade gold 0 pot basket 0 opium 0
+pending trades:
+> readlog 200
+log 200:
+1000:0::0::> buy 77 1 4
+1000:0::0::Try to buy one~<no subkind>~[77] for 4~gold.
+1000:0::0::Try to sell two~<no subkind>~[77] for 5~gold each.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 50
+raw item 77 5
+1000 char 0
+il	1 50 \
+	77 5
+tl	1 77 1 4 0 0 0 0 \
+	2 77 2 5 0 0 0 0
+LI
+ wh 9300
+CH
+ lo 200
+CO
+ li sell 77 2 5
+ ar 77 2 5 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 50
+raw item 77 5
+1001 char 0
+il	1 50 \
+	77 5
+tl	2 77 5 3 0 0 0 0 \
+	1 77 5 6 0 0 0 0
+LI
+ wh 9300
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300
+9000 loc city
+LI
+ hl 9300 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001
+9300 ship galley
+LI
+ wh 9000
+ hl 1000 1001 
+
+stderr:
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 nonmarket posts offers without settlement and zero filtering survives replacement
+> entity 1 4 0
+> entity 77 4 0
+> entity 9000 3 3
+> link 9000 1000
+> link 9000 1001
+> inventory 1000 1 100
+> inventory 1000 77 5
+> inventory 1001 1 100
+> inventory 1001 77 5
+> trade 1001 2 77 5 3 1001 0
+> trade 1001 1 77 5 9 1001 0
+> parse buy 77 1 4
+parse 1
+> do
+> parse sell 77 2 5
+parse 1
+> tradecmd sell
+trade start 1
+> parse buy 77 0
+parse 1
+> tradecmd buy
+trade start 1
+> parse buy 77 1 6
+parse 1
+> tradecmd buy
+trade start 1
+> offers 1 9000 0
+offer 1001 77 5 3 1
+offer 1000 77 2 5 0
+> offers 0 9000 0
+offer 1000 77 1 6 0
+offer 1001 77 5 9 0
+> economy raw 1000
+trade raw 0 1000 1 77 0 0 0 0 0 0 0
+trade raw 1 1000 2 77 2 5 0 0 0 0 0
+trade raw 2 1000 1 77 1 6 0 0 0 0 0
+1000 char 0
+il	1 100 \
+	77 5
+tl	2 77 2 5 0 0 0 0 \
+	1 77 1 6 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li buy 77 1 6
+ ar 77 1 6 0 0 0 0 0
+ st 1
+
+> economy raw 1001
+trade raw 0 1001 2 77 5 3 0 0 0 0 1
+trade raw 1 1001 1 77 5 9 0 0 0 0 0
+1001 char 0
+il	1 100 \
+	77 5
+tl	2 77 5 3 0 0 0 0 \
+	1 77 5 9 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> economy state
+trade gold 0 pot basket 0 opium 0
+pending trades:
+> readlog 200
+log 200:
+1000:0::0::> buy 77 1 4
+1000:0::0::Try to buy one~<no subkind>~[77] for 4~gold.
+1000:0::0::Try to sell two~<no subkind>~[77] for 5~gold each.
+1000:0::0::Cleared pending buy for <no subkind>~[77].
+1000:0::0::Try to buy one~<no subkind>~[77] for 6~gold.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 100
+raw item 77 5
+1000 char 0
+il	1 100 \
+	77 5
+tl	2 77 2 5 0 0 0 0 \
+	1 77 1 6 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li buy 77 1 6
+ ar 77 1 6 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 100
+raw item 77 5
+1001 char 0
+il	1 100 \
+	77 5
+tl	2 77 5 3 0 0 0 0 \
+	1 77 5 9 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001
+9000 loc plain
+LI
+ hl 1000 1001 
+
+stderr:
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 city opium and basket income direct SELL uses real stock accounting and month delta
+> entity 1 4 0
+> entity 93 4 0
+> entity 94 4 0
+> entity 9000 3 14
+> link 9000 1000
+> inventory 1000 93 15
+> inventory 1000 94 4
+> trade 9000 1 93 15 17 9000 0
+> trade 9000 1 94 4 4 9000 0
+> parse sell 93 15 17
+parse 1
+> do
+> parse sell 94 4 4
+parse 1
+> tradecmd sell
+trade start 1
+> economy raw 9000
+trade raw 0 9000 1 93 0 17 0 0 0 0 0
+trade raw 1 9000 1 94 0 4 0 0 0 0 0
+9000 loc city
+LI
+ hl 1000 
+
+> market opium 9000
+> economy raw 9000
+trade raw 0 9000 1 93 0 17 0 0 0 0 0
+trade raw 1 9000 1 94 0 4 0 0 0 0 0
+trade raw 2 9000 4 93 28 17 1 0 0 0 0
+9000 loc city
+tl	4 93 28 17 1 0 0 0
+LI
+ hl 1000 
+SL
+ op 1
+
+> economy raw 1000
+trade raw 0 1000 2 93 0 17 0 0 0 0 0
+trade raw 1 1000 2 94 0 4 0 0 0 0 0
+1000 char 0
+il	1 271
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li sell 94 4 4
+ ar 94 4 4 0 0 0 0 0
+ st 1
+
+> economy state
+trade gold 0 pot basket 16 opium 255
+pending trades:
+> entity_rolls 1000 1 9000
+prison roll 524
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 38266
+> newitem 1000 0
+created 77542
+> save_new
+77542 item 0
+IT
+ un 1000
+
+> readlog 200
+log 200:
+1000:0::0::> sell 93 15 17
+1000:0::0::Try to sell 15~<no subkind>~[93] for 17~gold each.
+11:0::0::<no subkind>~[1000] earned 255~gold selling opium.
+1000:0::0::Sold 15~<no subkind>~[93] to City~[9000] for 255~gold.
+1000:0::0::Try to sell four~<no subkind>~[94] for 4~gold each.
+1000:0::0::Sold four~<no subkind>~[94] to City~[9000] for 16~gold.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 93 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+93 item 0
+
+export entity 94 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+94 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 11
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 93 0
+raw item 94 0
+raw item 1 271
+raw item 77542 1
+1000 char 0
+il	1 271 \
+	77542 1
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li sell 94 4 4
+ ar 94 4 4 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9000 loc city
+tl	4 93 28 17 1 0 0 0
+LI
+ hl 1000 
+SL
+ op 1
+
+export entity 77542 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+77542 item 0
+IT
+ un 1000
+
+stderr:
+warning: plural name not set for item [93]
+warning: plural name not set for item [93]
+warning: plural name not set for item [93]
+warning: plural name not set for item [94]
+warning: plural name not set for item [94]
+warning: plural name not set for item [94]
+
+exit 0
+stdout:
+section N23 queued BUY SELL clear WAIT real day scheduler and live validated queue
+> resolve_wait
+> entity 1 4 0
+> entity 77 4 0
+> entity 9000 3 14
+> link 9000 1000
+> link 9000 1001
+> inventory 1000 1 50
+> inventory 1001 77 8
+> trade 1001 2 77 8 5 1001 0
+> queue buy 77 3 6
+> queue sell 77 2 9
+> queue buy 77 0
+> queue wait time 2
+> initial
+> start
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> day 1
+> dump
+cmd 94 who 1000 state 2 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> day 2
+> dump
+cmd 94 who 1000 state 0 status 1 wait 0 poll 1 pri 1 cond 0 fuzzy 0 days 2 debug 2 inhibit 1 cur 99
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 4 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> economy state
+trade gold 0 pot basket 0 opium 0
+pending trades:
+> economy check
+> economy state
+trade gold 0 pot basket 0 opium 0
+pending trades:
+> economy raw 1000
+trade raw 0 1000 1 77 0 6 0 0 0 0 0
+trade raw 1 1000 2 77 2 9 0 0 0 0 0
+trade raw 2 1000 1 77 0 0 0 0 0 0 0
+1000 char 0
+il	1 35 \
+	77 3
+tl	2 77 2 9 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ st 1
+ de 2
+ po 1
+ pr 1
+ if 1
+
+> economy raw 1001
+trade raw 0 1001 2 77 5 5 0 0 0 0 0
+1001 char 0
+il	77 5 \
+	1 15
+tl	2 77 5 5 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+
+> save 9000
+9000 loc city
+LI
+ hl 1000 1001 
+
+> readlog 200
+log 200:
+1000:0::0::> buy 77 3 6
+1000:0::0::Try to buy three~<no subkind>~[77] for 6~gold each.
+1000:0::0::Bought three~<no subkind>~[77] from <no subkind>~[1001] for 15~gold.
+1001:0::0::Sold three~<no subkind>~[77] to <no subkind>~[1000] for 15~gold.
+1000:0::0::> sell 77 2 9
+1000:0::0::Try to sell two~<no subkind>~[77] for 9~gold each.
+1000:0::0::> buy 77 0
+1000:0::0::No pending buy for <no subkind>~[77].
+1000:0::0::> wait time 2
+1000:0::0::Wait finished: two days have passed.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 35
+raw item 77 3
+1000 char 0
+il	1 35 \
+	77 3
+tl	2 77 2 9 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ st 1
+ de 2
+ po 1
+ pr 1
+ if 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 5
+raw item 1 15
+1001 char 0
+il	77 5 \
+	1 15
+tl	2 77 5 5 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000 1001
+9000 loc city
+LI
+ hl 1000 1001 
+
+stderr:
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 BUY mismatched real owner assertion
+> entity 77 4 0
+> trade 1000 1 77 1 3 1001 0
+> parse buy 77 0
+parse 1
+> do
+stderr:
+assertion failure: olympia/buy.c (926): t->who == c->who
+
+exit 134
+stdout:
+section N23 SELL mismatched real owner assertion
+> entity 77 4 0
+> trade 1000 2 77 1 3 1001 0
+> parse sell 77 0
+parse 1
+> do
+stderr:
+assertion failure: olympia/buy.c (997): t->who == c->who
+
+exit 134
+stdout:
+section N23 saved running BUY and SELL interrupt through genuine NULL without clearing offers
+> resolve_wait
+> entity 77 4 0
+> parse buy 77 2 7
+parse 1
+> tradecmd buy
+trade start 1
+> run 6 0 1 0
+> persist_command
+> queue wait time 2
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 2 0 0 0 0 0 0; parse [wait] [time] [2]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> economy raw 1000
+trade raw 0 1000 1 77 2 7 0 0 0 0 0
+1000 char 0
+tl	1 77 2 7 0 0 0 0
+CH
+ lo 200
+CO
+ li wait time 2
+ ar 0 2 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> parse sell 77 3 9
+parse 1
+> tradecmd sell
+trade start 1
+> run 8 0 1 0
+> persist_command
+> queue wait time 3
+> generic_interrupt 1000
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 3 0 0 0 0 0 0; parse [wait] [time] [3]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> economy raw 1000
+trade raw 0 1000 1 77 2 7 0 0 0 0 0
+trade raw 1 1000 2 77 3 9 0 0 0 0 0
+1000 char 0
+tl	1 77 2 7 0 0 0 0 \
+	2 77 3 9 0 0 0 0
+CH
+ lo 200
+CO
+ li wait time 3
+ ar 0 3 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::Try to buy two~<no subkind>~[77] for 7~gold each.
+1000:0::0::Try to sell three~<no subkind>~[77] for 9~gold each.
+> export state
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+tl	1 77 2 7 0 0 0 0 \
+	2 77 3 9 0 0 0 0
+CH
+ lo 200
+CO
+ li wait time 3
+ ar 0 3 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+stderr:
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+
+exit 0
+stdout:
+section N23 direct BUY skips zero negative moving prisoner and invalid item offers
+> entity 1 4 0
+> entity 77 4 0
+> entity 9000 3 14
+> entity 1100 2 0
+> entity 1101 2 0
+> link 9000 1000
+> link 9000 1001
+> link 9000 1100
+> link 9000 1101
+> field 1001 prisoner 1
+> field 1100 moving 1
+> inventory 1000 1 100
+> inventory 1001 77 5
+> inventory 1100 77 5
+> inventory 1101 77 5
+> trade 1001 2 77 5 1 1001 88
+> trade 1100 2 77 5 2 1100 99
+> trade 1101 2 77 0 3 1101 78
+> trade 1101 2 77 -9 3 1101 79
+> trade 1101 2 12345 5 3 1101 80
+> trade 1101 2 77 2 4 1101 81
+> parse buy 77 5 7
+parse 1
+> do
+> offers 1 9000 1000
+> economy raw 1000
+trade raw 0 1000 1 77 3 7 0 0 0 0 0
+1000 char 0
+il	1 92 \
+	77 2
+tl	1 77 3 7 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li buy 77 5 7
+ ar 77 5 7 0 0 0 0 0
+ st 1
+
+> economy raw 1001
+trade raw 0 1001 2 77 5 1 0 0 0 0 88
+1001 char 0
+il	77 5
+tl	2 77 5 1 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+ pr 1
+
+> economy raw 1100
+trade raw 0 1100 2 77 5 2 0 0 0 0 99
+1100 char 0
+il	77 5
+tl	2 77 5 2 0 0 0 0
+LI
+ wh 9000
+CH
+ mo 1
+
+> economy raw 1101
+trade raw 0 1101 2 77 0 3 0 0 0 0 78
+trade raw 1 1101 2 77 -9 3 0 0 0 0 79
+trade raw 2 1101 2 12345 5 3 0 0 0 0 80
+trade raw 3 1101 2 77 0 4 0 0 0 0 0
+1101 char 0
+il	77 3 \
+	1 8
+LI
+ wh 9000
+
+> readlog 200
+log 200:
+1000:0::0::> buy 77 5 7
+1000:0::0::Try to buy five~<no subkind>~[77] for 7~gold each.
+1000:0::0::Bought two~<no subkind>~[77] from <no subkind>~[1101] for 8~gold.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 92
+raw item 77 2
+1000 char 0
+il	1 92 \
+	77 2
+tl	1 77 3 7 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li buy 77 5 7
+ ar 77 5 7 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 5
+1001 char 0
+il	77 5
+tl	2 77 5 1 0 0 0 0
+LI
+ wh 9000
+CH
+ lo 200
+ pr 1
+
+export entity 1100 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 5
+1100 char 0
+il	77 5
+tl	2 77 5 2 0 0 0 0
+LI
+ wh 9000
+CH
+ mo 1
+
+export entity 1101 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 77 3
+raw item 1 8
+1101 char 0
+il	77 3 \
+	1 8
+LI
+ wh 9000
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001 1100 1101
+9000 loc city
+LI
+ hl 1000 1001 1100 1101 
+
+stderr:
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+
+exit 0

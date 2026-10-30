@@ -404,6 +404,10 @@ func init() {
 			cmdTbl[i].start = (*world).vDiscard
 		case "claim":
 			cmdTbl[i].start = (*world).vClaim
+		case "buy":
+			cmdTbl[i].start = (*world).vBuy
+		case "sell":
+			cmdTbl[i].start = (*world).vSell
 		case "reclaim":
 			cmdTbl[i].start = (*world).vReclaim
 		case "die":

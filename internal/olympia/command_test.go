@@ -1034,6 +1034,19 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		case "trade":
 			n := args.num(t)
 			w.bx[n].trades.Append(&trade{kind: int32(args.num(t)), item: int32(args.num(t)), qty: int32(args.num(t)), cost: int32(args.num(t)), who: int32(args.num(t)), sort: int32(args.num(t))})
+		case "tradecmd":
+			switch action := args.word(); action {
+			case "buy", "sell":
+				row := cmdTbl[w.findCommand(action)]
+				fmt.Fprintf(&stdout, "trade start %d\n", row.start(w, c))
+			case "table":
+				for _, name := range []string{"buy", "sell"} {
+					e := cmdTbl[w.findCommand(name)]
+					fmt.Fprintf(&stdout, "trade table %s %d %d %d %d %d %d\n", e.name, b2i(e.start != nil), b2i(e.finish != nil), b2i(e.interrupt != nil), e.time, e.poll, e.pri)
+				}
+			default:
+				t.Fatalf("unknown trade command %s", action)
+			}
 		case "economy":
 			switch action := args.word(); action {
 			case "all":
@@ -2613,6 +2626,9 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			c.a, c.b, c.c = int32(args.num(t)), int32(args.num(t)), int32(args.num(t))
 			if strings.TrimSpace(args.rest) != "" {
 				c.d = int32(args.num(t))
+			}
+			if strings.TrimSpace(args.rest) != "" {
+				c.e = int32(args.num(t))
 			}
 		case "build":
 			action, s := args.word(), args.word()

@@ -9,6 +9,101 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## Direct trade-entry original-fixture proof (#225)
+
+**0.147.0-alpha**, immutable **9a03d126**, complete gold_each/v_buy/v_sell
+only; previously accepted v_fee and all inventory, settlement, arrival,
+report and month-restock owners remain unchanged. The supplied all-open
+audit is relied on: only settled289 remains local bug/follow-C work, upstream
+main is unchanged, and no new blocker was demonstrated. USE trade discovery
+is #244, not permission to expand this slice or claim a trade-family exit.
+
+Before canonical reuse, every **1237 original blob/mode** is verified against
+isolated bare `tmp/upstream.git` at9a03d126. C executable SHA-256 remains
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+Debug/Ninja retains original
+`-ffile-prefix-map=/home/user/workspace/repo/tmp/_issue215/canonical/=`
+(trailing slash essential). Verification:
+`tmp/issue225-canonical-provenance.log`. No canonical source/build/fixture
+is changed. The idle protected `tmp/issue291-roundtrip` cache is not used
+for engines or disposable inputs; complete path/mode/file-digest fingerprints
+before/after match. No repeated full207 serializer proof is inferred.
+
+Read the actual original trade-market/refused/opium READMEs, check.sh,
+Lua and scenario.patch, plus trade-route-seed-parse and trade-routes:
+`tmp/issue225-original-fixture-{scripts,authoring}.log`. Market executes city
+wood purchase, pending basket purchase, outpriced pitch/clear, a seller-price
+18-gold character trade and 12-gold city basket sale. Refused retains both
+BUY/SELL fail/rejected and accepted FEE rejection. Opium sells all15 for255,
+then real month-end raises Greyfell to1 and decays untouched Adalgar to2.
+No original --update, patch, overlay, Lua authoring or expected-byte rewrite.
+
+The native pre-cleanup launcher preserves **argv0/stdin**, captures raw
+streams **O_RDWR**, sources timeout.sh and invokes
+`run_limited 120 "$0" "$S4_ENGINE" "$@"`. It seeks/replays stdout then
+stderr, closes both, writes real status/newline, then **cp -a .** into the
+absent capture cwd before original script cleanup. Every invocation has its
+own001/002/etc directory: all **14** seed-parse branches are retained, never
+overwriting001. C markers are rejected before status acceptance. Existing
+strict turn comparator and tree-modes.py cover raw status/stdout/stderr and
+**ALL cwd paths/types/modes/empty directories/regular bytes**, no exclusions.
+Temporary source, complete commands and binary hashes survive as text in
+`tmp/issue225-helper-provenance.log`; launcher source/binary SHA-256:
+`6408f53dd970f6bd4eaa32c82b7c4d29926579e7254b07127b0dd2ae7fe6d24f` /
+`00fab3f1ec380641088f44ee47dd256bb320c25fea62ed8c0af5dd44759bee81`.
+
+```sh
+. tools/lib/timeout.sh
+export G3_REPO="$PWD/tmp/upstream.git" S4_ROOT="$PWD"
+# Recreate/build native capture source retained in helper-provenance.log;
+# build fresh Go ./cmd/olympia and existing ./tools/turn-compat under tmp/_issue225.
+# For EACH script: C1, C2, THEN Go; every S4_CAPTURE base must be absent.
+export S4_CAPTURE="$PWD/tmp/_issue225/$fixture-$run"
+export S4_ENGINE="$PWD/tmp/_issue215/canonical/build/canonical/olympia-g3"
+# For run=go, S4_ENGINE is the fresh Go executable instead.
+OLYMPIA_ENGINE_BIN="$PWD/tmp/_issue225/capture" \
+  run_limited 180 bash /bin/bash \
+  "$PWD/tmp/_issue215/canonical/tests/olympia/regress/$fixture/check.sh"
+# Compare complete invocation inventories first, then EVERY sequence:
+run_limited 120 compare "$PWD/tmp/_issue225/compare" --manifest "$capture"
+run_limited 120 compare "$PWD/tmp/_issue225/compare" "$c1" "$c2"
+run_limited 120 compare "$PWD/tmp/_issue225/compare" "$c1" "$go"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$c2/cwd"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$go/cwd"
+```
+
+All **51 captures /17 invocation branches** for the three original trade
+scripts and retained seed parsing pass. For each original, unchanged C1/C2
+precede freshly built Go. Every engine status0; every original script YES/0:
+
+| Original script / invocation | C/C/Go cwd entries | Strict result |
+| --- | --- | --- |
+| trade-market001 | 239 | exact raw/tree; original coverage/hashes/JSON pass |
+| trade-refused001 | 237 | exact raw/tree; original coverage/hashes/JSON pass |
+| trade-opium001 | 235 | exact raw/tree; original opium/loc/report hashes pass |
+| trade-route-seed-parse001–013 | 228 each | all13 exact raw/tree and seed checks |
+| trade-route-seed-parse014 | 229 | exact raw/tree and input-seed check |
+
+Additionally, unchanged **trade-routes** executes all **five** engine branches
+under C1/C2 (both original scripts YES/0, every engine0), with strict raw/tree
+C/C equality. Go honestly fails all five branches **engine2 / script1** at
+**command USE v_find_buy callback: not yet implemented**, owned by #244.
+All five inventories, raw streams/status, complete manifests, strict failing
+comparisons and C1/Go captures remain; this is not accepted C/Go parity.
+No new blocker or independent fix was inferred from this known boundary.
+
+Logs: `tmp/issue225-fixtures.log`, `tmp/issue225-*-script.log`, complete
+invocation inventories, `*-manifest.txt` and `*-{cc,cgo}.log`. The
+[command oracle](../command-compat/README.md#direct-buy-and-sell-225-stage-4-n23)
+separately discriminates clears/allocation, raw signed args, cloak/flags,
+NULL callbacks, queues, nested market/ship behavior, ordering/reserves and
+RNG/mint/accounting aftermath. Matching captures/helpers/binaries/disposable
+WORKs and generated coverage/use dumps are removed after proof; decisive
+logs/manifests/failed-Go evidence and pristine canonical/cache remain.
+ATTACK235/fog264/full missing-argument remain stage4; immediate-i/five console
+guards/gm-immediate-missing remain stage5. No family/stage exit, whole-spec
+parity or full207 corpus acceptance; parent independently accepts/delivers.
+
 ## Raze and retained construction proof (#224)
 
 **0.146.0-alpha**, unchanged immutable **9a03d126**. Complete direct RAZE

@@ -154,7 +154,7 @@ functions = {
               'scan_trades', 'match_trades', 'match_all_trades', 'check_validated_trades',
               'find_trade', 'new_trade', 'add_city_trade', 'opium_market_delta',
               'expire_trades', 'loc_trade_sup', 'trade_suffuse_ring', 'location_trades', 'is_tradegood', 'list_pending_trades',
-              'list_market_items', 'market_report'],
+              'list_market_items', 'market_report', 'gold_each', 'v_buy', 'v_sell'],
     'c1.c': ['flag_raised', 'clear_wait_parse', 'parse_wait_args', 'wait_leader', 'check_wait_conditions',
              'v_wait', 'd_wait', 'i_wait', 'next_np_turn', 'print_hiring_status', 'print_unformed',
              'form_new_noble', 'v_form', 'd_form', 'v_accept', 'will_accept_sup', 'will_accept', 'how_many',
@@ -900,6 +900,18 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N23 '* ]]; then
+   expected_status=0
+   case "${section_names[$i]}" in
+    'section N23 BUY mismatched real owner assertion')
+     expected_status=134
+     grep -Fxq 'assertion failure: olympia/buy.c (926): t->who == c->who' "${WORK}/${run}/stderr" || die "wrong N23 BUY assertion" ;;
+    'section N23 SELL mismatched real owner assertion')
+     expected_status=134
+     grep -Fxq 'assertion failure: olympia/buy.c (997): t->who == c->who' "${WORK}/${run}/stderr" || die "wrong N23 SELL assertion" ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N23 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N22b '* ]]; then
    expected_status=0
    if [[ "${section_names[$i]}" == 'section N22b negative C32 manpower reaches shared damage assertion' ]]; then

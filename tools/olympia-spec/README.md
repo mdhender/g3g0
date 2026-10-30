@@ -8,6 +8,54 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## Direct trade-entry no-loss (#225)
+
+At **0.147.0-alpha**, unchanged immutable **9a03d126**, full unchanged spec
+exits0: **129 fixtures /73 pass /56 fail /0 error (132s)**. Every **70 prior
+name** and stage3's **36 names** is retained as an exact set. The only newly
+passing original names are **`trade-market`**, **`trade-opium`** and
+**`trade-refused`**. Only the existing tool writes passing.txt; no original
+fixture, scenario, expected byte or original --update is used.
+
+The complete original gold_each/v_buy/v_sell owner removes actual old-Go
+BUY and SELL dispatch NYIs, without repeating accepted220's v_fee or changing
+shared settlement, arrival, inventory, reports or monthly restock. Separate
+[native original-script proof](../turn-compat/README.md#direct-trade-entry-original-fixture-proof-225)
+runs unchanged C1,C2 **before Go** on all three plus retained seed parsing.
+All **51 captures /17 branches** match raw streams/status and every cwd
+path/type/mode/empty directory/regular byte, with no exclusions: market239,
+refused237, opium235, seed-parse228 for001–013 and229 for014. The script's
+entire14-invocation inventory is preserved;001 is not overwritten.
+
+Original trade-routes remains **FAIL**, honestly **engine2 / script1** at
+**command USE v_find_buy callback: not yet implemented** (#244). All five
+branches repeat strict C/C successfully and fail strict C/Go; raw streams,
+status, full manifests, inventories and failed-Go/C1 captures are retained.
+This is not a new blocker or authorization for trade-route discovery, a
+trade-family/stage exit, whole-spec parity or repeated full207 serializers.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue225/spec" \
+  RUN_DIR=/tmp/g3g0-issue225-spec-run RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Tool-written passing.txt: **1430 bytes**, SHA-256
+`5e82f52fcab18c59f92abde108db03f4b57d0253213474e325880f531e38975f`.
+Stage3 source list: **876 bytes**, SHA-256
+`6d2080c29961395d8387364983b6543a6d05c7277b63bdfd16f9025a91736b67`.
+Golden remains **NO**, initialization **2**, unsupported `load_db (-i)`.
+ATTACK235/fog264/full original missing-argument remain stage4; immediate-i,
+five console guards/original gm-immediate-missing stay the explicit stage5
+remainder. Supplied audit has no demonstrated new blocker. Evidence:
+`tmp/issue225-spec.log`, `tmp/issue225-spec-names.log`,
+`tmp/issue225-spec-logs/` and linked native proof. Matching captures,
+temporary helpers/binaries/disposable WORKs/external RUN_DIR/generated
+coverage/use dumps are removed; decisive logs/manifests/failed-Go evidence
+and pristine canonical/cache are retained. Changes stay uncommitted for
+parent independent acceptance/delivery; no GitHub writes or stage5 work.
+
 ## Raze no-loss (#224)
 
 At **0.146.0-alpha**, unchanged immutable **9a03d126**, full unchanged spec:
