@@ -42180,3 +42180,596 @@ move_state
 readlog 200
 readlog 201
 export state
+
+section N18 asymmetric ship unfinished captain skill then missing argument validation
+entity 601 5 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9200 9 34
+link 8000 9000
+link 9000 1000
+parse sail
+callback_start
+link 9000 9200
+link 9200 1001
+link 9200 1000
+parse sail
+callback_start
+field 9200 subkind 67
+callback_start
+field 9200 subkind 31
+callback_start
+link 9000 1001
+callback_start
+learn 1000 601 2 0
+callback_start
+dump
+readlog 200
+export state
+
+section N18 direct delayed saved reparse ship flags untouched stack and single experience
+master 0
+resolve_wait
+set turn 3
+set day 1
+set epoch 71
+entity 10 4 0
+field 10 weight 100
+entity 19 4 0
+entity 24 4 0
+entity 601 5 0
+learn 1000 601 2 0
+inventory 1000 19 8
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9200 9 31
+field 9200 capacity 1000
+field 9200 horn 1
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9200 1000
+link 1000 1001
+field 1000 guard 1
+field 1000 moving 7
+field 1001 moving 9
+routes 9000 9001 9001 9001 9001
+routes 9001 9000 9000 9000 9000
+queue sail nowhere north west
+queue wait time 1
+load
+do
+dump
+move_state
+save 9200
+persist_command
+initial
+dump
+field 9200 horn 1
+set wait 1
+evening
+dump
+move_state
+arrival_state
+save 9200
+report skill_rows 1000
+orders_file 200
+shuffle 1000 9001
+entity_rolls 1000 1 9000
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+readlog 200
+export state
+
+section N18 USE601 real delayed reload generic experience only once and flags
+master 0
+set day 1
+set epoch 71
+entity 10 4 0
+field 10 weight 100
+entity 19 4 0
+entity 24 4 0
+entity 600 5 0
+entity 601 5 0
+field 601 required 600
+learn 1000 600 2 0
+learn 1000 601 2 0
+inventory 1000 19 8
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9200 9 31
+field 9200 capacity 1000
+field 9200 horn 1
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9200 1000
+link 9200 1001
+routes 9000 9001 0 0 0
+coverage path coverage.tsv
+ucov path use.tsv
+queue use 601 north
+load
+do
+dump
+ucov command
+save 9200
+persist_command
+initial
+field 9200 horn 1
+set wait 1
+evening
+dump
+save 9200
+usemeta rows 1000
+usemeta skill_usage 601
+coverage write
+ucov write
+readfile coverage.tsv
+readfile use.tsv
+readlog 200
+export state
+
+section N18 truncating loaded100 accepts weight1009 then1010 refuses even alternative
+set epoch 71
+entity 10 4 0
+field 10 weight 1009
+entity 19 4 0
+entity 24 4 0
+entity 601 5 0
+learn 1000 601 2 0
+inventory 1000 19 8
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9200 9 31
+field 9200 capacity 1000
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9200 1000
+routes 9000 9001 0 0 0
+parse sail north
+callback_start
+dump
+save 9200
+interrupt
+field 10 weight 1010
+parse sail north out
+callback_start
+dump
+save 9200
+readlog 200
+export state
+
+section N18 damage percent capacity50 and100 boundary and zero cap raft
+entity 10 4 0
+field 10 weight 504
+entity 19 4 0
+entity 24 4 0
+entity 601 5 0
+learn 1000 601 2 0
+inventory 1000 19 8
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9200 9 31
+field 9200 capacity 1000
+field 9200 damage 50
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9200 1000
+routes 9000 9001 0 0 0
+parse sail north
+callback_start
+dump
+interrupt
+field 10 weight 505
+callback_start
+field 9200 damage 100
+callback_start
+dump
+interrupt
+field 9200 subkind 66
+field 9200 capacity 0
+field 10 weight 999999
+callback_start
+dump
+interrupt
+save 9200
+readlog 200
+export state
+
+section N18 crew roundship wind and galley pirate crew and raft no penalties
+entity 10 4 0
+entity 19 4 0
+entity 24 4 0
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9200 9 31
+entity 9300 11 58
+field 9300 strength 2
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9000 9300
+link 9200 1000
+routes 9000 9001 0 0 0
+parse sail north
+callback_start
+dump
+interrupt
+field 9200 subkind 30
+inventory 1000 24 13
+callback_start
+dump
+interrupt
+field 9200 subkind 66
+callback_start
+dump
+interrupt
+readlog 200
+export state
+
+section N18 parsed dry exit disables outer fallback and final unknown retained
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9100 3 9
+entity 9200 9 66
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9100 9200
+link 9200 1000
+routes 9000 0 9001 0 0
+parse sail in east
+callback_start
+dump
+parse sail nowhere north unknown
+callback_start
+dump
+pstate 200
+readlog 200
+export state
+
+section N18 outer fallback exact original multiargument prepend last numeric argument
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9100 3 9
+entity 9200 9 66
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9100 9200
+link 9200 1000
+routes 9000 0 9001 0 0
+queue sail nowhere 9001
+queue format 9
+load
+do
+dump
+pstate 200
+set wait 1
+evening
+dump
+save 9200
+pstate 200
+readlog 200
+export state
+
+section N18 overloaded outer fallback diagnostic precedes retry and damage detail
+entity 10 4 0
+field 10 weight 1010
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9100 3 9
+entity 9200 9 31
+field 9200 capacity 2000
+field 9200 damage 50
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9100 9200
+link 9200 1000
+routes 9000 0 9001 0 0
+parse sail nowhere east
+callback_start
+dump
+pstate 200
+readlog 200
+export state
+
+section N18 direct interruption clears ferry and moving without captain revalidation
+set epoch 71
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9200 9 66
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9200 1000
+link 9200 1001
+routes 9000 9001 0 0 0
+queue sail north
+queue format 9
+load
+do
+save 9200
+link 9000 1000
+link 9200 1000
+field 9200 horn 1
+generic_interrupt 1000
+dump
+save 9200
+pstate 200
+report skill_rows 1000
+readlog 200
+export state
+
+section N18 USE interrupt retained through reload no experience and real callback
+set epoch 71
+entity 600 5 0
+entity 601 5 0
+field 601 required 600
+learn 1000 600 2 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9200 9 66
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9200 1000
+routes 9000 9001 0 0 0
+queue use 601 north
+queue format 9
+load
+do
+persist_command
+initial
+field 9200 horn 1
+generic_interrupt 1000
+dump
+save 9200
+report skill_rows 1000
+pstate 200
+readlog 200
+export state
+
+section N18 completion adjacent dead moved and live bound storms no skipping current road source
+master 0
+set epoch 71
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9002 3 1
+entity 9200 9 66
+entity 9300 11 58
+entity 9301 11 59
+entity 9302 11 58
+entity 9303 11 59
+entity 9400 7 0
+entity 9401 7 0
+field 9300 strength 1
+field 9301 strength 2
+field 9302 strength 3
+field 9303 strength 4
+field 9302 summoner 1000
+field 9303 summoner 1000
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 9000 9200
+link 9200 1000
+link 9000 9300
+link 9000 9301
+link 9000 9302
+link 9000 9303
+link 9000 9400
+link 9001 9401
+road 9400 9001 1
+road 9401 9002 1
+set_known 1000 9400
+queue sail 9001
+load
+do
+delete_box 9300
+delete_box 9301
+field 9200 bound_storm 9300
+field 9200 bound_storm 9301
+field 9200 bound_storm 9302
+field 9200 bound_storm 9303
+link 9002 9302
+link 9002 9200
+field 9200 horn 1
+set wait 1
+evening
+dump
+save 9200
+arrival_state
+readlog 200
+export state
+
+section N18 hidden endpoints fog arrival public owner stack and passenger vector
+set epoch 71
+entity 10 4 0
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9200 9 66
+entity 9300 11 57
+entity 1002 2 0
+entity 1003 2 0
+field 1002 lord 201
+field 1003 lord 201
+field 9300 strength 2
+field 9000 loc_hidden 1
+field 9001 loc_hidden 1
+set_known 1000 9001
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9200 1000
+link 9200 1001
+link 9000 1002
+link 9001 1003
+link 9001 9300
+routes 9000 9001 0 0 0
+queue sail north
+load
+do
+set wait 1
+evening
+dump
+move_state
+readlog 200
+readlog 201
+export state
+
+section N18 invalid completion changed ship asserts still ship at1612
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9200 9 66
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9200 1000
+routes 9000 9001 0 0 0
+queue sail north
+load
+do
+link 9000 1000
+set wait 0
+finish
+
+section N18 invalid completion changed captain asserts owner at1613
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9200 9 66
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9200 1000
+routes 9000 9001 0 0 0
+queue sail north
+load
+do
+link 9000 1000
+link 9200 1001
+link 9200 1000
+set wait 0
+finish
+
+section N18 invalid interruption changed ship asserts still ship at1657
+parse sail north
+interrupt
+
+section N18 parsed impassable water refuses and suppresses outer fallback
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 4
+entity 9001 3 1
+entity 9200 9 66
+link 8000 9000
+link 8000 9001
+link 9000 9200
+link 9200 1000
+routes 9000 9001 0 0 0
+parse sail north unknown
+callback_start
+dump
+readlog 200
+export state
+
+section N18 repeated overloaded attempts preserve diagnostics and no active weight detail
+entity 10 4 0
+field 10 weight 1010
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9100 3 9
+entity 9200 9 66
+field 9200 capacity 2000
+field 9200 damage 50
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9100 9200
+link 9200 1000
+routes 9000 9001 0 0 0
+parse sail north
+callback_start
+callback_start
+parse sail out
+callback_start
+dump
+pstate 200
+readlog 200
+export state
+
+section N18 completion moved captain to another valid ship uses current ship not saved one
+set epoch 71
+entity 601 5 0
+learn 1000 601 2 0
+entity 8000 3 50
+entity 9000 3 1
+entity 9001 3 1
+entity 9002 3 1
+entity 9200 9 66
+entity 9201 9 66
+field 9200 horn 1
+field 9201 horn 1
+link 8000 9000
+link 8000 9001
+link 8000 9002
+link 9000 9200
+link 9002 9201
+link 9200 1000
+link 9201 1001
+routes 9000 9001 0 0 0
+queue sail north
+load
+do
+link 9002 1001
+link 9201 1000
+set wait 1
+evening
+dump
+save 9200
+save 9201
+report skill_rows 1000
+readlog 200
+export state

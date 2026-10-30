@@ -46,10 +46,12 @@ player-refused
 player-settings
 production-harvest
 production-refused
+raft-sail
 recruitment-raise
 recruitment-refused
 release-swear-np
 rng-selftest
+sail-out-first
 savage-cap
 save-fly-cap
 save-libdir-space

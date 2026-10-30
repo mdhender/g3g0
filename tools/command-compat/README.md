@@ -3,6 +3,123 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## SAIL (#219, stage 4 N18)
+
+**0.141.0-alpha**, unchanged immutable **9a03d126**. Complete original
+definitions are extracted unchanged, at their actual `#line`, from move.c:
+
+| Definition | Lines | Bytes | SHA-256 |
+| --- | --- | --- | --- |
+| move_exit_water (existing Go owner) | 1250–1324 | 1552 | `f9adf6857ff311e41a74bde373c9e69758c825c5d21b2c1584d351e1ce051366` |
+| sail_depart_message | 1327–1343 | 317 | `ae9d71238ae9b5202a697b280e4ad07eff48ea2666d5d8224604930bc09176d0` |
+| sail_arrive_message | 1346–1373 | 497 | `5a06ca05cca8429e17c6476cbf1bb7a50fa84acdce40029253c2f3434b054a04` |
+| sail_check | 1376–1396 | 310 | `03baacb4e4e46714ff578f0553f6d9b0bc77a1c753b38859633c1cdfac09ad77` |
+| can_sail_here | 1399–1414 | 281 | `e13168e44e3200e427bdfbeddeea47246b47474ed33513fb484d10111cdc0a4b` |
+| can_sail_at_outer_level | 1417–1455 | 755 | `6591724aab458d8ab78b3d7580a8b1e450975218c10dff81dbe7a8bbce139872` |
+| v_sail | 1458–1602 | 2607 | `c40de6ca95d6150611f33c3432cae8ad9b4424542a95c05f0eb36d1f675b08bd` |
+| d_sail | 1605–1645 | 1020 | `caa334b861ac89acb96660cf33291f183f0b998257461f318e8f4874c77f6ab0` |
+| i_sail | 1653–1665 | 220 | `568376050ebcca714298e6701d38ab2343c57807542e8d34d2aaf228b56263a8` |
+
+Existing move.go owns the complete lifecycle. Direct glob.go SAIL and actual
+use.c row137 **USE601** share the same three real start/finish/interrupt
+owners. No second dispatcher, nil/success replacement, pin move or new source
+dependency is introduced. Ship weights/capacity, exit parsing/saved arrays,
+queues, output vectors, experience, knowledge, touching and ship-bound storm
+movement reuse their existing actual owners. No future storm command is added.
+
+**19 appended sections** exercise asymmetric ship/unfinished/captain/skill/
+argument validation; parsed dry/impassable routes disabling outer fallback;
+last-argument retention and exact original multiargument queue prepend;
+int32 loaded-percent **1009/1000 accepted versus 1010/1000 refused**, damage
+**50/100**, zero-capacity raft, repeated overload diagnostics and crew/wind
+differences. C's weight_display_flag readers are entirely inside disabled
+`#if 0` in ship_weight; no invented active diagnostic/weight owner is added.
+
+Real direct/USE dispatch, delayed evenings, saved command reload/reparse and
+generic interruption compare moving epoch/ferry flags, retained stack/guard/
+character-moving state, queues, skill accounting, output/allocation and full
+saved/raw state. Completion asserts today's ship and captain before restoring
+the exit; moving the captain to another valid ship moves **that** ship, not
+the original one. Interruption has no captain/skill revalidation or output.
+There is no MOVE stale-destination guard or FLY stack suspension/detachment.
+Road discovery uses the ship's current location. Adjacent deleted bound-storm
+entries are removed without skipping moved/live neighbors; hidden endpoints,
+fog/public ship arrival and passengers, shared mint, keyed and legacy RNG
+aftermath are recorded without normalization.
+
+Three narrow expected native aborts require **134** and the exact original
+assertions at move.c **1612** (`is_ship(ship)`), **1613**
+(`building_owner(ship) == c->who`) and **1657** (`is_ship(ship)`). All other
+N18 cases require native **0**. Marker rejection runs first. Temporary compiled
+executable-entry probes exercise six marker classes × actual native **0/134**
+× default/update: **24 status2 rejections**, recording unchanged; these are
+negative harness controls, never successful gameplay callbacks.
+
+Before implementation, unchanged C ran twice deterministically; old Go
+stopped at real direct **command sail start NYI**
+(`tmp/issue219-before-go.log`). Preliminary malformed small inputs (missing
+pirate item, wrong rain kind/road target/knowledge owner, city instead of
+island, incomplete finish countdown) were corrected, not accepted as aborts
+or fixture success. The final C-only update and default each run C twice
+before Go and pass **1889 sections /165583 lines /3197725 output bytes**:
+
+| Bytes | Size | SHA-256 |
+| --- | --- | --- |
+| Input | 794529 | `5fc572bae7cc3bae8d7781fcf76858e69f67554ffa402c07af5816dcd285dd83` |
+| Output | 3197725 | `71b3ec349f49c75ae424ccbf04aec8fb25bcb6820da1b5ec7f7ceb067446f424` |
+
+The entire inherited input **784547**, SHA
+`e3c02bf494be280ccce07ccc09d0b8a2ed379368ade02a5f136a360cddc3c900`, and
+output **3141113**, SHA
+`2d9559d99b114ea8d69dc3edcf8758eab920d982aee05a96e7a312b7e799112b`,
+are exact prefixes, including **21/67 high-bit bytes** and C trailing spaces.
+
+Reproduction (sequential, every compatibility invocation explicitly isolated):
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/command-compat/run.sh --update # C twice, C-only recording, Go
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3_REPO="$PWD/tmp/upstream.git" G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+```
+
+All eight defaults, bounded vet and fresh full-enabled tests pass (**11 test
+packages**). No full serializer/207-roundtrip rerun, movement-family exit,
+later repair/combat/magic or stage5 acceptance is claimed. See
+[original scripts](../turn-compat/README.md#sail-originals-219) and
+[full spec no-loss](../olympia-spec/README.md#sail-no-loss-219).
+Evidence: `tmp/issue219-{source-definitions,markers,command-update-final2}.log`,
+`tmp/issue219-TOOL-default.log`, `tmp/issue219-{vet,tests}.log`.
+Temporary helpers, binaries, matching captures, disposable WORKs and generated
+dumps are removed; decisive failed captures/logs/manifests and pristine C remain.
+
+Parent independently reviewed the complete pinned definitions and all changed
+owners. Bounded vet, fresh full-enabled tests (**11 packages**, Olympia
+**2.361s**) and all eight sequential defaults pass, including the full
+**1889-section /165583-line real C/C/Go** oracle. Both inherited byte prefixes,
+all **1237** canonical source blobs/modes, canonical C binary and all **30**
+saved fixture-manifest digests verify. Independent native replay captures
+every one of **30 engine invocations**, checking inventories as well as raw
+status/streams and complete cwd trees: **10 C/C** and **5 C/Go** matches,
+including all three raft-sail cases and only the load case of raft-loc-depth.
+The five genuine later-owner NYIs repeat exactly as listed in the linked
+original-script proof. Full independent spec repeats **64 pass /65 fail /
+0 error (127s)**, adding only raft-sail/sail-out-first and retaining every
+prior62/stage3-36 name; initialization2/goldenNO remain red.
+Evidence: `tmp/parent219-{vet,tests,fixtures,spec,provenance,manifest-digests}.log`,
+eight `tmp/parent219-*-default.log` files and per-invocation manifests.
+Source/docs/input whitespace checks pass; **93** authentic appended C-output
+trailing-space lines are retained unchanged. No full-corpus or family exit
+is newly claimed by this parent acceptance.
+
 ## FLY (#218, stage 4 N17)
 
 **0.140.0-alpha**, unchanged immutable **9a03d126**. Complete unchanged

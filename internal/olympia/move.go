@@ -651,7 +651,7 @@ func (w *world) moveExitFly(c *command, v *exitView, show bool) int32 {
 }
 
 // checkCaptainLosesSailors is the complete pinned move.c helper. The caller
-// has already removed qty sailors/pirates. Full SAIL callbacks remain NYI.
+// has already removed qty sailors/pirates.
 func (w *world) checkCaptainLosesSailors(qty int32, target, inform int) {
 	where := w.subloc(target)
 	if w.cmdSail < 0 {
@@ -741,6 +741,209 @@ func (w *world) moveExitWater(c *command, v *exitView, ship int, show bool) int3
 		}
 	}
 	return delay + handsShort - windBonus
+}
+
+// SAIL's messages (move.c:1327–1373) deliberately do not use the character
+// movement notices: ships still announce hidden-route departures and fog arrivals.
+func (w *world) sailDepartMessage(ship int, v *exitView) {
+	desc, to, comma := w.linerDesc(ship), "", ""
+	if v.destHidden == 0 {
+		to = sout(" for %s.", w.boxName(int(v.destination)))
+	}
+	if strings.Contains(desc, ",") {
+		comma = ","
+	}
+	w.commandOut(int(v.orig), "%s%s departed%s", desc, comma, to)
+}
+
+func (w *world) sailArriveMessage(ship int, v *exitView) {
+	desc, from, comma := w.linerDesc(ship), "", ""
+	if v.origHidden == 0 {
+		from = sout(" from %s", w.boxName(int(v.orig)))
+	}
+	if strings.Contains(desc, ",") {
+		comma = ","
+	}
+	with := w.displayOwner(ship)
+	if with == "" {
+		with = "."
+	}
+	w.showToGarrison = true
+	w.commandOut(int(v.destination), "%s%s arrived%s%s", desc, comma, from, with)
+	w.showOwnerStack(int(v.destination), ship)
+	w.showToGarrison = false
+}
+
+func (w *world) sailCheck(c *command, v *exitView, show bool) bool {
+	if v.water == 0 {
+		if show {
+			w.commandOut(int(c.who), "There is no water route in that direction.")
+		}
+		return false
+	}
+	if v.impassable != 0 {
+		if show {
+			w.commandOut(int(c.who), "That route is impassable.")
+		}
+		return false
+	}
+	return true
+}
+
+func (w *world) canSailHere(where int, c *command, ship int) bool {
+	v := w.parseExitDir(c, where, nil)
+	return v != nil && v.direction != dirIn && w.sailCheck(c, v, false) && w.moveExitWater(c, v, ship, false) >= 0
+}
+
+func (w *world) canSailAtOuterLevel(ship, where int, c *command) int {
+	if w.shipCap(ship) != 0 {
+		loaded := w.shipWeight(ship) * 100 / w.shipCap(ship)
+		if loaded > 100 {
+			w.commandOut(int(c.who), "%s is too overloaded to sail.", w.boxName(ship))
+			p := w.rpSubloc(ship)
+			w.commandOut(int(c.who), "(ship capacity = %d, damage = %d, load = %d)", p.capacity, p.damage, w.shipWeight(ship))
+			// C sets weight_display_flag around this read; its only readers
+			// are disabled by #if 0 in ship_weight, so there is no output.
+			w.shipWeight(ship)
+			return 0
+		}
+	}
+	for outer := w.subloc(where); w.locDepth(outer) > locRegion; outer = w.subloc(outer) {
+		if w.canSailHere(outer, c, ship) {
+			return w.locDepth(outer) - w.locDepth(where)
+		}
+	}
+	return 0
+}
+
+// vSail is move.c:1458–1602. Capacity compares the truncated int32 loaded
+// percentage, not weight > capacity. No stack detachment/suspension occurs.
+func (w *world) vSail(c *command) int {
+	who := int(c.who)
+	ship := w.subloc(who)
+	if !w.isShip(ship) {
+		if w.subkind(ship) == subGalleyNotdone || w.subkind(ship) == subRoundshipNotdone {
+			w.commandOut(who, "%s is not yet completed.", w.boxName(ship))
+		} else {
+			w.commandOut(who, "Must be on a sea-worthy ship to sail.")
+		}
+		return 0
+	}
+	if w.buildingOwner(ship) != who {
+		w.commandOut(who, "Only the captain of a ship may sail.")
+		return 0
+	}
+	if w.hasSkill(who, skPilotShip) <= 0 {
+		w.commandOut(who, "Knowledge of %s is required to sail.", w.boxName(skPilotShip))
+		return 0
+	}
+	if c.parse.Len()-1 < 1 {
+		w.commandOut(who, "Specify direction or destination to sail.")
+		return 0
+	}
+	outerLoc, checkOuter := w.subloc(ship), true
+	var v *exitView
+	for c.parse.Len()-1 > 0 {
+		sail := "sail"
+		v = w.parseExitDir(c, outerLoc, &sail)
+		if v != nil {
+			checkOuter = false
+			if w.sailCheck(c, v, true) {
+				break
+			}
+			v = nil
+		}
+		if c.parse.Len()-1 == 1 {
+			break
+		}
+		w.cmdShift(c)
+	}
+	if v == nil && checkOuter && w.canSailAtOuterLevel(ship, outerLoc, c) != 0 {
+		c.a = int32(w.subloc(outerLoc))
+		v = w.parseExitDir(c, outerLoc, nil)
+		assert(v != nil, "olympia/move.c", 1530, "v")
+		if v != nil {
+			assert(w.moveExitWater(c, v, ship, false) >= 0, "olympia/move.c", 1534, "move_exit_water(c, v, ship, FALSE) >= 0")
+			w.commandOut(who, "(assuming 'sail out' first)")
+			w.prependOrder(w.player(who), who, *c.line)
+		}
+	}
+	if v == nil {
+		return 0
+	}
+	if w.shipCap(ship) != 0 {
+		loaded := w.shipWeight(ship) * 100 / w.shipCap(ship)
+		if loaded > 100 {
+			w.commandOut(who, "%s is too overloaded to sail.", w.boxName(ship))
+			p := w.rpSubloc(ship)
+			w.commandOut(who, "(ship capacity = %d, damage = %d, load = %d)", p.capacity, p.damage, w.shipWeight(ship))
+			w.shipWeight(ship) // weight_display_flag's readers are disabled in C.
+			return 0
+		}
+	}
+	assert(v.inTransit == 0, "olympia/move.c", 1566, "!v->in_transit")
+	delay := w.moveExitWater(c, v, ship, true)
+	if delay < 0 {
+		return 0
+	}
+	c.wait, v.distance = delay, delay
+	saveVArray(c, v)
+	if delay > 0 {
+		w.vectorCharHere(who)
+		w.vectorAdd(who)
+		w.commandOut(vect, "Sailing to %s will take %s day%s.", w.boxName(int(v.destination)), niceNum(int(delay)), addS(int(delay)))
+	}
+	w.sailDepartMessage(ship, v)
+	w.pSubloc(ship).moving = w.sysclock.daysSinceEpoch
+	if p := w.rpMagic(ship); p != nil && p.ferryFlag != 0 {
+		w.pMagic(ship).ferryFlag = 0
+	}
+	return 1
+}
+
+// dSail is move.c:1605–1645. Assertions precede restoring the exit. Like
+// dFly, it has no MOVE stale-destination guard; road discovery uses today's
+// ship location, not the saved origin. Generic USE owns its own experience.
+func (w *world) dSail(c *command) int {
+	who := int(c.who)
+	ship := w.subloc(who)
+	assert(w.isShip(ship), "olympia/move.c", 1612, "is_ship(ship)")
+	assert(w.buildingOwner(ship) == who, "olympia/move.c", 1613, "building_owner(ship) == c->who")
+	var v exitView
+	restoreVArray(c, &v)
+	dest := int(v.destination)
+	if v.road != 0 {
+		w.discoverRoad(who, w.subloc(ship), &v)
+	}
+	w.vectorCharHere(ship)
+	w.commandOut(vect, "Arrival at %s.", w.boxName(dest))
+	if w.locDepth(dest) == locProvince && w.viewloc(w.subloc(ship)) != w.viewloc(dest) && w.weatherHere(dest, subFog) != 0 {
+		w.commandOut(vect, "The province is blanketed in fog.")
+	}
+	w.pSubloc(ship).moving = 0
+	w.setWhere(ship, dest)
+	w.markLocStackKnown(ship, dest)
+	w.moveBoundStorms(ship, dest)
+	if p := w.rpMagic(ship); p != nil && p.ferryFlag != 0 {
+		w.pMagic(ship).ferryFlag = 0
+	}
+	w.touchLocAfterMove(ship, dest)
+	w.sailArriveMessage(ship, &v)
+	if c.useSkill == 0 {
+		w.addSkillExperience(who, skPilotShip)
+	}
+	return 1
+}
+
+// iSail is move.c:1653–1665: no captain/skill revalidation or output.
+func (w *world) iSail(c *command) int {
+	ship := w.subloc(int(c.who))
+	assert(w.isShip(ship), "olympia/move.c", 1657, "is_ship(ship)")
+	w.pSubloc(ship).moving = 0
+	if p := w.rpMagic(ship); p != nil && p.ferryFlag != 0 {
+		w.pMagic(ship).ferryFlag = 0
+	}
+	return 1
 }
 
 // Ported from olympia/move.c: restore_stack_actions(), which check_db()

@@ -14,7 +14,8 @@ import (
 // These are Go port boundaries, not invented C gameplay outcomes. The oracle
 // checks all C NULL bits; every other absent implementation must remain NYI.
 func TestCommandUseCallbackBoundaries(t *testing.T) {
-	implemented := map[int][2]func(*world, *command) int{
+	implemented := map[int][3]func(*world, *command) int{
+		skPilotShip:     {(*world).vSail, (*world).dSail, (*world).iSail},
 		skHideSelf:      {(*world).vHide, (*world).dHide},
 		skBindStorm:     {(*world).vBindStorm, (*world).dBindStorm},
 		skRaiseMob:      {(*world).vRaise, (*world).dRaise},
@@ -38,7 +39,7 @@ func TestCommandUseCallbackBoundaries(t *testing.T) {
 				continue
 			}
 			t.Run(fmt.Sprintf("%d/%d", i, phase), func(t *testing.T) {
-				if real, ok := implemented[row.skill]; ok && phase < 2 && real[phase] != nil {
+				if real, ok := implemented[row.skill]; ok && real[phase] != nil {
 					if reflect.ValueOf(callback).Pointer() != reflect.ValueOf(real[phase]).Pointer() {
 						t.Fatal("did not reuse existing gameplay callback")
 					}
@@ -73,7 +74,7 @@ func TestCommandUseSharedNYIBoundaries(t *testing.T) {
 		}
 		switch row.skill {
 		case skQuarryStone, skCatchHorse, skHarvestLumber, skHarvestYew, skRaiseCorpses, skMageMenial, skFishing,
-			skTrainWild, skTrainWarmount, skRaiseMob, skRallyMob, skBribeNoble, skInciteMob:
+			skTrainWild, skTrainWarmount, skRaiseMob, skRallyMob, skBribeNoble, skInciteMob, skPilotShip:
 			continue // Real reparse/dispatch outcomes are covered by the C oracle.
 		}
 		t.Run(fmt.Sprint(row.skill), func(t *testing.T) {

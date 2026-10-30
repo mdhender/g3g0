@@ -9,6 +9,97 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## SAIL originals (#219)
+
+**0.141.0-alpha**, unchanged immutable **9a03d126**. Before native reuse,
+all **1237 original blobs/modes** in `tmp/_issue215/canonical` were verified
+against the bare pin. Canonical C retains SHA-256
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+The shared additional checkout is never used. The protected
+`tmp/issue291-roundtrip` cache remains idle and untouched; no in-place or
+linked cache input is executed. Original scripts, README/scenarios and
+expected bytes are read without edits, regeneration or `--update`.
+
+The [bounded native pre-cleanup method](#recruitment-raise-and-refused-215)
+is recreated under unique `tmp/_issue219`. The launcher opens **O_RDWR** raw
+streams, preserves original argv0/stdin, sources timeout.sh in bash and calls
+`run_limited 120 "$0" "$S4_ENGINE" "$@"`. It seeks/replays stdout then
+stderr, closes them, writes actual status plus newline, then `cp -a .` to an
+absent `cwd` **after replay and before original cleanup**. Thus script-owned
+redirected `out`/`err` bytes are captured too. Scripts are bounded at **150**
+seconds; native/comparator/test children at **120**. All invocations explicitly
+set `G3_REPO="$PWD/tmp/upstream.git"`.
+
+**Every engine invocation is captured separately**, not overwritten: each
+fixture/run has an exclusive base and deterministic `001`, `002`, `003`
+subdirectories, allocated in actual execution order. `raft-sail` runs
+**sail/lose/lose-ship**; `raft-loc-depth` runs **load/attack**. Compare complete
+per-run invocation inventories as well as each corresponding capture. No
+`cp -a` destination already exists. Real C1/C2 run before Go for each script;
+raw dependency/NYI/stub/sanitizer markers are rejected before accepting any C
+status. Existing strict comparator plus `tree-modes.py` compare **all** cwd
+paths/types/modes/empty directories/bytes and raw status/stdout/stderr.
+
+```sh
+. tools/lib/timeout.sh
+export G3_REPO="$PWD/tmp/upstream.git" S4_ROOT="$PWD"
+# Recreate/build the native sequential-capture launcher as described above.
+export S4_CAPTURE="$PWD/tmp/_issue219/$fixture-$run" # fresh absent run base
+export S4_ENGINE="$PWD/tmp/_issue215/canonical/build/canonical/olympia-g3"
+# Go run only after both C repeats; use a freshly built cmd/olympia instead.
+OLYMPIA_ENGINE_BIN="$PWD/tmp/_issue219/capture" \
+  run_limited 150 bash /bin/bash \
+  "$PWD/tmp/_issue215/canonical/tests/olympia/regress/$fixture/check.sh"
+run_limited 120 compare "$PWD/tmp/_issue219/compare" --manifest "$capture"
+run_limited 120 compare "$PWD/tmp/_issue219/compare" "$c1" "$c2"
+run_limited 120 compare "$PWD/tmp/_issue219/compare" "$c1" "$go"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$go/cwd"
+```
+
+**30 native engine runs**, ten invocations for each C1/C2/Go set. All ten
+C/C captures match, engine0 and original script YES0. Five corresponding Go
+captures match strictly; five remain honest later-owner boundaries:
+
+| Fixture / invocation | C cwd entries | Go engine / script | Strict C/Go / actual next stop |
+| --- | --- | --- | --- |
+| sail-out-first / 001 | 240 | 0 / YES0 | exact |
+| raft-sail / 001 sail | 235 | 0 / YES0 | exact |
+| raft-sail / 002 lose | 235 | 0 / YES0 | exact |
+| raft-sail / 003 lose-ship | 235 | 0 / YES0 | exact |
+| raft-loc-depth / 001 load | 227 | 0 / script1 overall | exact load case only |
+| raft-loc-depth / 002 attack | 235 | 2 / 1 | `regular_combat` NYI, canonical combat owners through #235 |
+| move-ship / 001 | 239 | 2 / 1 | `command fee start` NYI, #220 |
+| sail-stale-storm / 001 | 237 | 2 / 1 | `USE v_dissipate callback` NYI, #265 |
+| stop-running / 001 | 259 | 2 / 1 | `command repair interrupt` NYI, #223/#240 |
+| movement-refused / 001 | 239 | 2 / 1 | `command board start` NYI, #220 |
+
+Only **sail-out-first** and **raft-sail** are newly passing complete scripts.
+raft-loc-depth's load-case parity is not whole-script acceptance. STOP's real
+next NYI is now **repair interrupt**, not SAIL; both direct/USE SAIL interrupts
+are genuinely owned and covered by the command oracle, not overlaid in this
+fixture. Stale/live/moved adjacent bound-storm completion is independently
+real-C/Go exact there; no future dissipate command is accelerated here.
+No movement-family/stage exit or later command/mode implementation is claimed.
+
+Matching capture manifest SHA-256s (three equal each):
+
+- sail-out-first: `51f85264c5314f8bb771536f00b423141a2b9c4b655ec9623fdc42a9b96b0007`
+- raft-sail sail: `7bfc2cdeec022e47eb30bf0859ef9cf2fa83e506e03023cf647802458359f750`
+- raft-sail lose: `6b39bc9bdc7bd5180f442dafd8b5450bfe28bb63cd50113df17fec9d9058d19b`
+- raft-sail lose-ship: `f8ba27099aaf8d47d03e673017ed1007eec33b8ca2b9ee911cac4260ae0276e8`
+- raft-loc-depth load: `9edeb2e639d6e4228f1b1f55497eec42454e681ecdef612bf09665f39a899bb4`
+
+Logs/manifests: `tmp/issue219-fixtures.log`,
+`tmp/issue219-FIXTURE-{c1,c2,go}.log`,
+`tmp/issue219-FIXTURE-RUN-ID-manifest.txt`,
+`tmp/issue219-{fixture-manifests,launcher}.sha256` and
+`tmp/issue219-canonical-provenance.log`. The five decisive C/Go failures are
+retained under `tmp/issue219-FIXTURE-captures/{c1-ID,go-ID}`, with complete
+mismatch lists `tmp/issue219-FIXTURE-ID.diff`. Matching captures, task helpers/
+binaries and disposable WORKs are removed; pristine C/cache remain.
+See [complete lifecycle proof](../command-compat/README.md#sail-219-stage-4-n18)
+and [spec no-loss](../olympia-spec/README.md#sail-no-loss-219).
+
 ## FLY originals (#218)
 
 **0.140.0-alpha**, immutable **9a03d126b329ed466c4af48425553c025eaca26f**.

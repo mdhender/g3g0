@@ -8,6 +8,55 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## SAIL no-loss (#219)
+
+At **0.141.0-alpha**, unchanged immutable
+**9a03d126b329ed466c4af48425553c025eaca26f**, the full original spec reports
+**129 fixtures: 64 pass /65 fail /0 error (131s)**. Exactly **raft-sail** and
+**sail-out-first** are newly passing. Every prior **62 name** and stage-3's
+full **36-name** set is retained, checked by name rather than count. The
+stage-3 source list remains **876 bytes**, SHA-256
+`6d2080c29961395d8387364983b6543a6d05c7277b63bdfd16f9025a91736b67`.
+The existing tool alone writes passing.txt: **1298 bytes**, SHA-256
+`96ff0be54197af07a5ce93d31032d5038b11ceda8ac3e3e29c3489cca656e0aa`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue219/spec" \
+  RUN_DIR=/tmp/g3g0-issue219-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Separate unchanged original scripts use real C twice before Go and the
+[bounded native pre-cleanup capture](../turn-compat/README.md#sail-originals-219).
+All **30 engine invocations** are individually captured: ten per C1/C2/Go
+set, including raft-sail's **three** cases and raft-loc-depth's **two**.
+sail-out-first matches raw status/streams and **240 complete cwd entries**;
+raft-sail matches all three **235-entry** cases. raft-loc-depth's load case
+matches **227 entries**, but its attack case remains engine2/script1 at real
+`regular_combat` NYI. It is **not** a passing complete script.
+
+Honest later-owner failures remain: move-ship **FEE start** (#220),
+movement-refused **BOARD start** (#220), sail-stale-storm **USE v_dissipate**
+(#265), and stop-running now **REPAIR interrupt** (#223/#240), rather than
+the formerly observed SAIL interrupt. These match C/C and remain red for
+Go, not fixture-specific successful replacements or reasons to accelerate
+later owners. Complete direct/USE601 SAIL and live/moved/deleted adjacent
+bound-storm lifecycle have independent command-oracle parity.
+
+Golden remains **NO**, initialization **2** at unsupported `load_db (-i)`.
+#289's canonical ATTACK/fog/full original missing-argument obligations and
+explicit stage5 console remainder are unchanged. No pin, original fixture or
+expected bytes are edited, and no movement-family/stage exit is claimed.
+Linux amd64, GCC **12.2.0**, Go **1.26.4** only. Accepted #291 full serializer/
+207-roundtrip corpora are not rerun for this bounded callback task.
+
+Logs: `tmp/issue219-spec.log`, `tmp/issue219-spec-names.log`,
+`tmp/issue219-spec-logs/{run-all,olympia-g3,golden,build}.log`. Disposable spec
+WORK/RUN_DIR, helpers/binaries and matching captures are removed; pristine C
+and decisive failed captures/manifests/logs remain. See
+[complete lifecycle/source proof](../command-compat/README.md#sail-219-stage-4-n18).
+
 ## FLY no-loss (#218)
 
 At **0.140.0-alpha**, unchanged immutable

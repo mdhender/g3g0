@@ -162534,3 +162534,3050 @@ LO
 stderr:
 
 exit 0
+stdout:
+section N18 asymmetric ship unfinished captain skill then missing argument validation
+> entity 601 5 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9200 9 34
+> link 8000 9000
+> link 9000 1000
+> parse sail
+parse 1
+> callback_start
+callback start 0
+> link 9000 9200
+> link 9200 1001
+> link 9200 1000
+> parse sail
+parse 1
+> callback_start
+callback start 0
+> field 9200 subkind 67
+> callback_start
+callback start 0
+> field 9200 subkind 31
+> callback_start
+callback start 0
+> link 9000 1001
+> callback_start
+callback start 0
+> learn 1000 601 2 0
+> callback_start
+callback start 0
+> dump
+cmd 74 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [sail]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::Must be on a sea-worthy ship to sail.
+1000:0::0::Roundship-in-progress~[9200] is not yet completed.
+1000:0::0::Must be on a sea-worthy ship to sail.
+1000:0::0::Only the captain of a ship may sail.
+1000:0::0::Knowledge of <no subkind>~[601] is required to sail.
+1000:0::0::Specify direction or destination to sail.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 601 2
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 0 0
+CO
+ li sail
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200 1001
+9000 loc ocean
+LI
+ wh 8000
+ hl 9200 1001 
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9200 ship roundship
+LI
+ wh 9000
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N18 direct delayed saved reparse ship flags untouched stack and single experience
+> master 0
+> resolve_wait
+> set turn 3
+> set day 1
+> set epoch 71
+> entity 10 4 0
+> field 10 weight 100
+> entity 19 4 0
+> entity 24 4 0
+> entity 601 5 0
+> learn 1000 601 2 0
+> inventory 1000 19 8
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9200 9 31
+> field 9200 capacity 1000
+> field 9200 horn 1
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9200 1000
+> link 1000 1001
+> field 1000 guard 1
+> field 1000 moving 7
+> field 1001 moving 9
+> routes 9000 9001 9001 9001 9001
+> routes 9001 9000 9000 9000 9000
+> queue sail nowhere north west
+> queue wait time 1
+> load
+load 1
+> do
+> dump
+cmd 74 who 1000 state 2 status 1 wait 3 poll 0 pri 4 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [sail] [north] [west]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> move_state
+vector: 1001 1000
+move char 1000 where 9200 moving 7 guard 1
+here: 1001
+move char 1001 where 1000 moving 9 guard 0
+here:
+show_garrison 0
+> save 9200
+9200 ship roundship
+LI
+ wh 9000
+ hl 1000 
+CH
+SL
+ ca 1000
+ mo 71
+
+> persist_command
+> initial
+> dump
+cmd 74 who 1000 state 2 status 1 wait 3 poll 0 pri 4 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [sail] [nowhere] [north] [west]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> field 9200 horn 1
+> set wait 1
+> evening
+> dump
+cmd 94 who 1000 state 1 status 1 wait -1 poll 1 pri 1 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 0
+args 0 1 0 0 0 0 0 0; parse [wait] [time] [1]
+player 200 count 1 last 3 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000 1001
+move char 1000 where 9200 moving 7 guard 1
+here: 1001
+move char 1001 where 1000 moving 9 guard 0
+here:
+show_garrison 0
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9001
+touched: 9001
+weather:
+output: 1000 1001 9001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> save 9200
+9200 ship roundship
+LI
+ wh 9001
+ hl 1000 
+CH
+SL
+ ca 1000
+
+> report skill_rows 1000
+skill record 1000 1
+skill row 601 2 0 1
+1000 char 0
+il	19 8
+LI
+ wh 9200
+ hl 1001 
+CH
+ lo 200
+ sl	601 2 0 1 0
+ mo 7
+ gu 1
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+> orders_file 200
+orders file 200:
+> shuffle 1000 9001
+> entity_rolls 1000 1 9000
+prison roll 143
+land dir99 3
+land dir98 4
+land pick 2
+> usemeta legacy 1 100000
+use legacy 87265
+> newitem 1000 0
+created 78783
+> save_new
+78783 item 0
+IT
+ un 1000
+
+> readlog 200
+log 200:
+1000:0::0::> sail nowhere north west
+1000:0::0::Unknown direction or destination 'nowhere'.
+1001:0::0::Sailing to Ocean~[9001] will take three days.
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+1000:0::0::Arrival at Ocean~[9001].
+1001:0::0::Arrival at Ocean~[9001].
+9001:0::0::Roundship~[9200], roundship, 20% loaded, arrived from Ocean~[9000], owner:
+9001:0::0/3::   <no subkind>~[1000], on guard, accompanied~by:
+9001:0::0/6::      <no subkind>~[1001]
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+
+export entity 19 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+19 item 0
+
+export entity 24 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+24 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001 9001
+200 player pl_regular
+PL
+ lt 3
+ kn 9001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1001
+raw skill 601 2
+raw item 19 8
+raw item 78783 1
+1000 char 0
+il	19 8 \
+	78783 1
+LI
+ wh 9200
+ hl 1001 
+CH
+ lo 200
+ sl	601 2 0 1 0
+ mo 7
+ gu 1
+CO
+ li wait time 1
+ ar 0 1 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ mo 9
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9000 loc ocean
+LI
+ wh 8000
+LO
+ pd 9001 9001 9001 9001 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9001 loc ocean
+LI
+ wh 8000
+ hl 9200 
+LO
+ pd 9000 9000 9000 9000 
+
+export entity 9200 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here: 1000
+9200 ship roundship
+LI
+ wh 9001
+ hl 1000 
+CH
+SL
+ ca 1000
+
+export entity 78783 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+78783 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N18 USE601 real delayed reload generic experience only once and flags
+> master 0
+> set day 1
+> set epoch 71
+> entity 10 4 0
+> field 10 weight 100
+> entity 19 4 0
+> entity 24 4 0
+> entity 600 5 0
+> entity 601 5 0
+> field 601 required 600
+> learn 1000 600 2 0
+> learn 1000 601 2 0
+> inventory 1000 19 8
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9200 9 31
+> field 9200 capacity 1000
+> field 9200 horn 1
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9200 1000
+> link 9200 1001
+> routes 9000 9001 0 0 0
+> coverage path coverage.tsv
+> ucov path use.tsv
+> queue use 601 north
+> load
+load 1
+> do
+> dump
+cmd 93 who 1000 state 2 status 1 wait 3 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [use] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> ucov command
+use command 601 47 1 0 3 0 0
+> save 9200
+9200 ship roundship
+LI
+ wh 9000
+ hl 1000 1001 
+CH
+SL
+ ca 1000
+ mo 71
+
+> persist_command
+> initial
+> field 9200 horn 1
+> set wait 1
+> evening
+> dump
+cmd 93 who 1000 state 0 status 1 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 1 debug 1 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [use] [601] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9200
+9200 ship roundship
+LI
+ wh 9001
+ hl 1000 1001 
+CH
+SL
+ ca 1000
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 600 2 0 0 0
+grant row 601 2 0 1 1
+> usemeta skill_usage 601
+grant usage 601 record 1 count 1 who 1000
+> coverage write
+> ucov write
+> readfile coverage.tsv
+file bytes coverage.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	1	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readfile use.tsv
+file bytes use.tsv 2736:
+kind	key	name	checks	ok	fail
+invalid	0	(invalid)	0	0	0
+skill	601	<no subkind>	0	1	0
+skill	602		0	0	0
+skill	603		0	0	0
+skill	612		0	0	0
+skill	613		0	0	0
+skill	614		0	0	0
+skill	615		0	0	0
+skill	616		0	0	0
+skill	617		0	0	0
+skill	631		0	0	0
+skill	632		0	0	0
+skill	633		0	0	0
+skill	634		0	0	0
+skill	635		0	0	0
+skill	636		0	0	0
+skill	637		0	0	0
+skill	638	<no subkind>	0	0	0
+skill	639		0	0	0
+skill	651		0	0	0
+skill	652		0	0	0
+skill	653		0	0	0
+skill	654		0	0	0
+skill	655		0	0	0
+skill	656		0	0	0
+skill	657		0	0	0
+skill	658		0	0	0
+skill	659		0	0	0
+skill	661		0	0	0
+skill	671		0	0	0
+skill	672		0	0	0
+skill	673		0	0	0
+skill	674		0	0	0
+skill	675		0	0	0
+skill	676		0	0	0
+skill	681		0	0	0
+skill	682		0	0	0
+skill	691		0	0	0
+skill	692		0	0	0
+skill	693		0	0	0
+skill	694		0	0	0
+skill	695		0	0	0
+skill	696		0	0	0
+skill	697		0	0	0
+skill	701		0	0	0
+skill	702		0	0	0
+skill	703		0	0	0
+skill	704		0	0	0
+skill	706		0	0	0
+skill	707		0	0	0
+skill	721		0	0	0
+skill	722		0	0	0
+skill	723		0	0	0
+skill	732		0	0	0
+skill	733		0	0	0
+skill	751		0	0	0
+skill	752		0	0	0
+skill	753		0	0	0
+skill	754		0	0	0
+skill	755		0	0	0
+skill	756		0	0	0
+skill	801		0	0	0
+skill	802		0	0	0
+skill	803		0	0	0
+skill	804		0	0	0
+skill	805		0	0	0
+skill	806		0	0	0
+skill	807		0	0	0
+skill	808		0	0	0
+skill	809		0	0	0
+skill	811		0	0	0
+skill	812		0	0	0
+skill	813		0	0	0
+skill	814		0	0	0
+skill	821		0	0	0
+skill	822		0	0	0
+skill	823		0	0	0
+skill	824		0	0	0
+skill	825		0	0	0
+skill	826		0	0	0
+skill	827		0	0	0
+skill	828		0	0	0
+skill	829		0	0	0
+skill	831		0	0	0
+skill	832		0	0	0
+skill	833		0	0	0
+skill	841		0	0	0
+skill	842		0	0	0
+skill	843		0	0	0
+skill	844		0	0	0
+skill	845		0	0	0
+skill	846		0	0	0
+skill	847		0	0	0
+skill	848		0	0	0
+skill	849		0	0	0
+skill	851		0	0	0
+skill	852		0	0	0
+skill	861		0	0	0
+skill	862		0	0	0
+skill	863		0	0	0
+skill	864		0	0	0
+skill	865		0	0	0
+skill	866		0	0	0
+skill	867		0	0	0
+skill	868		0	0	0
+skill	869		0	0	0
+skill	871		0	0	0
+skill	872		0	0	0
+skill	881		0	0	0
+skill	882		0	0	0
+skill	883		0	0	0
+skill	884		0	0	0
+skill	885		0	0	0
+skill	886		0	0	0
+skill	887		0	0	0
+skill	888		0	0	0
+skill	889		0	0	0
+skill	891		0	0	0
+skill	892		0	0	0
+skill	893		0	0	0
+skill	894		0	0	0
+skill	901		0	0	0
+skill	902		0	0	0
+skill	903		0	0	0
+skill	904		0	0	0
+skill	905		0	0	0
+skill	906		0	0	0
+skill	907		0	0	0
+skill	908		0	0	0
+skill	909		0	0	0
+skill	911		0	0	0
+skill	921		0	0	0
+skill	922		0	0	0
+skill	997		0	0	0
+skill	998		0	0	0
+skill	999		0	0	0
+item	1	death_potion	0	0	0
+item	2	heal_potion	0	0	0
+item	3	slave_potion	0	0	0
+item	4	palantir	0	0	0
+item	5	proj_cast	0	0	0
+item	6	quick_cast	0	0	0
+item	7	drum	0	0	0
+item	8	faery_stone	0	0	0
+item	9	orb	0	0	0
+item	10	barbarian_kill	0	0	0
+item	11	savage_kill	0	0	0
+item	12	corpse_kill	0	0	0
+item	13	orc_kill	0	0	0
+item	14	skeleton_kill	0	0	0
+item	15	bta_skull	0	0	0
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::> use 601 north
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+1000:0::0::Arrival at Ocean~[9001].
+1001:0::0::Arrival at Ocean~[9001].
+9001:0::0::Roundship~[9200], roundship, 20% loaded, arrived from Ocean~[9000], owner:
+9001:0::0/3::   <no subkind>~[1000]
+9001:0::0/3::   <no subkind>~[1001]
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 100
+
+export entity 19 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+19 item 0
+
+export entity 24 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+24 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001 9001
+200 player pl_regular
+PL
+ kn 9001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 600 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+600 skill 0
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+601 skill 0
+SK
+ tl 0
+ rs 600
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 3010000 order 0
+here:
+raw skill 600 2
+raw skill 601 2
+raw item 19 8
+1000 char 0
+il	19 8
+LI
+ wh 9200
+CH
+ lo 200
+ sl	600 2 0 0 0 \
+	601 2 0 1 0
+CO
+ li use 601 north
+ ar 0 1 9001 0 0 3 9000 0
+ st 1
+ us 601
+ ue 1
+ de 1
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9200
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9000 loc ocean
+LI
+ wh 8000
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9001 loc ocean
+LI
+ wh 8000
+ hl 9200 
+
+export entity 9200 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here: 1000 1001
+9200 ship roundship
+LI
+ wh 9001
+ hl 1000 1001 
+CH
+SL
+ ca 1000
+
+stderr:
+
+exit 0
+stdout:
+section N18 truncating loaded100 accepts weight1009 then1010 refuses even alternative
+> set epoch 71
+> entity 10 4 0
+> field 10 weight 1009
+> entity 19 4 0
+> entity 24 4 0
+> entity 601 5 0
+> learn 1000 601 2 0
+> inventory 1000 19 8
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9200 9 31
+> field 9200 capacity 1000
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9200 1000
+> routes 9000 9001 0 0 0
+> parse sail north
+parse 1
+> callback_start
+callback start 1
+> dump
+cmd 74 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [sail] [north]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9200
+9200 ship roundship
+LI
+ wh 9000
+ hl 1000 
+SL
+ ca 1000
+ mo 71
+
+> interrupt
+interrupt 1
+> field 10 weight 1010
+> parse sail north out
+parse 1
+> callback_start
+callback start 0
+> dump
+cmd 74 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [sail] [north] [out]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9200
+9200 ship roundship
+LI
+ wh 9000
+ hl 1000 
+SL
+ ca 1000
+
+> readlog 200
+log 200:
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+1000:0::0::Roundship~[9200] is too overloaded to sail.
+1000:0::0::(ship capacity = 1000, damage = 0, load = 1010)
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 1010
+
+export entity 19 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+19 item 0
+
+export entity 24 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+24 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 601 2
+raw item 19 8
+1000 char 0
+il	19 8
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 0 0
+CO
+ li sail north out
+ ar 0 0 0 0 0 0 0 0
+ wa 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9000 loc ocean
+LI
+ wh 8000
+ hl 9200 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9200 ship roundship
+LI
+ wh 9000
+ hl 1000 
+SL
+ ca 1000
+
+stderr:
+
+exit 0
+stdout:
+section N18 damage percent capacity50 and100 boundary and zero cap raft
+> entity 10 4 0
+> field 10 weight 504
+> entity 19 4 0
+> entity 24 4 0
+> entity 601 5 0
+> learn 1000 601 2 0
+> inventory 1000 19 8
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9200 9 31
+> field 9200 capacity 1000
+> field 9200 damage 50
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9200 1000
+> routes 9000 9001 0 0 0
+> parse sail north
+parse 1
+> callback_start
+callback start 1
+> dump
+cmd 74 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [sail] [north]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> interrupt
+interrupt 1
+> field 10 weight 505
+> callback_start
+callback start 0
+> field 9200 damage 100
+> callback_start
+callback start 1
+> dump
+cmd 74 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [sail] [north]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> interrupt
+interrupt 1
+> field 9200 subkind 66
+> field 9200 capacity 0
+> field 10 weight 999999
+> callback_start
+callback start 1
+> dump
+cmd 74 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [sail] [north]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> interrupt
+interrupt 1
+> save 9200
+9200 ship raft
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 100
+
+> readlog 200
+log 200:
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+1000:0::0::Roundship~[9200] is too overloaded to sail.
+1000:0::0::(ship capacity = 1000, damage = 50, load = 505)
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 16959
+
+export entity 19 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+19 item 0
+
+export entity 24 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+24 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 601 2
+raw item 19 8
+1000 char 0
+il	19 8
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 0 0
+CO
+ li sail north
+ ar 0 1 9001 0 0 3 9000 0
+ wa 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9000 loc ocean
+LI
+ wh 8000
+ hl 9200 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9200 ship raft
+LI
+ wh 9000
+ hl 1000 
+SL
+ da 100
+
+stderr:
+
+exit 0
+stdout:
+section N18 crew roundship wind and galley pirate crew and raft no penalties
+> entity 10 4 0
+> entity 19 4 0
+> entity 24 4 0
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9200 9 31
+> entity 9300 11 58
+> field 9300 strength 2
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9000 9300
+> link 9200 1000
+> routes 9000 9001 0 0 0
+> parse sail north
+parse 1
+> callback_start
+callback start 1
+> dump
+cmd 74 who 1000 state 0 status 0 wait 10 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 10 9000 0; parse [sail] [north]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> interrupt
+interrupt 1
+> field 9200 subkind 30
+> inventory 1000 24 13
+> callback_start
+callback start 1
+> dump
+cmd 74 who 1000 state 0 status 0 wait 4 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 4 9000 0; parse [sail] [north]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> interrupt
+interrupt 1
+> field 9200 subkind 66
+> callback_start
+callback start 1
+> dump
+cmd 74 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [sail] [north]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> interrupt
+interrupt 1
+> readlog 200
+log 200:
+1000:0::0::The crew of a roundship is eight sailors, but you have none.  Travel will take an extra eight days.
+1000:0::0::Favorable winds speed our progress.
+1000:0::0::Sailing to Ocean~[9001] will take ten days.
+1000:0::0::The crew of a galley is fourteen slaves or sailors, but you have 13.  Travel will take an extra day.
+1000:0::0::Sailing to Ocean~[9001] will take four days.
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 19 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+19 item 0
+
+export entity 24 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+24 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 601 2
+raw item 24 13
+1000 char 0
+il	24 13
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 0 0
+CO
+ li sail north
+ ar 0 1 9001 0 0 3 9000 0
+ wa 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200 9300
+9000 loc ocean
+LI
+ wh 8000
+ hl 9200 9300 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9200 ship raft
+LI
+ wh 9000
+ hl 1000 
+SL
+
+export entity 9300 char 0 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+9300 storm wind
+LI
+ wh 9000
+MI
+ ss 2
+
+stderr:
+
+exit 0
+stdout:
+section N18 parsed dry exit disables outer fallback and final unknown retained
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9100 3 9
+> entity 9200 9 66
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9100 9200
+> link 9200 1000
+> routes 9000 0 9001 0 0
+> parse sail in east
+parse 1
+> callback_start
+callback start 0
+> dump
+cmd 74 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [sail] [east]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> parse sail nowhere north unknown
+parse 1
+> callback_start
+callback start 0
+> dump
+cmd 74 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [sail] [unknown]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::(assuming 'sail 9200')
+1000:0::0::There is no water route in that direction.
+1000:0::0::No visible east route from Island~[9100].
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::No visible north route from Island~[9100].
+1000:0::0::Unknown direction or destination 'unknown'.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 601 2
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 0 0
+CO
+ li sail nowhere north unknown
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc ocean
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 0 9001 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9100 loc island
+LI
+ wh 9000
+ hl 9200 
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9200 ship raft
+LI
+ wh 9100
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N18 outer fallback exact original multiargument prepend last numeric argument
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9100 3 9
+> entity 9200 9 66
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9100 9200
+> link 9200 1000
+> routes 9000 0 9001 0 0
+> queue sail nowhere 9001
+> queue format 9
+> load
+load 1
+> do
+> dump
+cmd 74 who 1000 state 2 status 1 wait 1 poll 0 pri 4 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9000 8 9000 0 0 1 9100 0; parse [sail] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 2
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000: [sail nowhere 9001] [format 9]
+> set wait 1
+> evening
+> dump
+cmd 74 who 1000 state 1 status 1 wait -1 poll 0 pri 4 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 9001 0 0 0 0 0 0; parse [sail] [nowhere] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4: 1000
+run_q:
+> save 9200
+9200 ship raft
+LI
+ wh 9000
+ hl 1000 
+SL
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 1 0
+orders 1000: [format 9]
+> readlog 200
+log 200:
+1000:0::0::> sail nowhere 9001
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::No visible route from Island~[9100] to 9001.
+1000:0::0::(assuming 'sail out' first)
+1000:0::0::Sailing to Ocean~[9000] will take one day.
+1000:0::0::Arrival at Ocean~[9000].
+9000:0::0::Raft~[9200], raft, arrived from Island~[9100], owner:
+9000:0::0/3::   <no subkind>~[1000]
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9000
+200 player pl_regular
+PL
+ kn 9000 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 4010000 order 0
+here:
+raw skill 601 2
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 1 0
+CO
+ li sail nowhere 9001
+ ar 0 9001 0 0 0 0 0 0
+ cs 1
+ wa -1
+ st 1
+ pr 4
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 9200
+9000 loc ocean
+LI
+ wh 8000
+ hl 9100 9200 
+LO
+ pd 0 9001 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9100 loc island
+LI
+ wh 9000
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9200 ship raft
+LI
+ wh 9000
+ hl 1000 
+SL
+
+stderr:
+
+exit 0
+stdout:
+section N18 overloaded outer fallback diagnostic precedes retry and damage detail
+> entity 10 4 0
+> field 10 weight 1010
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9100 3 9
+> entity 9200 9 31
+> field 9200 capacity 2000
+> field 9200 damage 50
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9100 9200
+> link 9200 1000
+> routes 9000 0 9001 0 0
+> parse sail nowhere east
+parse 1
+> callback_start
+callback start 0
+> dump
+cmd 74 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [sail] [east]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::Unknown direction or destination 'nowhere'.
+1000:0::0::No visible east route from Island~[9100].
+1000:0::0::Roundship~[9200] is too overloaded to sail.
+1000:0::0::(ship capacity = 2000, damage = 50, load = 1010)
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 1010
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 601 2
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 0 0
+CO
+ li sail nowhere east
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc ocean
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 0 9001 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9100 loc island
+LI
+ wh 9000
+ hl 9200 
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9200 ship roundship
+LI
+ wh 9100
+ hl 1000 
+SL
+ da 50
+ ca 2000
+
+stderr:
+
+exit 0
+stdout:
+section N18 direct interruption clears ferry and moving without captain revalidation
+> set epoch 71
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9200 9 66
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9200 1000
+> link 9200 1001
+> routes 9000 9001 0 0 0
+> queue sail north
+> queue format 9
+> load
+load 1
+> do
+> save 9200
+9200 ship raft
+LI
+ wh 9000
+ hl 1000 1001 
+SL
+ mo 71
+
+> link 9000 1000
+> link 9200 1000
+> field 9200 horn 1
+> generic_interrupt 1000
+> dump
+cmd 33 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9 0 0 0 0 0 0 0; parse [format] [9]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9200
+9200 ship raft
+LI
+ wh 9000
+ hl 1001 1000 
+CH
+SL
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> report skill_rows 1000
+skill record 1000 1
+skill row 601 2 0 0
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 0 0
+CO
+ li format 9
+ ar 9 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+> readlog 200
+log 200:
+1000:0::0::> sail north
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 601 2
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 0 0
+CO
+ li format 9
+ ar 9 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9200
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9000 loc ocean
+LI
+ wh 8000
+ hl 9200 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9200 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here: 1001 1000
+9200 ship raft
+LI
+ wh 9000
+ hl 1001 1000 
+CH
+SL
+
+stderr:
+
+exit 0
+stdout:
+section N18 USE interrupt retained through reload no experience and real callback
+> set epoch 71
+> entity 600 5 0
+> entity 601 5 0
+> field 601 required 600
+> learn 1000 600 2 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9200 9 66
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9200 1000
+> routes 9000 9001 0 0 0
+> queue use 601 north
+> queue format 9
+> load
+load 1
+> do
+> persist_command
+> initial
+> field 9200 horn 1
+> generic_interrupt 1000
+> dump
+cmd 33 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 9 0 0 0 0 0 0 0; parse [format] [9]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9200
+9200 ship raft
+LI
+ wh 9000
+ hl 1000 
+CH
+CM
+SL
+ mo 71
+
+> report skill_rows 1000
+skill record 1000 1
+skill row 600 2 0 0
+skill row 601 2 0 0
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	600 2 0 0 0 \
+	601 2 0 0 0
+CO
+ li format 9
+ ar 9 0 0 0 0 0 0 0
+ cs 1
+ ue 1
+ pr 1
+
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::> use 601 north
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 600 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+600 skill 0
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+601 skill 0
+SK
+ tl 0
+ rs 600
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 600 2
+raw skill 601 2
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	600 2 0 0 0 \
+	601 2 0 0 0
+CO
+ li format 9
+ ar 9 0 0 0 0 0 0 0
+ cs 1
+ ue 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9000 loc ocean
+LI
+ wh 8000
+ hl 9200 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9200 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here: 1000
+9200 ship raft
+LI
+ wh 9000
+ hl 1000 
+CH
+CM
+SL
+ mo 71
+
+stderr:
+
+exit 0
+stdout:
+section N18 completion adjacent dead moved and live bound storms no skipping current road source
+> master 0
+> set epoch 71
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9002 3 1
+> entity 9200 9 66
+> entity 9300 11 58
+> entity 9301 11 59
+> entity 9302 11 58
+> entity 9303 11 59
+> entity 9400 7 0
+> entity 9401 7 0
+> field 9300 strength 1
+> field 9301 strength 2
+> field 9302 strength 3
+> field 9303 strength 4
+> field 9302 summoner 1000
+> field 9303 summoner 1000
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 9000 9200
+> link 9200 1000
+> link 9000 9300
+> link 9000 9301
+> link 9000 9302
+> link 9000 9303
+> link 9000 9400
+> link 9001 9401
+> road 9400 9001 1
+> road 9401 9002 1
+> set_known 1000 9400
+> queue sail 9001
+> load
+load 1
+> do
+> delete_box 9300
+> delete_box 9301
+> field 9200 bound_storm 9300
+> field 9200 bound_storm 9301
+> field 9200 bound_storm 9302
+> field 9200 bound_storm 9303
+> link 9002 9302
+> link 9002 9200
+> field 9200 horn 1
+> set wait 1
+> evening
+> dump
+cmd 74 who 1000 state 0 status 1 wait 0 poll 0 pri 4 cond 0 fuzzy 0 days 1 debug 0 inhibit 0 cur 0
+args 9001 0 9001 9400 1 3 9000 1; parse [sail] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9200
+9200 ship raft
+LI
+ wh 9001
+ hl 1000 
+CH
+SL
+ bs 9302 9303 
+
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9400 9401 9001
+touched: 9001
+weather:
+output: 1000 9001
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output:
+> readlog 200
+log 200:
+1000:0::0::> sail 9001
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+1000:0::0::Arrival at Ocean~[9001].
+9001:0::0::It has become quite windy.
+9001:0::0::It has begun to rain.
+9001:0::0::Raft~[9200], raft, arrived, owner:
+9001:0::0/3::   <no subkind>~[1000]
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9001
+200 player pl_regular
+PL
+ kn 9001 9400 9401 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 4010000 order 0
+here:
+raw skill 601 2
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 1 0
+CO
+ li sail 9001
+ ar 9001 0 9001 9400 1 3 9000 1
+ st 1
+ de 1
+ pr 4
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001 9002
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300 9301 9400
+9000 loc ocean
+LI
+ wh 8000
+ hl 9400 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9401 9200 9302 9303
+9001 loc ocean
+LI
+ wh 8000
+ hl 9401 9200 9302 9303 
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9002 loc ocean
+LI
+ wh 8000
+
+export entity 9200 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here: 1000
+9200 ship raft
+LI
+ wh 9001
+ hl 1000 
+CH
+SL
+ bs 9302 9303 
+
+export entity 9302 char 0 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+9302 storm wind
+LI
+ wh 9001
+MI
+ sb 1000
+ ss 3
+
+export entity 9303 char 0 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+9303 storm rain
+LI
+ wh 9001
+MI
+ sb 1000
+ ss 4
+
+export entity 9400 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9400 road 0
+LI
+ wh 9000
+GA
+ tl 9001
+ rh 1
+
+export entity 9401 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9401 road 0
+LI
+ wh 9001
+GA
+ tl 9002
+ rh 1
+
+stderr:
+
+exit 0
+stdout:
+section N18 hidden endpoints fog arrival public owner stack and passenger vector
+> set epoch 71
+> entity 10 4 0
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9200 9 66
+> entity 9300 11 57
+> entity 1002 2 0
+> entity 1003 2 0
+> field 1002 lord 201
+> field 1003 lord 201
+> field 9300 strength 2
+> field 9000 loc_hidden 1
+> field 9001 loc_hidden 1
+> set_known 1000 9001
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9200 1000
+> link 9200 1001
+> link 9000 1002
+> link 9001 1003
+> link 9001 9300
+> routes 9000 9001 0 0 0
+> queue sail north
+> load
+load 1
+> do
+> set wait 1
+> evening
+> dump
+cmd 74 who 1000 state 0 status 1 wait 0 poll 0 pri 4 cond 0 fuzzy 0 days 1 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 1 3 9000 1; parse [sail] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> move_state
+vector: 1000 1001
+move char 1000 where 9200 moving 0 guard 0
+here:
+move char 1001 where 9200 moving 0 guard 0
+here:
+move char 1002 where 9000 moving 0 guard 0
+here:
+move char 1003 where 9001 moving 0 guard 0
+here:
+show_garrison 0
+> readlog 200
+log 200:
+1000:0::0::> sail north
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+1000:0::0::Arrival at Ocean~[9001].
+1001:0::0::Arrival at Ocean~[9001].
+1000:0::0::The province is blanketed in fog.
+1001:0::0::The province is blanketed in fog.
+9001:0::0::Raft~[9200], raft, arrived, owner:
+9001:0::0/3::   <no subkind>~[1000]
+9001:0::0/3::   <no subkind>~[1001]
+> readlog 201
+log 201:
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001 9001
+200 player pl_regular
+PL
+ kn 9001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 4010000 order 0
+here:
+raw skill 601 2
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 1 0
+CO
+ li sail north
+ ar 0 1 9001 0 1 3 9000 1
+ st 1
+ de 1
+ pr 4
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9200
+CH
+ lo 200
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1002 char 0
+LI
+ wh 9000
+CH
+ lo 201
+
+export entity 1003 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1003 char 0
+LI
+ wh 9001
+CH
+ lo 201
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1002
+9000 loc ocean
+LI
+ wh 8000
+ hl 1002 
+LO
+ pd 9001 0 0 0 
+ hi 1
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1003 9300 9200
+9001 loc ocean
+LI
+ wh 8000
+ hl 1003 9300 9200 
+LO
+ hi 1
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000 1001
+9200 ship raft
+LI
+ wh 9001
+ hl 1000 1001 
+SL
+
+export entity 9300 char 0 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+9300 storm fog
+LI
+ wh 9001
+MI
+ ss 2
+
+stderr:
+
+exit 0
+stdout:
+section N18 invalid completion changed ship asserts still ship at1612
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9200 9 66
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9200 1000
+> routes 9000 9001 0 0 0
+> queue sail north
+> load
+load 1
+> do
+> link 9000 1000
+> set wait 0
+> finish
+stderr:
+assertion failure: olympia/move.c (1612): is_ship(ship)
+
+exit 134
+stdout:
+section N18 invalid completion changed captain asserts owner at1613
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9200 9 66
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9200 1000
+> routes 9000 9001 0 0 0
+> queue sail north
+> load
+load 1
+> do
+> link 9000 1000
+> link 9200 1001
+> link 9200 1000
+> set wait 0
+> finish
+stderr:
+assertion failure: olympia/move.c (1613): building_owner(ship) == c->who
+
+exit 134
+stdout:
+section N18 invalid interruption changed ship asserts still ship at1657
+> parse sail north
+parse 1
+> interrupt
+stderr:
+assertion failure: olympia/move.c (1657): is_ship(ship)
+
+exit 134
+stdout:
+section N18 parsed impassable water refuses and suppresses outer fallback
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 4
+> entity 9001 3 1
+> entity 9200 9 66
+> link 8000 9000
+> link 8000 9001
+> link 9000 9200
+> link 9200 1000
+> routes 9000 9001 0 0 0
+> parse sail north unknown
+parse 1
+> callback_start
+callback start 0
+> dump
+cmd 74 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [sail] [unknown]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::That route is impassable.
+1000:0::0::Unknown direction or destination 'unknown'.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 601 2
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 0 0
+CO
+ li sail north unknown
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9000 loc mountain
+LI
+ wh 8000
+ hl 9200 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9200 ship raft
+LI
+ wh 9000
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N18 repeated overloaded attempts preserve diagnostics and no active weight detail
+> entity 10 4 0
+> field 10 weight 1010
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9100 3 9
+> entity 9200 9 66
+> field 9200 capacity 2000
+> field 9200 damage 50
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9100 9200
+> link 9200 1000
+> routes 9000 9001 0 0 0
+> parse sail north
+parse 1
+> callback_start
+callback start 0
+> callback_start
+callback start 0
+> parse sail out
+parse 1
+> callback_start
+callback start 0
+> dump
+cmd 74 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [sail] [out]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> pstate 200
+player 200 np 0 gained 0 spent 0 backlinks 0
+units:
+output 0 0 0 1 0 touched 0 0
+orders 1000:
+> readlog 200
+log 200:
+1000:0::0::No visible north route from Island~[9100].
+1000:0::0::Raft~[9200] is too overloaded to sail.
+1000:0::0::(ship capacity = 2000, damage = 50, load = 1010)
+1000:0::0::No visible north route from Island~[9100].
+1000:0::0::Raft~[9200] is too overloaded to sail.
+1000:0::0::(ship capacity = 2000, damage = 50, load = 1010)
+1000:0::0::Raft~[9200] is too overloaded to sail.
+1000:0::0::(ship capacity = 2000, damage = 50, load = 1010)
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+IT
+ wt 1010
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+raw skill 601 2
+1000 char 0
+LI
+ wh 9200
+CH
+ lo 200
+ sl	601 2 0 0 0
+CO
+ li sail out
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc ocean
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9100 loc island
+LI
+ wh 9000
+ hl 9200 
+
+export entity 9200 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9200 ship raft
+LI
+ wh 9100
+ hl 1000 
+SL
+ da 50
+ ca 2000
+
+stderr:
+
+exit 0
+stdout:
+section N18 completion moved captain to another valid ship uses current ship not saved one
+> set epoch 71
+> entity 601 5 0
+> learn 1000 601 2 0
+> entity 8000 3 50
+> entity 9000 3 1
+> entity 9001 3 1
+> entity 9002 3 1
+> entity 9200 9 66
+> entity 9201 9 66
+> field 9200 horn 1
+> field 9201 horn 1
+> link 8000 9000
+> link 8000 9001
+> link 8000 9002
+> link 9000 9200
+> link 9002 9201
+> link 9200 1000
+> link 9201 1001
+> routes 9000 9001 0 0 0
+> queue sail north
+> load
+load 1
+> do
+> link 9002 1001
+> link 9201 1000
+> set wait 1
+> evening
+> dump
+cmd 74 who 1000 state 0 status 1 wait 0 poll 0 pri 4 cond 0 fuzzy 0 days 1 debug 0 inhibit 0 cur 0
+args 0 1 9001 0 0 3 9000 0; parse [sail] [north]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9200
+9200 ship raft
+LI
+ wh 9000
+CH
+SL
+ mo 71
+
+> save 9201
+9201 ship raft
+LI
+ wh 9001
+ hl 1000 
+CH
+SL
+
+> report skill_rows 1000
+skill record 1000 1
+skill row 601 2 0 1
+1000 char 0
+LI
+ wh 9201
+CH
+ lo 200
+ sl	601 2 0 1 0
+CO
+ li sail north
+ ar 0 1 9001 0 0 3 9000 0
+ st 1
+ de 1
+ pr 4
+
+> readlog 200
+log 200:
+1000:0::0::> sail north
+1000:0::0::Sailing to Ocean~[9001] will take three days.
+1000:0::0::Arrival at Ocean~[9001].
+9001:0::0::Raft~[9201], raft, arrived from Ocean~[9000], owner:
+9001:0::0/3::   <no subkind>~[1000]
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 9001
+200 player pl_regular
+PL
+ kn 9001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 601 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+601 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 601 2
+1000 char 0
+LI
+ wh 9201
+CH
+ lo 200
+ sl	601 2 0 1 0
+CO
+ li sail north
+ ar 0 1 9001 0 0 3 9000 0
+ st 1
+ de 1
+ pr 4
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9002
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001 9002
+8000 loc region
+LI
+ hl 9000 9001 9002 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9200
+9000 loc ocean
+LI
+ wh 8000
+ hl 9200 
+LO
+ pd 9001 0 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9201
+9001 loc ocean
+LI
+ wh 8000
+ hl 9201 
+
+export entity 9002 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9002 loc ocean
+LI
+ wh 8000
+ hl 1001 
+
+export entity 9200 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+9200 ship raft
+LI
+ wh 9000
+CH
+SL
+ mo 71
+
+export entity 9201 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here: 1000
+9201 ship raft
+LI
+ wh 9001
+ hl 1000 
+CH
+SL
+
+stderr:
+
+exit 0

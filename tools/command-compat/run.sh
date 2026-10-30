@@ -53,6 +53,8 @@ functions = {
                'can_move_here', 'can_move_at_outer_level', 'suspend_stack_actions',
                'clear_guard_flag', 'v_move', 'd_move',
                'move_exit_fly', 'fly_check', 'can_fly_here', 'can_fly_at_outer_level', 'v_fly', 'd_fly',
+               'move_exit_water', 'sail_depart_message', 'sail_arrive_message', 'sail_check',
+               'can_sail_here', 'can_sail_at_outer_level', 'v_sail', 'd_sail', 'i_sail',
                'init_ocean_chars', 'check_ocean_chars',
                'v_exit', 'v_enter', 'v_north', 'v_south', 'v_east', 'v_west'],
     'day.c': ['touch_loc_pl', 'touch_loc', 'storm_owner_touch_loc', 'init_locs_touched',
@@ -315,6 +317,7 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(source[start:end])
         if file == 'u.c':
             out.write(re.search(r'^static int dot_count = 0;\n', source, re.M).group(0))
+            out.write(re.search(r'^int weight_display_flag = 0;\n', source, re.M).group(0))
             # Whole original RNG prefix: shared persistent entity stream, tags,
             # turn guard and all keyed leaves, not replacement helper draws.
             start = source.index('#define\tETAG_TURN')
@@ -375,6 +378,8 @@ int immed_see_all, month_done, show_combat_flag;
                 pattern = r'^static int get_city_id\(.*?^\}\n'
             if name == 'v_flag':
                 pattern = r'^int v_flag\(.*?^\}\n'
+            if name == 'i_sail':
+                pattern = r'^int i_sail\(.*?^\}\n'
             m = re.search(pattern, source, re.M | re.S)
             if name == 'list_skill_sup':
                 # The first definition is disabled by #if 0; use the real #else.
@@ -848,6 +853,22 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N18 '* ]]; then
+   expected_status=0
+   expected_assert=''
+   case "${section_names[$i]}" in
+    'section N18 invalid completion changed ship asserts still ship at1612')
+     expected_status=134; expected_assert='assertion failure: olympia/move.c (1612): is_ship(ship)' ;;
+    'section N18 invalid completion changed captain asserts owner at1613')
+     expected_status=134; expected_assert='assertion failure: olympia/move.c (1613): building_owner(ship) == c->who' ;;
+    'section N18 invalid interruption changed ship asserts still ship at1657')
+     expected_status=134; expected_assert='assertion failure: olympia/move.c (1657): is_ship(ship)' ;;
+   esac
+   [ "$status" = "$expected_status" ] || die "unexpected N18 status $status in section $i"
+   if [ -n "$expected_assert" ]; then
+    grep -Fxq "$expected_assert" "${WORK}/${run}/stderr" || die "wrong N18 assertion in section $i"
+   fi
+  fi
   if [[ "${section_names[$i]}" == 'section N17 '* ]]; then
    [ "$status" = 0 ] || die "unexpected N17 status $status in section $i"
   fi

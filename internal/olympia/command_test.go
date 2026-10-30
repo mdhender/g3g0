@@ -3392,7 +3392,7 @@ func TestCommandUnportedStops(t *testing.T) {
 // Real transfer/interrupt orchestration must not turn unported non-NULL
 // callbacks into success. This tests the explicit boundary, not C results.
 func TestCommandInterruptionBoundaries(t *testing.T) {
-	for _, name := range []string{"sail"} {
+	for _, name := range []string{"repair"} {
 		for _, transfer := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%s/transfer=%v", name, transfer), func(t *testing.T) {
 				w := newWorld()

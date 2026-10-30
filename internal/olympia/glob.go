@@ -471,6 +471,10 @@ func init() {
 		case "fly":
 			cmdTbl[i].start = (*world).vFly
 			cmdTbl[i].finish = (*world).dFly
+		case "sail":
+			cmdTbl[i].start = (*world).vSail
+			cmdTbl[i].finish = (*world).dSail
+			cmdTbl[i].interrupt = (*world).iSail
 		case "north", "n":
 			cmdTbl[i].start = (*world).vNorth
 		case "south", "s":
