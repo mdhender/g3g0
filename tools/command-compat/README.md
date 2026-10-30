@@ -3,6 +3,139 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## REPAIR and IMPROVE (#223, stage 4 N22a)
+
+**0.145.0-alpha**, unchanged immutable **9a03d126**. Existing build.go owns
+complete `repair_points` **818–844**, `v_repair` **847–907**, `d_repair`
+**910–992**, `i_repair` **995–1018**, the original improvement tables
+**1134–1135**, `v_improve` **1137–1189** and `d_improve` **1192–1237**
+(ranges include return-type declarations). glob.go wires only the actual
+direct commands: real REPAIR interruption, genuine **NULL IMPROVE interrupt**.
+There is no construction REPAIR/IMPROVE USE row to invent. RAZE224, other
+USE/STOP closures240, combat235 and stage5 remain separate obligations.
+
+Repair uses the shared default-defense owner and C32 workers/remainder/totals,
+unsigned-byte damage and C32 defense. Start checks depth, tariff, damage/
+defense and workers **before** consuming one glue, only for **completed**
+galleys/roundships; successful start then clears d/e/f and sets wait. Daily
+work checks depth, already-whole, then workers; it does not invent another
+subtype, ownership, skill or glue recheck. Remainder carries across saved
+command reparsing. Damage precedes default-defense restoration; completion
+and timer expiry use the actual cumulative summary. Already-whole daily
+entry returns without replaying that summary. Interruption rebuilds the
+descendant-character vector plus the **current** structure even with zero
+totals; both/damage-only/defense-only/no-message cases retain original routing.
+
+Improvement checks castle, level6 and workers in that order. It allocates SL
+after workers but before insufficient stone is diagnosed. Stone is consumed
+only when `effort_given == 0`; that field stores **remaining** worker-days,
+not accumulated work. All six original cost/work rows are retained. Only
+zero days becomes -1 (REPAIR instead changes every days<1 to -1). Completion
+checks current castle/workers, subtracts C32 effort, clamps negative to zero,
+then increments signed-byte level and C32 defense by five, routing the exact
+original line without a final period. No level6/stone/owner/damage recheck,
+original-target binding, extra repair or automatic next level is added.
+
+The existing native extraction/hook and Go driver gain six build actions;
+**23 complete original build.c definitions** and both unchanged original
+improvement tables are verified byte-for-byte with genuine #line directives.
+Ranges/body hashes: `tmp/issue223-extraction-proof.log`. No new source
+dependency or pin, shared owner, RNG adapter or serializer change is needed.
+The obsolete test demanding REPAIR NYI is removed; its actual standalone
+interrupt and lord-transfer/queue-flush behavior is now compared against C.
+
+**20 appended sections** discriminate real delayed/saved/reloaded REPAIR and
+IMPROVE; real generic interruption and saved STOP; timer expiry, resume and
+successor queues; all repair tariffs/exclusions, validation/allocation order,
+finished/unfinished ship glue, repeated starts, remainder and damage before
+defense, exact/excess totals, nested recipients and current-location changes;
+all improvement costs, stone-once/persisted remaining effort, level6 start
+versus finish, zero/negative raw days and C32/byte width boundaries. Raw save
+bytes, inventories, order queues, output bits/lists and keyed/legacy/mint
+aftermath are included. These are driver scenarios, not upstream fixture edits.
+
+Before production edits, unchanged C ran twice and old Go genuinely stopped
+at **command repair start NYI** through actual dispatch:
+`tmp/issue223-command-before.log` (1953 deterministic C sections). Early
+authoring corrected an inn/castle subtype, glue entity261, structure-defense
+versus item-defense fields and a nonexistent driver verb. A new lord-transfer
+probe initially omitted the new owner's NP and hit C's existing swear.c:180
+assertion; the N22a status0 gate rejected it before recording. Funding the
+ordinary test account exercises real transfer instead; no assertion allowance,
+upstream fix, defensive engine guard or expected-byte workaround was added.
+
+Fresh final recording runs unchanged C **twice before recording/Go** and
+matches **1971 sections /176113 lines /3390000 output bytes**. Additions are
+**20 sections /559 input lines /9458 input bytes /2255 output lines /
+41502 output bytes**. Both entire inherited prefixes are exact, including
+**47 input /93 output high-bit bytes** and original C trailing spaces:
+
+| Bytes | Size | SHA-256 |
+| --- | --- | --- |
+| Input | 833066 | `6c875a847add536a17aad0200179b401a44d9128d49a8c3762dec9b4e955e807` |
+| Output | 3390000 | `2d59dc8b0930c7d26084c4eb2c3f17b48fc506ce2a03c0346ab337f0fb6e77ac` |
+| Entire inherited input | 823608 | `41c36407bbdf90770dea91e6269fba0ac8332f8bd2b9b3d2141333276122fc23` |
+| Entire inherited output | 3348498 | `3f4186c9cac88f041df3bd0e67c253d73dbae9dd9f089bdf393d40a1d80e4249` |
+
+Stage3 prefixes **578307/2134398 bytes** retain hashes
+`3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` /
+`1eabf595ecf06bcde56319a75012527a42dabb7e7218191b69006a86accccabe`,
+including accepted290's assertion shifts. Exact audit:
+`tmp/issue223-prefix-proof.log`. New N22a C sections require0; inherited
+source-located 134 controls retain their original gates. Rejected markers
+are checked **before** expected statuses or recording. Compiled native
+controls exercise **0/134 × default/update × six marker classes**, all
+**24 reject2**, with recordings unchanged; separate bounded real native
+probes confirm actual0/134. Evidence: `tmp/issue223-marker-{native,controls}.log`
+and per-control logs. No Go-generated expected bytes or normalization.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/command-compat/run.sh --update
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3G0_FULL=1 RUN_TIMEOUT=120 go test -count=1 -v \
+  -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+```
+
+Bounded vet and fresh full-enabled tests pass (**11 packages**, Olympia
+**2.310s**, ten explicit opt-in/child-entry skips). All **eight routine
+defaults run sequentially and pass** at their existing pins; the final command
+default repeats C/C/Go, **1971 sections /176113 lines**, Olympia **1.666s**.
+Gofmt, shell syntax and code/docs diff checks pass. Whole diff-check reports
+only authentic newly recorded C trailing spaces, deliberately not normalized.
+Logs: `tmp/issue223-{vet-final,tests,validation,source-checks}.log`,
+`tmp/issue223-command-{record-accepted,default}.log`, and
+`tmp/issue223-*-default.log`. Native original construction-build/refused and
+stop-running now all match; see [native proof](../turn-compat/README.md#repair-and-improvement-original-fixture-proof-223).
+Full original spec is **69/60/0**, adding exactly those three names with no
+loss; [spec proof](../olympia-spec/README.md#repair-and-improvement-no-loss-223).
+Golden remains NO/init2. The protected full207 cache stays idle: no new
+serializer/full-corpus proof, family/stage exit or stage5 claim is made.
+Temporary helpers/binaries, matching captures, disposable WORK/RUN_DIRs and
+generated coverage/use dumps are removed; decisive logs/manifests and pristine
+canonical/cache are retained. No commit, push or GitHub write is performed.
+
+Parent independently accepted the complete source/diff and repeated bounded
+vet, fresh full-enabled tests (**11 packages**, Olympia **2.248s**), all eight
+sequential defaults and the full unchanged spec (**69/60/0**, no lost names,
+golden NO/init2). The command oracle again matched **1971/176113**. Fresh
+native C1/C2/Go replay of all three scripts matched raw status/streams and
+all **242/245/259 cwd entries**, including modes and empty directories.
+Parent reverified **1237** canonical source blobs/modes, binary provenance,
+all **23** extracted definitions/tables and genuine locations, both complete
+inherited prefixes, all prior66/stage3-36 names and the **109** handoff evidence
+digests. Logs: `tmp/parent223-{vet,tests,command,move,helper,rng,code,loadsave,
+turn-driver,turn,spec,fixtures,integrity,evidence-check}.log`, native inventories
+and full manifests. Only construction-build/refused and stop-running are new
+spec passes; this remains localized acceptance, not a family/stage exit.
+
 ## Daily BUILD and completion (#222, stage 4 N21)
 
 **0.144.0-alpha**, unchanged immutable **9a03d126**. build.go now ports

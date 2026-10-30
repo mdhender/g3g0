@@ -8,6 +8,49 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## Repair and improvement no-loss (#223)
+
+At **0.145.0-alpha**, unchanged immutable **9a03d126**, full original spec:
+**129 fixtures /69 pass /60 fail /0 error (132s)**, exit0. All **66 prior
+names** and stage3's **36 names** remain, checked as sets rather than counts.
+Exactly three newly passing original names:
+
+- `construction-build`
+- `construction-refused`
+- `stop-running`
+
+The anticipated stop-running USE boundary is not a failure in this run:
+USE601's actual sailing callbacks already work after219, and complete
+REPAIR223 removes the last boundary in this particular frozen scenario.
+Other USE callbacks/STOP240 and RAZE224 remain their own obligations.
+The separate [native original-script proof](../turn-compat/README.md#repair-and-improvement-original-fixture-proof-223)
+runs C1,C2,Go, with all **nine** captures and all three complete cwd/raw
+comparisons exact (**242/245/259 entries**). None of this infers a family or
+stage exit, whole-spec parity or acceptance of other USE commands.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue223/spec" \
+  RUN_DIR=/tmp/g3g0-issue223-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Only the existing tool writes passing.txt: **1378 bytes**, SHA-256
+`bb7120a4ded88e68bc4c3eca917aadd10d295db9ff7e6f344dd7a63b4e2d7735`.
+Stage3's source list remains **876 bytes**, SHA-256
+`6d2080c29961395d8387364983b6543a6d05c7277b63bdfd16f9025a91736b67`.
+Golden stays honestly **NO**, initialization **2**, unsupported `load_db (-i)`.
+No original fixture or oracle edits, upstream --update, fixture overlays,
+new pin, stage5 implementation or full207 serializer-corpus rerun. #289's
+ATTACK235/fog264/full missing-argument obligations and immediate/console
+stage5 remainder are unchanged; no new upstream blocker was demonstrated.
+
+Evidence: `tmp/issue223-spec.log`, `tmp/issue223-spec-names.log`,
+`tmp/issue223-spec-logs/{run-all,olympia-g3,golden,build}.log`.
+The disposable WORK/external RUN_DIR, temporary binaries/helpers, matching
+captures and generated coverage/use dumps are removed after checks. The
+pristine verified canonical source and protected idle roundtrip cache remain.
+
 ## Daily BUILD no-loss (#222)
 
 At **0.144.0-alpha**, unchanged immutable **9a03d126**, full original spec:

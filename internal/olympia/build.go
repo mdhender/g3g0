@@ -3,7 +3,7 @@
 
 package olympia
 
-// Construction: build.c:8–811. Repair/improve and raze remain separate owners.
+// Construction and repair/improvement: build.c. Raze remains a separate owner.
 func fortDefaultDefense(sk int) int {
 	switch sk {
 	case subCastle:
@@ -380,4 +380,195 @@ func (w *world) dBuild(c *command) int {
 		return 0
 	}
 	return w.dailyBuild(c, t)
+}
+
+// repair_points, build.c:818–844. Unfinished ships are repairable too,
+// but only completed ships consume glue in v_repair.
+func repairPoints(k int) int32 {
+	switch k {
+	case subCastle, subCastleNotdone:
+		return 3
+	case subTower, subTowerNotdone, subTemple, subTempleNotdone,
+		subInn, subInnNotdone, subMine, subMineNotdone:
+		return 2
+	case subGalley, subGalleyNotdone, subRoundship, subRoundshipNotdone:
+		return 1
+	}
+	return 0
+}
+
+func (w *world) vRepair(c *command) int {
+	who, days := int(c.who), c.a
+	where := w.subloc(who)
+	fortDef := int32(fortDefaultDefense(w.subkind(where)))
+	if days < 1 {
+		days = -1
+	}
+	if w.locDepth(where) != locBuild {
+		w.commandOut(who, "%s may not be repaired.", w.boxName(where))
+		return 0
+	}
+	if repairPoints(w.subkind(where)) == 0 {
+		w.commandOut(who, "%s may not be repaired.", w.boxName(where))
+		return 0
+	}
+	p := w.rpSubloc(where)
+	// Missing SL has zero damage/defense, not default defense.
+	if (p == nil && fortDef <= 0) || (p != nil && p.damage < 1 && p.defense >= fortDef) {
+		w.commandOut(who, "%s is not damaged.", w.boxName(where))
+		return 0
+	}
+	if w.hasItem(who, itemWorker) < 1 {
+		w.commandOut(who, "Need at least one %s.", w.boxName(itemWorker))
+		return 0
+	}
+	if w.subkind(where) == subGalley || w.subkind(where) == subRoundship {
+		if !w.consumeItem(who, itemGlue, 1) {
+			w.commandOut(who, "%s repair requires %s.", capitalize(subkindS[w.subkind(where)]), w.boxNameQty(itemGlue, 1))
+			return 0
+		}
+	}
+	c.d, c.e, c.f = 0, 0, 0
+	c.wait = days
+	return 1
+}
+
+func (w *world) dRepair(c *command) int {
+	who := int(c.who)
+	where := w.subloc(who)
+	fortDef := int32(fortDefaultDefense(w.subkind(where)))
+	if w.locDepth(where) != locBuild {
+		w.commandOut(who, "No longer in a repairable structure.")
+		return 0
+	}
+	p := w.rpSubloc(where)
+	if (p == nil && fortDef <= 0) || (p != nil && p.damage < 1 && p.defense >= fortDef) {
+		w.commandOut(who, "%s has been fully repaired.", w.boxName(where))
+		c.wait = 0
+		return 1
+	}
+	workers := w.hasItem(who, itemWorker)
+	if workers < 1 {
+		w.commandOut(who, "No longer have at least one %s.", w.boxName(itemWorker))
+		return 0
+	}
+	perPoint := repairPoints(w.subkind(where))
+	// No new subtype/owner/glue check: C only checks depth at completion.
+	workers += c.d
+	c.d = workers % perPoint
+	points := workers / perPoint
+	p = w.pSubloc(where)
+	if p.damage > 0 {
+		if points > int32(p.damage) {
+			points -= int32(p.damage)
+			c.e += int32(p.damage)
+			p.damage = 0
+		} else {
+			p.damage = uint8(int32(p.damage) - points)
+			c.e += points
+			points = 0
+		}
+	}
+	if points > 0 && p.defense < fortDef {
+		if points > fortDef-p.defense {
+			c.f += fortDef - p.defense
+			p.defense = fortDef
+		} else {
+			p.defense += points
+			c.f += points
+		}
+	}
+	if p.damage < 1 && p.defense >= fortDef {
+		w.commandOut(who, "%s has been fully repaired.", w.boxName(where))
+		w.iRepair(c)
+		c.wait = 0
+		return 1
+	}
+	if c.wait == 0 {
+		w.iRepair(c)
+	}
+	return 1
+}
+
+func (w *world) iRepair(c *command) int {
+	where := w.subloc(int(c.who))
+	w.vectorCharHere(where)
+	w.vectorAdd(where)
+	switch {
+	case c.e != 0 && c.f != 0:
+		w.commandOut(vect, "%s repaired %s damage and %s defense for %s.", w.boxName(int(c.who)), niceNum(int(c.e)), niceNum(int(c.f)), w.boxName(where))
+	case c.e != 0:
+		w.commandOut(vect, "%s repaired %s damage to %s.", w.boxName(int(c.who)), niceNum(int(c.e)), w.boxName(where))
+	case c.f != 0:
+		w.commandOut(vect, "%s repaired %s defense for %s.", w.boxName(int(c.who)), niceNum(int(c.f)), w.boxName(where))
+	}
+	return 1
+}
+
+var improveStone = [...]int{50, 60, 70, 80, 90, 100}
+var improveWork = [...]int32{1000, 1250, 1500, 1750, 2000, 2500}
+
+func (w *world) vImprove(c *command) int {
+	who, days := int(c.who), c.a
+	where := w.subloc(who)
+	if w.subkind(where) != subCastle {
+		w.commandOut(who, "Not in a castle.")
+		return 0
+	}
+	level := 0
+	if p := w.rpSubloc(where); p != nil {
+		level = int(p.castleLev)
+	}
+	if level >= 6 {
+		w.commandOut(who, "No further castle improvement is possible.")
+		return 0
+	}
+	if w.hasItem(who, itemWorker) < 1 {
+		w.commandOut(who, "Need at least one %s.", w.boxName(itemWorker))
+		return 0
+	}
+	p := w.pSubloc(where)
+	if p.effortGiven == 0 {
+		stone := improveStone[level]
+		if w.hasItem(who, itemStone) < int32(stone) {
+			w.commandOut(who, "%s required to proceed with improvement to level %s.", w.boxNameQty(itemStone, stone), niceNum(level+1))
+			return 0
+		}
+		w.consumeItem(who, itemStone, stone)
+		w.commandOut(who, "Applied %s to begin work toward level %s.", w.boxNameQty(itemStone, stone), niceNum(level+1))
+		p.effortGiven = improveWork[level]
+	}
+	if days == 0 {
+		days = -1
+	}
+	c.wait = days
+	return 1
+}
+
+func (w *world) dImprove(c *command) int {
+	who := int(c.who)
+	where := w.subloc(who)
+	if w.subkind(where) != subCastle {
+		w.commandOut(who, "No longer in a castle.")
+		return 0
+	}
+	workers := w.hasItem(who, itemWorker)
+	if workers < 1 {
+		w.commandOut(who, "No longer have at least one %s.", w.boxName(itemWorker))
+		return 0
+	}
+	p := w.pSubloc(where)
+	p.effortGiven -= workers
+	if p.effortGiven < 0 {
+		p.effortGiven = 0
+	}
+	if p.effortGiven == 0 {
+		w.vectorCharHere(where)
+		w.vectorAdd(where)
+		p.castleLev++
+		p.defense += 5
+		w.commandOut(vect, "%s is now at improvement level %s, defense %d", w.boxName(where), niceNum(int(p.castleLev)), p.defense)
+		c.wait = 0
+	}
+	return 1
 }

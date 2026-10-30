@@ -44468,3 +44468,562 @@ readlog 202
 save 9300
 save 1000
 export state
+
+section N22a REPAIR actual dispatch saved remainder interruption totals and queued successor
+resolve_wait
+entity 9000 3 3
+entity 9300 3 32
+entity 11 4 0
+link 9000 9300
+link 9300 1000
+link 1000 1001
+field 9300 damage 3
+field 9300 structure_defense 49
+inventory 1000 11 2
+queue repair 9
+queue wait time 1
+load
+do
+dump
+day 1
+dump
+save 9300
+persist_command
+initial
+day 2
+dump
+save 9300
+generic_interrupt 1000
+dump
+save 1000
+readlog 200
+readlog 201
+export state
+
+section N22a IMPROVE actual dispatch saved remaining effort and genuine NULL interrupt
+resolve_wait
+entity 9000 3 3
+entity 9300 3 32
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9300 1000
+inventory 1000 11 100
+inventory 1000 78 50
+queue improve
+queue wait time 1
+load
+do
+dump
+day 1
+save 9300
+save 1000
+persist_command
+initial
+generic_interrupt 1000
+dump
+save 9300
+save 1000
+readlog 200
+export state
+
+section N22a REPAIR tariff all complete unfinished and excluded subtypes
+build repair_points x 32
+build repair_points x 39
+build repair_points x 46
+build repair_points x 47
+build repair_points x 29
+build repair_points x 36
+build repair_points x 37
+build repair_points x 38
+build repair_points x 40
+build repair_points x 41
+build repair_points x 30
+build repair_points x 33
+build repair_points x 31
+build repair_points x 34
+build repair_points x 35
+build repair_points x 53
+build repair_points x 66
+build repair_points x 67
+build repair_points x 0
+build repair_points x 3
+
+section N22a REPAIR start validation before workers glue and command reset
+entity 9000 3 3
+entity 9300 9 66
+entity 11 4 0
+entity 261 4 0
+link 9000 9300
+link 9000 1000
+parse repair -7
+rawargs -7 2 3 97
+set wait 8
+build repair_v
+dump
+link 9300 1000
+field 9300 damage 1
+build repair_v
+field 9300 subkind 30
+field 9300 damage 0
+field 9300 structure_defense 20
+build repair_v
+field 9300 damage 1
+build repair_v
+inventory 1000 11 -1
+build repair_v
+inventory 1000 11 1
+build repair_v
+inventory 1000 261 1
+build repair_v
+dump
+save 1000
+save 9300
+readlog 200
+
+section N22a REPAIR complete ships glue only once start not daily or saved reload
+resolve_wait
+entity 9000 3 3
+entity 9300 9 30
+entity 11 4 0
+entity 261 4 0
+link 9000 9300
+link 9300 1000
+field 9300 damage 3
+field 9300 structure_defense 19
+inventory 1000 11 2
+inventory 1000 261 1
+queue repair
+queue wait time 1
+load
+do
+save 1000
+day 1
+save 9300
+dump
+persist_command
+initial
+day 2
+dump
+save 9300
+save 1000
+readlog 200
+export state
+
+section N22a REPAIR unfinished ships no glue and no default defense
+entity 9000 3 3
+entity 9300 9 33
+entity 9301 9 34
+entity 11 4 0
+link 9000 9300
+link 9000 9301
+link 9300 1000
+field 9300 damage 1
+field 9301 damage 2
+inventory 1000 11 1
+parse repair 2
+build repair_v
+build repair_d
+dump
+save 9300
+link 9301 1000
+build repair_v
+build repair_d
+build repair_d
+dump
+save 9301
+save 1000
+readlog 200
+
+section N22a REPAIR roundship second start charges glue again but failed start keeps slots
+entity 9000 3 3
+entity 9300 9 31
+entity 11 4 0
+entity 261 4 0
+link 9000 9300
+link 9300 1000
+field 9300 damage 10
+inventory 1000 11 1
+inventory 1000 261 2
+parse repair 1
+build repair_v
+set wait 0
+build repair_d
+dump
+build repair_v
+build repair_d
+dump
+build repair_v
+dump
+save 1000
+save 9300
+readlog 200
+
+section N22a REPAIR remainder damage first exact and excess defense totals vector descendants
+entity 9000 3 3
+entity 9300 3 32
+entity 9301 3 46
+entity 1002 2 0
+entity 1003 2 0
+entity 11 4 0
+link 9000 9300
+link 9300 9301
+link 9300 1000
+link 1000 1001
+link 9300 1002
+link 9301 1003
+field 1002 lord 201
+field 1003 lord 201
+field 201 touched 9300
+field 9300 damage 2
+field 9300 structure_defense 48
+inventory 1000 11 2
+parse repair 10
+build repair_v
+build repair_d
+dump
+build repair_d
+dump
+build repair_d
+dump
+save 9300
+build repair_d
+dump
+build repair_d
+dump
+inventory 1000 11 20
+build repair_d
+dump
+save 9300
+build repair_d
+readlog 200
+readlog 201
+export state
+
+section N22a REPAIR completion depth then fully repaired then workers no extra subtype check
+entity 9000 3 3
+entity 9300 3 46
+entity 11 4 0
+link 9000 9300
+link 9000 1000
+parse repair
+set wait 8
+build repair_d
+link 9300 1000
+field 9300 structure_defense 40
+build repair_d
+field 9300 damage 1
+build repair_d
+inventory 1000 11 -2
+build repair_d
+inventory 1000 11 2
+field 9300 subkind 47
+build repair_d
+dump
+save 9300
+readlog 200
+
+section N22a REPAIR timer expiry persisted STOP current location summaries both only defense damage none
+resolve_wait
+entity 9000 3 3
+entity 9300 3 46
+entity 11 4 0
+link 9000 9300
+link 9300 1000
+field 9300 damage 1
+inventory 1000 11 3
+queue repair 2
+queue repair
+load
+do
+day 1
+day 2
+dump
+save 9300
+day 3
+dump
+persist_command
+initial
+queue stop
+queue wait time 1
+stops
+dump
+build repair_i
+field 9300 damage 1
+parse repair
+build repair_v
+build repair_i
+build repair_d
+build repair_i
+dump
+save 9300
+readlog 200
+
+section N22a REPAIR signed worker plus saved remainder and damage byte conversion
+entity 9000 3 3
+entity 9300 3 32
+entity 11 4 0
+link 9000 9300
+link 9300 1000
+field 9300 damage 250
+field 9300 structure_defense 49
+inventory 1000 11 2147483647
+parse repair 9
+build repair_v
+rawargs 9 0 0 2
+build repair_d
+dump
+save 9300
+build repair_i
+readlog 200
+
+section N22a IMPROVE validation level six before workers and stone with lazy SL allocation
+entity 9000 3 3
+entity 9300 3 32
+entity 9301 3 32
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9000 9301
+link 9000 1000
+parse improve 7
+build improve_v
+link 9300 1000
+build improve_v
+save 9300
+inventory 1000 11 1
+build improve_v
+save 9300
+inventory 1000 78 49
+build improve_v
+field 9300 castle_level 6
+field 9300 effort_given 7
+inventory 1000 11 0
+build improve_v
+save 9300
+link 9301 1000
+inventory 1000 11 -1
+build improve_v
+save 9301
+readlog 200
+
+section N22a IMPROVE six original stone effort rows and negative versus zero days
+entity 9000 3 3
+entity 9300 3 32
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9300 1000
+inventory 1000 11 1
+inventory 1000 78 500
+parse improve -2
+rawargs -2 0 0 0
+build improve_v
+dump
+save 9300
+field 9300 effort_given 0
+field 9300 castle_level 1
+parse improve 0
+build improve_v
+dump
+save 9300
+field 9300 effort_given 0
+field 9300 castle_level 2
+parse improve 1
+build improve_v
+dump
+save 9300
+field 9300 effort_given 0
+field 9300 castle_level 3
+build improve_v
+save 9300
+field 9300 effort_given 0
+field 9300 castle_level 4
+build improve_v
+save 9300
+field 9300 effort_given 0
+field 9300 castle_level 5
+build improve_v
+save 9300
+save 1000
+readlog 200
+
+section N22a IMPROVE timer expiry actual saved resume no second stone and natural finish successor
+resolve_wait
+entity 9000 3 3
+entity 9300 3 32
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9300 1000
+inventory 1000 11 333
+inventory 1000 78 50
+queue improve 2
+queue wait time 1
+load
+do
+day 1
+day 2
+dump
+save 9300
+save 1000
+persist_command
+initial
+queue improve
+load
+do
+day 3
+dump
+save 9300
+day 4
+day 5
+dump
+save 9300
+save 1000
+readlog 200
+export state
+
+section N22a IMPROVE finish validates castle then workers only level six damage owner ignored
+entity 9000 3 3
+entity 9300 3 32
+entity 11 4 0
+link 9000 9300
+link 9000 1000
+parse improve
+build improve_d
+link 9300 1000
+build improve_d
+inventory 1000 11 -1
+build improve_d
+inventory 1000 11 1
+field 9300 castle_level 6
+field 9300 effort_given 1
+field 9300 damage 99
+field 9300 structure_defense 70
+build improve_d
+dump
+save 9300
+readlog 200
+
+section N22a IMPROVE finish exact over effort and C32 subtraction defense and level widths
+entity 9000 3 3
+entity 9300 3 32
+entity 11 4 0
+link 9000 9300
+link 9300 1000
+inventory 1000 11 5
+field 9300 effort_given 6
+field 9300 structure_defense 2147483646
+field 9300 castle_level 127
+build improve_d
+save 9300
+build improve_d
+save 9300
+dump
+field 9300 effort_given -2147483648
+build improve_d
+save 9300
+dump
+readlog 200
+
+section N22a IMPROVE remaining effort belongs to current castle not original target no stone recheck
+entity 9000 3 3
+entity 9300 3 32
+entity 9301 3 32
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9000 9301
+link 9300 1000
+inventory 1000 11 3
+field 9300 effort_given 4
+parse improve
+build improve_v
+save 1000
+build improve_d
+save 9300
+link 9301 1000
+build improve_d
+dump
+save 9301
+readlog 200
+entity_rolls 1000 1 9000
+usemeta legacy 1 100000
+newitem 1000 0
+save_new
+export state
+
+section N22a REPAIR lord transfer flushes queued orders before real accumulated summary
+resolve_wait
+entity 9000 3 3
+entity 9300 3 46
+entity 11 4 0
+field 201 np 10
+link 9000 9300
+link 9300 1000
+field 9300 damage 1
+inventory 1000 11 4
+queue repair
+queue format 9
+load
+do
+day 1
+dump
+transfer 1000 201 -1 0
+dump
+save 1000
+save 9300
+readlog 200
+readlog 201
+export state
+
+section N22a REPAIR completion and interrupt use current different structure and retain accumulated totals
+entity 9000 3 3
+entity 9300 3 46
+entity 9301 3 32
+entity 11 4 0
+link 9000 9300
+link 9000 9301
+link 9300 1000
+field 9300 damage 1
+field 9300 structure_defense 39
+field 9301 damage 1
+field 9301 structure_defense 48
+inventory 1000 11 2
+parse repair 5
+build repair_v
+build repair_d
+link 9301 1000
+build repair_d
+dump
+build repair_d
+dump
+build repair_i
+save 9300
+save 9301
+readlog 200
+
+section N22a IMPROVE saved running STOP preserves remaining effort and successor queue without summary
+resolve_wait
+entity 9000 3 3
+entity 9300 3 32
+entity 11 4 0
+entity 78 4 0
+link 9000 9300
+link 9300 1000
+inventory 1000 11 7
+inventory 1000 78 50
+queue improve
+load
+do
+day 1
+persist_command
+initial
+queue stop
+queue wait time 1
+stops
+dump
+save 9300
+save 1000
+readlog 200
+export state

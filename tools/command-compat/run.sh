@@ -107,7 +107,8 @@ functions = {
     'build.c': ['fort_default_defense', 'ship_loc_okay', 'temple_loc_okay',
                 'tower_loc_okay', 'mine_loc_okay', 'inn_loc_okay', 'province_subloc',
                 'castle_loc_okay', 'find_build', 'build_materials_check', 'create_new_building', 'start_build',
-                'build_structure', 'unfinished_building', 'v_build', 'daily_build', 'd_build'],
+                'build_structure', 'unfinished_building', 'v_build', 'daily_build', 'd_build',
+                'repair_points', 'v_repair', 'd_repair', 'i_repair', 'v_improve', 'd_improve'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'max_current_aura', 'limit_cur_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
     'display.c': ['loc_inside_string', 'show_loc_barrier', 'safe_haven_s', 'ship_cap_s',
@@ -335,6 +336,9 @@ int immed_see_all, month_done, show_combat_flag;
                          'mine_loc_okay', 'inn_loc_okay', 'castle_loc_okay']:
                 out.write(f'static int {name}(struct command *, int);\n')
             start, end = source.index('struct build_ent\n'), source.index('static struct build_ent *\nfind_build(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/build.c"\n')
+            out.write(source[start:end])
+            start, end = source.index('static int improve_stone[]'), source.index('int\nv_improve(')
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/build.c"\n')
             out.write(source[start:end])
         if file == 'make.c':
@@ -613,6 +617,12 @@ void drv_build_table(void) {
  }
 }
 int drv_build(struct command *c, char *action, char *s, int n) {
+ if(!strcmp(action,"repair_points")) return repair_points(n);
+ if(!strcmp(action,"repair_v")) return v_repair(c);
+ if(!strcmp(action,"repair_d")) return d_repair(c);
+ if(!strcmp(action,"repair_i")) return i_repair(c);
+ if(!strcmp(action,"improve_v")) return v_improve(c);
+ if(!strcmp(action,"improve_d")) return d_improve(c);
  if(!strcmp(action,"defense")) return fort_default_defense(n);
  if(!strcmp(action,"roll")) return ent_build(n);
  if(!strcmp(action,"v")) return v_build(c);
@@ -887,6 +897,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N22a '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N22a status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N21 '* ]]; then
    [ "$status" = 0 ] || die "unexpected N21 status $status in section $i"
   fi

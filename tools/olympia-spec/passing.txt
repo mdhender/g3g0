@@ -8,6 +8,8 @@ attitude-refused
 attitude-set
 cli-options
 coast-rocks
+construction-build
+construction-refused
 fly-out-first
 gm-credit
 gm-refused
@@ -62,6 +64,7 @@ social-refused
 social-switched
 stacking-refused
 stacking-stack
+stop-running
 summary-trunc-name
 token-swear
 token-vanish

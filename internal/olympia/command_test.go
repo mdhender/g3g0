@@ -2638,6 +2638,18 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			}
 			result := 0
 			switch action {
+			case "repair_points":
+				result = int(repairPoints(n))
+			case "repair_v":
+				result = w.vRepair(c)
+			case "repair_d":
+				result = w.dRepair(c)
+			case "repair_i":
+				result = w.iRepair(c)
+			case "improve_v":
+				result = w.vImprove(c)
+			case "improve_d":
+				result = w.dImprove(c)
 			case "defense":
 				result = fortDefaultDefense(n)
 			case "roll":
@@ -3456,45 +3468,6 @@ func TestCommandUnportedStops(t *testing.T) {
 					}
 				}()
 				fn(w, &command{})
-			})
-		}
-	}
-}
-
-// Real transfer/interrupt orchestration must not turn unported non-NULL
-// callbacks into success. This tests the explicit boundary, not C results.
-func TestCommandInterruptionBoundaries(t *testing.T) {
-	for _, name := range []string{"repair"} {
-		for _, transfer := range []bool{false, true} {
-			t.Run(fmt.Sprintf("%s/transfer=%v", name, transfer), func(t *testing.T) {
-				w := newWorld()
-				w.allocBox(200, tPlayer, subPlRegular)
-				w.allocBox(201, tPlayer, subPlRegular)
-				w.allocBox(1000, tChar, 0)
-				w.allocBox(9000, tLoc, subPlain)
-				w.pChar(1000).unitLord = 200
-				w.setWhere(1000, 9000)
-				w.pPlayer(200).units.Append(1000)
-				w.queueOrder(200, 1000, "format 9")
-				c := w.pCommand(1000)
-				c.who, c.cmd, c.state = 1000, int32(w.findCommand(name)), stateRun
-				defer func() {
-					if r := recover(); r != notImplemented("command "+name+" interrupt") {
-						t.Fatalf("interrupt boundary = %v", r)
-					}
-					if w.player(1000) != 200 || c.state != stateRun {
-						t.Fatal("unported interruption falsely completed transfer/command")
-					}
-					_, queued := w.topOrder(200, 1000)
-					if queued == transfer {
-						t.Fatal("transfer must flush before interruption; standalone interrupt must not flush")
-					}
-				}()
-				if transfer {
-					w.setLord(1000, 201, loyUnchanged, 0)
-				} else {
-					w.interruptOrder(1000)
-				}
 			})
 		}
 	}

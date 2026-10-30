@@ -9,6 +9,87 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## Repair and improvement original-fixture proof (#223)
+
+At **0.145.0-alpha**, immutable **9a03d126**, the complete direct REPAIR/
+IMPROVE owners make all three unchanged original scripts below pass. The
+anticipated STOP/USE boundary was **not reached**: USE601's real sailing
+interrupt was already accepted in219, so stop-running now finishes too.
+This is not acceptance of other USE callbacks240, RAZE224, combat235, a
+construction family exit or a stage exit. No upstream bug/blocker was
+demonstrated. Supplied #289 ATTACK235/fog264/missing-argument ownership and
+the stage5 immediate/console deferrals are unchanged.
+
+Before reusing `tmp/_issue215/canonical`, verify every **1237 original
+blob/mode** against isolated bare pin9a03d126 and the canonical executable:
+SHA-256 `2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+Debug/Ninja and original
+`-ffile-prefix-map=/home/user/workspace/repo/tmp/_issue215/canonical/=`
+retain the trailing slash. `tmp/issue223-canonical-provenance.log` records
+this verification; no source, fixture, pin or canonical build was changed.
+Protected `tmp/issue291-roundtrip` stayed idle and was not used for engine
+runs, input copies or a repeat serializer corpus. Localized callbacks add
+no new serializer dependency and imply no new full207-corpus proof.
+
+Read complete original READMEs/check.sh/Lua, construction scenario.patch
+orders, and stop-running's actual frozen scenario.tgz command records, not
+just its backlog names. Source reading is retained in
+`tmp/issue223-original-fixture-source.log` / `tmp/issue223-stop-frozen.log`;
+the parent supplied `tmp/parent223-fixture-source.txt` as additional reading.
+No Lua authoring, regeneration, original --update or input overlay was used.
+
+Recreated native pre-cleanup launcher: preserve argv0/stdin, capture streams
+**O_RDWR**, invoke bash sourcing timeout.sh with
+`run_limited 120 "$0" "$S4_ENGINE" "$@"`, seek/replay stdout then stderr,
+close both, write real status/newline, then `cp -a .` to the absent capture
+cwd before original script cleanup. Each invocation has fresh sequential
+001/002/etc, never overwritten. Launcher source/binary SHA-256:
+`6fa176d41814de8a9e24423b198cf1b9da9b3efe3ef6a37b8d768d20caf72c48` /
+`fa788748b34ba75651013eec04e69e39bd62feea2d55ebd0053651602345c12a`.
+Source/commands/hashes remain in `tmp/issue223-capture-provenance.log`.
+
+```sh
+. tools/lib/timeout.sh
+export G3_REPO="$PWD/tmp/upstream.git" S4_ROOT="$PWD"
+# Recreate the launcher described above and build Go freshly under tmp/_issue223.
+# For EACH fixture below run C1, C2, THEN Go, using fresh absent capture bases.
+export S4_CAPTURE="$PWD/tmp/_issue223/$fixture-$run"
+export S4_ENGINE="$PWD/tmp/_issue215/canonical/build/canonical/olympia-g3"
+OLYMPIA_ENGINE_BIN="$PWD/tmp/_issue223/capture" \
+  run_limited 150 bash /bin/bash \
+  "$PWD/tmp/_issue215/canonical/tests/olympia/regress/$fixture/check.sh"
+# Reject C markers before accepting status, compare complete invocation inventories,
+# then for every001/002/etc use the EXISTING strict comparator and mode check:
+run_limited 120 compare "$PWD/tmp/_issue223/compare" --manifest "$capture"
+run_limited 120 compare "$PWD/tmp/_issue223/compare" "$c1" "$c2"
+run_limited 120 compare "$PWD/tmp/_issue223/compare" "$c1" "$go"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$c2/cwd"
+python3 -I tools/lib/tree-modes.py "$c1/cwd" "$go/cwd"
+```
+
+**Nine native engine captures**, three actual invocation branches. For each
+fixture C1/C2 precede Go; all inventories are exactly001, every engine status
+is **0**, every original script returns **YES/0**. C markers are rejected
+before accepting statuses. All raw streams/status and every cwd path/type/
+mode/empty directory/byte match, with no exclusions or normalization:
+
+| Unchanged original script / invocation | C/C/Go cwd entries | Result |
+| --- | --- | --- |
+| construction-build001 | 242 | strict exact; original coverage/hashes/JSON pass |
+| construction-refused001 | 245 | strict exact; original coverage/hashes/JSON pass |
+| stop-running001 | 259 | strict exact; original coverage/hashes/JSON pass |
+
+STOP exercises saved repairs with damage+defense, defense-only, damage-only
+and no progress, alongside the existing collect/make/sail/USE601 owners and
+their real successor orders. The direct command oracle separately checks
+IMPROVE's NULL interrupt and saved STOP without inventing a callback.
+Evidence: `tmp/issue223-fixtures.log`, all
+`tmp/issue223-*-{inventory,manifest}.txt`, `tmp/issue223-*-{cc,cgo}.log` and
+original-script logs. Matching captures and scratch binaries/helpers/WORKs
+are removed after proof; decisive logs/manifests and the old-Go dispatch NYI
+log remain. See [command proof](../command-compat/README.md#repair-and-improve-223-stage-4-n22a)
+and [full spec no-loss](../olympia-spec/README.md#repair-and-improvement-no-loss-223).
+
 ## Daily BUILD original-fixture proof (#222)
 
 **0.144.0-alpha**, unchanged immutable **9a03d126**. Before reusing
