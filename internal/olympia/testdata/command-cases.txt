@@ -40960,3 +40960,618 @@ readfile coverage.tsv
 readfile use.tsv
 readlog 200
 readlog 201
+
+section N16 real delayed terrorize vassal default reload fear and moving not rechecked
+master 0
+place 9000
+link 1000 1001
+field 1001 health 80
+queue terrorize 1001 0
+queue guard 1
+coverage path coverage.tsv
+load
+do
+day 1
+persist_command
+initial
+field 1000 loyal 3
+field 1001 moving 123
+day 2
+day 3
+day 4
+day 5
+day 6
+day 7
+dump
+monthly state
+coverage write
+readfile coverage.tsv
+readlog 200
+readlog 201
+export state
+
+section N16 direct incite timer only and USE start interrupted before future finish
+lore_root
+master 0
+entity 670 5 0
+entity 675 5 0
+entity 10 4 0
+field 675 required 670
+learn 1000 670 2 0
+learn 1000 675 2 0
+place 9000
+link 9000 1001
+field 1001 noble_item 10
+entity 9001 3 0
+link 9000 9001
+coverage path coverage.tsv
+ucov path use.tsv
+queue incite 1001 9001
+queue use 675 1001 9001
+queue guard 1
+load
+do
+day 1
+persist_command
+initial
+day 2
+day 3
+day 4
+day 5
+day 6
+day 7
+dump
+do
+dump
+generic_interrupt 1000
+dump
+monthly state
+usemeta rows 1000
+usemeta skill_usage 675
+coverage write
+ucov write
+readfile coverage.tsv
+readfile use.tsv
+readlog 200
+
+section N16 vassal negative default zero health sentinel signed rate and fear accumulation
+master 0
+place 9000
+link 1000 1001
+field 1001 health -1
+field 1001 rate 999
+parse terrorize 1001 -2147483648
+callback_start
+set wait 0
+finish
+save 1001
+parse terrorize 1001 2147483647
+callback_start
+set wait 0
+finish
+save 1001
+field 1001 health 0
+parse terrorize 1001 1
+callback_start
+set wait 0
+finish
+save 1001
+field 1001 health 100
+field 1001 rate 2147483647
+parse terrorize 1001 1
+callback_start
+set wait 0
+finish
+save 1001
+field 1001 loyal 1
+parse terrorize 1001 -1
+callback_start
+set wait 0
+finish
+monthly state
+readlog 200
+entity_rolls 1001 96 9000
+usemeta legacy 1 100000
+
+section N16 vassal lethal clipped severity survival uses local severity not healed delta
+master 0
+place 9000
+link 1000 1001
+entity 611 5 43
+learn 1001 611 2 21
+field 1001 health 7
+field 1001 sick 1
+parse terrorize 1001 2147483647
+callback_start
+set wait 0
+finish
+save 1001
+usemeta rows 1001
+readlog 200
+export state
+
+section N16 vassal actual death inheritance interrupts running target and returns FALSE
+set gm 200
+master 0
+entity 10000 3 50
+entity 10 4 0
+place 9000
+link 10000 9000
+link 1000 1001
+entity 1 4 0
+inventory 1001 1 101
+field 1001 health 2
+who 1001
+resolve_wait
+queue wait time 30
+queue guard 1
+load
+do
+select 1000
+queue terrorize 1001 3
+load
+do
+set wait 0
+finish
+dump
+inherit state
+monthly state
+readlog 200
+export state
+
+section N16 start validation fear before visibility foreign self beneath oath and prisoner NPC
+place 9000
+link 9000 1001
+field 1000 loyal 3
+parse terrorize 0 5
+callback_start
+field 1000 loyal 0
+callback_start
+parse terrorize 117 5
+callback_start
+parse terrorize 9000 5
+callback_start
+parse terrorize 1001 5
+field 1001 lord 201
+callback_start
+field 1001 lord 200
+callback_start
+parse terrorize 1000 5
+callback_start
+link 1000 1001
+field 1001 loyal 2
+parse terrorize 1001 5
+callback_start
+field 1001 prisoner 1
+callback_start
+field 1001 subkind 54
+callback_start
+field 1001 subkind 0
+field 1001 loyal 4
+callback_start
+field 1001 loyal 5
+callback_start
+link 9000 1001
+callback_start
+monthly state
+readlog 200
+
+section N16 foreign sibling prisoner same leader converts at exact real keyed gate with queues and NP
+master 0
+entity 1 4 0
+entity 100 1 0
+set indep 100
+entity 1005 2 0
+entity 1002 2 0
+place 9000
+link 9000 1002
+link 1002 1000
+link 1002 1005
+field 1005 lord 201
+field 1005 prisoner 1
+field 1005 health 100
+field 200 unit 1000
+field 201 unit 1005
+field 200 np 7
+field 201 np 3
+field 1005 hostile 1000
+field 1005 pledge 1001
+field 1005 rate 900
+entity 671 5 0
+field 671 skill_np 2
+learn 1005 671 2 0
+orders 201 1005 wait time 8
+orders 200 1005 guard 1
+who 1005
+resolve_wait
+queue wait time 30
+load
+do
+select 1000
+terror_roll 1000 1005
+usemeta legacy 1 100000
+queue terrorize 1005 7
+load
+do
+set wait 0
+finish
+dump
+select 1005
+dump
+select 1000
+monthly state
+pstate 200
+pstate 201
+terror_roll 1000 1005
+usemeta legacy 1 100000
+readlog 200
+readlog 201
+export state
+
+section N16 prisoner below gate refuses TRUE and negative defaults one unlike vassal
+master 0
+entity 1005 2 0
+place 9000
+link 1000 1005
+field 1005 lord 201
+field 1005 prisoner 1
+field 1005 health 100
+terror_roll 1000 1005
+parse terrorize 1005 6
+callback_start
+set wait 0
+finish
+parse terrorize 1005 -1
+callback_start
+set wait 0
+finish
+monthly state
+readlog 200
+readlog 201
+usemeta legacy 1 100000
+
+section N16 prisoner NP insufficient after wounds illness and health output no rollback
+master 0
+entity 1005 2 0
+place 9000
+link 1000 1005
+field 1005 lord 201
+field 1005 prisoner 1
+field 1005 health 100
+field 200 np 0
+field 201 np 13
+queue terrorize 1005 60
+load
+do
+terror_roll 1000 1005
+set wait 0
+finish
+dump
+monthly state
+readlog 200
+readlog 201
+entity_rolls 1005 40 9000
+usemeta legacy 1 100000
+
+section N16 oath prisoner refuses after damage regardless severity and zero NP
+master 0
+place 9000
+link 1000 1001
+field 1001 prisoner 1
+field 1001 lord 201
+field 1001 loyal 2
+field 1001 health 100
+field 200 np 0
+parse terrorize 1001 90
+callback_start
+set wait 0
+finish
+monthly state
+readlog 200
+readlog 201
+usemeta legacy 1 100000
+
+section N16 prisoner fatal survival keeps uncapped severity conversion and forgets skill
+master 0
+place 9000
+link 1000 1001
+entity 611 5 43
+learn 1001 611 2 21
+field 1001 prisoner 1
+field 1001 lord 201
+field 1001 health 3
+field 200 np 10
+parse terrorize 1001 2147483647
+callback_start
+set wait 0
+finish
+monthly state
+usemeta rows 1001
+readlog 200
+readlog 201
+export state
+
+section N16 prisoner sentinel49 no wound conversion versus sentinel50 actual fatal inheritance
+master 0
+set gm 200
+entity 10000 3 50
+entity 10 4 0
+entity 1002 2 0
+place 9000
+link 10000 9000
+link 1000 1001
+link 1000 1002
+field 1001 prisoner 1
+field 1001 lord 201
+field 1001 health -1
+field 1002 prisoner 1
+field 1002 lord 201
+field 1002 health -1
+field 200 np 10
+terror_roll 1000 1002
+parse terrorize 1002 49
+callback_start
+set wait 0
+finish
+parse terrorize 1001 50
+callback_start
+set wait 0
+finish
+monthly state
+readlog 200
+readlog 201
+export state
+
+section N16 completion prisoner NPC and actor fear not rechecked moving contacted foreign visible
+master 0
+place 9000
+link 1000 1001
+field 1001 prisoner 1
+field 1001 lord 201
+field 1001 health 100
+field 1001 loyal 2
+parse terrorize 1001 1
+callback_start
+field 1000 loyal 3
+field 1001 subkind 54
+field 1001 moving 1
+field 1001 hidden 1
+field 1001 contact 1000
+set wait 0
+finish
+monthly state
+readlog 200
+readlog 201
+
+section N16 finish lost visibility versus contacted hidden target and actual moved target
+master 0
+place 9000
+link 1000 1001
+field 1001 prisoner 1
+field 1001 lord 201
+field 1001 health 100
+parse terrorize 1001 1
+callback_start
+field 1001 hidden 1
+set wait 0
+finish
+field 1001 contact 1000
+finish
+entity 9001 3 0
+link 9001 1001
+finish
+monthly state
+readlog 200
+readlog 201
+
+section N16 finish rechecks ownership beneath oath stack leader and target character kind
+place 9000
+link 1000 1001
+field 1001 health 100
+parse terrorize 1001 1
+callback_start
+field 1001 lord 201
+set wait 0
+finish
+field 1001 lord 200
+link 9000 1001
+finish
+link 1000 1001
+field 1001 loyal 2
+finish
+field 1001 prisoner 1
+link 9000 1001
+finish
+who 1001
+set kind 4
+select 1000
+finish
+readlog 200
+
+section N16 changing prisoner flag chooses finish path not start path
+master 0
+place 9000
+link 1000 1001
+field 1001 health 100
+parse terrorize 1001 0
+callback_start
+field 1001 prisoner 1
+field 1001 loyal 2
+set wait 0
+finish
+parse terrorize 1001 0
+callback_start
+field 1001 prisoner 0
+field 1001 loyal 1
+set wait 0
+finish
+monthly state
+readlog 200
+
+section N16 interrupted terrorize never damages and saved running text is reparsed
+master 0
+place 9000
+link 1000 1001
+field 1001 health 100
+queue terrorize 1001 20
+queue terrorize 1001 1
+queue guard 1
+load
+do
+day 1
+generic_interrupt 1000
+dump
+monthly state
+do
+persist_command
+initial
+field 1001 lord 201
+day 2
+day 3
+day 4
+day 5
+day 6
+day 7
+day 8
+dump
+monthly state
+readlog 200
+readlog 201
+
+section N16 actual social day turn keyed gates and legacy aftermath
+master 0
+terror_roll 1000 1001
+terror_roll 1000 1001
+usemeta legacy 1 100000
+set day 7
+terror_roll 1000 1001
+terror_roll 1000 1001
+set turn 1
+terror_roll 1000 1001
+usemeta legacy 1 100000
+
+section N16 incite validation skill mob visibility target location before mob type and parent
+place 9000
+link 9000 1001
+parse incite 1001 0
+callback_start
+entity 675 5 0
+learn 1000 675 2 0
+parse incite 0 0
+callback_start
+parse incite 1001 0
+callback_start
+parse incite 1001 1000
+callback_start
+entity 10 4 0
+field 1001 noble_item 10
+link 1000 1001
+callback_start
+link 9000 1001
+callback_start
+entity 23 4 0
+field 1001 noble_item 23
+callback_start
+field 1001 lord 201
+field 1001 hidden 1
+callback_start
+field 1001 contact 1000
+callback_start
+field 1001 moving 123
+callback_start
+readlog 200
+monthly state
+
+section N16 incite target need not visible or character and direct completion rechecks nothing
+master 0
+entity 675 5 0
+learn 1000 675 2 0
+entity 1002 2 0
+entity 10 4 0
+entity 9001 3 0
+place 9000
+link 9000 1001
+link 9000 1002
+link 9000 9001
+field 1001 noble_item 10
+field 1002 lord 201
+field 1002 hidden 1
+parse incite 1001 1002
+callback_start
+parse incite 1001 9001
+callback_start
+queue incite 1001 1002
+queue guard 1
+load
+do
+death forget 1000 675
+field 1001 noble_item 0
+link 1000 1001
+link 9001 1002
+set wait 0
+finish
+dump
+monthly state
+usemeta rows 1000
+usemeta skill_usage 675
+readlog 200
+
+section N16 hidden foreign prisoner no longer shares leader fails visibility before ownership then contact exposes leader failure
+place 9000
+link 1000 1001
+field 1001 lord 201
+field 1001 prisoner 1
+field 1001 health 100
+parse terrorize 1001 1
+callback_start
+link 9000 1001
+field 1001 hidden 1
+set wait 0
+finish
+field 1001 contact 1000
+finish
+parse terrorize 117 1
+set wait 0
+finish
+monthly state
+readlog 200
+
+section N16 same faction prisoner conversion still requires NP but ownership transfer has no NP payment
+master 0
+entity 1005 2 0
+place 9000
+link 1000 1005
+field 1005 lord 200
+field 1005 prisoner 1
+field 1005 health 100
+field 200 np 0
+parse terrorize 1005 7
+callback_start
+set wait 0
+finish
+field 200 np 1
+finish
+monthly state
+readlog 200
+export state
+
+section N16 independent former owner prisoner conversion costs zero NP and clears prisoner
+master 0
+entity 100 1 0
+set indep 100
+entity 1005 2 0
+place 9000
+link 1000 1005
+field 1005 lord 100
+field 1005 prev 200
+field 1005 prisoner 1
+field 1005 health 100
+field 200 np 0
+parse terrorize 1005 7
+callback_start
+set wait 0
+finish
+monthly state
+readlog 200
+readlog 100
+export state

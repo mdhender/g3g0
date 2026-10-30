@@ -156713,3 +156713,2808 @@ log 201:
 stderr:
 
 exit 0
+stdout:
+section N16 real delayed terrorize vassal default reload fear and moving not rechecked
+> master 0
+> place 9000
+> link 1000 1001
+> field 1001 health 80
+> queue terrorize 1001 0
+> queue guard 1
+> coverage path coverage.tsv
+> load
+load 1
+> do
+> day 1
+> persist_command
+> initial
+> field 1000 loyal 3
+> field 1001 moving 123
+> day 2
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> dump
+cmd 38 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 1
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+ lk 3
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 77
+ lk 3
+ lr 3
+ mo 123
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> coverage write
+> readfile coverage.tsv
+file bytes coverage.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	0	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	1	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	0	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::> terrorize 1001 0
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1001:0::0::<no subkind>~[1001] is wounded.  Health is now 77.
+1000:0::0::<no subkind>~[1001] now bound with fear-3.
+> readlog 201
+log 201:
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1001
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+ lk 3
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 77
+ lk 3
+ lr 3
+ mo 123
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N16 direct incite timer only and USE start interrupted before future finish
+> lore_root
+> master 0
+> entity 670 5 0
+> entity 675 5 0
+> entity 10 4 0
+> field 675 required 670
+> learn 1000 670 2 0
+> learn 1000 675 2 0
+> place 9000
+> link 9000 1001
+> field 1001 noble_item 10
+> entity 9001 3 0
+> link 9000 9001
+> coverage path coverage.tsv
+> ucov path use.tsv
+> queue incite 1001 9001
+> queue use 675 1001 9001
+> queue guard 1
+> load
+load 1
+> do
+> day 1
+> persist_command
+> initial
+> day 2
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> dump
+cmd 93 who 1000 state 1 status 1 wait -1 poll 1 pri 3 cond 0 fuzzy 0 days 0 debug 7 inhibit 0 cur 3
+args 675 1001 9001 0 0 0 0 0; parse [use] [675] [1001] [9001]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> do
+> dump
+cmd 93 who 1000 state 2 status 1 wait 7 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 3
+args 1001 9001 0 0 0 0 0 675; parse [use] [1001] [9001]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q: 1000
+> generic_interrupt 1000
+> dump
+cmd 38 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 1
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	670 2 0 0 0 \
+	675 2 0 0 0
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ ue 1
+ pr 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 9000
+CH
+ ni 10
+ lo 200
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 1001 9001 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc 0
+LI
+ wh 9000
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+grant row 670 2 0 0 0
+grant row 675 2 0 0 0
+> usemeta skill_usage 675
+grant usage 675 record 1 count 0 who 0
+> coverage write
+> ucov write
+> readfile coverage.tsv
+file bytes coverage.tsv 2114:
+verb	rejected	unimplemented	ok	fail
+(unrecognized)	0	0	0	0
+accept	0	0	0	0
+additem	0	0	0	0
+admit	0	0	0	0
+attack	0	0	0	0
+banner	0	0	0	0
+be	0	0	0	0
+begin	0	0	0	0
+behind	0	0	0	0
+bind	0	0	0	0
+board	0	0	0	0
+breed	0	0	0	0
+bribe	0	0	0	0
+build	0	0	0	0
+buy	0	0	0	0
+catch	0	0	0	0
+claim	0	0	0	0
+collect	0	0	0	0
+contact	0	0	0	0
+credit	0	0	0	0
+ct	0	0	0	0
+decree	0	0	0	0
+default	0	0	0	0
+defend	0	0	0	0
+die	0	0	0	0
+discard	0	0	0	0
+drop	0	0	0	0
+dump	0	0	0	0
+e	0	0	0	0
+east	0	0	0	0
+email	0	0	0	0
+emote	0	0	0	0
+end	0	0	0	0
+enter	0	0	0	0
+execute	0	0	0	0
+exit	0	0	0	0
+explore	0	0	0	0
+fee	0	0	0	0
+ferry	0	0	0	0
+fish	0	0	0	0
+fix	0	0	0	0
+fix2	0	0	0	0
+flag	0	0	0	0
+flush	0	0	0	0
+fly	0	0	0	0
+forget	0	0	0	0
+form	0	0	0	0
+format	0	0	0	0
+garrison	0	0	0	0
+get	0	0	0	0
+give	0	0	0	0
+go	0	0	0	0
+guard	0	0	0	0
+h	0	0	0	0
+hide	0	0	0	0
+honor	0	0	0	0
+honour	0	0	0	0
+hostile	0	0	0	0
+i	0	0	0	0
+improve	0	0	0	0
+in	0	0	0	0
+incite	0	0	1	0
+kill	0	0	0	0
+know	0	0	0	0
+l	0	0	0	0
+look	0	0	0	0
+lore	0	0	0	0
+los	0	0	0	0
+make	0	0	0	0
+makeloc	0	0	0	0
+mallorn	0	0	0	0
+message	0	0	0	0
+move	0	0	0	0
+n	0	0	0	0
+name	0	0	0	0
+neutral	0	0	0	0
+north	0	0	0	0
+notab	0	0	0	0
+oath	0	0	0	0
+opium	0	0	0	0
+out	0	0	0	0
+passwd	0	0	0	0
+password	0	0	0	0
+pay	0	0	0	0
+pillage	0	0	0	0
+players	0	0	0	0
+pledge	0	0	0	0
+plugh	0	0	0	0
+poof	0	0	0	0
+post	0	0	0	0
+postproc	0	0	0	0
+press	0	0	0	0
+promote	0	0	0	0
+public	0	0	0	0
+quarry	0	0	0	0
+quest	0	0	0	0
+quit	0	0	0	0
+raise	0	0	0	0
+rally	0	0	0	0
+raze	0	0	0	0
+realname	0	0	0	0
+reclaim	0	0	0	0
+recruit	0	0	0	0
+relore	0	0	0	0
+remail	0	0	0	0
+repair	0	0	0	0
+research	0	0	0	0
+resend	0	0	0	0
+rumor	0	0	0	0
+s	0	0	0	0
+sail	0	0	0	0
+save	0	0	0	0
+seeall	0	0	0	0
+seed	0	0	0	0
+seedmarket	0	0	0	0
+seek	0	0	0	0
+sell	0	0	0	0
+sheet	0	0	0	0
+sk	0	0	0	0
+sneak	0	0	0	0
+south	0	0	0	0
+split	0	0	0	0
+stack	0	0	0	0
+stone	0	0	0	0
+stop	0	0	0	0
+study	0	0	0	0
+subitem	0	0	0	0
+surrender	0	0	0	0
+swear	0	0	0	0
+take	0	0	0	0
+terrorize	0	0	0	0
+times	0	0	0	0
+torture	0	0	0	0
+tp	0	0	0	0
+train	0	0	0	0
+trance	0	0	0	0
+ungarrison	0	0	0	0
+unit	0	0	0	0
+unload	0	0	0	0
+unstack	0	0	0	0
+use	0	0	1	0
+vis_email	0	0	0	0
+w	0	0	0	0
+wait	0	0	0	0
+west	0	0	0	0
+wood	0	0	0	0
+xyzzy	0	0	0	0
+yew	0	0	0	0
+
+end file bytes
+> readfile use.tsv
+file bytes use.tsv 2736:
+kind	key	name	checks	ok	fail
+invalid	0	(invalid)	0	0	0
+skill	601		0	0	0
+skill	602		0	0	0
+skill	603		0	0	0
+skill	612		0	0	0
+skill	613		0	0	0
+skill	614		0	0	0
+skill	615		0	0	0
+skill	616		0	0	0
+skill	617		0	0	0
+skill	631		0	0	0
+skill	632		0	0	0
+skill	633		0	0	0
+skill	634		0	0	0
+skill	635		0	0	0
+skill	636		0	0	0
+skill	637		0	0	0
+skill	638	<no subkind>	0	0	0
+skill	639		0	0	0
+skill	651		0	0	0
+skill	652		0	0	0
+skill	653		0	0	0
+skill	654		0	0	0
+skill	655		0	0	0
+skill	656		0	0	0
+skill	657		0	0	0
+skill	658		0	0	0
+skill	659		0	0	0
+skill	661		0	0	0
+skill	671		0	0	0
+skill	672		0	0	0
+skill	673		0	0	0
+skill	674		0	0	0
+skill	675	<no subkind>	0	1	0
+skill	676		0	0	0
+skill	681		0	0	0
+skill	682		0	0	0
+skill	691		0	0	0
+skill	692		0	0	0
+skill	693		0	0	0
+skill	694		0	0	0
+skill	695		0	0	0
+skill	696		0	0	0
+skill	697		0	0	0
+skill	701		0	0	0
+skill	702		0	0	0
+skill	703		0	0	0
+skill	704		0	0	0
+skill	706		0	0	0
+skill	707		0	0	0
+skill	721		0	0	0
+skill	722		0	0	0
+skill	723		0	0	0
+skill	732		0	0	0
+skill	733		0	0	0
+skill	751		0	0	0
+skill	752		0	0	0
+skill	753		0	0	0
+skill	754		0	0	0
+skill	755		0	0	0
+skill	756		0	0	0
+skill	801		0	0	0
+skill	802		0	0	0
+skill	803		0	0	0
+skill	804		0	0	0
+skill	805		0	0	0
+skill	806		0	0	0
+skill	807		0	0	0
+skill	808		0	0	0
+skill	809		0	0	0
+skill	811		0	0	0
+skill	812		0	0	0
+skill	813		0	0	0
+skill	814		0	0	0
+skill	821		0	0	0
+skill	822		0	0	0
+skill	823		0	0	0
+skill	824		0	0	0
+skill	825		0	0	0
+skill	826		0	0	0
+skill	827		0	0	0
+skill	828		0	0	0
+skill	829		0	0	0
+skill	831		0	0	0
+skill	832		0	0	0
+skill	833		0	0	0
+skill	841		0	0	0
+skill	842		0	0	0
+skill	843		0	0	0
+skill	844		0	0	0
+skill	845		0	0	0
+skill	846		0	0	0
+skill	847		0	0	0
+skill	848		0	0	0
+skill	849		0	0	0
+skill	851		0	0	0
+skill	852		0	0	0
+skill	861		0	0	0
+skill	862		0	0	0
+skill	863		0	0	0
+skill	864		0	0	0
+skill	865		0	0	0
+skill	866		0	0	0
+skill	867		0	0	0
+skill	868		0	0	0
+skill	869		0	0	0
+skill	871		0	0	0
+skill	872		0	0	0
+skill	881		0	0	0
+skill	882		0	0	0
+skill	883		0	0	0
+skill	884		0	0	0
+skill	885		0	0	0
+skill	886		0	0	0
+skill	887		0	0	0
+skill	888		0	0	0
+skill	889		0	0	0
+skill	891		0	0	0
+skill	892		0	0	0
+skill	893		0	0	0
+skill	894		0	0	0
+skill	901		0	0	0
+skill	902		0	0	0
+skill	903		0	0	0
+skill	904		0	0	0
+skill	905		0	0	0
+skill	906		0	0	0
+skill	907		0	0	0
+skill	908		0	0	0
+skill	909		0	0	0
+skill	911		0	0	0
+skill	921		0	0	0
+skill	922		0	0	0
+skill	997		0	0	0
+skill	998		0	0	0
+skill	999		0	0	0
+item	1	death_potion	0	0	0
+item	2	heal_potion	0	0	0
+item	3	slave_potion	0	0	0
+item	4	palantir	0	0	0
+item	5	proj_cast	0	0	0
+item	6	quick_cast	0	0	0
+item	7	drum	0	0	0
+item	8	faery_stone	0	0	0
+item	9	orb	0	0	0
+item	10	barbarian_kill	0	0	0
+item	11	savage_kill	0	0	0
+item	12	corpse_kill	0	0	0
+item	13	orc_kill	0	0	0
+item	14	skeleton_kill	0	0	0
+item	15	bta_skull	0	0	0
+
+end file bytes
+> readlog 200
+log 200:
+1000:0::0::> incite 1001 9001
+1000:0::0::> use 675 1001 9001
+stderr:
+
+exit 0
+stdout:
+section N16 vassal negative default zero health sentinel signed rate and fear accumulation
+> master 0
+> place 9000
+> link 1000 1001
+> field 1001 health -1
+> field 1001 rate 999
+> parse terrorize 1001 -2147483648
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he -1
+ lk 3
+ lr -1
+
+> parse terrorize 1001 2147483647
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he -1
+ lk 3
+ lr -2
+
+> field 1001 health 0
+> parse terrorize 1001 1
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ lk 3
+ lr -2
+
+> field 1001 health 100
+> field 1001 rate 2147483647
+> parse terrorize 1001 1
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 99
+ lk 3
+ lr -2147483648
+
+> field 1001 loyal 1
+> parse terrorize 1001 -1
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+CO
+ li terrorize 1001 -1
+ ar 1001 0 0 0 0 0 0 0
+ st 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 96
+ lk 3
+ lr 3
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::<no subkind>~[1001] now bound with fear--1.
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::<no subkind>~[1001] now bound with fear--2.
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::<no subkind>~[1001] now bound with fear--2.
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1001:0::0::<no subkind>~[1001] is wounded.  Health is now 99.
+1000:0::0::<no subkind>~[1001] now bound with fear--2147483648.
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1001:0::0::<no subkind>~[1001] is wounded.  Health is now 96.
+1000:0::0::<no subkind>~[1001] now bound with fear-3.
+> entity_rolls 1001 96 9000
+prison roll 532
+land dir99 4
+land dir98 4
+land pick 0
+> usemeta legacy 1 100000
+use legacy 87265
+stderr:
+
+exit 0
+stdout:
+section N16 vassal lethal clipped severity survival uses local severity not healed delta
+> master 0
+> place 9000
+> link 1000 1001
+> entity 611 5 43
+> learn 1001 611 2 21
+> field 1001 health 7
+> field 1001 sick 1
+> parse terrorize 1001 2147483647
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> save 1001
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 3
+ lr 7
+CM
+ ma -1
+
+> usemeta rows 1001
+grant records 1001 char 1 magic 1
+> readlog 200
+log 200:
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1001:0::0::<no subkind>~[1001] is wounded.  Health is now 0.
+1001:0::0::<no subkind>~[1001] would have died, but survived a fatal wound!
+1001:0::0::Forgot [611].
+1001:0::0::Health is now 100.
+1000:0::0::<no subkind>~[1001] now bound with fear-7.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 1001
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 611 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+611 skill magic
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+CO
+ li terrorize 1001 2147483647
+ ar 1001 2147483647 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+ lk 3
+ lr 7
+CM
+ ma -1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N16 vassal actual death inheritance interrupts running target and returns FALSE
+> set gm 200
+> master 0
+> entity 10000 3 50
+> entity 10 4 0
+> place 9000
+> link 10000 9000
+> link 1000 1001
+> entity 1 4 0
+> inventory 1001 1 101
+> field 1001 health 2
+> who 1001
+> resolve_wait
+> queue wait time 30
+> queue guard 1
+> load
+load 1
+> do
+> select 1000
+> queue terrorize 1001 3
+> load
+load 1
+> do
+> set wait 0
+> finish
+finish 0
+> dump
+cmd 88 who 1000 state 0 status 0 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1001 3 0 0 0 0 0 0; parse [terrorize] [1001] [3]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> inherit state
+combat gold 0 independent 0 indent 0 show_day 0
+inherit player 200
+bits: 1001 1000 12
+inherit player 201
+bits:
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+il	1 24
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li terrorize 1001 3
+ ar 1001 3 0 0 0 0 0 0
+ pr 3
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+il	1001 1
+LI
+ wh 10000
+ hl 1000 
+
+monthly loc 10000 loc 0 subloc 0 recent 0
+10000 loc region
+LI
+ hl 9000 
+
+> readlog 200
+log 200:
+1001:0::0::> wait time 30
+1000:0::0::> terrorize 1001 3
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1001:0::0::<no subkind>~[1001] is wounded.  Health is now 0.
+1001:0::0::*** <no subkind> has died ***
+1000:0::0::<no subkind>~[1001] has died.
+12:0::0::<no subkind>~[1001] died in Plain~[9000].
+1000:0::0::Taken from <no subkind>~[1001]:
+1000:0::3::24~<no subkind>~[1]
+1000:0::0::<no subkind>~[1001] unstacks from us.
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1001 1000 12
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 1 24
+1000 char 0
+il	1 24
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li terrorize 1001 3
+ ar 1001 3 0 0 0 0 0 0
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+raw item 1 0
+1001 item dead body
+na dead body
+CH
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 200
+CO
+ li wait time 30
+ ar 0 30 0 0 0 0 0 0
+ wa -1
+ st 1
+ po 1
+ pr 1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+raw item 1001 1
+9000 loc plain
+il	1001 1
+LI
+ wh 10000
+ hl 1000 
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+warning: plural name not set for item [1]
+
+exit 0
+stdout:
+section N16 start validation fear before visibility foreign self beneath oath and prisoner NPC
+> place 9000
+> link 9000 1001
+> field 1000 loyal 3
+> parse terrorize 0 5
+parse 1
+> callback_start
+callback start 0
+> field 1000 loyal 0
+> callback_start
+callback start 0
+> parse terrorize 117 5
+parse 1
+> callback_start
+callback start 0
+> parse terrorize 9000 5
+parse 1
+> callback_start
+callback start 0
+> parse terrorize 1001 5
+parse 1
+> field 1001 lord 201
+> callback_start
+callback start 0
+> field 1001 lord 200
+> callback_start
+callback start 0
+> parse terrorize 1000 5
+parse 1
+> callback_start
+callback start 0
+> link 1000 1001
+> field 1001 loyal 2
+> parse terrorize 1001 5
+parse 1
+> callback_start
+callback start 0
+> field 1001 prisoner 1
+> callback_start
+callback start 1
+> field 1001 subkind 54
+> callback_start
+callback start 0
+> field 1001 subkind 0
+> field 1001 loyal 4
+> callback_start
+callback start 0
+> field 1001 loyal 5
+> callback_start
+callback start 0
+> link 9000 1001
+> callback_start
+callback start 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li terrorize 1001 5
+ ar 1001 5 0 0 0 0 0 0
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ lk 5
+ pr 1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 1001 
+
+> readlog 200
+log 200:
+1000:0::0::Units of fear loyalty may not terrorize.
+1000:0::0::[0] is not a character.
+1000:0::0::[117] is not a character.
+1000:0::0::[9000] is not a character.
+1000:0::0::[1001] does not belong to our faction.
+1000:0::0::Unit to be terrorized must be stacked beneath us.
+1000:0::0::Unit to be terrorized must be stacked beneath us.
+1000:0::0::Oathbound units do not need to have their loyalty reinforced through terror.
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::NPC's cannot swear to player factions.
+1000:0::0::NPC's cannot swear to player factions.
+1000:0::0::NPC's cannot swear to player factions.
+1000:0::0::[1001] is not a prisoner of <no subkind>~[1000].
+stderr:
+
+exit 0
+stdout:
+section N16 foreign sibling prisoner same leader converts at exact real keyed gate with queues and NP
+> master 0
+> entity 1 4 0
+> entity 100 1 0
+> set indep 100
+> entity 1005 2 0
+> entity 1002 2 0
+> place 9000
+> link 9000 1002
+> link 1002 1000
+> link 1002 1005
+> field 1005 lord 201
+> field 1005 prisoner 1
+> field 1005 health 100
+> field 200 unit 1000
+> field 201 unit 1005
+> field 200 np 7
+> field 201 np 3
+> field 1005 hostile 1000
+> field 1005 pledge 1001
+> field 1005 rate 900
+> entity 671 5 0
+> field 671 skill_np 2
+> learn 1005 671 2 0
+> orders 201 1005 wait time 8
+> orders 200 1005 guard 1
+> who 1005
+> resolve_wait
+> queue wait time 30
+> load
+load 1
+> do
+> select 1000
+> terror_roll 1000 1005
+terror roll 1000 1005 7
+> usemeta legacy 1 100000
+use legacy 87265
+> queue terrorize 1005 7
+> load
+load 1
+> do
+> set wait 0
+> finish
+finish 1
+> dump
+cmd 88 who 1000 state 0 status 1 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1005 7 0 0 0 0 0 0; parse [terrorize] [1005] [7]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1005
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> select 1005
+> dump
+cmd 38 who 1005 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 1 last 0 format 0 notab 0 output 0 hidden 0 orders 0
+load_q 0:
+load_q 1: 1005
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> select 1000
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 1002
+CH
+ lo 200
+CO
+ li terrorize 1005 7
+ ar 1005 7 0 0 0 0 0 0
+ st 1
+ pr 3
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly char 1002 char 0 magic 0 fresh 0 new 0
+1002 char 0
+LI
+ wh 9000
+ hl 1000 1005 
+
+monthly char 1005 char 1 magic 1 fresh 1 new 1
+1005 char 0
+LI
+ wh 1002
+CH
+ lo 200
+ pl 201
+ he 93
+ lk 3
+ lr 7
+ sl	671 2 0 0 0
+ pr 1
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1002 
+
+> pstate 200
+player 200 np 4 gained 0 spent 3 backlinks 0
+units: 1000 1005
+output 0 1 0 1 0 touched 1 0
+orders 1005:
+orders 1000:
+> pstate 201
+player 201 np 6 gained 3 spent 0 backlinks 0
+units:
+output 0 0 1 0 0 touched 0 0
+orders 1005:
+> terror_roll 1000 1005
+terror roll 1000 1005 7
+> usemeta legacy 1 100000
+use legacy 10691
+> readlog 200
+log 200:
+1000:0::0::> terrorize 1005 7
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1005] through terror.
+1000:0::0::Health of <no subkind>~[1005] is now 93.
+1000:0::0::<no subkind>~[1005] has been convinced to join us.
+200:0::0:0:Paid 3 NPs for <no subkind>~[1005].
+200:0::0:0:<no subkind>~[1005] pledges fealty to us.
+> readlog 201
+log 201:
+201:0::0::<no subkind>~[1005] renounces loyalty to us.
+201:0::0:0:Received 3 NPs for <no subkind>~[1005].
+> export state
+export entity 1 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1 item 0
+
+export entity 100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+100 player 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1000 1005
+output: 1000 200
+200 player pl_regular
+PL
+ np 4
+ un 1000 1005 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 201
+201 player pl_regular
+PL
+ np 6
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 671 char 0 player 0 magic 0 misc 0 skill 1 temp 0 order 0
+here:
+671 skill 0
+SK
+ tl 0
+ np 2
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1000 char 0
+LI
+ wh 1002
+CH
+ lo 200
+CO
+ li terrorize 1005 7
+ ar 1005 7 0 0 0 0 0 0
+ st 1
+ pr 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1002 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000 1005
+1002 char 0
+LI
+ wh 9000
+ hl 1000 1005 
+
+export entity 1005 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 671 2
+1005 char 0
+LI
+ wh 1002
+CH
+ lo 200
+ pl 201
+ he 93
+ lk 3
+ lr 7
+ sl	671 2 0 0 0
+ pr 1
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1002
+9000 loc plain
+LI
+ hl 1002 
+
+stderr:
+
+exit 0
+stdout:
+section N16 prisoner below gate refuses TRUE and negative defaults one unlike vassal
+> master 0
+> entity 1005 2 0
+> place 9000
+> link 1000 1005
+> field 1005 lord 201
+> field 1005 prisoner 1
+> field 1005 health 100
+> terror_roll 1000 1005
+terror roll 1000 1005 7
+> parse terrorize 1005 6
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> parse terrorize 1005 -1
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1005 
+CH
+ lo 200
+CO
+ li terrorize 1005 -1
+ ar 1005 0 0 0 0 0 0 0
+ st 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly char 1005 char 1 magic 0 fresh 0 new 0
+1005 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ he 93
+ pr 1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1005] through terror.
+1000:0::0::Health of <no subkind>~[1005] is now 94.
+1000:0::0::<no subkind>~[1005] refuses to swear fealty to us.
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1005] through terror.
+1000:0::0::Health of <no subkind>~[1005] is now 93.
+1000:0::0::<no subkind>~[1005] refuses to swear fealty to us.
+> readlog 201
+log 201:
+> usemeta legacy 1 100000
+use legacy 87265
+stderr:
+
+exit 0
+stdout:
+section N16 prisoner NP insufficient after wounds illness and health output no rollback
+> master 0
+> entity 1005 2 0
+> place 9000
+> link 1000 1005
+> field 1005 lord 201
+> field 1005 prisoner 1
+> field 1005 health 100
+> field 200 np 0
+> field 201 np 13
+> queue terrorize 1005 60
+> load
+load 1
+> do
+> terror_roll 1000 1005
+terror roll 1000 1005 7
+> set wait 0
+> finish
+finish 0
+> dump
+cmd 88 who 1000 state 0 status 0 wait 0 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1005 60 0 0 0 0 0 0; parse [terrorize] [1005] [60]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1005 
+CH
+ lo 200
+CO
+ li terrorize 1005 60
+ ar 1005 60 0 0 0 0 0 0
+ pr 3
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly char 1005 char 1 magic 0 fresh 0 new 0
+1005 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ he 40
+ si 1
+ pr 1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::> terrorize 1005 60
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1005] through terror.
+1000:0::0::Health of <no subkind>~[1005] is now 40.
+1000:0::0::Don't have 1 NP to take control of <no subkind>~[1005].
+> readlog 201
+log 201:
+> entity_rolls 1005 40 9000
+prison roll 435
+land dir99 4
+land dir98 4
+land pick 0
+> usemeta legacy 1 100000
+use legacy 87265
+stderr:
+
+exit 0
+stdout:
+section N16 oath prisoner refuses after damage regardless severity and zero NP
+> master 0
+> place 9000
+> link 1000 1001
+> field 1001 prisoner 1
+> field 1001 lord 201
+> field 1001 loyal 2
+> field 1001 health 100
+> field 200 np 0
+> parse terrorize 1001 90
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+CO
+ li terrorize 1001 90
+ ar 1001 90 0 0 0 0 0 0
+ st 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ he 10
+ si 1
+ lk 2
+ pr 1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::Health of <no subkind>~[1001] is now 10.
+1000:0::0::<no subkind>~[1001] refuses to swear fealty to us.
+> readlog 201
+log 201:
+> usemeta legacy 1 100000
+use legacy 87265
+stderr:
+
+exit 0
+stdout:
+section N16 prisoner fatal survival keeps uncapped severity conversion and forgets skill
+> master 0
+> place 9000
+> link 1000 1001
+> entity 611 5 43
+> learn 1001 611 2 21
+> field 1001 prisoner 1
+> field 1001 lord 201
+> field 1001 health 3
+> field 200 np 10
+> parse terrorize 1001 2147483647
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+CO
+ li terrorize 1001 2147483647
+ ar 1001 2147483647 0 0 0 0 0 0
+ st 1
+
+monthly char 1001 char 1 magic 1 fresh 1 new 1
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pl 201
+ he 100
+ lk 3
+ lr 2147483647
+CM
+ ma -1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> usemeta rows 1001
+grant records 1001 char 1 magic 1
+> readlog 200
+log 200:
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::Health of <no subkind>~[1001] is now 100.
+1000:0::0::<no subkind>~[1001] has been convinced to join us.
+200:0::0:0:Paid 1 NP for <no subkind>~[1001].
+1001:0::0:0:<no subkind>~[1001] pledges fealty to us.
+200:0::0:0:<no subkind>~[1001] pledges fealty to us.
+> readlog 201
+log 201:
+201:0::0::<no subkind>~[1001] renounces loyalty to us.
+201:0::0:0:Received 1 NP for <no subkind>~[1001].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1001
+output: 1000 200 1001
+200 player pl_regular
+PL
+ np 9
+ un 1001 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 201
+201 player pl_regular
+PL
+ np 1
+
+export entity 611 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+611 skill magic
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1001
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+CO
+ li terrorize 1001 2147483647
+ ar 1001 2147483647 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 1 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pl 201
+ he 100
+ lk 3
+ lr 2147483647
+CM
+ ma -1
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N16 prisoner sentinel49 no wound conversion versus sentinel50 actual fatal inheritance
+> master 0
+> set gm 200
+> entity 10000 3 50
+> entity 10 4 0
+> entity 1002 2 0
+> place 9000
+> link 10000 9000
+> link 1000 1001
+> link 1000 1002
+> field 1001 prisoner 1
+> field 1001 lord 201
+> field 1001 health -1
+> field 1002 prisoner 1
+> field 1002 lord 201
+> field 1002 health -1
+> field 200 np 10
+> terror_roll 1000 1002
+terror roll 1000 1002 43
+> parse terrorize 1002 49
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> parse terrorize 1001 50
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1002 
+CH
+ lo 200
+CO
+ li terrorize 1001 50
+ ar 1001 50 0 0 0 0 0 0
+
+monthly char 1002 char 1 magic 0 fresh 1 new 1
+1002 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pl 201
+ he -1
+ lk 3
+ lr 49
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+il	1001 1
+LI
+ wh 10000
+ hl 1000 
+
+monthly loc 10000 loc 0 subloc 0 recent 0
+10000 loc region
+LI
+ hl 9000 
+
+> readlog 200
+log 200:
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1002] through terror.
+1000:0::0::Health of <no subkind>~[1002] is now -1.
+1000:0::0::<no subkind>~[1002] has been convinced to join us.
+200:0::0:0:Paid 1 NP for <no subkind>~[1002].
+1002:0::0:0:<no subkind>~[1002] pledges fealty to us.
+200:0::0:0:<no subkind>~[1002] pledges fealty to us.
+1000:0::0:0:Attempt to gain the loyalty of <no subkind>~[1001] through terror.
+1000:0::0:0:<no subkind>~[1001] has died.
+12:0::0:0:<no subkind>~[1001] died in Plain~[9000].
+1000:0::0:0:<no subkind>~[1001] unstacks from us.
+> readlog 201
+log 201:
+201:0::0::<no subkind>~[1002] renounces loyalty to us.
+201:0::0:0:Received 1 NP for <no subkind>~[1002].
+1001:0::0:0:*** <no subkind> has died ***
+> export state
+export entity 10 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+10 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1002
+output: 1000 200 1002 12
+200 player pl_regular
+PL
+ np 9
+ un 1002 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 201 1001
+201 player pl_regular
+PL
+ np 1
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1002
+1000 char 0
+LI
+ wh 9000
+ hl 1002 
+CH
+ lo 200
+CO
+ li terrorize 1001 50
+ ar 1001 50 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+1001 item dead body
+na dead body
+CH
+ he -1
+IT
+ pl dead bodies
+ un 9000
+MI
+ ol 201
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1002 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pl 201
+ he -1
+ lk 3
+ lr 49
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+raw item 1001 1
+9000 loc plain
+il	1001 1
+LI
+ wh 10000
+ hl 1000 
+
+export entity 10000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 9000
+10000 loc region
+LI
+ hl 9000 
+
+stderr:
+
+exit 0
+stdout:
+section N16 completion prisoner NPC and actor fear not rechecked moving contacted foreign visible
+> master 0
+> place 9000
+> link 1000 1001
+> field 1001 prisoner 1
+> field 1001 lord 201
+> field 1001 health 100
+> field 1001 loyal 2
+> parse terrorize 1001 1
+parse 1
+> callback_start
+callback start 1
+> field 1000 loyal 3
+> field 1001 subkind 54
+> field 1001 moving 1
+> field 1001 hidden 1
+> field 1001 contact 1000
+> set wait 0
+> finish
+finish 1
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+ lk 3
+CO
+ li terrorize 1001 1
+ ar 1001 1 0 0 0 0 0 0
+ st 1
+
+monthly char 1001 char 1 magic 1 fresh 0 new 0
+1001 char ni
+LI
+ wh 1000
+CH
+ lo 201
+ he 99
+ lk 2
+ pr 1
+ mo 1
+ ct 1000 
+CM
+ hs 1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::Health of Ni~[1001] is now 99.
+1000:0::0::Ni~[1001] refuses to swear fealty to us.
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section N16 finish lost visibility versus contacted hidden target and actual moved target
+> master 0
+> place 9000
+> link 1000 1001
+> field 1001 prisoner 1
+> field 1001 lord 201
+> field 1001 health 100
+> parse terrorize 1001 1
+parse 1
+> callback_start
+callback start 1
+> field 1001 hidden 1
+> set wait 0
+> finish
+finish 1
+> field 1001 contact 1000
+> finish
+finish 1
+> entity 9001 3 0
+> link 9001 1001
+> finish
+finish 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li terrorize 1001 1
+ ar 1001 1 0 0 0 0 0 0
+
+monthly char 1001 char 1 magic 1 fresh 0 new 0
+1001 char 0
+LI
+ wh 9001
+CH
+ lo 201
+ he 98
+ pr 1
+ ct 1000 
+CM
+ hs 1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc 0
+LI
+ hl 1001 
+
+> readlog 200
+log 200:
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::Health of <no subkind>~[1001] is now 99.
+1000:0::0::<no subkind>~[1001] refuses to swear fealty to us.
+1000:0::0::Health of <no subkind>~[1001] is now 98.
+1000:0::0::<no subkind>~[1001] refuses to swear fealty to us.
+1000:0::0::<no subkind>~[1001] can no longer be seen here.
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section N16 finish rechecks ownership beneath oath stack leader and target character kind
+> place 9000
+> link 1000 1001
+> field 1001 health 100
+> parse terrorize 1001 1
+parse 1
+> callback_start
+callback start 1
+> field 1001 lord 201
+> set wait 0
+> finish
+finish 0
+> field 1001 lord 200
+> link 9000 1001
+> finish
+finish 0
+> link 1000 1001
+> field 1001 loyal 2
+> finish
+finish 0
+> field 1001 prisoner 1
+> link 9000 1001
+> finish
+finish 0
+> who 1001
+> set kind 4
+> select 1000
+> finish
+finish 0
+> readlog 200
+log 200:
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::[1001] does not belong to our faction.
+1000:0::0::Unit to be terrorized must be stacked beneath us.
+1000:0::0::Oathbound units do not need to have their loyalty reinforced through terror.
+1000:0::0::[1001] is not a prisoner of <no subkind>~[1000].
+1000:0::0::[1001] is not a character.
+stderr:
+
+exit 0
+stdout:
+section N16 changing prisoner flag chooses finish path not start path
+> master 0
+> place 9000
+> link 1000 1001
+> field 1001 health 100
+> parse terrorize 1001 0
+parse 1
+> callback_start
+callback start 1
+> field 1001 prisoner 1
+> field 1001 loyal 2
+> set wait 0
+> finish
+finish 1
+> parse terrorize 1001 0
+parse 1
+> callback_start
+callback start 1
+> field 1001 prisoner 0
+> field 1001 loyal 1
+> set wait 0
+> finish
+finish 1
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+CO
+ li terrorize 1001 0
+ ar 1001 0 0 0 0 0 0 0
+ st 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 96
+ lk 3
+ lr 3
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::Health of <no subkind>~[1001] is now 99.
+1000:0::0::<no subkind>~[1001] refuses to swear fealty to us.
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1001] through terror.
+1001:0::0::<no subkind>~[1001] is wounded.  Health is now 96.
+1000:0::0::<no subkind>~[1001] now bound with fear-3.
+stderr:
+
+exit 0
+stdout:
+section N16 interrupted terrorize never damages and saved running text is reparsed
+> master 0
+> place 9000
+> link 1000 1001
+> field 1001 health 100
+> queue terrorize 1001 20
+> queue terrorize 1001 1
+> queue guard 1
+> load
+load 1
+> do
+> day 1
+> generic_interrupt 1000
+> dump
+cmd 88 who 1000 state 1 status 1 wait 7 poll 0 pri 3 cond 0 fuzzy 0 days 0 debug 1 inhibit 0 cur 3
+args 1001 1 0 0 0 0 0 0; parse [terrorize] [1001] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 1
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3: 1000
+load_q 4:
+run_q:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+CO
+ li terrorize 1001 1
+ ar 1001 1 0 0 0 0 0 0
+ cs 1
+ wa 7
+ st 1
+ pr 3
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 100
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> do
+> persist_command
+> initial
+> field 1001 lord 201
+> day 2
+> day 3
+> day 4
+> day 5
+> day 6
+> day 7
+> day 8
+> dump
+cmd 38 who 1000 state 1 status 0 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 8 inhibit 0 cur 1
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 2 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ pr 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 201
+ he 100
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::> terrorize 1001 20
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::> terrorize 1001 1
+1000:0::0::Increase the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::[1001] does not belong to our faction.
+> readlog 201
+log 201:
+stderr:
+
+exit 0
+stdout:
+section N16 actual social day turn keyed gates and legacy aftermath
+> master 0
+> terror_roll 1000 1001
+terror roll 1000 1001 84
+> terror_roll 1000 1001
+terror roll 1000 1001 84
+> usemeta legacy 1 100000
+use legacy 87265
+> set day 7
+> terror_roll 1000 1001
+terror roll 1000 1001 10
+> terror_roll 1000 1001
+terror roll 1000 1001 10
+> set turn 1
+> terror_roll 1000 1001
+terror roll 1000 1001 6
+> usemeta legacy 1 100000
+use legacy 10691
+stderr:
+
+exit 0
+stdout:
+section N16 incite validation skill mob visibility target location before mob type and parent
+> place 9000
+> link 9000 1001
+> parse incite 1001 0
+parse 1
+> callback_start
+callback start 0
+> entity 675 5 0
+> learn 1000 675 2 0
+> parse incite 0 0
+parse 1
+> callback_start
+callback start 0
+> parse incite 1001 0
+parse 1
+> callback_start
+callback start 0
+> parse incite 1001 1000
+parse 1
+> callback_start
+callback start 0
+> entity 10 4 0
+> field 1001 noble_item 10
+> link 1000 1001
+> callback_start
+callback start 0
+> link 9000 1001
+> callback_start
+callback start 1
+> entity 23 4 0
+> field 1001 noble_item 23
+> callback_start
+callback start 1
+> field 1001 lord 201
+> field 1001 hidden 1
+> callback_start
+callback start 0
+> field 1001 contact 1000
+> callback_start
+callback start 1
+> field 1001 moving 123
+> callback_start
+callback start 1
+> readlog 200
+log 200:
+1000:0::0::Requires [675].
+1000:0::0::[0] is not a character.
+1000:0::0::[0] is not here.
+1000:0::0::<no subkind>~[1001] is not a peasant mob.
+1000:0::0::<no subkind>~[1001] is stacked under a leader.
+1000:0::0::[1001] cannot be seen here.
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+ sl	675 2 0 0 0
+CO
+ li incite 1001 1000
+ ar 1001 1000 0 0 0 0 0 0
+
+monthly char 1001 char 1 magic 1 fresh 0 new 0
+1001 char 0
+LI
+ wh 9000
+CH
+ ni 23
+ lo 201
+ mo 123
+ ct 1000 
+CM
+ hs 1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 1001 
+
+stderr:
+
+exit 0
+stdout:
+section N16 incite target need not visible or character and direct completion rechecks nothing
+> master 0
+> entity 675 5 0
+> learn 1000 675 2 0
+> entity 1002 2 0
+> entity 10 4 0
+> entity 9001 3 0
+> place 9000
+> link 9000 1001
+> link 9000 1002
+> link 9000 9001
+> field 1001 noble_item 10
+> field 1002 lord 201
+> field 1002 hidden 1
+> parse incite 1001 1002
+parse 1
+> callback_start
+callback start 1
+> parse incite 1001 9001
+parse 1
+> callback_start
+callback start 1
+> queue incite 1001 1002
+> queue guard 1
+> load
+load 1
+> do
+> death forget 1000 675
+forget 1
+> field 1001 noble_item 0
+> link 1000 1001
+> link 9001 1002
+> set wait 0
+> finish
+finish 1
+> dump
+cmd 38 who 1000 state 1 status 1 wait 0 poll 0 pri 1 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 1 0 0 0 0 0 0 0; parse [guard] [1]
+player 200 count 1 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1: 1000
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1001 
+CH
+ lo 200
+CO
+ li guard 1
+ ar 1 0 0 0 0 0 0 0
+ cs 1
+ st 1
+ pr 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+monthly char 1002 char 1 magic 1 fresh 0 new 0
+1002 char 0
+LI
+ wh 9001
+CH
+ lo 201
+CM
+ hs 1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 9001 
+
+monthly loc 9001 loc 0 subloc 0 recent 0
+9001 loc 0
+LI
+ wh 9000
+ hl 1002 
+
+> usemeta rows 1000
+grant records 1000 char 1 magic 0
+> usemeta skill_usage 675
+grant usage 675 record 0 count 0 who 0
+> readlog 200
+log 200:
+1000:0::0::> incite 1001 1002
+stderr:
+
+exit 0
+stdout:
+section N16 hidden foreign prisoner no longer shares leader fails visibility before ownership then contact exposes leader failure
+> place 9000
+> link 1000 1001
+> field 1001 lord 201
+> field 1001 prisoner 1
+> field 1001 health 100
+> parse terrorize 1001 1
+parse 1
+> callback_start
+callback start 1
+> link 9000 1001
+> field 1001 hidden 1
+> set wait 0
+> finish
+finish 0
+> field 1001 contact 1000
+> finish
+finish 0
+> parse terrorize 117 1
+parse 1
+> set wait 0
+> finish
+finish 0
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li terrorize 117 1
+ ar 117 1 0 0 0 0 0 0
+
+monthly char 1001 char 1 magic 1 fresh 0 new 0
+1001 char 0
+LI
+ wh 9000
+CH
+ lo 201
+ he 100
+ pr 1
+ ct 1000 
+CM
+ hs 1
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 1001 
+
+> readlog 200
+log 200:
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1001] through terror.
+1000:0::0::<no subkind>~[1001] can no longer be seen here.
+1000:0::0::[1001] is not a prisoner of <no subkind>~[1000].
+1000:0::0::[117] is not a character.
+stderr:
+
+exit 0
+stdout:
+section N16 same faction prisoner conversion still requires NP but ownership transfer has no NP payment
+> master 0
+> entity 1005 2 0
+> place 9000
+> link 1000 1005
+> field 1005 lord 200
+> field 1005 prisoner 1
+> field 1005 health 100
+> field 200 np 0
+> parse terrorize 1005 7
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 0
+> field 200 np 1
+> finish
+finish 1
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1005 
+CH
+ lo 200
+CO
+ li terrorize 1005 7
+ ar 1005 7 0 0 0 0 0 0
+ st 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly char 1005 char 1 magic 0 fresh 1 new 1
+1005 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 86
+ lk 3
+ lr 7
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1005] through terror.
+1000:0::0::Health of <no subkind>~[1005] is now 93.
+1000:0::0::Don't have 1 NP to take control of <no subkind>~[1005].
+1000:0::0::Health of <no subkind>~[1005] is now 86.
+1000:0::0::<no subkind>~[1005] has been convinced to join us.
+200:0::0::<no subkind>~[1005] renounces loyalty to us.
+1005:0::0:0:<no subkind>~[1005] pledges fealty to us.
+200:0::0:0:<no subkind>~[1005] pledges fealty to us.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000 200 1005
+200 player pl_regular
+PL
+ np 1
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1005
+1000 char 0
+LI
+ wh 9000
+ hl 1005 
+CH
+ lo 200
+CO
+ li terrorize 1005 7
+ ar 1005 7 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1005 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1005 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ he 86
+ lk 3
+ lr 7
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N16 independent former owner prisoner conversion costs zero NP and clears prisoner
+> master 0
+> entity 100 1 0
+> set indep 100
+> entity 1005 2 0
+> place 9000
+> link 1000 1005
+> field 1005 lord 100
+> field 1005 prev 200
+> field 1005 prisoner 1
+> field 1005 health 100
+> field 200 np 0
+> parse terrorize 1005 7
+parse 1
+> callback_start
+callback start 1
+> set wait 0
+> finish
+finish 1
+> monthly state
+monthly char 1000 char 1 magic 0 fresh 0 new 0
+1000 char 0
+LI
+ wh 9000
+ hl 1005 
+CH
+ lo 200
+CO
+ li terrorize 1005 7
+ ar 1005 7 0 0 0 0 0 0
+ st 1
+
+monthly char 1001 char 1 magic 0 fresh 0 new 0
+1001 char 0
+CH
+ lo 200
+
+monthly char 1005 char 1 magic 0 fresh 1 new 1
+1005 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pl 100
+ he 93
+ lk 3
+ lr 7
+
+monthly loc 9000 loc 0 subloc 0 recent 0
+9000 loc plain
+LI
+ hl 1000 
+
+> readlog 200
+log 200:
+1000:0::0::Attempt to gain the loyalty of <no subkind>~[1005] through terror.
+1000:0::0::Health of <no subkind>~[1005] is now 93.
+1000:0::0::<no subkind>~[1005] has been convinced to join us.
+1005:0::0:0:<no subkind>~[1005] pledges fealty to us.
+200:0::0:0:<no subkind>~[1005] pledges fealty to us.
+> readlog 100
+log 100:
+100:0::0::<no subkind>~[1005] renounces loyalty to us.
+> export state
+export entity 100 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 100
+100 player 0
+PL
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units: 1005
+output: 1000 1005 200
+200 player pl_regular
+PL
+ un 1005 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1005
+1000 char 0
+LI
+ wh 9000
+ hl 1005 
+CH
+ lo 200
+CO
+ li terrorize 1005 7
+ ar 1005 7 0 0 0 0 0 0
+ st 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 1005 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1005 char 0
+LI
+ wh 1000
+CH
+ lo 200
+ pl 100
+ he 93
+ lk 3
+ lr 7
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9000 loc plain
+LI
+ hl 1000 
+
+stderr:
+
+exit 0

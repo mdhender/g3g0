@@ -126,6 +126,7 @@ void drv_use_table(void), drv_use_consume(int who,int sk), drv_use_scroll(int wh
 int drv_use_lookup(int sk), drv_use_may(int who,int sk), drv_use_correct(struct command *c), drv_use_meets(int who,int sk);
 int drv_use_callback(struct command *c, int sk, int finish);
 void drv_social_rolls(int who, int target);
+void drv_terror_roll(int who, int target);
 void drv_magic_rolls(int who, int other);
 int drv_potion_roll(int who, int item, int sub);
 void drv_json(FILE *fp, char *s), drv_export_unit(FILE *fp, int who), drv_export_faction(FILE *fp, int pl);
@@ -264,6 +265,10 @@ int main(int argc, char **argv)
   else if (!strcmp(op, "social")) {
    sscanf(line,"%*s %d %d",&n,&a);
    drv_social_rolls(n,a);
+  }
+  else if (!strcmp(op, "terror_roll")) {
+   sscanf(line,"%*s %d %d",&n,&a);
+   drv_terror_roll(n,a);
   }
   else if (!strcmp(op, "settings")) {
    struct entity_player *p;

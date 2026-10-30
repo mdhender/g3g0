@@ -45,7 +45,8 @@ functions = {
                 'orders_template_sup', 'orders_other', 'orders_template', 'list_order_templates'],
     'swear.c': ['lord', 'player', 'set_loyal', 'reswear_all_sworn', 'set_lord', 'unit_deserts',
                 'np_to_acquire', 'enough_np_to_acquire', 'v_honor', 'v_oath', 'v_swear',
-                'v_raise', 'd_raise', 'v_rally', 'd_rally', 'v_bribe', 'thanks_for_gift', 'd_bribe'],
+                'v_raise', 'd_raise', 'v_rally', 'd_rally', 'v_bribe', 'thanks_for_gift', 'd_bribe',
+                'terrorize_vassal', 'terrorize_prisoner', 'v_terrorize', 'd_terrorize', 'v_incite'],
     'move.c': ['check_captain_loses_sailors', 'restore_stack_actions', 'touch_loc_after_move', 'move_stack',
                'departure_message', 'arrival_message', 'discover_road', 'parse_exit_dir',
                'save_v_array', 'restore_v_array', 'move_exit_land', 'land_check',
@@ -250,7 +251,7 @@ int immed_see_all, month_done, show_combat_flag;
         source = open(f'{src}/{file}').read()
         # Original data declarations too: no copied or modeled tag/number table.
         if file == 'swear.c':
-            start, end = source.index('#define\tTAG_TURN'), source.index('/* TERRORIZE: severity gate')
+            start, end = source.index('#define\tTAG_TURN'), source.index('/* INCITE: rumor flavor')
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/swear.c"\n')
             out.write(source[start:end])
             start, end = source.index('#define\t\tSWITCH'), source.index('int\nd_bribe(')
@@ -386,6 +387,9 @@ int immed_see_all, month_done, show_combat_flag;
     out.write('''
 void drv_social_rolls(int who, int target) {
  printf("social rolls %d %d %d %d %d\\n",who,target,soc_gift(who,target),soc_bribe(who,target,0,1,2),soc_bribe(who,target,1,1,100));
+}
+void drv_terror_roll(int who, int target) {
+ printf("terror roll %d %d %d\\n",who,target,soc_terror(who,target));
 }
 int drv_use_callback(struct command *c, int sk, int finish) {
  struct use_tbl_ent *e = &use_tbl[find_use_entry(sk)];
@@ -843,6 +847,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N16 '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N16 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N15 '* ]]; then
    expected_status=0
    expected_assert=''

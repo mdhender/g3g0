@@ -3,6 +3,104 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## TERRORIZE and INCITE start (#217, stage 4 N16)
+
+**0.139.0-alpha**, unchanged immutable **9a03d126**. Complete original
+swear.c definitions are extracted without rewriting, with source `#line`:
+
+| Definition | Lines | Bytes | SHA-256 |
+| --- | --- | --- | --- |
+| terrorize_vassal | 794–823 | 527 | `2c9345d573d8a10b9fdcea7d457390553364aceed60824db00617a5d9addbe59` |
+| terrorize_prisoner | 826–861 | 760 | `edff8ad814dd1c32edec5df12921047b8af759db7faeafdcac2d7e91a25cc007` |
+| v_terrorize | 864–924 | 1209 | `edb2b6d25c111f7032cc18cbd3a8b7e03cc5820457706c2e0208fdef9af49032` |
+| d_terrorize | 927–970 | 838 | `bad7f817094ab7cec650b59f8196fdaaa2d270673c7401f2de932b3f61fc343e` |
+| v_incite | 1085–1118 | 621 | `941f8c5cb248175e0067340cdd097c4828efcee439b02021d9c7eda25b9ef1b6` |
+
+Only actual `soc_terror` extends the existing original social prefix; its
+tags/static state/begin_social/soc_today are not duplicated. Go reuses
+`Streams.SocTerror`, #198 damage/death/survival, and existing NP/desertion/
+ownership/stack/queue/output machinery. No pin or source dependency is added;
+#214 cookie allocation is unchanged.
+
+**23 appended sections** compare real dispatch, raw status/streams, complete
+saved state and raw allocation/loyalty/fresh_hire/new_lord fields, NP accounting,
+stored and running queues, coverage/USE/skill counts and keyed/legacy RNG:
+
+- Fear rejection precedes visibility. Foreign prisoners need a shared stack
+  **leader**, not necessarily the actor as parent; vassals require same faction,
+  strict beneath and nonoath. Completion repeats still-here and current path
+  checks, not actor fear or prisoner NPC refusal. Moving visible targets remain
+  valid; hidden same-leader/contact controls and actual movement distinguish
+  visibility from ownership/leader failures. Changes of owner, kind, oath,
+  parent and prisoner state are exercised between phases.
+- Default severity differs (vassal3/prisoner1). Vassal clipping includes health
+  **-1/0**, signed loyalty wrap and survive-fatal's health reset; prisoners keep
+  uncapped severity. Real wounds, illness, lethal inheritance/WAIT interruption,
+  survival skill loss and NP failure **after** damage/output have no rollback.
+  Oath and social refusals return TRUE; conversion uses full unit_deserts and
+  fresh_hire, including same-faction and independent-former-owner paths.
+- Actual seed bytes **00..0f**, turn/day **0/0**, actor1000/target1005 give
+  gate **7**: severity6 refuses, severity7 converts. Target1002 gives **43**
+  for the sentinel49 control. Actor1000/target1001 is **84**, then **10** on
+  day7, **6** on turn1/day7. No forced rolls or second RNG implementation.
+- Seven-day delay, saved command reparse/reload and NULL interrupts use the
+  real scheduler. Direct INCITE validates and consumes time only, with no
+  completion revalidation, experience or queued attack. USE675 shares its real
+  START; the oracle interrupts before completion. A Go boundary test exercises
+  actual USE dispatch through the explicitly NYI `d_incite` finish. That
+  non-NULL callback is **not** replaced by nil or success; #242 owns it.
+
+Before porting, unchanged Go fails `command terrorize start` after real C/C
+determinism: `tmp/issue217-before.log`. Every update repeats real C twice before
+recording or comparing Go. Final oracle: **1851 sections /159520 lines**.
+Both entire inherited prefixes remain exact, including all **21/67 high-bit
+bytes** and authentic trailing spaces. Accepted stage-3 prefix provenance
+below remains inherited unchanged.
+
+| File | Full bytes | Full SHA-256 |
+| --- | --- | --- |
+| input | 775266 | `f89630b8cdd92e3866cf41ffee4f72e54d456bc07717db6454deabb941b3b8d9` |
+| output | 3082072 | `3f9fb49dc7ce0d793bfdbc79731fcc24d12c588cd4d5aa71cf5cbeae12e2ef41` |
+
+Inherited input **764663 bytes**, SHA-256
+`22ac0386e8d5d075fadd76e99e310707c3b5e01e4d462ddda6bdabad840c2011`;
+output **3032662 bytes**, SHA-256
+`434bedc4bd41789cd42342567a99fe06162de4b44932ca1b13b05c661d4b5b94`.
+All N16 cases require native status0, after rejecting dependency/NYI/stub/
+sanitizer/runtime-error markers. No new abort exception is introduced.
+Compiled native executable-entry marker controls exercise actual **0/134**,
+six marker classes × default/update: **24 status2 rejections**, recording
+unchanged. These are harness controls, not gameplay callback replacements.
+
+Commands are the bounded update/vet/full-enabled-test commands in #216 below,
+followed by eight defaults **command/move/helper/rng/code/loadsave/turn-driver/
+turn sequentially**, each with explicit `G3_REPO="$PWD/tmp/upstream.git"`,
+`RUN_TIMEOUT=120` and `GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'"`.
+Bounded vet, fresh `G3G0_FULL=1` tests (**11 packages**, Olympia **3.544s**)
+and all eight sequential defaults pass. Full-enabled tests do not substitute
+for the already-accepted #291 full serializer/207-roundtrip tier; it is not rerun.
+Logs: `tmp/issue217-{before,command-update-final,command-default,marker-controls,
+prefixes,canonical-provenance,vet,tests}.log`, plus per-tool default logs.
+See [strict originals](../turn-compat/README.md#terrorize-and-incite-start-217)
+and [spec no-loss](../olympia-spec/README.md#terrorize-and-incite-no-loss-217).
+No family/stage exit, later combat owner, stage5 or remote-CI claim is made.
+
+Parent independently reviewed the complete pinned definitions and changed
+owners. Bounded vet, fresh full-enabled tests (**11 packages**, Olympia
+**3.386s**) and all eight sequential defaults pass, including the complete
+**1851-section / 159520-line C/C/Go** oracle. All **75** evidence digests,
+both entire inherited byte prefixes, all **1237** canonical source blobs/modes
+and the canonical C binary hash verify. Fresh native original-script captures
+match C/C/Go for social-switched (**243 entries**) and social-refused (**241**);
+social-bribe matches C/C (**245**) but Go remains engine2/script1 at the
+explicit USE `d_incite` NYI. The independent full original spec repeats
+**60 pass / 69 fail / 0 error (199s)**, adding only social-refused and retaining
+all prior59 and stage3-36 names; initialization2/goldenNO remain honest.
+Logs: `tmp/parent217-{vet,tests,spec,evidence-check}.log`, eight
+`tmp/parent217-*-default.log` files and `tmp/parent217-social-*` manifests.
+Source/docs whitespace checks pass; the **65** authentic appended C-output
+trailing-space lines are preserved, not normalized.
+
 ## BRIBE (#216, stage 4 N15)
 
 **0.138.0-alpha**, unchanged immutable **9a03d12**. The entire swear.c blob

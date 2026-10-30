@@ -136,6 +136,150 @@ func (w *world) dBribe(c *command) int {
 	return 1
 }
 
+// swear.c:794–823. Clip the local severity, not the resulting health delta:
+// sentinel health -1 and survive-fatal deliberately affect loyalty this way.
+func (w *world) terrorizeVassal(c *command) int {
+	who, target, severity := int(c.who), int(c.a), int(c.b)
+	if severity < 1 {
+		severity = 3
+	}
+	health := 0
+	if p := w.rpChar(target); p != nil {
+		health = int(p.health)
+	}
+	if severity > health {
+		severity = health
+	}
+	w.addCharDamage(target, severity, who)
+	if w.kind(target) != tChar {
+		return 0
+	}
+	p := w.pChar(target)
+	if p.loyKind != loyFear {
+		p.loyKind, p.loyRate = loyFear, 0
+	}
+	p.loyRate += int32(severity)
+	w.commandOut(who, "%s now bound with %s.", w.boxName(target), w.loyalS(target))
+	return 1
+}
+
+// swear.c:826–861. Damage/output precede acquisition, even when NP is short.
+func (w *world) terrorizePrisoner(c *command) int {
+	who, target, severity := int(c.who), int(c.a), int(c.b)
+	if severity < 1 {
+		severity = 1
+	}
+	w.addCharDamage(target, severity, who)
+	if w.kind(target) != tChar {
+		return 0
+	}
+	p := w.pChar(target)
+	w.commandOut(who, "Health of %s is now %d.", w.boxName(target), p.health)
+	if p.loyKind != loyOath && w.streams.SocTerror(who, target) <= severity {
+		if !w.enoughNPToAcquire(who, target) {
+			return 0
+		}
+		w.commandOut(who, "%s has been convinced to join us.", w.boxName(target))
+		w.unitDeserts(target, w.player(who), true, loyFear, severity)
+		w.pChar(target).freshHire = 1
+		return 1
+	}
+	w.commandOut(who, "%s refuses to swear fealty to us.", w.boxName(target))
+	return 1
+}
+
+// swear.c:864–924. A prisoner need only share the actor's stack leader;
+// a nonprisoner must instead be beneath the actor and in the same faction.
+func (w *world) vTerrorize(c *command) int {
+	who, target := int(c.who), int(c.a)
+	if p := w.rpChar(who); p != nil && p.loyKind == loyFear {
+		w.commandOut(who, "Units of fear loyalty may not terrorize.")
+		return 0
+	}
+	if !w.checkCharHere(who, target) {
+		return 0
+	}
+	if w.isPrisoner(target) {
+		if w.stackLeader(target) != w.stackLeader(who) {
+			w.commandOut(who, "%s is not a prisoner of %s.", w.boxCode(target), w.boxName(who))
+			return 0
+		}
+		if w.isNPC(target) {
+			w.commandOut(who, "NPC's cannot swear to player factions.")
+			return 0
+		}
+		w.commandOut(who, "Attempt to gain the loyalty of %s through terror.", w.boxName(target))
+		return 1
+	}
+	if w.player(target) != w.player(who) {
+		w.commandOut(who, "%s does not belong to our faction.", w.boxCode(target))
+		return 0
+	}
+	if !w.stackedBeneath(who, target) {
+		w.commandOut(who, "Unit to be terrorized must be stacked beneath us.")
+		return 0
+	}
+	if p := w.rpChar(target); p != nil && p.loyKind == loyOath {
+		w.commandOut(who, "Oathbound units do not need to have their loyalty reinforced through terror.")
+		return 0
+	}
+	w.commandOut(who, "Increase the loyalty of %s through terror.", w.boxName(target))
+	return 1
+}
+
+// swear.c:927–970. Do not repeat actor fear or prisoner NPC checks at finish.
+func (w *world) dTerrorize(c *command) int {
+	who, target := int(c.who), int(c.a)
+	if !w.checkStillHere(who, target) {
+		return 0
+	}
+	if w.isPrisoner(target) {
+		if w.stackLeader(target) != w.stackLeader(who) {
+			w.commandOut(who, "%s is not a prisoner of %s.", w.boxCode(target), w.boxName(who))
+			return 0
+		}
+		return w.terrorizePrisoner(c)
+	}
+	if w.player(target) != w.player(who) {
+		w.commandOut(who, "%s does not belong to our faction.", w.boxCode(target))
+		return 0
+	}
+	if !w.stackedBeneath(who, target) {
+		w.commandOut(who, "Unit to be terrorized must be stacked beneath us.")
+		return 0
+	}
+	if p := w.rpChar(target); p != nil && p.loyKind == loyOath {
+		w.commandOut(who, "Oathbound units do not need to have their loyalty reinforced through terror.")
+		return 0
+	}
+	return w.terrorizeVassal(c)
+}
+
+// swear.c:1085–1118. Direct INCITE has no completion callback. USE675
+// shares this start, but its non-NULL d_incite remains explicitly NYI (#242).
+func (w *world) vIncite(c *command) int {
+	who, mob, target := int(c.who), int(c.a), int(c.b)
+	if !w.checkSkill(who, skInciteMob) {
+		return 0
+	}
+	if !w.checkCharHere(who, mob) {
+		return 0
+	}
+	if !w.validBox(target) || w.subloc(target) != w.subloc(who) {
+		w.commandOut(who, "%s is not here.", w.boxCode(target))
+		return 0
+	}
+	if w.nobleItem(mob) != itemPeasant && w.nobleItem(mob) != itemAngryPeasant {
+		w.commandOut(who, "%s is not a peasant mob.", w.boxName(mob))
+		return 0
+	}
+	if w.stackParent(mob) != 0 {
+		w.commandOut(who, "%s is stacked under a leader.", w.boxName(mob))
+		return 0
+	}
+	return 1
+}
+
 // swear.c:973–1082. RAISE checks availability at start, but allocates from
 // the actor's current sublocation at completion, through the shared cookie owner.
 func (w *world) vRaise(c *command) int {

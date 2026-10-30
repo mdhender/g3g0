@@ -52,6 +52,7 @@ savage-cap
 save-fly-cap
 save-libdir-space
 save-seed-unwritable
+social-refused
 social-switched
 stacking-refused
 stacking-stack

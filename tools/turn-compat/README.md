@@ -9,6 +9,48 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## TERRORIZE and INCITE start (#217)
+
+**0.139.0-alpha**, unchanged **9a03d126b329ed466c4af48425553c025eaca26f**.
+All **1237 original source blobs/modes** in `tmp/_issue215/canonical` are
+verified before reuse; canonical C retains SHA-256
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+Original social scripts/READMEs/scenarios/expected data are unchanged.
+
+Recreate the [native pre-cleanup capture method](#recruitment-raise-and-refused-215)
+under `tmp/_issue217`: O_RDWR streams, original argv0/stdin, bounded native
+engine120/script150, real status and stdout-then-stderr replay before copying
+the entire cwd. Real C runs twice before Go. Reject raw dependency/NYI/stub/
+sanitizer/runtime-error markers before C status acceptance. Every invocation
+sets `G3_REPO="$PWD/tmp/upstream.git"`; no protected cached input is executed.
+
+| Original fixture | C1/C2/Go engine | Scripts C / Go | Strict result |
+| --- | --- | --- | --- |
+| social-switched | 0/0/0 | YES0 / YES0 | C/C and C/Go, **243 entries** |
+| social-refused | 0/0/0 | YES0 / YES0 | C/C and C/Go, **241 entries**, newly passing |
+| social-bribe | 0/0/2 | YES0 / NO1 | C/C, **245 entries**; Go reaches **USE d_incite finish NYI** |
+
+Existing turn-compat comparator plus tree-modes.py compare raw status/streams
+and **all** cwd paths/types/modes/empty directories/bytes, with no exclusions
+or normalization. Original script coverage/hash/JSON checks pass on both
+strict C/Go successes. social-refused's three capture manifests have SHA-256
+`04726e1cb1e3371f15218a0fb1a754cbdea18360e84ac657bf8c4e2aacb38a48`;
+social-switched retains
+`9571120d8a7e2f100813cc53507da7eb4242033b89257da88dad7f28175d3ac8`.
+Both C social-bribe manifests:
+`b6e5024b460e695fd327327ead5ffa1e8be48dc5bc198233c2ee2e78daf36ef3`.
+
+Logs/manifests: `tmp/issue217-fixtures.log`,
+`tmp/issue217-social-FIXTURE-{c1,c2,go}.log` and `-manifest.txt`,
+`tmp/issue217-canonical-provenance.log`, `tmp/issue217-launcher.sha256`.
+Matching captures, task helpers/binaries and disposable exports are removed;
+the decisive failed Go capture remains `tmp/_issue217/social-bribe-go`.
+Its start is now real; #242 still owns complete USE675 finish/queued ATTACK
+after combat. No success overlay, family #189 exit, stage exit, full serializer
+rerun, pin change, later-owner acceleration or stage5 work is implied.
+See [callback proof](../command-compat/README.md#terrorize-and-incite-start-217-stage-4-n16)
+and [spec no-loss](../olympia-spec/README.md#terrorize-and-incite-no-loss-217).
+
 ## BRIBE and social fixtures (#216)
 
 At **0.138.0-alpha**, immutable **9a03d126b329ed466c4af48425553c025eaca26f**

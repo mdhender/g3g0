@@ -1077,6 +1077,9 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 		case "social":
 			who, target := args.num(t), args.num(t)
 			fmt.Fprintf(&stdout, "social rolls %d %d %d %d %d\n", who, target, w.streams.SocGift(who, target), w.streams.SocBribe(who, target, 0, 1, 2), w.streams.SocBribe(who, target, 1, 1, 100))
+		case "terror_roll":
+			who, target := args.num(t), args.num(t)
+			fmt.Fprintf(&stdout, "terror roll %d %d %d\n", who, target, w.streams.SocTerror(who, target))
 		case "master":
 			n := args.num(t)
 			seed := make([]byte, 16)

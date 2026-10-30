@@ -20,6 +20,7 @@ func TestCommandUseCallbackBoundaries(t *testing.T) {
 		skRaiseMob:      {(*world).vRaise, (*world).dRaise},
 		skRallyMob:      {(*world).vRally, (*world).dRally},
 		skBribeNoble:    {(*world).vBribe, (*world).dBribe},
+		skInciteMob:     {(*world).vIncite, nil},
 		skHinderMed:     {(*world).vHinderMed, (*world).dHinderMed},
 		skQuarryStone:   {(*world).vQuarry, nil},
 		skCatchHorse:    {(*world).vCatch, nil},
@@ -37,7 +38,7 @@ func TestCommandUseCallbackBoundaries(t *testing.T) {
 				continue
 			}
 			t.Run(fmt.Sprintf("%d/%d", i, phase), func(t *testing.T) {
-				if real, ok := implemented[row.skill]; ok && phase < 2 {
+				if real, ok := implemented[row.skill]; ok && phase < 2 && real[phase] != nil {
 					if reflect.ValueOf(callback).Pointer() != reflect.ValueOf(real[phase]).Pointer() {
 						t.Fatal("did not reuse existing gameplay callback")
 					}
@@ -72,7 +73,7 @@ func TestCommandUseSharedNYIBoundaries(t *testing.T) {
 		}
 		switch row.skill {
 		case skQuarryStone, skCatchHorse, skHarvestLumber, skHarvestYew, skRaiseCorpses, skMageMenial, skFishing,
-			skTrainWild, skTrainWarmount, skRaiseMob, skRallyMob, skBribeNoble:
+			skTrainWild, skTrainWarmount, skRaiseMob, skRallyMob, skBribeNoble, skInciteMob:
 			continue // Real reparse/dispatch outcomes are covered by the C oracle.
 		}
 		t.Run(fmt.Sprint(row.skill), func(t *testing.T) {
@@ -111,6 +112,32 @@ func TestCommandUseSharedNYIBoundaries(t *testing.T) {
 			w.doCommand(c)
 		})
 	}
+}
+
+// Unlike direct INCITE's genuine NULL finish, USE675 has a real start and
+// a future non-NULL completion. Do not turn the partial port into success.
+func TestCommandUseInciteFinishBoundary(t *testing.T) {
+	defer func() {
+		if r := recover(); r != notImplemented("command USE d_incite callback") {
+			t.Fatalf("USE675 completion = %v, want explicit d_incite NYI", r)
+		}
+	}()
+	runCommandSection(t, strings.Split(`section USE675 future finish boundary
+lore_root
+entity 670 5 0
+entity 675 5 0
+entity 10 4 0
+field 675 required 670
+learn 1000 670 2 0
+learn 1000 675 2 0
+place 9000
+link 9000 1001
+field 1001 noble_item 10
+queue use 675 1001 1000
+load
+do
+set wait 0
+finish`, "\n"))
 }
 
 func TestCommandUseItemNYIBoundaries(t *testing.T) {

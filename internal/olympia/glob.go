@@ -374,6 +374,11 @@ func init() {
 		case "bribe":
 			cmdTbl[i].start = (*world).vBribe
 			cmdTbl[i].finish = (*world).dBribe
+		case "terrorize":
+			cmdTbl[i].start = (*world).vTerrorize
+			cmdTbl[i].finish = (*world).dTerrorize
+		case "incite":
+			cmdTbl[i].start = (*world).vIncite
 		case "accept":
 			cmdTbl[i].start = (*world).vAccept
 		case "give":

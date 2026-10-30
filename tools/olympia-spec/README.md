@@ -8,6 +8,38 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## TERRORIZE and INCITE no-loss (#217)
+
+At **0.139.0-alpha**, unchanged immutable **9a03d126b329ed466c4af48425553c025eaca26f**,
+the full original spec reports **129 fixtures: 60 pass /69 fail /0 error
+(195s)**. Exactly **social-refused** is newly passing. All prior **59 names**
+and stage-3's **36 names** remain; the latter source list is verified against
+its accepted 876-byte SHA-256. The tool alone writes passing.txt:
+**1249 bytes**, SHA-256
+`7d384e9540c11cbe94fc9cf71c3db4565ded05b0dacacb7ff9c4186551c92e63`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/issue217-spec" \
+  RUN_TIMEOUT=120 GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Separate unchanged original scripts run real C twice before Go through the
+[bounded native pre-cleanup method](../turn-compat/README.md#terrorize-and-incite-start-217).
+social-refused matches raw status/streams and **241 complete cwd entries**,
+engine/script **0/YES0**; social-switched retains its strict **243-entry** pass.
+social-bribe matches C/C (**245 entries**) but Go now reaches **USE d_incite
+finish NYI**, engine2/script1. #242 still owns that completion and queued
+ATTACK after combat. Direct INCITE's timer-only finish is genuinely NULL,
+not a successful replacement for USE completion.
+
+Golden remains **NO**, initialization **2** at unsupported `load_db (-i)`.
+#289's ATTACK/fog and authorized stage5 console remainder are unchanged.
+No upstream fixtures/expected bytes/pins change; family #189 and stage4 stay
+open. Logs: `tmp/issue217-spec.log`, `tmp/issue217-spec-names.log`,
+`tmp/issue217-spec/{run-all,olympia-g3,golden}.log`. Disposable exports/binaries
+are removed after the run; decisive logs and failed-Go fixture evidence remain.
+
 ## BRIBE no-loss gate (#216)
 
 At **0.138.0-alpha**, unchanged immutable **9a03d126b329ed466c4af48425553c025eaca26f**,
