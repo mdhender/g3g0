@@ -168519,3 +168519,2531 @@ LI
 stderr:
 
 exit 0
+stdout:
+section N20 complete table defenses exact fuzzy failed reset
+> build table
+build row 0 galley 602 0 9 0 33 30 3 250 1 77 10 5000 [New galley]
+build row 1 roundship 602 0 9 0 34 31 3 500 1 77 20 25000 [New roundship]
+build row 2 raft 0 0 9 0 67 66 0 45 1 59 5 2500 [New raft]
+build row 3 temple 680 0 3 1 36 29 3 1000 1 78 10 0 [New temple]
+build row 4 inn 680 0 3 2 38 37 3 300 1 77 15 0 [New inn]
+build row 5 castle 680 0 3 3 39 32 3 10000 1 78 100 0 [New castle]
+build row 6 mine 680 720 3 4 41 40 3 500 1 77 5 0 [New mine]
+build row 7 tower 680 0 3 5 47 46 3 2000 1 78 20 0 [New tower]
+> build defense x 32
+build defense 50
+> build defense x 46
+build defense 40
+> build defense x 30
+build defense 20
+> build defense x 31
+build defense 10
+> build defense x 29
+build defense 10
+> build defense x 40
+build defense 10
+> build defense x 37
+build defense 10
+> build defense x 66
+build defense 0
+> build defense x 39
+build defense 0
+> build defense x -1
+build defense 0
+> build find GALLEY
+build find [galley] 0
+build find 1
+> build find galey
+build find [galley] 1
+build find 1
+> build find roundship
+build find [roundship] 0
+build find 1
+> build find rou
+build find [NULL] 1
+build find 0
+> build find xxx
+build find [NULL] 1
+build find 0
+> build find tower
+build find [tower] 0
+build find 1
+> build find tmeple
+build find [temple] 1
+build find 1
+stderr:
+
+exit 0
+stdout:
+section N20 six location predicates terrain depth safe and city ocean order
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9100 3 14
+> entity 9101 3 20
+> entity 9102 3 4
+> entity 9200 3 32
+> entity 9201 3 39
+> entity 9202 3 46
+> link 8000 9000
+> link 8000 9001
+> link 8000 9102
+> link 9000 9100
+> link 9000 9101
+> link 9000 9200
+> link 9000 9201
+> link 9000 9202
+> build loc galley 9100
+build loc 0
+> build loc raft 9000
+build loc 0
+> routes 9000 0 9001 0 0
+> build loc raft 9000
+build loc 0
+> build loc galley 9100
+build loc 1
+> build loc roundship 9100
+build loc 1
+> build loc raft 9100
+build loc 1
+> build loc temple 9000
+build loc 1
+> build loc temple 9100
+build loc 1
+> build loc temple 9200
+build loc 0
+> build loc inn 9000
+build loc 1
+> build loc inn 9100
+build loc 1
+> build loc inn 9101
+build loc 0
+> build loc inn 9200
+build loc 0
+> build loc tower 9000
+build loc 1
+> build loc tower 9101
+build loc 1
+> build loc tower 9200
+build loc 1
+> build loc tower 9201
+build loc 1
+> build loc tower 9202
+build loc 0
+> build loc tower 8000
+build loc 0
+> build loc mine 9000
+build loc 0
+> build loc mine 9101
+build loc 1
+> build loc mine 9102
+build loc 1
+> field 9100 safe 1
+> build loc temple 9100
+build loc 0
+> build loc inn 9100
+build loc 0
+> build loc castle 9100
+build loc 0
+> build loc tower 9100
+build loc 1
+> field 9102 safe 1
+> build loc mine 9102
+build loc 0
+> field 9101 safe 1
+> build loc mine 9000
+build loc 0
+> readlog 200
+log 200:
+1000:0::0::City~[9100] is not an ocean port location.
+1000:0::0::Plain~[9000] is not an ocean port location.
+1000:0::0::Ships may only be built in cities.
+1000:0::0::A temple may not be built inside another building.
+1000:0::0::Inns may only be built in cities and provinces.
+1000:0::0::Inns may only be built in cities and provinces.
+1000:0::0::A tower may not be built here.
+1000:0::0::A tower may not be built here.
+1000:0::0::Mines may only be built in mountain provinces and rocky hills.
+1000:0::0::Building is not permitted in safe havens.
+1000:0::0::Building is not permitted in safe havens.
+1000:0::0::Building is not permitted in safe havens.
+1000:0::0::Building is not permitted in safe havens.
+1000:0::0::Mines may only be built in mountain provinces and rocky hills.
+stderr:
+
+exit 0
+stdout:
+section N20 tower castle six direct location structures not ships or descendants
+> entity 9000 3 3
+> entity 9100 3 39
+> link 9000 9100
+> entity 9200 3 46
+> entity 9201 3 47
+> entity 9202 3 46
+> entity 9203 3 47
+> entity 9204 3 46
+> entity 9205 3 47
+> entity 9206 9 46
+> entity 9207 3 47
+> link 9100 9200
+> link 9100 9201
+> link 9100 9202
+> link 9100 9203
+> link 9100 9204
+> link 9100 9206
+> link 9200 9207
+> field 9100 safe 1
+> build loc tower 9100
+build loc 1
+> link 9100 9205
+> build loc tower 9100
+build loc 0
+> build loc tower 9000
+build loc 1
+> readlog 200
+log 200:
+1000:0::0::Six towers at most can be built within a castle-in-progress.
+stderr:
+
+exit 0
+stdout:
+section N20 mine existing before collapsed direct only terrain before safe
+> entity 9000 3 4
+> entity 9100 3 40
+> entity 9101 3 41
+> entity 9102 3 53
+> link 9000 9102
+> build loc mine 9000
+build loc 0
+> link 9000 9101
+> build loc mine 9000
+build loc 0
+> link 9000 9100
+> build loc mine 9000
+build loc 0
+> field 9000 safe 1
+> build loc mine 9000
+build loc 0
+> readlog 200
+log 200:
+1000:0::0::Another mine may not be built here until the collapsed mine vanishes.
+1000:0::0::A location may not have more than one mine.
+1000:0::0::A location may not have more than one mine.
+1000:0::0::Building is not permitted in safe havens.
+stderr:
+
+exit 0
+stdout:
+section N20 castle direct province first city duplicate unfinished and ignored second city
+> entity 9000 3 3
+> entity 9100 3 14
+> entity 9101 3 14
+> entity 9200 3 32
+> entity 9201 3 39
+> entity 9202 3 46
+> link 9000 9100
+> link 9000 9101
+> link 9000 9202
+> link 9101 9200
+> build loc castle 9000
+build loc 1
+> build loc castle 9101
+build loc 1
+> build loc castle 9202
+build loc 0
+> link 9100 9201
+> build loc castle 9000
+build loc 0
+> build loc castle 9101
+build loc 0
+> link 9000 9200
+> build loc castle 9100
+build loc 0
+> readlog 200
+log 200:
+1000:0::0::A castle must be built in a province or a city.
+1000:0::0::This province already contains a castle.  Another may not be built here.
+1000:0::0::This province already contains a castle.  Another may not be built here.
+1000:0::0::This province already contains a castle.  Another may not be built here.
+stderr:
+
+exit 0
+stdout:
+section N20 vbuild missing unknown invalid chosen before terrain wait signed boundaries
+> entity 9000 3 1
+> link 9000 1000
+> build v
+build v 0
+> parse build mystery
+parse 1
+> build v
+build v 0
+> parse build tower "" 7 1001
+parse 1
+> build v
+build v 0
+> dump
+cmd 10 who 1000 state 0 status 0 wait 7 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 7 1001 0 0 0 0; parse [build] [tower] [] [7] [1001]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> parse build twer "" 0
+parse 1
+> set wait 37
+> rawargs 0 0 -2147483648
+> build v
+build v 0
+> dump
+cmd 10 who 1000 state 0 status 0 wait 37 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 -2147483648 0 0 0 0 0; parse [build] [twer] [] [0]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> parse build tower
+parse 1
+> rawargs 0 0 2147483647
+> build v
+build v 0
+> dump
+cmd 10 who 1000 state 0 status 0 wait 2147483647 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 2147483647 0 0 0 0 0; parse [build] [tower]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::Must specify what to build.
+1000:0::0::Don't know how to build 'mystery'.
+1000:0::0::[1001] is not a valid unformed entity code.
+1000:0::0::Construction may not take place at sea.
+1000:0::0::Don't know how to build 'twer'.
+1000:0::0::Construction may not take place at sea.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li build tower
+ ar 0 0 2147483647 0 0 0 0 0
+ wa 2147483647
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc ocean
+LI
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N20 finished and continued before materials sea underground chosen claims
+> entity 9000 3 1
+> entity 9100 3 47
+> entity 9101 3 46
+> entity 9300 12 0
+> field 200 unformed 9300
+> link 9000 9100
+> link 9000 9101
+> link 9100 1000
+> parse build tower "" -1 9300
+parse 1
+> build v
+build v 1
+> dump
+cmd 10 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 9300 0 0 0 0; parse [build] [tower] [] [-1] [9300]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9300
+9300 unform 0
+
+> build unfinished
+unfinished [tower]
+build unfinished 1
+> parse build
+parse 1
+> build v
+build v 1
+> dump
+cmd 10 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [build] [tower]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> link 9101 1000
+> parse build tower "" 6 9300
+parse 1
+> build v
+build v 0
+> dump
+cmd 10 who 1000 state 0 status 0 wait 6 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 6 9300 0 0 0 0; parse [build] [tower] [] [6] [9300]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 200
+200 player pl_regular
+PL
+ uf 9300 
+
+> save 9300
+9300 unform 0
+
+> readlog 200
+log 200:
+1000:0::0::Continuing work on Tower-in-progress~[9100].
+1000:0::0::(assuming you meant 'build tower')
+1000:0::0::Continuing work on Tower-in-progress~[9100].
+1000:0::0::Tower~[9101] is already finished.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ uf 9300 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9101
+CH
+ lo 200
+CO
+ li build tower "" 6 9300
+ ar 0 0 6 9300 0 0 0 0
+ wa 6
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100 9101
+9000 loc ocean
+LI
+ hl 9100 9101 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9100 loc tower-in-progress
+LI
+ wh 9000
+
+export entity 9101 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9101 loc tower
+LI
+ wh 9000
+ hl 1000 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+9300 unform 0
+
+stderr:
+
+exit 0
+stdout:
+section N20 raft omitted bare shorthand yet explicit continuation succeeds
+> entity 9000 3 1
+> entity 9100 9 67
+> link 9000 9100
+> link 9100 1000
+> build unfinished
+unfinished [NULL]
+build unfinished 0
+> parse build
+parse 1
+> build v
+build v 0
+> parse build raft
+parse 1
+> build v
+build v 1
+> readlog 200
+log 200:
+1000:0::0::Must specify what to build.
+1000:0::0::Continuing work on Raft-in-progress~[9100].
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9100
+CH
+ lo 200
+CO
+ li build raft
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc ocean
+LI
+ hl 9100 
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9100 ship raft-in-progress
+LI
+ wh 9000
+ hl 1000 
+
+stderr:
+
+exit 0
+stdout:
+section N20 underground before location and materials no mint
+> master 123
+> entity 9000 3 70
+> link 9000 1000
+> parse build raft
+parse 1
+> build v
+build v 0
+> parse build mine
+parse 1
+> build v
+build v 0
+> readlog 200
+log 200:
+1000:0::0::Building is not permitted underground.
+1000:0::0::Building is not permitted underground.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li build mine
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc tunnel
+LI
+ hl 1000 
+
+> newitem 1000 0
+created 69901
+> save_new
+69901 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N20 material skill primary alternate missing exact and workers last
+> entity 9000 3 4
+> entity 602 5 0
+> entity 680 5 0
+> entity 720 5 0
+> entity 11 4 0
+> entity 77 4 0
+> entity 78 4 0
+> entity 59 4 0
+> link 9000 1000
+> build materials mine
+build materials 0
+> build materials tower
+build materials 0
+> build materials galley
+build materials 0
+> report skill 1000 720 2 0
+> build materials mine
+build materials 0
+> inventory 1000 77 4
+> build materials mine
+build materials 0
+> genitem 1000 77 1
+> build materials mine
+build materials 0
+> inventory 1000 11 2
+> build materials mine
+build materials 0
+> genitem 1000 11 1
+> build materials mine
+build materials 1
+> build materials raft
+build materials 0
+> inventory 1000 59 5
+> build materials raft
+build materials 1
+> report skill 1000 680 2 0
+> inventory 1000 78 19
+> build materials tower
+build materials 0
+> genitem 1000 78 1
+> build materials tower
+build materials 1
+> save 1000
+1000 char 0
+il	77 5 \
+	11 3 \
+	59 5 \
+	78 20
+LI
+ wh 9000
+CH
+ lo 200
+ sl	720 2 0 0 0 \
+	680 2 0 0 0
+
+> readlog 200
+log 200:
+1000:0::0::Building a mine requires either <no subkind>~[680] or <no subkind>~[720].
+1000:0::0::Building a tower requires <no subkind>~[680].
+1000:0::0::Building a galley requires <no subkind>~[602].
+1000:0::0::Need five~<no subkind>~[77] to start.
+1000:0::0::Need five~<no subkind>~[77] to start.
+1000:0::0::Need at least three~<no subkind>~[11] for construction.
+1000:0::0::Need at least three~<no subkind>~[11] for construction.
+1000:0::0::Need five~<no subkind>~[59] to start.
+1000:0::0::Need 20~<no subkind>~[78] to start.
+stderr:
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [11]
+warning: plural name not set for item [11]
+warning: plural name not set for item [59]
+warning: plural name not set for item [78]
+
+exit 0
+stdout:
+section N20 owned unformed tower name25 no initial consumption nested stack aftermath
+> master 123
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 680 5 0
+> entity 11 4 0
+> entity 78 4 0
+> entity 9300 12 0
+> entity 9301 12 0
+> entity 1002 2 0
+> entity 1010 2 64
+> entity 9400 3 32
+> field 1010 lord 201
+> field 1010 castle 9400
+> field 1001 lord 201
+> field 1002 lord 200
+> field 200 unformed 9301
+> field 200 unformed 9300
+> field 1000 guard 1
+> field 1002 contact 1001
+> link 8000 9000
+> link 9000 1010
+> link 9000 9400
+> link 9000 1000
+> link 9400 1001
+> link 1000 1002
+> report skill 1000 680 2 0
+> inventory 1000 11 3
+> inventory 1000 78 20
+> parse build tower "abcdefghijklmnopqrstuvwxy" 3 9300
+parse 1
+> build v
+build v 1
+> dump
+cmd 10 who 1000 state 0 status 0 wait 3 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 3 9300 0 0 0 0; parse [build] [tower] [abcdefghijklmnopqrstuvwxy] [3] [9300]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9300
+9300 loc tower-in-progress
+na abcdefghijklmnopqrstuvwxy
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 200000
+
+> save 9301
+9301 unform 0
+
+> save 1000
+1000 char 0
+il	11 3 \
+	78 20
+LI
+ wh 9300
+ hl 1002 
+CH
+ lo 200
+ sl	680 2 0 0 0
+ gu 1
+CO
+ li build tower "abcdefghijklmnopqrstuvwxy" 3 9300
+ ar 0 0 3 9300 0 0 0 0
+ wa 3
+
+> save 1002
+1002 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+> save 200
+200 player pl_regular
+PL
+ kn 9300 
+ uf 9301 
+
+> arrival_state
+ocean:
+arrival char 1000 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1001 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival char 1002 allocated 1 time 0 contacts_alloc 1
+contacts:
+arrival char 1010 allocated 1 time 0 contacts_alloc 0
+contacts:
+arrival player 200 allocated 1
+known: 9300
+touched: 9000
+weather:
+output: 1000
+arrival player 201 allocated 1
+known:
+touched:
+weather:
+output: 9000
+> readlog 200
+log 200:
+1000:0::0::Created abcdefghijklmnopqrstuvwxy~[9300], tower-in-progress.
+> readlog 201
+log 201:
+9000:0::0::<no subkind>~[1000] began construction of abcdefghijklmnopqrstuvwxy~[9300], tower-in-progress in Plain~[9000].
+> export state
+export entity 11 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+11 item 0
+
+export entity 78 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+78 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ kn 9300 
+ uf 9301 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 9000
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 680 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+680 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1002
+raw skill 680 2
+raw item 11 3
+raw item 78 20
+1000 char 0
+il	11 3 \
+	78 20
+LI
+ wh 9300
+ hl 1002 
+CH
+ lo 200
+ sl	680 2 0 0 0
+ gu 1
+CO
+ li build tower "abcdefghijklmnopqrstuvwxy" 3 9300
+ ar 0 0 3 9300 0 0 0 0
+ wa 3
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+LI
+ wh 9400
+CH
+ lo 201
+
+export entity 1002 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+1002 char 0
+LI
+ wh 1000
+CH
+ lo 200
+
+export entity 1010 char 1 player 0 magic 0 misc 1 skill 0 temp 0 order 0
+here:
+1010 char garrison
+LI
+ wh 9000
+CH
+ lo 201
+MI
+ gc 9400
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1010 9400 9300
+9000 loc plain
+LI
+ wh 8000
+ hl 1010 9400 9300 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9300 loc tower-in-progress
+na abcdefghijklmnopqrstuvwxy
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 200000
+
+export entity 9301 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+9301 unform 0
+
+export entity 9400 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1001
+9400 loc castle
+LI
+ wh 9000
+ hl 1001 
+
+> usemeta legacy 1 100000
+use legacy 73424
+> region_rolls 1000 9000
+hads ambush 58
+hads kind 2
+hads retal 2
+faer ambush 10
+faer kind 3
+faer retal 2
+> newitem 1000 0
+created 69901
+> save_new
+69901 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N20 mint raft default name city port and no auto unformed choice
+> master 321
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9100 3 14
+> entity 9300 12 0
+> entity 59 4 0
+> entity 11 4 0
+> field 200 unformed 9300
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9100 1000
+> routes 9000 0 9001 0 0
+> inventory 1000 59 5
+> parse build raft
+parse 1
+> build v
+build v 1
+> dump
+cmd 10 who 1000 state 0 status 0 wait 0 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 0 0 0 0 0; parse [build] [raft]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	59 5
+LI
+ wh 8641
+CH
+ lo 200
+CO
+ li build raft
+ ar 0 0 0 0 0 0 0 0
+
+> save 9300
+9300 unform 0
+
+> save 200
+200 player pl_regular
+PL
+ kn 8641 
+ uf 9300 
+
+> readlog 200
+log 200:
+1000:0::0::Created New raft~[8641], raft-in-progress.
+> export state
+export entity 11 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+11 item 0
+
+export entity 59 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+59 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ kn 8641 
+ uf 9300 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw item 59 5
+1000 char 0
+il	59 5
+LI
+ wh 8641
+CH
+ lo 200
+CO
+ li build raft
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 8641 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+8641 ship raft-in-progress
+na New raft
+LI
+ wh 9100
+ hl 1000 
+SL
+ ca 2500
+ er 4500
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 0 9001 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 8641
+9100 loc city
+LI
+ wh 9000
+ hl 8641 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+9300 unform 0
+
+> usemeta legacy 1 100000
+use legacy 64538
+> region_rolls 1000 9000
+hads ambush 60
+hads kind 3
+hads retal 1
+faer ambush 33
+faer kind 2
+faer retal 1
+> newitem 1000 0
+created 73387
+> save_new
+73387 item 0
+IT
+ un 1000
+
+stderr:
+
+exit 0
+stdout:
+section N20 galley selected unformed empty default retains zero days wait
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9100 3 14
+> entity 9300 12 0
+> entity 602 5 0
+> entity 11 4 0
+> entity 77 4 0
+> field 200 unformed 9300
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9100 1000
+> routes 9000 0 9001 0 0
+> report skill 1000 602 2 0
+> inventory 1000 11 3
+> inventory 1000 77 10
+> parse build galley "" 0 9300
+parse 1
+> set wait 19
+> build v
+build v 1
+> dump
+cmd 10 who 1000 state 0 status 0 wait 19 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 0 9300 0 0 0 0; parse [build] [galley] [] [0] [9300]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9300
+9300 ship galley-in-progress
+na New galley
+LI
+ wh 9100
+ hl 1000 
+SL
+ ca 5000
+ er 25000
+
+> save 1000
+1000 char 0
+il	11 3 \
+	77 10
+LI
+ wh 9300
+CH
+ lo 200
+ sl	602 2 0 0 0
+CO
+ li build galley "" 0 9300
+ ar 0 0 0 9300 0 0 0 0
+ wa 19
+
+> save 200
+200 player pl_regular
+PL
+ kn 9300 
+
+> readlog 200
+log 200:
+1000:0::0::Created New galley~[9300], galley-in-progress.
+> export state
+export entity 11 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+11 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ kn 9300 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 602 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+602 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 602 2
+raw item 11 3
+raw item 77 10
+1000 char 0
+il	11 3 \
+	77 10
+LI
+ wh 9300
+CH
+ lo 200
+ sl	602 2 0 0 0
+CO
+ li build galley "" 0 9300
+ ar 0 0 0 9300 0 0 0 0
+ wa 19
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 0 9001 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300
+9100 loc city
+LI
+ wh 9000
+ hl 9300 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9300 ship galley-in-progress
+na New galley
+LI
+ wh 9100
+ hl 1000 
+SL
+ ca 5000
+ er 25000
+
+stderr:
+
+exit 0
+stdout:
+section N20 roundship name26 fallback selected unformed
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9001 3 1
+> entity 9100 3 14
+> entity 9300 12 0
+> entity 602 5 0
+> entity 11 4 0
+> entity 77 4 0
+> field 200 unformed 9300
+> link 8000 9000
+> link 8000 9001
+> link 9000 9100
+> link 9100 1000
+> routes 9000 0 9001 0 0
+> report skill 1000 602 2 0
+> inventory 1000 11 3
+> inventory 1000 77 20
+> parse build roundship "abcdefghijklmnopqrstuvwxyz" 1 9300
+parse 1
+> build v
+build v 1
+> save 9300
+9300 ship roundship-in-progress
+na New roundship
+LI
+ wh 9100
+ hl 1000 
+SL
+ ca 25000
+ er 50000
+
+> save 1000
+1000 char 0
+il	11 3 \
+	77 20
+LI
+ wh 9300
+CH
+ lo 200
+ sl	602 2 0 0 0
+CO
+ li build roundship "abcdefghijklmnopqrstuvwxyz" 1 9300
+ ar 0 0 1 9300 0 0 0 0
+ wa 1
+
+> readlog 200
+log 200:
+1000:0::0::The name you gave is too long.  Place names must be 25 characters or less.  Please use the NAME order to set a shorter name next turn.
+1000:0::0::Created New roundship~[9300], roundship-in-progress.
+> export state
+export entity 11 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+11 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ kn 9300 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 602 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+602 skill 0
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 602 2
+raw item 11 3
+raw item 77 20
+1000 char 0
+il	11 3 \
+	77 20
+LI
+ wh 9300
+CH
+ lo 200
+ sl	602 2 0 0 0
+CO
+ li build roundship "abcdefghijklmnopqrstuvwxyz" 1 9300
+ ar 0 0 1 9300 0 0 0 0
+ wa 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000 9001
+8000 loc region
+LI
+ hl 9000 9001 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9100
+9000 loc plain
+LI
+ wh 8000
+ hl 9100 
+LO
+ pd 0 9001 0 0 
+
+export entity 9001 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+9001 loc ocean
+LI
+ wh 8000
+
+export entity 9100 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300
+9100 loc city
+LI
+ wh 9000
+ hl 9300 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9300 ship roundship-in-progress
+na New roundship
+LI
+ wh 9100
+ hl 1000 
+SL
+ ca 25000
+ er 50000
+
+stderr:
+
+exit 0
+stdout:
+section N20 temple multibyte name26 bytes default despite13 runes
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9300 12 0
+> entity 680 5 0
+> entity 11 4 0
+> entity 78 4 0
+> field 200 unformed 9300
+> link 8000 9000
+> link 9000 1000
+> report skill 1000 680 2 0
+> inventory 1000 11 3
+> inventory 1000 78 10
+> parse build temple "ééééééééééééé" 1 9300
+parse 1
+> build v
+build v 1
+> save 9300
+9300 loc temple-in-progress
+na New temple
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 100000
+
+> save 1000
+1000 char 0
+il	11 3 \
+	78 10
+LI
+ wh 9300
+CH
+ lo 200
+ sl	680 2 0 0 0
+CO
+ li build temple "C)C)C)C)C)C)C)C)C)C)C)C)C)" 1 9300
+ ar 0 0 1 9300 0 0 0 0
+ wa 1
+
+> readlog 200
+log 200:
+1000:0::0::The name you gave is too long.  Place names must be 25 characters or less.  Please use the NAME order to set a shorter name next turn.
+1000:0::0::Created New temple~[9300], temple-in-progress.
+> export state
+export entity 11 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+11 item 0
+
+export entity 78 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+78 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ kn 9300 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 680 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+680 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 680 2
+raw item 11 3
+raw item 78 10
+1000 char 0
+il	11 3 \
+	78 10
+LI
+ wh 9300
+CH
+ lo 200
+ sl	680 2 0 0 0
+CO
+ li build temple "C)C)C)C)C)C)C)C)C)C)C)C)C)" 1 9300
+ ar 0 0 1 9300 0 0 0 0
+ wa 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300
+9000 loc plain
+LI
+ wh 8000
+ hl 9300 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9300 loc temple-in-progress
+na New temple
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 100000
+
+stderr:
+
+exit 0
+stdout:
+section N20 inn custom name sanitization owned unformed
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9300 12 0
+> entity 680 5 0
+> entity 11 4 0
+> entity 77 4 0
+> field 200 unformed 9300
+> link 8000 9000
+> link 9000 1000
+> report skill 1000 680 2 0
+> inventory 1000 11 3
+> inventory 1000 77 15
+> parse build inn "[A] Inn" 1 9300
+parse 1
+> build v
+build v 1
+> save 9300
+9300 loc inn-in-progress
+na {A} Inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 30000
+
+> save 1000
+1000 char 0
+il	11 3 \
+	77 15
+LI
+ wh 9300
+CH
+ lo 200
+ sl	680 2 0 0 0
+CO
+ li build inn "[A] Inn" 1 9300
+ ar 0 0 1 9300 0 0 0 0
+ wa 1
+
+> readlog 200
+log 200:
+1000:0::0::Created {A} Inn~[9300], inn-in-progress.
+> export state
+export entity 11 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+11 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ kn 9300 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 680 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+680 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 680 2
+raw item 11 3
+raw item 77 15
+1000 char 0
+il	11 3 \
+	77 15
+LI
+ wh 9300
+CH
+ lo 200
+ sl	680 2 0 0 0
+CO
+ li build inn "[A] Inn" 1 9300
+ ar 0 0 1 9300 0 0 0 0
+ wa 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300
+9000 loc plain
+LI
+ wh 8000
+ hl 9300 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9300 loc inn-in-progress
+na {A} Inn
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 30000
+
+stderr:
+
+exit 0
+stdout:
+section N20 castle default unformed
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 9300 12 0
+> entity 680 5 0
+> entity 11 4 0
+> entity 78 4 0
+> field 200 unformed 9300
+> link 8000 9000
+> link 9000 1000
+> report skill 1000 680 2 0
+> inventory 1000 11 3
+> inventory 1000 78 100
+> parse build castle "" 1 9300
+parse 1
+> build v
+build v 1
+> save 9300
+9300 loc castle-in-progress
+na New castle
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 1000000
+
+> save 1000
+1000 char 0
+il	11 3 \
+	78 100
+LI
+ wh 9300
+CH
+ lo 200
+ sl	680 2 0 0 0
+CO
+ li build castle "" 1 9300
+ ar 0 0 1 9300 0 0 0 0
+ wa 1
+
+> readlog 200
+log 200:
+1000:0::0::Created New castle~[9300], castle-in-progress.
+> export state
+export entity 11 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+11 item 0
+
+export entity 78 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+78 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ kn 9300 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 680 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+680 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 680 2
+raw item 11 3
+raw item 78 100
+1000 char 0
+il	11 3 \
+	78 100
+LI
+ wh 9300
+CH
+ lo 200
+ sl	680 2 0 0 0
+CO
+ li build castle "" 1 9300
+ ar 0 0 1 9300 0 0 0 0
+ wa 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300
+9000 loc plain
+LI
+ wh 8000
+ hl 9300 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9300 loc castle-in-progress
+na New castle
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 1000000
+
+stderr:
+
+exit 0
+stdout:
+section N20 mine alternate mining skill unformed
+> entity 8000 3 50
+> entity 9000 3 4
+> entity 9300 12 0
+> entity 720 5 0
+> entity 11 4 0
+> entity 77 4 0
+> field 200 unformed 9300
+> link 8000 9000
+> link 9000 1000
+> report skill 1000 720 2 0
+> inventory 1000 11 3
+> inventory 1000 77 5
+> parse build mine "Deep" 1 9300
+parse 1
+> build v
+build v 1
+> save 9300
+9300 loc mine-in-progress
+na Deep
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 50000
+
+> save 1000
+1000 char 0
+il	11 3 \
+	77 5
+LI
+ wh 9300
+CH
+ lo 200
+ sl	720 2 0 0 0
+CO
+ li build mine "Deep" 1 9300
+ ar 0 0 1 9300 0 0 0 0
+ wa 1
+
+> readlog 200
+log 200:
+1000:0::0::Created Deep~[9300], mine-in-progress.
+> export state
+export entity 11 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+11 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ kn 9300 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 720 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+720 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 720 2
+raw item 11 3
+raw item 77 5
+1000 char 0
+il	11 3 \
+	77 5
+LI
+ wh 9300
+CH
+ lo 200
+ sl	720 2 0 0 0
+CO
+ li build mine "Deep" 1 9300
+ ar 0 0 1 9300 0 0 0 0
+ wa 1
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300
+9000 loc mountain
+LI
+ wh 8000
+ hl 9300 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9300 loc mine-in-progress
+na Deep
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 50000
+
+stderr:
+
+exit 0
+stdout:
+section N20 invalid chosen foreign unformed falls back only after all checks
+> master 123
+> entity 8000 3 50
+> entity 9000 3 3
+> entity 680 5 0
+> entity 11 4 0
+> entity 78 4 0
+> entity 9300 12 0
+> field 201 unformed 9300
+> link 8000 9000
+> link 9000 1000
+> parse build tower "X" 2 9300
+parse 1
+> build v
+build v 0
+> dump
+cmd 10 who 1000 state 0 status 0 wait 2 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 2 9300 0 0 0 0; parse [build] [tower] [X] [2] [9300]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 9300
+9300 unform 0
+
+> save 200
+200 player pl_regular
+PL
+
+> save 201
+201 player pl_regular
+PL
+ uf 9300 
+
+> report skill 1000 680 2 0
+> build v
+build v 0
+> inventory 1000 78 20
+> build v
+build v 0
+> inventory 1000 11 3
+> build v
+build v 1
+> dump
+cmd 10 who 1000 state 0 status 0 wait 2 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 2 9300 0 0 0 0; parse [build] [tower] [X] [2] [9300]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> save 1000
+1000 char 0
+il	78 20 \
+	11 3
+LI
+ wh 3879
+CH
+ lo 200
+ sl	680 2 0 0 0
+CO
+ li build tower "X" 2 9300
+ ar 0 0 2 9300 0 0 0 0
+ wa 2
+
+> save 200
+200 player pl_regular
+PL
+ kn 3879 
+
+> save 201
+201 player pl_regular
+PL
+ uf 9300 
+
+> save 9300
+9300 unform 0
+
+> readlog 200
+log 200:
+1000:0::0::[9300] is not a valid unformed entity code.
+1000:0::0::Building a tower requires <no subkind>~[680].
+1000:0::0::[9300] is not a valid unformed entity code.
+1000:0::0::Need 20~<no subkind>~[78] to start.
+1000:0::0::[9300] is not a valid unformed entity code.
+1000:0::0::Need at least three~<no subkind>~[11] for construction.
+1000:0::0::[9300] is not a valid unformed entity code.
+1000:0::0::Created X~[3879], tower-in-progress.
+> export state
+export entity 11 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+11 item 0
+
+export entity 78 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+78 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ kn 3879 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+ uf 9300 
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 680 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+680 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 680 2
+raw item 78 20
+raw item 11 3
+1000 char 0
+il	78 20 \
+	11 3
+LI
+ wh 3879
+CH
+ lo 200
+ sl	680 2 0 0 0
+CO
+ li build tower "X" 2 9300
+ ar 0 0 2 9300 0 0 0 0
+ wa 2
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 3879 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+3879 loc tower-in-progress
+na X
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 200000
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 3879
+9000 loc plain
+LI
+ wh 8000
+ hl 3879 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+9300 unform 0
+
+> newitem 1000 0
+created 72174
+> save_new
+72174 item 0
+IT
+ un 1000
+
+stderr:
+warning: plural name not set for item [78]
+warning: plural name not set for item [11]
+
+exit 0
+stdout:
+section N20 direct start helper and structure helper use real materials and stack owners
+> entity 8000 3 50
+> entity 9000 3 4
+> entity 9300 12 0
+> entity 720 5 0
+> entity 11 4 0
+> entity 77 4 0
+> field 200 unformed 9300
+> link 8000 9000
+> link 9000 1000
+> parse build mine "Helper"
+parse 1
+> build start mine 9300
+build start 0
+> report skill 1000 720 2 0
+> inventory 1000 77 5
+> inventory 1000 11 3
+> build structure mine 9300
+build structure 1
+> build structure mine 0
+build structure 1
+> build unfinished
+unfinished [mine]
+build unfinished 1
+> save 9300
+9300 loc mine-in-progress
+na Helper
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 50000
+
+> save 1000
+1000 char 0
+il	77 5 \
+	11 3
+LI
+ wh 9300
+CH
+ lo 200
+ sl	720 2 0 0 0
+CO
+ li build mine "Helper"
+ ar 0 0 0 0 0 0 0 0
+
+> readlog 200
+log 200:
+1000:0::0::Building a mine requires either [680] or <no subkind>~[720].
+1000:0::0::Created Helper~[9300], mine-in-progress.
+1000:0::0::Continuing work on Helper~[9300].
+> export state
+export entity 11 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+11 item 0
+
+export entity 77 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+77 item 0
+
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+ kn 9300 
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 720 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+720 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here:
+raw skill 720 2
+raw item 77 5
+raw item 11 3
+1000 char 0
+il	77 5 \
+	11 3
+LI
+ wh 9300
+CH
+ lo 200
+ sl	720 2 0 0 0
+CO
+ li build mine "Helper"
+ ar 0 0 0 0 0 0 0 0
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 8000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9000
+8000 loc region
+LI
+ hl 9000 
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 9300
+9000 loc mountain
+LI
+ wh 8000
+ hl 9300 
+
+export entity 9300 char 0 player 0 magic 0 misc 0 skill 0 temp 1 order 0
+here: 1000
+9300 loc mine-in-progress
+na Helper
+LI
+ wh 9000
+ hl 1000 
+SL
+ er 50000
+
+stderr:
+
+exit 0
+stdout:
+section N20 all material cutoffs with primary skill and negative workers
+> entity 9000 3 3
+> entity 602 5 0
+> entity 680 5 0
+> entity 11 4 0
+> entity 59 4 0
+> entity 77 4 0
+> entity 78 4 0
+> link 9000 1000
+> report skill 1000 602 2 0
+> report skill 1000 680 2 0
+> inventory 1000 11 3
+> inventory 1000 77 9
+> build materials galley
+build materials 0
+> genitem 1000 77 1
+> build materials galley
+build materials 1
+> genitem 1000 77 9
+> build materials roundship
+build materials 0
+> genitem 1000 77 1
+> build materials roundship
+build materials 1
+> consume 1000 77 6
+inventory result 1
+> build materials inn
+build materials 0
+> genitem 1000 77 1
+> build materials inn
+build materials 1
+> inventory 1000 78 9
+> build materials temple
+build materials 0
+> genitem 1000 78 1
+> build materials temple
+build materials 1
+> genitem 1000 78 89
+> build materials castle
+build materials 0
+> genitem 1000 78 1
+> build materials castle
+build materials 1
+> inventory 1000 59 4
+> build materials raft
+build materials 0
+> genitem 1000 59 1
+> build materials raft
+build materials 1
+> consume 1000 11 3
+inventory result 1
+> inventory 1000 11 -1
+> build materials raft
+build materials 1
+> save 1000
+1000 char 0
+il	77 15 \
+	78 100 \
+	59 5
+LI
+ wh 9000
+CH
+ lo 200
+ sl	602 2 0 0 0 \
+	680 2 0 0 0
+
+> readlog 200
+log 200:
+1000:0::0::Need ten~<no subkind>~[77] to start.
+1000:0::0::Need 20~<no subkind>~[77] to start.
+1000:0::0::Need 15~<no subkind>~[77] to start.
+1000:0::0::Need ten~<no subkind>~[78] to start.
+1000:0::0::Need 100~<no subkind>~[78] to start.
+1000:0::0::Need five~<no subkind>~[59] to start.
+stderr:
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [77]
+warning: plural name not set for item [78]
+warning: plural name not set for item [78]
+warning: plural name not set for item [59]
+
+exit 0
+stdout:
+section N20 unfinished shorthand all seven types and completed null
+> entity 9000 3 3
+> entity 9100 3 39
+> entity 9101 3 47
+> entity 9102 3 36
+> entity 9103 9 33
+> entity 9104 9 34
+> entity 9105 3 38
+> entity 9106 3 41
+> entity 9107 3 40
+> link 9000 9100
+> link 9000 9101
+> link 9000 9102
+> link 9000 9103
+> link 9000 9104
+> link 9000 9105
+> link 9000 9106
+> link 9000 9107
+> link 9100 1000
+> build unfinished
+unfinished [castle]
+build unfinished 1
+> parse build
+parse 1
+> build v
+build v 1
+> link 9101 1000
+> build unfinished
+unfinished [tower]
+build unfinished 1
+> parse build
+parse 1
+> build v
+build v 1
+> link 9102 1000
+> build unfinished
+unfinished [temple]
+build unfinished 1
+> parse build
+parse 1
+> build v
+build v 1
+> link 9103 1000
+> build unfinished
+unfinished [galley]
+build unfinished 1
+> parse build
+parse 1
+> build v
+build v 1
+> link 9104 1000
+> build unfinished
+unfinished [roundship]
+build unfinished 1
+> parse build
+parse 1
+> build v
+build v 1
+> link 9105 1000
+> build unfinished
+unfinished [inn]
+build unfinished 1
+> parse build
+parse 1
+> build v
+build v 1
+> link 9106 1000
+> build unfinished
+unfinished [mine]
+build unfinished 1
+> parse build
+parse 1
+> build v
+build v 1
+> link 9107 1000
+> build unfinished
+unfinished [NULL]
+build unfinished 0
+> readlog 200
+log 200:
+1000:0::0::(assuming you meant 'build castle')
+1000:0::0::Continuing work on Castle-in-progress~[9100].
+1000:0::0::(assuming you meant 'build tower')
+1000:0::0::Continuing work on Tower-in-progress~[9101].
+1000:0::0::(assuming you meant 'build temple')
+1000:0::0::Continuing work on Temple-in-progress~[9102].
+1000:0::0::(assuming you meant 'build galley')
+1000:0::0::Continuing work on Galley-in-progress~[9103].
+1000:0::0::(assuming you meant 'build roundship')
+1000:0::0::Continuing work on Roundship-in-progress~[9104].
+1000:0::0::(assuming you meant 'build inn')
+1000:0::0::Continuing work on Inn-in-progress~[9105].
+1000:0::0::(assuming you meant 'build mine')
+1000:0::0::Continuing work on Mine-in-progress~[9106].
+stderr:
+
+exit 0
+stdout:
+section N20 raw chosen signed boundaries preserve command slots before sea refusal
+> entity 9000 3 1
+> link 9000 1000
+> parse build raft
+parse 1
+> rawargs 0 0 -1 -2147483648
+> build v
+build v 0
+> dump
+cmd 10 who 1000 state 0 status 0 wait -1 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 -1 -2147483648 0 0 0 0; parse [build] [raft]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> rawargs 0 0 -2147483648 2147483647
+> build v
+build v 0
+> dump
+cmd 10 who 1000 state 0 status 0 wait -2147483648 poll 0 pri 0 cond 0 fuzzy 0 days 0 debug 0 inhibit 0 cur 0
+args 0 0 -2147483648 2147483647 0 0 0 0; parse [build] [raft]
+player 200 count 0 last 0 format 0 notab 0 output 1 hidden 0 orders 0
+load_q 0:
+load_q 1:
+load_q 2:
+load_q 3:
+load_q 4:
+run_q:
+> readlog 200
+log 200:
+1000:0::0::[-2147483648] is not a valid unformed entity code.
+1000:0::0::Construction may not take place at sea.
+1000:0::0::[2147483647] is not a valid unformed entity code.
+1000:0::0::Construction may not take place at sea.
+> export state
+export entity 200 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output: 1000
+200 player pl_regular
+PL
+
+export entity 201 char 0 player 1 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+units:
+output:
+201 player pl_regular
+PL
+
+export entity 638 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+638 skill 0
+
+export entity 1000 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1000 char 0
+LI
+ wh 9000
+CH
+ lo 200
+CO
+ li build raft
+ ar 0 0 -2147483648 2147483647 0 0 0 0
+ wa -2147483648
+
+export entity 1001 char 1 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here:
+1001 char 0
+CH
+ lo 200
+
+export entity 9000 char 0 player 0 magic 0 misc 0 skill 0 temp 0 order 0
+here: 1000
+9000 loc ocean
+LI
+ hl 1000 
+
+stderr:
+
+exit 0

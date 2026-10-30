@@ -182,6 +182,8 @@ type world struct {
 	// fuzzyFind is fuzzy_find in input.c: whether the last find_command()
 	// matched a command name only fuzzily.
 	fuzzyFind bool
+	// Independent construction-table match state (build.c), not parser state.
+	fuzzyBuildMatch bool
 
 	// loadQ and runQ are the statics load_q and run_q of input.c: the units
 	// whose commands are loaded, by priority, and running.

@@ -11,6 +11,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"reflect"
 	"runtime"
 	"strings"
 	"syscall"
@@ -2610,6 +2611,66 @@ func runCommandSectionInDir(t *testing.T, lines []string, dir string) (output st
 			}
 		case "rawargs":
 			c.a, c.b, c.c = int32(args.num(t)), int32(args.num(t)), int32(args.num(t))
+			if strings.TrimSpace(args.rest) != "" {
+				c.d = int32(args.num(t))
+			}
+		case "build":
+			action, s := args.word(), args.word()
+			n := 0
+			if strings.TrimSpace(args.rest) != "" {
+				n = args.num(t)
+			}
+			if action == "table" {
+				callbacks := []func(*world, *command, int) int{(*world).shipLocOkay, (*world).templeLocOkay, (*world).innLocOkay, (*world).castleLocOkay, (*world).mineLocOkay, (*world).towerLocOkay}
+				for i, r := range buildTbl {
+					if r.what == "" {
+						break
+					}
+					cb := -1
+					for j, f := range callbacks {
+						if reflect.ValueOf(f).Pointer() == reflect.ValueOf(r.locOK).Pointer() {
+							cb = j
+						}
+					}
+					fmt.Fprintf(&stdout, "build row %d %s %d %d %d %d %d %d %d %d %d %d %d %d [%s]\n", i, r.what, r.skillReq, r.skill2, r.kind, cb, r.unfinishedSubkind, r.finishedSubkind, r.minWorkers, r.workerDays, r.minDays, r.reqItem, r.reqQty, r.capacity, r.defaultName)
+				}
+				break
+			}
+			result := 0
+			switch action {
+			case "defense":
+				result = fortDefaultDefense(n)
+			case "v":
+				result = w.vBuild(c)
+			case "unfinished":
+				p := w.unfinishedBuilding(int(c.who))
+				name := "NULL"
+				if p != nil {
+					name, result = *p, 1
+				}
+				fmt.Fprintf(&stdout, "unfinished [%s]\n", name)
+			default:
+				r := w.findBuild(s)
+				switch action {
+				case "find":
+					name := "NULL"
+					if r != nil {
+						name, result = r.what, 1
+					}
+					fmt.Fprintf(&stdout, "build find [%s] %d\n", name, b2i(w.fuzzyBuildMatch))
+				case "loc":
+					result = r.locOK(w, c, n)
+				case "materials":
+					result = w.buildMaterialsCheck(c, r)
+				case "start":
+					result = w.startBuild(c, r, n)
+				case "structure":
+					result = w.buildStructure(c, r, n)
+				default:
+					t.Fatalf("unknown build action %s", action)
+				}
+			}
+			fmt.Fprintf(&stdout, "build %s %d\n", action, result)
 		case "make_raw":
 			rawMake = *findMake(args.num(t))
 			rawMake.worker, rawMake.inp1, rawMake.inp2 = args.num(t), args.num(t), args.num(t)

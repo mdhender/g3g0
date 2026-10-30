@@ -41,6 +41,8 @@ int drv_harvest_summary(struct command *c, int item);
 int drv_harvest_daily(struct command *c, int item);
 void drv_harvest_bump(int where, int item);
 void drv_make_table(void);
+void drv_build_table(void);
+int drv_build(struct command *c, char *action, char *s, int n);
 int drv_make_find(int item), drv_make_call(struct command *c, int action, int item, int number);
 void drv_make_raw(int item, int worker, int inp1, int inp2, int aura, int factor, int pub, int where, int skill);
 void drv_cookie_table(void);
@@ -1888,7 +1890,14 @@ int main(int argc, char **argv)
    else return 2;
   }
   else if (!strcmp(op, "rawargs")) {
-   sscanf(line,"%*s %d %d %d",&c->a,&c->b,&c->c);
+   sscanf(line,"%*s %d %d %d %d",&c->a,&c->b,&c->c,&c->d);
+  }
+  else if (!strcmp(op, "build")) {
+   char s[80]="";
+   n=0;
+   if(sscanf(line,"%*s %31s %79s %d",text,s,&n)<1) return 2;
+   if(!strcmp(text,"table")) drv_build_table();
+   else printf("build %s %d\n",text,drv_build(c,text,s,n));
   }
   else if (!strcmp(op, "make_raw")) {
    int worker,inp1,inp2,aura,factor,pub,where,skill;

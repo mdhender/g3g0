@@ -43294,3 +43294,613 @@ save 9200
 gm_economy gold 200
 readlog 200
 export state
+
+section N20 complete table defenses exact fuzzy failed reset
+build table
+build defense x 32
+build defense x 46
+build defense x 30
+build defense x 31
+build defense x 29
+build defense x 40
+build defense x 37
+build defense x 66
+build defense x 39
+build defense x -1
+build find GALLEY
+build find galey
+build find roundship
+build find rou
+build find xxx
+build find tower
+build find tmeple
+
+section N20 six location predicates terrain depth safe and city ocean order
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 1
+entity 9100 3 14
+entity 9101 3 20
+entity 9102 3 4
+entity 9200 3 32
+entity 9201 3 39
+entity 9202 3 46
+link 8000 9000
+link 8000 9001
+link 8000 9102
+link 9000 9100
+link 9000 9101
+link 9000 9200
+link 9000 9201
+link 9000 9202
+build loc galley 9100
+build loc raft 9000
+routes 9000 0 9001 0 0
+build loc raft 9000
+build loc galley 9100
+build loc roundship 9100
+build loc raft 9100
+build loc temple 9000
+build loc temple 9100
+build loc temple 9200
+build loc inn 9000
+build loc inn 9100
+build loc inn 9101
+build loc inn 9200
+build loc tower 9000
+build loc tower 9101
+build loc tower 9200
+build loc tower 9201
+build loc tower 9202
+build loc tower 8000
+build loc mine 9000
+build loc mine 9101
+build loc mine 9102
+field 9100 safe 1
+build loc temple 9100
+build loc inn 9100
+build loc castle 9100
+build loc tower 9100
+field 9102 safe 1
+build loc mine 9102
+field 9101 safe 1
+build loc mine 9000
+readlog 200
+
+section N20 tower castle six direct location structures not ships or descendants
+entity 9000 3 3
+entity 9100 3 39
+link 9000 9100
+entity 9200 3 46
+entity 9201 3 47
+entity 9202 3 46
+entity 9203 3 47
+entity 9204 3 46
+entity 9205 3 47
+entity 9206 9 46
+entity 9207 3 47
+link 9100 9200
+link 9100 9201
+link 9100 9202
+link 9100 9203
+link 9100 9204
+link 9100 9206
+link 9200 9207
+field 9100 safe 1
+build loc tower 9100
+link 9100 9205
+build loc tower 9100
+build loc tower 9000
+readlog 200
+
+section N20 mine existing before collapsed direct only terrain before safe
+entity 9000 3 4
+entity 9100 3 40
+entity 9101 3 41
+entity 9102 3 53
+link 9000 9102
+build loc mine 9000
+link 9000 9101
+build loc mine 9000
+link 9000 9100
+build loc mine 9000
+field 9000 safe 1
+build loc mine 9000
+readlog 200
+
+section N20 castle direct province first city duplicate unfinished and ignored second city
+entity 9000 3 3
+entity 9100 3 14
+entity 9101 3 14
+entity 9200 3 32
+entity 9201 3 39
+entity 9202 3 46
+link 9000 9100
+link 9000 9101
+link 9000 9202
+link 9101 9200
+build loc castle 9000
+build loc castle 9101
+build loc castle 9202
+link 9100 9201
+build loc castle 9000
+build loc castle 9101
+link 9000 9200
+build loc castle 9100
+readlog 200
+
+section N20 vbuild missing unknown invalid chosen before terrain wait signed boundaries
+entity 9000 3 1
+link 9000 1000
+build v
+parse build mystery
+build v
+parse build tower "" 7 1001
+build v
+dump
+parse build twer "" 0
+set wait 37
+rawargs 0 0 -2147483648
+build v
+dump
+parse build tower
+rawargs 0 0 2147483647
+build v
+dump
+readlog 200
+export state
+
+section N20 finished and continued before materials sea underground chosen claims
+entity 9000 3 1
+entity 9100 3 47
+entity 9101 3 46
+entity 9300 12 0
+field 200 unformed 9300
+link 9000 9100
+link 9000 9101
+link 9100 1000
+parse build tower "" -1 9300
+build v
+dump
+save 9300
+build unfinished
+parse build
+build v
+dump
+link 9101 1000
+parse build tower "" 6 9300
+build v
+dump
+save 200
+save 9300
+readlog 200
+export state
+
+section N20 raft omitted bare shorthand yet explicit continuation succeeds
+entity 9000 3 1
+entity 9100 9 67
+link 9000 9100
+link 9100 1000
+build unfinished
+parse build
+build v
+parse build raft
+build v
+readlog 200
+export state
+
+section N20 underground before location and materials no mint
+master 123
+entity 9000 3 70
+link 9000 1000
+parse build raft
+build v
+parse build mine
+build v
+readlog 200
+export state
+newitem 1000 0
+save_new
+
+section N20 material skill primary alternate missing exact and workers last
+entity 9000 3 4
+entity 602 5 0
+entity 680 5 0
+entity 720 5 0
+entity 11 4 0
+entity 77 4 0
+entity 78 4 0
+entity 59 4 0
+link 9000 1000
+build materials mine
+build materials tower
+build materials galley
+report skill 1000 720 2 0
+build materials mine
+inventory 1000 77 4
+build materials mine
+genitem 1000 77 1
+build materials mine
+inventory 1000 11 2
+build materials mine
+genitem 1000 11 1
+build materials mine
+build materials raft
+inventory 1000 59 5
+build materials raft
+report skill 1000 680 2 0
+inventory 1000 78 19
+build materials tower
+genitem 1000 78 1
+build materials tower
+save 1000
+readlog 200
+
+section N20 owned unformed tower name25 no initial consumption nested stack aftermath
+master 123
+entity 8000 3 50
+entity 9000 3 3
+entity 680 5 0
+entity 11 4 0
+entity 78 4 0
+entity 9300 12 0
+entity 9301 12 0
+entity 1002 2 0
+entity 1010 2 64
+entity 9400 3 32
+field 1010 lord 201
+field 1010 castle 9400
+field 1001 lord 201
+field 1002 lord 200
+field 200 unformed 9301
+field 200 unformed 9300
+field 1000 guard 1
+field 1002 contact 1001
+link 8000 9000
+link 9000 1010
+link 9000 9400
+link 9000 1000
+link 9400 1001
+link 1000 1002
+report skill 1000 680 2 0
+inventory 1000 11 3
+inventory 1000 78 20
+parse build tower "abcdefghijklmnopqrstuvwxy" 3 9300
+build v
+dump
+save 9300
+save 9301
+save 1000
+save 1002
+save 200
+arrival_state
+readlog 200
+readlog 201
+export state
+usemeta legacy 1 100000
+region_rolls 1000 9000
+newitem 1000 0
+save_new
+
+section N20 mint raft default name city port and no auto unformed choice
+master 321
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 1
+entity 9100 3 14
+entity 9300 12 0
+entity 59 4 0
+entity 11 4 0
+field 200 unformed 9300
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9100 1000
+routes 9000 0 9001 0 0
+inventory 1000 59 5
+parse build raft
+build v
+dump
+save 1000
+save 9300
+save 200
+readlog 200
+export state
+usemeta legacy 1 100000
+region_rolls 1000 9000
+newitem 1000 0
+save_new
+
+section N20 galley selected unformed empty default retains zero days wait
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 1
+entity 9100 3 14
+entity 9300 12 0
+entity 602 5 0
+entity 11 4 0
+entity 77 4 0
+field 200 unformed 9300
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9100 1000
+routes 9000 0 9001 0 0
+report skill 1000 602 2 0
+inventory 1000 11 3
+inventory 1000 77 10
+parse build galley "" 0 9300
+set wait 19
+build v
+dump
+save 9300
+save 1000
+save 200
+readlog 200
+export state
+
+section N20 roundship name26 fallback selected unformed
+entity 8000 3 50
+entity 9000 3 3
+entity 9001 3 1
+entity 9100 3 14
+entity 9300 12 0
+entity 602 5 0
+entity 11 4 0
+entity 77 4 0
+field 200 unformed 9300
+link 8000 9000
+link 8000 9001
+link 9000 9100
+link 9100 1000
+routes 9000 0 9001 0 0
+report skill 1000 602 2 0
+inventory 1000 11 3
+inventory 1000 77 20
+parse build roundship "abcdefghijklmnopqrstuvwxyz" 1 9300
+build v
+save 9300
+save 1000
+readlog 200
+export state
+
+section N20 temple multibyte name26 bytes default despite13 runes
+entity 8000 3 50
+entity 9000 3 3
+entity 9300 12 0
+entity 680 5 0
+entity 11 4 0
+entity 78 4 0
+field 200 unformed 9300
+link 8000 9000
+link 9000 1000
+report skill 1000 680 2 0
+inventory 1000 11 3
+inventory 1000 78 10
+parse build temple "ééééééééééééé" 1 9300
+build v
+save 9300
+save 1000
+readlog 200
+export state
+
+section N20 inn custom name sanitization owned unformed
+entity 8000 3 50
+entity 9000 3 3
+entity 9300 12 0
+entity 680 5 0
+entity 11 4 0
+entity 77 4 0
+field 200 unformed 9300
+link 8000 9000
+link 9000 1000
+report skill 1000 680 2 0
+inventory 1000 11 3
+inventory 1000 77 15
+parse build inn "[A] Inn" 1 9300
+build v
+save 9300
+save 1000
+readlog 200
+export state
+
+section N20 castle default unformed
+entity 8000 3 50
+entity 9000 3 3
+entity 9300 12 0
+entity 680 5 0
+entity 11 4 0
+entity 78 4 0
+field 200 unformed 9300
+link 8000 9000
+link 9000 1000
+report skill 1000 680 2 0
+inventory 1000 11 3
+inventory 1000 78 100
+parse build castle "" 1 9300
+build v
+save 9300
+save 1000
+readlog 200
+export state
+
+section N20 mine alternate mining skill unformed
+entity 8000 3 50
+entity 9000 3 4
+entity 9300 12 0
+entity 720 5 0
+entity 11 4 0
+entity 77 4 0
+field 200 unformed 9300
+link 8000 9000
+link 9000 1000
+report skill 1000 720 2 0
+inventory 1000 11 3
+inventory 1000 77 5
+parse build mine "Deep" 1 9300
+build v
+save 9300
+save 1000
+readlog 200
+export state
+
+section N20 invalid chosen foreign unformed falls back only after all checks
+master 123
+entity 8000 3 50
+entity 9000 3 3
+entity 680 5 0
+entity 11 4 0
+entity 78 4 0
+entity 9300 12 0
+field 201 unformed 9300
+link 8000 9000
+link 9000 1000
+parse build tower "X" 2 9300
+build v
+dump
+save 9300
+save 200
+save 201
+report skill 1000 680 2 0
+build v
+inventory 1000 78 20
+build v
+inventory 1000 11 3
+build v
+dump
+save 1000
+save 200
+save 201
+save 9300
+readlog 200
+export state
+newitem 1000 0
+save_new
+
+section N20 direct start helper and structure helper use real materials and stack owners
+entity 8000 3 50
+entity 9000 3 4
+entity 9300 12 0
+entity 720 5 0
+entity 11 4 0
+entity 77 4 0
+field 200 unformed 9300
+link 8000 9000
+link 9000 1000
+parse build mine "Helper"
+build start mine 9300
+report skill 1000 720 2 0
+inventory 1000 77 5
+inventory 1000 11 3
+build structure mine 9300
+build structure mine 0
+build unfinished
+save 9300
+save 1000
+readlog 200
+export state
+
+section N20 all material cutoffs with primary skill and negative workers
+entity 9000 3 3
+entity 602 5 0
+entity 680 5 0
+entity 11 4 0
+entity 59 4 0
+entity 77 4 0
+entity 78 4 0
+link 9000 1000
+report skill 1000 602 2 0
+report skill 1000 680 2 0
+inventory 1000 11 3
+inventory 1000 77 9
+build materials galley
+genitem 1000 77 1
+build materials galley
+genitem 1000 77 9
+build materials roundship
+genitem 1000 77 1
+build materials roundship
+consume 1000 77 6
+build materials inn
+genitem 1000 77 1
+build materials inn
+inventory 1000 78 9
+build materials temple
+genitem 1000 78 1
+build materials temple
+genitem 1000 78 89
+build materials castle
+genitem 1000 78 1
+build materials castle
+inventory 1000 59 4
+build materials raft
+genitem 1000 59 1
+build materials raft
+consume 1000 11 3
+inventory 1000 11 -1
+build materials raft
+save 1000
+readlog 200
+
+section N20 unfinished shorthand all seven types and completed null
+entity 9000 3 3
+entity 9100 3 39
+entity 9101 3 47
+entity 9102 3 36
+entity 9103 9 33
+entity 9104 9 34
+entity 9105 3 38
+entity 9106 3 41
+entity 9107 3 40
+link 9000 9100
+link 9000 9101
+link 9000 9102
+link 9000 9103
+link 9000 9104
+link 9000 9105
+link 9000 9106
+link 9000 9107
+link 9100 1000
+build unfinished
+parse build
+build v
+link 9101 1000
+build unfinished
+parse build
+build v
+link 9102 1000
+build unfinished
+parse build
+build v
+link 9103 1000
+build unfinished
+parse build
+build v
+link 9104 1000
+build unfinished
+parse build
+build v
+link 9105 1000
+build unfinished
+parse build
+build v
+link 9106 1000
+build unfinished
+parse build
+build v
+link 9107 1000
+build unfinished
+readlog 200
+
+section N20 raw chosen signed boundaries preserve command slots before sea refusal
+entity 9000 3 1
+link 9000 1000
+parse build raft
+rawargs 0 0 -1 -2147483648
+build v
+dump
+rawargs 0 0 -2147483648 2147483647
+build v
+dump
+readlog 200
+export state

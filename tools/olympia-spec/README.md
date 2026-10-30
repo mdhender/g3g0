@@ -8,6 +8,39 @@ The current merged-pin no-loss proof and remaining stage-4/stage-5 boundaries
 are recorded in [merged-pin proof](../README.md#merged-pin-proof-291).
 Historical task results below describe their own pins, not whole-spec parity.
 
+## Construction start no-loss (#221)
+
+At **0.143.0-alpha**, unchanged immutable **9a03d126**, full original spec:
+**129 fixtures /66 pass /63 fail /0 error (130s)**. No new construction
+pass is expected: direct BUILD start/finish remain genuinely NYI until222,
+repair/improve until223. Exactly all prior **66 names** and stage-3's
+**36 names** are retained, checked by name, not count. The existing tool
+alone writes passing.txt, unchanged **1325 bytes**, SHA-256
+`326cf4c3827bb0f8be7ab11094f900cda2ae50ceb81b55187b569198738c9f8d`.
+Stage-3 source list remains **876 bytes**, SHA-256
+`6d2080c29961395d8387364983b6543a6d05c7277b63bdfd16f9025a91736b67`.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" WORK="$PWD/tmp/_issue221/spec" \
+  RUN_DIR=/tmp/g3g0-issue221-spec RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/olympia-spec/run.sh
+```
+
+Golden remains **NO**, initialization exits **2** at unsupported `load_db
+(-i)`. #289's settled canonical ATTACK235/fog264/full missing-argument
+stage4 obligations and deferred stage5 console remainder are unchanged.
+No pin/fixture edit, family/stage exit, stage5, GitHub write or delivery
+acceptance. No new full207 serializer/roundtrip corpus claim; its cache
+remains idle/unmodified. Bounded C/C/Go original construction scripts
+remain [honest later-owner gates](../turn-compat/README.md#construction-start-prerequisite-221).
+
+Evidence: `tmp/issue221-spec.log`, `tmp/issue221-spec-names.log`,
+`tmp/issue221-spec-logs/{run-all,olympia-g3,golden,build}.log`.
+Spec WORK/RUN_DIR, temporary helpers/binaries, matching captures and
+generated coverage/use dumps are removed; decisive logs/manifests and
+failed Go construction captures remain. Linux amd64, GCC12.2.0/Go1.26.4.
+
 ## Ferry no-loss (#220)
 
 At **0.142.0-alpha**, unchanged immutable

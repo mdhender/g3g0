@@ -104,7 +104,12 @@ functions = {
                'nprovs_to_rank', 'find_kings', 'lower_noble_rank',
                'det_noble_rank_sup', 'determine_noble_ranks', 'may_rule_here',
                'garr_own_s', 'garrison_summary', 'pledged_beneath', 'v_pledge'],
-    'build.c': ['province_subloc'],
+    'build.c': ['fort_default_defense', 'ship_loc_okay', 'temple_loc_okay',
+                'tower_loc_okay', 'mine_loc_okay', 'inn_loc_okay', 'province_subloc',
+                # Native-only complete completion body resolves start_build's
+                # unreachable instant_build reference; no completion hook.
+                'castle_loc_okay', 'find_build', 'build_materials_check', 'create_new_building', 'start_build',
+                'build_structure', 'unfinished_building', 'v_build'],
     'art.c': ['has_auraculum', 'max_eff_aura', 'max_current_aura', 'limit_cur_aura', 'token_player', 'swear_token_units',
               'melt_token_units', 'add_token_unit_sup', 'add_token_units', 'move_token', 'check_token_units', 'new_suffuse_ring'],
     'display.c': ['loc_inside_string', 'show_loc_barrier', 'safe_haven_s', 'ship_cap_s',
@@ -326,6 +331,13 @@ int immed_see_all, month_done, show_combat_flag;
             out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/u.c"\n')
             out.write(source[start:source.index('void\nkill_stack_ocean(int who)')])
             start, end = source.index('static char *num_s[]'), source.index('char *\nnice_num(')
+            out.write(source[start:end])
+        if file == 'build.c':
+            for name in ['ship_loc_okay', 'temple_loc_okay', 'tower_loc_okay',
+                         'mine_loc_okay', 'inn_loc_okay', 'castle_loc_okay']:
+                out.write(f'static int {name}(struct command *, int);\n')
+            start, end = source.index('struct build_ent\n'), source.index('static struct build_ent *\nfind_build(')
+            out.write(f'#line {source.count(chr(10), 0, start) + 1} "olympia/build.c"\n')
             out.write(source[start:end])
         if file == 'make.c':
             start, end = source.index('#define\tWHERE_SHIP'), source.index('static struct make *\nfind_make(')
@@ -595,6 +607,26 @@ void drv_make_raw(int item, int worker, int inp1, int inp2, int aura, int factor
  drv_raw_make.aura=aura; drv_raw_make.factor=factor; drv_raw_make.public=pub;
  drv_raw_make.where=where; drv_raw_make.req_skill=skill;
 }
+void drv_build_table(void) {
+ for (int i=0; build_tbl[i].what; i++) {
+  struct build_ent *t=&build_tbl[i];
+  int cb=t->loc_ok==ship_loc_okay ? 0 : t->loc_ok==temple_loc_okay ? 1 : t->loc_ok==inn_loc_okay ? 2 : t->loc_ok==castle_loc_okay ? 3 : t->loc_ok==mine_loc_okay ? 4 : t->loc_ok==tower_loc_okay ? 5 : -1;
+  printf("build row %d %s %d %d %d %d %d %d %d %d %d %d %d %d [%s]\\n",i,t->what,t->skill_req,t->skill2,t->kind,cb,t->unfinished_subkind,t->finished_subkind,t->min_workers,t->worker_days,t->min_days,t->req_item,t->req_qty,t->capacity,t->default_name);
+ }
+}
+int drv_build(struct command *c, char *action, char *s, int n) {
+ if(!strcmp(action,"defense")) return fort_default_defense(n);
+ if(!strcmp(action,"v")) return v_build(c);
+ if(!strcmp(action,"unfinished")) { char *p=unfinished_building(c->who); printf("unfinished [%s]\\n",p?p:"NULL"); return p!=NULL; }
+ struct build_ent *t=find_build(s);
+ if(!strcmp(action,"find")) { printf("build find [%s] %d\\n",t?t->what:"NULL",fuzzy_build_match); return t!=NULL; }
+ if(!t) abort();
+ if(!strcmp(action,"loc")) return t->loc_ok(c,n);
+ if(!strcmp(action,"materials")) return build_materials_check(c,t);
+ if(!strcmp(action,"start")) return start_build(c,t,n);
+ if(!strcmp(action,"structure")) return build_structure(c,t,n);
+ abort();
+}
 void drv_make_table(void) {
  for (int i=0; i<sizeof(make_tbl)/sizeof(*make_tbl); i++) {
   struct make *t=&make_tbl[i];
@@ -854,6 +886,9 @@ for run in run1 run2; do
   grep -Ei 'out-of-scope|not (yet )?implemented|missing.*dependency:|NYI|stub|Sanitizer|runtime error:' \
    "${WORK}/${run}/stdout" "${WORK}/${run}/stderr" >&2 || marker_status=$?
   [ "$marker_status" = 1 ] || die "section $i invalid C reference or unreadable streams"
+  if [[ "${section_names[$i]}" == 'section N20 '* ]]; then
+   [ "$status" = 0 ] || die "unexpected N20 status $status in section $i"
+  fi
   if [[ "${section_names[$i]}" == 'section N19 '* ]]; then
    expected_status=0
    case "${section_names[$i]}" in

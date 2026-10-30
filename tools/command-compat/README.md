@@ -3,6 +3,127 @@
 Pinned reference: [Olympia G3 at
 9a03d126b329ed466c4af48425553c025eaca26f](https://github.com/playbymail/olympia-g3/tree/9a03d126b329ed466c4af48425553c025eaca26f).
 
+## Construction predicates, table and start (#221, stage 4 N20)
+
+**0.143.0-alpha**, unchanged immutable **9a03d126**. New build.go owns only
+build.c **8–427,460–560,666–793**: defense defaults, six location predicates,
+complete eight-row table/NULL sentinel, exact-then-fuzzy lookup, materials,
+start/structure, unfinished shorthand and v_build. Existing loc/topology,
+skills, mint, unformed lists, naming, moveStack, output/garrison and RNG
+remain shared. Construction fuzzy state is separate from parser state.
+The byte-length name limit, no initial material consumption, disabled tower
+safe-haven check, six direct towers in castles, first-city castle lookup
+and omitted raft shorthand are retained.
+
+**Direct BUILD start/finish remain NYI** until #222 supplies completion and
+dispatch together. glob.go is untouched. instant_build is always FALSE;
+its enabling code is #if 0. Go represents its reachable branch without a
+fake completion. Native extraction retains unchanged create_new_building
+solely for the original start_build's unreachable static reference, not a
+Go completion. Repair/improve223, raze224 and stage5 remain separate.
+build.c was already in the affected-source map: no pin/dependency change or
+new full207-corpus acceptance is claimed.
+
+The extractor retains **15 complete original definitions**, including the
+already-owned province_subloc and native-only completion reference, plus
+the original table/fuzzy state, at their actual #line source locations.
+All ranges/byte counts/SHA-256s: `tmp/issue221-extraction-proof.log`.
+The **3429-byte table/state** SHA-256 is
+`678ff3e481b6137f4070d99d0aae283e04bc53c5034325f0a9ae425a57c2f9a0`.
+Driver observers call real functions, not a C model; table observations
+include every field/actual callback identity. rawargs optionally sets slot4
+as C32 without changing inherited three-slot calls.
+
+**23 appended sections** discriminate all structures/defenses/callbacks;
+ocean-before-city (also raft), terrain/safe/depth/count ordering, mine
+existing-before-collapsed and province/first-city castle duplicates;
+finished/continued before location/material refusal; all seven shorthand
+types and explicit-only raft; fuzzy reset, wait and raw signed boundaries;
+chosen-code notice before refusal, owned/foreign unformed, post-gate mint;
+all material exact cutoffs, workers2–3, alternate mining; empty/default/
+custom/25-/26-byte/UTF-8 names; nested stacks/contacts/guard, saved raw state,
+allocation/cache/lists, garrison-only public notices and keyed/legacy RNG
+with subsequent real mint probes. No orphan allocation on refusal.
+
+Unchanged C first ran twice before recording/Go. Old Go lacked the helper
+hook (`tmp/issue221-command-before.log`, unknown build operation); unchanged
+direct BUILD remains independently NYI in the original fixture. Initial
+test-authoring errors (unknown exit/grant opcodes, worker item and rocky-hill
+topology) were corrected, not accepted as successful native statuses.
+Final update and default each repeat C twice then match Go:
+**1933 sections /171049 lines /3297105 output bytes**.
+
+| Bytes | Size | SHA-256 |
+| --- | --- | --- |
+| Input | 814197 | `537b574d1da1f75318bc8022f13e35d6d06efd7a401da9ff7cc49a1c60a387b1` |
+| Output | 3297105 | `016ccb97e8a84280c009b92edab2ec313aa8cd66781e3ecff3ee7ed041b42f63` |
+| Entire inherited input | 803258 | `4a78cdb3869651790e5a3a25af0cab993242caa367039e1016953ee36e794b4c` |
+| Entire inherited output | 3249171 | `3eac918a0fe5c8663d9cd714df79cbec96c6cbca4ad3ab7c144fa2297968d39f` |
+
+Both entire prefixes are byte-identical, including **21/67 high-bit bytes**
+and authentic trailing spaces. Accepted stage-3 **578307/2134398-byte**
+prefix hashes remain `3481dcd40549f16ff6fc67201a70bab1e00c08a599799151e7706734ff594659` /
+`1eabf595ecf06bcde56319a75012527a42dabb7e7218191b69006a86accccabe`
+(already accepted #290 assertion-location shifts, not new changes).
+
+Every new native section requires0, no new assertion exception. Marker
+rejection precedes statuses/reference writes. Temporary compiled executable-
+entry controls (not callbacks) exercise six marker classes × actual native
+**0/134** × default/update: **24 rejection2**, recording unchanged.
+Separate bounded native probes verify actual0/134. Logs:
+`tmp/issue221-marker-{controls,native}.log` and 24 per-control logs.
+
+```sh
+G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+  GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+  bash tools/command-compat/run.sh --update # C twice, C-only record, then Go
+for tool in command move helper rng code loadsave turn-driver turn; do
+  G3_REPO="$PWD/tmp/upstream.git" RUN_TIMEOUT=120 \
+    GOFLAGS="'-exec=bash $PWD/tools/lib/run-limited.sh'" \
+    bash "tools/$tool-compat/run.sh"
+done
+. tools/lib/timeout.sh
+run_limited 120 go "$(command -v go)" vet ./...
+G3G0_FULL=1 RUN_TIMEOUT=120 \
+  go test -count=1 -exec "bash $PWD/tools/lib/run-limited.sh" ./...
+```
+
+Eight defaults pass **sequentially**: command1933/171049, move135/7158,
+helper37/1487, RNG321, code43/969, loadsave61/3411, turn-driver7/152,
+phase5/484, calendar2/119, schedule4/1801, default turn's two-entry control.
+Bounded vet/fresh full-enabled tests pass (11 test packages, Olympia2.367s).
+Default loadsave does not run saved-game corpora. Logs:
+`tmp/issue221-{command-update,*-default,vet,tests,prefix-proof}.log`.
+Original [native fixtures](../turn-compat/README.md#construction-start-prerequisite-221)
+and [spec no-loss](../olympia-spec/README.md#construction-start-no-loss-221)
+remain separate honest later-owner gates. Temporary helpers/binaries,
+matching C captures, disposable WORKs and generated coverage/use dumps are
+removed; decisive logs/manifests and failed Go captures remain under tmp.
+No family/stage exit, commit/push, GitHub write or parent acceptance.
+
+Parent independently reviewed every scoped C definition and the complete
+Go/driver/extraction/case diff. All **15 generated definitions**, their
+actual `#line` provenance and the complete table/state match pinned source
+bytes; all **68 evidence digests** verify. Parent also verified both entire
+inherited prefixes and all **1237 canonical source blobs/modes** plus the C
+binary hash. Bounded vet, fresh bounded full-enabled tests (**11 packages**,
+Olympia **2.286s**) and all eight sequential defaults pass, including fresh
+**1933-section /171049-line C/C/Go** command comparison. A separately
+recreated native pre-cleanup launcher repeats both original construction
+scripts: all six engine invocations accounted for, C/C exact **242/245 cwd
+entries**, Go honestly engine2/script1 at BUILD/REPAIR start NYIs. Every
+raw stream/status and cwd path/type/mode/empty directory/byte participates.
+Launcher source/executable hashes are in `tmp/parent221-launcher.sha256`;
+source SHA-256 is
+`e8e486ef5e0653591d93f354bdd006183ef88fc103caa50516a3dc72fd4012f4`.
+Fresh full spec is **66 pass /63 fail /0 error (129s)**, passing.txt unchanged,
+all prior66/stage3-36 names retained, golden NO/init2. Evidence:
+`tmp/parent221-{vet,tests,command,fixtures,spec,evidence-check}.log`, per-tool
+logs/manifests and decisive C/Go captures in `tmp/parent221-failed-captures`.
+Temporary launchers/binaries, matching captures, disposable WORK/RUN_DIRs
+and generated dumps are removed after inspection. This accepts the bounded
+start prerequisite only; direct BUILD remains NYI until completion #222.
+
 ## Ferry, boarding, unload and fee (#220, stage 4 N19)
 
 **0.142.0-alpha**, unchanged immutable **9a03d126**. The six complete original

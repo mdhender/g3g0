@@ -9,6 +9,63 @@ remaining original-fixture NYIs are in
 [merged-pin proof](../README.md#merged-pin-proof-291). The older snapshot and
 stage-exit evidence below retain their historical scope.
 
+## Construction start prerequisite (#221)
+
+**0.143.0-alpha**, unchanged immutable **9a03d126**. All **1237 original
+source blobs/modes** in `tmp/_issue215/canonical` were verified against the
+isolated bare pin before native reuse. The Debug/Ninja build retains
+`-ffile-prefix-map=/home/user/workspace/repo/tmp/_issue215/canonical/=`;
+binary SHA-256 remains
+`2ea19140ebd00e1ca672bd022ff958c139efb3aeca59f5f91b3cb8ebb93b5212`.
+Provenance: `tmp/issue221-canonical-provenance.log`. The protected full207
+input cache is idle/unmodified; no in-place engine/input links, shared C
+checkout, new pin or full-corpus rerun.
+
+Original construction-build/refused scripts, READMEs, Lua and frozen
+scenarios were read unchanged. Neither authoring/regeneration nor upstream
+fixture edits are used. Both need complete BUILD222 and repair/improve223;
+the helper oracle is deliberately not partial direct dispatch.
+
+The native pre-cleanup capture method below was recreated under unique
+`tmp/_issue221`: O_RDWR raw streams, preserved argv0/stdin, bash sourcing
+timeout.sh and `run_limited 120 "$0" "$S4_ENGINE" "$@"`, seek/replay stdout
+then stderr, close, actual status/newline, and `cp -a .` to an absent cwd
+after replay and before script cleanup. Every invocation gets its own
+001/002/... directory; both scripts actually invoke the engine once.
+Launcher source/binary hashes are
+`d67b22c6f2f51114edc47907566689870cb3283b924d9d9fdcf15903943012cc` /
+`9b40f6ebb9dd7abec781b5db29dd69a2f2d38aa405c7ffe2fbd47891601a3932`.
+
+```sh
+. tools/lib/timeout.sh
+export G3_REPO="$PWD/tmp/upstream.git" S4_ROOT="$PWD"
+# Recreate native sequential capture as described above, then C1/C2/Go:
+export S4_CAPTURE="$PWD/tmp/_issue221/$fixture-$run"
+export S4_ENGINE="$PWD/tmp/_issue215/canonical/build/canonical/olympia-g3"
+# Go run only after both C repeats; use fresh tmp/_issue221/olympia instead.
+OLYMPIA_ENGINE_BIN="$PWD/tmp/_issue221/capture" \
+  run_limited 150 bash /bin/bash \
+  "$PWD/tmp/_issue215/canonical/tests/olympia/regress/$fixture/check.sh"
+run_limited 120 compare "$PWD/tmp/_issue221/compare" "$c1/001" "$c2/001"
+python3 -I tools/lib/tree-modes.py "$c1/001/cwd" "$c2/001/cwd"
+```
+
+**Six native captures**, actual invocation inventories exactly001. Real C1
+and C2 run before Go for each script. Marker rejection precedes C status
+acceptance. Strict comparator plus tree-modes.py match raw status/streams
+and every cwd path/type/mode/empty directory/byte: construction-build
+**242 entries**, construction-refused **245 entries**, C engine0/scriptYES0.
+Go honestly differs: **engine2/scriptNO1**, respectively **command build
+start NYI** and **command repair start NYI**. Completion stays NYI too;
+no construction script or family exit is newly accepted.
+
+Logs/manifests: `tmp/issue221-construction-*-{cc,cgo,*-script}.log`,
+`tmp/issue221-construction-*-manifest.txt`, `tmp/issue221-fixtures.log`,
+source/capture provenance. Failed Go captures remain in
+`tmp/issue221-construction-{build,refused}-go`; matching C captures,
+temporary launcher/compiler/Go binaries and disposable WORKs are removed.
+See [bounded helper proof](../command-compat/README.md#construction-predicates-table-and-start-221-stage-4-n20).
+
 ## Ferry originals (#220)
 
 **0.142.0-alpha**, unchanged immutable **9a03d126**. All **1237 original
